@@ -1,0 +1,18 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Rapid Fire Core Plugin
+Bundle-SymbolicName: biz.rapidfire.core;singleton:=true
+Bundle-Version: 1.0.0.b001
+Bundle-Activator: biz.rapidfire.core.RapidFireCorePlugin
+Bundle-Vendor: Rapid Fire Project Team
+Bundle-Localization: plugin
+Require-Bundle: org.eclipse.ui,
+ org.eclipse.core.runtime,
+ biz.rapidfire.rse,
+ com.ibm.etools.iseries.toolbox,
+ biz.rapidfire.base
+Bundle-ClassPath: .
+Bundle-RequiredExecutionEnvironment: J2SE-1.5
+Bundle-ActivationPolicy: lazy
+Eclipse-LazyStart: true
+Export-Package: biz.rapidfire.core.model
