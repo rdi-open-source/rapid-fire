@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.2"?>
+<plugin>
+      	
+	<!--
+	  ==========================================
+	    SubSystem Configuration
+	  ==========================================
+	-->
+   <extension point="org.eclipse.rse.core.subsystemConfigurations">
+        <configuration
+             systemTypeIds="org.eclipse.rse.systemtype.iseries"
+             name="%Rapid_Fire"
+             category="nativefiles"
+             class="biz.rapidfire.rse.subsystem.DeveloperSubSystemConfiguration"
+             vendor="iSphere Project Team"
+             id="biz.rapidfire.rse.subsystem.factory"
+        >
+        </configuration>
+   </extension>            
+
+</plugin>
