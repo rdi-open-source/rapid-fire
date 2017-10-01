@@ -6,8 +6,19 @@
  * http://www.eclipse.org/legal/cpl-v10.html
  *******************************************************************************/
 
-package biz.rapidfire.rse.subsystem;
+package biz.rapidfire.rse.model;
 
-public interface IRapidFireSubSystem {
+import biz.rapidfire.core.model.AbstractJobs;
+import biz.rapidfire.rse.model.dao.JobsDAO;
 
+public class Jobs extends AbstractJobs {
+
+    public Jobs(String connectionName, String library) throws Exception {
+        super(connectionName, library);
+    }
+
+    @Override
+    protected JobsDAO createDAO(String connectionName, String library) throws Exception {
+        return new JobsDAO(connectionName, library);
+    }
 }

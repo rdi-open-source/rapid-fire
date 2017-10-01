@@ -12,24 +12,12 @@ import org.eclipse.osgi.util.NLS;
 
 public class Messages extends NLS {
 
-    private static final String BUNDLE_NAME = "biz.rapidfire.core.messages"; //$NON-NLS-1$
+    private static final String BUNDLE_NAME = "biz.rapidfire.rse.messages"; //$NON-NLS-1$
 
     public static final String EMPTY = ""; //$NON-NLS-1$
     public static final String SPACE = " "; //$NON-NLS-1$
 
-    /*
-     * Common strings
-     */
-
-    public static String E_R_R_O_R;
-
-    /*
-     * DAO strings
-     */
-
-    public static String DAOBase_Invalid_or_missing_connection_name_A;
-    public static String DAOBase_Connection_A_not_found;
-    public static String DAOBase_Failed_to_connect_to_A;
+    public static final String E_R_R_O_R = "E R R O R"; //$NON-NLS-1$
 
     static {
         // initialize resource bundle

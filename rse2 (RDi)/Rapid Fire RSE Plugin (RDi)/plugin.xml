@@ -7,16 +7,18 @@
 	    SubSystem Configuration
 	  ==========================================
 	-->
-   <extension point="org.eclipse.rse.core.subsystemConfigurations">
-        <configuration
-             systemTypeIds="org.eclipse.rse.systemtype.iseries"
-             name="%Rapid_Fire"
-             category="nativefiles"
-             class="biz.rapidfire.rse.subsystem.DeveloperSubSystemConfiguration"
-             vendor="iSphere Project Team"
-             id="biz.rapidfire.rse.subsystem.factory"
-        >
-        </configuration>
-   </extension>            
+  <extension
+         point="org.eclipse.rse.core.subsystemConfigurations">
+      <configuration
+            systemTypeIds="org.eclipse.rse.systemtype.iseries"
+            name="%Rapid_Fire"
+            iconlive="icons/rapidfire_connected.gif"
+            icon="icons/rapidfire.gif"
+            category="rapidfire"
+            class="biz.rapidfire.rse.subsystem.RapidFireSubSystemFactory"
+            vendor="Rapid Fire Project Team"
+            id="biz.rapidfire.rse.subsystem.RapidFireSubSystemFactory">
+      </configuration>
+   </extension>
 
 </plugin>
