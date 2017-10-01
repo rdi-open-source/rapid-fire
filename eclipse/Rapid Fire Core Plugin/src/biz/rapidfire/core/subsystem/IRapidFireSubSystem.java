@@ -6,13 +6,8 @@
  * http://www.eclipse.org/legal/cpl-v10.html
  *******************************************************************************/
 
-package biz.rapidfire.core.model.dao;
+package biz.rapidfire.core.subsystem;
 
-import java.util.List;
+public interface IRapidFireSubSystem {
 
-import biz.rapidfire.core.model.IJob;
-
-public interface IJobsDAO {
-
-    public List<IJob> load() throws Exception;
 }

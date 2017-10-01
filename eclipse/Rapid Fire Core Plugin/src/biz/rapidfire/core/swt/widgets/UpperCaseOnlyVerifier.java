@@ -1,18 +1,20 @@
 /*******************************************************************************
- * Copyright (c) 2012-2017 iSphere Project Owners
+ * Copyright (c) 2012-2014 iSphere Project Owners
  * All rights reserved. This program and the accompanying materials 
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/cpl-v10.html
  *******************************************************************************/
 
-package biz.rapidfire.core.model.dao;
+package biz.rapidfire.core.swt.widgets;
 
-import java.util.List;
+import org.eclipse.swt.events.VerifyEvent;
+import org.eclipse.swt.events.VerifyListener;
 
-import biz.rapidfire.core.model.IJob;
+public class UpperCaseOnlyVerifier implements VerifyListener {
 
-public interface IJobsDAO {
+    public void verifyText(VerifyEvent event) {
+        event.text = event.text.toUpperCase();
+    }
 
-    public List<IJob> load() throws Exception;
 }

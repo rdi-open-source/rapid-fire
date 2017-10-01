@@ -14,14 +14,15 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import biz.rapidfire.core.model.Job;
+import biz.rapidfire.base.model.dao.AbstractDAOBase;
+import biz.rapidfire.core.model.IJob;
 import biz.rapidfire.core.model.JobName;
 import biz.rapidfire.core.model.Phase;
 import biz.rapidfire.core.model.Status;
 
 import com.ibm.as400.access.QSYSObjectPathName;
 
-public class JobsDAO extends DAOBase implements IJobsDAO {
+public abstract class AbstractJobsDAO extends AbstractDAOBase {
 
     public static final String JOB = "JOB";
     public static final String DESCRIPTION = "DESCRIPTION";
@@ -38,13 +39,17 @@ public class JobsDAO extends DAOBase implements IJobsDAO {
     public static final String STOP_APPLY_CHANGES = "STOP_APPLY_CHANGES";
     public static final String CMONE_FORM = "CMONE_FORM";
 
-    public JobsDAO(String connectionName) throws Exception {
+    private String library;
+
+    public AbstractJobsDAO(String connectionName, String library) throws Exception {
         super(connectionName);
+
+        this.library = library;
     }
 
-    public List<Job> load(String library) throws Exception {
+    public List<IJob> load() throws Exception {
 
-        List<Job> journalEntries = new ArrayList<Job>();
+        List<IJob> journalEntries = new ArrayList<IJob>();
 
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
@@ -70,7 +75,7 @@ public class JobsDAO extends DAOBase implements IJobsDAO {
         return journalEntries;
     }
 
-    private Job produceJob(ResultSet resultSet) throws SQLException {
+    private IJob produceJob(ResultSet resultSet) throws SQLException {
 
         String name = resultSet.getString(JOB);
         String description = resultSet.getString(DESCRIPTION);
@@ -78,7 +83,8 @@ public class JobsDAO extends DAOBase implements IJobsDAO {
         String jobQueueLibrary = resultSet.getString(JOB_QUEUE_LIBRARY);
         String jobQueueName = resultSet.getString(JOB_QUEUE);
 
-        Job job = new Job(name, description, convertYesNo(createEnvironment), new QSYSObjectPathName(jobQueueLibrary, jobQueueName, "JOBQ"));
+        IJob job = createJobInstance(name, description, convertYesNo(createEnvironment),
+            new QSYSObjectPathName(jobQueueLibrary, jobQueueName, "JOBQ"));
 
         String status = resultSet.getString(STATUS);
         String phase = resultSet.getString(PHASE);
@@ -100,6 +106,8 @@ public class JobsDAO extends DAOBase implements IJobsDAO {
 
         return job;
     }
+
+    protected abstract IJob createJobInstance(String name, String description2, boolean convertYesNo, QSYSObjectPathName qsysObjectPathName);
 
     private String getSqlStatement() {
 
@@ -126,5 +134,4 @@ public class JobsDAO extends DAOBase implements IJobsDAO {
 
         return sqlStatement;
     }
-
 }

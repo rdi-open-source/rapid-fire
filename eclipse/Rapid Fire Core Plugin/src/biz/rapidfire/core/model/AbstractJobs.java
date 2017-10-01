@@ -10,23 +10,25 @@ package biz.rapidfire.core.model;
 
 import java.util.List;
 
-import biz.rapidfire.core.model.dao.DAOBase;
-import biz.rapidfire.core.model.dao.JobsDAO;
+import biz.rapidfire.core.model.dao.IJobsDAO;
 
-public class Jobs extends DAOBase {
+public abstract class AbstractJobs {
 
+    private String connectionName;
     private String library;
 
-    public Jobs(String connectionName, String library) throws Exception {
-        super(connectionName);
+    public AbstractJobs(String connectionName, String library) throws Exception {
 
+        this.connectionName = connectionName;
         this.library = library;
     }
 
-    public List<Job> load() throws Exception {
+    public List<IJob> load() throws Exception {
 
-        JobsDAO jobsDAO = new JobsDAO(getConnectionName());
+        IJobsDAO jobsDAO = createDAO(connectionName, library);
 
-        return jobsDAO.load(library);
+        return jobsDAO.load();
     }
+
+    protected abstract IJobsDAO createDAO(String connectionName, String library) throws Exception;
 }
