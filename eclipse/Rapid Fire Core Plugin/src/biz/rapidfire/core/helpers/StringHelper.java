@@ -81,7 +81,7 @@ public final class StringHelper {
      * @return string without trailing spaces
      */
     public static String trimR(String aString) {
-        return aString.replaceAll("\\s+$", "");
+        return aString.replaceAll("\\s+$", ""); //$NON-NLS-1$ //$NON-NLS-2$
     }
 
     /**
@@ -91,7 +91,7 @@ public final class StringHelper {
      * @return string without leading spaces
      */
     public static String trimL(String aString) {
-        return aString.replaceAll("^\\s+", "");
+        return aString.replaceAll("^\\s+", ""); //$NON-NLS-1$ //$NON-NLS-2$
     }
 
     /**
@@ -104,7 +104,7 @@ public final class StringHelper {
     public static String getFixLength(String aValue, int aLength) {
         StringBuffer fixLength = new StringBuffer(aValue);
         while (fixLength.length() < aLength) {
-            fixLength.append(" ");
+            fixLength.append(" "); //$NON-NLS-1$
         }
         return fixLength.toString();
     }
@@ -119,7 +119,7 @@ public final class StringHelper {
     public static String getFixLengthLeading(String aValue, int aLength) {
         StringBuffer fixLength = new StringBuffer();
         while (fixLength.length() < aLength - aValue.length()) {
-            fixLength.append(" ");
+            fixLength.append(" "); //$NON-NLS-1$
         }
         fixLength.append(aValue);
         return fixLength.toString();
@@ -199,17 +199,17 @@ public final class StringHelper {
      */
     public static String addQuotes(String stringToBeQuoted) {
 
-        StringBuffer stringWithQuotes = new StringBuffer("");
-        stringWithQuotes.append("'");
+        StringBuffer stringWithQuotes = new StringBuffer(""); //$NON-NLS-1$
+        stringWithQuotes.append("'"); //$NON-NLS-1$
 
         for (int idx = 0; idx < stringToBeQuoted.length(); idx++) {
             String character = stringToBeQuoted.substring(idx, idx + 1);
             stringWithQuotes.append(character);
-            if (character.equals("'")) {
-                stringWithQuotes.append("'");
+            if (character.equals("'")) { //$NON-NLS-1$
+                stringWithQuotes.append("'"); //$NON-NLS-1$
             }
         }
-        stringWithQuotes.append("'");
+        stringWithQuotes.append("'"); //$NON-NLS-1$
 
         return stringWithQuotes.toString();
     }
@@ -235,7 +235,7 @@ public final class StringHelper {
         for (String line : lines) {
             retBuf.append(indent);
             retBuf.append(line);
-            retBuf.append('\n');
+            retBuf.append('\n'); //$NON-NLS-1$
         }
 
         return retBuf.toString();
@@ -261,10 +261,10 @@ public final class StringHelper {
         // remove newlines from head and tail
         if (removeNewLines) {
             original = original.trim();
-            original = original.replace('\n', ' ');
+            original = original.replace('\n', ' '); //$NON-NLS-1$ //$NON-NLS-2$
             workingSet = new String[] { original };
         } else {
-            StringTokenizer tokens = new StringTokenizer(original, "\n"); // NOI18N
+            StringTokenizer tokens = new StringTokenizer(original, "\n"); //$NON-NLS-1$
             int len = tokens.countTokens();
             workingSet = new String[len];
 
@@ -290,9 +290,9 @@ public final class StringHelper {
 
         ArrayList<String> lines = new ArrayList<String>();
 
-        int lineStart = 0; // the position of start of currently processed line
-                           // in
-        // the original string
+        // the position of start of currently processed line in the original
+        // string
+        int lineStart = 0;
 
         for (int i = 0; i < workingSet.length; i++) {
             if (workingSet[i].length() < width)
@@ -346,13 +346,13 @@ public final class StringHelper {
             return false;
         }
 
-        if ("*".equals(pattern)) {
+        if ("*".equals(pattern)) { //$NON-NLS-1$
             return true;
         }
 
         // Escape dots (.) and backslashes (\)
-        pattern = pattern.replaceAll("\\\\", "\\\\\\\\");
-        pattern = pattern.replaceAll("\\.", "\\\\.");
+        pattern = pattern.replaceAll("\\\\", "\\\\\\\\"); //$NON-NLS-1$  //$NON-NLS-2$
+        pattern = pattern.replaceAll("\\.", "\\\\."); //$NON-NLS-1$  //$NON-NLS-2$
 
         /**
          * Replace asterisks (*) and question marks (?)<br>
@@ -366,7 +366,7 @@ public final class StringHelper {
          * </ul>
          */
 
-        pattern = "^" + pattern.replaceAll("\\*", ".*").replaceAll("\\?", ".") + "$";
+        pattern = "^" + pattern.replaceAll("\\*", ".*").replaceAll("\\?", ".") + "$"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$ //$NON-NLS-5$ //$NON-NLS-6$
 
         Pattern regexPattern = Pattern.compile(pattern, Pattern.CASE_INSENSITIVE);
         Matcher matcher = regexPattern.matcher(text);

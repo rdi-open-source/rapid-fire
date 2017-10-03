@@ -8,16 +8,32 @@
 
 package biz.rapidfire.core.model;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public enum Status {
-    RDY ("*RDY"),
-    RUN_PENDING ("*RUN-PND"),
-    RUN ("*RUN"),
-    END_PND ("*END-PND"),
-    END ("*END");
+    RDY ("*RDY"), //$NON-NLS-1$
+    RUN_PENDING ("*RUN-PND"), //$NON-NLS-1$
+    RUN ("*RUN"), //$NON-NLS-1$
+    END_PND ("*END-PND"), //$NON-NLS-1$
+    END ("*END"); //$NON-NLS-1$
 
     public String label;
 
+    private static Map<String, Status> statuses;
+
+    static {
+        statuses = new HashMap<String, Status>();
+        for (Status status : Status.values()) {
+            statuses.put(status.label, status);
+        }
+    }
+
     private Status(String label) {
         this.label = label;
+    }
+
+    public static Status find(String label) {
+        return statuses.get(label);
     }
 }

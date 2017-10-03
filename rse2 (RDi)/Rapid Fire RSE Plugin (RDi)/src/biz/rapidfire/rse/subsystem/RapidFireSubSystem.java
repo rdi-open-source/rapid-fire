@@ -29,8 +29,10 @@ import org.eclipse.rse.services.clientserver.messages.SystemMessage;
 import org.eclipse.rse.ui.RSEUIPlugin;
 import org.eclipse.swt.widgets.Shell;
 
+import biz.rapidfire.core.model.IRapidFireInstanceResource;
 import biz.rapidfire.core.subsystem.IRapidFireSubSystem;
 import biz.rapidfire.core.subsystem.RapidFireFilter;
+import biz.rapidfire.rse.model.RapidFireInstanceResource;
 
 import com.ibm.etools.iseries.subsystems.qsys.IISeriesSubSystem;
 import com.ibm.etools.iseries.subsystems.qsys.api.IBMiConnection;
@@ -65,25 +67,19 @@ public class RapidFireSubSystem extends SubSystem implements IISeriesSubSystem, 
     protected Object[] internalResolveFilterString(String filterString, IProgressMonitor monitor) throws InvocationTargetException,
         InterruptedException {
 
-        try {
+        IRapidFireInstanceResource[] allResources = getSubSystemAttributes().getRapidFireInstances();
 
-            RapidFireInstanceResource[] allResources = getSubSystemAttributes().getRapidFireInstances();
+        RapidFireFilter filter = new RapidFireFilter(filterString);
+        NamePatternMatcher libraryMatcher = new NamePatternMatcher(filter.getLibrary());
 
-            RapidFireFilter filter = new RapidFireFilter(filterString);
-            NamePatternMatcher libraryMatcher = new NamePatternMatcher(filter.getLibrary());
-
-            Vector<RapidFireInstanceResource> filteredResources = new Vector<RapidFireInstanceResource>();
-            for (int i = 0; i < allResources.length; i++) {
-                if (libraryMatcher.matches(allResources[i].getLibrary())) {
-                    filteredResources.addElement(allResources[i]);
-                }
+        Vector<IRapidFireInstanceResource> filteredResources = new Vector<IRapidFireInstanceResource>();
+        for (int i = 0; i < allResources.length; i++) {
+            if (libraryMatcher.matches(allResources[i].getLibrary())) {
+                filteredResources.addElement(allResources[i]);
             }
-
-            return filteredResources.toArray(new RapidFireInstanceResource[filteredResources.size()]);
-
-        } catch (Exception e) {
-            return new Object[] { createErrorMessage(e) };
         }
+
+        return filteredResources.toArray(new RapidFireInstanceResource[filteredResources.size()]);
     }
 
     @Override

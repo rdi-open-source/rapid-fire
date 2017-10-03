@@ -10,7 +10,7 @@ package biz.rapidfire.core.model;
 
 import com.ibm.as400.access.QSYSObjectPathName;
 
-public interface IJob {
+public interface IRapidFireJobResource {
 
     public String getName();
 

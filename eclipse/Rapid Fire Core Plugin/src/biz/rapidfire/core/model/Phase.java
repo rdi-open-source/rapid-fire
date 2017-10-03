@@ -8,16 +8,32 @@
 
 package biz.rapidfire.core.model;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public enum Phase {
-    NONE ("*NONE"),
-    COPY_RECORDS ("*CPY-RCD"),
-    APPLY_CHANGES ("*APY-CHG"),
-    READY_PRODUCTION ("*RDY-PRD"),
-    ABORT ("*ABORT");
+    NONE ("*NONE"), //$NON-NLS-1$
+    COPY_RECORDS ("*CPY-RCD"), //$NON-NLS-1$
+    APPLY_CHANGES ("*APY-CHG"), //$NON-NLS-1$
+    READY_PRODUCTION ("*RDY-PRD"), //$NON-NLS-1$
+    ABORT ("*ABORT"); //$NON-NLS-1$
 
     public String label;
 
+    private static Map<String, Phase> phases;
+
+    static {
+        phases = new HashMap<String, Phase>();
+        for (Phase phase : Phase.values()) {
+            phases.put(phase.label, phase);
+        }
+    }
+
     private Phase(String label) {
         this.label = label;
+    }
+
+    public static Phase find(String label) {
+        return phases.get(label);
     }
 }

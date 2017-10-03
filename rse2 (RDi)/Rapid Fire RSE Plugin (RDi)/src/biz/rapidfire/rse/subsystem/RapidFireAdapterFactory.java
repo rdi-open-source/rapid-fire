@@ -17,9 +17,15 @@ import org.eclipse.rse.ui.view.AbstractSystemRemoteAdapterFactory;
 import org.eclipse.rse.ui.view.ISystemViewElementAdapter;
 import org.eclipse.ui.views.properties.IPropertySource;
 
+import biz.rapidfire.rse.model.RapidFireInstanceResource;
+import biz.rapidfire.rse.model.RapidFireJobResource;
+import biz.rapidfire.rse.subsystem.adapters.RapidFireInstanceResourceAdapter;
+import biz.rapidfire.rse.subsystem.adapters.RapidFireJobResourceAdapter;
+
 public class RapidFireAdapterFactory extends AbstractSystemRemoteAdapterFactory implements IAdapterFactory {
 
     private RapidFireInstanceResourceAdapter instanceResourceAdapter = new RapidFireInstanceResourceAdapter();
+    private RapidFireJobResourceAdapter jobResourceAdapter = new RapidFireJobResourceAdapter();
 
     public RapidFireAdapterFactory() {
         super();
@@ -31,6 +37,8 @@ public class RapidFireAdapterFactory extends AbstractSystemRemoteAdapterFactory 
         ISystemViewElementAdapter adapter = null;
         if (adaptableObject instanceof RapidFireInstanceResource) {
             adapter = instanceResourceAdapter;
+        } else if (adaptableObject instanceof RapidFireJobResource) {
+            adapter = jobResourceAdapter;
         }
 
         if ((adapter != null) && (adapterType == IPropertySource.class)) {

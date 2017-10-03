@@ -9,12 +9,12 @@
  *     SoftLanding - initial API and implementation
  *     iSphere Project Owners - Maintenance and enhancements
  *******************************************************************************/
-package biz.rapidfire.rse.subsystem;
+package biz.rapidfire.rse.model;
 
 import org.eclipse.rse.core.subsystems.AbstractResource;
 import org.eclipse.rse.core.subsystems.ISubSystem;
 
-import biz.rapidfire.core.subsystem.IRapidFireInstanceResource;
+import biz.rapidfire.core.model.IRapidFireInstanceResource;
 import biz.rapidfire.core.subsystem.IRapidFireSubSystem;
 
 public class RapidFireInstanceResource extends AbstractResource implements IRapidFireInstanceResource, Comparable<RapidFireInstanceResource> {
@@ -33,6 +33,10 @@ public class RapidFireInstanceResource extends AbstractResource implements IRapi
         super();
     }
 
+    /*
+     * IRapidFireInstanceResource methods
+     */
+
     public String getName() {
         return name;
     }
@@ -49,11 +53,6 @@ public class RapidFireInstanceResource extends AbstractResource implements IRapi
         return (IRapidFireSubSystem)getSubSystem();
     }
 
-    @Override
-    public String toString() {
-        return getSubSystem().getName() + "." + library;
-    }
-
     public int compareTo(RapidFireInstanceResource resource) {
 
         if (resource == null || resource.getLibrary() == null) {
@@ -63,5 +62,10 @@ public class RapidFireInstanceResource extends AbstractResource implements IRapi
         }
 
         return getLibrary().compareTo(resource.getLibrary());
+    }
+
+    @Override
+    public String toString() {
+        return getSubSystem().getName() + "." + library; //$NON-NLS-1$
     }
 }

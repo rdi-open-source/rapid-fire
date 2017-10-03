@@ -21,11 +21,11 @@ import org.eclipse.core.runtime.IStatus;
 
 public class Validator {
 
-    private static final String TYPE_NAME = "*NAME";
-    private static final String TYPE_DEC = "*DEC";
-    private static final String TYPE_CHAR = "*CHAR";
-    private static final String TYPE_DATE = "*DATE";
-    private static final String TYPE_TIME = "*TIME";
+    private static final String TYPE_NAME = "*NAME"; //$NON-NLS-1$
+    private static final String TYPE_DEC = "*DEC"; //$NON-NLS-1$
+    private static final String TYPE_CHAR = "*CHAR"; //$NON-NLS-1$
+    private static final String TYPE_DATE = "*DATE"; //$NON-NLS-1$
+    private static final String TYPE_TIME = "*TIME"; //$NON-NLS-1$
 
     private String type;
     private int length;
@@ -116,16 +116,16 @@ public class Validator {
         Arrays.sort(charactersName2);
         Arrays.sort(charactersDec);
         dateFormat1 = new SimpleDateFormat();
-        dateFormat1.applyPattern("dd'.'MM'.'yyyy");
+        dateFormat1.applyPattern("dd'.'MM'.'yyyy"); //$NON-NLS-1$
         dateFormat1.setLenient(false);
         dateFormat2 = new SimpleDateFormat();
-        dateFormat2.applyPattern("ddMMyyyy");
+        dateFormat2.applyPattern("ddMMyyyy"); //$NON-NLS-1$
         dateFormat2.setLenient(false);
         timeFormat1 = new SimpleDateFormat();
-        timeFormat1.applyPattern("HH':'mm':'ss");
+        timeFormat1.applyPattern("HH':'mm':'ss"); //$NON-NLS-1$
         timeFormat1.setLenient(false);
         timeFormat2 = new SimpleDateFormat();
-        timeFormat2.applyPattern("HHmmss");
+        timeFormat2.applyPattern("HHmmss"); //$NON-NLS-1$
         timeFormat2.setLenient(false);
         integerValue = -1;
         longValue = -1;
@@ -181,7 +181,7 @@ public class Validator {
     }
 
     public boolean addSpecialValue(String specialValue) {
-        if (specialValue.equals("")) {
+        if (specialValue.equals("")) { //$NON-NLS-1$
             return false;
         }
         for (int idx = 0; idx < arrayListSpecialValues.size(); idx++) {
@@ -230,7 +230,7 @@ public class Validator {
         if (type.equals(TYPE_NAME)) {
             if (generic && argument.endsWith("*")) { //$NON-NLS-1$
                 argument = argument.substring(0, argument.length() - 1);
-                if (argument.equals("")) {
+                if (argument.equals("")) { //$NON-NLS-1$
                     return false;
                 }
             }

@@ -17,10 +17,10 @@ import org.eclipse.rse.core.model.ISystemRegistry;
 import org.eclipse.rse.ui.actions.SystemBaseAction;
 import org.eclipse.swt.widgets.Shell;
 
+import biz.rapidfire.core.dialogs.AddRapidFireInstanceDialog;
+import biz.rapidfire.core.model.IRapidFireInstanceResource;
 import biz.rapidfire.rse.Messages;
 import biz.rapidfire.rse.RapidFireRSEPlugin;
-import biz.rapidfire.rse.dialogs.AddRapidFireInstanceDialog;
-import biz.rapidfire.rse.subsystem.RapidFireInstanceResource;
 import biz.rapidfire.rse.subsystem.RapidFireSubSystem;
 import biz.rapidfire.rse.subsystem.RapidFireSubSystemAttributes;
 
@@ -33,8 +33,8 @@ public class AddRapidFireInstanceAction extends SystemBaseAction {
 
         this.subSystem = subSystem;
 
-        setText("Add Rapid Fire Instance");
-        setToolTipText("Adds a Rapid Fire instance to the Rapid Fire subsystem.");
+        setText(Messages.Add_Rapid_Fire_Instance);
+        setToolTipText(Messages.Tooltip_Add_Rapid_Fire_Instance);
         setImageDescriptor(RapidFireRSEPlugin.getDefault().getImageRegistry().getDescriptor(RapidFireRSEPlugin.IMAGE_RAPID_FIRE));
     }
 
@@ -46,11 +46,11 @@ public class AddRapidFireInstanceAction extends SystemBaseAction {
 
             RapidFireSubSystemAttributes subSystemAttributes = subSystem.getSubSystemAttributes();
             if (subSystemAttributes.hasRapidFireInstance(dialog.getLibrary())) {
-                MessageDialog.openError(getShell(), Messages.E_R_R_O_R, "Instance exists.");
+                MessageDialog.openError(getShell(), Messages.E_R_R_O_R, Messages.bind(Messages.Instance_A_exists, dialog.getLibrary()));
                 return;
             }
 
-            RapidFireInstanceResource resource = subSystemAttributes.addRapidFireInstance(dialog.getName(), dialog.getLibrary());
+            IRapidFireInstanceResource resource = subSystemAttributes.addRapidFireInstance(dialog.getName(), dialog.getLibrary());
 
             // Refresh filters
             ISystemRegistry sr = RSECorePlugin.getTheSystemRegistry();

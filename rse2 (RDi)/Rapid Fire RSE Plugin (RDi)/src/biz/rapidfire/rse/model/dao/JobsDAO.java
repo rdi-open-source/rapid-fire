@@ -8,20 +8,23 @@
 
 package biz.rapidfire.rse.model.dao;
 
-import biz.rapidfire.core.model.IJob;
+import biz.rapidfire.core.model.IRapidFireInstanceResource;
+import biz.rapidfire.core.model.IRapidFireJobResource;
 import biz.rapidfire.core.model.dao.AbstractJobsDAO;
 import biz.rapidfire.core.model.dao.IJobsDAO;
-import biz.rapidfire.rse.model.Job;
+import biz.rapidfire.rse.model.RapidFireJobResource;
 
 import com.ibm.as400.access.QSYSObjectPathName;
 
 public class JobsDAO extends AbstractJobsDAO implements IJobsDAO {
 
-    public JobsDAO(String connectionName, String library) throws Exception {
-        super(connectionName, library);
+    public JobsDAO(String connectionName) throws Exception {
+        super(new BaseDAO(connectionName));
     }
 
-    protected IJob createJobInstance(String name, String description, boolean doCreateEnvironment, QSYSObjectPathName jobQueue) {
-        return new Job(name, description, doCreateEnvironment, jobQueue);
+    @Override
+    protected IRapidFireJobResource createJobInstance(IRapidFireInstanceResource parent, String name, String description,
+        boolean doCreateEnvironment, QSYSObjectPathName jobQueue) {
+        return new RapidFireJobResource(parent, name, description, doCreateEnvironment, jobQueue);
     }
 }

@@ -6,7 +6,7 @@
  * http://www.eclipse.org/legal/cpl-v10.html
  *******************************************************************************/
 
-package biz.rapidfire.rse.dialogs;
+package biz.rapidfire.core.dialogs;
 
 import org.eclipse.jface.dialogs.IDialogSettings;
 import org.eclipse.swt.SWT;
@@ -44,7 +44,7 @@ public class AddRapidFireInstanceDialog extends XDialog {
     @Override
     protected void configureShell(Shell newShell) {
         super.configureShell(newShell);
-        newShell.setText("Messages.Specify_a_filter");
+        newShell.setText(Messages.Specify_a_filter);
     }
 
     @Override
@@ -59,7 +59,7 @@ public class AddRapidFireInstanceDialog extends XDialog {
 
         Label labelName = new Label(compositeFilter, SWT.NONE);
         labelName.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false));
-        labelName.setText("Messages.Name_colon");
+        labelName.setText(Messages.Name_colon);
 
         textName = WidgetFactory.createText(compositeFilter);
         textName.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
@@ -67,7 +67,7 @@ public class AddRapidFireInstanceDialog extends XDialog {
 
         Label labelFilter = new Label(compositeFilter, SWT.NONE);
         labelFilter.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false));
-        labelFilter.setText("Messages.Library_colon");
+        labelFilter.setText(Messages.Library_colon);
 
         textLibrary = WidgetFactory.createText(compositeFilter);
         textLibrary.addVerifyListener(new UpperCaseOnlyVerifier());
@@ -100,7 +100,7 @@ public class AddRapidFireInstanceDialog extends XDialog {
         textLibrary.setText(textLibrary.getText().trim());
 
         if (!Validator.getLibraryNameInstance().validate(textLibrary.getText())) {
-            setErrorMessage("Messages.The_value_in_field_Filter_is_not_valid");
+            setErrorMessage(Messages.bind(Messages.Library_name_A_is_not_valid, textLibrary.getText()));
             textLibrary.setFocus();
             return;
         }

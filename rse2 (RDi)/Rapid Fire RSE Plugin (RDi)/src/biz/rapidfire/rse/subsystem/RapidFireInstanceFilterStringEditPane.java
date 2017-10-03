@@ -24,6 +24,7 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 
 import biz.rapidfire.core.subsystem.RapidFireFilterStringEditPaneDelegate;
+import biz.rapidfire.rse.Messages;
 
 public class RapidFireInstanceFilterStringEditPane extends SystemFilterStringEditPane {
 
@@ -86,7 +87,7 @@ public class RapidFireInstanceFilterStringEditPane extends SystemFilterStringEdi
     public SystemMessage verify() {
         if (!areFieldsComplete())
             return SystemMessageDialog.getExceptionMessage(Display.getCurrent().getActiveShell(), new Exception(
-                "Messages.Message_queue_and_library_must_be_specified"));
+                Messages.The_library_name_must_be_specified));
         return null;
     }
 

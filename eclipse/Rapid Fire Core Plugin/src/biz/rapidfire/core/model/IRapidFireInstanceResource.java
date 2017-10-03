@@ -6,7 +6,9 @@
  * http://www.eclipse.org/legal/cpl-v10.html
  *******************************************************************************/
 
-package biz.rapidfire.core.subsystem;
+package biz.rapidfire.core.model;
+
+import biz.rapidfire.core.subsystem.IRapidFireSubSystem;
 
 public interface IRapidFireInstanceResource {
 

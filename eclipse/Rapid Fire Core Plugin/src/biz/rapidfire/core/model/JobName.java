@@ -8,6 +8,8 @@
 
 package biz.rapidfire.core.model;
 
+import biz.rapidfire.core.helpers.StringHelper;
+
 public class JobName {
 
     private String name;
@@ -30,5 +32,21 @@ public class JobName {
 
     public String getNumber() {
         return number;
+    }
+
+    @Override
+    public String toString() {
+
+        StringBuilder buffer = new StringBuilder();
+
+        if (!StringHelper.isNullOrEmpty(name) && !StringHelper.isNullOrEmpty(user) && !StringHelper.isNullOrEmpty(number)) {
+            buffer.append(number);
+            buffer.append("/"); //$NON-NLS-1$
+            buffer.append(user);
+            buffer.append("/"); //$NON-NLS-1$
+            buffer.append(name);
+        }
+
+        return buffer.toString();
     }
 }

@@ -64,7 +64,14 @@ public class RapidFireFilter {
         int index;
 
         index = filterString.indexOf(SLASH);
-        String temp = filterString.substring(0, index);
+
+        String temp;
+        if (index <= 0) {
+            temp = filterString;
+        } else {
+            temp = filterString.substring(0, index);
+        }
+
         if (!temp.equals(ASTERISK)) {
             setLibrary(temp);
         }

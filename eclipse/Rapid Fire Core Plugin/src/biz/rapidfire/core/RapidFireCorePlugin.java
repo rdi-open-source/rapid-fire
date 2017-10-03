@@ -21,7 +21,7 @@ public class RapidFireCorePlugin extends AbstractUIPlugin {
     private static RapidFireCorePlugin plugin;
     private static URL installURL;
 
-    public static final String IMAGE_ERROR = "error.gif";
+    public static final String IMAGE_ERROR = "error.gif"; //$NON-NLS-1$
 
     /**
      * The constructor

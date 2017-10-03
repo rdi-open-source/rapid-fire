@@ -21,11 +21,11 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
+import biz.rapidfire.core.Messages;
 import biz.rapidfire.core.swt.widgets.WidgetFactory;
 
 public class RapidFireFilterStringEditPaneDelegate {
 
-    private static final String QUSRSYS = "QUSRSYS"; //$NON-NLS-1$
     private static final String ASTERISK = "*"; //$NON-NLS-1$
     private Text libraryText;
 
@@ -37,7 +37,7 @@ public class RapidFireFilterStringEditPaneDelegate {
         ((GridLayout)composite_prompts.getLayout()).marginWidth = 0;
 
         Label libraryLabel = new Label(composite_prompts, SWT.NONE);
-        libraryLabel.setText("Messages.Library_colon");
+        libraryLabel.setText(Messages.Library_colon);
 
         libraryText = WidgetFactory.createUpperCaseText(composite_prompts);
         GridData gd = new GridData();
@@ -63,7 +63,7 @@ public class RapidFireFilterStringEditPaneDelegate {
         if (inputFilterString != null) {
 
             RapidFireFilter filter = new RapidFireFilter(inputFilterString);
-            filter.setLibrary(libraryText.getText());
+            libraryText.setText(filter.getLibrary());
         }
     }
 

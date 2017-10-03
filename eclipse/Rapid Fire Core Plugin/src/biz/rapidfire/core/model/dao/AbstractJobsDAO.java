@@ -14,122 +14,122 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import biz.rapidfire.base.model.dao.AbstractDAOBase;
-import biz.rapidfire.core.model.IJob;
+import biz.rapidfire.core.model.IRapidFireInstanceResource;
+import biz.rapidfire.core.model.IRapidFireJobResource;
 import biz.rapidfire.core.model.JobName;
 import biz.rapidfire.core.model.Phase;
 import biz.rapidfire.core.model.Status;
 
 import com.ibm.as400.access.QSYSObjectPathName;
 
-public abstract class AbstractJobsDAO extends AbstractDAOBase {
+public abstract class AbstractJobsDAO {
 
-    public static final String JOB = "JOB";
-    public static final String DESCRIPTION = "DESCRIPTION";
-    public static final String CREATE_ENVIRONMENT = "CREATE_ENVIRONMENT";
-    public static final String JOB_QUEUE_LIBRARY = "JOB_QUEUE_LIBRARY";
-    public static final String JOB_QUEUE = "JOB_QUEUE";
-    public static final String STATUS = "STATUS";
-    public static final String PHASE = "PHASE";
-    public static final String ERROR = "ERROR";
-    public static final String ERROR_TEXT = "ERROR_TEXT";
-    public static final String BATCH_JOB = "BATCH_JOB";
-    public static final String BATCH_USER = "BATCH_USER";
-    public static final String BATCH_NUMBER = "BATCH_NUMBER";
-    public static final String STOP_APPLY_CHANGES = "STOP_APPLY_CHANGES";
-    public static final String CMONE_FORM = "CMONE_FORM";
+    public static final String JOB = "JOB"; //$NON-NLS-1$
+    public static final String DESCRIPTION = "DESCRIPTION"; //$NON-NLS-1$
+    public static final String CREATE_ENVIRONMENT = "CREATE_ENVIRONMENT"; //$NON-NLS-1$
+    public static final String JOB_QUEUE_LIBRARY = "JOB_QUEUE_LIBRARY"; //$NON-NLS-1$
+    public static final String JOB_QUEUE = "JOB_QUEUE"; //$NON-NLS-1$
+    public static final String STATUS = "STATUS"; //$NON-NLS-1$
+    public static final String PHASE = "PHASE"; //$NON-NLS-1$
+    public static final String ERROR = "ERROR"; //$NON-NLS-1$
+    public static final String ERROR_TEXT = "ERROR_TEXT"; //$NON-NLS-1$
+    public static final String BATCH_JOB = "BATCH_JOB"; //$NON-NLS-1$
+    public static final String BATCH_USER = "BATCH_USER"; //$NON-NLS-1$
+    public static final String BATCH_NUMBER = "BATCH_NUMBER"; //$NON-NLS-1$
+    public static final String STOP_APPLY_CHANGES = "STOP_APPLY_CHANGES"; //$NON-NLS-1$
+    public static final String CMONE_FORM = "CMONE_FORM"; //$NON-NLS-1$
 
-    private String library;
+    private IBaseDAO dao;
 
-    public AbstractJobsDAO(String connectionName, String library) throws Exception {
-        super(connectionName);
+    public AbstractJobsDAO(IBaseDAO dao) {
 
-        this.library = library;
+        this.dao = dao;
     }
 
-    public List<IJob> load() throws Exception {
+    public List<IRapidFireJobResource> load(IRapidFireInstanceResource parent) throws Exception {
 
-        List<IJob> journalEntries = new ArrayList<IJob>();
+        List<IRapidFireJobResource> journalEntries = new ArrayList<IRapidFireJobResource>();
 
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
 
         try {
 
-            String sqlStatement = String.format(getSqlStatement(), library);
-            preparedStatement = prepareStatement(sqlStatement);
+            String sqlStatement = String.format(getSqlStatement(), parent.getLibrary());
+            preparedStatement = dao.prepareStatement(sqlStatement);
             resultSet = preparedStatement.executeQuery();
             resultSet.setFetchSize(50);
 
             if (resultSet != null) {
                 while (resultSet.next()) {
-                    journalEntries.add(produceJob(resultSet));
+                    journalEntries.add(produceJob(parent, resultSet));
                 }
             }
 
         } finally {
-            super.destroy(preparedStatement);
-            super.destroy(resultSet);
+            dao.destroy(preparedStatement);
+            dao.destroy(resultSet);
         }
 
         return journalEntries;
     }
 
-    private IJob produceJob(ResultSet resultSet) throws SQLException {
+    private IRapidFireJobResource produceJob(IRapidFireInstanceResource parent, ResultSet resultSet) throws SQLException {
 
-        String name = resultSet.getString(JOB);
-        String description = resultSet.getString(DESCRIPTION);
-        String createEnvironment = resultSet.getString(CREATE_ENVIRONMENT);
-        String jobQueueLibrary = resultSet.getString(JOB_QUEUE_LIBRARY);
-        String jobQueueName = resultSet.getString(JOB_QUEUE);
+        String name = resultSet.getString(JOB).trim();
+        String description = resultSet.getString(DESCRIPTION).trim();
+        String createEnvironment = resultSet.getString(CREATE_ENVIRONMENT).trim();
+        String jobQueueLibrary = resultSet.getString(JOB_QUEUE_LIBRARY).trim();
+        String jobQueueName = resultSet.getString(JOB_QUEUE).trim();
 
-        IJob job = createJobInstance(name, description, convertYesNo(createEnvironment),
-            new QSYSObjectPathName(jobQueueLibrary, jobQueueName, "JOBQ"));
+        IRapidFireJobResource job = createJobInstance(parent, name, description, dao.convertYesNo(createEnvironment), new QSYSObjectPathName(
+            jobQueueLibrary, jobQueueName, "JOBQ")); //$NON-NLS-1$
 
-        String status = resultSet.getString(STATUS);
-        String phase = resultSet.getString(PHASE);
-        String isError = resultSet.getString(ERROR);
-        String errorText = resultSet.getString(ERROR_TEXT);
-        String batchJob = resultSet.getString(BATCH_JOB);
-        String batchUser = resultSet.getString(BATCH_USER);
-        String batchNumber = resultSet.getString(BATCH_NUMBER);
-        String isStopApplyChanges = resultSet.getString(STOP_APPLY_CHANGES);
-        String cmoneFormNumber = resultSet.getString(CMONE_FORM);
+        String status = resultSet.getString(STATUS).trim();
+        String phase = resultSet.getString(PHASE).trim();
+        String isError = resultSet.getString(ERROR).trim();
+        String errorText = resultSet.getString(ERROR_TEXT).trim();
+        String batchJob = resultSet.getString(BATCH_JOB).trim();
+        String batchUser = resultSet.getString(BATCH_USER).trim();
+        String batchNumber = resultSet.getString(BATCH_NUMBER).trim();
+        String isStopApplyChanges = resultSet.getString(STOP_APPLY_CHANGES).trim();
+        String cmoneFormNumber = resultSet.getString(CMONE_FORM).trim();
 
-        job.setStatus(Status.valueOf(status));
-        job.setPhase(Phase.valueOf(phase));
-        job.setError(convertYesNo(isError));
+        job.setStatus(Status.find(status));
+        job.setPhase(Phase.find(phase));
+        job.setError(dao.convertYesNo(isError));
         job.setErrorText(errorText);
         job.setBatchJob(new JobName(batchJob, batchUser, batchNumber));
-        job.setStopApplyChanges(convertYesNo(isStopApplyChanges));
+        job.setStopApplyChanges(dao.convertYesNo(isStopApplyChanges));
         job.setCmoneFormNumber(cmoneFormNumber);
 
         return job;
     }
 
-    protected abstract IJob createJobInstance(String name, String description2, boolean convertYesNo, QSYSObjectPathName qsysObjectPathName);
+    protected abstract IRapidFireJobResource createJobInstance(IRapidFireInstanceResource parent, String name, String description,
+        boolean doCreateEnvironment, QSYSObjectPathName jobQueue);
 
     private String getSqlStatement() {
 
         // @formatter:off
         String sqlStatement = 
-            "SELECT " +
-                "JOB, " +
-                "DESCRIPTION, " +
-                "CREATE_ENVIRONMENT, " +
-                "JOB_QUEUE_LIBRARY, " +
-                "JOB_QUEUE, " +
-                "STATUS, " +
-                "PHASE, " +
-                "ERROR, " +
-                "ERROR_TEXT, " +
-                "BATCH_JOB, " +
-                "BATCH_USER, " +
-                "BATCH_NUMBER, " +
-                "STOP_APPLY_CHANGES, " +
-                "CMONE_FORM " +
-            "FROM " +
-                "%1.JOBS";
+            Messages.AbstractJobsDAO_14 +
+                Messages.AbstractJobsDAO_15 +
+                Messages.AbstractJobsDAO_16 +
+                Messages.AbstractJobsDAO_17 +
+                Messages.AbstractJobsDAO_18 +
+                Messages.AbstractJobsDAO_19 +
+                Messages.AbstractJobsDAO_20 +
+                Messages.AbstractJobsDAO_21 +
+                Messages.AbstractJobsDAO_22 +
+                Messages.AbstractJobsDAO_23 +
+                Messages.AbstractJobsDAO_24 +
+                Messages.AbstractJobsDAO_25 +
+                Messages.AbstractJobsDAO_26 +
+                Messages.AbstractJobsDAO_27 +
+                Messages.AbstractJobsDAO_28 +
+            Messages.AbstractJobsDAO_29 +
+                Messages.AbstractJobsDAO_30;
         // @formatter:on
 
         return sqlStatement;

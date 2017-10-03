@@ -10,8 +10,9 @@ import org.eclipse.jface.resource.ImageRegistry;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
+import biz.rapidfire.rse.model.RapidFireInstanceResource;
+import biz.rapidfire.rse.model.RapidFireJobResource;
 import biz.rapidfire.rse.subsystem.RapidFireAdapterFactory;
-import biz.rapidfire.rse.subsystem.RapidFireInstanceResource;
 import biz.rapidfire.rse.subsystem.RapidFireSubSystemConfigurationAdapterFactory;
 
 /**
@@ -76,6 +77,7 @@ public class RapidFireRSEPlugin extends AbstractUIPlugin {
 
         RapidFireAdapterFactory adapterFactory = new RapidFireAdapterFactory();
         manager.registerAdapters(adapterFactory, RapidFireInstanceResource.class);
+        manager.registerAdapters(adapterFactory, RapidFireJobResource.class);
 
         RapidFireSubSystemConfigurationAdapterFactory subSystemConfigurationAdapterFactory = new RapidFireSubSystemConfigurationAdapterFactory();
         subSystemConfigurationAdapterFactory.registerWithManager(manager);

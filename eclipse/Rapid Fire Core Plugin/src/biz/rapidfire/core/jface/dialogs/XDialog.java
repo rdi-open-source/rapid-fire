@@ -213,7 +213,7 @@ public class XDialog extends Dialog {
      */
     protected IDialogSettings getDialogBoundsSettings(IDialogSettings workbenchSettings) {
         if (workbenchSettings == null) {
-            throw new IllegalArgumentException("Parameter 'workbenchSettings' must not be null.");
+            throw new IllegalArgumentException("Parameter 'workbenchSettings' must not be null."); //$NON-NLS-1$
         }
         String sectionName = getClass().getName();
         IDialogSettings dialogSettings = workbenchSettings.getSection(sectionName);

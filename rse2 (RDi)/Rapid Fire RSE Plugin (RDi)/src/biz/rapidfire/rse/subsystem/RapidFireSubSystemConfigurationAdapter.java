@@ -27,6 +27,7 @@ import org.eclipse.rse.ui.filters.actions.SystemNewFilterAction;
 import org.eclipse.rse.ui.view.SubSystemConfigurationAdapter;
 import org.eclipse.swt.widgets.Shell;
 
+import biz.rapidfire.rse.Messages;
 import biz.rapidfire.rse.actions.AddRapidFireInstanceAction;
 
 public class RapidFireSubSystemConfigurationAdapter extends SubSystemConfigurationAdapter {
@@ -46,7 +47,7 @@ public class RapidFireSubSystemConfigurationAdapter extends SubSystemConfigurati
     public IAction[] getSubSystemActions(SystemMenuManager menu, IStructuredSelection selection, Shell shell, String menuGroup,
         ISubSystemConfiguration config, ISubSystem selectedSubSystem) {
 
-        menu.add("group.new", new AddRapidFireInstanceAction(shell, (RapidFireSubSystem)selectedSubSystem));
+        menu.add("group.new", new AddRapidFireInstanceAction(shell, (RapidFireSubSystem)selectedSubSystem)); //$NON-NLS-1$
 
         return super.getSubSystemActions(menu, selection, shell, menuGroup, config, selectedSubSystem);
     }
@@ -62,10 +63,10 @@ public class RapidFireSubSystemConfigurationAdapter extends SubSystemConfigurati
         ISubSystemConfiguration config, ISystemFilterPool selectedPool) {
 
         SystemNewFilterAction filterAction = (SystemNewFilterAction)super.getNewFilterPoolFilterAction(config, selectedPool, shell);
-        filterAction.setWizardPageTitle("Messages.Message_Filter");
-        filterAction.setPage1Description("Messages.Create_a_new_filter_to_list_messages");
-        filterAction.setType("Messages.Message_Filter");
-        filterAction.setText("Messages.Message_Filter_Dots");
+        filterAction.setWizardPageTitle(Messages.Rapid_Fire_Instance_Filter);
+        filterAction.setPage1Description(Messages.Create_a_new_filter_to_list_Rapid_Fire_instances);
+        filterAction.setType(Messages.Instance_Filter_type);
+        filterAction.setText(Messages.Instance_Filter_dots);
         filterAction.setFilterStringEditPane(new RapidFireInstanceFilterStringEditPane(shell));
 
         ISystemFilterPoolManager[] filterPoolManager = config.getSystemFilterPoolManagers();
@@ -91,7 +92,7 @@ public class RapidFireSubSystemConfigurationAdapter extends SubSystemConfigurati
 
         SystemChangeFilterAction action = (SystemChangeFilterAction)super.getChangeFilterAction(factory, selectedFilter, shell);
         selectedFilter.getType();
-        action.setDialogTitle("Messages.Change_Message_Filter");
+        action.setDialogTitle(Messages.Change_Rapid_Fire_filter);
         action.setFilterStringEditPane(new RapidFireInstanceFilterStringEditPane(shell));
 
         return action;

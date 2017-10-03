@@ -22,6 +22,9 @@ import org.eclipse.rse.core.subsystems.IConnectorService;
 import org.eclipse.rse.core.subsystems.ISubSystem;
 import org.eclipse.rse.core.subsystems.SubSystemConfiguration;
 
+import biz.rapidfire.core.subsystem.RapidFireFilter;
+import biz.rapidfire.rse.Messages;
+
 import com.ibm.etools.iseries.subsystems.qsys.objects.QSYSObjectSubSystem;
 
 public class RapidFireSubSystemFactory extends SubSystemConfiguration {
@@ -46,8 +49,7 @@ public class RapidFireSubSystemFactory extends SubSystemConfiguration {
 
     @Override
     public String getTranslatedFilterTypeProperty(ISystemFilter selectedFilter) {
-        return "Messages.Message_Filter";
-        // return null;
+        return Messages.Instance_Filter_type;
     }
 
     @Override
@@ -56,17 +58,14 @@ public class RapidFireSubSystemFactory extends SubSystemConfiguration {
         ISystemFilterPool defaultPool = super.createDefaultFilterPool(mgr);
         Vector<String> strings = new Vector<String>();
 
-        // RapidFireFilter messageFilter =
-        // RapidFireFilter.getDefaultFilter();
-        // strings.add(messageFilter.getFilterString());
-        strings.add("*");
+        RapidFireFilter instanceFilter = RapidFireFilter.getDefaultFilter();
+        strings.add(instanceFilter.getFilterString());
         try {
-            ISystemFilter filter = mgr.createSystemFilter(defaultPool, "Messages.My_Messages", strings);
-            filter.setType("Messages.Message_Filter");
+            ISystemFilter filter = mgr.createSystemFilter(defaultPool, Messages.My_Rapid_Fire, strings);
+            filter.setType(Messages.Instance_Filter_type);
         } catch (Exception exc) {
         }
         return defaultPool;
-        // return null;
     }
 
     @Override

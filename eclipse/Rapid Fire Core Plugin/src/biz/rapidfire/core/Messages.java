@@ -22,6 +22,25 @@ public class Messages extends NLS {
         NLS.initializeMessages(BUNDLE_NAME, Messages.class);
     }
 
+    // Dialog titles
+    public static String Specify_a_filter;
+
+    // Dialog labels
+    public static String Name_colon;
+    public static String Library_colon;
+
+    // Property labels
+    public static String Batch_job_name;
+    public static String Batch_job_user;
+    public static String Batch_job_number;
+
+    public static String Tooltip_Batch_job_name;
+    public static String Tooltip_Batch_job_user;
+    public static String Tooltip_Batch_job_number;
+
+    // Error messages
+    public static String Library_name_A_is_not_valid;
+
     private Messages() {
     }
 }
