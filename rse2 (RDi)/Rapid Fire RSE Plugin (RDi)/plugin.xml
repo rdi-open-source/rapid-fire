@@ -166,7 +166,7 @@
          class="biz.rapidfire.core.handlers.TestJobHandler">
          <enabledWhen>
             <with variable="selection">
-               <count value="1" />
+               <count value="*" />
                <iterate operator="and">
                   <adapt type="biz.rapidfire.rse.model.RapidFireJobResource" />
                </iterate>
@@ -179,7 +179,7 @@
          class="biz.rapidfire.core.handlers.StartJobHandler">
          <enabledWhen>
             <with variable="selection">
-               <count value="1" />
+               <count value="*" />
                <iterate operator="and">
                   <adapt type="biz.rapidfire.rse.model.RapidFireJobResource" />
                </iterate>
@@ -192,7 +192,7 @@
          class="biz.rapidfire.core.handlers.EndJobHandler">
          <enabledWhen>
             <with variable="selection">
-               <count value="1" />
+               <count value="*" />
                <iterate operator="and">
                   <adapt type="biz.rapidfire.rse.model.RapidFireJobResource" />
                </iterate>
@@ -205,7 +205,7 @@
          class="biz.rapidfire.core.handlers.ResetJobHandler">
          <enabledWhen>
             <with variable="selection">
-               <count value="1" />
+               <count value="*" />
                <iterate operator="and">
                   <adapt type="biz.rapidfire.rse.model.RapidFireJobResource" />
                </iterate>
@@ -218,7 +218,7 @@
          class="biz.rapidfire.core.handlers.ResetJobAfterAbortionHandler">
          <enabledWhen>
             <with variable="selection">
-               <count value="1" />
+               <count value="*" />
                <iterate operator="and">
                   <adapt type="biz.rapidfire.rse.model.RapidFireJobResource" />
                </iterate>
@@ -244,64 +244,141 @@
             commandId="biz.rapidfire.core.command.Job.change" 
             icon="icons/change.gif"
             >
+	        <visibleWhen>
+	           <with variable="selection">
+	              <iterate operator="and">
+	                 <adapt type="biz.rapidfire.rse.model.RapidFireJobResource" />
+	              </iterate>
+	           </with>
+	        </visibleWhen>
          </command>
          
          <command
             commandId="biz.rapidfire.core.command.Job.copy" 
             icon="icons/copy.gif"
             >
+	        <visibleWhen>
+	           <with variable="selection">
+	              <iterate operator="and">
+	                 <adapt type="biz.rapidfire.rse.model.RapidFireJobResource" />
+	              </iterate>
+	           </with>
+	        </visibleWhen>
          </command>
          
          <command
             commandId="biz.rapidfire.core.command.Job.delete" 
             icon="icons/delete.gif"
             >
+	        <visibleWhen>
+	           <with variable="selection">
+	              <iterate operator="and">
+	                 <adapt type="biz.rapidfire.rse.model.RapidFireJobResource" />
+	              </iterate>
+	           </with>
+	        </visibleWhen>
          </command>
          
          <command
             commandId="biz.rapidfire.core.command.Job.display" 
             icon="icons/display.gif"
             >
+	        <visibleWhen>
+	           <with variable="selection">
+	              <iterate operator="and">
+	                 <adapt type="biz.rapidfire.rse.model.RapidFireJobResource" />
+	              </iterate>
+	           </with>
+	        </visibleWhen>
          </command>
          
          <separator
             name="run"
             visible="true">
+	        <visibleWhen>
+	           <with variable="selection">
+	              <iterate operator="and">
+	                 <adapt type="biz.rapidfire.rse.model.RapidFireJobResource" />
+	              </iterate>
+	           </with>
+	        </visibleWhen>
          </separator>
          
          <command
             commandId="biz.rapidfire.core.command.Job.test" 
             icon="icons/test.gif"
             >
+	        <visibleWhen>
+	           <with variable="selection">
+	              <iterate operator="and">
+	                 <adapt type="biz.rapidfire.rse.model.RapidFireJobResource" />
+	              </iterate>
+	           </with>
+	        </visibleWhen>
          </command>
          
          <command
             commandId="biz.rapidfire.core.command.Job.start" 
             icon="icons/start.gif"
             >
+	        <visibleWhen>
+	           <with variable="selection">
+	              <iterate operator="and">
+	                 <adapt type="biz.rapidfire.rse.model.RapidFireJobResource" />
+	              </iterate>
+	           </with>
+	        </visibleWhen>
          </command>
          
          <command
             commandId="biz.rapidfire.core.command.Job.end" 
             icon="icons/end.gif"
             >
+	        <visibleWhen>
+	           <with variable="selection">
+	              <iterate operator="and">
+	                 <adapt type="biz.rapidfire.rse.model.RapidFireJobResource" />
+	              </iterate>
+	           </with>
+	        </visibleWhen>
          </command>
          
          <separator
             name="reset"
             visible="true">
+	        <visibleWhen>
+	           <with variable="selection">
+	              <iterate operator="and">
+	                 <adapt type="biz.rapidfire.rse.model.RapidFireJobResource" />
+	              </iterate>
+	           </with>
+	        </visibleWhen>
          </separator>
          
          <command
             commandId="biz.rapidfire.core.command.Job.reset" 
             icon="icons/reset.gif"
             >
+	        <visibleWhen>
+	           <with variable="selection">
+	              <iterate operator="and">
+	                 <adapt type="biz.rapidfire.rse.model.RapidFireJobResource" />
+	              </iterate>
+	           </with>
+	        </visibleWhen>
          </command>
          
          <command
             commandId="biz.rapidfire.core.command.Job.resetabortion" 
             icon="icons/resetabortion.gif"
             >
+	        <visibleWhen>
+	           <with variable="selection">
+	              <iterate operator="and">
+	                 <adapt type="biz.rapidfire.rse.model.RapidFireJobResource" />
+	              </iterate>
+	           </with>
+	        </visibleWhen>
          </command>
          
       </menuContribution>
