@@ -136,7 +136,7 @@ public class RapidFireFilter {
         }
 
         String temp;
-        if (start < 0) {
+        if (start < 0 || end < 0 || start >= filterString.length()) {
             temp = ASTERISK;
         } else {
             temp = filterString.substring(start, end);
