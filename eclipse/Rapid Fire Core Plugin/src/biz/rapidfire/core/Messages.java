@@ -26,8 +26,10 @@ public class Messages extends NLS {
     public static String Specify_a_filter;
 
     // Dialog labels
-    public static String Name_colon;
     public static String Library_colon;
+    public static String Job_colon;
+    public static String Status_colon;
+    public static String Label_Full_generic_string;
 
     // Property labels
     public static String Batch_job_name;
@@ -40,6 +42,9 @@ public class Messages extends NLS {
 
     // Error messages
     public static String Library_name_A_is_not_valid;
+    public static String The_library_name_must_be_specified;
+    public static String The_job_name_must_be_specified;
+    public static String The_job_status_must_be_specified;
 
     private Messages() {
     }

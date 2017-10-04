@@ -22,11 +22,10 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.views.properties.IPropertyDescriptor;
 import org.eclipse.ui.views.properties.PropertyDescriptor;
 
-import biz.rapidfire.core.model.IRapidFireInstanceResource;
 import biz.rapidfire.core.model.IRapidFireJobResource;
 import biz.rapidfire.core.properties.JobNameProperties;
+import biz.rapidfire.rse.Messages;
 import biz.rapidfire.rse.RapidFireRSEPlugin;
-import biz.rapidfire.rse.model.RapidFireInstanceResource;
 import biz.rapidfire.rse.model.RapidFireJobResource;
 
 public class RapidFireJobResourceAdapter extends AbstractResourceAdapter implements ISystemRemoteElementAdapter {
@@ -80,21 +79,15 @@ public class RapidFireJobResourceAdapter extends AbstractResourceAdapter impleme
     public String getAbsoluteName(Object element) {
 
         RapidFireJobResource resource = (RapidFireJobResource)element;
-        IRapidFireInstanceResource parent = resource.getParent();
+        String library = resource.getParent();
 
-        String name = "RapidFireJob." + parent.getLibrary() + "." + resource.getName(); //$NON-NLS-1$ //$NON-NLS-2$
+        String name = "RapidFireJob." + library + "." + resource.getName(); //$NON-NLS-1$ //$NON-NLS-2$
 
         return name;
     }
 
     public String getAbsoluteParentName(Object element) {
-
-        RapidFireJobResource resource = (RapidFireJobResource)element;
-        RapidFireInstanceResourceAdapter parentAdapter = (RapidFireInstanceResourceAdapter)resource.getAdapter(RapidFireInstanceResource.class);
-
-        String parentName = parentAdapter.getAbsoluteName(getParent(element));
-
-        return parentName;
+        return ((RapidFireJobResource)element).getParent().toString();
     }
 
     /**
@@ -103,12 +96,12 @@ public class RapidFireJobResourceAdapter extends AbstractResourceAdapter impleme
      */
     @Override
     public String getType(Object element) {
-        return "Rapid Fire Job";
+        return Messages.Resource_Rapid_Fire_Job;
     }
 
     @Override
     public Object getParent(Object element) {
-        return ((RapidFireInstanceResource)element).getParent();
+        return ((RapidFireJobResource)element).getParent();
     }
 
     @Override
@@ -125,26 +118,26 @@ public class RapidFireJobResourceAdapter extends AbstractResourceAdapter impleme
     protected IPropertyDescriptor[] internalGetPropertyDescriptors() {
 
         PropertyDescriptor[] ourPDs = new PropertyDescriptor[10];
-        ourPDs[0] = new PropertyDescriptor(JOB, "Job name");
-        ourPDs[0].setDescription("Name of the Rapid Fire job.");
-        ourPDs[1] = new PropertyDescriptor(DESCRIPTION, "Description");
-        ourPDs[1].setDescription("Description of the Rapid Fire job.");
-        ourPDs[2] = new PropertyDescriptor(BATCH_JOB, "Batch job");
-        ourPDs[2].setDescription("Qualified name of the associated batch job.");
-        ourPDs[3] = new PropertyDescriptor(CREATE_ENVIRONMENT, "Create environment");
-        ourPDs[3].setDescription("Specifies whether to create a new environment for Rapid Fire copy job.");
-        ourPDs[4] = new PropertyDescriptor(JOB_QUEUE, "Job queue");
-        ourPDs[4].setDescription("Job queue to which the job is submitted to batch.");
-        ourPDs[5] = new PropertyDescriptor(JOB_QUEUE_LIBRARY, "Job queue library");
-        ourPDs[5].setDescription("Library that contains the job queue.");
-        ourPDs[6] = new PropertyDescriptor(STATUS, "Status");
-        ourPDs[6].setDescription("The status of the job.");
-        ourPDs[7] = new PropertyDescriptor(PHASE, "Phase");
-        ourPDs[7].setDescription("The phase of the job.");
-        ourPDs[8] = new PropertyDescriptor(ERROR, "Error");
-        ourPDs[8].setDescription("Spefifies whether the job is in error state.");
-        ourPDs[9] = new PropertyDescriptor(ERROR_TEXT, "Error text");
-        ourPDs[9].setDescription("Error description.");
+        ourPDs[0] = new PropertyDescriptor(JOB, Messages.Job_name);
+        ourPDs[0].setDescription(Messages.Tooltip_Job_name);
+        ourPDs[1] = new PropertyDescriptor(DESCRIPTION, Messages.Description);
+        ourPDs[1].setDescription(Messages.Tooltip_Description);
+        ourPDs[2] = new PropertyDescriptor(BATCH_JOB, Messages.Batch_job);
+        ourPDs[2].setDescription(Messages.Tooltip_Batch_job);
+        ourPDs[3] = new PropertyDescriptor(CREATE_ENVIRONMENT, Messages.Create_environment);
+        ourPDs[3].setDescription(Messages.Tooltip_Create_environment);
+        ourPDs[4] = new PropertyDescriptor(JOB_QUEUE, Messages.Job_queue);
+        ourPDs[4].setDescription(Messages.Tooltip_Job_queue);
+        ourPDs[5] = new PropertyDescriptor(JOB_QUEUE_LIBRARY, Messages.Job_queue_library);
+        ourPDs[5].setDescription(Messages.Tooltip_Job_queue_library);
+        ourPDs[6] = new PropertyDescriptor(STATUS, Messages.Status);
+        ourPDs[6].setDescription(Messages.Tooltip_Status);
+        ourPDs[7] = new PropertyDescriptor(PHASE, Messages.Phase);
+        ourPDs[7].setDescription(Messages.Tooltip_Phase);
+        ourPDs[8] = new PropertyDescriptor(ERROR, Messages.Error);
+        ourPDs[8].setDescription(Messages.Tooltip_Error);
+        ourPDs[9] = new PropertyDescriptor(ERROR_TEXT, Messages.Error_text);
+        ourPDs[9].setDescription(Messages.Tooltip_Error_text);
 
         return ourPDs;
     }

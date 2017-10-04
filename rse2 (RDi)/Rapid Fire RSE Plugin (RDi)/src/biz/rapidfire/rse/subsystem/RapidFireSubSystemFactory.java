@@ -49,7 +49,7 @@ public class RapidFireSubSystemFactory extends SubSystemConfiguration {
 
     @Override
     public String getTranslatedFilterTypeProperty(ISystemFilter selectedFilter) {
-        return Messages.Instance_Filter_type;
+        return Messages.Rapid_Fire_filter_type;
     }
 
     @Override
@@ -62,7 +62,7 @@ public class RapidFireSubSystemFactory extends SubSystemConfiguration {
         strings.add(instanceFilter.getFilterString());
         try {
             ISystemFilter filter = mgr.createSystemFilter(defaultPool, Messages.My_Rapid_Fire, strings);
-            filter.setType(Messages.Instance_Filter_type);
+            filter.setType(Messages.Rapid_Fire_filter_type);
         } catch (Exception exc) {
         }
         return defaultPool;

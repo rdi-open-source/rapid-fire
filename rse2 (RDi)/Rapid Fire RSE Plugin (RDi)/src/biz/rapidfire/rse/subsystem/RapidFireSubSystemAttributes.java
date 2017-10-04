@@ -8,9 +8,7 @@
 
 package biz.rapidfire.rse.subsystem;
 
-import biz.rapidfire.core.model.IRapidFireInstanceResource;
 import biz.rapidfire.core.subsystem.AbstractRapidFireSubSystemAttributes;
-import biz.rapidfire.rse.model.RapidFireInstanceResource;
 
 public class RapidFireSubSystemAttributes extends AbstractRapidFireSubSystemAttributes {
 
@@ -22,26 +20,9 @@ public class RapidFireSubSystemAttributes extends AbstractRapidFireSubSystemAttr
         this.subSystem = subSystem;
     }
 
-    protected IRapidFireInstanceResource createRapidFireInstanceResource(String name, String library) {
-
-        IRapidFireInstanceResource resource = new RapidFireInstanceResource(subSystem, name, library);
-
-        return resource;
-    }
-
     protected void saveSubSystem() throws Exception {
 
         subSystem.getSubSystemConfiguration().saveSubSystem(subSystem);
-    }
-
-    protected String getResourceKey(IRapidFireInstanceResource resource) {
-
-        return getResourceKey(resource.getLibrary());
-    }
-
-    protected String getResourceKey(String library) {
-
-        return subSystem.getHostAliasName() + "." + library; //$NON-NLS-1$
     }
 
     protected String getVendorAttribute(String key) {

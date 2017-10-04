@@ -28,7 +28,7 @@ import org.eclipse.rse.ui.view.SubSystemConfigurationAdapter;
 import org.eclipse.swt.widgets.Shell;
 
 import biz.rapidfire.rse.Messages;
-import biz.rapidfire.rse.actions.AddRapidFireInstanceAction;
+import biz.rapidfire.rse.RapidFireRSEPlugin;
 
 public class RapidFireSubSystemConfigurationAdapter extends SubSystemConfigurationAdapter {
 
@@ -46,15 +46,11 @@ public class RapidFireSubSystemConfigurationAdapter extends SubSystemConfigurati
     @Override
     public IAction[] getSubSystemActions(SystemMenuManager menu, IStructuredSelection selection, Shell shell, String menuGroup,
         ISubSystemConfiguration config, ISubSystem selectedSubSystem) {
-
-        menu.add("group.new", new AddRapidFireInstanceAction(shell, (RapidFireSubSystem)selectedSubSystem)); //$NON-NLS-1$
-
         return super.getSubSystemActions(menu, selection, shell, menuGroup, config, selectedSubSystem);
     }
 
     @Override
     protected void addConnectOrDisconnectAction(Vector actions, Shell shell, ISubSystem selectedSS) {
-
         super.addConnectOrDisconnectAction(actions, shell, selectedSS);
     }
 
@@ -63,10 +59,10 @@ public class RapidFireSubSystemConfigurationAdapter extends SubSystemConfigurati
         ISubSystemConfiguration config, ISystemFilterPool selectedPool) {
 
         SystemNewFilterAction filterAction = (SystemNewFilterAction)super.getNewFilterPoolFilterAction(config, selectedPool, shell);
-        filterAction.setWizardPageTitle(Messages.Rapid_Fire_Instance_Filter);
-        filterAction.setPage1Description(Messages.Create_a_new_filter_to_list_Rapid_Fire_instances);
-        filterAction.setType(Messages.Instance_Filter_type);
-        filterAction.setText(Messages.Instance_Filter_dots);
+        filterAction.setWizardPageTitle(Messages.Rapid_Fire_Filter);
+        filterAction.setPage1Description(Messages.Create_a_new_filter_to_list_Rapid_Fire_jobs);
+        filterAction.setType(Messages.Rapid_Fire_filter_type);
+        filterAction.setText(Messages.Add_Rapid_Fire_Filter_dots);
         filterAction.setFilterStringEditPane(new RapidFireInstanceFilterStringEditPane(shell));
 
         ISystemFilterPoolManager[] filterPoolManager = config.getSystemFilterPoolManagers();
@@ -100,18 +96,11 @@ public class RapidFireSubSystemConfigurationAdapter extends SubSystemConfigurati
 
     @Override
     public ImageDescriptor getSystemFilterImage(ISystemFilter filter) {
-        // return
-        // ISphereMessageSubsystemRSEPlugin.getDefault().getImageRegistry().getDescriptor(ISphereMessageSubsystemRSEPlugin.IMAGE_MESSAGE_FILTER);
-        return null;
+        return RapidFireRSEPlugin.getDefault().getImageRegistry().getDescriptor(RapidFireRSEPlugin.IMAGE_RAPID_FIRE_FILTER);
     }
 
     @Override
     protected Vector<IAction> getAdditionalFilterActions(ISubSystemConfiguration config, ISystemFilter selectedFilter, Shell shell) {
-
-        // Vector<IAction> actions = new Vector<IAction>();
-        // actions.add(getChangeFilterAction(config, selectedFilter, shell));
-        //
-        // return actions;
         return null;
     }
 

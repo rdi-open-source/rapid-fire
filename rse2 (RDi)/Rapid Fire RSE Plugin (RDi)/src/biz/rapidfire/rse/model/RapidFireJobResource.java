@@ -9,12 +9,13 @@
 package biz.rapidfire.rse.model;
 
 import org.eclipse.rse.core.subsystems.AbstractResource;
+import org.eclipse.rse.core.subsystems.ISubSystem;
 
-import biz.rapidfire.core.model.IRapidFireInstanceResource;
 import biz.rapidfire.core.model.IRapidFireJobResource;
 import biz.rapidfire.core.model.JobName;
 import biz.rapidfire.core.model.Phase;
 import biz.rapidfire.core.model.Status;
+import biz.rapidfire.core.subsystem.IRapidFireSubSystem;
 
 import com.ibm.as400.access.QSYSObjectPathName;
 
@@ -31,12 +32,11 @@ public class RapidFireJobResource extends AbstractResource implements IRapidFire
     private JobName batchJob;
     private boolean isStopApplyChanges;
     private String cmoneFormNumber;
-    private IRapidFireInstanceResource parent;
+    private String library;
 
-    public RapidFireJobResource(IRapidFireInstanceResource parent, String name, String description, boolean doCreateEnvironment,
-        QSYSObjectPathName jobQueue) {
+    public RapidFireJobResource(String library, String name, String description, boolean doCreateEnvironment, QSYSObjectPathName jobQueue) {
 
-        this.parent = parent;
+        this.library = library;
         this.name = name;
         this.description = description;
         this.doCreateEnvironment = doCreateEnvironment;
@@ -46,6 +46,14 @@ public class RapidFireJobResource extends AbstractResource implements IRapidFire
     /*
      * IRapidFireJobResource methods
      */
+
+    public String getParent() {
+        return library;
+    }
+
+    public String getLibrary() {
+        return library;
+    }
 
     public String getName() {
         return name;
@@ -131,10 +139,6 @@ public class RapidFireJobResource extends AbstractResource implements IRapidFire
         return batchJob;
     }
 
-    public IRapidFireInstanceResource getParent() {
-        return parent;
-    }
-
     public int compareTo(RapidFireJobResource resource) {
 
         if (resource == null || resource.getName() == null) {
@@ -144,6 +148,14 @@ public class RapidFireJobResource extends AbstractResource implements IRapidFire
         }
 
         return getName().compareTo(resource.getName());
+    }
+
+    public void setParentSubSystem(IRapidFireSubSystem subSystem) {
+        super.setSubSystem((ISubSystem)subSystem);
+    }
+
+    public IRapidFireSubSystem getParentSubSystem() {
+        return (IRapidFireSubSystem)super.getSubSystem();
     }
 
     @Override

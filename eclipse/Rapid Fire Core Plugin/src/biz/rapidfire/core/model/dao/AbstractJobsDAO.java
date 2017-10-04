@@ -14,7 +14,6 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
-import biz.rapidfire.core.model.IRapidFireInstanceResource;
 import biz.rapidfire.core.model.IRapidFireJobResource;
 import biz.rapidfire.core.model.JobName;
 import biz.rapidfire.core.model.Phase;
@@ -46,26 +45,25 @@ public abstract class AbstractJobsDAO {
         this.dao = dao;
     }
 
-    public List<IRapidFireJobResource> load(IRapidFireInstanceResource parent) throws Exception {
+    public List<IRapidFireJobResource> load(final String library) throws Exception {
 
-        List<IRapidFireJobResource> journalEntries = new ArrayList<IRapidFireJobResource>();
+        final List<IRapidFireJobResource> journalEntries = new ArrayList<IRapidFireJobResource>();
 
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
 
         try {
 
-            String sqlStatement = String.format(getSqlStatement(), parent.getLibrary());
+            String sqlStatement = String.format(getSqlStatement(), library);
             preparedStatement = dao.prepareStatement(sqlStatement);
             resultSet = preparedStatement.executeQuery();
             resultSet.setFetchSize(50);
 
             if (resultSet != null) {
                 while (resultSet.next()) {
-                    journalEntries.add(produceJob(parent, resultSet));
+                    journalEntries.add(produceJob(library, resultSet));
                 }
             }
-
         } finally {
             dao.destroy(preparedStatement);
             dao.destroy(resultSet);
@@ -74,7 +72,7 @@ public abstract class AbstractJobsDAO {
         return journalEntries;
     }
 
-    private IRapidFireJobResource produceJob(IRapidFireInstanceResource parent, ResultSet resultSet) throws SQLException {
+    private IRapidFireJobResource produceJob(String library, ResultSet resultSet) throws SQLException {
 
         String name = resultSet.getString(JOB).trim();
         String description = resultSet.getString(DESCRIPTION).trim();
@@ -82,7 +80,7 @@ public abstract class AbstractJobsDAO {
         String jobQueueLibrary = resultSet.getString(JOB_QUEUE_LIBRARY).trim();
         String jobQueueName = resultSet.getString(JOB_QUEUE).trim();
 
-        IRapidFireJobResource job = createJobInstance(parent, name, description, dao.convertYesNo(createEnvironment), new QSYSObjectPathName(
+        IRapidFireJobResource job = createJobInstance(library, name, description, dao.convertYesNo(createEnvironment), new QSYSObjectPathName(
             jobQueueLibrary, jobQueueName, "JOBQ")); //$NON-NLS-1$
 
         String status = resultSet.getString(STATUS).trim();
@@ -106,30 +104,30 @@ public abstract class AbstractJobsDAO {
         return job;
     }
 
-    protected abstract IRapidFireJobResource createJobInstance(IRapidFireInstanceResource parent, String name, String description,
-        boolean doCreateEnvironment, QSYSObjectPathName jobQueue);
+    protected abstract IRapidFireJobResource createJobInstance(String library, String name, String description, boolean doCreateEnvironment,
+        QSYSObjectPathName jobQueue);
 
     private String getSqlStatement() {
 
         // @formatter:off
         String sqlStatement = 
-            Messages.AbstractJobsDAO_14 +
-                Messages.AbstractJobsDAO_15 +
-                Messages.AbstractJobsDAO_16 +
-                Messages.AbstractJobsDAO_17 +
-                Messages.AbstractJobsDAO_18 +
-                Messages.AbstractJobsDAO_19 +
-                Messages.AbstractJobsDAO_20 +
-                Messages.AbstractJobsDAO_21 +
-                Messages.AbstractJobsDAO_22 +
-                Messages.AbstractJobsDAO_23 +
-                Messages.AbstractJobsDAO_24 +
-                Messages.AbstractJobsDAO_25 +
-                Messages.AbstractJobsDAO_26 +
-                Messages.AbstractJobsDAO_27 +
-                Messages.AbstractJobsDAO_28 +
-            Messages.AbstractJobsDAO_29 +
-                Messages.AbstractJobsDAO_30;
+            "SELECT " +
+            "JOB, " +
+            "DESCRIPTION, " +
+            "CREATE_ENVIRONMENT, " +
+            "JOB_QUEUE_LIBRARY, " +
+            "JOB_QUEUE, " +
+            "STATUS, " +
+            "PHASE, " +
+            "ERROR, " +
+            "ERROR_TEXT, " +
+            "BATCH_JOB, " +
+            "BATCH_USER, " +
+            "BATCH_NUMBER, " +
+            "STOP_APPLY_CHANGES, " +
+            "CMONE_FORM " +
+        "FROM " +
+            "%s.JOBS";
         // @formatter:on
 
         return sqlStatement;

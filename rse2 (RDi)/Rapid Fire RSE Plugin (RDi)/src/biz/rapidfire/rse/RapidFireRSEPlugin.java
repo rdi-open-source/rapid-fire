@@ -10,7 +10,6 @@ import org.eclipse.jface.resource.ImageRegistry;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
-import biz.rapidfire.rse.model.RapidFireInstanceResource;
 import biz.rapidfire.rse.model.RapidFireJobResource;
 import biz.rapidfire.rse.subsystem.RapidFireAdapterFactory;
 import biz.rapidfire.rse.subsystem.RapidFireSubSystemConfigurationAdapterFactory;
@@ -29,6 +28,7 @@ public class RapidFireRSEPlugin extends AbstractUIPlugin {
 
     public static final String IMAGE_RAPID_FIRE = "rapidfire.gif"; //$NON-NLS-1$
     public static final String IMAGE_LIBRARY = "library.gif"; //$NON-NLS-1$
+    public static final String IMAGE_RAPID_FIRE_FILTER = "rapidfire_filter.gif"; //$NON-NLS-1$
 
     /**
      * The constructor
@@ -76,7 +76,6 @@ public class RapidFireRSEPlugin extends AbstractUIPlugin {
         IAdapterManager manager = Platform.getAdapterManager();
 
         RapidFireAdapterFactory adapterFactory = new RapidFireAdapterFactory();
-        manager.registerAdapters(adapterFactory, RapidFireInstanceResource.class);
         manager.registerAdapters(adapterFactory, RapidFireJobResource.class);
 
         RapidFireSubSystemConfigurationAdapterFactory subSystemConfigurationAdapterFactory = new RapidFireSubSystemConfigurationAdapterFactory();
@@ -89,6 +88,7 @@ public class RapidFireRSEPlugin extends AbstractUIPlugin {
 
         reg.put(IMAGE_RAPID_FIRE, getImageDescriptor(IMAGE_RAPID_FIRE));
         reg.put(IMAGE_LIBRARY, getImageDescriptor(IMAGE_LIBRARY));
+        reg.put(IMAGE_RAPID_FIRE_FILTER, getImageDescriptor(IMAGE_RAPID_FIRE_FILTER));
     }
 
     private ImageDescriptor getImageDescriptor(String name) {

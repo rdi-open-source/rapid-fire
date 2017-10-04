@@ -8,9 +8,15 @@
 
 package biz.rapidfire.core.model;
 
+import biz.rapidfire.core.subsystem.IRapidFireSubSystem;
+
 import com.ibm.as400.access.QSYSObjectPathName;
 
 public interface IRapidFireJobResource {
+
+    public String getParent();
+
+    public String getLibrary();
 
     public String getName();
 
@@ -53,4 +59,8 @@ public interface IRapidFireJobResource {
     public void setBatchJob(JobName job);
 
     public JobName getBatchJob();
+
+    public void setParentSubSystem(IRapidFireSubSystem subSystem);
+
+    public IRapidFireSubSystem getParentSubSystem();
 }

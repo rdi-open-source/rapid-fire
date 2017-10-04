@@ -8,7 +8,6 @@
 
 package biz.rapidfire.rse.model.dao;
 
-import biz.rapidfire.core.model.IRapidFireInstanceResource;
 import biz.rapidfire.core.model.IRapidFireJobResource;
 import biz.rapidfire.core.model.dao.AbstractJobsDAO;
 import biz.rapidfire.core.model.dao.IJobsDAO;
@@ -23,8 +22,8 @@ public class JobsDAO extends AbstractJobsDAO implements IJobsDAO {
     }
 
     @Override
-    protected IRapidFireJobResource createJobInstance(IRapidFireInstanceResource parent, String name, String description,
-        boolean doCreateEnvironment, QSYSObjectPathName jobQueue) {
-        return new RapidFireJobResource(parent, name, description, doCreateEnvironment, jobQueue);
+    protected IRapidFireJobResource createJobInstance(String library, String name, String description, boolean doCreateEnvironment,
+        QSYSObjectPathName jobQueue) {
+        return new RapidFireJobResource(library, name, description, doCreateEnvironment, jobQueue);
     }
 }

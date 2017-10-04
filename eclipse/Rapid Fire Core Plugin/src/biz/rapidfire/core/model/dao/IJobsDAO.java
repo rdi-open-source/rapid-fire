@@ -10,10 +10,9 @@ package biz.rapidfire.core.model.dao;
 
 import java.util.List;
 
-import biz.rapidfire.core.model.IRapidFireInstanceResource;
 import biz.rapidfire.core.model.IRapidFireJobResource;
 
 public interface IJobsDAO {
 
-    public List<IRapidFireJobResource> load(IRapidFireInstanceResource parent) throws Exception;
+    public List<IRapidFireJobResource> load(String library) throws Exception;
 }

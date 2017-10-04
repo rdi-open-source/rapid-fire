@@ -119,6 +119,6 @@ public abstract class AbstractResourceAdapter extends AbstractSystemViewAdapter 
 
     public String getSubSystemConfigurationId(Object element) {
         // as declared in extension in plugin.xml
-        return null;
+        return RapidFireSubSystemFactory.ID;
     }
 }

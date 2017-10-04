@@ -11,12 +11,8 @@ Require-Bundle: org.eclipse.ui,
  org.eclipse.core.runtime,
  org.eclipse.core.resources,
  com.ibm.etools.iseries.toolbox
-Bundle-ClassPath: .
-Bundle-RequiredExecutionEnvironment: J2SE-1.5
-Bundle-ActivationPolicy: lazy
-Eclipse-LazyStart: true
 Export-Package: biz.rapidfire.core,
- biz.rapidfire.core.dialogs,
+ biz.rapidfire.core.handlers,
  biz.rapidfire.core.helpers,
  biz.rapidfire.core.jface.dialogs,
  biz.rapidfire.core.model,
@@ -25,3 +21,7 @@ Export-Package: biz.rapidfire.core,
  biz.rapidfire.core.subsystem,
  biz.rapidfire.core.swt.widgets,
  biz.rapidfire.core.validators
+Bundle-ClassPath: .
+Bundle-RequiredExecutionEnvironment: J2SE-1.5
+Bundle-ActivationPolicy: lazy
+Eclipse-LazyStart: true

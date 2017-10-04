@@ -13,6 +13,7 @@ package biz.rapidfire.rse.subsystem;
 
 import java.lang.reflect.InvocationTargetException;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Vector;
 
 import org.eclipse.core.runtime.IProgressMonitor;
@@ -24,15 +25,15 @@ import org.eclipse.rse.core.model.SystemMessageObject;
 import org.eclipse.rse.core.subsystems.IConnectorService;
 import org.eclipse.rse.core.subsystems.ISubSystem;
 import org.eclipse.rse.core.subsystems.SubSystem;
-import org.eclipse.rse.services.clientserver.NamePatternMatcher;
 import org.eclipse.rse.services.clientserver.messages.SystemMessage;
 import org.eclipse.rse.ui.RSEUIPlugin;
 import org.eclipse.swt.widgets.Shell;
 
-import biz.rapidfire.core.model.IRapidFireInstanceResource;
+import biz.rapidfire.core.model.IRapidFireJobResource;
 import biz.rapidfire.core.subsystem.IRapidFireSubSystem;
 import biz.rapidfire.core.subsystem.RapidFireFilter;
-import biz.rapidfire.rse.model.RapidFireInstanceResource;
+import biz.rapidfire.rse.model.RapidFireJobResource;
+import biz.rapidfire.rse.model.dao.JobsDAO;
 
 import com.ibm.etools.iseries.subsystems.qsys.IISeriesSubSystem;
 import com.ibm.etools.iseries.subsystems.qsys.api.IBMiConnection;
@@ -67,19 +68,24 @@ public class RapidFireSubSystem extends SubSystem implements IISeriesSubSystem, 
     protected Object[] internalResolveFilterString(String filterString, IProgressMonitor monitor) throws InvocationTargetException,
         InterruptedException {
 
-        IRapidFireInstanceResource[] allResources = getSubSystemAttributes().getRapidFireInstances();
-
-        RapidFireFilter filter = new RapidFireFilter(filterString);
-        NamePatternMatcher libraryMatcher = new NamePatternMatcher(filter.getLibrary());
-
-        Vector<IRapidFireInstanceResource> filteredResources = new Vector<IRapidFireInstanceResource>();
-        for (int i = 0; i < allResources.length; i++) {
-            if (libraryMatcher.matches(allResources[i].getLibrary())) {
-                filteredResources.addElement(allResources[i]);
+        try {
+            RapidFireFilter filter = new RapidFireFilter(filterString);
+            JobsDAO dao = new JobsDAO(getHostAliasName());
+            List<IRapidFireJobResource> allResources = dao.load(filter.getLibrary());
+            Vector<IRapidFireJobResource> filteredResources = new Vector<IRapidFireJobResource>();
+            for (IRapidFireJobResource resource : allResources) {
+                if (filter.matches(resource)) {
+                    resource.setParentSubSystem(this);
+                    filteredResources.addElement(resource);
+                }
             }
+
+            return filteredResources.toArray(new RapidFireJobResource[filteredResources.size()]);
+        } catch (Exception e) {
+            e.printStackTrace();
         }
 
-        return filteredResources.toArray(new RapidFireInstanceResource[filteredResources.size()]);
+        return null;
     }
 
     @Override

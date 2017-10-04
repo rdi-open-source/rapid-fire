@@ -11,17 +11,25 @@
  *******************************************************************************/
 package biz.rapidfire.core.subsystem;
 
+import biz.rapidfire.core.helpers.StringHelper;
+import biz.rapidfire.core.model.IRapidFireJobResource;
+
 public class RapidFireFilter {
 
     private static final String SLASH = "/"; //$NON-NLS-1$
-    private static final String ASTERISK = "*"; //$NON-NLS-1$
+    public static final String ASTERISK = "*"; //$NON-NLS-1$
+    public static final String RAPIDFIRE_LIBRARY = "RAPIDFIRE"; //$NON-NLS-1$
 
     private String library;
+    private String job;
+    private String status;
 
     public RapidFireFilter() {
         super();
 
-        setLibrary(ASTERISK);
+        setLibrary(RAPIDFIRE_LIBRARY);
+        setJob(ASTERISK);
+        setStatus(ASTERISK);
     }
 
     public RapidFireFilter(String filterString) {
@@ -37,18 +45,41 @@ public class RapidFireFilter {
         this.library = library;
     }
 
+    public String getJob() {
+        return job;
+    }
+
+    public void setJob(String job) {
+        this.job = job;
+    }
+
+    public String getStatus() {
+        return status;
+    }
+
+    public void setStatus(String status) {
+        this.status = status;
+    }
+
     public String getFilterString() {
 
         StringBuffer filterString = new StringBuffer();
 
-        if (library == null) {
-            filterString.append(ASTERISK);
-        } else {
-            filterString.append(library);
-        }
-        filterString.append(SLASH);
+        appendFilterItem(filterString, library);
+        appendFilterItem(filterString, job);
+        appendFilterItem(filterString, status);
 
         return filterString.toString();
+    }
+
+    private void appendFilterItem(StringBuffer filterString, String filterItem) {
+
+        if (filterItem == null) {
+            filterString.append(ASTERISK);
+        } else {
+            filterString.append(filterItem);
+        }
+        filterString.append(SLASH);
     }
 
     public static RapidFireFilter getDefaultFilter() {
@@ -61,20 +92,57 @@ public class RapidFireFilter {
 
     public void setFilterString(String filterString) {
 
-        int index;
+        int start = 0;
+        int end = 0;
+        String filterItem;
 
-        index = filterString.indexOf(SLASH);
+        end = filterString.indexOf(SLASH, start);
+        filterItem = retrieveFilterItem(filterString, start, end);
+        setLibrary(filterItem);
+        start = end + 1;
+
+        end = filterString.indexOf(SLASH, start);
+        filterItem = retrieveFilterItem(filterString, start, end);
+        setJob(filterItem);
+        start = end + 1;
+
+        end = filterString.indexOf(SLASH, start);
+        filterItem = retrieveFilterItem(filterString, start, end);
+        setStatus(filterItem);
+        start = end + 1;
+    }
+
+    public boolean matches(IRapidFireJobResource job) {
+
+        if (!getLibrary().equals(job.getLibrary())) {
+            return false;
+        }
+
+        if (!ASTERISK.equals(getJob()) && !StringHelper.matchesGeneric(job.getName(), getJob())) {
+            return false;
+        }
+
+        if (!ASTERISK.equals(getStatus()) & !getStatus().equals(job.getStatus().label)) {
+            return false;
+        }
+
+        return true;
+    }
+
+    private String retrieveFilterItem(String filterString, int start, int end) {
+
+        if (end >= filterString.length()) {
+            return null;
+        }
 
         String temp;
-        if (index <= 0) {
-            temp = filterString;
+        if (start < 0) {
+            temp = ASTERISK;
         } else {
-            temp = filterString.substring(0, index);
+            temp = filterString.substring(start, end);
         }
 
-        if (!temp.equals(ASTERISK)) {
-            setLibrary(temp);
-        }
+        return temp;
     }
 
 }

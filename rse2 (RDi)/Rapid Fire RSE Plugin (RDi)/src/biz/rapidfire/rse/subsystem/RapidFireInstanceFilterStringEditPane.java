@@ -40,22 +40,34 @@ public class RapidFireInstanceFilterStringEditPane extends SystemFilterStringEdi
     public Control createContents(Composite parent) {
 
         int nbrColumns = 3;
-        Composite composite_prompts = SystemWidgetHelpers.createComposite(parent, nbrColumns);
+        Composite composite = SystemWidgetHelpers.createComposite(parent, nbrColumns);
 
-        delegate.createContents(composite_prompts);
+        delegate.createContents(composite);
 
         resetFields();
         doInitializeFields();
 
         ModifyListener keyListener = new ModifyListener() {
             public void modifyText(ModifyEvent e) {
-                validateStringInput();
+                validateInput();
             }
         };
 
         delegate.addModifyListener(keyListener);
 
-        return composite_prompts;
+        return composite;
+    }
+
+    private void validateInput() {
+
+        String message = delegate.validateInput();
+        if (message != null) {
+            errorMessage = new SystemMessage("", "", "", SystemMessage.ERROR, message, ""); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$ //$NON-NLS-4$
+        } else {
+            errorMessage = null;
+        }
+
+        fireChangeEvent(errorMessage);
     }
 
     @Override
@@ -83,12 +95,25 @@ public class RapidFireInstanceFilterStringEditPane extends SystemFilterStringEdi
         return delegate.getFilterString();
     }
 
+    /**
+     * Called, when the dialog is first displayed.
+     */
     @Override
-    public SystemMessage verify() {
-        if (!areFieldsComplete())
-            return SystemMessageDialog.getExceptionMessage(Display.getCurrent().getActiveShell(), new Exception(
-                Messages.The_library_name_must_be_specified));
-        return null;
+    public boolean isComplete() {
+        return areFieldsComplete();
     }
 
+    /**
+     * Called, when the [Finish] button is pressed.
+     */
+    @Override
+    public SystemMessage verify() {
+
+        if (!areFieldsComplete()) {
+            return SystemMessageDialog.getExceptionMessage(Display.getCurrent().getActiveShell(), new Exception(
+                Messages.Rapid_Fire_filter_contains_invalid_values));
+        }
+
+        return null;
+    }
 }
