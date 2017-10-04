@@ -84,7 +84,7 @@ public class RapidFireSubSystem extends SubSystem implements IISeriesSubSystem, 
 
             return filteredResources.toArray(new RapidFireJobResource[filteredResources.size()]);
         } catch (Exception e) {
-            RapidFireCorePlugin.logError("*** Could resolve filter string and load jobs ***", e);
+            RapidFireCorePlugin.logError("*** Could resolve filter string and load jobs ***", e); //$NON-NLS-1$
             MessageDialogAsync.displayError(e.getLocalizedMessage());
         }
 
