@@ -70,7 +70,7 @@ public class RapidFireJobResourceAdapter extends AbstractResourceAdapter impleme
 
         RapidFireJobResource resource = (RapidFireJobResource)element;
 
-        return resource.getName() + " - " + resource.getDescription() + " (" + resource.getStatus() + ")"; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+        return resource.getName() + " - " + resource.getStatus(); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
     }
 
     /**
