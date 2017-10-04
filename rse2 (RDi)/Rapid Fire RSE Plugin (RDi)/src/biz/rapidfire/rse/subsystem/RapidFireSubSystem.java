@@ -29,6 +29,8 @@ import org.eclipse.rse.services.clientserver.messages.SystemMessage;
 import org.eclipse.rse.ui.RSEUIPlugin;
 import org.eclipse.swt.widgets.Shell;
 
+import biz.rapidfire.core.RapidFireCorePlugin;
+import biz.rapidfire.core.dialogs.MessageDialogAsync;
 import biz.rapidfire.core.model.IRapidFireJobResource;
 import biz.rapidfire.core.subsystem.IRapidFireSubSystem;
 import biz.rapidfire.core.subsystem.RapidFireFilter;
@@ -82,7 +84,8 @@ public class RapidFireSubSystem extends SubSystem implements IISeriesSubSystem, 
 
             return filteredResources.toArray(new RapidFireJobResource[filteredResources.size()]);
         } catch (Exception e) {
-            e.printStackTrace();
+            RapidFireCorePlugin.logError("*** Could resolve filter string and load jobs ***", e);
+            MessageDialogAsync.displayError(e.getLocalizedMessage());
         }
 
         return null;
