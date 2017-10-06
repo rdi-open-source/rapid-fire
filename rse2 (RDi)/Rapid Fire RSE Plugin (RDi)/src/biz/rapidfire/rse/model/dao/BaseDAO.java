@@ -1,7 +1,5 @@
 package biz.rapidfire.rse.model.dao;
 
-import java.sql.Connection;
-
 import biz.rapidfire.core.model.dao.AbstractBaseDAO;
 import biz.rapidfire.core.model.dao.IBaseDAO;
 import biz.rapidfire.rse.Messages;
@@ -12,7 +10,6 @@ import com.ibm.etools.iseries.subsystems.qsys.api.IBMiConnection;
 public class BaseDAO extends AbstractBaseDAO implements IBaseDAO {
 
     private IBMiConnection ibmiConnection;
-    private Connection connection;
 
     public BaseDAO(String connectionName) throws Exception {
 
