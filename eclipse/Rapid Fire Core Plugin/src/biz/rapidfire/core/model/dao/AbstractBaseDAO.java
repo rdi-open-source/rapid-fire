@@ -27,7 +27,7 @@ public abstract class AbstractBaseDAO {
     private static final String BOOLEAN_YES = "*YES"; //$NON-NLS-1$
     private static final String BOOLEAN_NO = "*NO"; //$NON-NLS-1$
 
-    private Connection connection;
+    protected Connection connection;
 
     public PreparedStatement prepareStatement(String sql) throws SQLException {
         return getConnection().prepareStatement(sql);
