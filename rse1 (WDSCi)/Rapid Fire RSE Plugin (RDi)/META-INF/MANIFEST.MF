@@ -1,6 +1,6 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Rapid Fire RSE Plugin (RDi)
+Bundle-Name: Rapid Fire RSE Plugin (WDSCi)
 Bundle-SymbolicName: biz.rapidfire.rse;singleton:=true
 Bundle-Version: 1.0.0.b001
 Bundle-Activator: biz.rapidfire.rse.RapidFireRSEPlugin
