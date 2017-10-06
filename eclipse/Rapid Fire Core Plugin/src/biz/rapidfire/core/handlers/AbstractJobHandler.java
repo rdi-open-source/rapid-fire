@@ -15,8 +15,8 @@ import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 
+import biz.rapidfire.core.model.IRapidFireResource;
 import biz.rapidfire.rsebase.handlers.AbstractSelectionHandler;
-import biz.rapidfire.rsebase.model.IRapidFireResource;
 
 public abstract class AbstractJobHandler extends AbstractSelectionHandler {
 

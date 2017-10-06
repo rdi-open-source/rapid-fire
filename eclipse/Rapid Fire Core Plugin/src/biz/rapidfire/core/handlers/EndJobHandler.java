@@ -11,7 +11,7 @@ package biz.rapidfire.core.handlers;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.commands.IHandler;
 
-import biz.rapidfire.rsebase.model.IRapidFireResource;
+import biz.rapidfire.core.model.IRapidFireResource;
 
 public class EndJobHandler extends AbstractJobHandler implements IHandler {
 

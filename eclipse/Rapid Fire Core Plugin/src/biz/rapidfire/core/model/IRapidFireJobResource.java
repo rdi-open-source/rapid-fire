@@ -9,7 +9,6 @@
 package biz.rapidfire.core.model;
 
 import biz.rapidfire.core.subsystem.IRapidFireSubSystem;
-import biz.rapidfire.rsebase.model.IRapidFireResource;
 
 import com.ibm.as400.access.QSYSObjectPathName;
 
