@@ -11,14 +11,6 @@ import com.ibm.etools.iseries.subsystems.qsys.api.IBMiConnection;
 
 public class BaseDAO extends AbstractBaseDAO implements IBaseDAO {
 
-    private static final String BOOLEAN_Y = "Y"; //$NON-NLS-1$
-    private static final String BOOLEAN_N = "N"; //$NON-NLS-1$
-    private static final String BOOLEAN_YES = "*YES"; //$NON-NLS-1$
-    private static final String BOOLEAN_NO = "*NO"; //$NON-NLS-1$
-
-    // protected static final String properties = "thread used=false; extendeddynamic=true; package criteria=select; package cache=true;"; //$NON-NLS-1$
-    protected static final String properties = "translate hex=binary; prompt=false; extended dynamic=true; package cache=true"; //$NON-NLS-1$
-
     private IBMiConnection ibmiConnection;
     private Connection connection;
 
