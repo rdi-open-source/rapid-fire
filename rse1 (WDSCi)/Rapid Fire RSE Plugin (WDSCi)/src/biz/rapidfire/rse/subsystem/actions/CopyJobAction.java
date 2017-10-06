@@ -1,29 +1,18 @@
 package biz.rapidfire.rse.subsystem.actions;
 
-import java.util.Vector;
+import org.eclipse.core.commands.ExecutionEvent;
+import org.eclipse.core.commands.ExecutionException;
 
-import biz.rapidfire.rse.model.RapidFireJobResource;
-
-import com.ibm.etools.systems.core.SystemPlugin;
-import com.ibm.etools.systems.model.ISystemRemoteChangeEvents;
-import com.ibm.etools.systems.model.SystemRegistry;
+import biz.rapidfire.core.handlers.CopyJobHandler;
 
 public class CopyJobAction extends AbstractJobAction {
 
-    public String execute(RapidFireJobResource jobResource) {
+    private CopyJobHandler handler = new CopyJobHandler();
 
-        // TODO: Do something
-        String message = null;
-        System.out.println("Copying Rapid Fire job: " + jobResource.getName());
-        
-        if (message == null) {
-            SystemRegistry sr = SystemPlugin.getDefault().getSystemRegistry();
-            Vector<RapidFireJobResource> jobVector = new Vector<RapidFireJobResource>();
-            jobVector.addElement(jobResource);
-            sr.fireRemoteResourceChangeEvent(ISystemRemoteChangeEvents.SYSTEM_REMOTE_RESOURCE_CREATED, jobVector, null, null, null, null);
-        }
+    public void execute(ExecutionEvent event) throws ExecutionException {
 
-        return message;
+        System.out.println("Calling handler: Copying Rapid Fire job ...");
+        handler.execute(event);
     }
 
 }

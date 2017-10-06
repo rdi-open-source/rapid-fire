@@ -1,10 +1,12 @@
 package biz.rapidfire.rse.subsystem.actions;
 
-import org.eclipse.jface.dialogs.MessageDialog;
-import org.eclipse.swt.widgets.Display;
+import java.util.HashMap;
+import java.util.Map;
 
-import biz.rapidfire.rse.Messages;
-import biz.rapidfire.rse.model.RapidFireJobResource;
+import org.eclipse.core.commands.ExecutionEvent;
+import org.eclipse.core.commands.ExecutionException;
+import org.eclipse.jface.viewers.StructuredSelection;
+import org.eclipse.ui.ISources;
 
 import com.ibm.etools.iseries.core.ui.actions.isv.ISeriesAbstractQSYSPopupMenuExtensionAction;
 
@@ -13,38 +15,21 @@ public abstract class AbstractJobAction extends ISeriesAbstractQSYSPopupMenuExte
     @Override
     public void run() {
 
-        init();
+        try {
 
-        String message = null;
+            Object[] selection = getSelectedRemoteObjects();
 
-        Object[] selection = getSelectedRemoteObjects();
-        for (int i = 0; i < selection.length; i++) {
-            if (selection[i] instanceof RapidFireJobResource) {
-                RapidFireJobResource jobResource = (RapidFireJobResource)selection[i];
-                message = execute(jobResource);
-                if (message != null) {
-                    MessageDialog.openError(Display.getCurrent().getActiveShell(), Messages.Error, message);
-                    break;
-                }
-            }
+            Map<String, Object> properties = new HashMap<String, Object>();
+            properties.put(ISources.ACTIVE_CURRENT_SELECTION_NAME, new StructuredSelection(selection));
+            ExecutionEvent event = new ExecutionEvent(null, properties, null, null);
+            
+            execute(event);
+            
+        } catch (ExecutionException e) {
+            e.printStackTrace(); // TODO: fix it
         }
-
-        if (message == null) {
-            message = finish();
-            if (message != null) {
-                MessageDialog.openError(Display.getCurrent().getActiveShell(), Messages.Error, message);
-            }
-        }
-
     }
 
-    public void init() {
-    }
-
-    public abstract String execute(RapidFireJobResource jobResource);
-
-    public String finish() {
-        return null;
-    }
+    public abstract void execute(ExecutionEvent event) throws ExecutionException ;
 
 }

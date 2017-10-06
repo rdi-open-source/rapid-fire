@@ -1,29 +1,18 @@
 package biz.rapidfire.rse.subsystem.actions;
 
-import java.util.Vector;
+import org.eclipse.core.commands.ExecutionEvent;
+import org.eclipse.core.commands.ExecutionException;
 
-import biz.rapidfire.rse.model.RapidFireJobResource;
-
-import com.ibm.etools.systems.core.SystemPlugin;
-import com.ibm.etools.systems.model.ISystemRemoteChangeEvents;
-import com.ibm.etools.systems.model.SystemRegistry;
+import biz.rapidfire.core.handlers.ResetJobHandler;
 
 public class ResetJobAction extends AbstractJobAction {
 
-    public String execute(RapidFireJobResource jobResource) {
+    private ResetJobHandler handler = new ResetJobHandler();
 
-        // TODO: Do something
-        String message = null;
-        System.out.println("Reseting Rapid Fire job: " + jobResource.getName());
-        
-        if (message == null) {
-            SystemRegistry sr = SystemPlugin.getDefault().getSystemRegistry();
-            Vector<RapidFireJobResource> jobVector = new Vector<RapidFireJobResource>();
-            jobVector.addElement(jobResource);
-            sr.fireRemoteResourceChangeEvent(ISystemRemoteChangeEvents.SYSTEM_REMOTE_RESOURCE_CREATED, jobVector, null, null, null, null);
-        }
+    public void execute(ExecutionEvent event) throws ExecutionException {
 
-        return message;
+        System.out.println("Calling handler: Resetting Rapid Fire job ...");
+        handler.execute(event);
     }
 
 }
