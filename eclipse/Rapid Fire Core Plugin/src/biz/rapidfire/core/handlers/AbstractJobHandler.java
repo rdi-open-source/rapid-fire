@@ -6,20 +6,19 @@
  * http://www.eclipse.org/legal/cpl-v10.html
  *******************************************************************************/
 
-package biz.rapidfire.rsebase.handlers;
+package biz.rapidfire.core.handlers;
 
 import java.util.Iterator;
 
-import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
-import org.eclipse.ui.handlers.HandlerUtil;
 
+import biz.rapidfire.rsebase.handlers.AbstractSelectionHandler;
 import biz.rapidfire.rsebase.model.IRapidFireResource;
 
-public abstract class AbstractJobHandler extends AbstractHandler {
+public abstract class AbstractJobHandler extends AbstractSelectionHandler {
 
     /*
      * (non-Javadoc)
@@ -29,7 +28,7 @@ public abstract class AbstractJobHandler extends AbstractHandler {
      */
     public Object execute(ExecutionEvent event) throws ExecutionException {
 
-        ISelection selection = HandlerUtil.getCurrentSelection(event);
+        ISelection selection = getCurrentSelection(event);
 
         return executeWithSelection(selection);
     }
@@ -48,4 +47,5 @@ public abstract class AbstractJobHandler extends AbstractHandler {
     }
 
     protected abstract Object executeWithResource(IRapidFireResource resource) throws ExecutionException;
+
 }
