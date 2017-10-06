@@ -10,7 +10,6 @@ import biz.rapidfire.core.model.dao.IBaseDAO;
 import biz.rapidfire.rse.Messages;
 
 import com.ibm.as400.access.AS400;
-import com.ibm.as400.access.AS400Date;
 import com.ibm.etools.iseries.subsystems.qsys.api.IBMiConnection;
 
 public class BaseDAO implements IBaseDAO {
@@ -25,10 +24,6 @@ public class BaseDAO implements IBaseDAO {
 
     private IBMiConnection ibmiConnection;
     private Connection connection;
-
-    private String dateFormat;
-    private String dateSeparator;
-    private String timeSeparator;
 
     public BaseDAO(String connectionName) throws Exception {
 
@@ -51,14 +46,6 @@ public class BaseDAO implements IBaseDAO {
                 throw new Exception(Messages.bind(Messages.RseBaseDAO_Failed_to_connect_to_A, connectionName));
             }
         }
-
-        dateFormat = ibmiConnection.getQSYSJobSubSystem().getServerJob(null).getInternationalProperties().getDateFormat();
-        if (dateFormat.startsWith("*")) { //$NON-NLS-1$
-            dateFormat = dateFormat.substring(1);
-        }
-
-        dateSeparator = ibmiConnection.getQSYSJobSubSystem().getServerJob(null).getInternationalProperties().getDateSeparator();
-        timeSeparator = ibmiConnection.getQSYSJobSubSystem().getServerJob(null).getInternationalProperties().getTimeSeparator();
 
         connection = ibmiConnection.getJDBCConnection(properties, true);
         connection.setAutoCommit(false);
@@ -104,18 +91,6 @@ public class BaseDAO implements IBaseDAO {
         if (connection != null && !connection.isClosed()) {
             if (connection.getAutoCommit() == false) connection.commit();
         }
-    }
-
-    public Character getTimeSeparator() {
-        return timeSeparator.charAt(0);
-    }
-
-    public Character getDateSeparator() {
-        return dateSeparator.charAt(0);
-    }
-
-    public int getDateFormat() {
-        return AS400Date.toFormat(dateFormat);
     }
 
     public Connection getConnection() {

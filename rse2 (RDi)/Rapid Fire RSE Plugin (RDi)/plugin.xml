@@ -114,7 +114,7 @@
          class="biz.rapidfire.core.handlers.ChangeJobHandler">
          <enabledWhen>
             <with variable="selection">
-               <count value="*" />
+               <count value="+" />
                <iterate operator="and">
                   <adapt type="biz.rapidfire.rse.model.RapidFireJobResource" />
                </iterate>
@@ -140,7 +140,7 @@
          class="biz.rapidfire.core.handlers.DeleteJobHandler">
          <enabledWhen>
             <with variable="selection">
-               <count value="*" />
+               <count value="+" />
                <iterate operator="and">
                   <adapt type="biz.rapidfire.rse.model.RapidFireJobResource" />
                </iterate>
@@ -166,7 +166,7 @@
          class="biz.rapidfire.core.handlers.TestJobHandler">
          <enabledWhen>
             <with variable="selection">
-               <count value="*" />
+               <count value="+" />
                <iterate operator="and">
                   <adapt type="biz.rapidfire.rse.model.RapidFireJobResource" />
                </iterate>
@@ -179,7 +179,7 @@
          class="biz.rapidfire.core.handlers.StartJobHandler">
          <enabledWhen>
             <with variable="selection">
-               <count value="*" />
+               <count value="+" />
                <iterate operator="and">
                   <adapt type="biz.rapidfire.rse.model.RapidFireJobResource" />
                </iterate>
@@ -192,7 +192,7 @@
          class="biz.rapidfire.core.handlers.EndJobHandler">
          <enabledWhen>
             <with variable="selection">
-               <count value="*" />
+               <count value="+" />
                <iterate operator="and">
                   <adapt type="biz.rapidfire.rse.model.RapidFireJobResource" />
                </iterate>
@@ -205,7 +205,7 @@
          class="biz.rapidfire.core.handlers.ResetJobHandler">
          <enabledWhen>
             <with variable="selection">
-               <count value="*" />
+               <count value="+" />
                <iterate operator="and">
                   <adapt type="biz.rapidfire.rse.model.RapidFireJobResource" />
                </iterate>
@@ -218,7 +218,7 @@
          class="biz.rapidfire.core.handlers.ResetJobAfterAbortionHandler">
          <enabledWhen>
             <with variable="selection">
-               <count value="*" />
+               <count value="+" />
                <iterate operator="and">
                   <adapt type="biz.rapidfire.rse.model.RapidFireJobResource" />
                </iterate>

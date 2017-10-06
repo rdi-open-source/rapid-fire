@@ -19,12 +19,6 @@ public interface IBaseDAO {
 
     public void destroy();
 
-    public Character getTimeSeparator();
-
-    public Character getDateSeparator();
-
-    public int getDateFormat();
-
     public Connection getConnection();
 
     public String getConnectionName();

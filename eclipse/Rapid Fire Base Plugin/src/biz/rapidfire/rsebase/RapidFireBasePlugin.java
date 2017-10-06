@@ -1,4 +1,4 @@
-package biz.rapidfire.base;
+package biz.rapidfire.rsebase;
 
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;

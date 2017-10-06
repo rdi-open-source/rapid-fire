@@ -26,6 +26,7 @@ import org.eclipse.rse.core.subsystems.IConnectorService;
 import org.eclipse.rse.core.subsystems.ISubSystem;
 import org.eclipse.rse.core.subsystems.SubSystem;
 import org.eclipse.rse.services.clientserver.messages.SystemMessage;
+import org.eclipse.rse.services.clientserver.messages.SystemMessageException;
 import org.eclipse.rse.ui.RSEUIPlugin;
 import org.eclipse.swt.widgets.Shell;
 
@@ -37,6 +38,7 @@ import biz.rapidfire.core.subsystem.RapidFireFilter;
 import biz.rapidfire.rse.model.RapidFireJobResource;
 import biz.rapidfire.rse.model.dao.JobsDAO;
 
+import com.ibm.as400.access.AS400;
 import com.ibm.etools.iseries.subsystems.qsys.IISeriesSubSystem;
 import com.ibm.etools.iseries.subsystems.qsys.api.IBMiConnection;
 import com.ibm.etools.iseries.subsystems.qsys.commands.QSYSCommandSubSystem;
@@ -168,15 +170,15 @@ public class RapidFireSubSystem extends SubSystem implements IISeriesSubSystem, 
         return msgObj;
     }
 
-    // private AS400 getToolboxAS400Object() {
-    //
-    // try {
-    // return IBMiConnection.getConnection(getHost()).getAS400ToolboxObject();
-    // } catch (SystemMessageException e) {
-    // RapidFireCorePlugin.logError(e.getLocalizedMessage(), e);
-    // return null;
-    // }
-    // }
+    public AS400 getToolboxAS400Object() {
+
+        try {
+            return IBMiConnection.getConnection(getHost()).getAS400ToolboxObject();
+        } catch (SystemMessageException e) {
+            RapidFireCorePlugin.logError(e.getLocalizedMessage(), e);
+            return null;
+        }
+    }
 
     public String getVendorAttribute(String key) {
 

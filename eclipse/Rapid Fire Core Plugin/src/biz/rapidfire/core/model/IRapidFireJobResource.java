@@ -9,16 +9,15 @@
 package biz.rapidfire.core.model;
 
 import biz.rapidfire.core.subsystem.IRapidFireSubSystem;
+import biz.rapidfire.rsebase.model.IRapidFireResource;
 
 import com.ibm.as400.access.QSYSObjectPathName;
 
-public interface IRapidFireJobResource {
+public interface IRapidFireJobResource extends IRapidFireResource {
 
     public String getParent();
 
     public String getLibrary();
-
-    public String getName();
 
     public String getDescription();
 
