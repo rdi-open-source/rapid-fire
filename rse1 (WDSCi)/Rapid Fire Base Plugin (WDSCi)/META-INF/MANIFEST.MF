@@ -1,0 +1,18 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Rapid Fire RSE Base Plugin (RDi)
+Bundle-SymbolicName: biz.rapidfire.rsebase;singleton:=true
+Bundle-Version: 1.0.0.b001
+Bundle-Activator: biz.rapidfire.rsebase.RapidFireBasePlugin
+Bundle-Vendor: Rapid Fire Project Team
+Bundle-Localization: plugin
+Require-Bundle: org.eclipse.ui,
+ org.eclipse.ui.views,
+ org.eclipse.core.runtime,
+ com.ibm.etools.iseries.toolbox
+Bundle-ClassPath: .
+Bundle-RequiredExecutionEnvironment: J2SE-1.5
+Bundle-ActivationPolicy: lazy
+Eclipse-LazyStart: true
+Export-Package: biz.rapidfire.rsebase.handlers,
+ biz.rapidfire.rsebase.model
