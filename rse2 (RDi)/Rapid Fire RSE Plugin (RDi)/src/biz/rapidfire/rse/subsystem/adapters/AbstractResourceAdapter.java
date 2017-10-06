@@ -59,7 +59,6 @@ public abstract class AbstractResourceAdapter extends AbstractSystemViewAdapter 
 
     @Override
     public Object[] getChildren(IAdaptable arg0, IProgressMonitor arg1) {
-        // TODO Auto-generated method stub
         return null;
     }
 

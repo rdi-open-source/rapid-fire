@@ -17,12 +17,6 @@ public class BaseDAO extends AbstractBaseDAO implements IBaseDAO {
             throw new Exception(Messages.bind(Messages.RseBaseDAO_Invalid_or_missing_connection_name_A, connectionName));
         }
 
-        // if (library == null) {
-        // throw new
-        // Exception(Messages.bind(Messages.RseBaseDAO_Invalid_or_missing_library_name_A,
-        // connectionName));
-        // }
-
         ibmiConnection = IBMiConnection.getConnection(connectionName);
         if (ibmiConnection == null) {
             throw new Exception(Messages.bind(Messages.RseBaseDAO_Connection_A_not_found, connectionName));
