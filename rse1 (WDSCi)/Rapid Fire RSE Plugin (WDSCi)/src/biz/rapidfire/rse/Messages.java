@@ -53,7 +53,9 @@ public class Messages extends NLS {
     /*
      * Dialog properties
      */
+    public static String DataLibrary_name;
     public static String Job_name;
+    public static String File_name;
     public static String Description;
     public static String Batch_job;
     public static String Create_environment;
@@ -63,8 +65,18 @@ public class Messages extends NLS {
     public static String Phase;
     public static String Error;
     public static String Error_text;
+    public static String Position;
+    public static String FileType;
+    public static String Copy_program_name;
+    public static String Copy_program_library;
+    public static String Conversion_program_name;
+    public static String Conversion_program_library;
+    public static String Library_name;;
+    public static String ShadowLibrary_name;;
 
+    public static String Tooltip_DataLibrary_name;
     public static String Tooltip_Job_name;
+    public static String Tooltip_File_name;
     public static String Tooltip_Description;
     public static String Tooltip_Batch_job;
     public static String Tooltip_Create_environment;
@@ -74,6 +86,14 @@ public class Messages extends NLS {
     public static String Tooltip_Phase;
     public static String Tooltip_Error;
     public static String Tooltip_Error_text;
+    public static String Tooltip_Position;
+    public static String Tooltip_FileType;
+    public static String Tooltip_Copy_program_name;
+    public static String Tooltip_Copy_program_library;
+    public static String Tooltip_Conversion_program_name;
+    public static String Tooltip_Conversion_program_library;
+    public static String Tooltip_Library_name;
+    public static String Tooltip_ShadowLibrary_name;
 
     /*
      * Filter types
@@ -84,6 +104,11 @@ public class Messages extends NLS {
      * Resource types
      */
     public static String Resource_Rapid_Fire_Job;
+    public static String Resource_Rapid_Fire_File;
+    public static String Resource_Rapid_Fire_Library;
+
+    public static String Node_Files;
+    public static String Node_Libraries;
 
     static {
         // initialize resource bundle

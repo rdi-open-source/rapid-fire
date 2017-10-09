@@ -14,17 +14,17 @@ import biz.rapidfire.core.model.Phase;
 import biz.rapidfire.core.model.Status;
 import biz.rapidfire.core.subsystem.IRapidFireSubSystem;
 
-import com.ibm.as400.access.QSYSObjectPathName;
 import com.ibm.etools.systems.subsystems.SubSystem;
 import com.ibm.etools.systems.subsystems.impl.AbstractResource;
 
+public class RapidFireJobResource extends AbstractResource implements IRapidFireJobResource, Comparable<IRapidFireJobResource> {
 
-public class RapidFireJobResource extends AbstractResource implements IRapidFireJobResource, Comparable<RapidFireJobResource> {
-
-    private String name;
+    private String dataLibrary;
+    private String job;
     private String description;
     private boolean doCreateEnvironment;
-    private QSYSObjectPathName jobQueue;
+    private String jobQueueName;
+    private String jobQueueLibrary;
     private Status status;
     private Phase phase;
     private boolean isError;
@@ -32,31 +32,23 @@ public class RapidFireJobResource extends AbstractResource implements IRapidFire
     private JobName batchJob;
     private boolean isStopApplyChanges;
     private String cmoneFormNumber;
-    private String library;
 
-    public RapidFireJobResource(String library, String name, String description, boolean doCreateEnvironment, QSYSObjectPathName jobQueue) {
+    public RapidFireJobResource(String dataLibrary, String job) {
 
-        this.library = library;
-        this.name = name;
-        this.description = description;
-        this.doCreateEnvironment = doCreateEnvironment;
-        this.jobQueue = jobQueue;
+        this.dataLibrary = dataLibrary;
+        this.job = job;
     }
 
     /*
      * IRapidFireJobResource methods
      */
 
-    public String getParent() {
-        return library;
-    }
-
-    public String getLibrary() {
-        return library;
+    public String getDataLibrary() {
+        return dataLibrary;
     }
 
     public String getName() {
-        return name;
+        return job;
     }
 
     public String getDescription() {
@@ -75,12 +67,20 @@ public class RapidFireJobResource extends AbstractResource implements IRapidFire
         this.doCreateEnvironment = doCreateEnvironment;
     }
 
-    public QSYSObjectPathName getJobQueue() {
-        return jobQueue;
+    public String getJobQueueName() {
+        return jobQueueName;
     }
 
-    public void setJobQueue(QSYSObjectPathName jobQueue) {
-        this.jobQueue = jobQueue;
+    public void setJobQueueName(String jobQueueName) {
+        this.jobQueueName = jobQueueName;
+    }
+
+    public String getJobQueueLibrary() {
+        return jobQueueLibrary;
+    }
+
+    public void setJobQueueLibrary(String jobQueueLibrary) {
+        this.jobQueueLibrary = jobQueueLibrary;
     }
 
     public Status getStatus() {
@@ -139,12 +139,15 @@ public class RapidFireJobResource extends AbstractResource implements IRapidFire
         return batchJob;
     }
 
-    public int compareTo(RapidFireJobResource resource) {
+    public int compareTo(IRapidFireJobResource resource) {
 
-        if (resource == null || resource.getName() == null) {
+        if (resource == null) {
             return 1;
-        } else if (getName() == null) {
-            return -1;
+        }
+
+        int result = resource.getDataLibrary().compareTo(getDataLibrary());
+        if (result != 0) {
+            return result;
         }
 
         return getName().compareTo(resource.getName());
