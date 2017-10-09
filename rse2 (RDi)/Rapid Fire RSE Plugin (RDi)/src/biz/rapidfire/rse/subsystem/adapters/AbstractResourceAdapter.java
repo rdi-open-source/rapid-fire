@@ -50,7 +50,7 @@ public abstract class AbstractResourceAdapter extends AbstractSystemViewAdapter 
     }
 
     public Object getParent(Object element) {
-        return null; // not really used, which is good because it is ambiguous
+        return null;
     }
 
     public boolean hasChildren(IAdaptable element) {
@@ -58,7 +58,7 @@ public abstract class AbstractResourceAdapter extends AbstractSystemViewAdapter 
     }
 
     @Override
-    public Object[] getChildren(IAdaptable arg0, IProgressMonitor arg1) {
+    public Object[] getChildren(IAdaptable element, IProgressMonitor progressMonitor) {
         return null;
     }
 

@@ -71,7 +71,7 @@ public class RapidFireFileResourceAdapter extends AbstractResourceAdapter implem
 
         RapidFireFileResource resource = (RapidFireFileResource)element;
 
-        String name = "RapidFireFile." + resource.getDataLibrary() + "." + resource.getJob() + "." + resource.getName(); //$NON-NLS-1$ //$NON-NLS-2$
+        String name = "RapidFireFile." + resource.getDataLibrary() + "." + resource.getJob() + "." + resource.getName(); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
         return name;
     }

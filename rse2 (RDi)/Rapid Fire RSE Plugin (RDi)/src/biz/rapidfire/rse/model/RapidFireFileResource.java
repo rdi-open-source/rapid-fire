@@ -54,8 +54,8 @@ public class RapidFireFileResource extends AbstractResource implements IRapidFir
         return file;
     }
 
-    public void setName(String name) {
-        this.file = name;
+    public void setName(String file) {
+        this.file = file;
     }
 
     public FileType getFileType() {

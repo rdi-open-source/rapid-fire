@@ -153,7 +153,9 @@ public class RapidFireJobResourceAdapter extends AbstractResourceAdapter impleme
 
         final IRapidFireJobResource resource = (IRapidFireJobResource)propertySourceInput;
 
-        if (propKey.equals(JOB)) {
+        if (propKey.equals(DATA_LIBRARY)) {
+            return resource.getDataLibrary();
+        } else if (propKey.equals(JOB)) {
             return resource.getName();
         } else if (propKey.equals(DESCRIPTION)) {
             return resource.getDescription();
