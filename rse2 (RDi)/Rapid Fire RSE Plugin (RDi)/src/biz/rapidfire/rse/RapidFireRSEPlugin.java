@@ -10,7 +10,11 @@ import org.eclipse.jface.resource.ImageRegistry;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
+import biz.rapidfire.rse.model.RapidFireFileResource;
 import biz.rapidfire.rse.model.RapidFireJobResource;
+import biz.rapidfire.rse.model.RapidFireLibraryResource;
+import biz.rapidfire.rse.subsystem.FilesNode;
+import biz.rapidfire.rse.subsystem.LibrariesNode;
 import biz.rapidfire.rse.subsystem.RapidFireAdapterFactory;
 import biz.rapidfire.rse.subsystem.RapidFireSubSystemConfigurationAdapterFactory;
 
@@ -27,8 +31,10 @@ public class RapidFireRSEPlugin extends AbstractUIPlugin {
     private static URL installURL;
 
     public static final String IMAGE_RAPID_FIRE = "rapidfire.gif"; //$NON-NLS-1$
-    public static final String IMAGE_LIBRARY = "library.gif"; //$NON-NLS-1$
     public static final String IMAGE_RAPID_FIRE_FILTER = "rapidfire_filter.gif"; //$NON-NLS-1$
+    public static final String IMAGE_RAPID_FIRE_JOB = "rapidfire_job.gif"; //$NON-NLS-1$
+    public static final String IMAGE_FILE = "file.gif"; //$NON-NLS-1$
+    public static final String IMAGE_LIBRARY = "library.gif"; //$NON-NLS-1$
 
     /**
      * The constructor
@@ -77,6 +83,11 @@ public class RapidFireRSEPlugin extends AbstractUIPlugin {
 
         RapidFireAdapterFactory adapterFactory = new RapidFireAdapterFactory();
         manager.registerAdapters(adapterFactory, RapidFireJobResource.class);
+        manager.registerAdapters(adapterFactory, RapidFireFileResource.class);
+        manager.registerAdapters(adapterFactory, RapidFireLibraryResource.class);
+
+        manager.registerAdapters(adapterFactory, FilesNode.class);
+        manager.registerAdapters(adapterFactory, LibrariesNode.class);
 
         RapidFireSubSystemConfigurationAdapterFactory subSystemConfigurationAdapterFactory = new RapidFireSubSystemConfigurationAdapterFactory();
         subSystemConfigurationAdapterFactory.registerWithManager(manager);
@@ -87,8 +98,10 @@ public class RapidFireRSEPlugin extends AbstractUIPlugin {
         super.initializeImageRegistry(reg);
 
         reg.put(IMAGE_RAPID_FIRE, getImageDescriptor(IMAGE_RAPID_FIRE));
-        reg.put(IMAGE_LIBRARY, getImageDescriptor(IMAGE_LIBRARY));
         reg.put(IMAGE_RAPID_FIRE_FILTER, getImageDescriptor(IMAGE_RAPID_FIRE_FILTER));
+        reg.put(IMAGE_RAPID_FIRE_JOB, getImageDescriptor(IMAGE_RAPID_FIRE_JOB));
+        reg.put(IMAGE_FILE, getImageDescriptor(IMAGE_FILE));
+        reg.put(IMAGE_LIBRARY, getImageDescriptor(IMAGE_LIBRARY));
     }
 
     private ImageDescriptor getImageDescriptor(String name) {

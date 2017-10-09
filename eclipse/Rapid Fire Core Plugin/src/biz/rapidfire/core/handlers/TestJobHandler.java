@@ -21,7 +21,7 @@ public class TestJobHandler extends AbstractJobHandler implements IHandler {
 
     protected Object executeWithResource(IRapidFireResource job) throws ExecutionException {
 
-        System.out.println("Testing Rapid Fire job ... " + job.getName());
+        System.out.println("Testing Rapid Fire job ... " + job);
 
         return null;
     }

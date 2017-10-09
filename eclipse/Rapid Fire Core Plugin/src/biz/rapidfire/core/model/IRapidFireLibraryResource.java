@@ -8,11 +8,15 @@
 
 package biz.rapidfire.core.model;
 
-import biz.rapidfire.core.subsystem.IRapidFireSubSystem;
+public interface IRapidFireLibraryResource extends IRapidFireResource {
 
-public interface IRapidFireResource {
+    public String getDataLibrary();
 
-    public void setParentSubSystem(IRapidFireSubSystem subSystem);
+    public String getJob();
 
-    public IRapidFireSubSystem getParentSubSystem();
+    public String getLibrary();
+
+    public String getShadowLibrary();
+
+    public void setShadowLibrary(String shadowLibrary);
 }

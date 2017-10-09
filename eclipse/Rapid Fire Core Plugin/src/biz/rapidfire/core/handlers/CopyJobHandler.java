@@ -21,7 +21,7 @@ public class CopyJobHandler extends AbstractJobHandler implements IHandler {
 
     protected Object executeWithResource(IRapidFireResource job) throws ExecutionException {
 
-        System.out.println("Copying Rapid Fire job ... " + job.getName());
+        System.out.println("Copying Rapid Fire job ... " + job);
 
         return null;
     }

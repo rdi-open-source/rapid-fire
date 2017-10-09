@@ -21,7 +21,7 @@ public class StartJobHandler extends AbstractJobHandler implements IHandler {
 
     protected Object executeWithResource(IRapidFireResource job) throws ExecutionException {
 
-        System.out.println("Starting Rapid Fire job ... " + job.getName());
+        System.out.println("Starting Rapid Fire job ... " + job);
 
         return null;
     }

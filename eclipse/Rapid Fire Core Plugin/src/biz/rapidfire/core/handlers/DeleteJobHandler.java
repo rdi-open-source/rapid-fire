@@ -21,7 +21,7 @@ public class DeleteJobHandler extends AbstractJobHandler implements IHandler {
 
     protected Object executeWithResource(IRapidFireResource job) throws ExecutionException {
 
-        System.out.println("Deleting Rapid Fire job ... " + job.getName());
+        System.out.println("Deleting Rapid Fire job ... " + job);
 
         return null;
     }

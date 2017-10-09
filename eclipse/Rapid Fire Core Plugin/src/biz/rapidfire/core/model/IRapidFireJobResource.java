@@ -8,15 +8,11 @@
 
 package biz.rapidfire.core.model;
 
-import biz.rapidfire.core.subsystem.IRapidFireSubSystem;
-
-import com.ibm.as400.access.QSYSObjectPathName;
-
 public interface IRapidFireJobResource extends IRapidFireResource {
 
-    public String getParent();
+    public String getDataLibrary();
 
-    public String getLibrary();
+    public String getName();
 
     public String getDescription();
 
@@ -26,9 +22,13 @@ public interface IRapidFireJobResource extends IRapidFireResource {
 
     public void setDoCreateEnvironment(boolean doCreateEnvironment);
 
-    public QSYSObjectPathName getJobQueue();
+    public String getJobQueueName();
 
-    public void setJobQueue(QSYSObjectPathName jobQueue);
+    public void setJobQueueName(String jobQueueName);
+
+    public String getJobQueueLibrary();
+
+    public void setJobQueueLibrary(String jobQueueLibrary);
 
     public Status getStatus();
 
@@ -57,8 +57,4 @@ public interface IRapidFireJobResource extends IRapidFireResource {
     public void setBatchJob(JobName job);
 
     public JobName getBatchJob();
-
-    public void setParentSubSystem(IRapidFireSubSystem subSystem);
-
-    public IRapidFireSubSystem getParentSubSystem();
 }

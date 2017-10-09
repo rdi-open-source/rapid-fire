@@ -83,18 +83,25 @@ public abstract class AbstractResourceAdapter extends AbstractSystemViewAdapter 
         return "root"; //$NON-NLS-1$
     }
 
+    /**
+     * Value of the "typecategoryfilter" attribute of the
+     * "com.ibm.etools.systems.core.popupMenus" extension point.
+     */
     public String getRemoteTypeCategory(Object element) {
-        // Course grained. Same for all our remote resources.
         return "rapid fire"; //$NON-NLS-1$; 
     }
 
-    public String getRemoteType(Object element) {
-        // Fine grained. Unique to this resource type.
-        return getClass().getSimpleName();
-    }
+    /**
+     * Value of the "typefilter" attribute of the
+     * "com.ibm.etools.systems.core.popupMenus" extension point.
+     */
+    public abstract String getRemoteType(Object element);
 
-    public String getRemoteSubType(Object element) {
-        // Very fine grained. We don't use it.
+    /**
+     * Value of the "subtypefilter" attribute of the
+     * "com.ibm.etools.systems.core.popupMenus" extension point.
+     */
+    public final String getRemoteSubType(Object element) {
         return null;
     }
 
@@ -103,8 +110,9 @@ public abstract class AbstractResourceAdapter extends AbstractSystemViewAdapter 
     }
 
     public Object getRemoteParent(Object element, IProgressMonitor monitor) throws Exception {
-        return null; // maybe this would be a Project or Roster object, or leave
-                     // as null if this is the root
+        // maybe this would be a Project or Roster object, or leave as null if
+        // this is the root
+        return null;
     }
 
     public String[] getRemoteParentNamesInUse(Object element, IProgressMonitor monitor) throws Exception {

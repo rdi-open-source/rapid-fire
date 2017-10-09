@@ -1,14 +1,11 @@
 /*******************************************************************************
- * Copyright (c) 2005 SoftLanding Systems, Inc. and others.
+ * Copyright (c) 2017-2017 Rapid Fire Project Owners
  * All rights reserved. This program and the accompanying materials 
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/cpl-v10.html
- * 
- * Contributors:
- *     SoftLanding - initial API and implementation
- *     iSphere Project Owners - Maintenance and enhancements
  *******************************************************************************/
+
 package biz.rapidfire.core.subsystem;
 
 import biz.rapidfire.core.helpers.StringHelper;
@@ -20,29 +17,30 @@ public class RapidFireFilter {
     public static final String ASTERISK = "*"; //$NON-NLS-1$
     public static final String RAPIDFIRE_LIBRARY = "RAPIDFIRE"; //$NON-NLS-1$
 
-    private String library;
+    private String dataLibrary;
     private String job;
     private String status;
 
     public RapidFireFilter() {
         super();
 
-        setLibrary(RAPIDFIRE_LIBRARY);
+        setDataLibrary(RAPIDFIRE_LIBRARY);
         setJob(ASTERISK);
         setStatus(ASTERISK);
     }
 
     public RapidFireFilter(String filterString) {
         this();
+
         setFilterString(filterString);
     }
 
-    public String getLibrary() {
-        return library;
+    public String getDataLibrary() {
+        return dataLibrary;
     }
 
-    public void setLibrary(String library) {
-        this.library = library;
+    public void setDataLibrary(String dataLibrary) {
+        this.dataLibrary = dataLibrary;
     }
 
     public String getJob() {
@@ -65,7 +63,7 @@ public class RapidFireFilter {
 
         StringBuffer filterString = new StringBuffer();
 
-        appendFilterItem(filterString, library);
+        appendFilterItem(filterString, dataLibrary);
         appendFilterItem(filterString, job);
         appendFilterItem(filterString, status);
 
@@ -98,7 +96,7 @@ public class RapidFireFilter {
 
         end = filterString.indexOf(SLASH, start);
         filterItem = retrieveFilterItem(filterString, start, end);
-        setLibrary(filterItem);
+        setDataLibrary(filterItem);
         start = end + 1;
 
         end = filterString.indexOf(SLASH, start);
@@ -114,7 +112,7 @@ public class RapidFireFilter {
 
     public boolean matches(IRapidFireJobResource job) {
 
-        if (!getLibrary().equals(job.getLibrary())) {
+        if (!getDataLibrary().equals(job.getDataLibrary())) {
             return false;
         }
 

@@ -6,13 +6,13 @@
  * http://www.eclipse.org/legal/cpl-v10.html
  *******************************************************************************/
 
-package biz.rapidfire.core.model;
+package biz.rapidfire.core.model.dao;
 
-import biz.rapidfire.core.subsystem.IRapidFireSubSystem;
+import java.util.List;
 
-public interface IRapidFireResource {
+import biz.rapidfire.core.model.IRapidFireFileResource;
 
-    public void setParentSubSystem(IRapidFireSubSystem subSystem);
+public interface IFilesDAO {
 
-    public IRapidFireSubSystem getParentSubSystem();
+    public List<IRapidFireFileResource> load(String dataLibrary, String job) throws Exception;
 }

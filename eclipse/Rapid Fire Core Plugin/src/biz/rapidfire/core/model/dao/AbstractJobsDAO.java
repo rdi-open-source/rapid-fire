@@ -19,8 +19,6 @@ import biz.rapidfire.core.model.JobName;
 import biz.rapidfire.core.model.Phase;
 import biz.rapidfire.core.model.Status;
 
-import com.ibm.as400.access.QSYSObjectPathName;
-
 public abstract class AbstractJobsDAO {
 
     public static final String JOB = "JOB"; //$NON-NLS-1$
@@ -72,17 +70,16 @@ public abstract class AbstractJobsDAO {
         return journalEntries;
     }
 
-    private IRapidFireJobResource produceJob(String library, ResultSet resultSet) throws SQLException {
+    private IRapidFireJobResource produceJob(String dataLibrary, ResultSet resultSet) throws SQLException {
 
         String name = resultSet.getString(JOB).trim();
+
+        IRapidFireJobResource jobResource = createJobInstance(dataLibrary, name);
+
         String description = resultSet.getString(DESCRIPTION).trim();
         String createEnvironment = resultSet.getString(CREATE_ENVIRONMENT).trim();
         String jobQueueLibrary = resultSet.getString(JOB_QUEUE_LIBRARY).trim();
         String jobQueueName = resultSet.getString(JOB_QUEUE).trim();
-
-        IRapidFireJobResource job = createJobInstance(library, name, description, dao.convertYesNo(createEnvironment), new QSYSObjectPathName(
-            jobQueueLibrary, jobQueueName, "JOBQ")); //$NON-NLS-1$
-
         String status = resultSet.getString(STATUS).trim();
         String phase = resultSet.getString(PHASE).trim();
         String isError = resultSet.getString(ERROR).trim();
@@ -93,25 +90,28 @@ public abstract class AbstractJobsDAO {
         String isStopApplyChanges = resultSet.getString(STOP_APPLY_CHANGES).trim();
         String cmoneFormNumber = resultSet.getString(CMONE_FORM).trim();
 
-        job.setStatus(Status.find(status));
-        job.setPhase(Phase.find(phase));
-        job.setError(dao.convertYesNo(isError));
-        job.setErrorText(errorText);
-        job.setBatchJob(new JobName(batchJob, batchUser, batchNumber));
-        job.setStopApplyChanges(dao.convertYesNo(isStopApplyChanges));
-        job.setCmoneFormNumber(cmoneFormNumber);
+        jobResource.setDescription(description);
+        jobResource.setDoCreateEnvironment(dao.convertYesNo(createEnvironment));
+        jobResource.setJobQueueName(jobQueueName);
+        jobResource.setJobQueueLibrary(jobQueueLibrary);
+        jobResource.setStatus(Status.find(status));
+        jobResource.setPhase(Phase.find(phase));
+        jobResource.setError(dao.convertYesNo(isError));
+        jobResource.setErrorText(errorText);
+        jobResource.setBatchJob(new JobName(batchJob, batchUser, batchNumber));
+        jobResource.setStopApplyChanges(dao.convertYesNo(isStopApplyChanges));
+        jobResource.setCmoneFormNumber(cmoneFormNumber);
 
-        return job;
+        return jobResource;
     }
 
-    protected abstract IRapidFireJobResource createJobInstance(String library, String name, String description, boolean doCreateEnvironment,
-        QSYSObjectPathName jobQueue);
+    protected abstract IRapidFireJobResource createJobInstance(String library, String name);
 
     private String getSqlStatement() {
 
         // @formatter:off
         String sqlStatement = 
-            "SELECT " +
+        "SELECT " +
             "JOB, " +
             "DESCRIPTION, " +
             "CREATE_ENVIRONMENT, " +

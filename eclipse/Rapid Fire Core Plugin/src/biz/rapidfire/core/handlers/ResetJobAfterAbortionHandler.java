@@ -21,7 +21,7 @@ public class ResetJobAfterAbortionHandler extends AbstractJobHandler implements 
 
     protected Object executeWithResource(IRapidFireResource job) throws ExecutionException {
 
-        System.out.println("Reseting Rapid Fire job after abortion ... " + job.getName());
+        System.out.println("Reseting Rapid Fire job after abortion ... " + job);
 
         return null;
     }

@@ -1,13 +1,9 @@
 /*******************************************************************************
- * Copyright (c) 2005 SoftLanding Systems, Inc. and others.
+ * Copyright (c) 2017-2017 Rapid Fire Project Owners
  * All rights reserved. This program and the accompanying materials 
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/cpl-v10.html
- * 
- * Contributors:
- *     SoftLanding - initial API and implementation
- *     iSphere Project Owners - Maintenance and enhancements
  *******************************************************************************/
 
 package biz.rapidfire.core.subsystem;
@@ -33,7 +29,7 @@ import biz.rapidfire.core.validators.Validator;
 
 public class RapidFireFilterStringEditPaneDelegate {
 
-    private Text libraryText;
+    private Text dataLibraryText;
     private Text jobText;
     private Combo statusCombo;
 
@@ -44,7 +40,7 @@ public class RapidFireFilterStringEditPaneDelegate {
 
         ((GridLayout)parent.getLayout()).marginWidth = 0;
 
-        libraryText = createUpperCaseText(parent, Messages.Library_colon, 10, null);
+        dataLibraryText = createUpperCaseText(parent, Messages.Library_colon, 10, null);
         jobText = createUpperCaseText(parent, Messages.Job_colon, 10, Messages.Label_Full_generic_string);
         statusCombo = createReadOnlyCombo(parent, Messages.Status_colon, Status.values());
 
@@ -95,20 +91,20 @@ public class RapidFireFilterStringEditPaneDelegate {
 
     public void addModifyListener(ModifyListener keyListener) {
 
-        libraryText.addModifyListener(keyListener);
+        dataLibraryText.addModifyListener(keyListener);
         jobText.addModifyListener(keyListener);
         statusCombo.addModifyListener(keyListener);
     }
 
     public Control getInitialFocusControl() {
-        return libraryText;
+        return dataLibraryText;
     }
 
     public void doInitializeFields(String inputFilterString) {
 
         if (inputFilterString != null) {
             RapidFireFilter filter = new RapidFireFilter(inputFilterString);
-            libraryText.setText(filter.getLibrary());
+            dataLibraryText.setText(filter.getDataLibrary());
             jobText.setText(filter.getJob());
             statusCombo.setText(filter.getStatus());
         } else {
@@ -118,14 +114,14 @@ public class RapidFireFilterStringEditPaneDelegate {
 
     public void resetFields() {
 
-        libraryText.setText(RapidFireFilter.RAPIDFIRE_LIBRARY); //$NON-NLS-1$
+        dataLibraryText.setText(RapidFireFilter.RAPIDFIRE_LIBRARY); //$NON-NLS-1$
         jobText.setText(RapidFireFilter.ASTERISK); //$NON-NLS-1$
         statusCombo.select(0);
     }
 
     public String validateInput() {
 
-        String library = libraryText.getText();
+        String library = dataLibraryText.getText();
         if (StringHelper.isNullOrEmpty(library)) {
             return Messages.The_library_name_must_be_specified;
         }
@@ -160,7 +156,7 @@ public class RapidFireFilterStringEditPaneDelegate {
 
         RapidFireFilter filter = new RapidFireFilter();
 
-        filter.setLibrary(libraryText.getText().toUpperCase());
+        filter.setDataLibrary(dataLibraryText.getText().toUpperCase());
         filter.setJob(jobText.getText().toUpperCase());
         filter.setStatus(statusCombo.getText());
 
