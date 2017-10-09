@@ -26,8 +26,8 @@
          point="com.ibm.etools.systems.core.popupMenus">
       <objectContribution
             subsystemfactoryid="biz.rapidfire.rse.subsystem.RapidFireSubSystemFactory"
-            typecategoryfilter="*"
-            typefilter="*"
+            typecategoryfilter="rapid fire"
+            typefilter="job"
             subtypefilter="*"
             namefilter="*"
             id="biz.rapidfire.rse.job.actions">

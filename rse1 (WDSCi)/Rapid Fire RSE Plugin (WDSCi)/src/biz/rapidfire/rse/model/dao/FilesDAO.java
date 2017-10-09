@@ -8,19 +8,20 @@
 
 package biz.rapidfire.rse.model.dao;
 
-import biz.rapidfire.core.model.IRapidFireJobResource;
-import biz.rapidfire.core.model.dao.AbstractJobsDAO;
-import biz.rapidfire.core.model.dao.IJobsDAO;
-import biz.rapidfire.rse.model.RapidFireJobResource;
+import biz.rapidfire.core.model.IRapidFireFileResource;
+import biz.rapidfire.core.model.dao.AbstractFilesDAO;
+import biz.rapidfire.core.model.dao.IFilesDAO;
+import biz.rapidfire.rse.model.RapidFireFileResource;
 
-public class JobsDAO extends AbstractJobsDAO implements IJobsDAO {
+public class FilesDAO extends AbstractFilesDAO implements IFilesDAO {
 
-    public JobsDAO(String connectionName) throws Exception {
+    public FilesDAO(String connectionName) throws Exception {
         super(new BaseDAO(connectionName));
     }
 
     @Override
-    protected IRapidFireJobResource createJobInstance(String dataLibrary, String name) {
-        return new RapidFireJobResource(dataLibrary, name);
+    protected IRapidFireFileResource createFileInstance(String dataLibrary, String job, int position) {
+        return new RapidFireFileResource(dataLibrary, job, position);
     }
+
 }
