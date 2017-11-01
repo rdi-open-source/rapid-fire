@@ -1,6 +1,6 @@
 Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
-Bundle-Name: Rapid Fire Core Plugin
+Bundle-Name: Rapid Fire Core Plug-in
 Bundle-SymbolicName: biz.rapidfire.core;singleton:=true
 Bundle-Version: 1.0.0.b001
 Bundle-Activator: biz.rapidfire.core.RapidFireCorePlugin
