@@ -17,12 +17,7 @@ public class Messages extends NLS {
     public static final String EMPTY = ""; //$NON-NLS-1$
     public static final String SPACE = " "; //$NON-NLS-1$
 
-    public static final String E_R_R_O_R = "E R R O R"; //$NON-NLS-1$
-
-    static {
-        // initialize resource bundle
-        NLS.initializeMessages(BUNDLE_NAME, Messages.class);
-    }
+    public static String E_R_R_O_R;
 
     // Dialog titles
     public static String Specify_a_filter;
@@ -76,5 +71,10 @@ public class Messages extends NLS {
     public static String The_job_status_must_be_specified;
 
     private Messages() {
+    }
+
+    static {
+        // initialize resource bundle
+        NLS.initializeMessages(BUNDLE_NAME, Messages.class);
     }
 }
