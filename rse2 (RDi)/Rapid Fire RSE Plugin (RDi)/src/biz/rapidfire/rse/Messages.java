@@ -17,7 +17,7 @@ public class Messages extends NLS {
     public static final String EMPTY = ""; //$NON-NLS-1$
     public static final String SPACE = " "; //$NON-NLS-1$
 
-    public static final String E_R_R_O_R = "E R R O R"; //$NON-NLS-1$
+    public static String E_R_R_O_R;
 
     /*
      * DAO strings
@@ -110,11 +110,11 @@ public class Messages extends NLS {
     public static String Node_Files;
     public static String Node_Libraries;
 
+    private Messages() {
+    }
+
     static {
         // initialize resource bundle
         NLS.initializeMessages(BUNDLE_NAME, Messages.class);
-    }
-
-    private Messages() {
     }
 }
