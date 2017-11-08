@@ -10,9 +10,11 @@ package biz.rapidfire.core.model.dao;
 
 import java.util.List;
 
+import org.eclipse.swt.widgets.Shell;
+
 import biz.rapidfire.core.model.IFileCopyStatus;
 
 public interface IFileCopyStatusDAO {
 
-    public List<IFileCopyStatus> load(String dataLibrary, String job) throws Exception;
+    public List<IFileCopyStatus> load(String dataLibrary, String job, Shell shell) throws Exception;
 }

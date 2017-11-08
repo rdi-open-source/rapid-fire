@@ -10,9 +10,11 @@ package biz.rapidfire.core.model.dao;
 
 import java.util.List;
 
+import org.eclipse.swt.widgets.Shell;
+
 import biz.rapidfire.core.model.IRapidFireJobResource;
 
 public interface IJobsDAO {
 
-    public List<IRapidFireJobResource> load(String library) throws Exception;
+    public List<IRapidFireJobResource> load(String library, Shell shell) throws Exception;
 }

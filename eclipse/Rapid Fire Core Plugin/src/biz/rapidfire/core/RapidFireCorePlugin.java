@@ -13,6 +13,7 @@ import org.eclipse.jface.resource.ColorRegistry;
 import org.eclipse.jface.resource.ImageRegistry;
 import org.eclipse.swt.graphics.RGB;
 import org.osgi.framework.BundleContext;
+import org.osgi.framework.Constants;
 
 import biz.rapidfire.core.model.dao.JdbcConnectionManager;
 import biz.rapidfire.core.plugin.AbstractExtendedUIPlugin;
@@ -24,6 +25,9 @@ public class RapidFireCorePlugin extends AbstractExtendedUIPlugin {
 
     // The plug-in ID
     public static final String PLUGIN_ID = "biz.rapidfire.core"; //$NON-NLS-1$
+
+    // Minimal required version of Rapid Fire library
+    private static final String MIN_SERVER_VERSION = "4.5.0"; //$NON-NLS-1$
 
     // The shared instance
     private static RapidFireCorePlugin plugin;
@@ -72,6 +76,30 @@ public class RapidFireCorePlugin extends AbstractExtendedUIPlugin {
      */
     public static RapidFireCorePlugin getDefault() {
         return plugin;
+    }
+
+    /**
+     * Returns the version of the plugin, as assigned to "Bundle-Version" in
+     * "MANIFEST.MF".
+     * 
+     * @return Version of the plugin.
+     */
+    public String getVersion() {
+        String version = (String)getBundle().getHeaders().get(Constants.BUNDLE_VERSION);
+        if (version == null) {
+            version = "0.0.0";
+        }
+        return version;
+    }
+
+    /**
+     * Returns the version of the plugin, as assigned to "Bundle-Version" in
+     * "MANIFEST.MF" formatted as "vvrrmm".
+     * 
+     * @return Version of the plugin.
+     */
+    public String getMinServerVersion() {
+        return MIN_SERVER_VERSION;
     }
 
     @Override

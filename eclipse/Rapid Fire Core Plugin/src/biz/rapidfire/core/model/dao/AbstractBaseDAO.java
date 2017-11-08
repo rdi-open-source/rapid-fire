@@ -13,6 +13,9 @@ import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
 import org.eclipse.core.runtime.OperationCanceledException;
+import org.eclipse.swt.widgets.Shell;
+
+import biz.rapidfire.core.helpers.RapidFireHelper;
 
 import com.ibm.as400.access.AS400;
 
@@ -82,6 +85,10 @@ public abstract class AbstractBaseDAO {
         }
 
         return booleanValue;
+    }
+
+    public boolean checkRapidFireLibrary(Shell shell, String libraryName) throws Exception {
+        return RapidFireHelper.checkRapidFireLibrary(shell, getSystem(), libraryName);
     }
 
     public abstract AS400 getSystem() throws Exception;

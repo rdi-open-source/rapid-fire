@@ -18,6 +18,12 @@ import biz.rapidfire.core.Messages;
 public class MessageDialogAsync {
 
     public static void displayError(Shell shell, String message) {
+
+        if (shell == null) {
+            displayError(message);
+            return;
+        }
+
         int kind = MessageDialog.ERROR;
         MessageDialog dialog = new MessageDialog(shell, Messages.E_R_R_O_R, null, message, kind, getButtonLabels(kind), 0);
         MessageDialogUIJob job = new MessageDialogUIJob(shell.getDisplay(), dialog);

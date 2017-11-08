@@ -69,6 +69,10 @@ public class Messages extends NLS {
     public static String The_library_name_must_be_specified;
     public static String The_job_name_must_be_specified;
     public static String The_job_status_must_be_specified;
+    public static String Rapid_Fire_library_A_on_system_B_is_of_version_C_but_at_least_version_D_is_required_Please_update_the_Rapid_Fire_library;
+    public static String The_installed_Rapid_Fire_plug_in_version_A_is_outdated_because_the_installed_Rapid_Fire_library_requires_at_least_version_B_of_the_Rapid_Fire_plug_in_Please_update_your_Rapid_Fire_plug_in;
+    public static String Rapid_Fire_library_A_does_not_exist_on_system_B_Please_install_Rapid_Fire_library_A_on_system_B;
+    public static String The_specified_library_A_on_system_B_is_not_a_Rapid_Fire_library;
 
     private Messages() {
     }

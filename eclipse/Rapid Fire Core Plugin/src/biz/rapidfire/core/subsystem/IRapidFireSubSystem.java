@@ -8,6 +8,8 @@
 
 package biz.rapidfire.core.subsystem;
 
+import org.eclipse.swt.widgets.Shell;
+
 import biz.rapidfire.core.model.IFileCopyStatus;
 import biz.rapidfire.core.model.IRapidFireFileResource;
 import biz.rapidfire.core.model.IRapidFireJobResource;
@@ -15,11 +17,11 @@ import biz.rapidfire.core.model.IRapidFireLibraryResource;
 
 public interface IRapidFireSubSystem {
 
-    public IRapidFireJobResource[] getJobs(String library) throws Exception;
+    public IRapidFireJobResource[] getJobs(String library, Shell shell) throws Exception;
 
-    public IRapidFireFileResource[] getFiles(String library, String job) throws Exception;
+    public IRapidFireFileResource[] getFiles(String library, String job, Shell shell) throws Exception;
 
-    public IRapidFireLibraryResource[] getLibraries(String library, String job) throws Exception;
+    public IRapidFireLibraryResource[] getLibraries(String library, String job, Shell shell) throws Exception;
 
-    public IFileCopyStatus[] getFileCopyStatus(String library, String job) throws Exception;
+    public IFileCopyStatus[] getFileCopyStatus(String library, String job, Shell shell) throws Exception;
 }

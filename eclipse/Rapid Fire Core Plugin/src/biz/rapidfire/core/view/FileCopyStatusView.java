@@ -36,6 +36,7 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.ui.IActionBars;
@@ -313,7 +314,7 @@ public class FileCopyStatusView extends ViewPart implements IPropertyChangeListe
 
             IRapidFireSubSystem subSystem = job.getParentSubSystem();
 
-            IFileCopyStatus[] fileCopyStatuses = subSystem.getFileCopyStatus(job.getDataLibrary(), job.getName());
+            IFileCopyStatus[] fileCopyStatuses = subSystem.getFileCopyStatus(job.getDataLibrary(), job.getName(), getShell());
 
             return fileCopyStatuses;
 
@@ -363,6 +364,10 @@ public class FileCopyStatusView extends ViewPart implements IPropertyChangeListe
 
     private boolean isDataAvailable() {
         return inputDataAvailable;
+    }
+
+    private Shell getShell() {
+        return getViewSite().getShell();
     }
 
     private class JobStatusesLabelProvider extends LabelProvider implements ITableLabelProvider {

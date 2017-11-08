@@ -15,12 +15,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
-import biz.rapidfire.core.RapidFireCorePlugin;
-import biz.rapidfire.core.helpers.ISphereHelper;
+import org.eclipse.swt.widgets.Shell;
+
 import biz.rapidfire.core.model.IFileCopyStatus;
 import biz.rapidfire.core.model.list.FileCopyStatus;
-
-import com.ibm.as400.access.AS400;
 
 public abstract class AbstractFileCopyStatusDAO {
 
@@ -45,55 +43,33 @@ public abstract class AbstractFileCopyStatusDAO {
         this.dao = dao;
     }
 
-    public List<IFileCopyStatus> load(final String library, String job) throws Exception {
+    public List<IFileCopyStatus> load(final String library, String job, Shell shell) throws Exception {
 
         final List<IFileCopyStatus> fileCopyStatus = new ArrayList<IFileCopyStatus>();
 
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
-        String currentLibrary = null;
-        AS400 _as400 = dao.getSystem();
 
         try {
 
-            try {
-                currentLibrary = ISphereHelper.getCurrentLibrary(_as400);
-            } catch (Exception e) {
-                RapidFireCorePlugin.logError("*** Could not retrieve current library ***", e);
+            if (!dao.checkRapidFireLibrary(shell, library)) {
+                return fileCopyStatus;
             }
 
-            if (currentLibrary != null) {
+            String sqlStatement = getSqlStatement(job);
+            preparedStatement = dao.prepareStatement(sqlStatement, library);
+            resultSet = preparedStatement.executeQuery();
+            resultSet.setFetchSize(50);
 
-                boolean ok = false;
-                try {
-                    ok = ISphereHelper.setCurrentLibrary(_as400, "RFPRI");
-                } catch (Exception e1) {
-                    RapidFireCorePlugin.logError("*** Could not set current library to: " + "RFPRI" + " ***", e1);
-                }
-
-                // String sqlStatement = String.format(getSqlStatement(),
-                // "RFPRI");
-                String sqlStatement = getSqlStatement(job);
-                preparedStatement = dao.prepareStatement(sqlStatement, "RFPRI");
-                resultSet = preparedStatement.executeQuery();
-                resultSet.setFetchSize(50);
-
-                if (resultSet != null) {
-                    while (resultSet.next()) {
-                        fileCopyStatus.add(produceFileCopyStatus(library, resultSet));
-                    }
+            if (resultSet != null) {
+                while (resultSet.next()) {
+                    fileCopyStatus.add(produceFileCopyStatus(library, resultSet));
                 }
             }
 
         } finally {
             dao.destroy(preparedStatement);
             dao.destroy(resultSet);
-
-            try {
-                ISphereHelper.setCurrentLibrary(_as400, currentLibrary);
-            } catch (Exception e) {
-                RapidFireCorePlugin.logError("*** Could not restore current library to: " + currentLibrary + " ***", e);
-            }
         }
 
         return fileCopyStatus;

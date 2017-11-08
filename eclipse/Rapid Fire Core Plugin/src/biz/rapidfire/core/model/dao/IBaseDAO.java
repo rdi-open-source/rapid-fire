@@ -12,6 +12,8 @@ import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
+import org.eclipse.swt.widgets.Shell;
+
 import com.ibm.as400.access.AS400;
 
 public interface IBaseDAO {
@@ -31,4 +33,6 @@ public interface IBaseDAO {
     public void commit(Connection connection) throws Exception;
 
     public boolean convertYesNo(String yesNoValue);
+
+    public boolean checkRapidFireLibrary(Shell shell, String libraryName) throws Exception;
 }

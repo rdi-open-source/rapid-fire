@@ -14,6 +14,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.swt.widgets.Shell;
+
 import biz.rapidfire.core.model.IRapidFireJobResource;
 import biz.rapidfire.core.model.JobName;
 import biz.rapidfire.core.model.Phase;
@@ -43,7 +45,7 @@ public abstract class AbstractJobsDAO {
         this.dao = dao;
     }
 
-    public List<IRapidFireJobResource> load(final String library) throws Exception {
+    public List<IRapidFireJobResource> load(final String library, Shell shell) throws Exception {
 
         final List<IRapidFireJobResource> journalEntries = new ArrayList<IRapidFireJobResource>();
 
@@ -51,6 +53,10 @@ public abstract class AbstractJobsDAO {
         ResultSet resultSet = null;
 
         try {
+
+            if (!dao.checkRapidFireLibrary(shell, library)) {
+                return journalEntries;
+            }
 
             String sqlStatement = String.format(getSqlStatement(), library);
             preparedStatement = dao.prepareStatement(sqlStatement, null);
