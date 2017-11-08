@@ -1,3 +1,11 @@
+/*******************************************************************************
+ * Copyright (c) 2017-2017 Rapid Fire Project Team
+ * All rights reserved. This program and the accompanying materials 
+ * are made available under the terms of the Common Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/cpl-v10.html
+ *******************************************************************************/
+
 package biz.rapidfire.core.helpers;
 
 import java.io.IOException;
@@ -25,12 +33,14 @@ public class RapidFireHelper extends AbstractRapidFireHelper {
 
     public static String getRapidFireLibraryVersion(AS400 as400, String library) {
 
-        String dataAreaRapidFireContent = readRapidFireDataArea(null, as400, library);
+        RapidFireDataArea dataAreaRapidFireContent = readRapidFireDataArea(null, as400, library);
         if (dataAreaRapidFireContent == null) {
             return null;
         }
 
-        String libraryVersion = retrieveServerVersion(dataAreaRapidFireContent);
+        // String libraryVersion =
+        // retrieveServerVersion(dataAreaRapidFireContent);
+        String libraryVersion = dataAreaRapidFireContent.getServerVersion();
         if (libraryVersion == null) {
             return null;
         }
@@ -40,12 +50,13 @@ public class RapidFireHelper extends AbstractRapidFireHelper {
 
     public static String getRapidFireLibraryBuildDate(AS400 as400, String library) {
 
-        String dataAreaRapidFireContent = readRapidFireDataArea(null, as400, library);
+        RapidFireDataArea dataAreaRapidFireContent = readRapidFireDataArea(null, as400, library);
         if (dataAreaRapidFireContent == null) {
             return null;
         }
 
-        String buildDate = retrieveBuildDate(dataAreaRapidFireContent);
+        // String buildDate = retrieveBuildDate(dataAreaRapidFireContent);
+        String buildDate = dataAreaRapidFireContent.getBuildDate();
         if (buildDate == null || buildDate.trim().length() == 0) {
             return null;
         }
@@ -64,13 +75,17 @@ public class RapidFireHelper extends AbstractRapidFireHelper {
             return false;
         }
 
-        String dataAreaRapidFireContent = readRapidFireDataArea(shell, as400, library);
+        RapidFireDataArea dataAreaRapidFireContent = readRapidFireDataArea(shell, as400, library);
         if (dataAreaRapidFireContent == null) {
             return false;
         }
 
-        String serverProvided = retrieveServerVersion(dataAreaRapidFireContent);
-        String serverNeedsClient = retrieveRequiredClientVersion(dataAreaRapidFireContent);
+        // String serverProvided =
+        // retrieveServerVersion(dataAreaRapidFireContent);
+        // String serverNeedsClient =
+        // retrieveRequiredClientVersion(dataAreaRapidFireContent);
+        String serverProvided = dataAreaRapidFireContent.getServerVersion();
+        String serverNeedsClient = dataAreaRapidFireContent.getClientVersion();
 
         String clientProvided = comparableVersion(RapidFireCorePlugin.getDefault().getVersion());
         String clientNeedsServer = comparableVersion(RapidFireCorePlugin.getDefault().getMinServerVersion());
@@ -207,19 +222,22 @@ public class RapidFireHelper extends AbstractRapidFireHelper {
             + Integer.parseInt(aVersionNumber.substring(4, 6));
     }
 
-    private static String retrieveServerVersion(String dataAreaRapidFireContent) {
-        return dataAreaRapidFireContent.substring(7, 13);
-    }
+    // private static String retrieveServerVersion(String
+    // dataAreaRapidFireContent) {
+    // return dataAreaRapidFireContent.substring(7, 13);
+    // }
+    //
+    // private static String retrieveRequiredClientVersion(String
+    // dataAreaRapidFireContent) {
+    // return dataAreaRapidFireContent.substring(21, 27);
+    // }
+    //
+    // private static String retrieveBuildDate(String dataAreaRapidFireContent)
+    // {
+    // return dataAreaRapidFireContent.substring(39, 49);
+    // }
 
-    private static String retrieveRequiredClientVersion(String dataAreaRapidFireContent) {
-        return dataAreaRapidFireContent.substring(21, 27);
-    }
-
-    private static String retrieveBuildDate(String dataAreaRapidFireContent) {
-        return dataAreaRapidFireContent.substring(39, 49);
-    }
-
-    private static String readRapidFireDataArea(Shell shell, AS400 as400, String libraryName) {
+    private static RapidFireDataArea readRapidFireDataArea(Shell shell, AS400 as400, String libraryName) {
 
         if (!checkLibrary(as400, libraryName)) {
 
@@ -261,6 +279,6 @@ public class RapidFireHelper extends AbstractRapidFireHelper {
             return null;
         }
 
-        return dataAreaRapidFireContent;
+        return new RapidFireDataArea(dataAreaRapidFireContent);
     }
 }
