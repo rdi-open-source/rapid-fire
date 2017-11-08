@@ -50,7 +50,7 @@ public class FilesNodeAdapter extends AbstractNodeAdapter {
             FilesNode files = (FilesNode)element;
             IRapidFireJobResource resource = files.getJob();
 
-            return resource.getParentSubSystem().getFiles(resource.getDataLibrary(), resource.getName());
+            return resource.getParentSubSystem().getFiles(resource.getDataLibrary(), resource.getName(), getShell());
 
         } catch (Exception e) {
             RapidFireCorePlugin.logError("*** Could resolve filter string and load files ***", e); //$NON-NLS-1$

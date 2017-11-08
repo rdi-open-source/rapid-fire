@@ -14,6 +14,8 @@ import java.util.List;
 import java.util.Vector;
 
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
 import org.eclipse.rse.core.model.IHost;
 import org.eclipse.rse.core.model.IProperty;
 import org.eclipse.rse.core.model.IPropertySet;
@@ -25,7 +27,9 @@ import org.eclipse.rse.core.subsystems.SubSystem;
 import org.eclipse.rse.services.clientserver.messages.SystemMessage;
 import org.eclipse.rse.services.clientserver.messages.SystemMessageException;
 import org.eclipse.rse.ui.RSEUIPlugin;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.ui.progress.WorkbenchJob;
 
 import biz.rapidfire.core.RapidFireCorePlugin;
 import biz.rapidfire.core.dialogs.MessageDialogAsync;
@@ -51,11 +55,33 @@ import com.ibm.etools.iseries.subsystems.qsys.objects.QSYSObjectSubSystem;
 public class RapidFireSubSystem extends SubSystem implements IISeriesSubSystem, IRapidFireSubSystem {
 
     private RapidFireSubSystemAttributes subSystemAttributes;
+    private boolean isLoading;
 
     public RapidFireSubSystem(IHost host, IConnectorService connectorService) {
         super(host, connectorService);
 
         this.subSystemAttributes = new RapidFireSubSystemAttributes(this);
+        this.isLoading = true;
+
+        new WorkbenchJob("") {
+
+            @Override
+            public IStatus runInUIThread(IProgressMonitor arg0) {
+
+                Shell[] shells = Display.getCurrent().getShells();
+                for (int i = 0; (i < shells.length) && (shell == null); i++) {
+                    if ((!shells[i].isDisposed()) && (shells[i].isVisible()) && (shells[i].isEnabled())) {
+                        setShell(shells[i]);
+                        break;
+                    }
+                }
+
+                isLoading = false;
+
+                return Status.OK_STATUS;
+            }
+
+        }.schedule();
     }
 
     public RapidFireSubSystemAttributes getSubSystemAttributes() {
@@ -69,7 +95,7 @@ public class RapidFireSubSystem extends SubSystem implements IISeriesSubSystem, 
         try {
 
             RapidFireFilter filter = new RapidFireFilter(filterString);
-            IRapidFireJobResource[] allJobs = getJobs(filter.getDataLibrary());
+            IRapidFireJobResource[] allJobs = getJobs(filter.getDataLibrary(), getShell());
             Vector<IRapidFireJobResource> filteredJobs = new Vector<IRapidFireJobResource>();
             for (IRapidFireJobResource job : allJobs) {
                 if (filter.matches(job)) {
@@ -88,15 +114,23 @@ public class RapidFireSubSystem extends SubSystem implements IISeriesSubSystem, 
         return null;
     }
 
-    public IRapidFireJobResource[] getJobs(String library) throws Exception {
+    public IRapidFireJobResource[] getJobs(String library, Shell shell) throws Exception {
+
+        if (!successFullyLoaded()) {
+            return new IRapidFireJobResource[0];
+        }
 
         JobsDAO dao = new JobsDAO(getHostAliasName());
-        List<IRapidFireJobResource> jobs = dao.load(library);
+        List<IRapidFireJobResource> jobs = dao.load(library, shell);
 
         return jobs.toArray(new IRapidFireJobResource[jobs.size()]);
     }
 
-    public IRapidFireFileResource[] getFiles(String library, String job) throws Exception {
+    public IRapidFireFileResource[] getFiles(String library, String job, Shell shell) throws Exception {
+
+        if (!successFullyLoaded()) {
+            return new IRapidFireFileResource[0];
+        }
 
         FilesDAO dao = new FilesDAO(getHostAliasName());
         List<IRapidFireFileResource> files = dao.load(library, job);
@@ -104,7 +138,11 @@ public class RapidFireSubSystem extends SubSystem implements IISeriesSubSystem, 
         return files.toArray(new IRapidFireFileResource[files.size()]);
     }
 
-    public IRapidFireLibraryResource[] getLibraries(String library, String job) throws Exception {
+    public IRapidFireLibraryResource[] getLibraries(String library, String job, Shell shell) throws Exception {
+
+        if (!successFullyLoaded()) {
+            return new IRapidFireLibraryResource[0];
+        }
 
         LibrariesDAO dao = new LibrariesDAO(getHostAliasName());
         List<IRapidFireLibraryResource> libraries = dao.load(library, job);
@@ -112,12 +150,35 @@ public class RapidFireSubSystem extends SubSystem implements IISeriesSubSystem, 
         return libraries.toArray(new IRapidFireLibraryResource[libraries.size()]);
     }
 
-    public IFileCopyStatus[] getFileCopyStatus(String library, String job) throws Exception {
+    public IFileCopyStatus[] getFileCopyStatus(String library, String job, Shell shell) throws Exception {
 
         FileCopyStatusDAO dao = new FileCopyStatusDAO(getHostAliasName());
-        List<IFileCopyStatus> fileCopyStatuses = dao.load(library, job);
+        List<IFileCopyStatus> fileCopyStatuses = dao.load(library, job, shell);
 
         return fileCopyStatuses.toArray(new FileCopyStatus[fileCopyStatuses.size()]);
+    }
+
+    private boolean successFullyLoaded() {
+
+        if (isLoading) {
+
+            final int SLEEP_TIME = 250;
+            int maxTime = 30 * 1000 / SLEEP_TIME;
+
+            while (isLoading) {
+                try {
+                    Thread.sleep(SLEEP_TIME);
+                } catch (InterruptedException e) {
+                }
+            }
+        }
+
+        if (getShell() == null) {
+            MessageDialogAsync.displayError("*** Could not successfully load the Rapid Fire subsystem ***");
+            return false;
+        }
+
+        return true;
     }
 
     @Override

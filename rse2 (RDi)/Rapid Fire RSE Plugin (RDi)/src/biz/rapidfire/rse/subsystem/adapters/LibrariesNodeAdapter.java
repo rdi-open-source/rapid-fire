@@ -50,7 +50,7 @@ public class LibrariesNodeAdapter extends AbstractNodeAdapter {
             LibrariesNode libraries = (LibrariesNode)element;
             IRapidFireJobResource resource = libraries.getJob();
 
-            return resource.getParentSubSystem().getLibraries(resource.getDataLibrary(), resource.getName());
+            return resource.getParentSubSystem().getLibraries(resource.getDataLibrary(), resource.getName(), getShell());
 
         } catch (Exception e) {
             RapidFireCorePlugin.logError("*** Could resolve filter string and load libraries ***", e); //$NON-NLS-1$
