@@ -45,7 +45,7 @@ public abstract class AbstractFilesDAO {
         try {
 
             String sqlStatement = String.format(getSqlStatement(), library);
-            preparedStatement = dao.prepareStatement(sqlStatement);
+            preparedStatement = dao.prepareStatement(sqlStatement, null);
             preparedStatement.setString(1, job);
             resultSet = preparedStatement.executeQuery();
             resultSet.setFetchSize(50);

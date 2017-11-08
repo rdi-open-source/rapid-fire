@@ -11,23 +11,16 @@ package biz.rapidfire.core.model.dao;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 
 import com.ibm.as400.access.AS400;
 
 public interface IBaseDAO {
 
-    public void destroy();
-
-    public Connection getConnection();
+    public AS400 getSystem() throws Exception;
 
     public String getConnectionName();
 
-    public AS400 getSystem() throws Exception;
-
-    public PreparedStatement prepareStatement(String sql) throws SQLException;
-
-    public void destroy(Connection connection) throws Exception;
+    public PreparedStatement prepareStatement(String sql, String defaultLibrary) throws Exception;
 
     public void destroy(ResultSet resultSet) throws Exception;
 

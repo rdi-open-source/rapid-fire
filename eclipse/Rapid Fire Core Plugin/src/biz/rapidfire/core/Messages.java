@@ -27,11 +27,35 @@ public class Messages extends NLS {
     // Dialog titles
     public static String Specify_a_filter;
 
+    // Column headings
+    public static String ColumnLabel_File;
+    public static String ColumnLabel_Library;
+    public static String ColumnLabel_Records_in_production_library;
+    public static String ColumnLabel_Records_in_shadow_library;
+    public static String ColumnLabel_Records_to_copy;
+    public static String ColumnLabel_Records_copied;
+    public static String ColumnLabel_Estimated_time;
+    public static String ColumnLabel_Changes_to_apply;
+    public static String ColumnLabel_Changes_applied;
+    public static String ColumnLabel_Progress;
+
     // Dialog labels
-    public static String Library_colon;
-    public static String Job_colon;
-    public static String Status_colon;
+    public static String Label_Library_colon;
+    public static String Label_Job_colon;
+    public static String Label_Status_colon;
     public static String Label_Full_generic_string;
+    public static String Label_Enable_large_progress_bar;
+
+    public static String Tooltip_Enable_large_progress_bar;
+
+    // Action labels
+    public static String ActionLabel_Auto_refresh_menu_item;
+    public static String ActionLabel_Auto_refresh_menu_item_stop;
+    public static String ActionLabel_Auto_refresh_menu_item_every_A_seconds;
+
+    public static String ActionTooltip_Refresh;
+    public static String ActionTooltip_Auto_refresh_menu_item_every_A_seconds;
+    public static String ActionTooltip_Auto_refresh_menu_item_stop;
 
     // Property labels
     public static String Batch_job_name;
@@ -41,6 +65,9 @@ public class Messages extends NLS {
     public static String Tooltip_Batch_job_name;
     public static String Tooltip_Batch_job_user;
     public static String Tooltip_Batch_job_number;
+
+    // Job labels
+    public static String JobLabel_Refreshing_file_copy_statuses;
 
     // Error messages
     public static String Library_name_A_is_not_valid;

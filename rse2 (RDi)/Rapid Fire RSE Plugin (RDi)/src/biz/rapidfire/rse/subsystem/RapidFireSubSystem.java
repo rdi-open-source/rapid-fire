@@ -29,12 +29,15 @@ import org.eclipse.swt.widgets.Shell;
 
 import biz.rapidfire.core.RapidFireCorePlugin;
 import biz.rapidfire.core.dialogs.MessageDialogAsync;
+import biz.rapidfire.core.model.IFileCopyStatus;
 import biz.rapidfire.core.model.IRapidFireFileResource;
 import biz.rapidfire.core.model.IRapidFireJobResource;
 import biz.rapidfire.core.model.IRapidFireLibraryResource;
+import biz.rapidfire.core.model.list.FileCopyStatus;
 import biz.rapidfire.core.subsystem.IRapidFireSubSystem;
 import biz.rapidfire.core.subsystem.RapidFireFilter;
 import biz.rapidfire.rse.model.RapidFireJobResource;
+import biz.rapidfire.rse.model.dao.FileCopyStatusDAO;
 import biz.rapidfire.rse.model.dao.FilesDAO;
 import biz.rapidfire.rse.model.dao.JobsDAO;
 import biz.rapidfire.rse.model.dao.LibrariesDAO;
@@ -107,6 +110,14 @@ public class RapidFireSubSystem extends SubSystem implements IISeriesSubSystem, 
         List<IRapidFireLibraryResource> libraries = dao.load(library, job);
 
         return libraries.toArray(new IRapidFireLibraryResource[libraries.size()]);
+    }
+
+    public IFileCopyStatus[] getFileCopyStatus(String library, String job) throws Exception {
+
+        FileCopyStatusDAO dao = new FileCopyStatusDAO(getHostAliasName());
+        List<IFileCopyStatus> fileCopyStatuses = dao.load(library, job);
+
+        return fileCopyStatuses.toArray(new FileCopyStatus[fileCopyStatuses.size()]);
     }
 
     @Override

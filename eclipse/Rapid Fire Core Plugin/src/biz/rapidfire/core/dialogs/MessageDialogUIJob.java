@@ -20,7 +20,7 @@ public class MessageDialogUIJob extends UIJob {
     MessageDialog dialog;
 
     public MessageDialogUIJob(Display jobDisplay, MessageDialog dialog) {
-        super(jobDisplay, "");
+        super(jobDisplay, ""); //$NON-NLS-1$
         this.dialog = dialog;
     }
 

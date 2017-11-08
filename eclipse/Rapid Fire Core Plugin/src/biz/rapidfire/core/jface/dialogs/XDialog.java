@@ -100,8 +100,7 @@ public class XDialog extends Dialog {
     protected void setErrorMessage(String errorMessage) {
         if (statusLineManager != null) {
             if (errorMessage != null) {
-                statusLineManager.setErrorMessage(RapidFireCorePlugin.getDefault().getImageRegistry().get(RapidFireCorePlugin.IMAGE_ERROR),
-                    errorMessage);
+                statusLineManager.setErrorMessage(RapidFireCorePlugin.getDefault().getImage(RapidFireCorePlugin.IMAGE_ERROR), errorMessage);
             } else {
                 statusLineManager.setErrorMessage(null, null);
             }

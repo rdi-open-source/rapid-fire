@@ -14,6 +14,8 @@ import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.swt.widgets.Shell;
+import org.eclipse.ui.PlatformUI;
 
 import biz.rapidfire.core.model.IRapidFireResource;
 import biz.rapidfire.rsebase.handlers.AbstractSelectionHandler;
@@ -44,6 +46,10 @@ public abstract class AbstractJobHandler extends AbstractSelectionHandler {
         }
 
         return null;
+    }
+
+    public Shell getShell() {
+        return PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell();
     }
 
     protected abstract Object executeWithResource(IRapidFireResource resource) throws ExecutionException;

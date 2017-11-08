@@ -11,68 +11,65 @@ package biz.rapidfire.core.model.dao;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
-import java.sql.SQLException;
 
-import biz.rapidfire.core.RapidFireCorePlugin;
+import org.eclipse.core.runtime.OperationCanceledException;
 
 import com.ibm.as400.access.AS400;
 
 public abstract class AbstractBaseDAO {
-
-    // protected static final String properties = "thread used=false; extendeddynamic=true; package criteria=select; package cache=true;"; //$NON-NLS-1$
-    protected static final String properties = "translate hex=binary; prompt=false; extended dynamic=true; package cache=true"; //$NON-NLS-1$
 
     private static final String BOOLEAN_Y = "Y"; //$NON-NLS-1$
     private static final String BOOLEAN_N = "N"; //$NON-NLS-1$
     private static final String BOOLEAN_YES = "*YES"; //$NON-NLS-1$
     private static final String BOOLEAN_NO = "*NO"; //$NON-NLS-1$
 
-    protected Connection connection;
+    public PreparedStatement prepareStatement(String sql, String defaultLibrary) throws Exception {
 
-    public PreparedStatement prepareStatement(String sql) throws SQLException {
-        return getConnection().prepareStatement(sql);
-    }
+        // Actually we should call IBMiConnection.getConnection() via the
+        // abstract method getJdbcConnection().
+        // But because IBMiConnection does not properly handle the "properties"
+        // parameter (actually ignoring it), we have to do it this way to set
+        // the default schema.
+        // Connection connection = getJdbcConnection(defaultLibrary)
+        JdbcConnectionService service = JdbcConnectionManager.getInstance().getJdbcConnectionService(getHostName(), getSystem());
 
-    public void destroy() {
+        Connection jdbcConnection;
 
-        if (connection != null) {
-            try {
-                if (!connection.isClosed()) {
-                    connection.close();
-                    connection = null;
-                }
-            } catch (Throwable e) {
-                RapidFireCorePlugin.logError("*** Could not destroy connection ***", e); //$NON-NLS-1$
-            }
+        try {
+            jdbcConnection = service.getJdbcConnection(getUser(), getPassword(), defaultLibrary);
+        } catch (OperationCanceledException e) {
+            return null;
         }
-    }
 
-    public void destroy(Connection connection) throws Exception {
-        if (connection != null && !connection.isClosed()) connection.close();
+        return jdbcConnection.prepareStatement(sql);
     }
 
     public void destroy(ResultSet resultSet) throws Exception {
-        if (resultSet != null) resultSet.close();
+        if (resultSet != null) {
+            resultSet.close();
+        }
     }
 
     public void destroy(PreparedStatement preparedStatement) throws Exception {
-        if (preparedStatement != null) preparedStatement.close();
+        if (preparedStatement != null) {
+            preparedStatement.close();
+        }
     }
 
     public void rollback(Connection connection) throws Exception {
         if (connection != null && !connection.isClosed()) {
-            if (connection.getAutoCommit() == false) connection.rollback();
+            if (connection.getAutoCommit() == false) {
+                connection.rollback();
+            }
         }
     }
 
     public void commit(Connection connection) throws Exception {
         if (connection != null && !connection.isClosed()) {
-            if (connection.getAutoCommit() == false) connection.commit();
+            if (connection.getAutoCommit() == false) {
+                connection.commit();
+            }
         }
-    }
-
-    public Connection getConnection() {
-        return connection;
     }
 
     public boolean convertYesNo(String yesNoValue) {
@@ -88,6 +85,12 @@ public abstract class AbstractBaseDAO {
     }
 
     public abstract AS400 getSystem() throws Exception;
+
+    protected abstract String getUser();
+
+    protected abstract String getPassword();
+
+    public abstract String getHostName();
 
     public abstract String getConnectionName();
 

@@ -8,6 +8,7 @@
 
 package biz.rapidfire.core.subsystem;
 
+import biz.rapidfire.core.model.IFileCopyStatus;
 import biz.rapidfire.core.model.IRapidFireFileResource;
 import biz.rapidfire.core.model.IRapidFireJobResource;
 import biz.rapidfire.core.model.IRapidFireLibraryResource;
@@ -19,4 +20,6 @@ public interface IRapidFireSubSystem {
     public IRapidFireFileResource[] getFiles(String library, String job) throws Exception;
 
     public IRapidFireLibraryResource[] getLibraries(String library, String job) throws Exception;
+
+    public IFileCopyStatus[] getFileCopyStatus(String library, String job) throws Exception;
 }

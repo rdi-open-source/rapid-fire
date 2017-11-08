@@ -53,7 +53,7 @@ public abstract class AbstractJobsDAO {
         try {
 
             String sqlStatement = String.format(getSqlStatement(), library);
-            preparedStatement = dao.prepareStatement(sqlStatement);
+            preparedStatement = dao.prepareStatement(sqlStatement, null);
             resultSet = preparedStatement.executeQuery();
             resultSet.setFetchSize(50);
 

@@ -40,9 +40,9 @@ public class RapidFireFilterStringEditPaneDelegate {
 
         ((GridLayout)parent.getLayout()).marginWidth = 0;
 
-        dataLibraryText = createUpperCaseText(parent, Messages.Library_colon, 10, null);
-        jobText = createUpperCaseText(parent, Messages.Job_colon, 10, Messages.Label_Full_generic_string);
-        statusCombo = createReadOnlyCombo(parent, Messages.Status_colon, Status.values());
+        dataLibraryText = createUpperCaseText(parent, Messages.Label_Library_colon, 10, null);
+        jobText = createUpperCaseText(parent, Messages.Label_Job_colon, 10, Messages.Label_Full_generic_string);
+        statusCombo = createReadOnlyCombo(parent, Messages.Label_Status_colon, Status.values());
 
         return parent;
     }

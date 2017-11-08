@@ -64,6 +64,13 @@
       </command>
          
       <command
+         id="biz.rapidfire.core.command.Job.displaycopystatus"
+         categoryId="biz.rapidfire.category.Commands"
+         name="%command_Display_copy_status"
+         description="%command_Display_copy_status_Description">
+      </command>
+         
+      <command
          id="biz.rapidfire.core.command.Job.test"
          categoryId="biz.rapidfire.category.Commands"
          name="%command_Test_Job"
@@ -151,6 +158,19 @@
       <handler
          commandId="biz.rapidfire.core.command.Job.display"
          class="biz.rapidfire.core.handlers.DisplayJobHandler">
+         <enabledWhen>
+            <with variable="selection">
+               <count value="1" />
+               <iterate operator="and">
+                  <adapt type="biz.rapidfire.rse.model.RapidFireJobResource" />
+               </iterate>
+            </with>
+         </enabledWhen>
+      </handler>
+      
+      <handler
+         commandId="biz.rapidfire.core.command.Job.displaycopystatus"
+         class="biz.rapidfire.core.handlers.DisplayCopyStatusHandler">
          <enabledWhen>
             <with variable="selection">
                <count value="1" />
@@ -282,6 +302,19 @@
          <command
             commandId="biz.rapidfire.core.command.Job.display" 
             icon="icons/display.gif"
+            >
+	        <visibleWhen>
+	           <with variable="selection">
+	              <iterate operator="and">
+	                 <adapt type="biz.rapidfire.rse.model.RapidFireJobResource" />
+	              </iterate>
+	           </with>
+	        </visibleWhen>
+         </command>
+         
+         <command
+            commandId="biz.rapidfire.core.command.Job.displaycopystatus" 
+            icon="icons/job_status.gif"
             >
 	        <visibleWhen>
 	           <with variable="selection">

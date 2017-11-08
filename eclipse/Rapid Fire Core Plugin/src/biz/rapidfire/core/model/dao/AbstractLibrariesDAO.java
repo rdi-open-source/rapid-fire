@@ -39,7 +39,7 @@ public abstract class AbstractLibrariesDAO {
         try {
 
             String sqlStatement = String.format(getSqlStatement(), dataLibrary);
-            preparedStatement = dao.prepareStatement(sqlStatement);
+            preparedStatement = dao.prepareStatement(sqlStatement, null);
             preparedStatement.setString(1, job);
             resultSet = preparedStatement.executeQuery();
             resultSet.setFetchSize(50);

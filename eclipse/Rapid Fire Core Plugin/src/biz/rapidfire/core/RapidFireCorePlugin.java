@@ -1,27 +1,39 @@
+/*******************************************************************************
+ * Copyright (c) 2017-2017 Rapid Fire Project Owners
+ * All rights reserved. This program and the accompanying materials 
+ * are made available under the terms of the Common Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/cpl-v10.html
+ *******************************************************************************/
+
 package biz.rapidfire.core;
 
-import java.net.MalformedURLException;
-import java.net.URL;
-
 import org.eclipse.core.runtime.Status;
-import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.jface.resource.ColorRegistry;
 import org.eclipse.jface.resource.ImageRegistry;
-import org.eclipse.ui.plugin.AbstractUIPlugin;
+import org.eclipse.swt.graphics.RGB;
 import org.osgi.framework.BundleContext;
+
+import biz.rapidfire.core.model.dao.JdbcConnectionManager;
+import biz.rapidfire.core.plugin.AbstractExtendedUIPlugin;
 
 /**
  * The activator class controls the plug-in life cycle
  */
-public class RapidFireCorePlugin extends AbstractUIPlugin {
+public class RapidFireCorePlugin extends AbstractExtendedUIPlugin {
 
     // The plug-in ID
     public static final String PLUGIN_ID = "biz.rapidfire.core"; //$NON-NLS-1$
 
     // The shared instance
     private static RapidFireCorePlugin plugin;
-    private static URL installURL;
 
     public static final String IMAGE_ERROR = "error.gif"; //$NON-NLS-1$
+    public static final String IMAGE_REFRESH = "refresh.gif"; //$NON-NLS-1$
+    public static final String IMAGE_AUTO_REFRESH_OFF = "auto_refresh_off.gif"; //$NON-NLS-1$
+
+    public static final String COLOR_PROGRESS_BAR_FOREGROUND = "COLOR_PROGRESS_BAR_FOREGROUND"; //$NON-NLS-1$
+    public static final String COLOR_PROGRESS_BAR_BACKGROUND = "COLOR_PROGRESS_BAR_BACKGROUND"; //$NON-NLS-1$
 
     /**
      * The constructor
@@ -39,8 +51,6 @@ public class RapidFireCorePlugin extends AbstractUIPlugin {
         super.start(context);
 
         plugin = this;
-
-        installURL = context.getBundle().getEntry("/"); //$NON-NLS-1$
     }
 
     /*
@@ -50,6 +60,7 @@ public class RapidFireCorePlugin extends AbstractUIPlugin {
      * )
      */
     public void stop(BundleContext context) throws Exception {
+        JdbcConnectionManager.getInstance().destroy();
         plugin = null;
         super.stop(context);
     }
@@ -68,17 +79,16 @@ public class RapidFireCorePlugin extends AbstractUIPlugin {
         super.initializeImageRegistry(reg);
 
         reg.put(IMAGE_ERROR, getImageDescriptor(IMAGE_ERROR));
+        reg.put(IMAGE_REFRESH, getImageDescriptor(IMAGE_REFRESH));
+        reg.put(IMAGE_AUTO_REFRESH_OFF, getImageDescriptor(IMAGE_AUTO_REFRESH_OFF));
     }
 
-    private ImageDescriptor getImageDescriptor(String name) {
-        String iconPath = "icons/"; //$NON-NLS-1$
-        try {
-            URL url = new URL(installURL, iconPath + name);
-            return ImageDescriptor.createFromURL(url);
-        } catch (MalformedURLException e) {
-            // should not happen
-            return ImageDescriptor.getMissingImageDescriptor();
-        }
+    @Override
+    protected void initializeColorRegistry(ColorRegistry reg) {
+        super.initializeColorRegistry(reg);
+
+        reg.put(COLOR_PROGRESS_BAR_FOREGROUND, new RGB(100, 230, 80));
+        reg.put(COLOR_PROGRESS_BAR_BACKGROUND, new RGB(220, 220, 220));
     }
 
     /**
