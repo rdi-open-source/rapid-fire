@@ -1,0 +1,410 @@
+<!--
+ * =====================================================================
+ *   This Ant script must run in the same JRE of the workspace,
+ *   to make the "eclipse.refreshLocal" tag work properly.
+ *
+ *   Creating the Update site
+ *   ========================
+ *
+ *   1. Open "build.properties" of project "Java Scoped Template Variables Build".
+ *   2. Increment version number of property "build.version".
+ *   3. Execute target "build".
+ *   4. Create plug-in: Right-click 'site.xml', select 'PDE Tools -> Build Site'.
+ *   5. Execute target "createSourceForgeFiles".
+ *   6. Check-in source code.
+ *   7. Create version tag.
+ *
+ * ===================================================================== -->
+<project name="Rapid Fire Build" default="build" basedir=".">
+
+	<!-- Include Ant Contrib tasks -->
+	<taskdef resource="net/sf/antcontrib/antlib.xml">
+		<classpath>
+			<pathelement location="${basedir}/lib/ant-contrib-1.0b3.jar" />
+		</classpath>
+	</taskdef>
+
+	<!-- Load project names and new version number -->
+	<property file="build.properties" />
+
+	<!-- Load ftp user name and password -->
+	<property file="ftp.properties" />
+
+	<!-- Set date and time -->
+	<tstamp>
+		<format property="today.timestamp" pattern="dd.MM.yyyy - kk:mm:ss" locale="de,DE" />
+		<format property="today.date.eur" pattern="dd.MM.yyyy" locale="de,DE" />
+		<format property="today.date.iso" pattern="yyyy-MM-dd" locale="de,DE" />
+		<format property="today.year" pattern="yyyy" locale="de,DE" />
+	</tstamp>
+	 
+	<property name="workspace.home"    location="./../.."/>
+	<property name="build.dir"         location="./.."/>
+	<property name="build.upload.dir"  location="${build.dir}/upload" />
+
+	<property name="site.dir"          location="${workspace.home}/${build.updatesite}"  />
+	<property name="site.features.dir" location="${site.dir}/features" />
+	<property name="site.plugins.dir"  location="${site.dir}/plugins"  />
+
+	<property name="temp.dir"          location="${basedir}/temp" />
+	<property name="temp.dir.local_updatesite" location="${temp.dir}/local_updatesite" />
+	
+	<!-- Check for BETA or RELEASE version -->
+	<property name="release.flag.regex" value="^(?:[1-9]+\.[0-9]+(?:\.[0-9]+)?(?:\.(?:b[0-9]{3}|(r)))?)$" />
+	<propertyregex property="release.flag" input="${build.version}" regexp="${release.flag.regex}" select="\1" casesensitive="true" />
+	<if>
+		<equals arg1="${release.flag}" arg2="r" />
+		<then>
+			<echo>Building a RELEASE version.</echo>
+			<property name="is.beta.version" value="false" />
+			<property name="beta.dir" value="." />
+			<property name="version.info" value="&lt;div class=&quot;release&quot;&gt;Release Version - ${build.version}&lt;/div&gt;" />
+		</then>
+		<else>
+			<echo>Building a BETA version.</echo>
+			<property name="is.beta.version" value="true" />
+			<property name="beta.dir" value="${sf.ftp.beta.dir.name}" />
+			<property name="version.info" value="&lt;div class=&quot;beta&quot;&gt;Beta Version - ${build.version}&lt;/div&gt;" />
+		</else>
+	</if>
+	
+	<property name="build.upload.dir.files"         location="${build.upload.dir}/sf-files/${beta.dir}" />
+	<property name="build.upload.dir.files.eclipse" location="${build.upload.dir}/sf-files/${beta.dir}/eclipse" />
+
+	<!-- Set regular expressions and replacement values -->
+	<property name="validate.version.regex" value="^([1-9]+\.[0-9]+(?:\.[0-9]+)?(?:\.(?:b[0-9]{3}|r))?)$" />
+	
+	<property name="manifest.version.regex" value="(Bundle-Version:\s)([1-9]+\.[0-9]+(?:\.[0-9]+)?(?:\.(?:b[0-9]{1,3}|r))?)" />
+	<property name="manifest.version.replace" value="\1${build.version}" />
+
+	<property name="feature.1.version.regex" value="(&lt;feature.*version=&quot;)([1-9]+\.[0-9]+(?:\.[0-9]+)?(?:\.(?:b[0-9]{1,3}|r))?)(&quot;\s+provider-name.*?&gt;)" />
+	<property name="feature.1.version.replace" value="\1${build.version}\3" />
+
+	<property name="feature.2.version.regex" value="(&lt;import feature.*version=&quot;)([0-9]+\.[0-9]+(?:\.[0-9]+)?(?:\.(?:b[0-9]{1,3}|r))?)(&quot;\s+match.*?&gt;)" />
+	<property name="feature.2.version.replace" value="\1${build.version}\3" />
+
+	<property name="site.1.version.regex" value="(&lt;feature.*_)([0-9]+\.[0-9]+(?:\.[0-9]+)?(?:\.(?:b[0-9]{1,3}|r))?)(\.jar)" />
+	<property name="site.1.version.replace" value="\1${build.version}\3" />
+
+	<property name="site.2.version.regex" value="(&lt;feature.*version=&quot;)([0-9]+\.[0-9]+(?:\.[0-9]+)?(?:\.(?:b[0-9]{1,3}|r))?)(&quot;)" />
+	<property name="site.2.version.replace" value="\1${build.version}\3" />
+	
+	<property name="local.zipfile" value="${build.zip.file.name}_v${build.version}.zip" />
+
+	<!-- Set update site values -->
+	<property name="updatesite.tag.file" location="${workspace.home}\${build.updatesite}\${build.updatesite} v${build.version}.tag" />
+	
+	<!-- =============================================================
+	      Erstellt eine neue Update-Site.
+	      Alle alten Dateien werden überschrieben, bzw. gelöscht.
+	     ============================================================= -->
+	<target name="build" depends="checkBuildTarget, clean, updateVersionNumber, createTagFile" description="Step 1">
+		
+			<echo>+------------------------------------------------------+</echo>
+			<echo>|  Finished RPGUnit build ${build.version}             |</echo>
+			<echo>|                                                      |</echo>
+			<echo>|  Right-click 'site.xml' and select 'PDE Tools' ->    |</echo>
+			<echo>|  'Build Site' to build the update site.              |</echo>
+			<echo>|                                                      |</echo>
+			<echo>|  Then proceed with:   createSourceForgeFiles         |</echo>
+			<echo>|                      -uploadSourceForgeFiles-        |</echo>
+			<echo>+------------------------------------------------------+</echo>
+			<echo>*** Finished ***</echo>
+		
+	</target>
+	
+	<!-- =============================================================
+	      Kopiert alle erforderlichen Assets-Dateien.
+	     ============================================================= -->
+	<target name="createSourceForgeFiles" depends="createZipFile, createUpdateSite" description="Step 3">
+		
+		<antcall target="cleanTempAndPDE" />
+		<antcall target="refreshProjects" />
+		
+	</target>
+	
+	<!-- =============================================================
+	      Erzeugt die ZIP Datei.
+	     ============================================================= -->
+	<target name="createZipFile" depends="prepareZipFile">
+		
+		<echo>Erzeuge zip Datei: ${version.file}</echo>
+		
+		<mkdir dir="${build.upload.dir.files}" />
+		
+	  	<zip destfile="${build.upload.dir.files}/${version.file}">
+		    <fileset dir="${temp.dir.local_updatesite}"/>
+		</zip>		
+		
+	</target>
+	
+	<!-- =============================================================
+	      Erzeugt die Update Site.
+	     ============================================================= -->
+	<target name="createUpdateSite" depends="prepareUpdateSite">
+		
+		<echo>Erzeuge Update Site Datei: ${version.file}</echo>
+		
+		<mkdir dir="${build.upload.dir.files.eclipse}" />
+		
+		<copy todir="${build.upload.dir.files.eclipse}/features" >
+			<fileset dir="${temp.dir.local_updatesite}/features"/>
+		</copy>
+		
+		<copy todir="${build.upload.dir.files.eclipse}/plugins" >
+			<fileset dir="${temp.dir.local_updatesite}/plugins"/>
+		</copy>
+		
+		<copy todir="${build.upload.dir.files.eclipse}" >
+			<fileset dir="${temp.dir.local_updatesite}" includes="artifacts.jar"/>
+			<fileset dir="${temp.dir.local_updatesite}" includes="content.jar"/>
+		</copy>
+		
+	</target>
+	
+	<!-- =============================================================
+	      Bereitet das Erstellen der ZIP Datei vor.
+	     ============================================================= -->
+	<target name="prepareZipFile" depends="retrieveVersionInfo">
+		
+		<mkdir dir="${temp.dir.local_updatesite}" />
+		<mkdir dir="${temp.dir.local_updatesite}/features" />
+		<mkdir dir="${temp.dir.local_updatesite}/plugins" />
+		
+		<copy todir="${temp.dir.local_updatesite}/features" >
+			<fileset dir="${site.dir}/features" />
+		</copy>
+		
+		<copy todir="${temp.dir.local_updatesite}/plugins" >
+			<fileset dir="${site.dir}/plugins" />
+		</copy>
+		
+		<copy todir="${temp.dir.local_updatesite}" >
+			<fileset dir="${site.dir}" includes="artifacts.jar" />
+			<fileset dir="${site.dir}" includes="content.jar" />
+			<fileset dir="${site.dir}" includes="*.tag" />
+		</copy>
+
+	</target>
+	
+	<!-- =============================================================
+	      Bereitet das Erstellen der Update-Site Datei vor.
+	     ============================================================= -->
+	<target name="prepareUpdateSite" depends="retrieveVersionInfo">
+		
+	</target>
+
+	<!--
+    * =====================================================================
+    *   Creates the tag file to indicate the project's version 
+    *   of the zip file.
+    * ===================================================================== -->
+	<target name="createTagFile">
+
+		<echo>Creating version tag file ${updatesite.tag.file} ...</echo>
+
+		<touch file="${updatesite.tag.file}" />
+		
+		<eclipse.refreshLocal resource="${build.updatesite}" depth="infinite" />
+
+	</target>
+	
+	<!-- =============================================================
+	      Kopiert die Versions-Informationen.
+	     ============================================================= -->
+	<target name="retrieveVersionInfo" depends="">
+		
+		<property name="version.file" value="${local.zipfile}"/>
+		
+		<echo>Ermittelter Dateiname ist: ${version.file}</echo>
+	</target>
+
+	<!-- =============================================================
+	      Löscht alle bestehenden Dateien.
+	     ============================================================= -->
+	<target name="clean" depends="cleanTempAndPDE" description="Cleans all build directories">
+		
+		<mkdir dir="${build.upload.dir}" />
+		
+		<!-- 'upload' folder -->
+		<delete includeemptydirs="true">
+			<fileset dir="${build.upload.dir}" includes="**/*"/>
+		</delete>
+		
+		<antcall target="refreshProjects" />
+		
+	</target>
+
+	<!-- =============================================================
+	      Löscht alle bestehenden Dateien.
+	     ============================================================= -->
+	<target name="cleanTempAndPDE" depends="" description="Cleans only temp and PDE folders">
+		
+		<mkdir dir="${temp.dir}" />
+		
+		<!-- 'temp' folder -->
+		<delete includeemptydirs="true">
+			<fileset dir="${temp.dir}" includes="**/*"/>
+		</delete>
+
+		<!-- Files created by PDE Tools -->
+		<delete failonerror="true" >
+			<fileset dir="${site.features.dir}" />
+			<fileset dir="${site.plugins.dir}" />
+		</delete>
+		
+		<delete failonerror="true" >
+			<fileset dir="${site.dir}" includes="artifacts.jar" />
+			<fileset dir="${site.dir}" includes="content.jar" />
+			<fileset dir="${site.dir}" includes="*.tag" />
+		</delete>
+		
+		<!-- Files created by PDE Tools -->
+		<delete failonerror="true" >
+			<fileset dir="${site.dir}" includes="*.tag" />
+		</delete>
+		
+		<antcall target="refreshProjects" />
+		
+	</target>
+
+	<!--
+    * =====================================================================
+    *   Updates the version numbers of the following files:
+    *     - MANIFEST.MF
+    *     - feature.xml
+    *     - site.xml
+    * ===================================================================== -->
+	<target name="updateVersionNumber" depends="validateVersionNumber">
+
+		<echo>Updating version number to: ${build.version} ...</echo>
+
+		<for list="${build.projects}" delimiter="," param="project">
+			<sequential>
+
+				<if>
+					<available file="${workspace.home}\@{project}" type="dir"/>
+					<then>
+
+						<echo message="${workspace.home}\@{project}" />
+
+						<if>
+							<available file="${workspace.home}\@{project}/META-INF" />
+							<then>
+								<replaceregexp match="${manifest.version.regex}" replace="${manifest.version.replace}" byline="true">
+									<fileset dir="${workspace.home}\@{project}/META-INF" includes="MANIFEST.MF" />
+								</replaceregexp>
+							</then>
+						</if>
+		
+						<replaceregexp match="${feature.1.version.regex}" replace="${feature.1.version.replace}" flags="s" byline="false">
+							<fileset dir="${workspace.home}\@{project}" includes="feature.xml" />
+						</replaceregexp>
+		
+						<replaceregexp match="${feature.2.version.regex}" replace="${feature.2.version.replace}" flags="s" byline="false">
+							<fileset dir="${workspace.home}\@{project}" includes="feature.xml" />
+						</replaceregexp>
+		
+						<replaceregexp match="${site.1.version.regex}" replace="${site.1.version.replace}" flags="g" byline="false">
+							<fileset dir="${workspace.home}\@{project}" includes="site.xml" />
+						</replaceregexp>
+		
+						<replaceregexp match="${site.2.version.regex}" replace="${site.2.version.replace}" flags="g" byline="false">
+							<fileset dir="${workspace.home}\@{project}" includes="site.xml" />
+						</replaceregexp>
+
+						<eclipse.refreshLocal resource="@{project}" depth="infinite" />
+					</then>
+				</if>
+			</sequential>
+		</for>
+
+		<echo>Done.</echo>
+
+	</target>
+
+	<!--
+    * =====================================================================
+    *   Validates the version number to ensure, that it matches
+    *   the required format.
+    * ===================================================================== -->
+	<target name="validateVersionNumber">
+
+		<echo>Validating version number to: ${build.version} ...</echo>
+
+		<propertyregex property="validated.version" input="${build.version}" regexp="${validate.version.regex}" select="\1" casesensitive="true" />
+
+		<if>
+			<equals arg1="${build.version}" arg2="${validated.version}" />
+			<then>
+				<echo>Version number validated: OK</echo>
+			</then>
+			<else>
+				<echo>+------------------------------------------------------+</echo>
+				<echo>| Version number does not match expected pattern!      |</echo>
+				<echo>|                                                      |</echo>
+				<echo>| Pattern:                                             |</echo>
+				<echo>| major.minor.micro.qualifier                          |</echo>
+				<echo>|                                                      |</echo>
+				<echo>| major - major version number (requested)             |</echo>
+				<echo>| minor - minor version number (recommended)           |</echo>
+				<echo>| micro - micro version number (optional)              |</echo>
+				<echo>|                                                      |</echo>
+				<echo>| The possible qualifiers are:                         |</echo>
+				<echo>| r     - release version                              |</echo>
+				<echo>| bnnn  - beta version, where nnn between 001 and 999  |</echo>
+				<echo>+------------------------------------------------------+</echo>
+				<fail>*** ERROR: Invalid version number. ***</fail>
+			</else>
+		</if>
+
+	</target>
+
+	<!--
+    * =====================================================================
+    *   Checks whether of not the build has been started 
+    *   for the right target.
+    * ===================================================================== -->
+	<target name="checkBuildTarget">
+
+		<echo>Checking build target: ${build.target}</echo>
+		
+		<condition property="build.updatesite.exists">
+			<available file="${workspace.home}\${build.updatesite}" type="dir"/>
+		</condition>
+		
+		<if>
+			<equals arg1="${build.updatesite.exists}" arg2="true" />
+			<then>
+				<echo>*** Success ***</echo>
+			</then>
+			<else>
+				<fail>*** Error: Update site ${build.updatesite} not found! ***</fail>
+			</else>
+		</if>
+
+	</target>
+
+	<!--
+    * =====================================================================
+    *   Refreshs the projects listed in 'build.properties'.
+    * ===================================================================== -->
+	<target name="refreshProjects">
+
+		<echo>Refereshing projects ...</echo>
+
+		<for list="${build.projects}" delimiter="," param="project">
+			<sequential>
+				<eclipse.refreshLocal resource="@{project}" depth="infinite" />
+				<echo>* @{project}</echo>
+			</sequential>
+		</for>
+
+		<echo>* ${ant.project.name}</echo>
+		<eclipse.refreshLocal resource="${ant.project.name}" depth="infinite" />
+		
+		<echo>Done.</echo>
+
+	</target>
+
+</project>
