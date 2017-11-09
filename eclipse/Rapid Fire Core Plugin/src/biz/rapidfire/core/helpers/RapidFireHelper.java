@@ -37,8 +37,6 @@ public class RapidFireHelper extends AbstractRapidFireHelper {
             return null;
         }
 
-        // String libraryVersion =
-        // retrieveServerVersion(dataAreaRapidFireContent);
         String libraryVersion = dataAreaRapidFireContent.getServerVersion();
         if (libraryVersion == null) {
             return null;
@@ -54,7 +52,6 @@ public class RapidFireHelper extends AbstractRapidFireHelper {
             return null;
         }
 
-        // String buildDate = retrieveBuildDate(dataAreaRapidFireContent);
         String buildDate = dataAreaRapidFireContent.getBuildDate();
         if (buildDate == null || buildDate.trim().length() == 0) {
             return null;
