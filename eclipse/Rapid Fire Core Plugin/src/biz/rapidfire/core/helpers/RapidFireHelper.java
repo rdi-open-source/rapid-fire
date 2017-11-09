@@ -159,16 +159,21 @@ public class RapidFireHelper extends AbstractRapidFireHelper {
         String[] parts = new String[3];
         parts = comparableVersion.split("\\."); //$NON-NLS-1$
         DecimalFormat formatter = new DecimalFormat("00"); //$NON-NLS-1$
+
+        // Build comparable version string ignoring the "b" (beta) and "r"
+        // (release) part.
         for (int i = 0; i < parts.length; i++) {
-            if (parts[i] == null) {
-                parts[i] = formatter.format(0L);
-            } else {
-                parts[i] = formatter.format(IntHelper.tryParseInt(parts[i], 0));
-            }
-            if (i == 0) {
-                comparableVersion = parts[i];
-            } else {
-                comparableVersion = comparableVersion + parts[i];
+            if (!parts[i].startsWith("b") && !parts[i].startsWith("r")) {
+                if (parts[i] == null) {
+                    parts[i] = formatter.format(0L);
+                } else {
+                    parts[i] = formatter.format(IntHelper.tryParseInt(parts[i], 0));
+                }
+                if (i == 0) {
+                    comparableVersion = parts[i];
+                } else {
+                    comparableVersion = comparableVersion + parts[i];
+                }
             }
         }
         return comparableVersion;

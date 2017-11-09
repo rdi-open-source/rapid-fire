@@ -32,6 +32,10 @@ public class RapidFireDataArea {
      *    DCL        VAR(&CM_RLS ) TYPE(*CHAR) STG(*DEFINED) LEN( 2) DEFVAR(&RAPIDFIRE  9)
      *    DCL        VAR(&CM_MDN ) TYPE(*CHAR) STG(*DEFINED) LEN( 2) DEFVAR(&RAPIDFIRE 11)
      *    DCL        VAR(&CM_PTF ) TYPE(*CHAR) STG(*DEFINED) LEN(10) DEFVAR(&RAPIDFIRE 13)
+     *    DCL        VAR(&BD_DATE) TYPE(*CHAR) STG(*DEFINED) LEN(10) DEFVAR(&RAPIDFIRE 23)
+     *    DCL        VAR(&CL_VER ) TYPE(*CHAR) STG(*DEFINED) LEN( 2) DEFVAR(&RAPIDFIRE 33)
+     *    DCL        VAR(&CL_RLS ) TYPE(*CHAR) STG(*DEFINED) LEN( 2) DEFVAR(&RAPIDFIRE 35)
+     *    DCL        VAR(&CL_MDN ) TYPE(*CHAR) STG(*DEFINED) LEN( 2) DEFVAR(&RAPIDFIRE 37)
      * </pre>
      */
 
@@ -47,6 +51,10 @@ public class RapidFireDataArea {
 
     public String getCMOneVersion() {
         return content.substring(6, 12);
+    }
+
+    public String getCMOnePTF() {
+        return content.substring(12, 22);
     }
 
     public String getBuildDate() {
