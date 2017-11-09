@@ -44,7 +44,7 @@ public abstract class AbstractLibrariesDAO {
 
         try {
 
-            String sqlStatement = String.format(getSqlStatement(), libraryName);
+            String sqlStatement = getSqlStatement(libraryName);
             preparedStatement = dao.prepareStatement(sqlStatement, libraryName);
             preparedStatement.setString(1, job);
             resultSet = preparedStatement.executeQuery();
@@ -77,9 +77,9 @@ public abstract class AbstractLibrariesDAO {
         return libraryResource;
     }
 
-    protected abstract IRapidFireLibraryResource createLibraryInstance(String dataLibrary, String job, String library);
+    protected abstract IRapidFireLibraryResource createLibraryInstance(String libraryName, String job, String library);
 
-    private String getSqlStatement() {
+    private String getSqlStatement(String libraryName) throws Exception {
 
         // @formatter:off
         String sqlStatement = 
@@ -88,11 +88,12 @@ public abstract class AbstractLibrariesDAO {
             "LIBRARY, " +
             "SHADOW_LIBRARY " +
         "FROM " +
-            "%s.LIBRARIES " +
+            IBaseDAO.LIBRARY +
+            "LIBRARIES " +
         "WHERE " +
             "JOB = ?";
         // @formatter:on
 
-        return sqlStatement;
+        return dao.insertLibraryQualifier(sqlStatement, libraryName);
     }
 }

@@ -50,7 +50,7 @@ public abstract class AbstractFilesDAO {
 
         try {
 
-            String sqlStatement = String.format(getSqlStatement(), libraryName);
+            String sqlStatement = getSqlStatement(libraryName);
             preparedStatement = dao.prepareStatement(sqlStatement, libraryName);
             preparedStatement.setString(1, job);
             resultSet = preparedStatement.executeQuery();
@@ -95,9 +95,9 @@ public abstract class AbstractFilesDAO {
         return fileResource;
     }
 
-    protected abstract IRapidFireFileResource createFileInstance(String dataLibrary, String job, int position);
+    protected abstract IRapidFireFileResource createFileInstance(String libraryName, String job, int position);
 
-    private String getSqlStatement() {
+    private String getSqlStatement(String libraryName) throws Exception {
 
         // @formatter:off
         String sqlStatement = 
@@ -111,11 +111,12 @@ public abstract class AbstractFilesDAO {
             "CONVERSION_PROGRAM_LIBRARY, " +
             "CONVERSION_PROGRAM " +
         "FROM " +
-            "%s.FILES " +
+            IBaseDAO.LIBRARY +
+            "FILES " +
         "WHERE " +
             "JOB = ?";
         // @formatter:on
 
-        return sqlStatement;
+        return dao.insertLibraryQualifier(sqlStatement, libraryName);
     }
 }
