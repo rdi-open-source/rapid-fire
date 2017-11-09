@@ -1,11 +1,22 @@
+/*******************************************************************************
+ * Copyright (c) 2017-2017 Rapid Fire Project Team
+ * All rights reserved. This program and the accompanying materials 
+ * are made available under the terms of the Common Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/cpl-v10.html
+ *******************************************************************************/
+
 package biz.rapidfire.rse.model.dao;
+
+import java.sql.Connection;
 
 import biz.rapidfire.core.model.dao.AbstractBaseDAO;
 import biz.rapidfire.core.model.dao.IBaseDAO;
 import biz.rapidfire.rse.Messages;
 
 import com.ibm.as400.access.AS400;
-import com.ibm.etools.iseries.connectorservice.ToolboxConnectorService;
+import com.ibm.as400.access.AS400JDBCConnection;
+import com.ibm.as400.access.Job;
 import com.ibm.etools.iseries.subsystems.qsys.api.IBMiConnection;
 
 public class BaseDAO extends AbstractBaseDAO implements IBaseDAO {
@@ -27,7 +38,7 @@ public class BaseDAO extends AbstractBaseDAO implements IBaseDAO {
         this.system = this.ibmiConnection.getAS400ToolboxObject();
     }
 
-    public AS400 getSystem() throws Exception {
+    public AS400 getSystem() {
         return system;
     }
 
@@ -43,28 +54,54 @@ public class BaseDAO extends AbstractBaseDAO implements IBaseDAO {
      * Does not work at the moment due to a bug in
      * IBMiConnection.getJdbcConnection().
      */
-    // public Connection getJdbcConnection(String defaultLibrary) throws
-    // Exception {
-    //
-    // String properties;
-    // if (defaultLibrary == null) {
-    // properties = "";
-    // } else {
-    // properties = ";libraries=" + defaultLibrary + ",*LIBL;";
-    // }
-    //
-    // return ibmiConnection.getJDBCConnection(properties, false);
-    // }
+    public Connection getJdbcConnection(String defaultSchema) throws Exception {
 
-    protected String getUser() {
+        String properties;
+        if (defaultSchema == null) {
+            properties = "";
+        } else {
+            properties = ";libraries=" + defaultSchema + ",*LIBL;";
+        }
 
-        ToolboxConnectorService service = (ToolboxConnectorService)ibmiConnection.getConnectorService();
-        return service.getUserId();
+        Connection jdbcConnection = ibmiConnection.getJDBCConnection(properties, false);
+
+        if (mustSetLibraries(jdbcConnection, defaultSchema)) {
+
+            // Bugfix, because getJDBCConnection does not set the default
+            // schema.
+            // (PMR 91446,031,724)
+            getAS400JDBCConnection(jdbcConnection).setSchema(defaultSchema);
+
+            // Also set the current library to find dependent objects.
+            setCurrentLibrary(jdbcConnection, defaultSchema);
+        }
+
+        return jdbcConnection;
     }
 
-    protected String getPassword() {
+    protected boolean mustSetLibraries(Connection jdbcConnection, String defaultSchema) {
+        return true;
+    }
 
-        ToolboxConnectorService service = (ToolboxConnectorService)ibmiConnection.getConnectorService();
-        return service.getPassword();
+    protected Job getServerJob(Connection jdbcConnection) {
+
+        AS400JDBCConnection as400JdbcConnection = (AS400JDBCConnection)jdbcConnection;
+        String serverJobIdentifier = as400JdbcConnection.getServerJobIdentifier();
+        String jobName = serverJobIdentifier.substring(0, 10);
+        String userName = serverJobIdentifier.substring(10, 20);
+        String jobNumber = serverJobIdentifier.substring(20, 26);
+
+        Job serverJob = new Job(getSystem(), jobName, userName, jobNumber);
+
+        return serverJob;
+    }
+
+    private AS400JDBCConnection getAS400JDBCConnection(Connection jdbcConnection) throws Exception {
+
+        if (jdbcConnection instanceof AS400JDBCConnection) {
+            return (AS400JDBCConnection)jdbcConnection;
+        } else {
+            throw new IllegalArgumentException("*** The expected connection class is: " + AS400JDBCConnection.class.getName() + " ***"); //$NON-NLS-1$ //$NON-NLS-2$
+        }
     }
 }

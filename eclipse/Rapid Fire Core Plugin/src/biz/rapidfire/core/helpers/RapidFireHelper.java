@@ -25,7 +25,6 @@ import com.ibm.as400.access.CharacterDataArea;
 import com.ibm.as400.access.CommandCall;
 import com.ibm.as400.access.ErrorCompletingRequestException;
 import com.ibm.as400.access.IllegalObjectTypeException;
-import com.ibm.as400.access.Job;
 import com.ibm.as400.access.ObjectDoesNotExistException;
 import com.ibm.as400.access.QSYSObjectPathName;
 
@@ -64,11 +63,6 @@ public class RapidFireHelper extends AbstractRapidFireHelper {
         return buildDate;
     }
 
-    public static boolean checkRapidFireLibrary(Shell shell, String connectionName, String libraryName) {
-        AS400 as400 = getSystem(connectionName);
-        return checkRapidFireLibrary(shell, as400, libraryName);
-    }
-
     public static boolean checkRapidFireLibrary(Shell shell, AS400 as400, String library) {
 
         if (as400 == null) {
@@ -80,10 +74,6 @@ public class RapidFireHelper extends AbstractRapidFireHelper {
             return false;
         }
 
-        // String serverProvided =
-        // retrieveServerVersion(dataAreaRapidFireContent);
-        // String serverNeedsClient =
-        // retrieveRequiredClientVersion(dataAreaRapidFireContent);
         String serverProvided = dataAreaRapidFireContent.getServerVersion();
         String serverNeedsClient = dataAreaRapidFireContent.getClientVersion();
 
@@ -114,59 +104,11 @@ public class RapidFireHelper extends AbstractRapidFireHelper {
         return true;
     }
 
-    public static String executeCommand(AS400 as400, String command) throws Exception {
-
-        CommandCall commandCall = new CommandCall(as400);
-        commandCall.run(command);
-        AS400Message[] messageList = commandCall.getMessageList();
-        if (messageList.length > 0) {
-            for (int idx = 0; idx < messageList.length; idx++) {
-                if (messageList[idx].getType() == AS400Message.ESCAPE) {
-                    return messageList[idx].getID();
-                }
-            }
-        }
-        return ""; //$NON-NLS-1$
-    }
-
-    public static String getCurrentLibrary(AS400 _as400) throws Exception {
-
-        String currentLibrary = null;
-
-        Job[] jobs = _as400.getJobs(AS400.COMMAND);
-
-        if (jobs.length == 1) {
-
-            if (!jobs[0].getCurrentLibraryExistence()) {
-                currentLibrary = "*CRTDFT"; //$NON-NLS-1$
-            } else {
-                currentLibrary = jobs[0].getCurrentLibrary();
-            }
-
-        }
-
-        return currentLibrary;
-
-    }
-
-    public static boolean setCurrentLibrary(AS400 _as400, String currentLibrary) throws Exception {
-
-        String command = "CHGCURLIB CURLIB(" + currentLibrary + ")"; //$NON-NLS-1$ //$NON-NLS-2$
-        CommandCall commandCall = new CommandCall(_as400);
-
-        if (commandCall.run(command)) {
-            return true;
-        } else {
-            return false;
-        }
-
-    }
-
-    public static boolean checkLibrary(AS400 system, String library) {
+    private static boolean checkLibrary(AS400 system, String library) {
         return checkObject(system, new QSYSObjectPathName("QSYS", library, "LIB")); //$NON-NLS-1$ //$NON-NLS-2$
     }
 
-    public static boolean checkObject(AS400 system, QSYSObjectPathName pathName) {
+    private static boolean checkObject(AS400 system, QSYSObjectPathName pathName) {
 
         StringBuilder command = new StringBuilder();
         command.append("CHKOBJ OBJ("); //$NON-NLS-1$
@@ -190,6 +132,21 @@ public class RapidFireHelper extends AbstractRapidFireHelper {
         return false;
     }
 
+    private static String executeCommand(AS400 as400, String command) throws Exception {
+
+        CommandCall commandCall = new CommandCall(as400);
+        commandCall.run(command);
+        AS400Message[] messageList = commandCall.getMessageList();
+        if (messageList.length > 0) {
+            for (int idx = 0; idx < messageList.length; idx++) {
+                if (messageList[idx].getType() == AS400Message.ESCAPE) {
+                    return messageList[idx].getID();
+                }
+            }
+        }
+        return ""; //$NON-NLS-1$
+    }
+
     /**
      * Changes a given version string of type "v.r.m" to a comparable version
      * string of type "VVRRMM".
@@ -200,8 +157,8 @@ public class RapidFireHelper extends AbstractRapidFireHelper {
     private static String comparableVersion(String version) {
         String comparableVersion = version;
         String[] parts = new String[3];
-        parts = comparableVersion.split("\\.");
-        DecimalFormat formatter = new DecimalFormat("00");
+        parts = comparableVersion.split("\\."); //$NON-NLS-1$
+        DecimalFormat formatter = new DecimalFormat("00"); //$NON-NLS-1$
         for (int i = 0; i < parts.length; i++) {
             if (parts[i] == null) {
                 parts[i] = formatter.format(0L);
@@ -222,21 +179,6 @@ public class RapidFireHelper extends AbstractRapidFireHelper {
             + Integer.parseInt(aVersionNumber.substring(4, 6));
     }
 
-    // private static String retrieveServerVersion(String
-    // dataAreaRapidFireContent) {
-    // return dataAreaRapidFireContent.substring(7, 13);
-    // }
-    //
-    // private static String retrieveRequiredClientVersion(String
-    // dataAreaRapidFireContent) {
-    // return dataAreaRapidFireContent.substring(21, 27);
-    // }
-    //
-    // private static String retrieveBuildDate(String dataAreaRapidFireContent)
-    // {
-    // return dataAreaRapidFireContent.substring(39, 49);
-    // }
-
     private static RapidFireDataArea readRapidFireDataArea(Shell shell, AS400 as400, String libraryName) {
 
         if (!checkLibrary(as400, libraryName)) {
@@ -252,7 +194,7 @@ public class RapidFireHelper extends AbstractRapidFireHelper {
         }
 
         String dataAreaRapidFireContent = null;
-        CharacterDataArea dataAreaRapidFire = new CharacterDataArea(as400, "/QSYS.LIB/" + libraryName + ".LIB/RAPIDFIRE.DTAARA");
+        CharacterDataArea dataAreaRapidFire = new CharacterDataArea(as400, "/QSYS.LIB/" + libraryName + ".LIB/RAPIDFIRE.DTAARA"); //$NON-NLS-1$ //$NON-NLS-2$
         try {
             dataAreaRapidFireContent = dataAreaRapidFire.read();
         } catch (AS400SecurityException e) {

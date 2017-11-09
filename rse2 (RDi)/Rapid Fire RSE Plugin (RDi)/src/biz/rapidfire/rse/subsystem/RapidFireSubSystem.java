@@ -133,7 +133,7 @@ public class RapidFireSubSystem extends SubSystem implements IISeriesSubSystem, 
         }
 
         FilesDAO dao = new FilesDAO(getHostAliasName());
-        List<IRapidFireFileResource> files = dao.load(library, job);
+        List<IRapidFireFileResource> files = dao.load(library, job, shell);
 
         return files.toArray(new IRapidFireFileResource[files.size()]);
     }
@@ -145,7 +145,7 @@ public class RapidFireSubSystem extends SubSystem implements IISeriesSubSystem, 
         }
 
         LibrariesDAO dao = new LibrariesDAO(getHostAliasName());
-        List<IRapidFireLibraryResource> libraries = dao.load(library, job);
+        List<IRapidFireLibraryResource> libraries = dao.load(library, job, shell);
 
         return libraries.toArray(new IRapidFireLibraryResource[libraries.size()]);
     }

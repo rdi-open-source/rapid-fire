@@ -18,9 +18,16 @@ import com.ibm.as400.access.AS400;
 
 public interface IBaseDAO {
 
-    public AS400 getSystem() throws Exception;
+    public static final String LIBRARY = "<LIBRARY>";
+    public static final String CATALOG_SEPARATOR = "<CATALOG_SEPARATOR>";
+
+    public AS400 getSystem();
 
     public String getConnectionName();
+
+    public Connection getJdbcConnection(String defaultSchema) throws Exception;
+
+    public String insertLibraryQualifier(String sqlStatement, String libraryName) throws Exception;
 
     public PreparedStatement prepareStatement(String sql, String defaultLibrary) throws Exception;
 

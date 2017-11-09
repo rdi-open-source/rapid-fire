@@ -41,31 +41,30 @@ public abstract class AbstractJobsDAO {
     private IBaseDAO dao;
 
     public AbstractJobsDAO(IBaseDAO dao) {
-
         this.dao = dao;
     }
 
-    public List<IRapidFireJobResource> load(final String library, Shell shell) throws Exception {
+    public List<IRapidFireJobResource> load(final String libraryName, Shell shell) throws Exception {
 
-        final List<IRapidFireJobResource> journalEntries = new ArrayList<IRapidFireJobResource>();
+        final List<IRapidFireJobResource> jobs = new ArrayList<IRapidFireJobResource>();
 
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
 
+        if (!dao.checkRapidFireLibrary(shell, libraryName)) {
+            return jobs;
+        }
+
         try {
 
-            if (!dao.checkRapidFireLibrary(shell, library)) {
-                return journalEntries;
-            }
-
-            String sqlStatement = String.format(getSqlStatement(), library);
-            preparedStatement = dao.prepareStatement(sqlStatement, null);
+            String sqlStatement = getSqlStatement(libraryName);
+            preparedStatement = dao.prepareStatement(sqlStatement, libraryName);
             resultSet = preparedStatement.executeQuery();
             resultSet.setFetchSize(50);
 
             if (resultSet != null) {
                 while (resultSet.next()) {
-                    journalEntries.add(produceJob(library, resultSet));
+                    jobs.add(produceJob(libraryName, resultSet));
                 }
             }
         } finally {
@@ -73,7 +72,7 @@ public abstract class AbstractJobsDAO {
             dao.destroy(resultSet);
         }
 
-        return journalEntries;
+        return jobs;
     }
 
     private IRapidFireJobResource produceJob(String dataLibrary, ResultSet resultSet) throws SQLException {
@@ -113,7 +112,7 @@ public abstract class AbstractJobsDAO {
 
     protected abstract IRapidFireJobResource createJobInstance(String library, String name);
 
-    private String getSqlStatement() {
+    private String getSqlStatement(String libraryName) throws Exception {
 
         // @formatter:off
         String sqlStatement = 
@@ -133,9 +132,10 @@ public abstract class AbstractJobsDAO {
             "STOP_APPLY_CHANGES, " +
             "CMONE_FORM " +
         "FROM " +
-            "%s.JOBS";
+            IBaseDAO.LIBRARY +
+            "JOBS";
         // @formatter:on
 
-        return sqlStatement;
+        return dao.insertLibraryQualifier(sqlStatement, libraryName);
     }
 }

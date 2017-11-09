@@ -43,27 +43,27 @@ public abstract class AbstractFileCopyStatusDAO {
         this.dao = dao;
     }
 
-    public List<IFileCopyStatus> load(final String library, String job, Shell shell) throws Exception {
+    public List<IFileCopyStatus> load(final String libraryName, String job, Shell shell) throws Exception {
 
-        final List<IFileCopyStatus> fileCopyStatus = new ArrayList<IFileCopyStatus>();
+        final List<IFileCopyStatus> fileCopyStatuses = new ArrayList<IFileCopyStatus>();
 
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
 
+        if (!dao.checkRapidFireLibrary(shell, libraryName)) {
+            return fileCopyStatuses;
+        }
+
         try {
 
-            if (!dao.checkRapidFireLibrary(shell, library)) {
-                return fileCopyStatus;
-            }
-
-            String sqlStatement = getSqlStatement(job);
-            preparedStatement = dao.prepareStatement(sqlStatement, library);
+            String sqlStatement = getSqlStatement(libraryName, job);
+            preparedStatement = dao.prepareStatement(sqlStatement, libraryName);
             resultSet = preparedStatement.executeQuery();
             resultSet.setFetchSize(50);
 
             if (resultSet != null) {
                 while (resultSet.next()) {
-                    fileCopyStatus.add(produceFileCopyStatus(library, resultSet));
+                    fileCopyStatuses.add(produceFileCopyStatus(libraryName, resultSet));
                 }
             }
 
@@ -72,7 +72,7 @@ public abstract class AbstractFileCopyStatusDAO {
             dao.destroy(resultSet);
         }
 
-        return fileCopyStatus;
+        return fileCopyStatuses;
     }
 
     private FileCopyStatus produceFileCopyStatus(String dataLibrary, ResultSet resultSet) throws SQLException {
@@ -113,7 +113,7 @@ public abstract class AbstractFileCopyStatusDAO {
         return fileCopyStatus;
     }
 
-    private String getSqlStatement(String job) {
+    private String getSqlStatement(String libraryName, String job) throws Exception {
 
         String where;
         if (job != null) {
@@ -139,10 +139,11 @@ public abstract class AbstractFileCopyStatusDAO {
             CHANGES_APPLIED + ", " +
             PERCENT_DONE + " " +
         "FROM TABLE(" +
+            IBaseDAO.LIBRARY +
             "\"LODSTSE_loadStatusEntries\"('" + where + "')" +
             ") AS X";
         // @formatter:on
 
-        return sqlStatement;
+        return dao.insertLibraryQualifier(sqlStatement, libraryName);
     }
 }

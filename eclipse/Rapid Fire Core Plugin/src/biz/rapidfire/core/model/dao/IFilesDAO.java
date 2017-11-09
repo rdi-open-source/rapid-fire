@@ -10,9 +10,11 @@ package biz.rapidfire.core.model.dao;
 
 import java.util.List;
 
+import org.eclipse.swt.widgets.Shell;
+
 import biz.rapidfire.core.model.IRapidFireFileResource;
 
 public interface IFilesDAO {
 
-    public List<IRapidFireFileResource> load(String dataLibrary, String job) throws Exception;
+    public List<IRapidFireFileResource> load(String libraryName, String job, Shell shell) throws Exception;
 }

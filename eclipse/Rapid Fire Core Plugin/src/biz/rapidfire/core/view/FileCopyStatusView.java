@@ -21,6 +21,7 @@ import org.eclipse.jface.action.Action;
 import org.eclipse.jface.action.IMenuManager;
 import org.eclipse.jface.action.IToolBarManager;
 import org.eclipse.jface.action.MenuManager;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.util.IPropertyChangeListener;
 import org.eclipse.jface.util.PropertyChangeEvent;
 import org.eclipse.jface.viewers.IStructuredContentProvider;
@@ -49,6 +50,7 @@ import biz.rapidfire.core.Messages;
 import biz.rapidfire.core.RapidFireCorePlugin;
 import biz.rapidfire.core.action.RefreshViewIntervalAction;
 import biz.rapidfire.core.dialogs.MessageDialogAsync;
+import biz.rapidfire.core.helpers.ExceptionHelper;
 import biz.rapidfire.core.job.IJobFinishedListener;
 import biz.rapidfire.core.model.IFileCopyStatus;
 import biz.rapidfire.core.model.IRapidFireJobResource;
@@ -319,6 +321,7 @@ public class FileCopyStatusView extends ViewPart implements IPropertyChangeListe
             return fileCopyStatuses;
 
         } catch (Exception e) {
+            MessageDialog.openError(getShell(), Messages.E_R_R_O_R, ExceptionHelper.getLocalizedMessage(e));
             return null;
         }
     }

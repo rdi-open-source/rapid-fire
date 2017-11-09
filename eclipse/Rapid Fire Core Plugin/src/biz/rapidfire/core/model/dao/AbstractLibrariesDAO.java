@@ -14,6 +14,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.swt.widgets.Shell;
+
 import biz.rapidfire.core.model.IRapidFireLibraryResource;
 
 public abstract class AbstractLibrariesDAO {
@@ -29,24 +31,28 @@ public abstract class AbstractLibrariesDAO {
         this.dao = dao;
     }
 
-    public List<IRapidFireLibraryResource> load(final String dataLibrary, String job) throws Exception {
+    public List<IRapidFireLibraryResource> load(final String libraryName, String job, Shell shell) throws Exception {
 
-        final List<IRapidFireLibraryResource> journalEntries = new ArrayList<IRapidFireLibraryResource>();
+        final List<IRapidFireLibraryResource> libraries = new ArrayList<IRapidFireLibraryResource>();
 
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
 
+        if (!dao.checkRapidFireLibrary(shell, libraryName)) {
+            return libraries;
+        }
+
         try {
 
-            String sqlStatement = String.format(getSqlStatement(), dataLibrary);
-            preparedStatement = dao.prepareStatement(sqlStatement, null);
+            String sqlStatement = String.format(getSqlStatement(), libraryName);
+            preparedStatement = dao.prepareStatement(sqlStatement, libraryName);
             preparedStatement.setString(1, job);
             resultSet = preparedStatement.executeQuery();
             resultSet.setFetchSize(50);
 
             if (resultSet != null) {
                 while (resultSet.next()) {
-                    journalEntries.add(produceLibrary(dataLibrary, resultSet));
+                    libraries.add(produceLibrary(libraryName, resultSet));
                 }
             }
         } finally {
@@ -54,7 +60,7 @@ public abstract class AbstractLibrariesDAO {
             dao.destroy(resultSet);
         }
 
-        return journalEntries;
+        return libraries;
     }
 
     private IRapidFireLibraryResource produceLibrary(String dataLibrary, ResultSet resultSet) throws SQLException {

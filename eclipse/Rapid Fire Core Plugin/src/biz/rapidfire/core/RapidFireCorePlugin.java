@@ -15,7 +15,6 @@ import org.eclipse.swt.graphics.RGB;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.Constants;
 
-import biz.rapidfire.core.model.dao.JdbcConnectionManager;
 import biz.rapidfire.core.plugin.AbstractExtendedUIPlugin;
 
 /**
@@ -64,7 +63,7 @@ public class RapidFireCorePlugin extends AbstractExtendedUIPlugin {
      * )
      */
     public void stop(BundleContext context) throws Exception {
-        JdbcConnectionManager.getInstance().destroy();
+        // JdbcConnectionManager.getInstance().destroy();
         plugin = null;
         super.stop(context);
     }

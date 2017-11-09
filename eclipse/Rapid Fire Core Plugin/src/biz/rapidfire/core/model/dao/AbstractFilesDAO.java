@@ -14,6 +14,8 @@ import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.eclipse.swt.widgets.Shell;
+
 import biz.rapidfire.core.model.FileType;
 import biz.rapidfire.core.model.IRapidFireFileResource;
 
@@ -35,24 +37,28 @@ public abstract class AbstractFilesDAO {
         this.dao = dao;
     }
 
-    public List<IRapidFireFileResource> load(final String library, String job) throws Exception {
+    public List<IRapidFireFileResource> load(final String libraryName, String job, Shell shell) throws Exception {
 
-        final List<IRapidFireFileResource> journalEntries = new ArrayList<IRapidFireFileResource>();
+        final List<IRapidFireFileResource> files = new ArrayList<IRapidFireFileResource>();
 
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
 
+        if (!dao.checkRapidFireLibrary(shell, libraryName)) {
+            return files;
+        }
+
         try {
 
-            String sqlStatement = String.format(getSqlStatement(), library);
-            preparedStatement = dao.prepareStatement(sqlStatement, null);
+            String sqlStatement = String.format(getSqlStatement(), libraryName);
+            preparedStatement = dao.prepareStatement(sqlStatement, libraryName);
             preparedStatement.setString(1, job);
             resultSet = preparedStatement.executeQuery();
             resultSet.setFetchSize(50);
 
             if (resultSet != null) {
                 while (resultSet.next()) {
-                    journalEntries.add(produceFile(library, resultSet));
+                    files.add(produceFile(libraryName, resultSet));
                 }
             }
         } finally {
@@ -60,7 +66,7 @@ public abstract class AbstractFilesDAO {
             dao.destroy(resultSet);
         }
 
-        return journalEntries;
+        return files;
     }
 
     private IRapidFireFileResource produceFile(String dataLibrary, ResultSet resultSet) throws SQLException {
