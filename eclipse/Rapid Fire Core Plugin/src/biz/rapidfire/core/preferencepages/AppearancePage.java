@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012-2015 iSphere Project Team
+ * Copyright (c) 2017-2017 Rapid Fire Project Team
  * All rights reserved. This program and the accompanying materials 
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
@@ -25,11 +25,11 @@ import biz.rapidfire.core.RapidFireCorePlugin;
 import biz.rapidfire.core.preferences.Preferences;
 import biz.rapidfire.core.swt.widgets.WidgetFactory;
 
-public class RapidFirePreferencePage extends PreferencePage implements IWorkbenchPreferencePage {
+public class AppearancePage extends PreferencePage implements IWorkbenchPreferencePage {
 
     private Button btnLargeProgressBar;
 
-    public RapidFirePreferencePage() {
+    public AppearancePage() {
         super();
 
         setPreferenceStore(RapidFireCorePlugin.getDefault().getPreferenceStore());

@@ -31,6 +31,11 @@ public class RapidFireCorePlugin extends AbstractExtendedUIPlugin {
     // The shared instance
     private static RapidFireCorePlugin plugin;
 
+    // Contributor logos
+    public static final String IMAGE_RAPIDFIRE = "rapidfire.gif"; //$NON-NLS-1$
+    public static final String IMAGE_TASKFORCE = "TaskForce.png";
+    public static final String IMAGE_TOOLS400 = "Tools400.bmp";
+
     public static final String IMAGE_ERROR = "error.gif"; //$NON-NLS-1$
     public static final String IMAGE_REFRESH = "refresh.gif"; //$NON-NLS-1$
     public static final String IMAGE_AUTO_REFRESH_OFF = "auto_refresh_off.gif"; //$NON-NLS-1$
@@ -105,6 +110,9 @@ public class RapidFireCorePlugin extends AbstractExtendedUIPlugin {
     protected void initializeImageRegistry(ImageRegistry reg) {
         super.initializeImageRegistry(reg);
 
+        reg.put(IMAGE_RAPIDFIRE, getImageDescriptor(IMAGE_RAPIDFIRE));
+        reg.put(IMAGE_TASKFORCE, getImageDescriptor(IMAGE_TASKFORCE));
+        reg.put(IMAGE_TOOLS400, getImageDescriptor(IMAGE_TOOLS400));
         reg.put(IMAGE_ERROR, getImageDescriptor(IMAGE_ERROR));
         reg.put(IMAGE_REFRESH, getImageDescriptor(IMAGE_REFRESH));
         reg.put(IMAGE_AUTO_REFRESH_OFF, getImageDescriptor(IMAGE_AUTO_REFRESH_OFF));

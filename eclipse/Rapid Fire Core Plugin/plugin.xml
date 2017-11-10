@@ -38,10 +38,19 @@
    <extension
          point="org.eclipse.ui.preferencePages">
       <page
-            class="biz.rapidfire.core.preferencepages.RapidFirePreferencePage"
+            class="biz.rapidfire.core.preferencepages.General"
+            name="%PrefencePage_General"
+            id="biz.rapidfire.core.preferencepages.General"/>
+      <page
+            class="biz.rapidfire.core.preferencepages.AppearancePage"
             category="biz.rapidfire.core.preferencepages.General"
-            name="%PrefencePage_Rapid_Fire_Preferences"
-            id="biz.rapidfire.core.preferencepages.RapidFirePreferencePage"/>
+            name="%PrefencePage_Appearance"
+            id="biz.rapidfire.core.preferencepages.AppearancePage"/>
+      <page
+            class="biz.rapidfire.core.preferencepages.Contributors"
+            category="biz.rapidfire.core.preferencepages.General"
+            name="%PrefencePage_Contributors"
+            id="biz.rapidfire.core.preferencepages.Contributors"/>
    </extension>
 
 </plugin>

@@ -35,6 +35,11 @@ public class Messages extends NLS {
     public static String ColumnLabel_Progress;
 
     // Dialog labels
+    public static String Label_E_Mail_colon;
+    public static String Label_Internet_colon;
+    public static String Label_Telefax_colon;
+    public static String Label_Telefon_colon;
+
     public static String Label_Library_colon;
     public static String Label_Job_colon;
     public static String Label_Status_colon;
