@@ -86,6 +86,8 @@ public class RapidFireSubSystemConfigurationAdapter extends SubSystemConfigurati
     @Override
     protected IAction getChangeFilterAction(ISubSystemConfiguration factory, ISystemFilter selectedFilter, Shell shell) {
 
+        selectedFilter.setSingleFilterStringOnly(true);
+
         SystemChangeFilterAction action = (SystemChangeFilterAction)super.getChangeFilterAction(factory, selectedFilter, shell);
         action.setDialogTitle(Messages.Change_Rapid_Fire_filter);
         action.setFilterStringEditPane(new RapidFireInstanceFilterStringEditPane(shell));
