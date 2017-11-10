@@ -1,15 +1,20 @@
 package biz.rapidfire.rse.model.dao;
 
+import java.sql.Connection;
+
 import biz.rapidfire.core.model.dao.AbstractBaseDAO;
 import biz.rapidfire.core.model.dao.IBaseDAO;
 import biz.rapidfire.rse.Messages;
 
 import com.ibm.as400.access.AS400;
+import com.ibm.as400.access.AS400JDBCConnection;
+import com.ibm.as400.access.Job;
 import com.ibm.etools.iseries.core.api.ISeriesConnection;
 
 public class BaseDAO extends AbstractBaseDAO implements IBaseDAO {
 
     private ISeriesConnection ibmiConnection;
+    private AS400 system;
 
     public BaseDAO(String connectionName) throws Exception {
 
@@ -17,25 +22,57 @@ public class BaseDAO extends AbstractBaseDAO implements IBaseDAO {
             throw new Exception(Messages.bind(Messages.RseBaseDAO_Invalid_or_missing_connection_name_A, connectionName));
         }
 
-        ibmiConnection = ISeriesConnection.getConnection(connectionName);
-        if (ibmiConnection == null) {
+        this.ibmiConnection = ISeriesConnection.getConnection(connectionName);
+        if (this.ibmiConnection == null) {
             throw new Exception(Messages.bind(Messages.RseBaseDAO_Connection_A_not_found, connectionName));
         }
-        if (!ibmiConnection.isConnected()) {
-            if (!ibmiConnection.connect()) {
-                throw new Exception(Messages.bind(Messages.RseBaseDAO_Failed_to_connect_to_A, connectionName));
-            }
-        }
 
-        connection = ibmiConnection.getJDBCConnection(properties, true);
-        connection.setAutoCommit(false);
+        this.system = this.ibmiConnection.getAS400ToolboxObject(null);
+    }
+
+    public AS400 getSystem() {
+        return system;
+    }
+
+    public String getHostName() {
+        return ibmiConnection.getHostName();
     }
 
     public String getConnectionName() {
         return ibmiConnection.getConnectionName();
     }
 
-    public AS400 getSystem() throws Exception {
-        return ibmiConnection.getAS400ToolboxObject(null);
+    /*
+     * Does not work at the moment due to a bug in
+     * IBMiConnection.getJdbcConnection().
+     */
+    public Connection getJdbcConnection(String defaultSchema) throws Exception {
+
+        String properties;
+        if (defaultSchema == null) {
+            properties = "";
+        } else {
+            properties = ";libraries=" + defaultSchema + ",*LIBL;";
+        }
+
+        Connection jdbcConnection = ibmiConnection.getJDBCConnection(properties, false);
+
+        if (mustSetLibraries(jdbcConnection, defaultSchema)) {
+
+            // Bugfix, because getJDBCConnection does not set the default
+            // schema.
+            // (PMR 91446,031,724)
+            // !! getSchema() is not available in WDSCi !!
+            // getAS400JDBCConnection(jdbcConnection).setSchema(defaultSchema);
+
+            // Also set the current library to find dependent objects.
+            setCurrentLibrary(jdbcConnection, defaultSchema);
+        }
+
+        return jdbcConnection;
+    }
+
+    protected boolean mustSetLibraries(Connection jdbcConnection, String defaultSchema) {
+        return true;
     }
 }
