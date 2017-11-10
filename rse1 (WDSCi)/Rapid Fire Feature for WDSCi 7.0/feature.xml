@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <feature
       id="biz.rapidfire.core"
-      label="Rapid Fire Core for WDSCi 7.0 (required)"
+      label="Rapid Fire Core (WDSCi) (required)"
       version="1.0.0.b001"
       provider-name="Rapid Fire Project Team">
 
