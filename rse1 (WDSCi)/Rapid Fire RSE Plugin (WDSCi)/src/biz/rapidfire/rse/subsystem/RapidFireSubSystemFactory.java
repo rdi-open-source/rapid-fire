@@ -78,6 +78,10 @@ public class RapidFireSubSystemFactory extends DefaultSubSystemFactoryImpl {
         return false;
     }
 
+    public boolean supportsMultipleFilterStrings() {
+        return false;
+    }
+    
     /*
      * Start of RDi/WDSCi specific methods.
      */
