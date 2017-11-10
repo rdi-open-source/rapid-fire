@@ -21,6 +21,7 @@ import biz.rapidfire.core.RapidFireCorePlugin;
 import biz.rapidfire.core.helpers.RapidFireHelper;
 
 import com.ibm.as400.access.AS400;
+import com.ibm.as400.access.AS400JDBCConnection;
 import com.ibm.as400.access.Job;
 
 public abstract class AbstractBaseDAO {
@@ -106,7 +107,7 @@ public abstract class AbstractBaseDAO {
         if (serverJob.getCurrentLibraryExistence()) {
             return serverJob.getCurrentLibrary();
         } else {
-            return "*CRTDFT";
+            return "*CRTDFT"; //$NON-NLS-1$
         }
     }
 
@@ -119,7 +120,7 @@ public abstract class AbstractBaseDAO {
 
             currentLibrary = getCurrentLibrary(jdbcConnection);
 
-            statement = jdbcConnection.prepareCall("CALL QCMDEXC('CHGCURLIB CURLIB(" + libraryName + ")')");
+            statement = jdbcConnection.prepareCall("CALL QCMDEXC('CHGCURLIB CURLIB(" + libraryName + ")')"); //$NON-NLS-1$ //$NON-NLS-2$
             statement.execute();
 
         } finally {
@@ -137,7 +138,7 @@ public abstract class AbstractBaseDAO {
         try {
             separator = jdbcConnection.getMetaData().getCatalogSeparator();
         } catch (SQLException e) {
-            RapidFireCorePlugin.logError("*** Could not get the JDBC catalog separator ***", e);
+            RapidFireCorePlugin.logError("*** Could not get the JDBC catalog separator ***", e); //$NON-NLS-1$
             separator = "."; //$NON-NLS-1$
         }
 
@@ -152,6 +153,17 @@ public abstract class AbstractBaseDAO {
 
     public abstract String getConnectionName();
 
-    protected abstract Job getServerJob(Connection jdbcConnection);
+    protected Job getServerJob(Connection jdbcConnection) {
+
+        AS400JDBCConnection as400JdbcConnection = (AS400JDBCConnection)jdbcConnection;
+        String serverJobIdentifier = as400JdbcConnection.getServerJobIdentifier();
+        String jobName = serverJobIdentifier.substring(0, 10);
+        String userName = serverJobIdentifier.substring(10, 20);
+        String jobNumber = serverJobIdentifier.substring(20, 26);
+
+        Job serverJob = new Job(getSystem(), jobName, userName, jobNumber);
+
+        return serverJob;
+    }
 
 }

@@ -15,8 +15,6 @@ import biz.rapidfire.core.model.dao.IBaseDAO;
 import biz.rapidfire.rse.Messages;
 
 import com.ibm.as400.access.AS400;
-import com.ibm.as400.access.AS400JDBCConnection;
-import com.ibm.as400.access.Job;
 import com.ibm.etools.iseries.subsystems.qsys.api.IBMiConnection;
 
 public class BaseDAO extends AbstractBaseDAO implements IBaseDAO {
@@ -70,7 +68,8 @@ public class BaseDAO extends AbstractBaseDAO implements IBaseDAO {
             // Bugfix, because getJDBCConnection does not set the default
             // schema.
             // (PMR 91446,031,724)
-            getAS400JDBCConnection(jdbcConnection).setSchema(defaultSchema);
+            // !! getSchema() is not available in WDSCi !!
+            // getAS400JDBCConnection(jdbcConnection).setSchema(defaultSchema);
 
             // Also set the current library to find dependent objects.
             setCurrentLibrary(jdbcConnection, defaultSchema);
@@ -81,27 +80,5 @@ public class BaseDAO extends AbstractBaseDAO implements IBaseDAO {
 
     protected boolean mustSetLibraries(Connection jdbcConnection, String defaultSchema) {
         return true;
-    }
-
-    protected Job getServerJob(Connection jdbcConnection) {
-
-        AS400JDBCConnection as400JdbcConnection = (AS400JDBCConnection)jdbcConnection;
-        String serverJobIdentifier = as400JdbcConnection.getServerJobIdentifier();
-        String jobName = serverJobIdentifier.substring(0, 10);
-        String userName = serverJobIdentifier.substring(10, 20);
-        String jobNumber = serverJobIdentifier.substring(20, 26);
-
-        Job serverJob = new Job(getSystem(), jobName, userName, jobNumber);
-
-        return serverJob;
-    }
-
-    private AS400JDBCConnection getAS400JDBCConnection(Connection jdbcConnection) throws Exception {
-
-        if (jdbcConnection instanceof AS400JDBCConnection) {
-            return (AS400JDBCConnection)jdbcConnection;
-        } else {
-            throw new IllegalArgumentException("*** The expected connection class is: " + AS400JDBCConnection.class.getName() + " ***"); //$NON-NLS-1$ //$NON-NLS-2$
-        }
     }
 }
