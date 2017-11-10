@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2012-2017 iSphere Project Owners
+ * Copyright (c) 2017-2017 Rapid Fire Project Team
  * All rights reserved. This program and the accompanying materials 
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
@@ -17,7 +17,7 @@ public class Messages extends NLS {
     public static final String EMPTY = ""; //$NON-NLS-1$
     public static final String SPACE = " "; //$NON-NLS-1$
 
-    public static final String E_R_R_O_R = "E R R O R"; //$NON-NLS-1$
+    public static String E_R_R_O_R;
 
     /*
      * DAO strings
@@ -110,11 +110,11 @@ public class Messages extends NLS {
     public static String Node_Files;
     public static String Node_Libraries;
 
+    private Messages() {
+    }
+
     static {
         // initialize resource bundle
         NLS.initializeMessages(BUNDLE_NAME, Messages.class);
-    }
-
-    private Messages() {
     }
 }

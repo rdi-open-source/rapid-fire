@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2017-2017 Rapid Fire Project Owners
+ * Copyright (c) 2017-2017 Rapid Fire Project Team
  * All rights reserved. This program and the accompanying materials 
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
@@ -49,7 +49,7 @@ public class LibrariesNodeAdapter extends AbstractNodeAdapter {
             LibrariesNode libraries = (LibrariesNode)element;
             IRapidFireJobResource resource = libraries.getJob();
 
-            return resource.getParentSubSystem().getLibraries(resource.getDataLibrary(), resource.getName());
+            return resource.getParentSubSystem().getLibraries(resource.getDataLibrary(), resource.getName(), getShell());
 
         } catch (Exception e) {
             RapidFireCorePlugin.logError("*** Could resolve filter string and load libraries ***", e); //$NON-NLS-1$
@@ -63,4 +63,5 @@ public class LibrariesNodeAdapter extends AbstractNodeAdapter {
     public String getRemoteType(Object element) {
         return "node.libraries"; //$NON-NLS-1$
     }
+
 }

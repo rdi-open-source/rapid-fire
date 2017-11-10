@@ -1,14 +1,11 @@
 /*******************************************************************************
- * Copyright (c) 2005 SoftLanding Systems, Inc. and others.
+ * Copyright (c) 2017-2017 Rapid Fire Project Team
  * All rights reserved. This program and the accompanying materials 
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/cpl-v10.html
- * 
- * Contributors:
- *     SoftLanding - initial API and implementation
- *     iSphere Project Owners - Maintenance and enhancements
  *******************************************************************************/
+
 package biz.rapidfire.rse.subsystem;
 
 import java.lang.reflect.InvocationTargetException;
@@ -17,16 +14,23 @@ import java.util.List;
 import java.util.Vector;
 
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
+import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.ui.progress.WorkbenchJob;
 
 import biz.rapidfire.core.RapidFireCorePlugin;
 import biz.rapidfire.core.dialogs.MessageDialogAsync;
+import biz.rapidfire.core.model.IFileCopyStatus;
 import biz.rapidfire.core.model.IRapidFireFileResource;
 import biz.rapidfire.core.model.IRapidFireJobResource;
 import biz.rapidfire.core.model.IRapidFireLibraryResource;
+import biz.rapidfire.core.model.list.FileCopyStatus;
 import biz.rapidfire.core.subsystem.IRapidFireSubSystem;
 import biz.rapidfire.core.subsystem.RapidFireFilter;
 import biz.rapidfire.rse.model.RapidFireJobResource;
+import biz.rapidfire.rse.model.dao.FileCopyStatusDAO;
 import biz.rapidfire.rse.model.dao.FilesDAO;
 import biz.rapidfire.rse.model.dao.JobsDAO;
 import biz.rapidfire.rse.model.dao.LibrariesDAO;
@@ -53,11 +57,33 @@ import com.ibm.etools.systems.subsystems.impl.AbstractSystemManager;
 public class RapidFireSubSystem extends DefaultSubSystemImpl implements IISeriesSubSystem, IRapidFireSubSystem {
 
     private RapidFireSubSystemAttributes subSystemAttributes;
+    private boolean isLoading;
 
     public RapidFireSubSystem(SystemConnection connection) {
         super();
 
         this.subSystemAttributes = new RapidFireSubSystemAttributes(this);
+        this.isLoading = true;
+
+        new WorkbenchJob("") {
+
+            @Override
+            public IStatus runInUIThread(IProgressMonitor arg0) {
+
+                Shell[] shells = Display.getCurrent().getShells();
+                for (int i = 0; (i < shells.length) && (shell == null); i++) {
+                    if ((!shells[i].isDisposed()) && (shells[i].isVisible()) && (shells[i].isEnabled())) {
+                        setShell(shells[i]);
+                        break;
+                    }
+                }
+
+                isLoading = false;
+
+                return Status.OK_STATUS;
+            }
+
+        }.schedule();
     }
 
     public RapidFireSubSystemAttributes getSubSystemAttributes() {
@@ -71,7 +97,7 @@ public class RapidFireSubSystem extends DefaultSubSystemImpl implements IISeries
         try {
 
             RapidFireFilter filter = new RapidFireFilter(filterString);
-            IRapidFireJobResource[] allJobs = getJobs(filter.getDataLibrary());
+            IRapidFireJobResource[] allJobs = getJobs(filter.getDataLibrary(), getShell());
             Vector<IRapidFireJobResource> filteredJobs = new Vector<IRapidFireJobResource>();
             for (IRapidFireJobResource job : allJobs) {
                 if (filter.matches(job)) {
@@ -90,28 +116,75 @@ public class RapidFireSubSystem extends DefaultSubSystemImpl implements IISeries
         return null;
     }
 
-    public IRapidFireJobResource[] getJobs(String library) throws Exception {
+    public IRapidFireJobResource[] getJobs(String library, Shell shell) throws Exception {
+
+        if (!successFullyLoaded()) {
+            return new IRapidFireJobResource[0];
+        }
 
         JobsDAO dao = new JobsDAO(getSystemConnectionName());
-        List<IRapidFireJobResource> jobs = dao.load(library);
+        List<IRapidFireJobResource> jobs = dao.load(library, shell);
 
         return jobs.toArray(new IRapidFireJobResource[jobs.size()]);
     }
 
-    public IRapidFireFileResource[] getFiles(String library, String job) throws Exception {
+    public IRapidFireFileResource[] getFiles(String library, String job, Shell shell) throws Exception {
+
+        if (!successFullyLoaded()) {
+            return new IRapidFireFileResource[0];
+        }
 
         FilesDAO dao = new FilesDAO(getSystemConnectionName());
-        List<IRapidFireFileResource> files = dao.load(library, job);
+        List<IRapidFireFileResource> files = dao.load(library, job, shell);
 
         return files.toArray(new IRapidFireFileResource[files.size()]);
     }
 
-    public IRapidFireLibraryResource[] getLibraries(String library, String job) throws Exception {
+    public IRapidFireLibraryResource[] getLibraries(String library, String job, Shell shell) throws Exception {
+
+        if (!successFullyLoaded()) {
+            return new IRapidFireLibraryResource[0];
+        }
 
         LibrariesDAO dao = new LibrariesDAO(getSystemConnectionName());
-        List<IRapidFireLibraryResource> libraries = dao.load(library, job);
+        List<IRapidFireLibraryResource> libraries = dao.load(library, job, shell);
 
         return libraries.toArray(new IRapidFireLibraryResource[libraries.size()]);
+    }
+
+    public IFileCopyStatus[] getFileCopyStatus(String library, String job, Shell shell) throws Exception {
+
+        if (!successFullyLoaded()) {
+            return new IFileCopyStatus[0];
+        }
+
+        FileCopyStatusDAO dao = new FileCopyStatusDAO(getHostName());
+        List<IFileCopyStatus> fileCopyStatuses = dao.load(library, job, shell);
+
+        return fileCopyStatuses.toArray(new FileCopyStatus[fileCopyStatuses.size()]);
+    }
+
+    private boolean successFullyLoaded() {
+
+        if (isLoading) {
+
+            final int SLEEP_TIME = 250;
+            int maxTime = 30 * 1000 / SLEEP_TIME;
+
+            while (isLoading) {
+                try {
+                    Thread.sleep(SLEEP_TIME);
+                } catch (InterruptedException e) {
+                }
+            }
+        }
+
+        if (getShell() == null) {
+            MessageDialogAsync.displayError("*** Could not successfully load the Rapid Fire subsystem ***");
+            return false;
+        }
+
+        return true;
     }
 
     @Override

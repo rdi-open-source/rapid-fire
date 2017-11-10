@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2017-2017 Rapid Fire Project Owners
+ * Copyright (c) 2017-2017 Rapid Fire Project Team
  * All rights reserved. This program and the accompanying materials 
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
@@ -14,13 +14,10 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.views.properties.IPropertyDescriptor;
 import org.eclipse.ui.views.properties.PropertyDescriptor;
 
-import biz.rapidfire.core.RapidFireCorePlugin;
-import biz.rapidfire.core.dialogs.MessageDialogAsync;
 import biz.rapidfire.core.model.IRapidFireFileResource;
 import biz.rapidfire.rse.Messages;
 import biz.rapidfire.rse.RapidFireRSEPlugin;
 import biz.rapidfire.rse.model.RapidFireFileResource;
-import biz.rapidfire.rse.model.RapidFireJobResource;
 
 import com.ibm.etools.systems.core.ui.SystemMenuManager;
 import com.ibm.etools.systems.core.ui.view.ISystemRemoteElementAdapter;
@@ -116,7 +113,7 @@ public class RapidFireFileResourceAdapter extends AbstractResourceAdapter implem
         // RapidFireCorePlugin.logError("*** Could resolve filter string and
         // load files ***", e); //$NON-NLS-1$
         // MessageDialogAsync.displayError(e.getLocalizedMessage());
-        //        }
+        // }
 
         return new Object[0];
     }
