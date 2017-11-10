@@ -49,6 +49,17 @@
 	<property name="temp.dir"          location="${basedir}/temp" />
 	<property name="temp.dir.local_updatesite" location="${temp.dir}/local_updatesite" />
 	
+	<!-- Target IDE -->
+	<if>
+		<equals arg1="${build.target}" arg2="RDi" />
+		<then>
+			<property name="do.copy.site.xml" value="false" />
+		</then>
+		<else>
+			<property name="do.copy.site.xml" value="true"/>
+		</else>
+	</if>
+	
 	<!-- Check for BETA or RELEASE version -->
 	<property name="release.flag.regex" value="^(?:[1-9]+\.[0-9]+(?:\.[0-9]+)?(?:\.(?:b[0-9]{3}|(r)))?)$" />
 	<propertyregex property="release.flag" input="${build.version}" regexp="${release.flag.regex}" select="\1" casesensitive="true" />
@@ -160,6 +171,15 @@
 			<fileset dir="${temp.dir.local_updatesite}" includes="content.jar"/>
 		</copy>
 		
+		<if>
+			<equals arg1="${do.copy.site.xml}" arg2="true" />
+			<then>
+				<copy todir="${build.upload.dir.files.eclipse}" >
+					<fileset dir="${site.dir}" includes="site.xml" />
+				</copy>
+			</then>
+		</if>
+		
 	</target>
 	
 	<!-- =============================================================
@@ -184,7 +204,15 @@
 			<fileset dir="${site.dir}" includes="content.jar" />
 			<fileset dir="${site.dir}" includes="*.tag" />
 		</copy>
-
+		
+		<if>
+			<equals arg1="${do.copy.site.xml}" arg2="true" />
+			<then>
+				<copy todir="${temp.dir.local_updatesite}" >
+					<fileset dir="${site.dir}" includes="site.xml" />
+				</copy>
+			</then>
+		</if>
 	</target>
 	
 	<!-- =============================================================
