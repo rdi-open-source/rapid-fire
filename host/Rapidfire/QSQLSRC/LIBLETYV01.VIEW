@@ -1,0 +1,32 @@
+-- *------------------------------------------------------------------------*
+-- *                                                                        *
+-- * Copyright (c) 2014 Task Force IT-Consulting GmbH, Waltrop (Germany)    *
+-- * This software and the accompanying materials are made available        *
+-- * under the terms of the GNU General Public License version 2.0 (GPLv2)  *
+-- * which accompanies this distribution and is available at                *
+-- * http://www.gnu.org/licenses/gpl-2.0.html                               *
+-- *                                                                        *
+-- *------------------------------------------------------------------------*
+-- *                                                                        *
+-- * Library list entries                                                   *
+-- *                                                                        *
+-- *------------------------------------------------------------------------*
+-- * >>PRE-COMPILER<<                                                       *
+-- *   >>CRTCMD<< RUNSQLSTM SRCFILE(&SL/&SF) SRCMBR(&SM) +                  *
+-- *                        COMMIT(*NONE) NAMING(*SYS) DFTRDBCOL(&LI) +     *
+-- *                        OPTION(*LIST) PROCESS(*RUN) USRPRF(*USER);      *
+-- *   >>CURLIB<< &CL;                                                      *
+-- *   >>LIBL<<   &LL;                                                      *
+-- *   >>EXECUTE<<                                                          *
+-- * >>END-PRE-COMPILER<<                                                   *
+-- *------------------------------------------------------------------------*
+
+CREATE OR REPLACE VIEW LIBRARY_LIST_ENTRIES_WITH_SHADOW_LIBRARY
+FOR SYSTEM NAME LIBLETYV01 AS
+(
+ SELECT A.*, SHADOW_LIBRARY
+ FROM LIBRARY_LIST_ENTRIES A LEFT OUTER JOIN LIBRARIES B
+ ON A.JOB = B.JOB AND A.LIBRARY = B.LIBRARY
+);
+
+CL: CHGOBJD OBJ(LIBLETYV01) OBJTYPE(*FILE) TEXT('Library list entries');

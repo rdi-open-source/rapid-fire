@@ -1,0 +1,43 @@
+     /*-------------------------------------------------------------------------------------------*/
+     /*                                                                                           */
+     /* Copyright (c) 2014 Task Force IT-Consulting GmbH, Waltrop (Germany)                       */
+     /* This software and the accompanying materials are made available                           */
+     /* under the terms of the GNU General Public License version 2.0 (GPLv2)                     */
+     /* which accompanies this distribution and is available at                                   */
+     /* http://www.gnu.org/licenses/gpl-2.0.html                                                  */
+     /*                                                                                           */
+     /*-------------------------------------------------------------------------------------------*/
+     /*                                                                                           */
+     /* Returncode of Exit Program for Command RCVJRNE                                            */
+     /*                                                                                           */
+     /*------------+--------+---------------------------------------------------------------------*/
+     /*   Datum    I Progr. I Beschreibung                                                        */
+     /*------------+--------+---------------------------------------------------------------------*/
+     /* 03.02.2016 I   TR   I STRPREPRC Header hinzugefügt.                                       */
+     /*------------+--------+---------------------------------------------------------------------*/
+     /*  >>PRE-COMPILER<<                                                                         */
+     /*    >>CRTCMD<< CRTSRVPGM    SRVPGM(&LI/&OB) EXPORT(*SRCFILE) SRCFILE(&SL/&SF) SRCMBR(&SM); */
+     /*    >>IMPORTANT<<                                                                          */
+     /*      >>PARM<< MODULE(&LI/JOURNALRTN);                                                     */
+     /*      >>PARM<< TEXT('Returncode of Exit Program for Command RCVJRNE');                     */
+     /*      >>PARM<< ACTGRP(&U2);                                                                */
+     /*      >>PARM<< TGTRLS(&TR);                                                                */
+     /*      >>PARM<< DETAIL(*BASIC);                                                             */
+     /*    >>END-IMPORTANT<<                                                                      */
+     /*    >>EXECUTE<<                                                                            */
+     /*  >>END-PRE-COMPILER<<                                                                     */
+     /*-------------------------------------------------------------------------------------------*/
+
+             STRPGMEXP
+
+                EXPORT     SYMBOL('JOURNALRTN_SET_JOB')
+                EXPORT     SYMBOL('JOURNALRTN_GET_JOB')
+                EXPORT     SYMBOL('JOURNALRTN_SET_RETURN_CODE')
+                EXPORT     SYMBOL('JOURNALRTN_GET_RETURN_CODE')
+                EXPORT     SYMBOL('JOURNALRTN_SET_DATE')
+                EXPORT     SYMBOL('JOURNALRTN_GET_DATE')
+                EXPORT     SYMBOL('JOURNALRTN_SET_TIME')
+                EXPORT     SYMBOL('JOURNALRTN_GET_TIME')
+
+             ENDPGMEXP
+

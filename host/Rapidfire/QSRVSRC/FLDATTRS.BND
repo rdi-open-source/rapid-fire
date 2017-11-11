@@ -1,0 +1,39 @@
+     /*-------------------------------------------------------------------------------------------*/
+     /*                                                                                           */
+     /* Copyright (c) 2016 Task Force IT-Consulting GmbH, Waltrop (Germany)                       */
+     /* This software and the accompanying materials are made available                           */
+     /* under the terms of the GNU General Public License version 2.0 (GPLv2)                     */
+     /* which accompanies this distribution and is available at                                   */
+     /* http://www.gnu.org/licenses/gpl-2.0.html                                                  */
+     /*                                                                                           */
+     /*-------------------------------------------------------------------------------------------*/
+     /*                                                                                           */
+     /* List API Manager                                                                          */
+     /*                                                                                           */
+     /*-------------------------------------------------------------------------------------------*/
+     /*  >>PRE-COMPILER<<                                                                         */
+     /*    >>CRTCMD<< CRTSRVPGM    SRVPGM(&LI/&OB) EXPORT(*SRCFILE) SRCFILE(&SL/&SF) SRCMBR(&SM); */
+     /*    >>IMPORTANT<<                                                                          */
+     /*      >>PARM<< MODULE(&LI/FLDATTRS);                                                       */
+     /*      >>PARM<< TEXT('Retrieve Field Attributes');                                          */
+     /*      >>PARM<< BNDDIR(&U0);                                                                */
+     /*      >>PARM<< ACTGRP(&U2);                                                                */
+     /*      >>PARM<< TGTRLS(&TR);                                                                */
+     /*      >>PARM<< DETAIL(*BASIC);                                                             */
+     /*    >>END-IMPORTANT<<                                                                      */
+     /*    >>EXECUTE<<                                                                            */
+     /*  >>END-PRE-COMPILER<<                                                                     */
+     /*-------------------------------------------------------------------------------------------*/
+
+             STRPGMEXP  SIGNATURE('Field_Attributes')
+
+                EXPORT     SYMBOL('FLDATTRS_FieldAttributes_new')
+                EXPORT     SYMBOL('FLDATTRS_FieldAttributes_delete')
+                EXPORT     SYMBOL('FLDATTRS_FieldAttributes_rewind')
+                EXPORT     SYMBOL('FLDATTRS_FieldAttributes_retrieve')
+                EXPORT     SYMBOL('FLDATTRS_FieldAttributes_length')
+                EXPORT     SYMBOL('FLDATTRS_FieldAttributes_isNull')
+                EXPORT     SYMBOL('FLDATTRS_FieldAttributes_getFormatLevelId')
+
+             ENDPGMEXP
+

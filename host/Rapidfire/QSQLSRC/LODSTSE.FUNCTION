@@ -1,0 +1,46 @@
+-- *------------------------------------------------------------------------*
+-- *                                                                        *
+-- * Load Status Entries                                                    *
+-- *                                                                        *
+-- *------------+--------+--------------------------------------------------*
+-- *   Datum    I Progr. I Beschreibung                                     *
+-- *------------+--------+--------------------------------------------------*
+-- * 26.10.2017 I   FH   I Dateierstellung                                  *
+-- *------------+--------+--------------------------------------------------*
+-- * >>PRE-COMPILER<<                                                       *
+-- *   >>CRTCMD<< RUNSQLSTM SRCFILE(&SL/&SF) SRCMBR(&SM) +                  *
+-- *                        COMMIT(*NONE) NAMING(*SYS) DFTRDBCOL(&LI) +     *
+-- *                        OPTION(*LIST) PROCESS(*RUN) USRPRF(*USER);      *
+-- *   >>CURLIB<< &CL;                                                      *
+-- *   >>LIBL<<   &LL;                                                      *
+-- *   >>EXECUTE<<                                                          *
+-- * >>END-PRE-COMPILER<<                                                   *
+-- *------------------------------------------------------------------------*
+
+CREATE OR REPLACE FUNCTION "LODSTSE_loadStatusEntries" (
+ VARCHAR(1024)
+)
+RETURNS TABLE
+(
+ JOB   CHARACTER(10),
+ POS   DECIMAL(6, 0),
+ ARA   CHARACTER(10),
+ FILE  CHARACTER(10),
+ LIB   CHARACTER(10),
+ RPL   DECIMAL(10, 0),
+ RSL   DECIMAL(10, 0),
+ RTO   DECIMAL(10, 0),
+ RCO   DECIMAL(10, 0),
+ ETC   CHARACTER(11),
+ CTA   DECIMAL(10, 0),
+ CAP   DECIMAL(10, 0),
+ PRC   DECIMAL(3, 0)
+)
+EXTERNAL NAME
+'&CMONE_SCHEMA_FOR_SERVICE_PROGRAM/LODSTSE(LODSTSE_loadStatusEntries)'
+SPECIFIC LODSTSE
+LANGUAGE RPGLE
+PARAMETER STYLE DB2SQL
+MODIFIES SQL DATA
+NOT DETERMINISTIC
+DISALLOW PARALLEL;

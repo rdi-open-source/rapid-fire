@@ -1,0 +1,65 @@
+-- *------------------------------------------------------------------------*
+-- *                                                                        *
+-- * Copyright (c) 2014 Task Force IT-Consulting GmbH, Waltrop (Germany)    *
+-- * This software and the accompanying materials are made available        *
+-- * under the terms of the GNU General Public License version 2.0 (GPLv2)  *
+-- * which accompanies this distribution and is available at                *
+-- * http://www.gnu.org/licenses/gpl-2.0.html                               *
+-- *                                                                        *
+-- *------------------------------------------------------------------------*
+-- *                                                                        *
+-- * Members                                                                *
+-- *                                                                        *
+-- *------------------------------------------------------------------------*
+-- * >>PRE-COMPILER<<                                                       *
+-- *   >>CRTCMD<< RUNSQLSTM SRCFILE(&SL/&SF) SRCMBR(&SM) +                  *
+-- *                        COMMIT(*NONE) NAMING(*SYS) DFTRDBCOL(&LI) +     *
+-- *                        OPTION(*LIST) PROCESS(*RUN) USRPRF(*USER);      *
+-- *   >>CURLIB<< &CL;                                                      *
+-- *   >>LIBL<<   &LL;                                                      *
+-- *   >>EXECUTE<<                                                          *
+-- * >>END-PRE-COMPILER<<                                                   *
+-- *------------------------------------------------------------------------*
+
+CREATE OR REPLACE TABLE MEMBERS
+(
+ JOB FOR COLUMN X7JOB CHAR(10) NOT NULL WITH DEFAULT,
+ POSITION FOR COLUMN X7POS DECIMAL(6, 0) NOT NULL WITH DEFAULT,
+ AREA FOR COLUMN X7ARA CHAR(10) NOT NULL WITH DEFAULT,
+ MEMBER FOR COLUMN X7MBR CHAR(10) NOT NULL WITH DEFAULT,
+ TARGET_AREA FOR COLUMN X7TARA CHAR(10) NOT NULL WITH DEFAULT,
+ FROM_AREA FOR COLUMN X7FARA CHAR(10) NOT NULL WITH DEFAULT,
+ TEXT FOR COLUMN X7TXT CHAR(50) NOT NULL WITH DEFAULT,
+ RECORDS FOR COLUMN X7RCD DECIMAL(10, 0) NOT NULL WITH DEFAULT
+);
+
+LABEL ON TABLE MEMBERS
+ IS 'Members';
+
+LABEL ON COLUMN MEMBERS
+(
+ JOB IS 'Job',
+ POSITION IS 'Position',
+ AREA IS 'Area',
+ MEMBER IS 'Member',
+ TARGET_AREA IS 'Target area',
+ FROM_AREA IS 'From area',
+ TEXT IS 'Text',
+ RECORDS IS 'Records'
+);
+
+LABEL ON COLUMN MEMBERS
+(
+ JOB TEXT IS 'Job',
+ POSITION TEXT IS 'Position',
+ AREA TEXT IS 'Area',
+ MEMBER TEXT IS 'Member',
+ TARGET_AREA TEXT IS 'Target area',
+ FROM_AREA TEXT IS 'From area',
+ TEXT TEXT IS 'Text',
+ RECORDS TEXT IS 'Records'
+);
+
+ALTER TABLE MEMBERS
+ADD CONSTRAINT MEMBERS_PRIMARY_KEY
+PRIMARY KEY (JOB, POSITION, AREA, MEMBER);

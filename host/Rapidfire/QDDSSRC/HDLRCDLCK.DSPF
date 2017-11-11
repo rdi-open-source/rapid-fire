@@ -1,0 +1,49 @@
+      *-------------------------------------------------------------------------------------------*
+      *                                                                                           *
+      * COPYRIGHT (C) 2014 TASK FORCE IT-CONSULTING GMBH, WALTROP (GERMANY)                       *
+      * This software and the accompanying materials are made available                           *
+      * under the terms of the GNU General Public License version 2.0 (GPLv2)                     *
+      * which accompanies this distribution and is available at                                   *
+      * http://www.gnu.org/licenses/gpl-2.0.html                                                  *
+      *                                                                                           *
+      *-------------------------------------------------------------------------------------------*
+      * >>PRE-COMPILER<<                                                                          *
+      *   >>CRTCMD<< CRTDSPF      FILE(&LI/&OB) SRCFILE(&SL/&SF) SRCMBR(&SM);                     *
+      *   >>IMPORTANT<<                                                                           *
+      *     >>PARM<< OPTION(*EVENTF);                                                             *
+      *   >>END-IMPORTANT<<                                                                       *
+      *   >>EXECUTE<<                                                                             *
+      * >>END-PRE-COMPILER<<                                                                      *
+      *-------------------------------------------------------------------------------------------*
+      *
+     A*%%TS  SD  20010720  164814  HILDEBRAND  REL-V4R2M0  5769-PW1
+     A*%%EC
+     A                                      DSPSIZ(24 80 *DS3)
+     A                                      CHGINPDFT
+     A                                      PRINT
+     A          R DSPF000
+     A*%%TS  SD  19980803  155237  EXT01       REL-V4R2M0  5769-PW1
+     A                                      ASSUME
+     A            §§§§§§         1   O  1  2
+     A          R DSPF010W
+     A*%%TS  SD  20010720  164814  HILDEBRAND  REL-V4R2M0  5769-PW1
+     A                                      WINDOW(5 1 13 76)
+     A                                      KEEP
+     A                                      OVERLAY
+     A                                  1  1DATE
+     A                                      EDTCDE(Y)
+     A                                      DSPATR(HI)
+     A                                  1 10MSGCON(057 CON0001 *LIBL/HDLRCDLCK)
+     A                                      DSPATR(HI)
+     A                                  1 68'HDLRCDLCK'
+     A                                      DSPATR(HI)
+     A                                  3 18MSGCON(030 CON0008 *LIBL/HDLRCDLCK)
+     A            DFUSER        10A  O  3 49
+     A                                  5  1MSGCON(076 CON0002 *LIBL/HDLRCDLCK)
+     A                                  6  1MSGCON(076 CON0003 *LIBL/HDLRCDLCK)
+     A                                  7  1MSGCON(076 CON0004 *LIBL/HDLRCDLCK)
+     A                                  8  1MSGCON(076 CON0005 *LIBL/HDLRCDLCK)
+     A                                  9  1MSGCON(076 CON0006 *LIBL/HDLRCDLCK)
+     A                                 10  1MSGCON(076 CON0007 *LIBL/HDLRCDLCK)
+     A                                 12  1MSGCON(076 CON0010 *LIBL/HDLRCDLCK)
+     A                                      COLOR(BLU)

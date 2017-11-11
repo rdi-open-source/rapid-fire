@@ -1,0 +1,135 @@
+     A*%%TS  SD  20160419  155853  HILDEBRAND  REL-V7R1M0  5770-WDS
+     A*-------------------------------------------------------------------------
+     A*
+     A* Copyright (c) 2014 Task Force IT-Consulting GmbH, Waltrop (Germany)
+     A* This software and the accompanying materials are made available
+     A* under the terms of the GNU General Public License version 2.0 (GPLv2)
+     A* which accompanies this distribution and is available at
+     A* http://www.gnu.org/licenses/gpl-2.0.html
+     A*
+     A*-------------------------------------------------------------------------
+     A* >>PRE-COMPILER<<
+     A*   >>CRTCMD<< CRTDSPF      FILE(&LI/&OB) SRCFILE(&SL/&SF) SRCMBR(&SM);
+     A*   >>IMPORTANT<<
+     A*     >>PARM<< OPTION(*EVENTF);
+     A*   >>END-IMPORTANT<<
+     A*   >>EXECUTE<<
+     A* >>END-PRE-COMPILER<<
+     A*-------------------------------------------------------------------------
+     A*
+     A*%%EC
+     A                                      DSPSIZ(27 132 *DS4)
+     A                                      CHGINPDFT
+     A                                      PRINT
+     A          R DSPF010S                  SFL
+     A*%%TS  SD  20160419  155225  HILDEBRAND  REL-V7R1M0  5770-WDS
+     A  63                                  SFLNXTCHG
+     A            DFPOS     R        H      REFFLD(AREAS/XDPOS *LIBL/AREAS)
+     A            DFARA     R        H      REFFLD(AREAS/XDARA *LIBL/AREAS)
+     A                                  7  2' '
+     A            DFOPT          2A  B  8  2DSPATR(UL)
+     A N81N82 83                            DSPATR(RI)
+     A N81N82 83                            DSPATR(PC)
+     A            DFFILE    R        O  8  6REFFLD(FILES/X3FILE *LIBL/FILES)
+     A                                      COLOR(RED)
+     A            DFLIB     R        O  8 18REFFLD(AREAS/XDLIB *LIBL/AREAS)
+     A                                      COLOR(RED)
+     A            DFRPL         13A  O  8 30COLOR(RED)
+     A            DFRSL         13A  O  8 45COLOR(RED)
+     A            DFRTO     R   13A  O  8 60REFFLD(AREAS/XDRTO *LIBL/AREAS)
+     A                                      COLOR(RED)
+     A            DFRCO     R   13A  O  8 75REFFLD(AREAS/XDRCO *LIBL/AREAS)
+     A                                      COLOR(RED)
+     A            DFETC         11A  O  8 90COLOR(RED)
+     A            DFCTA     R   13A  O  8103REFFLD(AREAS/XDCTA *LIBL/AREAS)
+     A                                      COLOR(RED)
+     A            DFCAP     R   13A  O  8118REFFLD(AREAS/XDCAP *LIBL/AREAS)
+     A                                      COLOR(RED)
+     A                                  9  6'+----------------------------------
+     A                                      ------------------------------------
+     A                                      ------------------------------------
+     A                                      -+'
+     A                                 10  6'I         10%       20%       30% -
+     A                                            40%       50%       60%      -
+     A                                       70%       80%       90%      100% -
+     A                                       I'
+     A                                 11  6'I'
+     A            DFPRZ        101A  O 11  8
+     A                                 11111'I'
+     A                                 12  6'+----------------------------------
+     A                                      ------------------------------------
+     A                                      ------------------------------------
+     A                                      -+'
+     A          R DSPF010C                  SFLCTL(DSPF010S)
+     A*%%TS  SD  20160419  155543  HILDEBRAND  REL-V7R1M0  5770-WDS
+     A                                      SFLSIZ(0003)
+     A                                      SFLPAG(0003)
+     A                                      CA03
+     A                                      CA12
+     A                                      CF01
+     A                                      CF05
+     A                                      CF17
+     A                                      CF18
+     A                                      ROLLUP
+     A                                      ROLLDOWN
+     A                                      RTNCSRLOC(*RECNAME &DFRCD010 &DFFLD-
+     A                                      010 &DFPOS010)
+     A                                      RTNCSRLOC(*MOUSE &DFROW010 &DFCOL01-
+     A                                      0)
+     A  90 91                               CSRLOC(DFROW010   DFCOL010)
+     A                                      OVERLAY
+     A N60N61                               SFLDSP
+     A N60                                  SFLDSPCTL
+     A  60                                  SFLCLR
+     A            DFRRN010       4S 0H      SFLRCDNBR(CURSOR)
+     A            DFROW010       3S 0H
+     A            DFCOL010       3S 0H
+     A            DFPOS010       4S 0H
+     A            DFFLD010      10A  H
+     A            DFRCD010      10A  H
+     A            DFPOPOS   R        H      REFFLD(AREAS/XDPOS *LIBL/AREAS)
+     A            DFPOARA   R        H      REFFLD(AREAS/XDARA *LIBL/AREAS)
+     A                                  1  2DATE
+     A                                      EDTCDE(Y)
+     A                                      DSPATR(HI)
+     A                                  1 11MSGCON(112 CON0001 *LIBL/RF0013MF)
+     A                                      DSPATR(HI)
+     A                                  1124'RF0013PG'
+     A                                      DSPATR(HI)
+     A                                  2  2MSGCON(030 CON0011 *LIBL/RF0013MF)
+     A            DFJOB     R        O  2 33REFFLD(AREAS/XDJOB *LIBL/AREAS)
+     A                                  3  2MSGCON(130 CON0002 *LIBL/RF0013MF)
+     A                                      COLOR(BLU)
+     A                                  4  2MSGCON(130 CON0003 *LIBL/RF0013MF)
+     A                                      COLOR(BLU)
+     A                                  5  2MSGCON(130 CON0016 *LIBL/RF0013MF)
+     A                                      DSPATR(HI)
+     A                                  6  2MSGCON(130 CON0009 *LIBL/RF0013MF)
+     A                                      DSPATR(HI)
+     A          R DSPF010L
+     A*%%TS  SD  20141020  122813  HILDEBRAND  REL-V7R1M0  5770-WDS
+     A                                      OVERLAY
+     A                                  8  2MSGCON(130 CON0008 *LIBL/RF0013MF)
+     A          R DSPF010F
+     A*%%TS  SD  20141020  122002  HILDEBRAND  REL-V7R1M0  5770-WDS
+     A                                      OVERLAY
+     A N61N62                          25117MSGCON(015 CON0013 *LIBL/RF0013MF)
+     A                                      DSPATR(HI)
+     A N61 62                          25117MSGCON(015 CON0014 *LIBL/RF0013MF)
+     A                                      DSPATR(HI)
+     A                                 26  2MSGCON(130 CON0006 *LIBL/RF0013MF)
+     A                                      COLOR(BLU)
+     A          R DSPF999S                  SFL
+     A*%%TS  SD  20010425  174353  EXT01       REL-V4R4M0  5769-PW1
+     A                                      SFLMSGRCD(27)
+     A            DFMSGK                    SFLMSGKEY
+     A            DFPGMQ                    SFLPGMQ(276)
+     A          R DSPF999C                  SFLCTL(DSPF999S)
+     A*%%TS  SD  20010831  100809  HILDEBRAND  REL-V4R2M0  5769-PW1
+     A                                      SFLDSP
+     A                                      SFLDSPCTL
+     A                                      SFLINZ
+     A  50                                  SFLEND
+     A                                      SFLSIZ(0100)
+     A                                      SFLPAG(0001)
+     A            DFPGMQ                    SFLPGMQ(276)

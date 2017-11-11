@@ -1,0 +1,171 @@
+.*-------------------------------------------------------------------------------------------*
+.*                                                                                           *
+.* Copyright (c) 2014 Task Force IT-Consulting GmbH, Waltrop (Germany)                       *
+.* This software and the accompanying materials are made available                           *
+.* under the terms of the GNU General Public License version 2.0 (GPLv2)                     *
+.* which accompanies this distribution and is available at                                   *
+.* http://www.gnu.org/licenses/gpl-2.0.html                                                  *
+.*                                                                                           *
+.*-------------------------------------------------------------------------------------------*
+.*                                                                                           *
+.* Display Status                                                                            *
+.*                                                                                           *
+.*------------+--------+---------------------------------------------------------------------*
+.*   Date     I Progr. I Description                                                         *
+.*------------+--------+---------------------------------------------------------------------*
+.* 01.07.2014 I   FH   I Created                                                             *
+.*------------+--------+---------------------------------------------------------------------*
+.* >>PRE-COMPILER<<                                                                          *
+.*   >>CRTCMD<< CRTPNLGRP    PNLGRP(&LI/&OB) SRCFILE(&SL/&SF) SRCMBR(&SM);                   *
+.*   >>EXECUTE<<                                                                             *
+.* >>END-PRE-COMPILER<<                                                                      *
+.*-------------------------------------------------------------------------------------------*
+
+.*-------------------------------------------------------------------------------------------*
+.* Begin of panelgroup                                                                       *
+.*-------------------------------------------------------------------------------------------*
+
+:PnlGrp.
+
+.*-------------------------------------------------------------------------------------------*
+.* Imports                                                                                   *
+.*-------------------------------------------------------------------------------------------*
+
+:Import Name='*' PnlGrp=GENERAL.
+
+.*-------------------------------------------------------------------------------------------*
+.* Help - General                                                                            *
+.*-------------------------------------------------------------------------------------------*
+
+:Help Name='GNR'.
+Display Status - Help
+:P.
+Displays the current status of the Rapid Fire job.
+:EHelp.
+
+.*-------------------------------------------------------------------------------------------*
+.* Helptext - Option                                                                         *
+.*-------------------------------------------------------------------------------------------*
+
+:Help Name='OPT'.
+Options - Helptext
+:XH3.
+Options
+:PARML.
+:PT.
+99=Reapply all changes
+:PD.
+All changes will be reapplied.
+:EPARML.
+:EHelp.
+
+.*-------------------------------------------------------------------------------------------*
+.* Help - Records in production library                                                      *
+.*-------------------------------------------------------------------------------------------*
+
+:Help Name='RPL'.
+Records in production library - Help
+:XH3.
+Records in production library
+:P.
+The current number of records in the file of the production library.
+:EHelp.
+
+.*-------------------------------------------------------------------------------------------*
+.* Help - Records in shadow library                                                          *
+.*-------------------------------------------------------------------------------------------*
+
+:Help Name='RSL'.
+Records in shadow library - Help
+:XH3.
+Records in shadow library
+:P.
+The current number of records in the file of the shadow library.
+:EHelp.
+
+.*-------------------------------------------------------------------------------------------*
+.* Help - Records to copy                                                                    *
+.*-------------------------------------------------------------------------------------------*
+
+:Help Name='RTO'.
+Records to copy - Help
+:XH3.
+Records to copy
+:P.
+The number of records to copy from the file in the production library to the file
+in the shadow library.
+:EHelp.
+
+.*-------------------------------------------------------------------------------------------*
+.* Help - Records copied                                                                     *
+.*-------------------------------------------------------------------------------------------*
+
+:Help Name='RCO'.
+Records copied - Help
+:XH3.
+Records copied
+:P.
+The number of records copied from the file in the production library to the file
+in the shadow library.
+:EHelp.
+
+.*-------------------------------------------------------------------------------------------*
+.* Help - Estimated time to complete                                                         *
+.*-------------------------------------------------------------------------------------------*
+
+:Help Name='ETC'.
+Estimated time to complete - Help
+:XH3.
+Estimated time to complete
+:P.
+The estimated time the Rapid Fire jobs needs to complete the copy process for the file.
+The time will be displayed in the format "Days:Hours:Minutes:Seconds".
+:EHelp.
+
+.*-------------------------------------------------------------------------------------------*
+.* Help - Changes to apply                                                                   *
+.*-------------------------------------------------------------------------------------------*
+
+:Help Name='CTA'.
+Changes to apply - Help
+:XH3.
+Changes to apply
+:P.
+The number of changed records in the file of the production library which currently have
+to be applied to the file of the shadow library.
+:EHelp.
+
+.*-------------------------------------------------------------------------------------------*
+.* Help - Changes applied                                                                    *
+.*-------------------------------------------------------------------------------------------*
+
+:Help Name='CAP'.
+Changes applied - Help
+:XH3.
+Changes applied
+:P.
+The number of changed records in the file of the production library since the Rapid Fire
+job has started which have applied to the file of the shadow library.
+:EHelp.
+
+.*-------------------------------------------------------------------------------------------*
+.* Help - Funktion Keys                                                                      *
+.*-------------------------------------------------------------------------------------------*
+
+:Help Name='FKT'.
+Function Keys - Help
+:XH3.
+Function Keys
+:ImHelp Name=F1.
+:ImHelp Name=F3.
+:ImHelp Name=F5.
+:ImHelp Name=F12.
+:ImHelp Name=F17.
+:ImHelp Name=F18.
+:EHelp.
+
+.*-------------------------------------------------------------------------------------------*
+.* End of panelgroup                                                                         *
+.*-------------------------------------------------------------------------------------------*
+
+:EPnlGrp.

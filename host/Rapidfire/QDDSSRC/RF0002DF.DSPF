@@ -1,0 +1,129 @@
+      *-------------------------------------------------------------------------------------------*
+      *                                                                                           *
+      * Copyright (c) 2014 Task Force IT-Consulting GmbH, Waltrop (Germany)                       *
+      * This software and the accompanying materials are made available                           *
+      * under the terms of the GNU General Public License version 2.0 (GPLv2)                     *
+      * which accompanies this distribution and is available at                                   *
+      * http://www.gnu.org/licenses/gpl-2.0.html                                                  *
+      *                                                                                           *
+      *-------------------------------------------------------------------------------------------*
+      * >>PRE-COMPILER<<                                                                          *
+      *   >>CRTCMD<< CRTDSPF      FILE(&LI/&OB) SRCFILE(&SL/&SF) SRCMBR(&SM);                     *
+      *   >>IMPORTANT<<                                                                           *
+      *     >>PARM<< OPTION(*EVENTF);                                                             *
+      *   >>END-IMPORTANT<<                                                                       *
+      *   >>EXECUTE<<                                                                             *
+      * >>END-PRE-COMPILER<<                                                                      *
+      *-------------------------------------------------------------------------------------------*
+      *
+     A*%%TS  SD  20140708  112855  HILDEBRAND  REL-V7R1M0  5770-WDS
+     A*%%EC
+     A                                      DSPSIZ(24 80 *DS3)
+     A                                      CHGINPDFT
+     A                                      PRINT
+     A          R DSPF010
+     A*%%TS  SD  20140708  112855  HILDEBRAND  REL-V7R1M0  5770-WDS
+     A                                      CA03
+     A                                      CA12
+     A                                      CF01
+     A  01
+     AO 02
+     AO 03                                  CF04
+     A                                      RTNCSRLOC(*RECNAME &DFRCD010 &DFFLD-
+     A                                      010 &DFPOS010)
+     A                                      RTNCSRLOC(*MOUSE &DFROW010 &DFCOL01-
+     A                                      0)
+     A  90 91                               CSRLOC(DFROW010   DFCOL010)
+     A                                      OVERLAY
+     A            DFPOS010       4S 0H
+     A            DFFLD010      10A  H
+     A            DFRCD010      10A  H
+     A            DFROW010       3S 0H
+     A            DFCOL010       3S 0H
+     A                                  1  2DATE
+     A                                      EDTCDE(Y)
+     A                                      DSPATR(HI)
+     A  01                              1 11MSGCON(060 CON0001 *LIBL/RF0002MF)
+     A                                      DSPATR(HI)
+     A  02                              1 11MSGCON(060 CON0002 *LIBL/RF0002MF)
+     A                                      DSPATR(HI)
+     A  03                              1 11MSGCON(060 CON0003 *LIBL/RF0002MF)
+     A                                      DSPATR(HI)
+     A  04                              1 11MSGCON(060 CON0004 *LIBL/RF0002MF)
+     A                                      DSPATR(HI)
+     A                                      DSPATR(BL)
+     A  05                              1 11MSGCON(060 CON0005 *LIBL/RF0002MF)
+     A                                      DSPATR(HI)
+     A                                  1 72'RF0002PG'
+     A                                      DSPATR(HI)
+     A                                  3  2MSGCON(020 CON0010 *LIBL/RF0002MF)
+     A            DFJOB     R        B  3 23REFFLD(JOBS/X1JOB *LIBL/JOBS)
+     A  01
+     AO 03                                  DSPATR(UL)
+     A N01N03                               DSPATR(PR)
+     A N87N88 89                            DSPATR(RI)
+     A N87N88 89                            DSPATR(PC)
+     A                                  3 37MSGCON(030 CON0007 *LIBL/RF0002MF)
+     A                                  5  2MSGCON(020 CON0011 *LIBL/RF0002MF)
+     A            DFDSCR    R        B  5 23REFFLD(JOBS/X1DSCR *LIBL/JOBS)
+     A  01
+     AO 02
+     AO 03                                  DSPATR(UL)
+     A N01N02N03                            DSPATR(PR)
+     A  87N88 89                            DSPATR(RI)
+     A  87N88 89                            DSPATR(PC)
+     A                                      CHECK(LC)
+     A                                  7  2MSGCON(020 CON0009 *LIBL/RF0002MF)
+     A            DFCRTE    R        B  7 23REFFLD(JOBS/X1CRTE *LIBL/JOBS)
+     A  01
+     AO 02
+     AO 03                                  DSPATR(UL)
+     A N01N02N03                            DSPATR(PR)
+     A N87 88N89                            DSPATR(RI)
+     A N87 88N89                            DSPATR(PC)
+     A                                  7 37MSGCON(030 CON0012 *LIBL/RF0002MF)
+     A                                  9  2MSGCON(020 CON0056 *LIBL/RF0002MF)
+     A            DFJQ      R        B  9 23REFFLD(JOBS/X1JQ *LIBL/JOBS)
+     A  01
+     AO 02
+     AO 03                                  DSPATR(UL)
+     A N01N02N03                            DSPATR(PR)
+     A  84N85N86                            DSPATR(RI)
+     A  84N85N86                            DSPATR(PC)
+     A                                  9 37MSGCON(030 CON0068 *LIBL/RF0002MF)
+     A                                 10  2MSGCON(020 CON0057 *LIBL/RF0002MF)
+     A            DFJQL     R        B 10 23REFFLD(JOBS/X1JQL *LIBL/JOBS)
+     A  01
+     AO 02
+     AO 03                                  DSPATR(UL)
+     A N01N02N03                            DSPATR(PR)
+     A  84N85 86                            DSPATR(RI)
+     A  84N85 86                            DSPATR(PC)
+     A                                 10 37MSGCON(030 CON0069 *LIBL/RF0002MF)
+     A N01N02N03                       23  2MSGCON(078 CON0006 *LIBL/RF0002MF)
+     A                                      COLOR(BLU)
+     A  01
+     AO 02
+     AO 03                             23  2MSGCON(078 CON0013 *LIBL/RF0002MF)
+     A                                      COLOR(BLU)
+     A          R DSPF020W
+     A*%%TS  SD  20010719  145903  HILDEBRAND  REL-V4R2M0  5769-PW1
+     A                                      CA12
+     A                                      OVERLAY
+     A                                      WINDOW(10 1 3 76)
+     A                                  2  1MSGCON(076 CON0008 *LIBL/RF0002MF)
+     A                                      DSPATR(BL)
+     A          R DSPF999S                  SFL
+     A*%%TS  SD  20010425  174353  EXT01       REL-V4R4M0  5769-PW1
+     A                                      SFLMSGRCD(24)
+     A            DFMSGK                    SFLMSGKEY
+     A            DFPGMQ                    SFLPGMQ(276)
+     A          R DSPF999C                  SFLCTL(DSPF999S)
+     A*%%TS  SD  20010430  173405  EXT01       REL-V4R4M0  5769-PW1
+     A                                      SFLDSP
+     A                                      SFLDSPCTL
+     A                                      SFLINZ
+     A  50                                  SFLEND
+     A                                      SFLSIZ(0100)
+     A                                      SFLPAG(0001)
+     A            DFPGMQ                    SFLPGMQ(276)

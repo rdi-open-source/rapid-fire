@@ -1,0 +1,64 @@
+     /*-------------------------------------------------------------------------------------------*/
+     /*                                                                                           */
+     /* Copyright (c) 2014 Task Force IT-Consulting GmbH, Waltrop (Germany)                       */
+     /* This software and the accompanying materials are made available                           */
+     /* under the terms of the GNU General Public License version 2.0 (GPLv2)                     */
+     /* which accompanies this distribution and is available at                                   */
+     /* http://www.gnu.org/licenses/gpl-2.0.html                                                  */
+     /*                                                                                           */
+     /*-------------------------------------------------------------------------------------------*/
+     /*                                                                                           */
+     /* Set Job-CCSID                                                                             */
+     /*                                                                                           */
+     /*------------+--------+---------------------------------------------------------------------*/
+     /*   Date     I Progr. I Description                                                         */
+     /*------------+--------+---------------------------------------------------------------------*/
+     /* 29.08.2016 I   FH   I Program created                                                     */
+     /*------------+--------+---------------------------------------------------------------------*/
+     /* >>PRE-COMPILER<<                                                                          */
+     /*   >>CRTCMD<< CRTBNDCL     PGM(&LI/&OB) SRCFILE(&SL/&SF) SRCMBR(&SM);                      */
+     /*   >>IMPORTANT<<                                                                           */
+     /*     >>PARM<< DBGVIEW(&U1);                                                                */
+     /*     >>PARM<< TGTRLS(&TR);                                                                 */
+     /*     >>PARM<< OPTION(*EVENTF);                                                             */
+     /*   >>END-IMPORTANT<<                                                                       */
+     /*   >>EXECUTE<<                                                                             */
+     /* >>END-PRE-COMPILER<<                                                                      */
+     /*-------------------------------------------------------------------------------------------*/
+
+     /* Programmstart */
+             PGM        PARM(&CCSID)
+
+     /* Variable deklarieren */
+             DCL        VAR(&CCSID) TYPE(*DEC) LEN(5 0)
+             DCL        VAR(&JOBCCSID) TYPE(*DEC) LEN(5 0)
+             DCL        VAR(&EXIST) TYPE(*CHAR) LEN(10)
+
+             IF         COND(&CCSID *NE -1) THEN(DO)
+     /* CCSID sichern */
+             CHKOBJ     OBJ(QTEMP/JOBCCSID) OBJTYPE(*DTAARA)
+             MONMSG     MSGID(CPF9801) EXEC(DO)
+             RTVJOBA    CCSID(&JOBCCSID)
+             CRTDTAARA  DTAARA(QTEMP/JOBCCSID) TYPE(*DEC) LEN(5 0) +
+                          VALUE(&JOBCCSID)
+             ENDDO
+     /* CCSID setzen */
+             CHGJOB     CCSID(&CCSID)
+             MONMSG     MSGID(CPF0000)
+             ENDDO
+
+     /* CCSID zurücksetzen */
+             IF         COND(&CCSID *EQ -1) THEN(DO)
+             CHGVAR     VAR(&EXIST) VALUE('*YES')
+             CHKOBJ     OBJ(QTEMP/JOBCCSID) OBJTYPE(*DTAARA)
+             MONMSG     MSGID(CPF9801) EXEC(CHGVAR VAR(&EXIST) +
+                          VALUE('*NO'))
+             IF         COND(&EXIST *EQ '*YES') THEN(DO)
+             RTVDTAARA  DTAARA(QTEMP/JOBCCSID) RTNVAR(&JOBCCSID)
+             CHGJOB     CCSID(&JOBCCSID)
+             MONMSG     MSGID(CPF0000)
+             ENDDO
+             ENDDO
+
+     /* Programmende */
+ STEP999:    ENDPGM

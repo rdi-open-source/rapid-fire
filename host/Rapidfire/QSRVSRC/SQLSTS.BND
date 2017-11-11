@@ -1,0 +1,47 @@
+     /*-------------------------------------------------------------------------------------------*/
+     /*                                                                                           */
+     /* Copyright (c) 2014 Task Force IT-Consulting GmbH, Waltrop (Germany)                       */
+     /* This software and the accompanying materials are made available                           */
+     /* under the terms of the GNU General Public License version 2.0 (GPLv2)                     */
+     /* which accompanies this distribution and is available at                                   */
+     /* http://www.gnu.org/licenses/gpl-2.0.html                                                  */
+     /*                                                                                           */
+     /*-------------------------------------------------------------------------------------------*/
+     /*                                                                                           */
+     /* SQL Status                                                                                */
+     /*                                                                                           */
+     /*------------+--------+---------------------------------------------------------------------*/
+     /*   Datum    I Progr. I Beschreibung                                                        */
+     /*------------+--------+---------------------------------------------------------------------*/
+     /* 18.03.2016 I   FH   I Creation                                                            */
+     /*------------+--------+---------------------------------------------------------------------*/
+     /*  >>PRE-COMPILER<<                                                                         */
+     /*    >>CRTCMD<< CRTSRVPGM    SRVPGM(&LI/&OB) EXPORT(*SRCFILE) SRCFILE(&SL/&SF) SRCMBR(&SM); */
+     /*    >>IMPORTANT<<                                                                          */
+     /*      >>PARM<< MODULE(&LI/SQLSTS);                                                         */
+     /*      >>PARM<< TEXT('SQL Status');                                                         */
+     /*      >>PARM<< ACTGRP(&U2);                                                                */
+     /*      >>PARM<< TGTRLS(&TR);                                                                */
+     /*      >>PARM<< DETAIL(*BASIC);                                                             */
+     /*    >>END-IMPORTANT<<                                                                      */
+     /*    >>EXECUTE<<                                                                            */
+     /*  >>END-PRE-COMPILER<<                                                                     */
+     /*-------------------------------------------------------------------------------------------*/
+
+             STRPGMEXP
+
+                EXPORT     SYMBOL('SQLCHECKSTATE')
+                EXPORT     SYMBOL('SETIGNOREDUPRCD')
+                EXPORT     SYMBOL('SETIGNORENODATA')
+                EXPORT     SYMBOL('SETIGNOREROWLOCK')
+                EXPORT     SYMBOL('SETIGNORECSTVIOLATION')
+                EXPORT     SYMBOL('SETLOGSTATEMENT')
+                EXPORT     SYMBOL('SETNOLOGSTATEMENT')
+                EXPORT     SYMBOL('SETIGNOREMORETHANONEROW')
+                EXPORT     SYMBOL('SETIGNORECHARACTERCONVERSIONERROR')
+                EXPORT     SYMBOL('SETIGNOREWARNINGS')
+                EXPORT     SYMBOL('SQLTRACE')
+                EXPORT     SYMBOL('SQLLASTSTATEMENT')
+
+             ENDPGMEXP
+

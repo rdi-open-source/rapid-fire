@@ -1,0 +1,50 @@
+-- *------------------------------------------------------------------------*
+-- *                                                                        *
+-- * Copyright (c) 2014 Task Force IT-Consulting GmbH, Waltrop (Germany)    *
+-- * This software and the accompanying materials are made available        *
+-- * under the terms of the GNU General Public License version 2.0 (GPLv2)  *
+-- * which accompanies this distribution and is available at                *
+-- * http://www.gnu.org/licenses/gpl-2.0.html                               *
+-- *                                                                        *
+-- *------------------------------------------------------------------------*
+-- *                                                                        *
+-- * Libraries                                                              *
+-- *                                                                        *
+-- *------------------------------------------------------------------------*
+-- * >>PRE-COMPILER<<                                                       *
+-- *   >>CRTCMD<< RUNSQLSTM SRCFILE(&SL/&SF) SRCMBR(&SM) +                  *
+-- *                        COMMIT(*NONE) NAMING(*SYS) DFTRDBCOL(&LI) +     *
+-- *                        OPTION(*LIST) PROCESS(*RUN) USRPRF(*USER);      *
+-- *   >>CURLIB<< &CL;                                                      *
+-- *   >>LIBL<<   &LL;                                                      *
+-- *   >>EXECUTE<<                                                          *
+-- * >>END-PRE-COMPILER<<                                                   *
+-- *------------------------------------------------------------------------*
+
+CREATE OR REPLACE TABLE LIBRARIES
+(
+ JOB FOR COLUMN X2JOB CHAR(10) NOT NULL WITH DEFAULT,
+ LIBRARY FOR COLUMN X2LIB CHAR(10) NOT NULL WITH DEFAULT,
+ SHADOW_LIBRARY FOR COLUMN X2SLIB CHAR(10) NOT NULL WITH DEFAULT
+);
+
+LABEL ON TABLE LIBRARIES
+ IS 'Libraries';
+
+LABEL ON COLUMN LIBRARIES
+(
+ JOB IS 'Job',
+ LIBRARY IS 'Library',
+ SHADOW_LIBRARY IS 'Shadow library'
+);
+
+LABEL ON COLUMN LIBRARIES
+(
+ JOB TEXT IS 'Job',
+ LIBRARY TEXT IS 'Library',
+ SHADOW_LIBRARY TEXT IS 'Shadow library'
+);
+
+ALTER TABLE LIBRARIES
+ADD CONSTRAINT LIBRARIES_PRIMARY_KEY
+PRIMARY KEY (JOB, LIBRARY);

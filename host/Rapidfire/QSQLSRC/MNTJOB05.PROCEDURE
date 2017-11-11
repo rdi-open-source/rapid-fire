@@ -1,0 +1,34 @@
+-- *------------------------------------------------------------------------*
+-- *                                                                        *
+-- * Set Values                                                             *
+-- *                                                                        *
+-- *------------+--------+--------------------------------------------------*
+-- *   Datum    I Progr. I Beschreibung                                     *
+-- *------------+--------+--------------------------------------------------*
+-- * 27.10.2017 I   FH   I Dateierstellung                                  *
+-- *------------+--------+--------------------------------------------------*
+-- * >>PRE-COMPILER<<                                                       *
+-- *   >>CRTCMD<< RUNSQLSTM SRCFILE(&SL/&SF) SRCMBR(&SM) +                  *
+-- *                        COMMIT(*NONE) NAMING(*SYS) DFTRDBCOL(&LI) +     *
+-- *                        OPTION(*LIST) PROCESS(*RUN) USRPRF(*USER);      *
+-- *   >>CURLIB<< &CL;                                                      *
+-- *   >>LIBL<<   &LL;                                                      *
+-- *   >>EXECUTE<<                                                          *
+-- * >>END-PRE-COMPILER<<                                                   *
+-- *------------------------------------------------------------------------*
+
+CREATE PROCEDURE "MNTJOB_setValues"
+(
+  IN JOB  CHAR(10),
+  IN DSCR CHAR(35),
+  IN CRTE CHAR(10),
+  IN JQ   CHAR(10),
+  IN JQL  CHAR(10)
+)
+EXTERNAL NAME
+'&CMONE_SCHEMA_FOR_SERVICE_PROGRAM/MNTJOB(MNTJOB_setValues)'
+SPECIFIC MNTJOB05
+LANGUAGE RPGLE
+PARAMETER STYLE GENERAL
+MODIFIES SQL DATA
+NOT DETERMINISTIC;

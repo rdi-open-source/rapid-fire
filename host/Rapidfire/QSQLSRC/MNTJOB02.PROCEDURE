@@ -1,0 +1,27 @@
+-- *------------------------------------------------------------------------*
+-- *                                                                        *
+-- * Close Files                                                            *
+-- *                                                                        *
+-- *------------+--------+--------------------------------------------------*
+-- *   Datum    I Progr. I Beschreibung                                     *
+-- *------------+--------+--------------------------------------------------*
+-- * 27.10.2017 I   FH   I Dateierstellung                                  *
+-- *------------+--------+--------------------------------------------------*
+-- * >>PRE-COMPILER<<                                                       *
+-- *   >>CRTCMD<< RUNSQLSTM SRCFILE(&SL/&SF) SRCMBR(&SM) +                  *
+-- *                        COMMIT(*NONE) NAMING(*SYS) DFTRDBCOL(&LI) +     *
+-- *                        OPTION(*LIST) PROCESS(*RUN) USRPRF(*USER);      *
+-- *   >>CURLIB<< &CL;                                                      *
+-- *   >>LIBL<<   &LL;                                                      *
+-- *   >>EXECUTE<<                                                          *
+-- * >>END-PRE-COMPILER<<                                                   *
+-- *------------------------------------------------------------------------*
+
+CREATE PROCEDURE "MNTJOB_closeFiles"()
+EXTERNAL NAME
+'&CMONE_SCHEMA_FOR_SERVICE_PROGRAM/MNTJOB(MNTJOB_closeFiles)'
+SPECIFIC MNTJOB02
+LANGUAGE RPGLE
+PARAMETER STYLE DB2SQL
+MODIFIES SQL DATA
+NOT DETERMINISTIC;

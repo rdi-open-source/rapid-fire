@@ -1,0 +1,83 @@
+-- *------------------------------------------------------------------------*
+-- *                                                                        *
+-- * Copyright (c) 2014 Task Force IT-Consulting GmbH, Waltrop (Germany)    *
+-- * This software and the accompanying materials are made available        *
+-- * under the terms of the GNU General Public License version 2.0 (GPLv2)  *
+-- * which accompanies this distribution and is available at                *
+-- * http://www.gnu.org/licenses/gpl-2.0.html                               *
+-- *                                                                        *
+-- *------------------------------------------------------------------------*
+-- *                                                                        *
+-- * Jobs                                                                   *
+-- *                                                                        *
+-- *------------------------------------------------------------------------*
+-- * >>PRE-COMPILER<<                                                       *
+-- *   >>CRTCMD<< RUNSQLSTM SRCFILE(&SL/&SF) SRCMBR(&SM) +                  *
+-- *                        COMMIT(*NONE) NAMING(*SYS) DFTRDBCOL(&LI) +     *
+-- *                        OPTION(*LIST) PROCESS(*RUN) USRPRF(*USER);      *
+-- *   >>CURLIB<< &CL;                                                      *
+-- *   >>LIBL<<   &LL;                                                      *
+-- *   >>EXECUTE<<                                                          *
+-- * >>END-PRE-COMPILER<<                                                   *
+-- *------------------------------------------------------------------------*
+
+CREATE OR REPLACE TABLE JOBS
+(
+ JOB FOR COLUMN X1JOB CHAR(10) NOT NULL WITH DEFAULT,
+ DESCRIPTION FOR COLUMN X1DSCR CHAR(35) NOT NULL WITH DEFAULT,
+ CREATE_ENVIRONMENT FOR COLUMN X1CRTE CHAR(10) NOT NULL WITH DEFAULT,
+ JOB_QUEUE_LIBRARY FOR COLUMN X1JQL CHAR(10) NOT NULL WITH DEFAULT,
+ JOB_QUEUE FOR COLUMN X1JQ CHAR(10) NOT NULL WITH DEFAULT,
+ STATUS FOR COLUMN X1STS CHAR(10) NOT NULL WITH DEFAULT,
+ PHASE FOR COLUMN X1PHS CHAR(10) NOT NULL WITH DEFAULT,
+ ERROR FOR COLUMN X1ERR CHAR(1) NOT NULL WITH DEFAULT,
+ ERROR_TEXT FOR COLUMN X1ETXT VARCHAR(304) NOT NULL WITH DEFAULT,
+ BATCH_JOB FOR COLUMN X1BJOB CHAR(10) NOT NULL WITH DEFAULT,
+ BATCH_USER FOR COLUMN X1BUSR CHAR(10) NOT NULL WITH DEFAULT,
+ BATCH_NUMBER FOR COLUMN X1BNBR CHAR(6) NOT NULL WITH DEFAULT,
+ STOP_APPLY_CHANGES FOR COLUMN X1SAC CHAR(1) NOT NULL WITH DEFAULT,
+ CMONE_FORM FOR COLUMN X1CFRM CHAR(7) NOT NULL WITH DEFAULT
+);
+
+LABEL ON TABLE JOBS
+ IS 'Jobs';
+
+LABEL ON COLUMN JOBS
+(
+ JOB IS 'Job',
+ DESCRIPTION IS 'Description',
+ CREATE_ENVIRONMENT IS 'Create environment',
+ JOB_QUEUE_LIBRARY IS 'Job queue (Library)',
+ JOB_QUEUE IS 'Job queue',
+ STATUS IS 'Status',
+ PHASE IS 'Phase',
+ ERROR IS 'Error',
+ ERROR_TEXT IS 'Error text',
+ BATCH_JOB IS 'Batch job',
+ BATCH_USER IS 'Batch user',
+ BATCH_NUMBER IS 'Batch number',
+ STOP_APPLY_CHANGES IS 'Stop apply changes',
+ CMONE_FORM IS 'CMOne Form'
+);
+
+LABEL ON COLUMN JOBS
+(
+ JOB TEXT IS 'Job',
+ DESCRIPTION TEXT IS 'Description',
+ CREATE_ENVIRONMENT TEXT IS 'Create environment',
+ JOB_QUEUE_LIBRARY TEXT IS 'Job queue (Library)',
+ JOB_QUEUE TEXT IS 'Job queue',
+ STATUS TEXT IS 'Status',
+ PHASE TEXT IS 'Phase',
+ ERROR TEXT IS 'Error',
+ ERROR_TEXT TEXT IS 'Error text',
+ BATCH_JOB TEXT IS 'Batch job',
+ BATCH_USER TEXT IS 'Batch user',
+ BATCH_NUMBER TEXT IS 'Batch number',
+ STOP_APPLY_CHANGES TEXT IS 'Stop apply changes',
+ CMONE_FORM TEXT IS 'CMOne Form'
+);
+
+ALTER TABLE JOBS
+ADD CONSTRAINT JOBS_PRIMARY_KEY
+PRIMARY KEY (JOB);

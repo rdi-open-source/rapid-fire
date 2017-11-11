@@ -1,0 +1,98 @@
+-- *------------------------------------------------------------------------*
+-- *                                                                        *
+-- * Copyright (c) 2014 Task Force IT-Consulting GmbH, Waltrop (Germany)    *
+-- * This software and the accompanying materials are made available        *
+-- * under the terms of the GNU General Public License version 2.0 (GPLv2)  *
+-- * which accompanies this distribution and is available at                *
+-- * http://www.gnu.org/licenses/gpl-2.0.html                               *
+-- *                                                                        *
+-- *------------------------------------------------------------------------*
+-- *                                                                        *
+-- * Areas                                                                  *
+-- *                                                                        *
+-- *------------------------------------------------------------------------*
+-- * >>PRE-COMPILER<<                                                       *
+-- *   >>CRTCMD<< RUNSQLSTM SRCFILE(&SL/&SF) SRCMBR(&SM) +                  *
+-- *                        COMMIT(*NONE) NAMING(*SYS) DFTRDBCOL(&LI) +     *
+-- *                        OPTION(*LIST) PROCESS(*RUN) USRPRF(*USER);      *
+-- *   >>CURLIB<< &CL;                                                      *
+-- *   >>LIBL<<   &LL;                                                      *
+-- *   >>EXECUTE<<                                                          *
+-- * >>END-PRE-COMPILER<<                                                   *
+-- *------------------------------------------------------------------------*
+
+CREATE OR REPLACE TABLE AREAS
+(
+ JOB FOR COLUMN XDJOB CHAR(10) NOT NULL WITH DEFAULT,
+ POSITION FOR COLUMN XDPOS DECIMAL(6, 0) NOT NULL WITH DEFAULT,
+ AREA FOR COLUMN XDARA CHAR(10) NOT NULL WITH DEFAULT,
+ LIBRARY FOR COLUMN XDLIB CHAR(10) NOT NULL WITH DEFAULT,
+ LIBRARY_LIST FOR COLUMN XDLIBL CHAR(10) NOT NULL WITH DEFAULT,
+ CCSID FOR COLUMN XDCCSID CHAR(10) NOT NULL WITH DEFAULT,
+ COMMAND_EXTENSION FOR COLUMN XDCEXT VARCHAR(1024) NOT NULL WITH DEFAULT,
+ FILE FOR COLUMN XDFILE CHAR(10) NOT NULL WITH DEFAULT,
+ WORKFILE_RECORDS FOR COLUMN XDRCDW CHAR(10) NOT NULL WITH DEFAULT,
+ WORKFILE_CHANGES FOR COLUMN XDCHGW CHAR(10) NOT NULL WITH DEFAULT,
+ WORKFILE_CHANGESLOG FOR COLUMN XDLOGW CHAR(10) NOT NULL WITH DEFAULT,
+ JOURNALING FOR COLUMN XDJLNG CHAR(1) NOT NULL WITH DEFAULT,
+ JOURNAL_LIBRARY FOR COLUMN XDJRNL CHAR(10) NOT NULL WITH DEFAULT,
+ JOURNAL FOR COLUMN XDJRN CHAR(10) NOT NULL WITH DEFAULT,
+ RECORDS_TO_COPY FOR COLUMN XDRTO DECIMAL(10, 0) NOT NULL WITH DEFAULT,
+ RECORDS_COPIED FOR COLUMN XDRCO DECIMAL(10, 0) NOT NULL WITH DEFAULT,
+ TIME_CONSUMED FOR COLUMN XDTCS INTEGER NOT NULL WITH DEFAULT,
+ CHANGES_TO_APPLY FOR COLUMN XDCTA DECIMAL(10, 0) NOT NULL WITH DEFAULT,
+ CHANGES_APPLIED FOR COLUMN XDCAP DECIMAL(10, 0) NOT NULL WITH DEFAULT
+);
+
+LABEL ON TABLE AREAS
+ IS 'Areas';
+
+LABEL ON COLUMN AREAS
+(
+ JOB IS 'Job',
+ POSITION IS 'Position',
+ AREA IS 'Area',
+ LIBRARY IS 'Library',
+ LIBRARY_LIST IS 'Library list',
+ CCSID IS 'CCSID',
+ COMMAND_EXTENSION IS 'Command extension',
+ FILE IS 'File',
+ WORKFILE_RECORDS IS 'Workfile records',
+ WORKFILE_CHANGES IS 'Workfile changes',
+ WORKFILE_CHANGESLOG IS 'Workfile changes log',
+ JOURNALING IS 'Journaling',
+ JOURNAL_LIBRARY IS 'Journal (Library)',
+ JOURNAL IS 'Journal',
+ RECORDS_TO_COPY IS 'Records to copy',
+ RECORDS_COPIED IS 'Records copied',
+ TIME_CONSUMED IS 'Time consumed',
+ CHANGES_TO_APPLY IS 'Changes to apply',
+ CHANGES_APPLIED IS 'Changes applied'
+);
+
+LABEL ON COLUMN AREAS
+(
+ JOB TEXT IS 'Job',
+ POSITION TEXT IS 'Position',
+ AREA TEXT IS 'Area',
+ LIBRARY TEXT IS 'Library',
+ LIBRARY_LIST TEXT IS 'Library list',
+ CCSID TEXT IS 'CCSID',
+ COMMAND_EXTENSION TEXT IS 'Command extension',
+ FILE TEXT IS 'File',
+ WORKFILE_RECORDS TEXT IS 'Workfile records',
+ WORKFILE_CHANGES TEXT IS 'Workfile changes',
+ WORKFILE_CHANGESLOG TEXT IS 'Workfile changes log',
+ JOURNALING TEXT IS 'Journaling',
+ JOURNAL_LIBRARY TEXT IS 'Journal (Library)',
+ JOURNAL TEXT IS 'Journal',
+ RECORDS_TO_COPY TEXT IS 'Records to copy',
+ RECORDS_COPIED TEXT IS 'Records copied',
+ TIME_CONSUMED TEXT IS 'Time consumed',
+ CHANGES_TO_APPLY TEXT IS 'Changes to apply',
+ CHANGES_APPLIED TEXT IS 'Changes applied'
+);
+
+ALTER TABLE AREAS
+ADD CONSTRAINT AREAS_PRIMARY_KEY
+PRIMARY KEY (JOB, POSITION, AREA);

@@ -1,0 +1,236 @@
+.*-------------------------------------------------------------------------------------------*
+.*                                                                                           *
+.* Copyright (c) 2014 Task Force IT-Consulting GmbH, Waltrop (Germany)                       *
+.* This software and the accompanying materials are made available                           *
+.* under the terms of the GNU General Public License version 2.0 (GPLv2)                     *
+.* which accompanies this distribution and is available at                                   *
+.* http://www.gnu.org/licenses/gpl-2.0.html                                                  *
+.*                                                                                           *
+.*-------------------------------------------------------------------------------------------*
+.*                                                                                           *
+.* Jobs                                                                                      *
+.*                                                                                           *
+.*------------+--------+---------------------------------------------------------------------*
+.*   Date     I Progr. I Description                                                         *
+.*------------+--------+---------------------------------------------------------------------*
+.* 01.07.2014 I   FH   I Created                                                             *
+.*------------+--------+---------------------------------------------------------------------*
+.* >>PRE-COMPILER<<                                                                          *
+.*   >>CRTCMD<< CRTPNLGRP    PNLGRP(&LI/&OB) SRCFILE(&SL/&SF) SRCMBR(&SM);                   *
+.*   >>EXECUTE<<                                                                             *
+.* >>END-PRE-COMPILER<<                                                                      *
+.*-------------------------------------------------------------------------------------------*
+
+.*-------------------------------------------------------------------------------------------*
+.* Begin of panelgroup                                                                       *
+.*-------------------------------------------------------------------------------------------*
+
+:PnlGrp.
+
+.*-------------------------------------------------------------------------------------------*
+.* Help - General                                                                            *
+.*-------------------------------------------------------------------------------------------*
+
+:Help Name='GNR'.
+Jobs - Help
+:P.
+The job is the umbrella term for all physical and logical files which have to be converted
+together. It`s the starting point if you plan to do a conversion of files by Rapid Fire.
+:EHelp.
+
+.*-------------------------------------------------------------------------------------------*
+.* Help - Job                                                                                *
+.*-------------------------------------------------------------------------------------------*
+
+:Help Name='JOB'.
+Job - Help
+:XH3.
+Job
+:P.
+Specifies the name of the job.
+:EHelp.
+
+.*-------------------------------------------------------------------------------------------*
+.* Help - Description                                                                        *
+.*-------------------------------------------------------------------------------------------*
+
+:Help Name='DSCR'.
+Description - Help
+:XH3.
+Description
+:P.
+Specifies the description of the job.
+:EHelp.
+
+.*-------------------------------------------------------------------------------------------*
+.* Help - Create environment                                                                 *
+.*-------------------------------------------------------------------------------------------*
+
+:Help Name='CRTE'.
+Create environment - Help
+:XH3.
+Create environment
+:P.
+Specifies wether or not the environment of the job has to be created automatically or
+manually. The environment consists of the shadow libraries and of the physical and logical
+files in the new format.
+:PARML.
+:PT.
+*YES
+:PD.
+The environment will be created automatically. The shadow libraries and the physical
+and logical files in the new format will be created by Rapid Fire.
+:PT.
+*NO
+:PD.
+The environment has to be created manually. You have to create the shadow libraries
+and the physical and logical files in the new format yourselves.
+:EPARML.
+:EHelp.
+
+.*-------------------------------------------------------------------------------------------*
+.* Help - Job queue                                                                          *
+.*-------------------------------------------------------------------------------------------*
+
+:Help Name='JQ'.
+Job queue - Help
+:XH3.
+Job queue
+:P.
+Specifies the job queue in which the Rapid Fire jobs will be placed. You have to make sure
+the job queue is able to run multiple jobs simultaneous. Otherwise the Rapid Fire control job
+will report an error.
+:EHelp.
+
+.*-------------------------------------------------------------------------------------------*
+.* Help - Job queue library                                                                  *
+.*-------------------------------------------------------------------------------------------*
+
+:Help Name='JQL'.
+Job queue library - Help
+:XH3.
+Job queue library
+:P.
+Specifies how to find the library where the job queue is located.
+:PARML.
+:PT.
+Name
+:PD.
+Specifies the library where the job queue is located.
+:PT.
+*LIBL
+:PD.
+All libraries in the library list for the current thread are
+searched until the first match is found.
+:PT.
+*CURLIB
+:PD.
+The current library for the thread is used to locate the job queue.
+If no library is specified as the current library for the thread,
+the QGPL library is used.
+:EPARML.
+:EHelp.
+
+.*-------------------------------------------------------------------------------------------*
+.* Helptext - Status                                                                         *
+.*-------------------------------------------------------------------------------------------*
+
+:Help Name='STS'.
+Status - Helptext
+:XH3.
+Status
+:P.
+The status of the job.
+:PARML.
+:PT.
+*RDY
+:PD.
+Ready - The job is ready to run.
+:PT.
+*RUN-PND
+:PD.
+Run Pending - Job start has issued. The Job is pending to run.
+:PT.
+*RUN
+:PD.
+Run - The job is running.
+:PT.
+*END-PND
+:PD.
+End Pending - Job end has issued. The Job is pending to end.
+:PT.
+*END
+:PD.
+End - The job has ended.
+:EPARML.
+:EHelp.
+
+.*-------------------------------------------------------------------------------------------*
+.* Helptext - Phase                                                                          *
+.*-------------------------------------------------------------------------------------------*
+
+:Help Name='PHS'.
+Phase - Helptext
+:XH3.
+Phase
+:P.
+The phase of the job.
+:PARML.
+:PT.
+*NONE
+:PD.
+None - This phase occurs only when the job has status *RDY. This has no special meaning.
+:PT.
+*CPY-RCD
+:PD.
+Copy Records - This phase occurs only when the job has status *RUN. It describes that the
+records will be copied to the target files.
+:PT.
+*APY-CHG
+:PD.
+Apply Changes - This phase occurs only when the job has status *RUN. It describes that the
+records which have been inserted, updated or deleted by the users after the job has started
+will be applied to the target files.
+:PT.
+*RDY-PRD
+:PD.
+Ready Production - This phase occurs only when the job has status *END. It describes that
+the job has finished succesfull and the files in the shadow libraries are ready to promote
+to production.
+:PT.
+*ABORT
+:PD.
+Abort - This phase occurs only when the job has status *END. It describes that the job has
+aborted by the user or by Rapid Fire. The files in the shadow libraries are NOT ready to
+promote to production.
+:EPARML.
+:EHelp.
+
+.*-------------------------------------------------------------------------------------------*
+.* Helptext - Error                                                                          *
+.*-------------------------------------------------------------------------------------------*
+
+:Help Name='ERR'.
+Error - Helptext
+:XH3.
+Error
+:P.
+Specifies wether or not an error has occured.
+:PARML.
+:PT.
+N
+:PD.
+No error has occured.
+:PT.
+Y
+:PD.
+An error has occured. Enter option '31=Display error' next to the job to see the detailed
+error description.
+:EPARML.
+:EHelp.
+
+.*-------------------------------------------------------------------------------------------*
+.* End of panelgroup                                                                         *
+.*-------------------------------------------------------------------------------------------*
+
+:EPnlGrp.
