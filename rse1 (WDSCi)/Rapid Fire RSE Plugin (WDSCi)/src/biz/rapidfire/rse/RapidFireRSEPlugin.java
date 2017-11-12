@@ -13,6 +13,7 @@ import org.osgi.framework.BundleContext;
 import biz.rapidfire.rse.model.RapidFireFileResource;
 import biz.rapidfire.rse.model.RapidFireJobResource;
 import biz.rapidfire.rse.model.RapidFireLibraryResource;
+import biz.rapidfire.rse.model.dao.DAOManager;
 import biz.rapidfire.rse.subsystem.FilesNode;
 import biz.rapidfire.rse.subsystem.LibrariesNode;
 import biz.rapidfire.rse.subsystem.RapidFireAdapterFactory;
@@ -61,6 +62,7 @@ public class RapidFireRSEPlugin extends AbstractUIPlugin {
      * @see org.eclipse.ui.plugin.AbstractUIPlugin#stop(org.osgi.framework.BundleContext )
      */
     public void stop(BundleContext context) throws Exception {
+        DAOManager.getInstance().destroy();
         plugin = null;
         super.stop(context);
     }
