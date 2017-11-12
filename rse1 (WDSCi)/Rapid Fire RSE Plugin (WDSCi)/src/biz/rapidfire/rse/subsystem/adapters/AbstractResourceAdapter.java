@@ -23,6 +23,7 @@ import com.ibm.etools.systems.core.ui.view.ISystemRemoteElementAdapter;
 
 public abstract class AbstractResourceAdapter extends AbstractSystemViewAdapter implements ISystemRemoteElementAdapter {
 
+    @Override
     public void addActions(SystemMenuManager menu, IStructuredSelection selection, Shell parent, String menuGroup) {
     }
 
@@ -36,10 +37,12 @@ public abstract class AbstractResourceAdapter extends AbstractSystemViewAdapter 
         return false;
     }
 
+    @Override
     public String getText(Object element) {
         return Messages.EMPTY;
     }
 
+    @Override
     public String getAbsoluteName(Object element) {
         return null;
     }
@@ -49,10 +52,12 @@ public abstract class AbstractResourceAdapter extends AbstractSystemViewAdapter 
         return null;
     }
 
+    @Override
     public Object getParent(Object element) {
         return null;
     }
 
+    @Override
     public boolean hasChildren(Object element) {
         return false;
     }
@@ -62,10 +67,12 @@ public abstract class AbstractResourceAdapter extends AbstractSystemViewAdapter 
         return null;
     }
 
+    @Override
     protected IPropertyDescriptor[] internalGetPropertyDescriptors() {
         return null;
     }
 
+    @Override
     protected Object internalGetPropertyValue(Object key) {
         return null;
     }

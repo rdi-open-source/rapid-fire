@@ -38,14 +38,17 @@ public abstract class AbstractNodeAdapter extends AbstractResourceAdapter {
         return null;
     }
 
+    @Override
     public Object getRemoteParent(Shell shell, Object element) throws Exception {
         return null;
     }
 
+    @Override
     public String[] getRemoteParentNamesInUse(Shell shell, Object element) throws Exception {
         return null;
     }
 
+    @Override
     public boolean supportsUserDefinedActions(Object shell) {
         return false;
     }

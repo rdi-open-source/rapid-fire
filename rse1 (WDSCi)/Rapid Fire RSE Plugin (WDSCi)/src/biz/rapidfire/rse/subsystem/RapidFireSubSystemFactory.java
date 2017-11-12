@@ -78,6 +78,7 @@ public class RapidFireSubSystemFactory extends DefaultSubSystemFactoryImpl {
         return false;
     }
 
+    @Override
     public boolean supportsMultipleFilterStrings() {
         return false;
     }

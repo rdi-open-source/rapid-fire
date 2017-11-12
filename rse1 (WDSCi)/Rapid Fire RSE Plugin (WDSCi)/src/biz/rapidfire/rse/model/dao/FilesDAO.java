@@ -20,8 +20,8 @@ public class FilesDAO extends AbstractFilesDAO implements IFilesDAO {
     }
 
     @Override
-    protected IRapidFireFileResource createFileInstance(String dataLibrary, String job, int position) {
-        return new RapidFireFileResource(dataLibrary, job, position);
+    protected IRapidFireFileResource createFileInstance(String libraryName, String job, int position) {
+        return new RapidFireFileResource(libraryName, job, position);
     }
 
 }

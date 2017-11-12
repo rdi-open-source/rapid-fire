@@ -32,14 +32,17 @@ public class BaseDAO extends AbstractBaseDAO implements IBaseDAO {
         this.system = this.ibmiConnection.getAS400ToolboxObject(null);
     }
 
+    @Override
     public AS400 getSystem() {
         return system;
     }
 
+    @Override
     public String getHostName() {
         return ibmiConnection.getHostName();
     }
 
+    @Override
     public String getConnectionName() {
         return ibmiConnection.getConnectionName();
     }
@@ -48,6 +51,7 @@ public class BaseDAO extends AbstractBaseDAO implements IBaseDAO {
      * Does not work at the moment due to a bug in
      * IBMiConnection.getJdbcConnection().
      */
+    @Override
     public Connection getJdbcConnection() throws Exception {
 
         String properties;

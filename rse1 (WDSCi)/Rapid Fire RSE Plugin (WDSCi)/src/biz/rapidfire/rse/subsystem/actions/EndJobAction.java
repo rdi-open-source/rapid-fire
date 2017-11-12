@@ -9,6 +9,7 @@ public class EndJobAction extends AbstractJobAction {
 
     private EndJobHandler handler = new EndJobHandler();
 
+    @Override
     public void execute(ExecutionEvent event) throws ExecutionException {
 
         System.out.println("Calling handler: Ending Rapid Fire job ...");
