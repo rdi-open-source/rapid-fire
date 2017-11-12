@@ -20,17 +20,21 @@ public class RapidFireSubSystemAttributes extends AbstractRapidFireSubSystemAttr
         this.subSystem = subSystem;
     }
 
+    @Override
     protected void saveSubSystem() throws Exception {
     }
 
+    @Override
     protected String getVendorAttribute(String key) {
         return subSystem.getVendorAttribute(key);
     }
 
+    @Override
     protected void setVendorAttribute(String key, String value) {
         subSystem.setVendorAttribute(key, value);
     }
 
+    @Override
     protected void removeVendorAttribute(String key) {
         subSystem.removeVendorAttribute(key);
     }

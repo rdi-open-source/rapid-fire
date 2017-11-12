@@ -23,10 +23,12 @@ import com.ibm.etools.systems.core.ui.SystemMenuManager;
 
 public class LibrariesNodeAdapter extends AbstractNodeAdapter {
 
+    @Override
     public String getText(Object element) {
         return Messages.Node_Libraries;
     }
 
+    @Override
     public String getAbsoluteName(Object element) {
         return "node.libraries"; //$NON-NLS-1$
     }

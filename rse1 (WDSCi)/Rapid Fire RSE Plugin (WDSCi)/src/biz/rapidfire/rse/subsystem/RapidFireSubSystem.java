@@ -32,7 +32,6 @@ import biz.rapidfire.core.model.maintenance.job.JobManager;
 import biz.rapidfire.core.subsystem.IRapidFireSubSystem;
 import biz.rapidfire.core.subsystem.RapidFireFilter;
 import biz.rapidfire.rse.model.RapidFireJobResource;
-import biz.rapidfire.rse.model.dao.BaseDAO;
 import biz.rapidfire.rse.model.dao.DAOManager;
 import biz.rapidfire.rse.model.dao.FileCopyStatusDAO;
 import biz.rapidfire.rse.model.dao.FilesDAO;

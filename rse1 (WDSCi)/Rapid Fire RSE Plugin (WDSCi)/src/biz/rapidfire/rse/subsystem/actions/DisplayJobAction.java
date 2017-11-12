@@ -9,6 +9,7 @@ public class DisplayJobAction extends AbstractJobAction {
 
     private DisplayJobHandler handler = new DisplayJobHandler();
 
+    @Override
     public void execute(ExecutionEvent event) throws ExecutionException {
 
         System.out.println("Calling handler: Displaying Rapid Fire job ...");

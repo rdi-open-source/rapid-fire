@@ -9,6 +9,7 @@ public class DeleteJobAction extends AbstractJobAction {
 
     private DeleteJobHandler handler = new DeleteJobHandler();
 
+    @Override
     public void execute(ExecutionEvent event) throws ExecutionException {
 
         System.out.println("Calling handler: Deleting Rapid Fire job ...");

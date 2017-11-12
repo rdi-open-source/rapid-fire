@@ -9,6 +9,7 @@ public class TestJobAction extends AbstractJobAction {
 
     private TestJobHandler handler = new TestJobHandler();
 
+    @Override
     public void execute(ExecutionEvent event) throws ExecutionException {
 
         System.out.println("Calling handler: Testing Rapid Fire job ...");

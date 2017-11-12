@@ -9,6 +9,7 @@ public class ResetJobAction extends AbstractJobAction {
 
     private ResetJobHandler handler = new ResetJobHandler();
 
+    @Override
     public void execute(ExecutionEvent event) throws ExecutionException {
 
         System.out.println("Calling handler: Resetting Rapid Fire job ...");
