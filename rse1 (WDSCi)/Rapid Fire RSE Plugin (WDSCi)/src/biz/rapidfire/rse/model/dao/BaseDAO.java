@@ -89,8 +89,4 @@ public class BaseDAO extends AbstractBaseDAO implements IBaseDAO {
 
         return jdbcConnection;
     }
-
-    protected boolean mustSetLibraries() {
-        return true;
-    }
 }
