@@ -23,6 +23,7 @@ import biz.rapidfire.rse.subsystem.RapidFireSubSystemFactory;
 
 public abstract class AbstractResourceAdapter extends AbstractSystemViewAdapter implements ISystemRemoteElementAdapter {
 
+    @Override
     public void addActions(SystemMenuManager menu, IStructuredSelection selection, Shell parent, String menuGroup) {
     }
 
@@ -49,10 +50,12 @@ public abstract class AbstractResourceAdapter extends AbstractSystemViewAdapter 
         return null;
     }
 
+    @Override
     public Object getParent(Object element) {
         return null;
     }
 
+    @Override
     public boolean hasChildren(IAdaptable element) {
         return false;
     }
@@ -62,10 +65,12 @@ public abstract class AbstractResourceAdapter extends AbstractSystemViewAdapter 
         return null;
     }
 
+    @Override
     protected IPropertyDescriptor[] internalGetPropertyDescriptors() {
         return null;
     }
 
+    @Override
     protected Object internalGetPropertyValue(Object key) {
         return null;
     }

@@ -57,6 +57,7 @@ public class RapidFireFileResourceAdapter extends AbstractResourceAdapter implem
      * Returns the name of the resource, e.g. for showing the name in the status
      * line.
      */
+    @Override
     public String getText(Object element) {
 
         RapidFireFileResource resource = (RapidFireFileResource)element;
@@ -67,6 +68,7 @@ public class RapidFireFileResourceAdapter extends AbstractResourceAdapter implem
     /**
      * Returns the absolute name of the resource for building hash values.
      */
+    @Override
     public String getAbsoluteName(Object element) {
 
         RapidFireFileResource resource = (RapidFireFileResource)element;
@@ -85,6 +87,7 @@ public class RapidFireFileResourceAdapter extends AbstractResourceAdapter implem
         return Messages.Resource_Rapid_Fire_File;
     }
 
+    @Override
     public String getRemoteType(Object element) {
         return "file";
     }

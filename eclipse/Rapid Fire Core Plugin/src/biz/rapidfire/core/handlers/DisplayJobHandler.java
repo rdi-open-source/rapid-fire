@@ -19,6 +19,7 @@ public class DisplayJobHandler extends AbstractJobHandler implements IHandler {
         super();
     }
 
+    @Override
     protected Object executeWithResource(IRapidFireResource job) throws ExecutionException {
 
         System.out.println("Displaying Rapid Fire job ... " + job);

@@ -22,12 +22,12 @@ public class AutoScrollbarsListener implements Listener {
         if (!(event.widget instanceof Text)) {
             return;
         }
-        
+
         Text text = (Text)event.widget;
         if (text.getHorizontalBar() == null && text.getVerticalBar() == null) {
             return;
         }
-        
+
         if (event.type != SWT.Modify && event.type != SWT.Resize) {
             return;
         }

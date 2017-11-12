@@ -235,7 +235,7 @@ public final class StringHelper {
         for (String line : lines) {
             retBuf.append(indent);
             retBuf.append(line);
-            retBuf.append('\n'); //$NON-NLS-1$
+            retBuf.append('\n');
         }
 
         return retBuf.toString();
@@ -261,7 +261,7 @@ public final class StringHelper {
         // remove newlines from head and tail
         if (removeNewLines) {
             original = original.trim();
-            original = original.replace('\n', ' '); //$NON-NLS-1$ //$NON-NLS-2$
+            original = original.replace('\n', ' ');
             workingSet = new String[] { original };
         } else {
             StringTokenizer tokens = new StringTokenizer(original, "\n"); //$NON-NLS-1$

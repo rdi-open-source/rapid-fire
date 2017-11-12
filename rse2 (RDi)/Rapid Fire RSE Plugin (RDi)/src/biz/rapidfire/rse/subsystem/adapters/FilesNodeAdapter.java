@@ -24,10 +24,12 @@ import biz.rapidfire.rse.subsystem.FilesNode;
 
 public class FilesNodeAdapter extends AbstractNodeAdapter {
 
+    @Override
     public String getText(Object element) {
         return Messages.Node_Files;
     }
 
+    @Override
     public String getAbsoluteName(Object element) {
         return "node.files"; //$NON-NLS-1$
     }

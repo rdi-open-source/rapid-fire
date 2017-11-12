@@ -74,7 +74,7 @@ public abstract class AbstractFilesDAO {
         String job = resultSet.getString(JOB).trim();
         int position = resultSet.getInt(POSITION);
 
-        IRapidFireFileResource fileResource = createFileInstance(dao.getLibraryName(), job, position); //$NON-NLS-1$
+        IRapidFireFileResource fileResource = createFileInstance(dao.getLibraryName(), job, position);
 
         String name = resultSet.getString(FILE).trim();
         String type = resultSet.getString(TYPE).trim();

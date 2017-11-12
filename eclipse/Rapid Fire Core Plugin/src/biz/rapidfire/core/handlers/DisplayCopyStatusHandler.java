@@ -27,12 +27,14 @@ public class DisplayCopyStatusHandler extends AbstractJobHandler implements IHan
         super();
     }
 
+    @Override
     protected Object executeWithResource(IRapidFireResource job) throws ExecutionException {
 
         if (job instanceof IRapidFireJobResource) {
             try {
 
-                FileCopyStatusView view = (FileCopyStatusView)PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage().showView(FileCopyStatusView.ID);
+                FileCopyStatusView view = (FileCopyStatusView)PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
+                    .showView(FileCopyStatusView.ID);
                 view.setInput((IRapidFireJobResource)job);
 
             } catch (PartInitException e) {

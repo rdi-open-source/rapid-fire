@@ -68,7 +68,7 @@ public abstract class AbstractLibrariesDAO {
         String job = resultSet.getString(JOB).trim();
         String library = resultSet.getString(LIBRARY).trim();
 
-        IRapidFireLibraryResource libraryResource = createLibraryInstance(dataLibrary, job, library); //$NON-NLS-1$
+        IRapidFireLibraryResource libraryResource = createLibraryInstance(dataLibrary, job, library);
 
         String shadowLibrary = resultSet.getString(SHADOW_LIBRARY).trim();
 

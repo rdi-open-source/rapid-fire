@@ -66,16 +66,18 @@ public class RapidFireJobResourceAdapter extends AbstractResourceAdapter impleme
      * Returns the name of the resource, e.g. for showing the name in the status
      * line.
      */
+    @Override
     public String getText(Object element) {
 
         RapidFireJobResource resource = (RapidFireJobResource)element;
 
-        return resource.getName() + " - " + resource.getStatus(); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+        return resource.getName() + " - " + resource.getStatus(); //$NON-NLS-1$ 
     }
 
     /**
      * Returns the absolute name of the resource for building hash values.
      */
+    @Override
     public String getAbsoluteName(Object element) {
 
         RapidFireJobResource resource = (RapidFireJobResource)element;
@@ -94,6 +96,7 @@ public class RapidFireJobResourceAdapter extends AbstractResourceAdapter impleme
         return Messages.Resource_Rapid_Fire_Job;
     }
 
+    @Override
     public String getRemoteType(Object element) {
         return "job";
     }

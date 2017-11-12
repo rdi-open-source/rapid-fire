@@ -19,6 +19,7 @@ public class TestJobHandler extends AbstractJobHandler implements IHandler {
         super();
     }
 
+    @Override
     protected Object executeWithResource(IRapidFireResource job) throws ExecutionException {
 
         System.out.println("Testing Rapid Fire job ... " + job);

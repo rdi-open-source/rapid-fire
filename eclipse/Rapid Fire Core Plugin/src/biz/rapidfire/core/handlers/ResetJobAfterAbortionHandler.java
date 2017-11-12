@@ -19,6 +19,7 @@ public class ResetJobAfterAbortionHandler extends AbstractJobHandler implements 
         super();
     }
 
+    @Override
     protected Object executeWithResource(IRapidFireResource job) throws ExecutionException {
 
         System.out.println("Reseting Rapid Fire job after abortion ... " + job);

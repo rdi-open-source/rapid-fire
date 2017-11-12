@@ -114,8 +114,8 @@ public class RapidFireFilterStringEditPaneDelegate {
 
     public void resetFields() {
 
-        dataLibraryText.setText(RapidFireFilter.RAPIDFIRE_LIBRARY); //$NON-NLS-1$
-        jobText.setText(RapidFireFilter.ASTERISK); //$NON-NLS-1$
+        dataLibraryText.setText(RapidFireFilter.RAPIDFIRE_LIBRARY);
+        jobText.setText(RapidFireFilter.ASTERISK);
         statusCombo.select(0);
     }
 
