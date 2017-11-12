@@ -38,14 +38,14 @@ public abstract class AbstractLibrariesDAO {
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
 
-        if (!dao.checkRapidFireLibrary(shell, libraryName)) {
+        if (!dao.checkRapidFireLibrary(shell)) {
             return libraries;
         }
 
         try {
 
-            String sqlStatement = getSqlStatement(libraryName);
-            preparedStatement = dao.prepareStatement(sqlStatement, libraryName);
+            String sqlStatement = getSqlStatement();
+            preparedStatement = dao.prepareStatement(sqlStatement);
             preparedStatement.setString(1, job);
             resultSet = preparedStatement.executeQuery();
             resultSet.setFetchSize(50);
@@ -79,7 +79,7 @@ public abstract class AbstractLibrariesDAO {
 
     protected abstract IRapidFireLibraryResource createLibraryInstance(String libraryName, String job, String library);
 
-    private String getSqlStatement(String libraryName) throws Exception {
+    private String getSqlStatement() throws Exception {
 
         // @formatter:off
         String sqlStatement = 
@@ -94,6 +94,6 @@ public abstract class AbstractLibrariesDAO {
             "JOB = ?";
         // @formatter:on
 
-        return dao.insertLibraryQualifier(sqlStatement, libraryName);
+        return dao.insertLibraryQualifier(sqlStatement);
     }
 }

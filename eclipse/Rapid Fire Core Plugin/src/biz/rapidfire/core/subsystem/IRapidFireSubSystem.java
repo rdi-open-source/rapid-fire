@@ -14,6 +14,7 @@ import biz.rapidfire.core.model.IFileCopyStatus;
 import biz.rapidfire.core.model.IRapidFireFileResource;
 import biz.rapidfire.core.model.IRapidFireJobResource;
 import biz.rapidfire.core.model.IRapidFireLibraryResource;
+import biz.rapidfire.core.model.maintenance.job.JobManager;
 
 public interface IRapidFireSubSystem {
 
@@ -24,4 +25,8 @@ public interface IRapidFireSubSystem {
     public IRapidFireLibraryResource[] getLibraries(String library, String job, Shell shell) throws Exception;
 
     public IFileCopyStatus[] getFileCopyStatus(String library, String job, Shell shell) throws Exception;
+
+    public String getConnectionName();
+
+    public JobManager getJobManager(String connectionName, String libraryName) throws Exception;
 }

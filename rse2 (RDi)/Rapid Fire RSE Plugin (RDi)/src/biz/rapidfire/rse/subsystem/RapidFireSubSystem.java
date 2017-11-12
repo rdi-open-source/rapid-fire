@@ -38,9 +38,11 @@ import biz.rapidfire.core.model.IRapidFireFileResource;
 import biz.rapidfire.core.model.IRapidFireJobResource;
 import biz.rapidfire.core.model.IRapidFireLibraryResource;
 import biz.rapidfire.core.model.list.FileCopyStatus;
+import biz.rapidfire.core.model.maintenance.job.JobManager;
 import biz.rapidfire.core.subsystem.IRapidFireSubSystem;
 import biz.rapidfire.core.subsystem.RapidFireFilter;
 import biz.rapidfire.rse.model.RapidFireJobResource;
+import biz.rapidfire.rse.model.dao.BaseDAO;
 import biz.rapidfire.rse.model.dao.FileCopyStatusDAO;
 import biz.rapidfire.rse.model.dao.FilesDAO;
 import biz.rapidfire.rse.model.dao.JobsDAO;
@@ -88,6 +90,10 @@ public class RapidFireSubSystem extends SubSystem implements IISeriesSubSystem, 
         return subSystemAttributes;
     }
 
+    public String getConnectionName() {
+        return getHostAliasName();
+    }
+
     @Override
     protected Object[] internalResolveFilterString(String filterString, IProgressMonitor monitor) throws InvocationTargetException,
         InterruptedException {
@@ -114,52 +120,56 @@ public class RapidFireSubSystem extends SubSystem implements IISeriesSubSystem, 
         return null;
     }
 
-    public IRapidFireJobResource[] getJobs(String library, Shell shell) throws Exception {
+    public IRapidFireJobResource[] getJobs(String libraryName, Shell shell) throws Exception {
 
         if (!successFullyLoaded()) {
             return new IRapidFireJobResource[0];
         }
 
-        JobsDAO dao = new JobsDAO(getHostAliasName());
-        List<IRapidFireJobResource> jobs = dao.load(library, shell);
+        JobsDAO dao = new JobsDAO(getHostAliasName(), libraryName);
+        List<IRapidFireJobResource> jobs = dao.load(libraryName, shell);
 
         return jobs.toArray(new IRapidFireJobResource[jobs.size()]);
     }
 
-    public IRapidFireFileResource[] getFiles(String library, String job, Shell shell) throws Exception {
+    public IRapidFireFileResource[] getFiles(String libraryName, String jobName, Shell shell) throws Exception {
 
         if (!successFullyLoaded()) {
             return new IRapidFireFileResource[0];
         }
 
-        FilesDAO dao = new FilesDAO(getHostAliasName());
-        List<IRapidFireFileResource> files = dao.load(library, job, shell);
+        FilesDAO dao = new FilesDAO(getHostAliasName(), libraryName);
+        List<IRapidFireFileResource> files = dao.load(jobName, shell);
 
         return files.toArray(new IRapidFireFileResource[files.size()]);
     }
 
-    public IRapidFireLibraryResource[] getLibraries(String library, String job, Shell shell) throws Exception {
+    public IRapidFireLibraryResource[] getLibraries(String libraryName, String jobName, Shell shell) throws Exception {
 
         if (!successFullyLoaded()) {
             return new IRapidFireLibraryResource[0];
         }
 
-        LibrariesDAO dao = new LibrariesDAO(getHostAliasName());
-        List<IRapidFireLibraryResource> libraries = dao.load(library, job, shell);
+        LibrariesDAO dao = new LibrariesDAO(getHostAliasName(), libraryName);
+        List<IRapidFireLibraryResource> libraries = dao.load(libraryName, jobName, shell);
 
         return libraries.toArray(new IRapidFireLibraryResource[libraries.size()]);
     }
 
-    public IFileCopyStatus[] getFileCopyStatus(String library, String job, Shell shell) throws Exception {
+    public IFileCopyStatus[] getFileCopyStatus(String libraryName, String jobName, Shell shell) throws Exception {
 
         if (!successFullyLoaded()) {
             return new IFileCopyStatus[0];
         }
 
-        FileCopyStatusDAO dao = new FileCopyStatusDAO(getHostAliasName());
-        List<IFileCopyStatus> fileCopyStatuses = dao.load(library, job, shell);
+        FileCopyStatusDAO dao = new FileCopyStatusDAO(getHostAliasName(), libraryName);
+        List<IFileCopyStatus> fileCopyStatuses = dao.load(jobName, shell);
 
         return fileCopyStatuses.toArray(new FileCopyStatus[fileCopyStatuses.size()]);
+    }
+
+    public JobManager getJobManager(String connectionName, String libraryName) throws Exception {
+        return new JobManager(new BaseDAO(connectionName, libraryName));
     }
 
     private boolean successFullyLoaded() {
@@ -169,7 +179,7 @@ public class RapidFireSubSystem extends SubSystem implements IISeriesSubSystem, 
             final int SLEEP_TIME = 250;
             int maxTime = 30 * 1000 / SLEEP_TIME;
 
-            while (isLoading) {
+            while (isLoading && maxTime > 0) {
                 try {
                     Thread.sleep(SLEEP_TIME);
                 } catch (InterruptedException e) {

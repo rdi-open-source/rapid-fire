@@ -43,27 +43,27 @@ public abstract class AbstractFileCopyStatusDAO {
         this.dao = dao;
     }
 
-    public List<IFileCopyStatus> load(final String libraryName, String job, Shell shell) throws Exception {
+    public List<IFileCopyStatus> load(String job, Shell shell) throws Exception {
 
         final List<IFileCopyStatus> fileCopyStatuses = new ArrayList<IFileCopyStatus>();
 
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
 
-        if (!dao.checkRapidFireLibrary(shell, libraryName)) {
+        if (!dao.checkRapidFireLibrary(shell)) {
             return fileCopyStatuses;
         }
 
         try {
 
-            String sqlStatement = getSqlStatement(libraryName, job);
-            preparedStatement = dao.prepareStatement(sqlStatement, libraryName);
+            String sqlStatement = getSqlStatement(job);
+            preparedStatement = dao.prepareStatement(sqlStatement);
             resultSet = preparedStatement.executeQuery();
             resultSet.setFetchSize(50);
 
             if (resultSet != null) {
                 while (resultSet.next()) {
-                    fileCopyStatuses.add(produceFileCopyStatus(libraryName, resultSet));
+                    fileCopyStatuses.add(produceFileCopyStatus(resultSet));
                 }
             }
 
@@ -75,7 +75,7 @@ public abstract class AbstractFileCopyStatusDAO {
         return fileCopyStatuses;
     }
 
-    private FileCopyStatus produceFileCopyStatus(String dataLibrary, ResultSet resultSet) throws SQLException {
+    private FileCopyStatus produceFileCopyStatus(ResultSet resultSet) throws SQLException {
 
         String job = resultSet.getString(JOB).trim();
         int position = resultSet.getInt(POSITION);
@@ -113,7 +113,7 @@ public abstract class AbstractFileCopyStatusDAO {
         return fileCopyStatus;
     }
 
-    private String getSqlStatement(String libraryName, String job) throws Exception {
+    private String getSqlStatement(String job) throws Exception {
 
         String where;
         if (job != null) {
@@ -144,6 +144,6 @@ public abstract class AbstractFileCopyStatusDAO {
             ") AS X";
         // @formatter:on
 
-        return dao.insertLibraryQualifier(sqlStatement, libraryName);
+        return dao.insertLibraryQualifier(sqlStatement);
     }
 }

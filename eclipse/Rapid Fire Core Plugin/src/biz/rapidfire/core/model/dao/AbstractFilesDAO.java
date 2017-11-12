@@ -37,28 +37,28 @@ public abstract class AbstractFilesDAO {
         this.dao = dao;
     }
 
-    public List<IRapidFireFileResource> load(final String libraryName, String job, Shell shell) throws Exception {
+    public List<IRapidFireFileResource> load(String job, Shell shell) throws Exception {
 
         final List<IRapidFireFileResource> files = new ArrayList<IRapidFireFileResource>();
 
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
 
-        if (!dao.checkRapidFireLibrary(shell, libraryName)) {
+        if (!dao.checkRapidFireLibrary(shell)) {
             return files;
         }
 
         try {
 
-            String sqlStatement = getSqlStatement(libraryName);
-            preparedStatement = dao.prepareStatement(sqlStatement, libraryName);
+            String sqlStatement = getSqlStatement();
+            preparedStatement = dao.prepareStatement(sqlStatement);
             preparedStatement.setString(1, job);
             resultSet = preparedStatement.executeQuery();
             resultSet.setFetchSize(50);
 
             if (resultSet != null) {
                 while (resultSet.next()) {
-                    files.add(produceFile(libraryName, resultSet));
+                    files.add(produceFile(resultSet));
                 }
             }
         } finally {
@@ -69,12 +69,12 @@ public abstract class AbstractFilesDAO {
         return files;
     }
 
-    private IRapidFireFileResource produceFile(String dataLibrary, ResultSet resultSet) throws SQLException {
+    private IRapidFireFileResource produceFile(ResultSet resultSet) throws SQLException {
 
         String job = resultSet.getString(JOB).trim();
         int position = resultSet.getInt(POSITION);
 
-        IRapidFireFileResource fileResource = createFileInstance(dataLibrary, job, position); //$NON-NLS-1$
+        IRapidFireFileResource fileResource = createFileInstance(dao.getLibraryName(), job, position); //$NON-NLS-1$
 
         String name = resultSet.getString(FILE).trim();
         String type = resultSet.getString(TYPE).trim();
@@ -97,7 +97,7 @@ public abstract class AbstractFilesDAO {
 
     protected abstract IRapidFireFileResource createFileInstance(String libraryName, String job, int position);
 
-    private String getSqlStatement(String libraryName) throws Exception {
+    private String getSqlStatement() throws Exception {
 
         // @formatter:off
         String sqlStatement = 
@@ -117,6 +117,6 @@ public abstract class AbstractFilesDAO {
             "JOB = ?";
         // @formatter:on
 
-        return dao.insertLibraryQualifier(sqlStatement, libraryName);
+        return dao.insertLibraryQualifier(sqlStatement);
     }
 }

@@ -21,8 +21,10 @@ public class BaseDAO extends AbstractBaseDAO implements IBaseDAO {
 
     private IBMiConnection ibmiConnection;
     private AS400 system;
+    private Connection jdbcConnection;
 
-    public BaseDAO(String connectionName) throws Exception {
+    public BaseDAO(String connectionName, String libraryName) throws Exception {
+        super(libraryName);
 
         if (connectionName == null) {
             throw new Exception(Messages.bind(Messages.RseBaseDAO_Invalid_or_missing_connection_name_A, connectionName));
@@ -52,33 +54,27 @@ public class BaseDAO extends AbstractBaseDAO implements IBaseDAO {
      * Does not work at the moment due to a bug in
      * IBMiConnection.getJdbcConnection().
      */
-    public Connection getJdbcConnection(String defaultSchema) throws Exception {
+    public Connection getJdbcConnection() throws Exception {
 
-        String properties;
-        if (defaultSchema == null) {
-            properties = "";
-        } else {
-            properties = ";libraries=" + defaultSchema + ",*LIBL;";
+        String properties = ";libraries=" + getLibraryName() + ",*LIBL;";
+
+        Connection localJdbcConnection = ibmiConnection.getJDBCConnection(properties, true);
+        if (localJdbcConnection == jdbcConnection) {
+            return jdbcConnection;
         }
 
-        Connection jdbcConnection = ibmiConnection.getJDBCConnection(properties, false);
-
-        if (mustSetLibraries(jdbcConnection, defaultSchema)) {
-
-            // Bugfix, because getJDBCConnection does not set the default
-            // schema.
-            // (PMR 91446,031,724)
-            // !! getSchema() is not available in WDSCi !!
-            // getAS400JDBCConnection(jdbcConnection).setSchema(defaultSchema);
-
-            // Also set the current library to find dependent objects.
-            setCurrentLibrary(jdbcConnection, defaultSchema);
+        if (jdbcConnection != null) {
+            jdbcConnection.close();
         }
+
+        jdbcConnection = localJdbcConnection;
+        jdbcConnection.setAutoCommit(true);
+
+        // Bugfix, because getJDBCConnection does not set the default
+        // schema.
+        // (PMR 91446,031,724)
+        setCurrentLibrary(jdbcConnection);
 
         return jdbcConnection;
-    }
-
-    protected boolean mustSetLibraries(Connection jdbcConnection, String defaultSchema) {
-        return true;
     }
 }

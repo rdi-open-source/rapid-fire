@@ -8,6 +8,7 @@
 
 package biz.rapidfire.core.model.dao;
 
+import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -25,11 +26,15 @@ public interface IBaseDAO {
 
     public String getConnectionName();
 
-    public Connection getJdbcConnection(String defaultSchema) throws Exception;
+    public Connection getJdbcConnection() throws Exception;
 
-    public String insertLibraryQualifier(String sqlStatement, String libraryName) throws Exception;
+    public String getLibraryName();
 
-    public PreparedStatement prepareStatement(String sql, String defaultLibrary) throws Exception;
+    public String insertLibraryQualifier(String sqlStatement) throws Exception;
+
+    public PreparedStatement prepareStatement(String sql) throws Exception;
+
+    public CallableStatement prepareCall(String sql) throws Exception;
 
     public void destroy(ResultSet resultSet) throws Exception;
 
@@ -41,5 +46,5 @@ public interface IBaseDAO {
 
     public boolean convertYesNo(String yesNoValue);
 
-    public boolean checkRapidFireLibrary(Shell shell, String libraryName) throws Exception;
+    public boolean checkRapidFireLibrary(Shell shell) throws Exception;
 }

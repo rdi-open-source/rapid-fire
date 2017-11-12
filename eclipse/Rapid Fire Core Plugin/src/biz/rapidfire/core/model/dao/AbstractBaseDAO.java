@@ -31,38 +31,62 @@ public abstract class AbstractBaseDAO {
     private static final String BOOLEAN_YES = "*YES"; //$NON-NLS-1$
     private static final String BOOLEAN_NO = "*NO"; //$NON-NLS-1$
 
-    public String insertLibraryQualifier(String sqlStatement, String libraryName) throws Exception {
+    private String libraryName;
 
-        return sqlStatement.replaceAll(IBaseDAO.LIBRARY, libraryName + getSeparator(getJdbcConnection(libraryName)));
+    public AbstractBaseDAO(String libraryName) {
+        this.libraryName = libraryName;
     }
 
-    public PreparedStatement prepareStatement(String sql, String defaultLibrary) throws Exception {
+    public String getLibraryName() {
+        return libraryName;
+    }
 
-        // Actually we should call IBMiConnection.getConnection() via the
-        // abstract method getJdbcConnection().
-        // But because IBMiConnection does not properly handle the "properties"
-        // parameter (actually ignoring it), we have to do it this way to set
-        // the default schema.
-        // Connection connection = getJdbcConnection(defaultLibrary)
+    public String insertLibraryQualifier(String sqlStatement) throws Exception {
+
+        return sqlStatement.replaceAll(IBaseDAO.LIBRARY, libraryName + getSeparator(getJdbcConnection()));
+    }
+
+    public PreparedStatement prepareStatement(String sqlStatement) throws Exception {
 
         Connection jdbcConnection;
 
         try {
-            jdbcConnection = getJdbcConnection(defaultLibrary);
+
+            sqlStatement = insertLibraryQualifier(sqlStatement);
+            jdbcConnection = getJdbcConnection();
+
         } catch (OperationCanceledException e) {
             return null;
         }
 
-        return jdbcConnection.prepareStatement(sql);
+        return jdbcConnection.prepareStatement(sqlStatement);
+    }
+
+    public CallableStatement prepareCall(String sqlStatement) throws Exception {
+
+        Connection jdbcConnection;
+
+        try {
+
+            sqlStatement = insertLibraryQualifier(sqlStatement);
+            jdbcConnection = getJdbcConnection();
+
+        } catch (OperationCanceledException e) {
+            return null;
+        }
+
+        return jdbcConnection.prepareCall(sqlStatement);
     }
 
     public void destroy(ResultSet resultSet) throws Exception {
+
         if (resultSet != null) {
             resultSet.close();
         }
     }
 
     public void destroy(PreparedStatement preparedStatement) throws Exception {
+
         if (preparedStatement != null) {
             preparedStatement.close();
         }
@@ -96,7 +120,7 @@ public abstract class AbstractBaseDAO {
         return booleanValue;
     }
 
-    public boolean checkRapidFireLibrary(Shell shell, String libraryName) throws Exception {
+    public boolean checkRapidFireLibrary(Shell shell) throws Exception {
         return RapidFireHelper.checkRapidFireLibrary(shell, getSystem(), libraryName);
     }
 
@@ -111,7 +135,7 @@ public abstract class AbstractBaseDAO {
         }
     }
 
-    protected String setCurrentLibrary(Connection jdbcConnection, String libraryName) throws Exception {
+    protected String setCurrentLibrary(Connection jdbcConnection) throws Exception {
 
         String currentLibrary = null;
         CallableStatement statement = null;
@@ -132,6 +156,22 @@ public abstract class AbstractBaseDAO {
         return currentLibrary;
     }
 
+    protected void startCommitControl(Connection jdbcConnection) throws Exception {
+
+        CallableStatement statement = null;
+
+        try {
+
+            statement = jdbcConnection.prepareCall("CALL QCMDEXC('STRCMTCTL LCKLVL(*CHG) CMTSCOPE(*JOB)')"); //$NON-NLS-1$
+            statement.execute();
+
+        } finally {
+            if (statement != null) {
+                statement.close();
+            }
+        }
+    }
+
     public String getSeparator(Connection jdbcConnection) {
 
         String separator;
@@ -147,7 +187,7 @@ public abstract class AbstractBaseDAO {
 
     public abstract AS400 getSystem();
 
-    public abstract Connection getJdbcConnection(String defaultSchema) throws Exception;
+    public abstract Connection getJdbcConnection() throws Exception;
 
     public abstract String getHostName();
 

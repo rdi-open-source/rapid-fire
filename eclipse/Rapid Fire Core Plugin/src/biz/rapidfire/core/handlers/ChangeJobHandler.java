@@ -10,20 +10,104 @@ package biz.rapidfire.core.handlers;
 
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.commands.IHandler;
+import org.eclipse.jface.dialogs.MessageDialog;
 
+import biz.rapidfire.core.Messages;
+import biz.rapidfire.core.RapidFireCorePlugin;
+import biz.rapidfire.core.model.IRapidFireJobResource;
 import biz.rapidfire.core.model.IRapidFireResource;
+import biz.rapidfire.core.model.maintenance.CheckStatus;
+import biz.rapidfire.core.model.maintenance.job.JobKey;
+import biz.rapidfire.core.model.maintenance.job.JobManager;
+import biz.rapidfire.core.model.maintenance.job.JobValues;
 
 public class ChangeJobHandler extends AbstractJobHandler implements IHandler {
+
+    private JobManager manager;
+    String mode = JobManager.MODE_CHANGE;
 
     public ChangeJobHandler() {
         super();
     }
 
-    protected Object executeWithResource(IRapidFireResource job) throws ExecutionException {
+    protected Object executeWithResource(IRapidFireResource resource) throws ExecutionException {
 
-        System.out.println("Changing Rapid Fire job ... " + job);
+        if (!(resource instanceof IRapidFireJobResource)) {
+            return null;
+        }
+
+        CheckStatus status = null;
+        IRapidFireJobResource job = (IRapidFireJobResource)resource;
+
+        try {
+
+            String message = initialize(job);
+            if (message != null) {
+                MessageDialog.openError(getShell(), Messages.E_R_R_O_R, message);
+            } else {
+
+                JobValues values = manager.getValues();
+
+                // TODO: open dialog and get values
+
+                manager.setValues(values);
+                status = manager.check();
+                if (status.isSuccessfull()) {
+                    manager.book();
+                }
+            }
+
+        } catch (Exception e) {
+            RapidFireCorePlugin.logError("*** Could not change Rapid Fire job resource ***", e);
+        } finally {
+            terminate();
+            if (status != null && status.isError()) {
+                MessageDialog.openError(getShell(), Messages.E_R_R_O_R, status.getMessage());
+            }
+        }
 
         return null;
     }
 
+    private String initialize(IRapidFireJobResource job) {
+
+        String connectionName = job.getParentSubSystem().getConnectionName();
+
+        try {
+
+            manager = job.getParentSubSystem().getJobManager(connectionName, job.getDataLibrary());
+            manager.openFiles();
+
+        } catch (Exception e) {
+            RapidFireCorePlugin.logError("*** Could not open files of 'Job' resource ***", e);
+            return "Could not open files of 'Job' resource.";
+        }
+
+        try {
+
+            CheckStatus status = manager.initialize(mode, new JobKey(job.getName()));
+            if (status.isError()) {
+                return status.getMessage();
+            }
+
+        } catch (Exception e) {
+            RapidFireCorePlugin.logError("*** Could not initialize 'Job Manager' for mode '" + mode + "' ***", e);
+            return Messages.bind("Could not initialize 'Job Manager' for mode ''{0}''.", mode);
+        }
+
+        return null;
+    }
+
+    private void terminate() {
+
+        try {
+
+            if (manager != null) {
+                manager.closeFiles();
+            }
+
+        } catch (Exception e) {
+            RapidFireCorePlugin.logError("*** Could not close files of job resource ***", e);
+        }
+    }
 }

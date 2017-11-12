@@ -15,8 +15,8 @@ import biz.rapidfire.rse.model.RapidFireJobResource;
 
 public class JobsDAO extends AbstractJobsDAO implements IJobsDAO {
 
-    public JobsDAO(String connectionName) throws Exception {
-        super(new BaseDAO(connectionName));
+    public JobsDAO(String connectionName, String libraryName) throws Exception {
+        super(DAOManager.getInstance().getBaseDAO(connectionName, libraryName));
     }
 
     @Override

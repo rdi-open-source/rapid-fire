@@ -68,7 +68,6 @@ public class RapidFireCorePlugin extends AbstractExtendedUIPlugin {
      * )
      */
     public void stop(BundleContext context) throws Exception {
-        // JdbcConnectionManager.getInstance().destroy();
         plugin = null;
         super.stop(context);
     }

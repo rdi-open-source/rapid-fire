@@ -10,9 +10,9 @@ package biz.rapidfire.core.model;
 
 public interface IRapidFireFileResource extends IRapidFireResource {
 
-    public String getDataLibrary();
-
     public String getJob();
+
+    public String getDataLibrary();
 
     public int getPosition();
 

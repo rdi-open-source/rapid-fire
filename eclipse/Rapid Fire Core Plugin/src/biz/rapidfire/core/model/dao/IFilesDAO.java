@@ -16,5 +16,5 @@ import biz.rapidfire.core.model.IRapidFireFileResource;
 
 public interface IFilesDAO {
 
-    public List<IRapidFireFileResource> load(String libraryName, String job, Shell shell) throws Exception;
+    public List<IRapidFireFileResource> load(String job, Shell shell) throws Exception;
 }
