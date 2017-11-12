@@ -31,7 +31,7 @@ public abstract class AbstractLibrariesDAO {
         this.dao = dao;
     }
 
-    public List<IRapidFireLibraryResource> load(final String libraryName, String job, Shell shell) throws Exception {
+    public List<IRapidFireLibraryResource> load(String job, Shell shell) throws Exception {
 
         final List<IRapidFireLibraryResource> libraries = new ArrayList<IRapidFireLibraryResource>();
 
@@ -52,7 +52,7 @@ public abstract class AbstractLibrariesDAO {
 
             if (resultSet != null) {
                 while (resultSet.next()) {
-                    libraries.add(produceLibrary(libraryName, resultSet));
+                    libraries.add(produceLibrary(dao.getLibraryName(), resultSet));
                 }
             }
         } finally {

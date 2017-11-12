@@ -44,7 +44,7 @@ public abstract class AbstractJobsDAO {
         this.dao = dao;
     }
 
-    public List<IRapidFireJobResource> load(final String libraryName, Shell shell) throws Exception {
+    public List<IRapidFireJobResource> load(Shell shell) throws Exception {
 
         final List<IRapidFireJobResource> jobs = new ArrayList<IRapidFireJobResource>();
 
@@ -64,7 +64,7 @@ public abstract class AbstractJobsDAO {
 
             if (resultSet != null) {
                 while (resultSet.next()) {
-                    jobs.add(produceJob(libraryName, resultSet));
+                    jobs.add(produceJob(dao.getLibraryName(), resultSet));
                 }
             }
         } finally {

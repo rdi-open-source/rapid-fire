@@ -16,5 +16,5 @@ import biz.rapidfire.core.model.IRapidFireJobResource;
 
 public interface IJobsDAO {
 
-    public List<IRapidFireJobResource> load(String library, Shell shell) throws Exception;
+    public List<IRapidFireJobResource> load(Shell shell) throws Exception;
 }
