@@ -13,7 +13,7 @@ public class JobKey {
     private String jobName;
 
     public JobKey(String jobName) {
-        this.jobName = jobName;
+        this.jobName = jobName.trim();
     }
 
     public String getJobName() {
@@ -21,6 +21,6 @@ public class JobKey {
     }
 
     public void setJobName(String jobName) {
-        this.jobName = jobName;
+        this.jobName = jobName.trim();
     }
 }

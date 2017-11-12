@@ -28,5 +28,5 @@ public interface IRapidFireSubSystem {
 
     public String getConnectionName();
 
-    public JobManager getJobManager(String connectionName, String libraryName) throws Exception;
+    public JobManager getJobManager(String connectionName, String libraryName, boolean isCommitControl) throws Exception;
 }

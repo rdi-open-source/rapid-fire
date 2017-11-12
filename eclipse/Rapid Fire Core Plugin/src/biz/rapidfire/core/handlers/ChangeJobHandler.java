@@ -30,6 +30,7 @@ public class ChangeJobHandler extends AbstractJobHandler implements IHandler {
         super();
     }
 
+    @Override
     protected Object executeWithResource(IRapidFireResource resource) throws ExecutionException {
 
         if (!(resource instanceof IRapidFireJobResource)) {
@@ -75,7 +76,7 @@ public class ChangeJobHandler extends AbstractJobHandler implements IHandler {
 
         try {
 
-            manager = job.getParentSubSystem().getJobManager(connectionName, job.getDataLibrary());
+            manager = job.getParentSubSystem().getJobManager(connectionName, job.getDataLibrary(), true);
             manager.openFiles();
 
         } catch (Exception e) {
@@ -85,7 +86,7 @@ public class ChangeJobHandler extends AbstractJobHandler implements IHandler {
 
         try {
 
-            CheckStatus status = manager.initialize(mode, new JobKey(job.getName()));
+            CheckStatus status = manager.initialize(JobManager.MODE_CHANGE, new JobKey(job.getName()));
             if (status.isError()) {
                 return status.getMessage();
             }

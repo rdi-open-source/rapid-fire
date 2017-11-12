@@ -42,9 +42,9 @@ public class JobManager extends AbstractManager<JobKey, JobValues> {
 
         CallableStatement statement = dao.prepareCall(dao.insertLibraryQualifier("{CALL " + IBaseDAO.LIBRARY + "\"MNTJOB_initialize\"(?, ?, ?)}"));
 
-        statement.setString(1, mode);
-        statement.setString(2, key.getJobName());
-        statement.setString(3, "");
+        statement.setString(1, mode); // Mode
+        statement.setString(2, key.getJobName()); // Job name
+        statement.setString(3, ""); // Success
 
         statement.registerOutParameter(3, Types.CHAR);
 
@@ -120,8 +120,8 @@ public class JobManager extends AbstractManager<JobKey, JobValues> {
 
         statement.execute();
 
-        String fieldName = statement.getString(1).trim(); // Field name
-        String message = statement.getString(2).trim(); // Message
+        String fieldName = statement.getString(1); // Field name
+        String message = statement.getString(2); // Message
         String success = statement.getString(3); // Success
 
         return new CheckStatus(fieldName, message, success);

@@ -31,7 +31,7 @@ public class JobValues {
     }
 
     public void setDescription(String description) {
-        this.description = description;
+        this.description = description.trim();
     }
 
     public String getCreateEnvironment() {
@@ -39,7 +39,7 @@ public class JobValues {
     }
 
     public void setCreateEnvironment(String createEnvironment) {
-        this.createEnvironment = createEnvironment;
+        this.createEnvironment = createEnvironment.trim();
     }
 
     public String getJobQueueName() {
@@ -47,7 +47,7 @@ public class JobValues {
     }
 
     public void setJobQueueName(String jobQueueName) {
-        this.jobQueueName = jobQueueName;
+        this.jobQueueName = jobQueueName.trim();
     }
 
     public String getJobQueueLibraryName() {
@@ -55,7 +55,7 @@ public class JobValues {
     }
 
     public void setJobQueueLibraryName(String jobQueueLibraryName) {
-        this.jobQueueLibraryName = jobQueueLibraryName;
+        this.jobQueueLibraryName = jobQueueLibraryName.trim();
     }
 
     public void clear() {

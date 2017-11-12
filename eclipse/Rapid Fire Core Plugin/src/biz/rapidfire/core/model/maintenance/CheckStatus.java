@@ -16,8 +16,8 @@ public class CheckStatus {
 
     public CheckStatus(String fieldName, String message, String success) {
 
-        this.fieldName = fieldName;
-        this.message = message;
+        this.fieldName = fieldName.trim();
+        this.message = message.trim();
         this.success = Success.value(success);
     }
 
@@ -30,7 +30,7 @@ public class CheckStatus {
     }
 
     public void setMessage(String message) {
-        this.message = message;
+        this.message = message.trim();
     }
 
     public boolean isSuccessfull() {

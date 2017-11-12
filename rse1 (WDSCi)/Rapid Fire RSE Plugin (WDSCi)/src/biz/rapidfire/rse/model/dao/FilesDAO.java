@@ -15,8 +15,8 @@ import biz.rapidfire.rse.model.RapidFireFileResource;
 
 public class FilesDAO extends AbstractFilesDAO implements IFilesDAO {
 
-    public FilesDAO(String connectionName) throws Exception {
-        super(new BaseDAO(connectionName));
+    public FilesDAO(String connectionName, String libraryName) throws Exception {
+        super(DAOManager.getInstance().getBaseDAO(connectionName, libraryName, false));
     }
 
     @Override
