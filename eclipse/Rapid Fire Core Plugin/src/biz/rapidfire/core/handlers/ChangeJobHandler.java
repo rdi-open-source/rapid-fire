@@ -14,6 +14,7 @@ import org.eclipse.jface.dialogs.MessageDialog;
 
 import biz.rapidfire.core.Messages;
 import biz.rapidfire.core.RapidFireCorePlugin;
+import biz.rapidfire.core.helpers.ExceptionHelper;
 import biz.rapidfire.core.model.IRapidFireJobResource;
 import biz.rapidfire.core.model.IRapidFireResource;
 import biz.rapidfire.core.model.maintenance.CheckStatus;
@@ -61,6 +62,7 @@ public class ChangeJobHandler extends AbstractJobHandler implements IHandler {
 
         } catch (Exception e) {
             RapidFireCorePlugin.logError("*** Could not change Rapid Fire job resource ***", e);
+            MessageDialog.openError(getShell(), Messages.E_R_R_O_R, ExceptionHelper.getLocalizedMessage(e));
         } finally {
             terminate();
             if (status != null && status.isError()) {
