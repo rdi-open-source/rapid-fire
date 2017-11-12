@@ -23,8 +23,9 @@ import biz.rapidfire.core.model.maintenance.job.JobValues;
 
 public class ChangeJobHandler extends AbstractJobHandler implements IHandler {
 
+    private static final String MODE = JobManager.MODE_CHANGE;
+
     private JobManager manager;
-    String mode = JobManager.MODE_CHANGE;
 
     public ChangeJobHandler() {
         super();
@@ -86,14 +87,14 @@ public class ChangeJobHandler extends AbstractJobHandler implements IHandler {
 
         try {
 
-            CheckStatus status = manager.initialize(JobManager.MODE_CHANGE, new JobKey(job.getName()));
+            CheckStatus status = manager.initialize(MODE, new JobKey(job.getName()));
             if (status.isError()) {
                 return status.getMessage();
             }
 
         } catch (Exception e) {
-            RapidFireCorePlugin.logError("*** Could not initialize 'Job Manager' for mode '" + mode + "' ***", e);
-            return Messages.bind("Could not initialize 'Job Manager' for mode ''{0}''.", mode);
+            RapidFireCorePlugin.logError("*** Could not initialize 'Job Manager' for mode '" + MODE + "' ***", e);
+            return Messages.bind("Could not initialize 'Job Manager' for mode ''{0}''.", MODE);
         }
 
         return null;
