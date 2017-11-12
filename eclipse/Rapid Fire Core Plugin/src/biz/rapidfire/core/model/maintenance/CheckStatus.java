@@ -16,8 +16,14 @@ public class CheckStatus {
 
     public CheckStatus(String fieldName, String message, String success) {
 
-        this.fieldName = fieldName.trim();
-        this.message = message.trim();
+        if (fieldName != null) {
+            this.fieldName = fieldName.trim();
+        }
+
+        if (message != null) {
+            this.message = message.trim();
+        }
+
         this.success = Success.value(success);
     }
 

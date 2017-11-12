@@ -13,7 +13,9 @@ public class JobKey {
     private String jobName;
 
     public JobKey(String jobName) {
-        this.jobName = jobName.trim();
+        if (jobName != null) {
+            this.jobName = jobName.trim();
+        }
     }
 
     public String getJobName() {
