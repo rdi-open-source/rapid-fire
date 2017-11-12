@@ -11,7 +11,6 @@ public class ChangeJobAction extends AbstractJobAction {
 
     public void execute(ExecutionEvent event) throws ExecutionException {
 
-        System.out.println("Calling handler: Changing Rapid Fire job ...");
         handler.execute(event);
     }
 

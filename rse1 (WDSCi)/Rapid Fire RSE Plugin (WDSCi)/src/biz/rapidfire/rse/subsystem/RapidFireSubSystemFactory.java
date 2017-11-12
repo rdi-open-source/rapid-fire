@@ -102,9 +102,11 @@ public class RapidFireSubSystemFactory extends DefaultSubSystemFactoryImpl {
 
     @Override
     protected IAction getChangeFilterAction(SystemFilter selectedFilter, Shell shell) {
+
         SystemChangeFilterAction action = (SystemChangeFilterAction)super.getChangeFilterAction(selectedFilter, shell);
         action.setDialogTitle("Change filter");
         action.setFilterStringEditPane(new RapidFireInstanceFilterStringEditPane(shell));
+
         return action;
     }
 
@@ -124,5 +126,5 @@ public class RapidFireSubSystemFactory extends DefaultSubSystemFactoryImpl {
     public ImageDescriptor getSystemFilterImage(SystemFilter filter) {
         return RapidFireRSEPlugin.getDefault().getImageRegistry().getDescriptor(RapidFireRSEPlugin.IMAGE_RAPID_FIRE_FILTER);
     }
-    
+
 }
