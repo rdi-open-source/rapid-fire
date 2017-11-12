@@ -33,6 +33,7 @@ import org.eclipse.ui.progress.WorkbenchJob;
 
 import biz.rapidfire.core.RapidFireCorePlugin;
 import biz.rapidfire.core.dialogs.MessageDialogAsync;
+import biz.rapidfire.core.helpers.ExceptionHelper;
 import biz.rapidfire.core.model.IFileCopyStatus;
 import biz.rapidfire.core.model.IRapidFireFileResource;
 import biz.rapidfire.core.model.IRapidFireJobResource;
@@ -42,7 +43,7 @@ import biz.rapidfire.core.model.maintenance.job.JobManager;
 import biz.rapidfire.core.subsystem.IRapidFireSubSystem;
 import biz.rapidfire.core.subsystem.RapidFireFilter;
 import biz.rapidfire.rse.model.RapidFireJobResource;
-import biz.rapidfire.rse.model.dao.BaseDAO;
+import biz.rapidfire.rse.model.dao.DAOManager;
 import biz.rapidfire.rse.model.dao.FileCopyStatusDAO;
 import biz.rapidfire.rse.model.dao.FilesDAO;
 import biz.rapidfire.rse.model.dao.JobsDAO;
@@ -114,7 +115,7 @@ public class RapidFireSubSystem extends SubSystem implements IISeriesSubSystem, 
 
         } catch (Exception e) {
             RapidFireCorePlugin.logError("*** Could resolve filter string and load jobs ***", e); //$NON-NLS-1$
-            MessageDialogAsync.displayError(e.getLocalizedMessage());
+            MessageDialogAsync.displayError(ExceptionHelper.getLocalizedMessage(e));
         }
 
         return null;
@@ -168,8 +169,8 @@ public class RapidFireSubSystem extends SubSystem implements IISeriesSubSystem, 
         return fileCopyStatuses.toArray(new FileCopyStatus[fileCopyStatuses.size()]);
     }
 
-    public JobManager getJobManager(String connectionName, String libraryName) throws Exception {
-        return new JobManager(new BaseDAO(connectionName, libraryName));
+    public JobManager getJobManager(String connectionName, String libraryName, boolean isCommitControl) throws Exception {
+        return new JobManager(DAOManager.getInstance().getBaseDAO(connectionName, libraryName, isCommitControl));
     }
 
     private boolean successFullyLoaded() {

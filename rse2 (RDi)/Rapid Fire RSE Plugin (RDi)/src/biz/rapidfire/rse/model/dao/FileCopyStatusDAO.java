@@ -14,7 +14,7 @@ import biz.rapidfire.core.model.dao.IFileCopyStatusDAO;
 public class FileCopyStatusDAO extends AbstractFileCopyStatusDAO implements IFileCopyStatusDAO {
 
     public FileCopyStatusDAO(String connectionName, String libraryName) throws Exception {
-        super(DAOManager.getInstance().getBaseDAO(connectionName, libraryName));
+        super(DAOManager.getInstance().getBaseDAO(connectionName, libraryName, false));
     }
 
 }

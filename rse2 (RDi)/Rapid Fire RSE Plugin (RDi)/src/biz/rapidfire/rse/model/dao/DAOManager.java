@@ -39,21 +39,21 @@ public class DAOManager {
         return instance;
     }
 
-    public IBaseDAO getBaseDAO(String connectionName, String libraryName) throws Exception {
+    public IBaseDAO getBaseDAO(String connectionName, String libraryName, boolean isCommitControl) throws Exception {
 
-        String key = connectionName + ":" + libraryName;
+        String key = connectionName + ":" + libraryName + ":commit=" + isCommitControl;
 
         IBaseDAO baseDAO = baseDAOs.get(key);
         if (baseDAO == null) {
-            baseDAO = produceBaseDAO(connectionName, libraryName);
+            baseDAO = produceBaseDAO(connectionName, libraryName, isCommitControl);
             baseDAOs.put(key, baseDAO);
         }
 
         return baseDAO;
     }
 
-    protected IBaseDAO produceBaseDAO(String connectionName, String libraryName) throws Exception {
-        return new BaseDAO(connectionName, libraryName);
+    protected IBaseDAO produceBaseDAO(String connectionName, String libraryName, boolean isCommitControl) throws Exception {
+        return new BaseDAO(connectionName, libraryName, isCommitControl);
     }
 
     public void destroy() {
