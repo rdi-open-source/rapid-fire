@@ -73,6 +73,7 @@ class BaseDAO extends AbstractBaseDAO implements IBaseDAO {
             properties += ";transaction isolation=read uncommitted";
         }
 
+        // TODO: fix me
         Connection localJdbcConnection = ibmiConnection.getJDBCConnection(properties, false);
         // if (localJdbcConnection == jdbcConnection) {
         // return jdbcConnection;

@@ -47,6 +47,7 @@ public class RapidFireJobResourceAdapter extends AbstractResourceAdapter impleme
 
     @Override
     public boolean showDelete(Object element) {
+        // TODO: fix me
         return false;
     }
 
@@ -57,6 +58,7 @@ public class RapidFireJobResourceAdapter extends AbstractResourceAdapter impleme
 
     @Override
     public boolean showRename(Object element) {
+        // TODO: fix me
         return false;
     }
 
