@@ -12,11 +12,12 @@ import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.commands.IHandler;
 
 import biz.rapidfire.core.model.IRapidFireResource;
+import biz.rapidfire.core.model.maintenance.IMaintenance;
 
-public class StartJobHandler extends AbstractJobHandler implements IHandler {
+public class StartJobHandler extends AbstractResourceHandler implements IHandler {
 
     public StartJobHandler() {
-        super();
+        super(IMaintenance.MODE_CHANGE);
     }
 
     @Override

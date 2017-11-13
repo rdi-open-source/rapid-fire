@@ -8,7 +8,10 @@
 
 package biz.rapidfire.core.model.maintenance.job;
 
-public class JobValues {
+import biz.rapidfire.core.RapidFireCorePlugin;
+import biz.rapidfire.core.helpers.ExceptionHelper;
+
+public class JobValues implements Cloneable {
 
     private JobKey key;
     private String description;
@@ -38,8 +41,20 @@ public class JobValues {
         return createEnvironment;
     }
 
+    public boolean isCreateEnvironment() {
+        return "*YES".equals(this.createEnvironment);
+    }
+
     public void setCreateEnvironment(String createEnvironment) {
         this.createEnvironment = createEnvironment.trim();
+    }
+
+    public void setCreateEnvironment(boolean createEnvironment) {
+        if (createEnvironment) {
+            this.createEnvironment = "*YES";
+        } else {
+            this.createEnvironment = "*NO";
+        }
     }
 
     public String getJobQueueName() {
@@ -69,6 +84,22 @@ public class JobValues {
 
         if (key == null) {
             key = new JobKey(null);
+        }
+    }
+
+    @Override
+    public JobValues clone() {
+
+        try {
+
+            JobValues jobValues = (JobValues)super.clone();
+            jobValues.setKey((JobKey)getKey().clone());
+
+            return jobValues;
+
+        } catch (CloneNotSupportedException e) {
+            RapidFireCorePlugin.logError("*** Clone not supported. ***", e); //$NON-NLS-1$
+            throw new biz.rapidfire.core.exceptions.CloneNotSupportedException(ExceptionHelper.getLocalizedMessage(e), e);
         }
     }
 }

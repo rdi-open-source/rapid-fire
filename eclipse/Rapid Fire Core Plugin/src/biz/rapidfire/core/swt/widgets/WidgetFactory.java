@@ -10,7 +10,9 @@ package biz.rapidfire.core.swt.widgets;
 
 import org.eclipse.jface.preference.ColorSelector;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.graphics.Color;
 import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
@@ -18,6 +20,11 @@ import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Spinner;
 import org.eclipse.swt.widgets.Text;
+
+import biz.rapidfire.core.Messages;
+import biz.rapidfire.core.RapidFireCorePlugin;
+import biz.rapidfire.core.exceptions.IllegalParameterException;
+import biz.rapidfire.core.model.maintenance.IMaintenance;
 
 /**
  * Factory for creating SWT widgets.
@@ -57,6 +64,17 @@ public final class WidgetFactory {
      */
     public static ColorSelector createColorSelector(Composite parent) {
         return new ColorSelector(parent);
+    }
+
+    /**
+     * Produces a dialog "mode" sub-title label.
+     * 
+     * @param parent - parent composite
+     * @param mode - dialog mode
+     * @return dialog sub-title
+     */
+    public static Label createDialogSubTitle(Composite parent, String mode) {
+        return WidgetFactory.getInstance().produceDialogSubTitle(parent, mode);
     }
 
     /**
@@ -169,6 +187,21 @@ public final class WidgetFactory {
         text.setEditable(false);
 
         return text;
+    }
+
+    /**
+     * Produces a 'description' text field. The field is limited to 35
+     * characters.
+     * 
+     * @param parent - parent composite
+     * @return text field
+     */
+    public static Text createDescriptionText(Composite parent) {
+
+        Text description = WidgetFactory.getInstance().produceText(parent, SWT.NONE, true);
+        description.setTextLimit(35);
+
+        return description;
     }
 
     /**
@@ -633,6 +666,39 @@ public final class WidgetFactory {
         separator.setLayoutData(gridData);
 
         return separator;
+    }
+
+    private Label produceDialogSubTitle(Composite parent, String mode) {
+
+        Color color = null;
+
+        String title;
+        if (IMaintenance.MODE_CREATE.equals(mode)) {
+            title = Messages.DialogMode_CREATE;
+            color = RapidFireCorePlugin.getDefault().getColor(RapidFireCorePlugin.COLOR_DIALOG_MODE_CREATE);
+        } else if (IMaintenance.MODE_COPY.equals(mode)) {
+            title = Messages.DialogMode_COPY;
+            color = RapidFireCorePlugin.getDefault().getColor(RapidFireCorePlugin.COLOR_DIALOG_MODE_COPY);
+        } else if (IMaintenance.MODE_CHANGE.equals(mode)) {
+            title = Messages.DialogMode_CHANGE;
+            color = RapidFireCorePlugin.getDefault().getColor(RapidFireCorePlugin.COLOR_DIALOG_MODE_CHANGE);
+        } else if (IMaintenance.MODE_DELETE.equals(mode)) {
+            title = Messages.DialogMode_DELETE;
+            color = RapidFireCorePlugin.getDefault().getColor(RapidFireCorePlugin.COLOR_DIALOG_MODE_DELETE);
+        } else if (IMaintenance.MODE_DISPLAY.equals(mode)) {
+            title = Messages.DialogMode_DISPLAY;
+            color = RapidFireCorePlugin.getDefault().getColor(RapidFireCorePlugin.COLOR_DIALOG_MODE_DISPLAY);
+        } else {
+            throw new IllegalParameterException("mode", mode); //$NON-NLS-1$
+        }
+
+        Label label = new Label(parent, SWT.CENTER);
+        label.setLayoutData(new GridData(SWT.FILL, SWT.DEFAULT, true, false, ((GridLayout)label.getParent().getLayout()).numColumns, 1));
+        label.setForeground(RapidFireCorePlugin.getDefault().getColor(RapidFireCorePlugin.COLOR_DIALOG_MODE_FOREGROUND));
+        label.setBackground(color);
+        label.setText(title);
+
+        return label;
     }
 
     /**

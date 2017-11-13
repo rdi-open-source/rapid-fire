@@ -11,7 +11,9 @@ package biz.rapidfire.core;
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.resource.ColorRegistry;
 import org.eclipse.jface.resource.ImageRegistry;
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.RGB;
+import org.eclipse.swt.widgets.Display;
 import org.osgi.framework.BundleContext;
 import org.osgi.framework.Constants;
 
@@ -42,6 +44,13 @@ public class RapidFireCorePlugin extends AbstractExtendedUIPlugin {
 
     public static final String COLOR_PROGRESS_BAR_FOREGROUND = "COLOR_PROGRESS_BAR_FOREGROUND"; //$NON-NLS-1$
     public static final String COLOR_PROGRESS_BAR_BACKGROUND = "COLOR_PROGRESS_BAR_BACKGROUND"; //$NON-NLS-1$
+
+    public static final String COLOR_DIALOG_MODE_FOREGROUND = "COLOR_DIALOG_MODE_FOREGROUND"; //$NON-NLS-1$
+    public static final String COLOR_DIALOG_MODE_CREATE = "COLOR_DIALOG_MODE_CREATE"; //$NON-NLS-1$
+    public static final String COLOR_DIALOG_MODE_COPY = "COLOR_DIALOG_MODE_COPY"; //$NON-NLS-1$
+    public static final String COLOR_DIALOG_MODE_CHANGE = "COLOR_DIALOG_MODE_CHANGE"; //$NON-NLS-1$
+    public static final String COLOR_DIALOG_MODE_DELETE = "COLOR_DIALOG_MODE_DELETE"; //$NON-NLS-1$
+    public static final String COLOR_DIALOG_MODE_DISPLAY = "COLOR_DIALOG_MODE_DISPLAY"; //$NON-NLS-1$
 
     /**
      * The constructor
@@ -125,6 +134,13 @@ public class RapidFireCorePlugin extends AbstractExtendedUIPlugin {
 
         reg.put(COLOR_PROGRESS_BAR_FOREGROUND, new RGB(100, 230, 80));
         reg.put(COLOR_PROGRESS_BAR_BACKGROUND, new RGB(220, 220, 220));
+
+        reg.put(COLOR_DIALOG_MODE_FOREGROUND, Display.getCurrent().getSystemColor(SWT.COLOR_WHITE).getRGB());
+        reg.put(COLOR_DIALOG_MODE_CREATE, Display.getCurrent().getSystemColor(SWT.COLOR_DARK_GRAY).getRGB());
+        reg.put(COLOR_DIALOG_MODE_COPY, Display.getCurrent().getSystemColor(SWT.COLOR_DARK_GRAY).getRGB());
+        reg.put(COLOR_DIALOG_MODE_CHANGE, Display.getCurrent().getSystemColor(SWT.COLOR_DARK_GRAY).getRGB());
+        reg.put(COLOR_DIALOG_MODE_DELETE, Display.getCurrent().getSystemColor(SWT.COLOR_RED).getRGB());
+        reg.put(COLOR_DIALOG_MODE_DISPLAY, Display.getCurrent().getSystemColor(SWT.COLOR_DARK_GRAY).getRGB());
     }
 
     /**

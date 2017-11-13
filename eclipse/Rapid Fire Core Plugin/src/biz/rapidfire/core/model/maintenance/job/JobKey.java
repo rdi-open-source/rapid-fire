@@ -8,7 +8,10 @@
 
 package biz.rapidfire.core.model.maintenance.job;
 
-public class JobKey {
+import biz.rapidfire.core.RapidFireCorePlugin;
+import biz.rapidfire.core.helpers.ExceptionHelper;
+
+public class JobKey implements Cloneable {
 
     private String jobName;
 
@@ -24,5 +27,17 @@ public class JobKey {
 
     public void setJobName(String jobName) {
         this.jobName = jobName.trim();
+    }
+
+    @Override
+    public Object clone() {
+        try {
+
+            return super.clone();
+
+        } catch (CloneNotSupportedException e) {
+            RapidFireCorePlugin.logError("*** Clone not supported. ***", e); //$NON-NLS-1$
+            throw new biz.rapidfire.core.exceptions.CloneNotSupportedException(ExceptionHelper.getLocalizedMessage(e), e);
+        }
     }
 }

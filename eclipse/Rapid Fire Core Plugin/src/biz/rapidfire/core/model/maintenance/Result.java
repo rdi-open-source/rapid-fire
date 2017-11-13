@@ -14,6 +14,10 @@ public class Result {
     private String message;
     private Success success;
 
+    public Result(Success success) {
+        this(null, null, success.toString());
+    }
+
     public Result(String fieldName, String message, String success) {
 
         if (fieldName != null) {

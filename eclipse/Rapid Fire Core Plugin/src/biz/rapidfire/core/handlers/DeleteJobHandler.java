@@ -8,23 +8,31 @@
 
 package biz.rapidfire.core.handlers;
 
-import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.commands.IHandler;
+import org.eclipse.jface.dialogs.Dialog;
 
-import biz.rapidfire.core.model.IRapidFireResource;
+import biz.rapidfire.core.dialogs.maintenance.JobMaintenanceDialog;
+import biz.rapidfire.core.model.IRapidFireJobResource;
+import biz.rapidfire.core.model.maintenance.IMaintenance;
+import biz.rapidfire.core.model.maintenance.job.JobValues;
 
-public class DeleteJobHandler extends AbstractJobHandler implements IHandler {
+public class DeleteJobHandler extends AbstractJobMaintenanceHandler implements IHandler {
 
     public DeleteJobHandler() {
-        super();
+        super(IMaintenance.MODE_DELETE);
     }
 
     @Override
-    protected Object executeWithResource(IRapidFireResource job) throws ExecutionException {
+    protected void performAction(IRapidFireJobResource job) throws Exception {
 
-        System.out.println("Deleting Rapid Fire job ... " + job);
+        JobValues values = getManager().getValues();
 
-        return null;
+        JobMaintenanceDialog dialog = JobMaintenanceDialog.getDeleteDialog(getShell(), getManager());
+        dialog.setValue(values);
+
+        if (dialog.open() == Dialog.OK) {
+            getManager().book();
+            refreshUI(job);
+        }
     }
-
 }

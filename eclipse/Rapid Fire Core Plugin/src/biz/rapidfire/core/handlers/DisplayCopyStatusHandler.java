@@ -19,12 +19,13 @@ import biz.rapidfire.core.RapidFireCorePlugin;
 import biz.rapidfire.core.helpers.ExceptionHelper;
 import biz.rapidfire.core.model.IRapidFireJobResource;
 import biz.rapidfire.core.model.IRapidFireResource;
+import biz.rapidfire.core.model.maintenance.IMaintenance;
 import biz.rapidfire.core.view.FileCopyStatusView;
 
-public class DisplayCopyStatusHandler extends AbstractJobHandler implements IHandler {
+public class DisplayCopyStatusHandler extends AbstractResourceHandler implements IHandler {
 
     public DisplayCopyStatusHandler() {
-        super();
+        super(IMaintenance.MODE_DISPLAY);
     }
 
     @Override

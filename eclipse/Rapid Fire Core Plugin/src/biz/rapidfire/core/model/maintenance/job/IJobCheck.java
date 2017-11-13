@@ -13,4 +13,10 @@ public interface IJobCheck {
     public static final int FIELD_NAME = 1;
     public static final int MESSAGE = 2;
     public static final int SUCCESS = 3;
+
+    public static final String FIELD_JOB = "JOB"; //$NON-NLS-1$
+    public static final String FIELD_DESCRIPTION = "DSCR"; //$NON-NLS-1$
+    public static final String FIELD_CREATE_ENVIRONMENT = "CRTE"; //$NON-NLS-1$
+    public static final String FIELD_JOB_QUEUE_NAME = "JQ"; //$NON-NLS-1$
+    public static final String FIELD_JOB_QUEUE_LIBRARY_NAME = "JQL"; //$NON-NLS-1$
 }

@@ -8,23 +8,27 @@
 
 package biz.rapidfire.core.handlers;
 
-import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.commands.IHandler;
 
-import biz.rapidfire.core.model.IRapidFireResource;
+import biz.rapidfire.core.dialogs.maintenance.JobMaintenanceDialog;
+import biz.rapidfire.core.model.IRapidFireJobResource;
+import biz.rapidfire.core.model.maintenance.IMaintenance;
+import biz.rapidfire.core.model.maintenance.job.JobValues;
 
-public class DisplayJobHandler extends AbstractJobHandler implements IHandler {
+public class DisplayJobHandler extends AbstractJobMaintenanceHandler implements IHandler {
 
     public DisplayJobHandler() {
-        super();
+        super(IMaintenance.MODE_DISPLAY);
     }
 
     @Override
-    protected Object executeWithResource(IRapidFireResource job) throws ExecutionException {
+    protected void performAction(IRapidFireJobResource job) throws Exception {
 
-        System.out.println("Displaying Rapid Fire job ... " + job);
+        JobValues values = getManager().getValues();
 
-        return null;
+        JobMaintenanceDialog dialog = JobMaintenanceDialog.getDisplayDialog(getShell(), getManager());
+        dialog.setValue(values);
+
+        dialog.open();
     }
-
 }

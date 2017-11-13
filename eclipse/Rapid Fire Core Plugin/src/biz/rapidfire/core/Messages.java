@@ -20,7 +20,15 @@ public class Messages extends NLS {
     public static String E_R_R_O_R;
 
     // Dialog titles
-    public static String Specify_a_filter;
+    public static String DialogTitle_Specify_a_filter;
+    public static String DialogTitle_Job;
+
+    // Dialog action titles
+    public static String DialogMode_CREATE;
+    public static String DialogMode_COPY;
+    public static String DialogMode_CHANGE;
+    public static String DialogMode_DELETE;
+    public static String DialogMode_DISPLAY;
 
     // Column headings
     public static String ColumnLabel_File;
@@ -42,10 +50,19 @@ public class Messages extends NLS {
 
     public static String Label_Library_colon;
     public static String Label_Job_colon;
+    public static String Label_Description_colon;
+    public static String Label_Create_environment_colon;
+    public static String Label_Job_queue_name_colon;
+    public static String Label_Job_queue_library_name_colon;
     public static String Label_Status_colon;
     public static String Label_Full_generic_string;
     public static String Label_Enable_large_progress_bar;
 
+    public static String Tooltip_Job;
+    public static String Tooltip_Description;
+    public static String Tooltip_Create_environment;
+    public static String Tooltip_Job_queue_name;
+    public static String Tooltip_Job_queue_library_name;
     public static String Tooltip_Enable_large_progress_bar;
 
     // Action labels
@@ -70,7 +87,11 @@ public class Messages extends NLS {
     public static String JobLabel_Refreshing_file_copy_statuses;
 
     // Error messages
+    public static String Job_name_A_is_not_valid;
+    public static String Description_A_is_not_valid;
     public static String Library_name_A_is_not_valid;
+    public static String Create_environment_value_has_been_rejected;
+    public static String Job_queue_name_A_is_not_valid;
     public static String The_library_name_must_be_specified;
     public static String The_job_name_must_be_specified;
     public static String The_job_status_must_be_specified;

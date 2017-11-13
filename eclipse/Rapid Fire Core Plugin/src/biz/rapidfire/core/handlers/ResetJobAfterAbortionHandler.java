@@ -12,11 +12,12 @@ import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.commands.IHandler;
 
 import biz.rapidfire.core.model.IRapidFireResource;
+import biz.rapidfire.core.model.maintenance.IMaintenance;
 
-public class ResetJobAfterAbortionHandler extends AbstractJobHandler implements IHandler {
+public class ResetJobAfterAbortionHandler extends AbstractResourceHandler implements IHandler {
 
     public ResetJobAfterAbortionHandler() {
-        super();
+        super(IMaintenance.MODE_CHANGE);
     }
 
     @Override

@@ -14,13 +14,27 @@ import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.rse.core.RSECorePlugin;
+import org.eclipse.rse.core.events.ISystemRemoteChangeEvents;
+import org.eclipse.rse.core.model.ISystemRegistry;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.PlatformUI;
 
 import biz.rapidfire.core.model.IRapidFireResource;
+import biz.rapidfire.core.model.maintenance.IMaintenance;
 import biz.rapidfire.rsebase.handlers.AbstractSelectionHandler;
 
-public abstract class AbstractJobHandler extends AbstractSelectionHandler {
+public abstract class AbstractResourceHandler extends AbstractSelectionHandler {
+
+    public AbstractResourceHandler(String mode) {
+        this.mode = mode;
+    }
+
+    private String mode;
+
+    protected String getMode() {
+        return mode;
+    }
 
     /*
      * (non-Javadoc)
@@ -53,5 +67,17 @@ public abstract class AbstractJobHandler extends AbstractSelectionHandler {
     }
 
     protected abstract Object executeWithResource(IRapidFireResource resource) throws ExecutionException;
+
+    protected void refreshUI(IRapidFireResource resource) {
+
+        if (resource != null) {
+            ISystemRegistry sr = RSECorePlugin.getTheSystemRegistry();
+            if (IMaintenance.MODE_DELETE.equals(mode)) {
+                sr.fireRemoteResourceChangeEvent(ISystemRemoteChangeEvents.SYSTEM_REMOTE_RESOURCE_DELETED, resource, null, null, null, null);
+            } else {
+                sr.fireRemoteResourceChangeEvent(ISystemRemoteChangeEvents.SYSTEM_REMOTE_RESOURCE_CREATED, resource, null, null, null, null);
+            }
+        }
+    }
 
 }
