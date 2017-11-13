@@ -70,29 +70,34 @@ class BaseDAO extends AbstractBaseDAO implements IBaseDAO {
         }
 
         if (isCommitControl) {
-            properties += ";transaction isolation=read committed";
+            properties += ";transaction isolation=read uncommitted";
         }
 
         Connection localJdbcConnection = ibmiConnection.getJDBCConnection(properties, false);
-        if (localJdbcConnection == jdbcConnection) {
-            return jdbcConnection;
-        }
-
-        if (jdbcConnection != null) {
-            jdbcConnection.close();
-        }
+        // if (localJdbcConnection == jdbcConnection) {
+        // return jdbcConnection;
+        // }
+        //
+        // if (jdbcConnection != null) {
+        // jdbcConnection.close();
+        // }
 
         jdbcConnection = localJdbcConnection;
+
         jdbcConnection.setAutoCommit(false);
+
+        System.out.println("Before: " + jdbcConnection.hashCode() + ": " + jdbcConnection.getTransactionIsolation());
 
         // Bugfix, because getJDBCConnection does not use the transaction
         // isolation of the JDBC properties.
         // (PMR 91446,031,724)
         if (isCommitControl) {
-            jdbcConnection.setTransactionIsolation(Connection.TRANSACTION_READ_COMMITTED);
+            jdbcConnection.setTransactionIsolation(Connection.TRANSACTION_READ_UNCOMMITTED);
         } else {
             jdbcConnection.setTransactionIsolation(Connection.TRANSACTION_NONE);
         }
+
+        System.out.println("After: " + jdbcConnection.hashCode() + ": " + jdbcConnection.getTransactionIsolation());
 
         // Bugfix, because getJDBCConnection does not set the default
         // schema.
