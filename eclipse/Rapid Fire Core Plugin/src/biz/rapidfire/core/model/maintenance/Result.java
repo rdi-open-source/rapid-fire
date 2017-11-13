@@ -8,13 +8,13 @@
 
 package biz.rapidfire.core.model.maintenance;
 
-public class CheckStatus {
+public class Result {
 
     private String fieldName;
     private String message;
     private Success success;
 
-    public CheckStatus(String fieldName, String message, String success) {
+    public Result(String fieldName, String message, String success) {
 
         if (fieldName != null) {
             this.fieldName = fieldName.trim();
@@ -24,7 +24,7 @@ public class CheckStatus {
             this.message = message.trim();
         }
 
-        this.success = Success.value(success);
+        this.success = Success.fromValue(success);
     }
 
     public String getFieldName() {
@@ -40,7 +40,7 @@ public class CheckStatus {
     }
 
     public boolean isSuccessfull() {
-        return success.equals(Success.YES);
+        return Success.YES.equals(success);
     }
 
     public boolean isError() {

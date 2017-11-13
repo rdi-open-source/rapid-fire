@@ -16,13 +16,13 @@ public abstract class AbstractManager<K, V> {
     public abstract void openFiles() throws Exception;
 
     // Return succes: Y or N
-    public abstract CheckStatus initialize(String mode, K key) throws Exception;
+    public abstract Result initialize(String mode, K key) throws Exception;
 
     public abstract V getValues() throws Exception;
 
     public abstract void setValues(V values) throws Exception;
 
-    public abstract CheckStatus check() throws Exception;
+    public abstract Result check() throws Exception;
 
     public abstract void book() throws Exception;
 

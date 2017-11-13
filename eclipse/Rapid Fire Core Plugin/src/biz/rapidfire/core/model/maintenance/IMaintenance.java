@@ -8,27 +8,11 @@
 
 package biz.rapidfire.core.model.maintenance;
 
-public enum Success {
-    YES ("Y"),
-    NO ("N");
+public interface IMaintenance {
 
-    private String value;
-
-    private Success(String value) {
-        this.value = value;
-    }
-
-    public static Success fromValue(String value) {
-
-        if (Success.YES.value.equalsIgnoreCase(value)) {
-            return Success.YES;
-        } else {
-            return Success.NO;
-        }
-    }
-
-    @Override
-    public String toString() {
-        return value;
-    }
+    public static final String MODE_CREATE = "*CREATE"; //$NON-NLS-1$
+    public static final String MODE_COPY = "*COPY"; //$NON-NLS-1$
+    public static final String MODE_CHANGE = "*CHANGE"; //$NON-NLS-1$
+    public static final String MODE_DELETE = "*DELETE"; //$NON-NLS-1$
+    public static final String MODE_DISPLAY = "*DISPLAY"; //$NON-NLS-1$
 }

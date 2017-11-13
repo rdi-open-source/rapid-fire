@@ -17,14 +17,15 @@ import biz.rapidfire.core.RapidFireCorePlugin;
 import biz.rapidfire.core.helpers.ExceptionHelper;
 import biz.rapidfire.core.model.IRapidFireJobResource;
 import biz.rapidfire.core.model.IRapidFireResource;
-import biz.rapidfire.core.model.maintenance.CheckStatus;
+import biz.rapidfire.core.model.maintenance.IMaintenance;
+import biz.rapidfire.core.model.maintenance.Result;
 import biz.rapidfire.core.model.maintenance.job.JobKey;
 import biz.rapidfire.core.model.maintenance.job.JobManager;
 import biz.rapidfire.core.model.maintenance.job.JobValues;
 
 public class ChangeJobHandler extends AbstractJobHandler implements IHandler {
 
-    private static final String MODE = JobManager.MODE_CHANGE;
+    private static final String MODE = IMaintenance.MODE_CHANGE;
 
     private JobManager manager;
 
@@ -39,7 +40,7 @@ public class ChangeJobHandler extends AbstractJobHandler implements IHandler {
             return null;
         }
 
-        CheckStatus status = null;
+        Result status = null;
         IRapidFireJobResource job = (IRapidFireJobResource)resource;
 
         try {
@@ -89,7 +90,7 @@ public class ChangeJobHandler extends AbstractJobHandler implements IHandler {
 
         try {
 
-            CheckStatus status = manager.initialize(MODE, new JobKey(job.getName()));
+            Result status = manager.initialize(MODE, new JobKey(job.getName()));
             if (status.isError()) {
                 return status.getMessage();
             }
