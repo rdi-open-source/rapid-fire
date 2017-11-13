@@ -11,11 +11,8 @@ package biz.rapidfire.rse.subsystem.adapters;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.resource.ImageDescriptor;
-import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.rse.core.subsystems.AbstractResource;
-import org.eclipse.rse.ui.SystemMenuManager;
 import org.eclipse.rse.ui.view.ISystemRemoteElementAdapter;
-import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.views.properties.IPropertyDescriptor;
 import org.eclipse.ui.views.properties.PropertyDescriptor;
 
@@ -49,7 +46,23 @@ public class RapidFireJobResourceAdapter extends AbstractResourceAdapter impleme
     }
 
     @Override
-    public void addActions(SystemMenuManager menu, IStructuredSelection selection, Shell shell, String menuGroup) {
+    public boolean showDelete(Object element) {
+        return false;
+    }
+
+    @Override
+    public boolean canDelete(Object element) {
+        return false;
+    }
+
+    @Override
+    public boolean showRename(Object element) {
+        return false;
+    }
+
+    @Override
+    public boolean canRename(Object element) {
+        return false;
     }
 
     @Override
