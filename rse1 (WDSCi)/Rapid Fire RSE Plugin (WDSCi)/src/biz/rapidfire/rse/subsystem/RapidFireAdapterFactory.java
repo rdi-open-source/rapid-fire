@@ -11,14 +11,14 @@ package biz.rapidfire.rse.subsystem;
 import org.eclipse.core.runtime.IAdapterFactory;
 import org.eclipse.ui.views.properties.IPropertySource;
 
-import biz.rapidfire.rse.model.RapidFireFileResource;
-import biz.rapidfire.rse.model.RapidFireJobResource;
-import biz.rapidfire.rse.model.RapidFireLibraryResource;
 import biz.rapidfire.rse.subsystem.adapters.FilesNodeAdapter;
 import biz.rapidfire.rse.subsystem.adapters.LibrariesNodeAdapter;
 import biz.rapidfire.rse.subsystem.adapters.RapidFireFileResourceAdapter;
 import biz.rapidfire.rse.subsystem.adapters.RapidFireJobResourceAdapter;
 import biz.rapidfire.rse.subsystem.adapters.RapidFireLibraryResourceAdapter;
+import biz.rapidfire.rse.subsystem.resources.RapidFireFileResource;
+import biz.rapidfire.rse.subsystem.resources.RapidFireJobResource;
+import biz.rapidfire.rse.subsystem.resources.RapidFireLibraryResource;
 
 import com.ibm.etools.systems.core.ui.view.AbstractSystemRemoteAdapterFactory;
 import com.ibm.etools.systems.core.ui.view.ISystemViewElementAdapter;

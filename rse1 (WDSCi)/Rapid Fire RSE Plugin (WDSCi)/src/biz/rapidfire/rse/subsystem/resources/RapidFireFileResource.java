@@ -6,128 +6,106 @@
  * http://www.eclipse.org/legal/cpl-v10.html
  *******************************************************************************/
 
-package biz.rapidfire.rse.model;
+package biz.rapidfire.rse.subsystem.resources;
 
 import biz.rapidfire.core.model.FileType;
 import biz.rapidfire.core.model.IRapidFireFileResource;
 import biz.rapidfire.core.subsystem.IRapidFireSubSystem;
+import biz.rapidfire.core.subsystem.resources.RapidFireFileResourceDelegate;
 
 import com.ibm.etools.systems.subsystems.SubSystem;
 import com.ibm.etools.systems.subsystems.impl.AbstractResource;
 
 public class RapidFireFileResource extends AbstractResource implements IRapidFireFileResource, Comparable<IRapidFireFileResource> {
 
-    private String dataLibrary;
-    private String job;
-    private int position;
-    private String file;
-    private FileType fileType;
-    private String copyProgramName;
-    private String copyProgramLibrary;
-    private String conversionProgramName;
-    private String conversionProgramLibrary;
+    private RapidFireFileResourceDelegate delegate;
 
-    public RapidFireFileResource(String library, String job, int position) {
-
-        this.dataLibrary = library;
-        this.job = job;
-        this.position = position;
+    public RapidFireFileResource(String dataLibrary, String job, int position) {
+        this.delegate = new RapidFireFileResourceDelegate(dataLibrary, job, position);
     }
 
     /*
-     * IRapidFireFileResource methods
+     * IRapidFireResource methods
      */
 
     public String getDataLibrary() {
-        return dataLibrary;
-    }
-
-    public String getJob() {
-        return job;
-    }
-
-    public int getPosition() {
-        return position;
-    }
-
-    public String getName() {
-        return file;
-    }
-
-    public void setName(String file) {
-        this.file = file;
-    }
-
-    public FileType getFileType() {
-        return fileType;
-    }
-
-    public void setFileType(FileType fileType) {
-        this.fileType = fileType;
-    }
-
-    public String getCopyProgramName() {
-        return copyProgramName;
-    }
-
-    public void setCopyProgramName(String copyProgramName) {
-        this.copyProgramName = copyProgramName;
-    }
-
-    public String getCopyProgramLibrary() {
-        return copyProgramLibrary;
-    }
-
-    public void setCopyProgramLibrary(String copyProgramLibrary) {
-        this.copyProgramLibrary = copyProgramLibrary;
-    }
-
-    public String getConversionProgramName() {
-        return conversionProgramName;
-    }
-
-    public void setConversionProgramName(String conversionProgramName) {
-        this.conversionProgramName = conversionProgramName;
-    }
-
-    public String getConversionProgramLibrary() {
-        return conversionProgramLibrary;
-    }
-
-    public void setConversionProgramLibrary(String conversionProgramLibrary) {
-        this.conversionProgramLibrary = conversionProgramLibrary;
-    }
-
-    public int compareTo(IRapidFireFileResource resource) {
-
-        if (resource == null) {
-            return 1;
-        }
-
-        int result = resource.getDataLibrary().compareTo(getDataLibrary());
-        if (result != 0) {
-            return result;
-        }
-
-        result = resource.getJob().compareTo(getJob());
-        if (result != 0) {
-            return result;
-        }
-
-        return getName().compareTo(resource.getName());
-    }
-
-    public void setParentSubSystem(IRapidFireSubSystem subSystem) {
-        super.setSubSystem((SubSystem)subSystem);
+        return delegate.getDataLibrary();
     }
 
     public IRapidFireSubSystem getParentSubSystem() {
         return (IRapidFireSubSystem)super.getSubSystem();
     }
 
-    @Override
-    public String toString() {
-        return getName();
+    public void setParentSubSystem(IRapidFireSubSystem subSystem) {
+        super.setSubSystem((SubSystem)subSystem);
     }
 
+    /*
+     * IRapidFireFileResource methods
+     */
+
+    public String getJob() {
+        return delegate.getJob();
+    }
+
+    public int getPosition() {
+        return delegate.getPosition();
+    }
+
+    public String getName() {
+        return delegate.getName();
+    }
+
+    public void setName(String file) {
+        delegate.setName(file);
+    }
+
+    public FileType getFileType() {
+        return delegate.getFileType();
+    }
+
+    public void setFileType(FileType fileType) {
+        delegate.setFileType(fileType);
+    }
+
+    public String getCopyProgramName() {
+        return delegate.getCopyProgramName();
+    }
+
+    public void setCopyProgramName(String copyProgramName) {
+        delegate.setCopyProgramName(copyProgramName);
+    }
+
+    public String getCopyProgramLibrary() {
+        return delegate.getCopyProgramLibrary();
+    }
+
+    public void setCopyProgramLibrary(String copyProgramLibrary) {
+        delegate.setCopyProgramLibrary(copyProgramLibrary);
+    }
+
+    public String getConversionProgramName() {
+        return delegate.getConversionProgramName();
+    }
+
+    public void setConversionProgramName(String conversionProgramName) {
+        delegate.setConversionProgramName(conversionProgramName);
+    }
+
+    public String getConversionProgramLibrary() {
+        return delegate.getConversionProgramLibrary();
+    }
+
+    public void setConversionProgramLibrary(String conversionProgramLibrary) {
+        delegate.setConversionProgramLibrary(conversionProgramLibrary);
+    }
+
+    public int compareTo(IRapidFireFileResource resource) {
+        return delegate.compareTo(resource);
+    }
+
+    @Override
+    public String toString() {
+        return delegate.toString();
+    }
 }
