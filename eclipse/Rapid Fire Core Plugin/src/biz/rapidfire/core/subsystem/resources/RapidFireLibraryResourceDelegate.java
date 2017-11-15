@@ -40,7 +40,7 @@ public class RapidFireLibraryResourceDelegate implements Comparable<IRapidFireLi
         return job;
     }
 
-    public String getLibrary() {
+    public String getName() {
         return library;
     }
 
@@ -68,12 +68,12 @@ public class RapidFireLibraryResourceDelegate implements Comparable<IRapidFireLi
             return result;
         }
 
-        return getLibrary().compareTo(resource.getLibrary());
+        return getName().compareTo(resource.getName());
     }
 
     @Override
     public String toString() {
-        return getLibrary();
+        return getName();
     }
 
 }
