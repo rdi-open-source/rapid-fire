@@ -40,12 +40,24 @@ public class RapidFireJobResource extends AbstractResource implements IRapidFire
     }
 
     /*
-     * IRapidFireJobResource methods
+     * IRapidFireResource methods
      */
 
     public String getDataLibrary() {
         return dataLibrary;
     }
+
+    public IRapidFireSubSystem getParentSubSystem() {
+        return (IRapidFireSubSystem)super.getSubSystem();
+    }
+
+    public void setParentSubSystem(IRapidFireSubSystem subSystem) {
+        super.setSubSystem((ISubSystem)subSystem);
+    }
+
+    /*
+     * IRapidFireJobResource methods
+     */
 
     public String getName() {
         return job;
@@ -151,14 +163,6 @@ public class RapidFireJobResource extends AbstractResource implements IRapidFire
         }
 
         return getName().compareTo(resource.getName());
-    }
-
-    public void setParentSubSystem(IRapidFireSubSystem subSystem) {
-        super.setSubSystem((ISubSystem)subSystem);
-    }
-
-    public IRapidFireSubSystem getParentSubSystem() {
-        return (IRapidFireSubSystem)super.getSubSystem();
     }
 
     @Override
