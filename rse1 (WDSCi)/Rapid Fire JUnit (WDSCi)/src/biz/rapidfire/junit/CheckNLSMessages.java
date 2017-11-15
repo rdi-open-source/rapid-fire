@@ -30,7 +30,7 @@ import org.junit.Test;
 /**
  * <b>JUnit 4 Test Case</b>
  * <p>
- * Verifies that all message constants of the iSphere <i>Messages</i> objects
+ * Verifies that all message constants of the Rapid Fire <i>Messages</i> objects
  * have a corresponding message text entry. Also ensure that there are no dead
  * text entries in the property files.
  * <p>
@@ -50,7 +50,7 @@ public class CheckNLSMessages {
     private final String[] locales = new String[] { defaultLocale };
 
     /**
-     * Verifies the NLS messages of the iSphere project.
+     * Verifies the NLS messages of the Rapid Fire project.
      * 
      * @throws Exception
      */
