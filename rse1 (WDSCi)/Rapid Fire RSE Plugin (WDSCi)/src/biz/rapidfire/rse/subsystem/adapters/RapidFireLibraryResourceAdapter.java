@@ -56,7 +56,7 @@ public class RapidFireLibraryResourceAdapter extends AbstractResourceAdapter imp
 
         RapidFireLibraryResource resource = (RapidFireLibraryResource)element;
 
-        return resource.getLibrary() + " -> " + resource.getShadowLibrary();
+        return resource.getName() + " -> " + resource.getShadowLibrary();
     }
 
     /**
@@ -67,7 +67,7 @@ public class RapidFireLibraryResourceAdapter extends AbstractResourceAdapter imp
 
         RapidFireLibraryResource resource = (RapidFireLibraryResource)element;
 
-        String name = "RapidFireLibrary." + resource.getDataLibrary() + "." + resource.getJob() + "." + resource.getLibrary(); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+        String name = "RapidFireLibrary." + resource.getDataLibrary() + "." + resource.getJob() + "." + resource.getName(); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
         return name;
     }
@@ -128,7 +128,7 @@ public class RapidFireLibraryResourceAdapter extends AbstractResourceAdapter imp
         } else if (propKey.equals(JOB)) {
             return resource.getJob();
         } else if (propKey.equals(LIBRARY)) {
-            return resource.getLibrary();
+            return resource.getName();
         } else if (propKey.equals(SHADOW_LIBRARY)) {
             return resource.getShadowLibrary();
         }
