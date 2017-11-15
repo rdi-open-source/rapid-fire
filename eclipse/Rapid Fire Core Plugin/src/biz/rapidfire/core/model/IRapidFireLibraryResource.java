@@ -10,11 +10,19 @@ package biz.rapidfire.core.model;
 
 public interface IRapidFireLibraryResource extends IRapidFireResource {
 
+    /*
+     * Key attributes
+     */
+
     public String getDataLibrary();
 
     public String getJob();
 
     public String getLibrary();
+
+    /*
+     * Other attributes
+     */
 
     public String getShadowLibrary();
 
