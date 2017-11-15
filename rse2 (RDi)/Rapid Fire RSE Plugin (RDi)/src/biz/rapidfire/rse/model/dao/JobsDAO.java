@@ -11,7 +11,7 @@ package biz.rapidfire.rse.model.dao;
 import biz.rapidfire.core.model.IRapidFireJobResource;
 import biz.rapidfire.core.model.dao.AbstractJobsDAO;
 import biz.rapidfire.core.model.dao.IJobsDAO;
-import biz.rapidfire.rse.model.RapidFireJobResource;
+import biz.rapidfire.core.subsystem.resources.RapidFireJobResource;
 
 public class JobsDAO extends AbstractJobsDAO implements IJobsDAO {
 

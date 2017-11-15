@@ -11,7 +11,7 @@ package biz.rapidfire.rse.model.dao;
 import biz.rapidfire.core.model.IRapidFireLibraryResource;
 import biz.rapidfire.core.model.dao.AbstractLibrariesDAO;
 import biz.rapidfire.core.model.dao.ILibrariesDAO;
-import biz.rapidfire.rse.model.RapidFireLibraryResource;
+import biz.rapidfire.core.subsystem.resources.RapidFireLibraryResource;
 
 public class LibrariesDAO extends AbstractLibrariesDAO implements ILibrariesDAO {
 

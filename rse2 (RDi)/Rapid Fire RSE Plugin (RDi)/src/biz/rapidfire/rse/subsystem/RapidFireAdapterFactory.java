@@ -13,9 +13,11 @@ import org.eclipse.rse.ui.view.AbstractSystemRemoteAdapterFactory;
 import org.eclipse.rse.ui.view.ISystemViewElementAdapter;
 import org.eclipse.ui.views.properties.IPropertySource;
 
-import biz.rapidfire.rse.model.RapidFireFileResource;
-import biz.rapidfire.rse.model.RapidFireJobResource;
-import biz.rapidfire.rse.model.RapidFireLibraryResource;
+import biz.rapidfire.core.subsystem.resources.RapidFireFileResource;
+import biz.rapidfire.core.subsystem.resources.RapidFireJobResource;
+import biz.rapidfire.core.subsystem.resources.RapidFireLibraryResource;
+import biz.rapidfire.rse.model.CreateJobNodeResource;
+import biz.rapidfire.rse.subsystem.adapters.CreateJobNodeAdapter;
 import biz.rapidfire.rse.subsystem.adapters.FilesNodeAdapter;
 import biz.rapidfire.rse.subsystem.adapters.LibrariesNodeAdapter;
 import biz.rapidfire.rse.subsystem.adapters.RapidFireFileResourceAdapter;
@@ -28,8 +30,9 @@ public class RapidFireAdapterFactory extends AbstractSystemRemoteAdapterFactory 
     private RapidFireFileResourceAdapter fileResourceAdapter = new RapidFireFileResourceAdapter();
     private RapidFireLibraryResourceAdapter libraryResourceAdapter = new RapidFireLibraryResourceAdapter();
 
-    private FilesNodeAdapter filesResourceAdapter = new FilesNodeAdapter();
-    private LibrariesNodeAdapter librariesResourceAdapter = new LibrariesNodeAdapter();
+    private FilesNodeAdapter filesNodeAdapter = new FilesNodeAdapter();
+    private LibrariesNodeAdapter librariesNodeAdapter = new LibrariesNodeAdapter();
+    private CreateJobNodeAdapter createJobNodeAdapter = new CreateJobNodeAdapter();
 
     public RapidFireAdapterFactory() {
         super();
@@ -46,9 +49,9 @@ public class RapidFireAdapterFactory extends AbstractSystemRemoteAdapterFactory 
         } else if (adaptableObject instanceof RapidFireLibraryResource) {
             adapter = libraryResourceAdapter;
         } else if (adaptableObject instanceof FilesNode) {
-            adapter = filesResourceAdapter;
+            adapter = filesNodeAdapter;
         } else if (adaptableObject instanceof LibrariesNode) {
-            adapter = librariesResourceAdapter;
+            adapter = librariesNodeAdapter;
         }
 
         if ((adapter != null) && (adapterType == IPropertySource.class)) {

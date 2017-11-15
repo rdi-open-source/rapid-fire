@@ -18,9 +18,9 @@ import org.eclipse.ui.views.properties.PropertyDescriptor;
 
 import biz.rapidfire.core.model.IRapidFireJobResource;
 import biz.rapidfire.core.properties.JobNameProperties;
+import biz.rapidfire.core.subsystem.resources.RapidFireJobResource;
 import biz.rapidfire.rse.Messages;
 import biz.rapidfire.rse.RapidFireRSEPlugin;
-import biz.rapidfire.rse.model.RapidFireJobResource;
 import biz.rapidfire.rse.subsystem.FilesNode;
 import biz.rapidfire.rse.subsystem.LibrariesNode;
 
