@@ -50,9 +50,9 @@ public class General extends PreferencePage implements IWorkbenchPreferencePage 
         final GridData gd_labelSeparator1 = new GridData(SWT.FILL, SWT.CENTER, true, false);
         labelSeparator1.setLayoutData(gd_labelSeparator1);
 
-        final Label labelISphere = new Label(container, SWT.NONE);
-        labelISphere.setLayoutData(new GridData(SWT.CENTER, SWT.CENTER, true, false));
-        labelISphere.setText("Rapid Fire Version " + RapidFireCorePlugin.getDefault().getVersion()); //$NON-NLS-1$
+        final Label labelRapidFire = new Label(container, SWT.NONE);
+        labelRapidFire.setLayoutData(new GridData(SWT.CENTER, SWT.CENTER, true, false));
+        labelRapidFire.setText("Rapid Fire Version " + RapidFireCorePlugin.getDefault().getVersion()); //$NON-NLS-1$
 
         final Label labelSeparator2 = new Label(container, SWT.SEPARATOR | SWT.HORIZONTAL);
         final GridData gd_labelSeparator2 = new GridData(SWT.FILL, SWT.CENTER, true, false);
