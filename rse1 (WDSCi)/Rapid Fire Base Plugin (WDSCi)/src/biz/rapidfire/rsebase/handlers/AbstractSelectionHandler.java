@@ -14,6 +14,10 @@ import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.ui.ISources;
 
+import com.ibm.etools.systems.core.SystemPlugin;
+import com.ibm.etools.systems.model.ISystemRemoteChangeEvents;
+import com.ibm.etools.systems.model.SystemRegistry;
+
 public abstract class AbstractSelectionHandler extends AbstractHandler {
 
     protected ISelection getCurrentSelection(ExecutionEvent event) throws ExecutionException {
@@ -24,4 +28,17 @@ public abstract class AbstractSelectionHandler extends AbstractHandler {
         }
         return (ISelection)object;
     }
+
+    protected void refreshUI(Object resource) {
+        if (resource != null) {
+            SystemRegistry sr = SystemPlugin.getDefault().getSystemRegistry();
+            if (isDeleteMode()) {
+                sr.fireRemoteResourceChangeEvent(ISystemRemoteChangeEvents.SYSTEM_REMOTE_RESOURCE_DELETED, resource, null, null, null, null);
+            } else {
+                sr.fireRemoteResourceChangeEvent(ISystemRemoteChangeEvents.SYSTEM_REMOTE_RESOURCE_CREATED, resource, null, null, null, null);
+            }
+        }
+    }
+
+    protected abstract boolean isDeleteMode();
 }

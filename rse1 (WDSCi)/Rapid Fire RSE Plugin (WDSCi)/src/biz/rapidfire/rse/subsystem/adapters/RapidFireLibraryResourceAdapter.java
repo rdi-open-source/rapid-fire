@@ -17,7 +17,7 @@ import org.eclipse.ui.views.properties.PropertyDescriptor;
 import biz.rapidfire.core.model.IRapidFireLibraryResource;
 import biz.rapidfire.rse.Messages;
 import biz.rapidfire.rse.RapidFireRSEPlugin;
-import biz.rapidfire.rse.model.RapidFireLibraryResource;
+import biz.rapidfire.rse.subsystem.resources.RapidFireLibraryResource;
 
 import com.ibm.etools.systems.core.ui.SystemMenuManager;
 import com.ibm.etools.systems.core.ui.view.ISystemRemoteElementAdapter;
