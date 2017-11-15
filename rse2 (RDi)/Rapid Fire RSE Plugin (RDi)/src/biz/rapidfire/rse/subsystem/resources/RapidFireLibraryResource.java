@@ -13,19 +13,14 @@ import org.eclipse.rse.core.subsystems.ISubSystem;
 
 import biz.rapidfire.core.model.IRapidFireLibraryResource;
 import biz.rapidfire.core.subsystem.IRapidFireSubSystem;
+import biz.rapidfire.core.subsystem.resources.RapidFireLibraryResourceDelegate;
 
 public class RapidFireLibraryResource extends AbstractResource implements IRapidFireLibraryResource, Comparable<IRapidFireLibraryResource> {
 
-    private String dataLibrary;
-    private String job;
-    private String library;
-    private String shadowLibrary;
+    private RapidFireLibraryResourceDelegate delegate;
 
     public RapidFireLibraryResource(String dataLibrary, String job, String library) {
-
-        this.dataLibrary = dataLibrary;
-        this.job = job;
-        this.library = library;
+        this.delegate = new RapidFireLibraryResourceDelegate(dataLibrary, job, library);
     }
 
     /*
@@ -33,7 +28,7 @@ public class RapidFireLibraryResource extends AbstractResource implements IRapid
      */
 
     public String getDataLibrary() {
-        return dataLibrary;
+        return delegate.getDataLibrary();
     }
 
     public IRapidFireSubSystem getParentSubSystem() {
@@ -45,47 +40,31 @@ public class RapidFireLibraryResource extends AbstractResource implements IRapid
     }
 
     /*
-     * IRapidFireLibraryResource methods
+     * IRapidFireFileResource methods
      */
 
     public String getJob() {
-        return job;
+        return delegate.getJob();
     }
 
     public String getLibrary() {
-        return library;
+        return delegate.getLibrary();
     }
 
     public String getShadowLibrary() {
-        return shadowLibrary;
+        return delegate.getShadowLibrary();
     }
 
     public void setShadowLibrary(String shadowLibrary) {
-        this.shadowLibrary = shadowLibrary;
+        delegate.setShadowLibrary(shadowLibrary);
     }
 
     public int compareTo(IRapidFireLibraryResource resource) {
-
-        if (resource == null) {
-            return 1;
-        }
-
-        int result = resource.getDataLibrary().compareTo(getDataLibrary());
-        if (result != 0) {
-            return result;
-        }
-
-        result = resource.getJob().compareTo(getJob());
-        if (result != 0) {
-            return result;
-        }
-
-        return getLibrary().compareTo(resource.getLibrary());
+        return delegate.compareTo(resource);
     }
 
     @Override
     public String toString() {
-        return getLibrary();
+        return delegate.toString();
     }
-
 }
