@@ -6,7 +6,7 @@
  * http://www.eclipse.org/legal/cpl-v10.html
  *******************************************************************************/
 
-package biz.rapidfire.core.subsystem.resources;
+package biz.rapidfire.rse.subsystem.resources;
 
 import org.eclipse.rse.core.subsystems.AbstractResource;
 import org.eclipse.rse.core.subsystems.ISubSystem;
@@ -16,27 +16,14 @@ import biz.rapidfire.core.model.JobName;
 import biz.rapidfire.core.model.Phase;
 import biz.rapidfire.core.model.Status;
 import biz.rapidfire.core.subsystem.IRapidFireSubSystem;
+import biz.rapidfire.core.subsystem.resources.RapidFireJobResourceDelegate;
 
 public class RapidFireJobResource extends AbstractResource implements IRapidFireJobResource, Comparable<IRapidFireJobResource> {
 
-    private String dataLibrary;
-    private String job;
-    private String description;
-    private boolean doCreateEnvironment;
-    private String jobQueueName;
-    private String jobQueueLibrary;
-    private Status status;
-    private Phase phase;
-    private boolean isError;
-    private String errorText;
-    private JobName batchJob;
-    private boolean isStopApplyChanges;
-    private String cmoneFormNumber;
+    private RapidFireJobResourceDelegate delegate;
 
-    public RapidFireJobResource(String dataLibrary, String job) {
-
-        this.dataLibrary = dataLibrary;
-        this.job = job;
+    public RapidFireJobResource(String library, String job) {
+        this.delegate = new RapidFireJobResourceDelegate(library, job);
     }
 
     /*
@@ -44,7 +31,7 @@ public class RapidFireJobResource extends AbstractResource implements IRapidFire
      */
 
     public String getDataLibrary() {
-        return dataLibrary;
+        return delegate.getDataLibrary();
     }
 
     public IRapidFireSubSystem getParentSubSystem() {
@@ -60,114 +47,104 @@ public class RapidFireJobResource extends AbstractResource implements IRapidFire
      */
 
     public String getName() {
-        return job;
+        return delegate.getName();
     }
 
     public String getDescription() {
-        return description;
+        return delegate.getDescription();
     }
 
     public void setDescription(String description) {
-        this.description = description;
+        delegate.setDescription(description);
     }
 
     public boolean isDoCreateEnvironment() {
-        return doCreateEnvironment;
+        return delegate.isDoCreateEnvironment();
     }
 
     public void setDoCreateEnvironment(boolean doCreateEnvironment) {
-        this.doCreateEnvironment = doCreateEnvironment;
+        delegate.setDoCreateEnvironment(doCreateEnvironment);
     }
 
     public String getJobQueueName() {
-        return jobQueueName;
+        return delegate.getJobQueueName();
     }
 
     public void setJobQueueName(String jobQueueName) {
-        this.jobQueueName = jobQueueName;
+        delegate.setJobQueueName(jobQueueName);
     }
 
     public String getJobQueueLibrary() {
-        return jobQueueLibrary;
+        return delegate.getJobQueueLibrary();
     }
 
     public void setJobQueueLibrary(String jobQueueLibrary) {
-        this.jobQueueLibrary = jobQueueLibrary;
+        delegate.setJobQueueLibrary(jobQueueLibrary);
     }
 
     public Status getStatus() {
-        return status;
+        return delegate.getStatus();
     }
 
     public void setStatus(Status status) {
-        this.status = status;
+        delegate.setStatus(status);
     }
 
     public Phase getPhase() {
-        return phase;
+        return delegate.getPhase();
     }
 
     public void setPhase(Phase phase) {
-        this.phase = phase;
+        delegate.setPhase(phase);
     }
 
     public boolean isError() {
-        return isError;
+        return delegate.isError();
     }
 
     public void setError(boolean isError) {
-        this.isError = isError;
+        delegate.setError(isError);
     }
 
     public String getErrorText() {
-        return errorText;
+        return delegate.getErrorText();
     }
 
     public void setErrorText(String errorText) {
-        this.errorText = errorText;
+        delegate.setErrorText(errorText);
     }
 
     public boolean isStopApplyChanges() {
-        return isStopApplyChanges;
+        return delegate.isStopApplyChanges();
     }
 
     public void setStopApplyChanges(boolean isStopApplyChanges) {
-        this.isStopApplyChanges = isStopApplyChanges;
+        delegate.setStopApplyChanges(isStopApplyChanges);
     }
 
     public String getCmoneFormNumber() {
-        return cmoneFormNumber;
+        return delegate.getCmoneFormNumber();
     }
 
     public void setCmoneFormNumber(String cmoneFormNumber) {
-        this.cmoneFormNumber = cmoneFormNumber;
-    }
-
-    public void setBatchJob(JobName job) {
-        this.batchJob = job;
+        delegate.setCmoneFormNumber(cmoneFormNumber);
     }
 
     public JobName getBatchJob() {
-        return batchJob;
+        return delegate.getBatchJob();
+    }
+
+    public void setBatchJob(JobName job) {
+        delegate.setBatchJob(job);
     }
 
     public int compareTo(IRapidFireJobResource resource) {
-
-        if (resource == null) {
-            return 1;
-        }
-
-        int result = resource.getDataLibrary().compareTo(getDataLibrary());
-        if (result != 0) {
-            return result;
-        }
-
-        return getName().compareTo(resource.getName());
+        return delegate.compareTo(resource);
     }
 
     @Override
     public String toString() {
-        return getName();
+        return delegate.toString();
     }
 
 }

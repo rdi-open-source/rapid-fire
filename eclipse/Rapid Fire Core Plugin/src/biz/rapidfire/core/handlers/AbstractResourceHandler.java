@@ -14,9 +14,6 @@ import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
-import org.eclipse.rse.core.RSECorePlugin;
-import org.eclipse.rse.core.events.ISystemRemoteChangeEvents;
-import org.eclipse.rse.core.model.ISystemRegistry;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.PlatformUI;
 
@@ -26,11 +23,11 @@ import biz.rapidfire.rsebase.handlers.AbstractSelectionHandler;
 
 public abstract class AbstractResourceHandler extends AbstractSelectionHandler {
 
+    private String mode;
+
     public AbstractResourceHandler(String mode) {
         this.mode = mode;
     }
-
-    private String mode;
 
     protected String getMode() {
         return mode;
@@ -39,8 +36,8 @@ public abstract class AbstractResourceHandler extends AbstractSelectionHandler {
     /*
      * (non-Javadoc)
      * @see
-     * org.eclipse.core.commands.IHandler#execute(org.eclipse.core.commands.
-     * ExecutionEvent)
+     * org.eclipse.core.commands.AbstractHandler#execute(org.eclipse.core.commands
+     * .ExecutionEvent)
      */
     public Object execute(ExecutionEvent event) throws ExecutionException {
 
@@ -66,18 +63,10 @@ public abstract class AbstractResourceHandler extends AbstractSelectionHandler {
         return PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell();
     }
 
-    protected abstract Object executeWithResource(IRapidFireResource resource) throws ExecutionException;
-
-    protected void refreshUI(IRapidFireResource resource) {
-
-        if (resource != null) {
-            ISystemRegistry sr = RSECorePlugin.getTheSystemRegistry();
-            if (IMaintenance.MODE_DELETE.equals(mode)) {
-                sr.fireRemoteResourceChangeEvent(ISystemRemoteChangeEvents.SYSTEM_REMOTE_RESOURCE_DELETED, resource, null, null, null, null);
-            } else {
-                sr.fireRemoteResourceChangeEvent(ISystemRemoteChangeEvents.SYSTEM_REMOTE_RESOURCE_CREATED, resource, null, null, null, null);
-            }
-        }
+    @Override
+    protected boolean isDeleteMode() {
+        return IMaintenance.MODE_DELETE.equals(mode);
     }
 
+    protected abstract Object executeWithResource(IRapidFireResource resource) throws ExecutionException;
 }

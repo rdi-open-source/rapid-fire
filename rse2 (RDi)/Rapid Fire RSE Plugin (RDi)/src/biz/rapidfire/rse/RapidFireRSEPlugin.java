@@ -18,14 +18,14 @@ import org.eclipse.jface.resource.ImageRegistry;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
-import biz.rapidfire.rse.model.RapidFireFileResource;
-import biz.rapidfire.rse.model.RapidFireJobResource;
-import biz.rapidfire.rse.model.RapidFireLibraryResource;
 import biz.rapidfire.rse.model.dao.DAOManager;
 import biz.rapidfire.rse.subsystem.FilesNode;
 import biz.rapidfire.rse.subsystem.LibrariesNode;
 import biz.rapidfire.rse.subsystem.RapidFireAdapterFactory;
 import biz.rapidfire.rse.subsystem.RapidFireSubSystemConfigurationAdapterFactory;
+import biz.rapidfire.rse.subsystem.resources.RapidFireFileResource;
+import biz.rapidfire.rse.subsystem.resources.RapidFireJobResource;
+import biz.rapidfire.rse.subsystem.resources.RapidFireLibraryResource;
 
 /**
  * The activator class controls the plug-in life cycle

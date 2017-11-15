@@ -12,6 +12,9 @@ import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.jface.viewers.ISelection;
+import org.eclipse.rse.core.RSECorePlugin;
+import org.eclipse.rse.core.events.ISystemRemoteChangeEvents;
+import org.eclipse.rse.core.model.ISystemRegistry;
 import org.eclipse.ui.handlers.HandlerUtil;
 
 public abstract class AbstractSelectionHandler extends AbstractHandler {
@@ -20,4 +23,17 @@ public abstract class AbstractSelectionHandler extends AbstractHandler {
 
         return HandlerUtil.getCurrentSelection(event);
     }
+
+    protected void refreshUI(Object resource) {
+        if (resource != null) {
+            ISystemRegistry sr = RSECorePlugin.getTheSystemRegistry();
+            if (isDeleteMode()) {
+                sr.fireRemoteResourceChangeEvent(ISystemRemoteChangeEvents.SYSTEM_REMOTE_RESOURCE_DELETED, resource, null, null, null, null);
+            } else {
+                sr.fireRemoteResourceChangeEvent(ISystemRemoteChangeEvents.SYSTEM_REMOTE_RESOURCE_CREATED, resource, null, null, null, null);
+            }
+        }
+    }
+
+    protected abstract boolean isDeleteMode();
 }

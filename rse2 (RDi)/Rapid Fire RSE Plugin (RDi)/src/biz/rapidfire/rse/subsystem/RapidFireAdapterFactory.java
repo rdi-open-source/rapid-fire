@@ -13,16 +13,15 @@ import org.eclipse.rse.ui.view.AbstractSystemRemoteAdapterFactory;
 import org.eclipse.rse.ui.view.ISystemViewElementAdapter;
 import org.eclipse.ui.views.properties.IPropertySource;
 
-import biz.rapidfire.core.subsystem.resources.RapidFireFileResource;
-import biz.rapidfire.core.subsystem.resources.RapidFireJobResource;
-import biz.rapidfire.core.subsystem.resources.RapidFireLibraryResource;
-import biz.rapidfire.rse.model.CreateJobNodeResource;
 import biz.rapidfire.rse.subsystem.adapters.CreateJobNodeAdapter;
 import biz.rapidfire.rse.subsystem.adapters.FilesNodeAdapter;
 import biz.rapidfire.rse.subsystem.adapters.LibrariesNodeAdapter;
 import biz.rapidfire.rse.subsystem.adapters.RapidFireFileResourceAdapter;
 import biz.rapidfire.rse.subsystem.adapters.RapidFireJobResourceAdapter;
 import biz.rapidfire.rse.subsystem.adapters.RapidFireLibraryResourceAdapter;
+import biz.rapidfire.rse.subsystem.resources.RapidFireFileResource;
+import biz.rapidfire.rse.subsystem.resources.RapidFireJobResource;
+import biz.rapidfire.rse.subsystem.resources.RapidFireLibraryResource;
 
 public class RapidFireAdapterFactory extends AbstractSystemRemoteAdapterFactory implements IAdapterFactory {
 

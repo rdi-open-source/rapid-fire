@@ -19,9 +19,9 @@ import org.eclipse.ui.views.properties.IPropertyDescriptor;
 import org.eclipse.ui.views.properties.PropertyDescriptor;
 
 import biz.rapidfire.core.model.IRapidFireLibraryResource;
-import biz.rapidfire.core.subsystem.resources.RapidFireLibraryResource;
 import biz.rapidfire.rse.Messages;
 import biz.rapidfire.rse.RapidFireRSEPlugin;
+import biz.rapidfire.rse.subsystem.resources.RapidFireLibraryResource;
 
 public class RapidFireLibraryResourceAdapter extends AbstractResourceAdapter implements ISystemRemoteElementAdapter {
 

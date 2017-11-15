@@ -6,7 +6,7 @@
  * http://www.eclipse.org/legal/cpl-v10.html
  *******************************************************************************/
 
-package biz.rapidfire.core.subsystem.resources;
+package biz.rapidfire.rse.subsystem.resources;
 
 import org.eclipse.rse.core.subsystems.AbstractResource;
 import org.eclipse.rse.core.subsystems.ISubSystem;
@@ -14,24 +14,14 @@ import org.eclipse.rse.core.subsystems.ISubSystem;
 import biz.rapidfire.core.model.FileType;
 import biz.rapidfire.core.model.IRapidFireFileResource;
 import biz.rapidfire.core.subsystem.IRapidFireSubSystem;
+import biz.rapidfire.core.subsystem.resources.RapidFireFileResourceDelegate;
 
 public class RapidFireFileResource extends AbstractResource implements IRapidFireFileResource, Comparable<IRapidFireFileResource> {
 
-    private String dataLibrary;
-    private String job;
-    private int position;
-    private String file;
-    private FileType fileType;
-    private String copyProgramName;
-    private String copyProgramLibrary;
-    private String conversionProgramName;
-    private String conversionProgramLibrary;
+    private RapidFireFileResourceDelegate delegate;
 
     public RapidFireFileResource(String library, String job, int position) {
-
-        this.dataLibrary = library;
-        this.job = job;
-        this.position = position;
+        this.delegate = new RapidFireFileResourceDelegate(library, job, position);
     }
 
     /*
@@ -39,7 +29,7 @@ public class RapidFireFileResource extends AbstractResource implements IRapidFir
      */
 
     public String getDataLibrary() {
-        return dataLibrary;
+        return delegate.getDataLibrary();
     }
 
     public IRapidFireSubSystem getParentSubSystem() {
@@ -55,83 +45,68 @@ public class RapidFireFileResource extends AbstractResource implements IRapidFir
      */
 
     public String getJob() {
-        return job;
+        return delegate.getJob();
     }
 
     public int getPosition() {
-        return position;
+        return delegate.getPosition();
     }
 
     public String getName() {
-        return file;
+        return delegate.getName();
     }
 
     public void setName(String file) {
-        this.file = file;
+        delegate.setName(file);
     }
 
     public FileType getFileType() {
-        return fileType;
+        return delegate.getFileType();
     }
 
     public void setFileType(FileType fileType) {
-        this.fileType = fileType;
+        delegate.setFileType(fileType);
     }
 
     public String getCopyProgramName() {
-        return copyProgramName;
+        return delegate.getCopyProgramName();
     }
 
     public void setCopyProgramName(String copyProgramName) {
-        this.copyProgramName = copyProgramName;
+        delegate.setCopyProgramName(copyProgramName);
     }
 
     public String getCopyProgramLibrary() {
-        return copyProgramLibrary;
+        return delegate.getCopyProgramLibrary();
     }
 
     public void setCopyProgramLibrary(String copyProgramLibrary) {
-        this.copyProgramLibrary = copyProgramLibrary;
+        delegate.setCopyProgramLibrary(copyProgramLibrary);
     }
 
     public String getConversionProgramName() {
-        return conversionProgramName;
+        return delegate.getConversionProgramName();
     }
 
     public void setConversionProgramName(String conversionProgramName) {
-        this.conversionProgramName = conversionProgramName;
+        delegate.setConversionProgramName(conversionProgramName);
     }
 
     public String getConversionProgramLibrary() {
-        return conversionProgramLibrary;
+        return delegate.getConversionProgramLibrary();
     }
 
     public void setConversionProgramLibrary(String conversionProgramLibrary) {
-        this.conversionProgramLibrary = conversionProgramLibrary;
+        delegate.setConversionProgramLibrary(conversionProgramLibrary);
     }
 
     public int compareTo(IRapidFireFileResource resource) {
-
-        if (resource == null) {
-            return 1;
-        }
-
-        int result = resource.getDataLibrary().compareTo(getDataLibrary());
-        if (result != 0) {
-            return result;
-        }
-
-        result = resource.getJob().compareTo(getJob());
-        if (result != 0) {
-            return result;
-        }
-
-        return getName().compareTo(resource.getName());
+        return delegate.compareTo(resource);
     }
 
     @Override
     public String toString() {
-        return getName();
+        return delegate.toString();
     }
 
 }
