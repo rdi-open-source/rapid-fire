@@ -24,6 +24,7 @@ Export-Package: biz.rapidfire.core,
  biz.rapidfire.core.model.maintenance.job,
  biz.rapidfire.core.properties,
  biz.rapidfire.core.subsystem,
+ biz.rapidfire.core.subsystem.resources,
  biz.rapidfire.core.swt.widgets,
  biz.rapidfire.core.validators
 Bundle-ClassPath: .
