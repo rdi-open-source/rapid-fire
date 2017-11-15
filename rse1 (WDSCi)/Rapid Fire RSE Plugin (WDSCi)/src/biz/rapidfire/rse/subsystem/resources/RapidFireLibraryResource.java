@@ -47,8 +47,8 @@ public class RapidFireLibraryResource extends AbstractResource implements IRapid
         return delegate.getJob();
     }
 
-    public String getLibrary() {
-        return delegate.getLibrary();
+    public String getName() {
+        return delegate.getName();
     }
 
     public String getShadowLibrary() {
