@@ -11,11 +11,15 @@ package biz.rapidfire.rse.subsystem;
 import org.eclipse.core.runtime.IAdapterFactory;
 import org.eclipse.ui.views.properties.IPropertySource;
 
+import biz.rapidfire.rse.subsystem.adapters.CreateJobNodeAdapter;
 import biz.rapidfire.rse.subsystem.adapters.FilesNodeAdapter;
 import biz.rapidfire.rse.subsystem.adapters.LibrariesNodeAdapter;
 import biz.rapidfire.rse.subsystem.adapters.RapidFireFileResourceAdapter;
 import biz.rapidfire.rse.subsystem.adapters.RapidFireJobResourceAdapter;
 import biz.rapidfire.rse.subsystem.adapters.RapidFireLibraryResourceAdapter;
+import biz.rapidfire.rse.subsystem.resources.CreateJobNode;
+import biz.rapidfire.rse.subsystem.resources.FilesNode;
+import biz.rapidfire.rse.subsystem.resources.LibrariesNode;
 import biz.rapidfire.rse.subsystem.resources.RapidFireFileResource;
 import biz.rapidfire.rse.subsystem.resources.RapidFireJobResource;
 import biz.rapidfire.rse.subsystem.resources.RapidFireLibraryResource;
@@ -29,8 +33,9 @@ public class RapidFireAdapterFactory extends AbstractSystemRemoteAdapterFactory 
     private RapidFireFileResourceAdapter fileResourceAdapter = new RapidFireFileResourceAdapter();
     private RapidFireLibraryResourceAdapter libraryResourceAdapter = new RapidFireLibraryResourceAdapter();
 
-    private FilesNodeAdapter filesResourceAdapter = new FilesNodeAdapter();
-    private LibrariesNodeAdapter librariesResourceAdapter = new LibrariesNodeAdapter();
+    private FilesNodeAdapter filesNodeAdapter = new FilesNodeAdapter();
+    private LibrariesNodeAdapter librariesNodeAdapter = new LibrariesNodeAdapter();
+    private CreateJobNodeAdapter createJobNodeAdapter = new CreateJobNodeAdapter();
 
     public RapidFireAdapterFactory() {
         super();
@@ -47,9 +52,11 @@ public class RapidFireAdapterFactory extends AbstractSystemRemoteAdapterFactory 
         } else if (adaptableObject instanceof RapidFireLibraryResource) {
             adapter = libraryResourceAdapter;
         } else if (adaptableObject instanceof FilesNode) {
-            adapter = filesResourceAdapter;
+            adapter = filesNodeAdapter;
         } else if (adaptableObject instanceof LibrariesNode) {
-            adapter = librariesResourceAdapter;
+            adapter = librariesNodeAdapter;
+        } else if (adaptableObject instanceof CreateJobNode) {
+            adapter = createJobNodeAdapter;
         }
 
         if ((adapter != null) && (adapterType == IPropertySource.class)) {

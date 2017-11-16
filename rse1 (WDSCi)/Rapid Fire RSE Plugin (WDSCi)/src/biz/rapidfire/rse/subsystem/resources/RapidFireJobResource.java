@@ -8,6 +8,8 @@
 
 package biz.rapidfire.rse.subsystem.resources;
 
+import biz.rapidfire.core.exceptions.IllegalParameterException;
+import biz.rapidfire.core.helpers.StringHelper;
 import biz.rapidfire.core.model.IRapidFireJobResource;
 import biz.rapidfire.core.model.JobName;
 import biz.rapidfire.core.model.Phase;
@@ -18,11 +20,24 @@ import biz.rapidfire.core.subsystem.resources.RapidFireJobResourceDelegate;
 import com.ibm.etools.systems.subsystems.SubSystem;
 import com.ibm.etools.systems.subsystems.impl.AbstractResource;
 
-public class RapidFireJobResource extends AbstractResource implements IRapidFireJobResource, Comparable<IRapidFireJobResource> {
+public class RapidFireJobResource extends AbstractResource implements IRapidFireJobResource, Comparable<Object> {
 
     private RapidFireJobResourceDelegate delegate;
 
+    public static RapidFireJobResource createEmptyInstance(String dataLibrary) {
+        return new RapidFireJobResource(dataLibrary, ""); //$NON-NLS-1$
+    }
+
     public RapidFireJobResource(String dataLibrary, String job) {
+
+        if (StringHelper.isNullOrEmpty(dataLibrary)) {
+            throw new IllegalParameterException("dataLibrary", dataLibrary); //$NON-NLS-1$
+        }
+
+        if (job == null) {
+            throw new IllegalParameterException("job", job); //$NON-NLS-1$
+        }
+
         this.delegate = new RapidFireJobResourceDelegate(dataLibrary, job);
     }
 
@@ -138,12 +153,13 @@ public class RapidFireJobResource extends AbstractResource implements IRapidFire
         delegate.setBatchJob(job);
     }
 
-    public int compareTo(IRapidFireJobResource resource) {
-        return delegate.compareTo(resource);
+    public int compareTo(Object object) {
+        return delegate.compareTo(object);
     }
 
     @Override
     public String toString() {
         return delegate.toString();
     }
+
 }

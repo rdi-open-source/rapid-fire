@@ -22,7 +22,6 @@ public class Messages extends NLS {
     /*
      * DAO strings
      */
-
     public static String RseBaseDAO_Invalid_or_missing_connection_name_A;
     public static String RseBaseDAO_Invalid_or_missing_library_name_A;
     public static String RseBaseDAO_Connection_A_not_found;
@@ -107,8 +106,13 @@ public class Messages extends NLS {
     public static String Resource_Rapid_Fire_File;
     public static String Resource_Rapid_Fire_Library;
 
-    public static String Node_Files;
-    public static String Node_Libraries;
+    public static String NodeText_Files;
+    public static String NodeText_Libraries;
+    public static String NodeText_Create_job;
+
+    public static String NodeType_Files;
+    public static String NodeType_Libraries;
+    public static String NodeType_Create_job;
 
     private Messages() {
     }
