@@ -15,7 +15,7 @@ public class RapidFireLibraryResourceDelegate implements Comparable<IRapidFireLi
     private String dataLibrary;
     private String job;
     private String library;
-    private String shadowLibrary;
+    private String shadowLibraryName;
 
     public RapidFireLibraryResourceDelegate(String dataLibrary, String job, String library) {
 
@@ -45,11 +45,11 @@ public class RapidFireLibraryResourceDelegate implements Comparable<IRapidFireLi
     }
 
     public String getShadowLibrary() {
-        return shadowLibrary;
+        return shadowLibraryName;
     }
 
     public void setShadowLibrary(String shadowLibrary) {
-        this.shadowLibrary = shadowLibrary;
+        this.shadowLibraryName = shadowLibrary;
     }
 
     public int compareTo(IRapidFireLibraryResource resource) {

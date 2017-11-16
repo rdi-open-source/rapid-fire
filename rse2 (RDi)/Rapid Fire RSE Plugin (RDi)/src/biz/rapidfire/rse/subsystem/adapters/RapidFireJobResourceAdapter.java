@@ -20,8 +20,8 @@ import biz.rapidfire.core.model.IRapidFireJobResource;
 import biz.rapidfire.core.properties.JobNameProperties;
 import biz.rapidfire.rse.Messages;
 import biz.rapidfire.rse.RapidFireRSEPlugin;
-import biz.rapidfire.rse.subsystem.FilesNode;
-import biz.rapidfire.rse.subsystem.LibrariesNode;
+import biz.rapidfire.rse.subsystem.resources.FilesNode;
+import biz.rapidfire.rse.subsystem.resources.LibrariesNode;
 import biz.rapidfire.rse.subsystem.resources.RapidFireJobResource;
 
 public class RapidFireJobResourceAdapter extends AbstractResourceAdapter implements ISystemRemoteElementAdapter {
@@ -43,28 +43,6 @@ public class RapidFireJobResourceAdapter extends AbstractResourceAdapter impleme
 
     public RapidFireJobResourceAdapter() {
         super();
-    }
-
-    @Override
-    public boolean showDelete(Object element) {
-        // TODO: fix me
-        return false;
-    }
-
-    @Override
-    public boolean canDelete(Object element) {
-        return false;
-    }
-
-    @Override
-    public boolean showRename(Object element) {
-        // TODO: fix me
-        return false;
-    }
-
-    @Override
-    public boolean canRename(Object element) {
-        return false;
     }
 
     @Override

@@ -23,9 +23,9 @@ public class RapidFireFileResourceDelegate implements Comparable<IRapidFireFileR
     private String conversionProgramName;
     private String conversionProgramLibrary;
 
-    public RapidFireFileResourceDelegate(String library, String job, int position) {
+    public RapidFireFileResourceDelegate(String dataLibrary, String job, int position) {
 
-        this.dataLibrary = library;
+        this.dataLibrary = dataLibrary;
         this.job = job;
         this.position = position;
     }

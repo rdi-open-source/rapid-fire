@@ -106,15 +106,13 @@ public class Messages extends NLS {
     public static String Resource_Rapid_Fire_File;
     public static String Resource_Rapid_Fire_Library;
 
-    public static String Node_Files;
-    public static String Node_Libraries;
-    public static String Node_Create_job;
+    public static String NodeText_Files;
+    public static String NodeText_Libraries;
+    public static String NodeText_Create_job;
 
-    /*
-     * Actions
-     */
-    public static String ActionLabel_Job;
-    public static String ActionTooltip_Job;
+    public static String NodeType_Files;
+    public static String NodeType_Libraries;
+    public static String NodeType_Create_job;
 
     private Messages() {
     }

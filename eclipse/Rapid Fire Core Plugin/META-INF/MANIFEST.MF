@@ -14,6 +14,7 @@ Require-Bundle: org.eclipse.ui,
  biz.rapidfire.rsebase
 Export-Package: biz.rapidfire.core,
  biz.rapidfire.core.dialogs,
+ biz.rapidfire.core.exceptions,
  biz.rapidfire.core.handlers,
  biz.rapidfire.core.helpers,
  biz.rapidfire.core.jface.dialogs,

@@ -14,18 +14,13 @@ import org.eclipse.ui.views.properties.IPropertyDescriptor;
 public abstract class AbstractNodeAdapter extends AbstractResourceAdapter {
 
     @Override
-    public final String getType(Object element) {
-        return "Node";
-    }
-
-    @Override
     public final Object getParent(Object element) {
         return null;
     }
 
     @Override
     public final boolean hasChildren(IAdaptable element) {
-        return true;
+        return false;
     }
 
     @Override

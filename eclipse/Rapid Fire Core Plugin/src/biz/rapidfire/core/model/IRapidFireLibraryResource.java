@@ -14,8 +14,6 @@ public interface IRapidFireLibraryResource extends IRapidFireResource {
      * Key attributes
      */
 
-    public String getDataLibrary();
-
     public String getJob();
 
     public String getName();

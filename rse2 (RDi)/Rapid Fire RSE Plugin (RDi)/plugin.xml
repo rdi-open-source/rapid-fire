@@ -123,7 +123,7 @@
             <with variable="selection">
                <count value="+" />
                <iterate operator="and">
-                  <adapt type="biz.rapidfire.rse.model.RapidFireJobResource" />
+                  <adapt type="biz.rapidfire.rse.subsystem.resources.RapidFireJobResource" />
                </iterate>
             </with>
          </enabledWhen>
@@ -136,7 +136,7 @@
             <with variable="selection">
                <count value="1" />
                <iterate operator="and">
-                  <adapt type="biz.rapidfire.rse.model.RapidFireJobResource" />
+                  <adapt type="biz.rapidfire.rse.subsystem.resources.RapidFireJobResource" />
                </iterate>
             </with>
          </enabledWhen>
@@ -149,7 +149,7 @@
             <with variable="selection">
                <count value="+" />
                <iterate operator="and">
-                  <adapt type="biz.rapidfire.rse.model.RapidFireJobResource" />
+                  <adapt type="biz.rapidfire.rse.subsystem.resources.RapidFireJobResource" />
                </iterate>
             </with>
          </enabledWhen>
@@ -162,7 +162,7 @@
             <with variable="selection">
                <count value="1" />
                <iterate operator="and">
-                  <adapt type="biz.rapidfire.rse.model.RapidFireJobResource" />
+                  <adapt type="biz.rapidfire.rse.subsystem.resources.RapidFireJobResource" />
                </iterate>
             </with>
          </enabledWhen>
@@ -175,7 +175,7 @@
             <with variable="selection">
                <count value="1" />
                <iterate operator="and">
-                  <adapt type="biz.rapidfire.rse.model.RapidFireJobResource" />
+                  <adapt type="biz.rapidfire.rse.subsystem.resources.RapidFireJobResource" />
                </iterate>
             </with>
          </enabledWhen>
@@ -188,7 +188,7 @@
             <with variable="selection">
                <count value="+" />
                <iterate operator="and">
-                  <adapt type="biz.rapidfire.rse.model.RapidFireJobResource" />
+                  <adapt type="biz.rapidfire.rse.subsystem.resources.RapidFireJobResource" />
                </iterate>
             </with>
          </enabledWhen>
@@ -201,7 +201,7 @@
             <with variable="selection">
                <count value="+" />
                <iterate operator="and">
-                  <adapt type="biz.rapidfire.rse.model.RapidFireJobResource" />
+                  <adapt type="biz.rapidfire.rse.subsystem.resources.RapidFireJobResource" />
                </iterate>
             </with>
          </enabledWhen>
@@ -214,7 +214,7 @@
             <with variable="selection">
                <count value="+" />
                <iterate operator="and">
-                  <adapt type="biz.rapidfire.rse.model.RapidFireJobResource" />
+                  <adapt type="biz.rapidfire.rse.subsystem.resources.RapidFireJobResource" />
                </iterate>
             </with>
          </enabledWhen>
@@ -227,7 +227,7 @@
             <with variable="selection">
                <count value="+" />
                <iterate operator="and">
-                  <adapt type="biz.rapidfire.rse.model.RapidFireJobResource" />
+                  <adapt type="biz.rapidfire.rse.subsystem.resources.RapidFireJobResource" />
                </iterate>
             </with>
          </enabledWhen>
@@ -240,7 +240,7 @@
             <with variable="selection">
                <count value="+" />
                <iterate operator="and">
-                  <adapt type="biz.rapidfire.rse.model.RapidFireJobResource" />
+                  <adapt type="biz.rapidfire.rse.subsystem.resources.RapidFireJobResource" />
                </iterate>
             </with>
          </enabledWhen>
@@ -267,7 +267,7 @@
 	        <visibleWhen>
 	           <with variable="selection">
 	              <iterate operator="and">
-	                 <adapt type="biz.rapidfire.rse.model.RapidFireJobResource" />
+	                 <adapt type="biz.rapidfire.rse.subsystem.resources.RapidFireJobResource" />
 	              </iterate>
 	           </with>
 	        </visibleWhen>
@@ -280,7 +280,7 @@
 	        <visibleWhen>
 	           <with variable="selection">
 	              <iterate operator="and">
-	                 <adapt type="biz.rapidfire.rse.model.RapidFireJobResource" />
+	                 <adapt type="biz.rapidfire.rse.subsystem.resources.RapidFireJobResource" />
 	              </iterate>
 	           </with>
 	        </visibleWhen>
@@ -293,7 +293,7 @@
 	        <visibleWhen>
 	           <with variable="selection">
 	              <iterate operator="and">
-	                 <adapt type="biz.rapidfire.rse.model.RapidFireJobResource" />
+	                 <adapt type="biz.rapidfire.rse.subsystem.resources.RapidFireJobResource" />
 	              </iterate>
 	           </with>
 	        </visibleWhen>
@@ -306,7 +306,7 @@
 	        <visibleWhen>
 	           <with variable="selection">
 	              <iterate operator="and">
-	                 <adapt type="biz.rapidfire.rse.model.RapidFireJobResource" />
+	                 <adapt type="biz.rapidfire.rse.subsystem.resources.RapidFireJobResource" />
 	              </iterate>
 	           </with>
 	        </visibleWhen>
@@ -319,7 +319,7 @@
 	        <visibleWhen>
 	           <with variable="selection">
 	              <iterate operator="and">
-	                 <adapt type="biz.rapidfire.rse.model.RapidFireJobResource" />
+	                 <adapt type="biz.rapidfire.rse.subsystem.resources.RapidFireJobResource" />
 	              </iterate>
 	           </with>
 	        </visibleWhen>
@@ -331,7 +331,7 @@
 	        <visibleWhen>
 	           <with variable="selection">
 	              <iterate operator="and">
-	                 <adapt type="biz.rapidfire.rse.model.RapidFireJobResource" />
+	                 <adapt type="biz.rapidfire.rse.subsystem.resources.RapidFireJobResource" />
 	              </iterate>
 	           </with>
 	        </visibleWhen>
@@ -344,7 +344,7 @@
 	        <visibleWhen>
 	           <with variable="selection">
 	              <iterate operator="and">
-	                 <adapt type="biz.rapidfire.rse.model.RapidFireJobResource" />
+	                 <adapt type="biz.rapidfire.rse.subsystem.resources.RapidFireJobResource" />
 	              </iterate>
 	           </with>
 	        </visibleWhen>
@@ -357,7 +357,7 @@
 	        <visibleWhen>
 	           <with variable="selection">
 	              <iterate operator="and">
-	                 <adapt type="biz.rapidfire.rse.model.RapidFireJobResource" />
+	                 <adapt type="biz.rapidfire.rse.subsystem.resources.RapidFireJobResource" />
 	              </iterate>
 	           </with>
 	        </visibleWhen>
@@ -370,7 +370,7 @@
 	        <visibleWhen>
 	           <with variable="selection">
 	              <iterate operator="and">
-	                 <adapt type="biz.rapidfire.rse.model.RapidFireJobResource" />
+	                 <adapt type="biz.rapidfire.rse.subsystem.resources.RapidFireJobResource" />
 	              </iterate>
 	           </with>
 	        </visibleWhen>
@@ -382,7 +382,7 @@
 	        <visibleWhen>
 	           <with variable="selection">
 	              <iterate operator="and">
-	                 <adapt type="biz.rapidfire.rse.model.RapidFireJobResource" />
+	                 <adapt type="biz.rapidfire.rse.subsystem.resources.RapidFireJobResource" />
 	              </iterate>
 	           </with>
 	        </visibleWhen>
@@ -395,7 +395,7 @@
 	        <visibleWhen>
 	           <with variable="selection">
 	              <iterate operator="and">
-	                 <adapt type="biz.rapidfire.rse.model.RapidFireJobResource" />
+	                 <adapt type="biz.rapidfire.rse.subsystem.resources.RapidFireJobResource" />
 	              </iterate>
 	           </with>
 	        </visibleWhen>
@@ -408,7 +408,7 @@
 	        <visibleWhen>
 	           <with variable="selection">
 	              <iterate operator="and">
-	                 <adapt type="biz.rapidfire.rse.model.RapidFireJobResource" />
+	                 <adapt type="biz.rapidfire.rse.subsystem.resources.RapidFireJobResource" />
 	              </iterate>
 	           </with>
 	        </visibleWhen>

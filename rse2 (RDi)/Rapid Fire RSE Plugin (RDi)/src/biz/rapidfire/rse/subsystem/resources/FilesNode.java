@@ -6,19 +6,19 @@
  * http://www.eclipse.org/legal/cpl-v10.html
  *******************************************************************************/
 
-package biz.rapidfire.rse.subsystem;
+package biz.rapidfire.rse.subsystem.resources;
 
 import org.eclipse.rse.core.subsystems.AbstractResource;
 
 import biz.rapidfire.core.model.IRapidFireJobResource;
 
-public class LibrariesNode extends AbstractResource {
+public class FilesNode extends AbstractResource {
 
     private String label;
     private IRapidFireJobResource job;
 
-    public LibrariesNode(IRapidFireJobResource job) {
-        this.label = "Libraries";
+    public FilesNode(IRapidFireJobResource job) {
+        this.label = "Files";
         this.job = job;
     }
 

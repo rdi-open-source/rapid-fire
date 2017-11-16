@@ -19,6 +19,9 @@ import biz.rapidfire.rse.subsystem.adapters.LibrariesNodeAdapter;
 import biz.rapidfire.rse.subsystem.adapters.RapidFireFileResourceAdapter;
 import biz.rapidfire.rse.subsystem.adapters.RapidFireJobResourceAdapter;
 import biz.rapidfire.rse.subsystem.adapters.RapidFireLibraryResourceAdapter;
+import biz.rapidfire.rse.subsystem.resources.CreateJobNode;
+import biz.rapidfire.rse.subsystem.resources.FilesNode;
+import biz.rapidfire.rse.subsystem.resources.LibrariesNode;
 import biz.rapidfire.rse.subsystem.resources.RapidFireFileResource;
 import biz.rapidfire.rse.subsystem.resources.RapidFireJobResource;
 import biz.rapidfire.rse.subsystem.resources.RapidFireLibraryResource;
@@ -51,6 +54,8 @@ public class RapidFireAdapterFactory extends AbstractSystemRemoteAdapterFactory 
             adapter = filesNodeAdapter;
         } else if (adaptableObject instanceof LibrariesNode) {
             adapter = librariesNodeAdapter;
+        } else if (adaptableObject instanceof CreateJobNode) {
+            adapter = createJobNodeAdapter;
         }
 
         if ((adapter != null) && (adapterType == IPropertySource.class)) {

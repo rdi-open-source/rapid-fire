@@ -49,6 +49,10 @@ public class JobMaintenanceDialog extends XDialog {
     private boolean enableKeyFields;
     private boolean enableFields;
 
+    public static JobMaintenanceDialog getCreateDialog(Shell shell, JobManager manager) {
+        return new JobMaintenanceDialog(shell, IMaintenance.MODE_CREATE, manager);
+    }
+
     public static JobMaintenanceDialog getCopyDialog(Shell shell, JobManager manager) {
         return new JobMaintenanceDialog(shell, IMaintenance.MODE_COPY, manager);
     }

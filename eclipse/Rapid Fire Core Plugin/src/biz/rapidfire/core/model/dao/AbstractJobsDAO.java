@@ -52,7 +52,7 @@ public abstract class AbstractJobsDAO {
         ResultSet resultSet = null;
 
         if (!dao.checkRapidFireLibrary(shell)) {
-            return jobs;
+            return null;
         }
 
         try {

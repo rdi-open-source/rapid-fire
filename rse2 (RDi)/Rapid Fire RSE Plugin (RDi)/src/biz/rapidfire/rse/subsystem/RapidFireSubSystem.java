@@ -38,6 +38,7 @@ import biz.rapidfire.core.model.IFileCopyStatus;
 import biz.rapidfire.core.model.IRapidFireFileResource;
 import biz.rapidfire.core.model.IRapidFireJobResource;
 import biz.rapidfire.core.model.IRapidFireLibraryResource;
+import biz.rapidfire.core.model.IRapidFireResource;
 import biz.rapidfire.core.model.list.FileCopyStatus;
 import biz.rapidfire.core.model.maintenance.job.JobManager;
 import biz.rapidfire.core.subsystem.IRapidFireSubSystem;
@@ -47,7 +48,7 @@ import biz.rapidfire.rse.model.dao.FileCopyStatusDAO;
 import biz.rapidfire.rse.model.dao.FilesDAO;
 import biz.rapidfire.rse.model.dao.JobsDAO;
 import biz.rapidfire.rse.model.dao.LibrariesDAO;
-import biz.rapidfire.rse.subsystem.resources.RapidFireJobResource;
+import biz.rapidfire.rse.subsystem.resources.CreateJobNode;
 
 import com.ibm.as400.access.AS400;
 import com.ibm.etools.iseries.subsystems.qsys.IISeriesSubSystem;
@@ -103,7 +104,16 @@ public class RapidFireSubSystem extends SubSystem implements IISeriesSubSystem, 
 
             RapidFireFilter filter = new RapidFireFilter(filterString);
             IRapidFireJobResource[] allJobs = getJobs(filter.getDataLibrary(), getShell());
-            Vector<IRapidFireJobResource> filteredJobs = new Vector<IRapidFireJobResource>();
+            if (allJobs == null) {
+                return null;
+            }
+
+            Vector<IRapidFireResource> filteredJobs = new Vector<IRapidFireResource>();
+
+            CreateJobNode createJobNode = new CreateJobNode(filter.getDataLibrary());
+            createJobNode.setSubSystem(this);
+            filteredJobs.add(createJobNode);
+
             for (IRapidFireJobResource job : allJobs) {
                 if (filter.matches(job)) {
                     job.setParentSubSystem(this);
@@ -111,7 +121,9 @@ public class RapidFireSubSystem extends SubSystem implements IISeriesSubSystem, 
                 }
             }
 
-            return filteredJobs.toArray(new RapidFireJobResource[filteredJobs.size()]);
+            // return filteredJobs.toArray(new
+            // RapidFireJobResource[filteredJobs.size()]);
+            return filteredJobs.toArray();
 
         } catch (Exception e) {
             RapidFireCorePlugin.logError("*** Could resolve filter string and load jobs ***", e); //$NON-NLS-1$
@@ -129,6 +141,9 @@ public class RapidFireSubSystem extends SubSystem implements IISeriesSubSystem, 
 
         JobsDAO dao = new JobsDAO(getHostAliasName(), libraryName);
         List<IRapidFireJobResource> jobs = dao.load(shell);
+        if (jobs == null) {
+            return null;
+        }
 
         return jobs.toArray(new IRapidFireJobResource[jobs.size()]);
     }

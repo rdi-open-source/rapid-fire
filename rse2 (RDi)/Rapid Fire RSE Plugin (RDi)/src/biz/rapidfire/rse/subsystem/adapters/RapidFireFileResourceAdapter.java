@@ -40,10 +40,6 @@ public class RapidFireFileResourceAdapter extends AbstractResourceAdapter implem
     }
 
     @Override
-    public void addActions(SystemMenuManager menu, IStructuredSelection selection, Shell shell, String menuGroup) {
-    }
-
-    @Override
     public ImageDescriptor getImageDescriptor(Object object) {
         return RapidFireRSEPlugin.getDefault().getImageRegistry().getDescriptor(RapidFireRSEPlugin.IMAGE_FILE);
     }
@@ -99,7 +95,7 @@ public class RapidFireFileResourceAdapter extends AbstractResourceAdapter implem
 
     @Override
     public boolean hasChildren(IAdaptable element) {
-        return true;
+        return false;
     }
 
     @Override

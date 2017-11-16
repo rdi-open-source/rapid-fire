@@ -11,6 +11,8 @@ package biz.rapidfire.rse.subsystem.resources;
 import org.eclipse.rse.core.subsystems.AbstractResource;
 import org.eclipse.rse.core.subsystems.ISubSystem;
 
+import biz.rapidfire.core.exceptions.IllegalParameterException;
+import biz.rapidfire.core.helpers.StringHelper;
 import biz.rapidfire.core.model.FileType;
 import biz.rapidfire.core.model.IRapidFireFileResource;
 import biz.rapidfire.core.subsystem.IRapidFireSubSystem;
@@ -20,8 +22,17 @@ public class RapidFireFileResource extends AbstractResource implements IRapidFir
 
     private RapidFireFileResourceDelegate delegate;
 
-    public RapidFireFileResource(String library, String job, int position) {
-        this.delegate = new RapidFireFileResourceDelegate(library, job, position);
+    public RapidFireFileResource(String dataLibrary, String job, int position) {
+
+        if (StringHelper.isNullOrEmpty(dataLibrary)) {
+            throw new IllegalParameterException("dataLibrary", dataLibrary); //$NON-NLS-1$
+        }
+
+        if (StringHelper.isNullOrEmpty(job)) {
+            throw new IllegalParameterException("job", job); //$NON-NLS-1$
+        }
+
+        this.delegate = new RapidFireFileResourceDelegate(dataLibrary, job, position);
     }
 
     /*
