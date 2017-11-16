@@ -17,7 +17,7 @@ import biz.rapidfire.core.dialogs.MessageDialogAsync;
 import biz.rapidfire.core.model.IRapidFireJobResource;
 import biz.rapidfire.rse.Messages;
 import biz.rapidfire.rse.RapidFireRSEPlugin;
-import biz.rapidfire.rse.subsystem.FilesNode;
+import biz.rapidfire.rse.subsystem.resources.FilesNode;
 
 import com.ibm.etools.systems.core.ui.SystemMenuManager;
 
@@ -25,7 +25,7 @@ public class FilesNodeAdapter extends AbstractNodeAdapter {
 
     @Override
     public String getText(Object element) {
-        return Messages.Node_Files;
+        return Messages.NodeText_Files;
     }
 
     @Override
@@ -59,6 +59,11 @@ public class FilesNodeAdapter extends AbstractNodeAdapter {
         }
 
         return new Object[0];
+    }
+
+    @Override
+    public String getType(Object element) {
+        return Messages.NodeType_Files;
     }
 
     @Override

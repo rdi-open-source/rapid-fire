@@ -17,7 +17,7 @@ import biz.rapidfire.core.dialogs.MessageDialogAsync;
 import biz.rapidfire.core.model.IRapidFireJobResource;
 import biz.rapidfire.rse.Messages;
 import biz.rapidfire.rse.RapidFireRSEPlugin;
-import biz.rapidfire.rse.subsystem.LibrariesNode;
+import biz.rapidfire.rse.subsystem.resources.LibrariesNode;
 
 import com.ibm.etools.systems.core.ui.SystemMenuManager;
 
@@ -25,7 +25,7 @@ public class LibrariesNodeAdapter extends AbstractNodeAdapter {
 
     @Override
     public String getText(Object element) {
-        return Messages.Node_Libraries;
+        return Messages.NodeText_Libraries;
     }
 
     @Override
@@ -59,6 +59,11 @@ public class LibrariesNodeAdapter extends AbstractNodeAdapter {
         }
 
         return new Object[0];
+    }
+
+    @Override
+    public String getType(Object element) {
+        return Messages.NodeType_Libraries;
     }
 
     @Override
