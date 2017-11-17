@@ -25,6 +25,11 @@ import biz.rapidfire.rse.subsystem.resources.LibrariesNode;
 public class LibrariesNodeAdapter extends AbstractNodeAdapter {
 
     @Override
+    public final boolean hasChildren(IAdaptable element) {
+        return true;
+    }
+
+    @Override
     public String getText(Object element) {
         return Messages.NodeText_Libraries;
     }

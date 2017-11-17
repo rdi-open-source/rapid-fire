@@ -25,6 +25,11 @@ import biz.rapidfire.rse.subsystem.resources.FilesNode;
 public class FilesNodeAdapter extends AbstractNodeAdapter {
 
     @Override
+    public final boolean hasChildren(IAdaptable element) {
+        return true;
+    }
+
+    @Override
     public String getText(Object element) {
         return Messages.NodeText_Files;
     }
