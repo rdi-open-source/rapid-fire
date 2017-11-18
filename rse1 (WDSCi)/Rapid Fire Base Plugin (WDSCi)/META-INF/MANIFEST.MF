@@ -17,4 +17,5 @@ Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Bundle-ActivationPolicy: lazy
 Eclipse-LazyStart: true
 Export-Package: biz.rapidfire.rsebase.handlers,
- biz.rapidfire.rsebase.helpers
+ biz.rapidfire.rsebase.helpers,
+ biz.rapidfire.rsebase.model.dao

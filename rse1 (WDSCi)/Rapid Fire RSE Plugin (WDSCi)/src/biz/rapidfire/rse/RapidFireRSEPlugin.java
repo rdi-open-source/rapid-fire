@@ -18,9 +18,8 @@ import org.eclipse.jface.resource.ImageRegistry;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
-import biz.rapidfire.rse.model.dao.DAOManager;
+import biz.rapidfire.core.model.dao.DAOManager;
 import biz.rapidfire.rse.subsystem.RapidFireAdapterFactory;
-import biz.rapidfire.rse.subsystem.resources.CreateJobNode;
 import biz.rapidfire.rse.subsystem.resources.FilesNode;
 import biz.rapidfire.rse.subsystem.resources.LibrariesNode;
 import biz.rapidfire.rse.subsystem.resources.RapidFireFileResource;
@@ -44,7 +43,9 @@ public class RapidFireRSEPlugin extends AbstractUIPlugin {
     public static final String IMAGE_RAPID_FIRE_JOB = "rapidfire_job.gif"; //$NON-NLS-1$
     public static final String IMAGE_FILE = "file.gif"; //$NON-NLS-1$
     public static final String IMAGE_LIBRARY = "library.gif"; //$NON-NLS-1$
-    public static final String IMAGE_CREATE_JOB = "create.gif"; //$NON-NLS-1$
+    public static final String IMAGE_NEW_JOB = "new_job.gif"; //$NON-NLS-1$
+    public static final String IMAGE_NEW_FILE = "new_file.gif"; //$NON-NLS-1$
+    public static final String IMAGE_NEW_LIBRARY = "new_library.gif"; //$NON-NLS-1$
 
     /**
      * The constructor
@@ -99,7 +100,6 @@ public class RapidFireRSEPlugin extends AbstractUIPlugin {
 
         manager.registerAdapters(adapterFactory, FilesNode.class);
         manager.registerAdapters(adapterFactory, LibrariesNode.class);
-        manager.registerAdapters(adapterFactory, CreateJobNode.class);
     }
 
     @Override
@@ -111,8 +111,10 @@ public class RapidFireRSEPlugin extends AbstractUIPlugin {
         reg.put(IMAGE_RAPID_FIRE_JOB, getImageDescriptor(IMAGE_RAPID_FIRE_JOB));
         reg.put(IMAGE_FILE, getImageDescriptor(IMAGE_FILE));
         reg.put(IMAGE_LIBRARY, getImageDescriptor(IMAGE_LIBRARY));
-        reg.put(IMAGE_CREATE_JOB, getImageDescriptor(IMAGE_CREATE_JOB));
-   }
+        reg.put(IMAGE_NEW_JOB, getImageDescriptor(IMAGE_NEW_JOB));
+        reg.put(IMAGE_NEW_FILE, getImageDescriptor(IMAGE_NEW_FILE));
+        reg.put(IMAGE_NEW_LIBRARY, getImageDescriptor(IMAGE_NEW_LIBRARY));
+    }
 
     private ImageDescriptor getImageDescriptor(String name) {
         String iconPath = "icons/"; //$NON-NLS-1$

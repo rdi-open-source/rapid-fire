@@ -10,6 +10,7 @@ package biz.rapidfire.rse.model.dao;
 
 import biz.rapidfire.core.model.IRapidFireJobResource;
 import biz.rapidfire.core.model.dao.AbstractJobsDAO;
+import biz.rapidfire.core.model.dao.DAOManager;
 import biz.rapidfire.core.model.dao.IJobsDAO;
 import biz.rapidfire.rse.subsystem.resources.RapidFireJobResource;
 

@@ -17,15 +17,23 @@ import org.eclipse.swt.widgets.Shell;
 import biz.rapidfire.core.subsystem.RapidFireFilter;
 import biz.rapidfire.rse.Messages;
 import biz.rapidfire.rse.RapidFireRSEPlugin;
+import biz.rapidfire.rse.subsystem.actions.NewJobFilterPopupMenuAction;
 
+import com.ibm.etools.iseries.core.api.ISeriesConnection;
+import com.ibm.etools.iseries.core.api.ISeriesDataElementWrapper;
+import com.ibm.etools.systems.core.ui.actions.SystemBaseAction;
 import com.ibm.etools.systems.dftsubsystem.impl.DefaultSubSystemFactoryImpl;
 import com.ibm.etools.systems.filters.SystemFilter;
 import com.ibm.etools.systems.filters.SystemFilterPool;
 import com.ibm.etools.systems.filters.SystemFilterPoolManager;
+import com.ibm.etools.systems.filters.SystemFilterPoolReference;
+import com.ibm.etools.systems.filters.SystemFilterReference;
+import com.ibm.etools.systems.filters.SystemFilterStringReference;
 import com.ibm.etools.systems.filters.ui.actions.SystemChangeFilterAction;
 import com.ibm.etools.systems.filters.ui.actions.SystemNewFilterAction;
 import com.ibm.etools.systems.model.SystemConnection;
 import com.ibm.etools.systems.subsystems.SubSystem;
+import com.ibm.etools.systems.subsystems.SubSystemHelpers;
 
 public class RapidFireSubSystemFactory extends DefaultSubSystemFactoryImpl {
 
@@ -75,14 +83,45 @@ public class RapidFireSubSystemFactory extends DefaultSubSystemFactoryImpl {
 
     @Override
     public boolean supportsNestedFilters() {
-        return false;
+        return true;
     }
 
     @Override
     public boolean supportsMultipleFilterStrings() {
+
+        // For RDi see:
+        // RapidFireSubSystemConfigurationAdapter.getChangeFilterAction()
         return false;
     }
-    
+
+    // protected IAction getNewNestedFilterAction(SystemFilter arg0, Shell
+    // shell) {
+    //
+    // SystemBaseAction action = new SystemBaseAction("Create Foo Object",
+    // shell) {
+    // @Override
+    // public void run() {
+    // // TODO Auto-generated method stub
+    // SystemFilterReference reference =
+    // (SystemFilterReference)getFirstSelection();
+    // // System.out.println(reference.getSubSystem().getHostAliasName());
+    //
+    // super.run();
+    // }
+    // };
+    //
+    // return null;
+    // };
+
+    public IAction[] getFilterActions(SystemFilter filter, Shell shell) {
+
+        Vector<IAction> actions = new Vector<IAction>();
+
+        actions.add(new NewJobFilterPopupMenuAction(shell));
+
+        return actions.toArray(new IAction[actions.size()]);
+    }
+
     /*
      * Start of RDi/WDSCi specific methods.
      */
@@ -118,9 +157,51 @@ public class RapidFireSubSystemFactory extends DefaultSubSystemFactoryImpl {
     }
 
     @Override
-    protected Vector getAdditionalFilterActions(SystemFilter selectedFilter, Shell shell) {
+    protected Vector getAdditionalFilterActions(final SystemFilter selectedFilter, Shell shell) {
         Vector actions = new Vector();
+
+        SystemBaseAction action = new SystemBaseAction("Create Foo Object", shell) {
+            @Override
+            public void run() {
+                // TODO Auto-generated method stub
+                SystemFilterReference reference = (SystemFilterReference)getFirstSelection();
+                // System.out.println(reference.getSubSystem().getHostAliasName());
+                Object object = reference.getParentSystemFilterReferencePool().getExistingSystemFilterReference(selectedFilter);
+                SubSystem subSystem = SubSystemHelpers.getParentSubSystem((SystemFilterReference)object);
+                super.run();
+            }
+        };
+
+        actions.add(action);
+
         return actions;
+    }
+
+    public ISeriesConnection getISeriesConnection(Object element) {
+        ISeriesConnection iseriesConnection = null;
+        // if ((element instanceof DataElement))
+        // {
+        // iseriesConnection =
+        // ISeriesConnection.getConnection(ISeriesDataElementUtil.getFileSubSystem((DataElement)element).getSystemConnection());
+        // }
+        // else
+        if ((element instanceof ISeriesDataElementWrapper)) {
+            iseriesConnection = ((ISeriesDataElementWrapper)element).getISeriesConnection();
+        } else if ((element instanceof SubSystem)) {
+            iseriesConnection = ISeriesConnection.getConnection(((SubSystem)element).getSystemConnection());
+        } else if ((element instanceof SystemFilterPoolReference)) {
+            SubSystem ss = SubSystemHelpers.getParentSubSystem((SystemFilterPoolReference)element);
+            iseriesConnection = ISeriesConnection.getConnection(ss.getSystemConnection());
+        } else if ((element instanceof SystemFilterReference)) {
+            SubSystem ss = SubSystemHelpers.getParentSubSystem((SystemFilterReference)element);
+            iseriesConnection = ISeriesConnection.getConnection(ss.getSystemConnection());
+        } else if ((element instanceof SystemFilterStringReference)) {
+            SubSystem ss = SubSystemHelpers.getParentSubSystem((SystemFilterStringReference)element);
+            iseriesConnection = ISeriesConnection.getConnection(ss.getSystemConnection());
+        } else if ((element instanceof SystemConnection)) {
+            iseriesConnection = ISeriesConnection.getConnection((SystemConnection)element);
+        }
+        return iseriesConnection;
     }
 
     @Override

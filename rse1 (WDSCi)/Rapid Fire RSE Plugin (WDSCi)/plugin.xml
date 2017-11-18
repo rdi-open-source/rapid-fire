@@ -121,6 +121,15 @@
                enablesFor="+"
                id="biz.rapidfire.rse.subsystem.actions.ChangeJobAction">
          </action>
+            
+         <action
+               label="%command_New_Job"
+               tooltip="%command_New_Job_Description"
+               icon="icons/new_job.gif"
+               class="biz.rapidfire.rse.subsystem.actions.NewJobAction"
+               enablesFor="+"
+               id="biz.rapidfire.rse.subsystem.actions.NewJobAction">
+         </action>
          
       </objectContribution>
       
@@ -139,6 +148,13 @@
          name="Rapid Fire"
          id="biz.rapidfire.category.Commands">
       </category>
+         
+      <command
+         id="biz.rapidfire.core.command.Job.new"
+         categoryId="biz.rapidfire.category.Commands"
+         name="%command_New_Job"
+         description="%command_New_Job_Description">
+      </command>
          
       <command
          id="biz.rapidfire.core.command.Job.change"
@@ -220,6 +236,19 @@
    
    <extension
       point="org.eclipse.ui.handlers">
+      
+      <handler
+         commandId="biz.rapidfire.core.command.Job.new"
+         class="biz.rapidfire.core.handlers.NewJobHandler">
+         <enabledWhen>
+            <with variable="selection">
+               <count value="*" />
+               <iterate operator="and">
+                  <adapt type="biz.rapidfire.rse.model.RapidFireJobResource" />
+               </iterate>
+            </with>
+         </enabledWhen>
+      </handler>
       
       <handler
          commandId="biz.rapidfire.core.command.Job.change"
