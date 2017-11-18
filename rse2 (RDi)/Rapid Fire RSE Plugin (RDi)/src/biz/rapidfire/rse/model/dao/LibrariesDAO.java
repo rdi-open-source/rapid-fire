@@ -10,14 +10,14 @@ package biz.rapidfire.rse.model.dao;
 
 import biz.rapidfire.core.model.IRapidFireLibraryResource;
 import biz.rapidfire.core.model.dao.AbstractLibrariesDAO;
-import biz.rapidfire.core.model.dao.DAOManager;
+import biz.rapidfire.core.model.dao.JDBCConnectionManager;
 import biz.rapidfire.core.model.dao.ILibrariesDAO;
 import biz.rapidfire.rse.subsystem.resources.RapidFireLibraryResource;
 
 public class LibrariesDAO extends AbstractLibrariesDAO implements ILibrariesDAO {
 
     public LibrariesDAO(String connectionName, String libraryName) throws Exception {
-        super(DAOManager.getInstance().getBaseDAO(connectionName, libraryName, false));
+        super(JDBCConnectionManager.getInstance().getBaseDAO(connectionName, libraryName, false));
     }
 
     @Override

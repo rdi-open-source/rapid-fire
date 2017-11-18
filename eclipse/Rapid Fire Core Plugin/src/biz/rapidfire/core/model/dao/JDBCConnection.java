@@ -23,7 +23,7 @@ import biz.rapidfire.core.helpers.RapidFireHelper;
 
 import com.ibm.as400.access.AS400;
 
-class JDBCConnection implements IBaseDAO {
+class JDBCConnection implements IJDBCConnection {
 
     private static final String BOOLEAN_Y = "Y"; //$NON-NLS-1$
     private static final String BOOLEAN_N = "N"; //$NON-NLS-1$
@@ -137,7 +137,7 @@ class JDBCConnection implements IBaseDAO {
     }
 
     public String insertLibraryQualifier(String sqlStatement) {
-        return sqlStatement.replaceAll(IBaseDAO.LIBRARY, libraryName + getSeparator(getJdbcConnection()));
+        return sqlStatement.replaceAll(IJDBCConnection.LIBRARY, libraryName + getSeparator(getJdbcConnection()));
     }
 
     public boolean convertYesNo(String yesNoValue) {

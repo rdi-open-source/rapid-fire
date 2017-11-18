@@ -25,7 +25,7 @@ import biz.rapidfire.rsebase.model.dao.AbstractDAOManager;
 import com.ibm.as400.access.AS400;
 import com.ibm.as400.access.AS400JDBCDriver;
 
-public class DAOManager extends AbstractDAOManager {
+public class JDBCConnectionManager extends AbstractDAOManager {
 
     private static final String PROPERTY_PROMPT = "prompt";
     private static final String PROPERTY_BIG_DECIMAL = "big decimal";
@@ -33,8 +33,8 @@ public class DAOManager extends AbstractDAOManager {
     private static final String PROPERTY_TRANSACTION_ISOLATION = "transaction isolation";
 
     private static final String JDBC_TRANSACTION_ISOLATION_NONE = "none";
-    private static final String JDBC_TRANSACTION_ISOLATION_READ_UNCOMMITED = "read commited";
-    private static final String JDBC_TRANSACTION_ISOLATION_READ_COMMITTED = "read uncommited";
+    private static final String JDBC_TRANSACTION_ISOLATION_READ_UNCOMMITED = "read uncommited";
+    private static final String JDBC_TRANSACTION_ISOLATION_READ_COMMITTED = "read commited";
     private static final String JDBC_TRANSACTION_ISOLATION_REPEATABLE_READ = "repeatable read";
     private static final String JDBC_TRANSACTION_ISOLATION_SERIALIZABLE = "serializable";
 
@@ -44,18 +44,18 @@ public class DAOManager extends AbstractDAOManager {
     /**
      * The instance of this Singleton class.
      */
-    private static DAOManager instance;
+    private static JDBCConnectionManager instance;
 
     private AS400JDBCDriver as400JDBCDriver;
 
-    private Map<String, IBaseDAO> baseDAOs;
+    private Map<String, IJDBCConnection> baseDAOs;
 
     /**
      * Private constructor to ensure the Singleton pattern.
      */
-    private DAOManager() {
+    private JDBCConnectionManager() {
 
-        this.baseDAOs = new HashMap<String, IBaseDAO>();
+        this.baseDAOs = new HashMap<String, IJDBCConnection>();
 
         try {
 
@@ -72,18 +72,18 @@ public class DAOManager extends AbstractDAOManager {
     /**
      * Thread-safe method that returns the instance of this Singleton class.
      */
-    public synchronized static DAOManager getInstance() {
+    public synchronized static JDBCConnectionManager getInstance() {
         if (instance == null) {
-            instance = new DAOManager();
+            instance = new JDBCConnectionManager();
         }
         return instance;
     }
 
-    public IBaseDAO getBaseDAO(String connectionName, String libraryName, boolean isCommitControl) throws Exception {
+    public IJDBCConnection getBaseDAO(String connectionName, String libraryName, boolean isCommitControl) throws Exception {
 
         String key = connectionName + ":" + libraryName + ":commit=" + isCommitControl;
 
-        IBaseDAO baseDAO = baseDAOs.get(key);
+        IJDBCConnection baseDAO = baseDAOs.get(key);
         if (baseDAO == null) {
             baseDAO = produceBaseDAO(connectionName, libraryName, isCommitControl);
             baseDAOs.put(key, baseDAO);
@@ -92,7 +92,7 @@ public class DAOManager extends AbstractDAOManager {
         return baseDAO;
     }
 
-    protected IBaseDAO produceBaseDAO(String connectionName, String libraryName, boolean isCommitControl) throws Exception {
+    protected IJDBCConnection produceBaseDAO(String connectionName, String libraryName, boolean isCommitControl) throws Exception {
 
         // Properties of ToolboxConnectorService
         Properties jdbcProperties = new Properties();
@@ -128,8 +128,8 @@ public class DAOManager extends AbstractDAOManager {
 
     private void closeAllConnection() {
 
-        Collection<IBaseDAO> daos = baseDAOs.values();
-        for (IBaseDAO dao : daos) {
+        Collection<IJDBCConnection> daos = baseDAOs.values();
+        for (IJDBCConnection dao : daos) {
             try {
                 Connection jdbcConnection = dao.getJdbcConnection();
                 if (!jdbcConnection.isClosed()) {

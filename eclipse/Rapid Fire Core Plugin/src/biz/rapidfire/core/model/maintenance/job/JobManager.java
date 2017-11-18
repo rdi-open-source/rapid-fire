@@ -12,7 +12,7 @@ import java.sql.CallableStatement;
 import java.sql.Types;
 
 import biz.rapidfire.core.Messages;
-import biz.rapidfire.core.model.dao.IBaseDAO;
+import biz.rapidfire.core.model.dao.IJDBCConnection;
 import biz.rapidfire.core.model.maintenance.AbstractManager;
 import biz.rapidfire.core.model.maintenance.Result;
 import biz.rapidfire.core.model.maintenance.Success;
@@ -20,23 +20,23 @@ import biz.rapidfire.core.model.maintenance.Success;
 public class JobManager extends AbstractManager<JobKey, JobValues> {
 
     private static final String EMPTY_STRING = ""; //$NON-NLS-1$
-    private IBaseDAO dao;
+    private IJDBCConnection dao;
 
-    public JobManager(IBaseDAO dao) {
+    public JobManager(IJDBCConnection dao) {
         this.dao = dao;
     }
 
     @Override
     public void openFiles() throws Exception {
 
-        CallableStatement statement = dao.prepareCall(dao.insertLibraryQualifier("{CALL " + IBaseDAO.LIBRARY + "\"MNTJOB_openFiles\"()}")); //$NON-NLS-1$ //$NON-NLS-2$
+        CallableStatement statement = dao.prepareCall(dao.insertLibraryQualifier("{CALL " + IJDBCConnection.LIBRARY + "\"MNTJOB_openFiles\"()}")); //$NON-NLS-1$ //$NON-NLS-2$
         statement.execute();
     }
 
     @Override
     public Result initialize(String mode, JobKey key) throws Exception {
 
-        CallableStatement statement = dao.prepareCall(dao.insertLibraryQualifier("{CALL " + IBaseDAO.LIBRARY + "\"MNTJOB_initialize\"(?, ?, ?)}")); //$NON-NLS-1$ //$NON-NLS-2$
+        CallableStatement statement = dao.prepareCall(dao.insertLibraryQualifier("{CALL " + IJDBCConnection.LIBRARY + "\"MNTJOB_initialize\"(?, ?, ?)}")); //$NON-NLS-1$ //$NON-NLS-2$
 
         statement.setString(IJobInitialize.MODE, mode);
         statement.setString(IJobInitialize.JOB, key.getJobName());
@@ -58,7 +58,7 @@ public class JobManager extends AbstractManager<JobKey, JobValues> {
     public JobValues getValues() throws Exception {
 
         CallableStatement statement = dao.prepareCall(dao
-            .insertLibraryQualifier("{CALL " + IBaseDAO.LIBRARY + "\"MNTJOB_getValues\"(?, ?, ?, ?, ?)}")); //$NON-NLS-1$ //$NON-NLS-2$
+            .insertLibraryQualifier("{CALL " + IJDBCConnection.LIBRARY + "\"MNTJOB_getValues\"(?, ?, ?, ?, ?)}")); //$NON-NLS-1$ //$NON-NLS-2$
 
         statement.setString(IJobGetValues.JOB, EMPTY_STRING);
         statement.setString(IJobGetValues.DESCRIPTION, EMPTY_STRING);
@@ -88,7 +88,7 @@ public class JobManager extends AbstractManager<JobKey, JobValues> {
     public void setValues(JobValues values) throws Exception {
 
         CallableStatement statement = dao.prepareCall(dao
-            .insertLibraryQualifier("{CALL " + IBaseDAO.LIBRARY + "\"MNTJOB_setValues\"(?, ?, ?, ?, ?)}")); //$NON-NLS-1$ //$NON-NLS-2$
+            .insertLibraryQualifier("{CALL " + IJDBCConnection.LIBRARY + "\"MNTJOB_setValues\"(?, ?, ?, ?, ?)}")); //$NON-NLS-1$ //$NON-NLS-2$
 
         statement.setString(IJobSetValues.JOB, values.getKey().getJobName());
         statement.setString(IJobSetValues.DESCRIPTION, values.getDescription());
@@ -102,7 +102,7 @@ public class JobManager extends AbstractManager<JobKey, JobValues> {
     @Override
     public Result check() throws Exception {
 
-        CallableStatement statement = dao.prepareCall(dao.insertLibraryQualifier("{CALL " + IBaseDAO.LIBRARY + "\"MNTJOB_check\"(?, ?, ?)}")); //$NON-NLS-1$ //$NON-NLS-2$
+        CallableStatement statement = dao.prepareCall(dao.insertLibraryQualifier("{CALL " + IJDBCConnection.LIBRARY + "\"MNTJOB_check\"(?, ?, ?)}")); //$NON-NLS-1$ //$NON-NLS-2$
 
         statement.setString(IJobCheck.FIELD_NAME, EMPTY_STRING);
         statement.setString(IJobCheck.MESSAGE, EMPTY_STRING);
@@ -124,14 +124,14 @@ public class JobManager extends AbstractManager<JobKey, JobValues> {
     @Override
     public void book() throws Exception {
 
-        CallableStatement statement = dao.prepareCall(dao.insertLibraryQualifier("{CALL " + IBaseDAO.LIBRARY + "\"MNTJOB_book\"()}")); //$NON-NLS-1$ //$NON-NLS-2$
+        CallableStatement statement = dao.prepareCall(dao.insertLibraryQualifier("{CALL " + IJDBCConnection.LIBRARY + "\"MNTJOB_book\"()}")); //$NON-NLS-1$ //$NON-NLS-2$
         statement.execute();
     }
 
     @Override
     public void closeFiles() throws Exception {
 
-        CallableStatement statement = dao.prepareCall(dao.insertLibraryQualifier("{CALL " + IBaseDAO.LIBRARY + "\"MNTJOB_closeFiles\"()}")); //$NON-NLS-1$ //$NON-NLS-2$
+        CallableStatement statement = dao.prepareCall(dao.insertLibraryQualifier("{CALL " + IJDBCConnection.LIBRARY + "\"MNTJOB_closeFiles\"()}")); //$NON-NLS-1$ //$NON-NLS-2$
         statement.execute();
     }
 

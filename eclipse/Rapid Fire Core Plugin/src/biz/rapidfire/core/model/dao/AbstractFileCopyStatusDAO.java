@@ -36,9 +36,9 @@ public abstract class AbstractFileCopyStatusDAO {
     public static final String CHANGES_APPLIED = "CAP"; //$NON-NLS-1$
     public static final String PERCENT_DONE = "PRC"; //$NON-NLS-1$
 
-    private IBaseDAO dao;
+    private IJDBCConnection dao;
 
-    public AbstractFileCopyStatusDAO(IBaseDAO dao) {
+    public AbstractFileCopyStatusDAO(IJDBCConnection dao) {
 
         this.dao = dao;
     }
@@ -139,7 +139,7 @@ public abstract class AbstractFileCopyStatusDAO {
             CHANGES_APPLIED + ", " +
             PERCENT_DONE + " " +
         "FROM TABLE(" +
-            IBaseDAO.LIBRARY +
+            IJDBCConnection.LIBRARY +
             "\"LODSTSE_loadStatusEntries\"('" + where + "')" +
             ") AS X";
         // @formatter:on

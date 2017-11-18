@@ -9,13 +9,13 @@
 package biz.rapidfire.rse.model.dao;
 
 import biz.rapidfire.core.model.dao.AbstractFileCopyStatusDAO;
-import biz.rapidfire.core.model.dao.DAOManager;
+import biz.rapidfire.core.model.dao.JDBCConnectionManager;
 import biz.rapidfire.core.model.dao.IFileCopyStatusDAO;
 
 public class FileCopyStatusDAO extends AbstractFileCopyStatusDAO implements IFileCopyStatusDAO {
 
     public FileCopyStatusDAO(String connectionName, String libraryName) throws Exception {
-        super(DAOManager.getInstance().getBaseDAO(connectionName, libraryName, false));
+        super(JDBCConnectionManager.getInstance().getBaseDAO(connectionName, libraryName, false));
     }
 
 }

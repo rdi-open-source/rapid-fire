@@ -17,7 +17,7 @@ import org.eclipse.swt.widgets.Shell;
 
 import com.ibm.as400.access.AS400;
 
-public interface IBaseDAO {
+public interface IJDBCConnection {
 
     public static final String LIBRARY = "<LIBRARY>";
     public static final String CATALOG_SEPARATOR = "<CATALOG_SEPARATOR>";

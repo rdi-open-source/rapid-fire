@@ -30,9 +30,9 @@ public abstract class AbstractFilesDAO {
     public static final String CONVERSION_PROGRAM_LIBRARY = "CONVERSION_PROGRAM_LIBRARY"; //$NON-NLS-1$
     public static final String CONVERSION_PROGRAM = "CONVERSION_PROGRAM"; //$NON-NLS-1$
 
-    private IBaseDAO dao;
+    private IJDBCConnection dao;
 
-    public AbstractFilesDAO(IBaseDAO dao) {
+    public AbstractFilesDAO(IJDBCConnection dao) {
 
         this.dao = dao;
     }
@@ -111,7 +111,7 @@ public abstract class AbstractFilesDAO {
             "CONVERSION_PROGRAM_LIBRARY, " +
             "CONVERSION_PROGRAM " +
         "FROM " +
-            IBaseDAO.LIBRARY +
+            IJDBCConnection.LIBRARY +
             "FILES " +
         "WHERE " +
             "JOB = ?";

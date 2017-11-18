@@ -24,9 +24,9 @@ public abstract class AbstractLibrariesDAO {
     public static final String LIBRARY = "LIBRARY"; //$NON-NLS-1$
     public static final String SHADOW_LIBRARY = "SHADOW_LIBRARY"; //$NON-NLS-1$
 
-    private IBaseDAO dao;
+    private IJDBCConnection dao;
 
-    public AbstractLibrariesDAO(IBaseDAO dao) {
+    public AbstractLibrariesDAO(IJDBCConnection dao) {
 
         this.dao = dao;
     }
@@ -88,7 +88,7 @@ public abstract class AbstractLibrariesDAO {
             "LIBRARY, " +
             "SHADOW_LIBRARY " +
         "FROM " +
-            IBaseDAO.LIBRARY +
+            IJDBCConnection.LIBRARY +
             "LIBRARIES " +
         "WHERE " +
             "JOB = ?";

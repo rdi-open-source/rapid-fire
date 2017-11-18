@@ -10,14 +10,14 @@ package biz.rapidfire.rse.model.dao;
 
 import biz.rapidfire.core.model.IRapidFireFileResource;
 import biz.rapidfire.core.model.dao.AbstractFilesDAO;
-import biz.rapidfire.core.model.dao.DAOManager;
+import biz.rapidfire.core.model.dao.JDBCConnectionManager;
 import biz.rapidfire.core.model.dao.IFilesDAO;
 import biz.rapidfire.rse.subsystem.resources.RapidFireFileResource;
 
 public class FilesDAO extends AbstractFilesDAO implements IFilesDAO {
 
     public FilesDAO(String connectionName, String libraryName) throws Exception {
-        super(DAOManager.getInstance().getBaseDAO(connectionName, libraryName, false));
+        super(JDBCConnectionManager.getInstance().getBaseDAO(connectionName, libraryName, false));
     }
 
     @Override

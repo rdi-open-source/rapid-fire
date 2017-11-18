@@ -38,9 +38,9 @@ public abstract class AbstractJobsDAO {
     public static final String STOP_APPLY_CHANGES = "STOP_APPLY_CHANGES"; //$NON-NLS-1$
     public static final String CMONE_FORM = "CMONE_FORM"; //$NON-NLS-1$
 
-    private IBaseDAO dao;
+    private IJDBCConnection dao;
 
-    public AbstractJobsDAO(IBaseDAO dao) {
+    public AbstractJobsDAO(IJDBCConnection dao) {
         this.dao = dao;
     }
 
@@ -132,7 +132,7 @@ public abstract class AbstractJobsDAO {
             "STOP_APPLY_CHANGES, " +
             "CMONE_FORM " +
         "FROM " +
-            IBaseDAO.LIBRARY +
+            IJDBCConnection.LIBRARY +
             "JOBS";
         // @formatter:on
 
