@@ -10,14 +10,14 @@ package biz.rapidfire.rse.model.dao;
 
 import biz.rapidfire.core.model.IRapidFireJobResource;
 import biz.rapidfire.core.model.dao.AbstractJobsDAO;
-import biz.rapidfire.core.model.dao.DAOManager;
 import biz.rapidfire.core.model.dao.IJobsDAO;
+import biz.rapidfire.core.model.dao.JDBCConnectionManager;
 import biz.rapidfire.rse.subsystem.resources.RapidFireJobResource;
 
 public class JobsDAO extends AbstractJobsDAO implements IJobsDAO {
 
     public JobsDAO(String connectionName, String libraryName) throws Exception {
-        super(DAOManager.getInstance().getBaseDAO(connectionName, libraryName, false));
+        super(JDBCConnectionManager.getInstance().getBaseDAO(connectionName, libraryName, false));
     }
 
     @Override
