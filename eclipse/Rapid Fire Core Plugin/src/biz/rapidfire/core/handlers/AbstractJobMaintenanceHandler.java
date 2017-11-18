@@ -16,6 +16,7 @@ import biz.rapidfire.core.RapidFireCorePlugin;
 import biz.rapidfire.core.helpers.ExceptionHelper;
 import biz.rapidfire.core.model.IRapidFireJobResource;
 import biz.rapidfire.core.model.IRapidFireResource;
+import biz.rapidfire.core.model.dao.JDBCConnectionManager;
 import biz.rapidfire.core.model.maintenance.IMaintenance;
 import biz.rapidfire.core.model.maintenance.Result;
 import biz.rapidfire.core.model.maintenance.job.JobKey;
@@ -68,7 +69,7 @@ public abstract class AbstractJobMaintenanceHandler extends AbstractResourceHand
 
         String connectionName = job.getParentSubSystem().getConnectionName();
 
-        manager = job.getParentSubSystem().getJobManager(connectionName, job.getDataLibrary(), getCommitActive(getMode()));
+        manager = new JobManager(JDBCConnectionManager.getInstance().getBaseDAO(connectionName, job.getDataLibrary(), isCommitControl()));
         manager.openFiles();
 
         Result status = manager.initialize(getMode(), new JobKey(job.getName()));
@@ -89,8 +90,9 @@ public abstract class AbstractJobMaintenanceHandler extends AbstractResourceHand
         }
     }
 
-    private boolean getCommitActive(String mode) {
+    private boolean isCommitControl() {
 
+        String mode = getMode();
         if (IMaintenance.MODE_CHANGE.equals(mode) || IMaintenance.MODE_DELETE.equals(mode)) {
             return true;
         }

@@ -39,9 +39,7 @@ import biz.rapidfire.core.model.IRapidFireFileResource;
 import biz.rapidfire.core.model.IRapidFireJobResource;
 import biz.rapidfire.core.model.IRapidFireLibraryResource;
 import biz.rapidfire.core.model.IRapidFireResource;
-import biz.rapidfire.core.model.dao.JDBCConnectionManager;
 import biz.rapidfire.core.model.list.FileCopyStatus;
-import biz.rapidfire.core.model.maintenance.job.JobManager;
 import biz.rapidfire.core.subsystem.IRapidFireSubSystem;
 import biz.rapidfire.core.subsystem.RapidFireFilter;
 import biz.rapidfire.rse.model.dao.FileCopyStatusDAO;
@@ -175,10 +173,6 @@ public class RapidFireSubSystem extends SubSystem implements IISeriesSubSystem, 
         List<IFileCopyStatus> fileCopyStatuses = dao.load(jobName, shell);
 
         return fileCopyStatuses.toArray(new FileCopyStatus[fileCopyStatuses.size()]);
-    }
-
-    public JobManager getJobManager(String connectionName, String libraryName, boolean isCommitControl) throws Exception {
-        return new JobManager(JDBCConnectionManager.getInstance().getBaseDAO(connectionName, libraryName, isCommitControl));
     }
 
     private boolean successFullyLoaded() {
