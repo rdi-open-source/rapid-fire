@@ -18,7 +18,7 @@ import org.eclipse.jface.resource.ImageRegistry;
 import org.eclipse.ui.plugin.AbstractUIPlugin;
 import org.osgi.framework.BundleContext;
 
-import biz.rapidfire.core.model.dao.DAOManager;
+import biz.rapidfire.core.model.dao.JDBCConnectionManager;
 import biz.rapidfire.rse.subsystem.RapidFireAdapterFactory;
 import biz.rapidfire.rse.subsystem.resources.FilesNode;
 import biz.rapidfire.rse.subsystem.resources.LibrariesNode;
@@ -75,7 +75,7 @@ public class RapidFireRSEPlugin extends AbstractUIPlugin {
      */
     @Override
     public void stop(BundleContext context) throws Exception {
-        DAOManager.getInstance().destroy();
+        JDBCConnectionManager.getInstance().destroy();
         plugin = null;
         super.stop(context);
     }
