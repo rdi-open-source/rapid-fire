@@ -9,6 +9,7 @@
 package biz.rapidfire.rse.model.dao;
 
 import biz.rapidfire.core.model.dao.AbstractFileCopyStatusDAO;
+import biz.rapidfire.core.model.dao.DAOManager;
 import biz.rapidfire.core.model.dao.IFileCopyStatusDAO;
 
 public class FileCopyStatusDAO extends AbstractFileCopyStatusDAO implements IFileCopyStatusDAO {

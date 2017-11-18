@@ -13,7 +13,8 @@ Require-Bundle: org.eclipse.ui,
  com.ibm.etools.iseries.core,
  com.ibm.etools.iseries.toolbox,
  biz.rapidfire.core,
- biz.rapidfire.rsebase
+ biz.rapidfire.rsebase,
+ biz.rapidfire.core
 Bundle-ClassPath: .
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Bundle-ActivationPolicy: lazy

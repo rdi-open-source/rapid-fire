@@ -19,7 +19,7 @@ public abstract class AbstractNodeAdapter extends AbstractResourceAdapter {
     }
 
     @Override
-    public final boolean hasChildren(Object element) {
+    public boolean hasChildren(Object element) {
         return false;
     }
 

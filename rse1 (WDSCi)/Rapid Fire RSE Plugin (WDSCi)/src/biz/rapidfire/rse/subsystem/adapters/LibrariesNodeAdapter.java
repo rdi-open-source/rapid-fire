@@ -17,11 +17,17 @@ import biz.rapidfire.core.dialogs.MessageDialogAsync;
 import biz.rapidfire.core.model.IRapidFireJobResource;
 import biz.rapidfire.rse.Messages;
 import biz.rapidfire.rse.RapidFireRSEPlugin;
+import biz.rapidfire.rse.subsystem.actions.NewLibraryAction;
 import biz.rapidfire.rse.subsystem.resources.LibrariesNode;
 
 import com.ibm.etools.systems.core.ui.SystemMenuManager;
 
 public class LibrariesNodeAdapter extends AbstractNodeAdapter {
+
+    @Override
+    public final boolean hasChildren(Object element) {
+        return true;
+    }
 
     @Override
     public String getText(Object element) {
@@ -35,7 +41,7 @@ public class LibrariesNodeAdapter extends AbstractNodeAdapter {
 
     @Override
     public void addActions(SystemMenuManager menuManager, IStructuredSelection selection, Shell shell, String paramString) {
-
+        menuManager.add(null, new NewLibraryAction(shell));
     }
 
     @Override

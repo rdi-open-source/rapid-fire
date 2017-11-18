@@ -20,14 +20,6 @@ public class Messages extends NLS {
     public static String E_R_R_O_R;
 
     /*
-     * DAO strings
-     */
-    public static String RseBaseDAO_Invalid_or_missing_connection_name_A;
-    public static String RseBaseDAO_Invalid_or_missing_library_name_A;
-    public static String RseBaseDAO_Connection_A_not_found;
-    public static String RseBaseDAO_Failed_to_connect_to_A;
-
-    /*
      * Menu options
      */
     public static String Add_Rapid_Fire_Filter_dots;
@@ -108,11 +100,18 @@ public class Messages extends NLS {
 
     public static String NodeText_Files;
     public static String NodeText_Libraries;
-    public static String NodeText_Create_job;
 
     public static String NodeType_Files;
     public static String NodeType_Libraries;
-    public static String NodeType_Create_job;
+
+    // Action labels
+    public static String ActionLabel_New_Job;
+    public static String ActionLabel_New_File;
+    public static String ActionLabel_New_Library;
+
+    public static String ActionTooltip_New_Job;
+    public static String ActionTooltip_New_File;
+    public static String ActionTooltip_New_Library;
 
     private Messages() {
     }
