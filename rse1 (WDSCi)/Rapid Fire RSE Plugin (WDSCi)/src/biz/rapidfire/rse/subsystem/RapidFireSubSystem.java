@@ -176,10 +176,6 @@ public class RapidFireSubSystem extends DefaultSubSystemImpl implements IISeries
         return fileCopyStatuses.toArray(new FileCopyStatus[fileCopyStatuses.size()]);
     }
 
-    public JobManager getJobManager(String connectionName, String libraryName, boolean isCommitControl) throws Exception {
-        return new JobManager(JDBCConnectionManager.getInstance().getBaseDAO(connectionName, libraryName, isCommitControl));
-    }
-
     private boolean successFullyLoaded() {
 
         if (isLoading) {
