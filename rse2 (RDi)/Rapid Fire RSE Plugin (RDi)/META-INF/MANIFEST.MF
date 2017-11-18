@@ -16,9 +16,8 @@ Require-Bundle: org.eclipse.ui,
  com.ibm.etools.iseries.services.qsys,
  com.ibm.etools.iseries.toolbox,
  com.ibm.etools.iseries.rse.ui,
- biz.rapidfire.core,
  biz.rapidfire.rsebase,
- com.ibm.etools.iseries.connectorservice;bundle-version="8.0.5"
+ biz.rapidfire.core
 Bundle-ClassPath: .
 Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Bundle-ActivationPolicy: lazy

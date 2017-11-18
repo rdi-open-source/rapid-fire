@@ -36,6 +36,13 @@
       </category>
          
       <command
+         id="biz.rapidfire.core.command.Job.new"
+         categoryId="biz.rapidfire.category.Commands"
+         name="%command_New_Job"
+         description="%command_New_Job_Description">
+      </command>
+         
+      <command
          id="biz.rapidfire.core.command.Job.change"
          categoryId="biz.rapidfire.category.Commands"
          name="%command_Change_Job"
@@ -115,6 +122,19 @@
    
    <extension
       point="org.eclipse.ui.handlers">
+      
+      <handler
+         commandId="biz.rapidfire.core.command.Job.new"
+         class="biz.rapidfire.core.handlers.NewJobHandler">
+         <enabledWhen>
+            <with variable="selection">
+               <count value="+" />
+               <iterate operator="and">
+                  <adapt type="biz.rapidfire.rse.subsystem.resources.RapidFireJobResource" />
+               </iterate>
+            </with>
+         </enabledWhen>
+      </handler>
       
       <handler
          commandId="biz.rapidfire.core.command.Job.change"
@@ -259,6 +279,19 @@
          
       <menuContribution
          locationURI="popup:org.eclipse.ui.popup.any?before=additions">
+         
+         <command
+            commandId="biz.rapidfire.core.command.Job.new" 
+            icon="icons/new_job.gif"
+            >
+	        <visibleWhen>
+	           <with variable="selection">
+	              <iterate operator="and">
+	                 <adapt type="biz.rapidfire.rse.subsystem.resources.RapidFireJobResource" />
+	              </iterate>
+	           </with>
+	        </visibleWhen>
+         </command>
          
          <command
             commandId="biz.rapidfire.core.command.Job.change" 

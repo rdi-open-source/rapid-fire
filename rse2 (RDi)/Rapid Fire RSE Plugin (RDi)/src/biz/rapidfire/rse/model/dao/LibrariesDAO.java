@@ -10,6 +10,7 @@ package biz.rapidfire.rse.model.dao;
 
 import biz.rapidfire.core.model.IRapidFireLibraryResource;
 import biz.rapidfire.core.model.dao.AbstractLibrariesDAO;
+import biz.rapidfire.core.model.dao.DAOManager;
 import biz.rapidfire.core.model.dao.ILibrariesDAO;
 import biz.rapidfire.rse.subsystem.resources.RapidFireLibraryResource;
 

@@ -27,11 +27,19 @@ public abstract class AbstractSelectionHandler extends AbstractHandler {
     protected void refreshUI(Object resource) {
         if (resource != null) {
             ISystemRegistry sr = RSECorePlugin.getTheSystemRegistry();
-            if (isDeleteMode()) {
-                sr.fireRemoteResourceChangeEvent(ISystemRemoteChangeEvents.SYSTEM_REMOTE_RESOURCE_DELETED, resource, null, null, null, null);
-            } else {
-                sr.fireRemoteResourceChangeEvent(ISystemRemoteChangeEvents.SYSTEM_REMOTE_RESOURCE_CREATED, resource, null, null, null, null);
-            }
+            // if (isDeleteMode()) {
+            // sr.fireRemoteResourceChangeEvent(ISystemRemoteChangeEvents.SYSTEM_REMOTE_RESOURCE_DELETED,
+            // resource, null, null, null, null);
+            // } else {
+            // sr.fireRemoteResourceChangeEvent(ISystemRemoteChangeEvents.SYSTEM_REMOTE_RESOURCE_CHANGED,
+            // null, null, null, null, null);
+            // }
+            sr.fireRemoteResourceChangeEvent(ISystemRemoteChangeEvents.SYSTEM_REMOTE_RESOURCE_CHANGED, resource, null, null, null, null);
+            sr.fireRemoteResourceChangeEvent(ISystemRemoteChangeEvents.SYSTEM_REMOTE_RESOURCE_CREATED, resource, null, null, null, null);
+            sr.fireRemoteResourceChangeEvent(ISystemRemoteChangeEvents.SYSTEM_REMOTE_RESOURCE_DELETED, resource, null, null, null, null);
+            sr.fireRemoteResourceChangeEvent(ISystemRemoteChangeEvents.SYSTEM_REMOTE_RESOURCE_DOWNLOADED, resource, null, null, null, null);
+            sr.fireRemoteResourceChangeEvent(ISystemRemoteChangeEvents.SYSTEM_REMOTE_RESOURCE_RENAMED, resource, null, null, null, null);
+            sr.fireRemoteResourceChangeEvent(ISystemRemoteChangeEvents.SYSTEM_REMOTE_RESOURCE_UPLOADED, resource, null, null, null, null);
         }
     }
 

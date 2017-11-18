@@ -56,8 +56,8 @@ public abstract class AbstractLibrariesDAO {
                 }
             }
         } finally {
-            dao.destroy(preparedStatement);
-            dao.destroy(resultSet);
+            dao.closeStatement(preparedStatement);
+            dao.closeResultSet(resultSet);
         }
 
         return libraries;

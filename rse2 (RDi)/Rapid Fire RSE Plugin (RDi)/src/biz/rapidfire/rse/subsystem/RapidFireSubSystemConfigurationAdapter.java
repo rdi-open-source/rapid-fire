@@ -22,6 +22,7 @@ import org.eclipse.rse.core.filters.ISystemFilterPoolManager;
 import org.eclipse.rse.core.subsystems.ISubSystem;
 import org.eclipse.rse.core.subsystems.ISubSystemConfiguration;
 import org.eclipse.rse.ui.SystemMenuManager;
+import org.eclipse.rse.ui.actions.SystemBaseAction;
 import org.eclipse.rse.ui.filters.actions.SystemChangeFilterAction;
 import org.eclipse.rse.ui.filters.actions.SystemNewFilterAction;
 import org.eclipse.rse.ui.view.SubSystemConfigurationAdapter;
@@ -29,6 +30,7 @@ import org.eclipse.swt.widgets.Shell;
 
 import biz.rapidfire.rse.Messages;
 import biz.rapidfire.rse.RapidFireRSEPlugin;
+import biz.rapidfire.rse.subsystem.actions.NewJobAction;
 
 public class RapidFireSubSystemConfigurationAdapter extends SubSystemConfigurationAdapter {
 
@@ -39,7 +41,6 @@ public class RapidFireSubSystemConfigurationAdapter extends SubSystemConfigurati
     @Override
     protected IAction[] getSubSystemNewFilterPoolActions(SystemMenuManager menu, IStructuredSelection selection, Shell shell, String menuGroup,
         ISubSystemConfiguration config, ISubSystem selectedSubSystem) {
-
         return super.getSubSystemNewFilterPoolActions(menu, selection, shell, menuGroup, config, selectedSubSystem);
     }
 
@@ -53,6 +54,72 @@ public class RapidFireSubSystemConfigurationAdapter extends SubSystemConfigurati
     protected void addConnectOrDisconnectAction(Vector actions, Shell shell, ISubSystem selectedSS) {
         super.addConnectOrDisconnectAction(actions, shell, selectedSS);
     }
+
+    // @Override
+    // public IAction[] getFilterActions(SystemMenuManager menu,
+    // IStructuredSelection selection, Shell shell, String menuGroup,
+    // ISubSystemConfiguration config, ISystemFilter selectedFilter) {
+    //
+    // SystemBaseAction action = new SystemBaseAction("Create Foo Object 1",
+    // shell) {
+    // @Override
+    // public void run() {
+    // // TODO Auto-generated method stub
+    // ISystemFilterReference reference =
+    // (ISystemFilterReference)getFirstSelection();
+    // System.out.println(reference.getSubSystem().getHostAliasName());
+    //
+    // super.run();
+    // }
+    // };
+    // menu.add("group.new", action);
+    //
+    // return super.getFilterActions(menu, selection, shell, menuGroup, config,
+    // selectedFilter);
+    // }
+
+    // @Override
+    // public IAction[] getFilterReferenceActions(SystemMenuManager menu,
+    // IStructuredSelection selection, Shell shell, String menuGroup,
+    // ISubSystemConfiguration config, ISystemFilterReference selectedFilterRef)
+    // {
+    //
+    // SystemBaseAction action = new SystemBaseAction("Create Foo Object",
+    // shell) {
+    // @Override
+    // public void run() {
+    // // TODO Auto-generated method stub
+    // getFirstSelection();
+    // super.run();
+    // }
+    // };
+    // menu.add("group.new", action);
+    //
+    // return super.getFilterReferenceActions(menu, selection, shell, menuGroup,
+    // config, selectedFilterRef);
+    // }
+
+    // @Override
+    // protected IAction getNewNestedFilterAction(ISubSystemConfiguration
+    // config, ISystemFilter selectedFilter, Shell shell) {
+    //
+    //
+    // SystemBaseAction action = new SystemBaseAction("Create Foo Object 2",
+    // shell) {
+    // @Override
+    // public void run() {
+    // // TODO Auto-generated method stub
+    // getFirstSelection();
+    // SubSystemHelpers.getParentSubSystem(((ISystemFilterReference)getFirstSelection()).getParentSystemFilterReferencePool());
+    // super.run();
+    // }
+    // };
+    // // menu.appendToGroup("group.new", action);
+    //
+    // return action;
+    //
+    // // return super.getNewNestedFilterAction(config, selectedFilter, shell);
+    // }
 
     @Override
     protected IAction[] getNewFilterPoolFilterActions(SystemMenuManager menu, IStructuredSelection selection, Shell shell, String menuGroup,
@@ -86,7 +153,11 @@ public class RapidFireSubSystemConfigurationAdapter extends SubSystemConfigurati
     @Override
     protected IAction getChangeFilterAction(ISubSystemConfiguration factory, ISystemFilter selectedFilter, Shell shell) {
 
-        selectedFilter.setSingleFilterStringOnly(true);
+        // For WDSCi see:
+        // RapidFireSubSystemFactory.supportsMultipleFilterStrings()
+        selectedFilter.setSingleFilterStringOnly(false);
+
+        selectedFilter.getSystemFilterPool().getSystemFilterPoolManager().getSystemFilterPosition(selectedFilter);
 
         SystemChangeFilterAction action = (SystemChangeFilterAction)super.getChangeFilterAction(factory, selectedFilter, shell);
         action.setDialogTitle(Messages.Change_Rapid_Fire_filter);
@@ -102,7 +173,16 @@ public class RapidFireSubSystemConfigurationAdapter extends SubSystemConfigurati
 
     @Override
     protected Vector<IAction> getAdditionalFilterActions(ISubSystemConfiguration config, ISystemFilter selectedFilter, Shell shell) {
-        return null;
-    }
 
+        // AbstractQSYSNewObjectAction newAction = new
+        // AbstractQSYSNewObjectAction
+
+        SystemBaseAction action = new NewJobAction(shell);
+
+        Vector<IAction> actions = new Vector<IAction>();
+
+        actions.add(action);
+
+        return actions;
+    }
 }

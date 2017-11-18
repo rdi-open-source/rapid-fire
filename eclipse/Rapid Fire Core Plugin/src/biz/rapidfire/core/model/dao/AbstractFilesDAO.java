@@ -62,8 +62,8 @@ public abstract class AbstractFilesDAO {
                 }
             }
         } finally {
-            dao.destroy(preparedStatement);
-            dao.destroy(resultSet);
+            dao.closeStatement(preparedStatement);
+            dao.closeResultSet(resultSet);
         }
 
         return files;

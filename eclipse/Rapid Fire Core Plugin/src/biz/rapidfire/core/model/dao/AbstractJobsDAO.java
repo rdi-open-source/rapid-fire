@@ -68,8 +68,8 @@ public abstract class AbstractJobsDAO {
                 }
             }
         } finally {
-            dao.destroy(preparedStatement);
-            dao.destroy(resultSet);
+            dao.closeStatement(preparedStatement);
+            dao.closeResultSet(resultSet);
         }
 
         return jobs;

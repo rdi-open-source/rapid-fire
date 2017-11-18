@@ -20,6 +20,7 @@ import biz.rapidfire.core.dialogs.MessageDialogAsync;
 import biz.rapidfire.core.model.IRapidFireJobResource;
 import biz.rapidfire.rse.Messages;
 import biz.rapidfire.rse.RapidFireRSEPlugin;
+import biz.rapidfire.rse.subsystem.actions.NewFileAction;
 import biz.rapidfire.rse.subsystem.resources.FilesNode;
 
 public class FilesNodeAdapter extends AbstractNodeAdapter {
@@ -40,8 +41,8 @@ public class FilesNodeAdapter extends AbstractNodeAdapter {
     }
 
     @Override
-    public void addActions(SystemMenuManager menuManager, IStructuredSelection selection, Shell shell, String paramString) {
-
+    public void addActions(SystemMenuManager menuManager, IStructuredSelection selection, Shell shell, String menuGroup) {
+        menuManager.add(null, new NewFileAction(shell));
     }
 
     @Override

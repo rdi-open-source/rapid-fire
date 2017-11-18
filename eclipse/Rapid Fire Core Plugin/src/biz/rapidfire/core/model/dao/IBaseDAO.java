@@ -24,27 +24,25 @@ public interface IBaseDAO {
 
     public AS400 getSystem();
 
-    public String getConnectionName();
-
-    public Connection getJdbcConnection() throws Exception;
-
     public String getLibraryName();
 
-    public String insertLibraryQualifier(String sqlStatement) throws Exception;
+    public String getConnectionName();
+
+    public Connection getJdbcConnection();
 
     public PreparedStatement prepareStatement(String sql) throws Exception;
 
     public CallableStatement prepareCall(String sql) throws Exception;
 
-    public void destroy(ResultSet resultSet) throws Exception;
+    public void closeResultSet(ResultSet resultSet);
 
-    public void destroy(PreparedStatement preparedStatement) throws Exception;
+    public void closeStatement(PreparedStatement preparedStatement);
 
-    public void rollback(Connection connection) throws Exception;
+    public void closeJdbcConnection();
 
-    public void commit(Connection connection) throws Exception;
+    public boolean checkRapidFireLibrary(Shell shell);
+
+    public String insertLibraryQualifier(String sqlStatement);
 
     public boolean convertYesNo(String yesNoValue);
-
-    public boolean checkRapidFireLibrary(Shell shell) throws Exception;
 }

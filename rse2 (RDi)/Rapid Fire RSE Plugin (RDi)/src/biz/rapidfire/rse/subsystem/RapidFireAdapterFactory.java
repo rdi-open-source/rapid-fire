@@ -13,13 +13,11 @@ import org.eclipse.rse.ui.view.AbstractSystemRemoteAdapterFactory;
 import org.eclipse.rse.ui.view.ISystemViewElementAdapter;
 import org.eclipse.ui.views.properties.IPropertySource;
 
-import biz.rapidfire.rse.subsystem.adapters.CreateJobNodeAdapter;
 import biz.rapidfire.rse.subsystem.adapters.FilesNodeAdapter;
 import biz.rapidfire.rse.subsystem.adapters.LibrariesNodeAdapter;
 import biz.rapidfire.rse.subsystem.adapters.RapidFireFileResourceAdapter;
 import biz.rapidfire.rse.subsystem.adapters.RapidFireJobResourceAdapter;
 import biz.rapidfire.rse.subsystem.adapters.RapidFireLibraryResourceAdapter;
-import biz.rapidfire.rse.subsystem.resources.CreateJobNode;
 import biz.rapidfire.rse.subsystem.resources.FilesNode;
 import biz.rapidfire.rse.subsystem.resources.LibrariesNode;
 import biz.rapidfire.rse.subsystem.resources.RapidFireFileResource;
@@ -34,7 +32,6 @@ public class RapidFireAdapterFactory extends AbstractSystemRemoteAdapterFactory 
 
     private FilesNodeAdapter filesNodeAdapter = new FilesNodeAdapter();
     private LibrariesNodeAdapter librariesNodeAdapter = new LibrariesNodeAdapter();
-    private CreateJobNodeAdapter createJobNodeAdapter = new CreateJobNodeAdapter();
 
     public RapidFireAdapterFactory() {
         super();
@@ -54,8 +51,6 @@ public class RapidFireAdapterFactory extends AbstractSystemRemoteAdapterFactory 
             adapter = filesNodeAdapter;
         } else if (adaptableObject instanceof LibrariesNode) {
             adapter = librariesNodeAdapter;
-        } else if (adaptableObject instanceof CreateJobNode) {
-            adapter = createJobNodeAdapter;
         }
 
         if ((adapter != null) && (adapterType == IPropertySource.class)) {

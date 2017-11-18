@@ -16,9 +16,9 @@ import biz.rapidfire.core.model.IRapidFireJobResource;
 import biz.rapidfire.core.model.maintenance.IMaintenance;
 import biz.rapidfire.core.model.maintenance.job.JobValues;
 
-public class CreateJobHandler extends AbstractJobMaintenanceHandler implements IHandler {
+public class NewJobHandler extends AbstractJobMaintenanceHandler implements IHandler {
 
-    public CreateJobHandler() {
+    public NewJobHandler() {
         super(IMaintenance.MODE_CREATE);
     }
 
