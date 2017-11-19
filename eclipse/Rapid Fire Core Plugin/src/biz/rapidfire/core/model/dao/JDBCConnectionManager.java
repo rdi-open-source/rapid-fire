@@ -48,14 +48,14 @@ public class JDBCConnectionManager extends AbstractDAOManager {
 
     private AS400JDBCDriver as400JDBCDriver;
 
-    private Map<String, IJDBCConnection> baseDAOs;
+    private Map<String, JDBCConnection> cachedJdbcConnections;
 
     /**
      * Private constructor to ensure the Singleton pattern.
      */
     private JDBCConnectionManager() {
 
-        this.baseDAOs = new HashMap<String, IJDBCConnection>();
+        this.cachedJdbcConnections = new HashMap<String, JDBCConnection>();
 
         try {
 
@@ -83,10 +83,10 @@ public class JDBCConnectionManager extends AbstractDAOManager {
 
         String key = createKey(connectionName, libraryName, isCommitControl);
 
-        IJDBCConnection baseDAO = baseDAOs.get(key);
+        JDBCConnection baseDAO = cachedJdbcConnections.get(key);
         if (baseDAO == null) {
-            baseDAO = produceBaseDAO(connectionName, libraryName, isCommitControl);
-            baseDAOs.put(key, baseDAO);
+            baseDAO = produceJdbcConnection(connectionName, libraryName, isCommitControl);
+            cachedJdbcConnections.put(key, baseDAO);
         }
 
         return baseDAO;
@@ -94,27 +94,36 @@ public class JDBCConnectionManager extends AbstractDAOManager {
 
     public boolean reconnect(IJDBCConnection jdbcConnection) throws Exception {
 
-        String key = createKey(jdbcConnection);
+        JDBCConnection jdbcConnectionImpl = (JDBCConnection)jdbcConnection;
 
         try {
-            if (!jdbcConnection.getJdbcConnection().isClosed()) {
-                jdbcConnection.getJdbcConnection().close();
+            if (!jdbcConnectionImpl.isClosed()) {
+                jdbcConnectionImpl.close();
             }
         } catch (SQLException e) {
             // ignore errors, because there is nothing we can do here.
         }
 
-        baseDAOs.remove(key);
+        String connectionName = jdbcConnection.getConnectionName();
+        AS400 system = getSystem(connectionName);
+        String libraryName = jdbcConnection.getLibraryName();
+        boolean isCommitControl = jdbcConnection.isCommitControl();
 
-        IJDBCConnection localJdbcConnection = produceBaseDAO(jdbcConnection.getConnectionName(), jdbcConnection.getLibraryName(),
-            jdbcConnection.isCommitControl());
-
-        ((JDBCConnection)jdbcConnection).setJdbcConnection(localJdbcConnection.getJdbcConnection());
+        jdbcConnectionImpl.setConnection(produceConnection(connectionName, system, libraryName, isCommitControl));
 
         return true;
     }
 
-    protected IJDBCConnection produceBaseDAO(String connectionName, String libraryName, boolean isCommitControl) throws Exception {
+    private JDBCConnection produceJdbcConnection(String connectionName, String libraryName, boolean isCommitControl) throws Exception {
+
+        AS400 system = getSystem(connectionName);
+
+        Connection connection = produceConnection(connectionName, system, libraryName, isCommitControl);
+
+        return new JDBCConnection(connectionName, system, connection, libraryName, isCommitControl);
+    }
+
+    private Connection produceConnection(String connectionName, AS400 system, String libraryName, boolean isCommitControl) throws SQLException {
 
         // Properties of ToolboxConnectorService
         Properties jdbcProperties = new Properties();
@@ -132,12 +141,11 @@ public class JDBCConnectionManager extends AbstractDAOManager {
             jdbcProperties.put(PROPERTY_TRANSACTION_ISOLATION, JDBC_TRANSACTION_ISOLATION_NONE);
         }
 
-        AS400 system = getSystem(connectionName);
-        Connection jdbcConnection = as400JDBCDriver.connect(system, jdbcProperties, libraryName, true);
+        Connection connection = as400JDBCDriver.connect(system, jdbcProperties, libraryName, true);
 
         CallableStatement statement = null;
         try {
-            statement = jdbcConnection.prepareCall("CALL QCMDEXC('CALL STRCNN')");
+            statement = connection.prepareCall("CALL QCMDEXC('CALL STRCNN')");
             statement.execute();
         } finally {
             if (statement != null) {
@@ -145,10 +153,10 @@ public class JDBCConnectionManager extends AbstractDAOManager {
             }
         }
 
-        return new JDBCConnection(connectionName, system, jdbcConnection, libraryName, isCommitControl);
+        return connection;
     }
 
-    private String createKey(IJDBCConnection jdbcConnection) {
+    private String createKey(JDBCConnection jdbcConnection) {
         return createKey(jdbcConnection.getConnectionName(), jdbcConnection.getLibraryName(), jdbcConnection.isCommitControl());
     }
 
@@ -159,10 +167,9 @@ public class JDBCConnectionManager extends AbstractDAOManager {
 
     private void closeAllConnection() {
 
-        Collection<IJDBCConnection> daos = baseDAOs.values();
-        for (IJDBCConnection dao : daos) {
+        Collection<JDBCConnection> jdbcConnections = cachedJdbcConnections.values();
+        for (JDBCConnection jdbcConnection : jdbcConnections) {
             try {
-                Connection jdbcConnection = dao.getJdbcConnection();
                 if (!jdbcConnection.isClosed()) {
 
                     CallableStatement statement = null;
@@ -178,7 +185,7 @@ public class JDBCConnectionManager extends AbstractDAOManager {
                     jdbcConnection.close();
                 }
             } catch (Exception e) {
-                RapidFireCorePlugin.logError("*** Could not close JDBC connection '" + dao.getConnectionName() + "' ***", e); //$NON-NLS-1$ //$NON-NLS-2$
+                RapidFireCorePlugin.logError("*** Could not close JDBC connection '" + jdbcConnection.getConnectionName() + "' ***", e); //$NON-NLS-1$ //$NON-NLS-2$
             }
         }
     }

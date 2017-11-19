@@ -9,7 +9,6 @@
 package biz.rapidfire.core.model.dao;
 
 import java.sql.CallableStatement;
-import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 
@@ -28,8 +27,6 @@ public interface IJDBCConnection {
 
     public String getConnectionName();
 
-    public Connection getJdbcConnection();
-
     public PreparedStatement prepareStatement(String sql) throws Exception;
 
     public CallableStatement prepareCall(String sql) throws Exception;
@@ -37,8 +34,6 @@ public interface IJDBCConnection {
     public void closeResultSet(ResultSet resultSet);
 
     public void closeStatement(PreparedStatement preparedStatement);
-
-    public void closeJdbcConnection();
 
     public boolean checkRapidFireLibrary(Shell shell);
 

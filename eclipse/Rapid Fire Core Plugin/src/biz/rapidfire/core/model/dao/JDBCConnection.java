@@ -32,18 +32,20 @@ class JDBCConnection implements IJDBCConnection {
 
     private String connectionName;
     private AS400 system;
-    private Connection jdbcConnection;
+    private Connection connection;
     private String libraryName;
     private boolean isCommitControl;
+    private String catalogSeparator;
 
     public JDBCConnection(String connectionName, AS400 system, Connection jdbcConnection, String libraryName, boolean isCommitControl)
         throws Exception {
 
         this.connectionName = connectionName;
         this.system = system;
-        this.jdbcConnection = jdbcConnection;
+        this.connection = jdbcConnection;
         this.libraryName = libraryName;
         this.isCommitControl = isCommitControl;
+        this.catalogSeparator = connection.getMetaData().getCatalogSeparator();
     }
 
     public AS400 getSystem() {
@@ -58,17 +60,22 @@ class JDBCConnection implements IJDBCConnection {
         return connectionName;
     }
 
-    public Connection getJdbcConnection() {
-        return jdbcConnection;
+    /**
+     * Used by the JDBCConnectionManager when reconnecting a connection.
+     * 
+     * @param connection - Java connection object
+     */
+    void setConnection(Connection connection) {
+        this.connection = connection;
     }
 
     /**
      * Used by the JDBCConnectionManager when reconnecting a connection.
      * 
-     * @param jdbcConnection
+     * @return Java connection object
      */
-    void setJdbcConnection(Connection jdbcConnection) {
-        this.jdbcConnection = jdbcConnection;
+    Connection getConnection() {
+        return connection;
     }
 
     public boolean checkRapidFireLibrary(Shell shell) {
@@ -77,10 +84,7 @@ class JDBCConnection implements IJDBCConnection {
 
     public PreparedStatement prepareStatement(String sqlStatement) throws Exception {
 
-        Connection jdbcConnection;
-
         sqlStatement = insertLibraryQualifier(sqlStatement);
-        jdbcConnection = getJdbcConnection();
 
         boolean isRetry = false;
 
@@ -88,7 +92,7 @@ class JDBCConnection implements IJDBCConnection {
 
             try {
 
-                return jdbcConnection.prepareStatement(sqlStatement);
+                return connection.prepareStatement(sqlStatement);
 
             } catch (SQLException e) {
                 if ("08003".equals(e.getSQLState())) {
@@ -124,7 +128,6 @@ class JDBCConnection implements IJDBCConnection {
     public CallableStatement prepareCall(String sqlStatement) throws Exception {
 
         sqlStatement = insertLibraryQualifier(sqlStatement);
-        Connection jdbcConnection = getJdbcConnection();
 
         boolean isRetry = false;
 
@@ -132,7 +135,7 @@ class JDBCConnection implements IJDBCConnection {
 
             try {
 
-                return jdbcConnection.prepareCall(sqlStatement);
+                return connection.prepareCall(sqlStatement);
 
             } catch (SQLException e) {
                 if ("08003".equals(e.getSQLState())) {
@@ -165,17 +168,29 @@ class JDBCConnection implements IJDBCConnection {
         }
     }
 
-    public void closeJdbcConnection() {
+    /**
+     * Used by the JDBCConnectionManager when closing a connection.
+     */
+    void close() {
 
         try {
-            jdbcConnection.close();
+            connection.close();
         } catch (SQLException e) {
             e.printStackTrace();
         }
     }
 
+    /**
+     * Used by the JDBCConnectionManager when querying the connection status.
+     * 
+     * @throws SQLException
+     */
+    boolean isClosed() throws SQLException {
+        return connection.isClosed();
+    }
+
     public String insertLibraryQualifier(String sqlStatement) {
-        return sqlStatement.replaceAll(IJDBCConnection.LIBRARY, libraryName + getSeparator(getJdbcConnection()));
+        return sqlStatement.replaceAll(IJDBCConnection.LIBRARY, libraryName + getSeparator());
     }
 
     public boolean convertYesNo(String yesNoValue) {
@@ -189,17 +204,8 @@ class JDBCConnection implements IJDBCConnection {
         throw new IllegalParameterException("yesNoValue", yesNoValue);
     }
 
-    private String getSeparator(Connection jdbcConnection) {
-
-        String separator;
-        try {
-            separator = jdbcConnection.getMetaData().getCatalogSeparator();
-        } catch (SQLException e) {
-            RapidFireCorePlugin.logError("*** Could not get the JDBC catalog separator ***", e); //$NON-NLS-1$
-            separator = "."; //$NON-NLS-1$
-        }
-
-        return separator;
+    private String getSeparator() {
+        return catalogSeparator;
     }
 
     public boolean isCommitControl() {
