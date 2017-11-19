@@ -36,7 +36,8 @@ class JDBCConnection implements IJDBCConnection {
     private String libraryName;
     private boolean isCommitControl;
 
-    public JDBCConnection(String connectionName, AS400 system, Connection jdbcConnection, String libraryName, boolean isCommitControl) throws Exception {
+    public JDBCConnection(String connectionName, AS400 system, Connection jdbcConnection, String libraryName, boolean isCommitControl)
+        throws Exception {
 
         this.connectionName = connectionName;
         this.system = system;
@@ -61,6 +62,15 @@ class JDBCConnection implements IJDBCConnection {
         return jdbcConnection;
     }
 
+    /**
+     * Used by the JDBCConnectionManager when reconnecting a connection.
+     * 
+     * @param jdbcConnection
+     */
+    void setJdbcConnection(Connection jdbcConnection) {
+        this.jdbcConnection = jdbcConnection;
+    }
+
     public boolean checkRapidFireLibrary(Shell shell) {
         return RapidFireHelper.checkRapidFireLibrary(shell, getSystem(), libraryName);
     }
@@ -72,16 +82,30 @@ class JDBCConnection implements IJDBCConnection {
         sqlStatement = insertLibraryQualifier(sqlStatement);
         jdbcConnection = getJdbcConnection();
 
-        try {
-            return jdbcConnection.prepareStatement(sqlStatement);
-        } catch (SQLException e) {
-            if ("08003".equals(e.getSQLState())) {
-                // TODO: ask user for reconnection.
-                throw e;
-            } else {
-                throw e;
+        boolean isRetry = false;
+
+        do {
+
+            try {
+
+                return jdbcConnection.prepareStatement(sqlStatement);
+
+            } catch (SQLException e) {
+                if ("08003".equals(e.getSQLState())) {
+                    // TODO: ask user for reconnection.
+                    if (!JDBCConnectionManager.getInstance().reconnect(this)) {
+                        throw e;
+                    } else {
+                        isRetry = true;
+                    }
+                } else {
+                    throw e;
+                }
             }
-        }
+
+        } while (isRetry);
+
+        return null;
     }
 
     public void closeResultSet(ResultSet resultSet) {
@@ -95,6 +119,37 @@ class JDBCConnection implements IJDBCConnection {
                 MessageDialogAsync.displayError(message);
             }
         }
+    }
+
+    public CallableStatement prepareCall(String sqlStatement) throws Exception {
+
+        sqlStatement = insertLibraryQualifier(sqlStatement);
+        Connection jdbcConnection = getJdbcConnection();
+
+        boolean isRetry = false;
+
+        do {
+
+            try {
+
+                return jdbcConnection.prepareCall(sqlStatement);
+
+            } catch (SQLException e) {
+                if ("08003".equals(e.getSQLState())) {
+                    // TODO: ask user for reconnection.
+                    if (!JDBCConnectionManager.getInstance().reconnect(this)) {
+                        throw e;
+                    } else {
+                        isRetry = true;
+                    }
+                } else {
+                    throw e;
+                }
+            }
+
+        } while (isRetry);
+
+        return null;
     }
 
     public void closeStatement(PreparedStatement preparedStatement) {
@@ -116,23 +171,6 @@ class JDBCConnection implements IJDBCConnection {
             jdbcConnection.close();
         } catch (SQLException e) {
             e.printStackTrace();
-        }
-    }
-
-    public CallableStatement prepareCall(String sqlStatement) throws Exception {
-
-        sqlStatement = insertLibraryQualifier(sqlStatement);
-        Connection jdbcConnection = getJdbcConnection();
-
-        try {
-            return jdbcConnection.prepareCall(sqlStatement);
-        } catch (SQLException e) {
-            if ("08003".equals(e.getSQLState())) {
-                // TODO: ask user for reconnection.
-                throw e;
-            } else {
-                throw e;
-            }
         }
     }
 
@@ -164,7 +202,7 @@ class JDBCConnection implements IJDBCConnection {
         return separator;
     }
 
-    private boolean isCommitControl() {
+    public boolean isCommitControl() {
         return isCommitControl;
     }
 

@@ -81,7 +81,7 @@ public class JDBCConnectionManager extends AbstractDAOManager {
 
     public IJDBCConnection getBaseDAO(String connectionName, String libraryName, boolean isCommitControl) throws Exception {
 
-        String key = connectionName + ":" + libraryName + ":commit=" + isCommitControl;
+        String key = createKey(connectionName, libraryName, isCommitControl);
 
         IJDBCConnection baseDAO = baseDAOs.get(key);
         if (baseDAO == null) {
@@ -90,6 +90,28 @@ public class JDBCConnectionManager extends AbstractDAOManager {
         }
 
         return baseDAO;
+    }
+
+    public boolean reconnect(IJDBCConnection jdbcConnection) throws Exception {
+
+        String key = createKey(jdbcConnection);
+
+        try {
+            if (!jdbcConnection.getJdbcConnection().isClosed()) {
+                jdbcConnection.getJdbcConnection().close();
+            }
+        } catch (SQLException e) {
+            // ignore errors, because there is nothing we can do here.
+        }
+
+        baseDAOs.remove(key);
+
+        IJDBCConnection localJdbcConnection = produceBaseDAO(jdbcConnection.getConnectionName(), jdbcConnection.getLibraryName(),
+            jdbcConnection.isCommitControl());
+
+        ((JDBCConnection)jdbcConnection).setJdbcConnection(localJdbcConnection.getJdbcConnection());
+
+        return true;
     }
 
     protected IJDBCConnection produceBaseDAO(String connectionName, String libraryName, boolean isCommitControl) throws Exception {
@@ -124,6 +146,15 @@ public class JDBCConnectionManager extends AbstractDAOManager {
         }
 
         return new JDBCConnection(connectionName, system, jdbcConnection, libraryName, isCommitControl);
+    }
+
+    private String createKey(IJDBCConnection jdbcConnection) {
+        return createKey(jdbcConnection.getConnectionName(), jdbcConnection.getLibraryName(), jdbcConnection.isCommitControl());
+    }
+
+    private String createKey(String connectionName, String libraryName, boolean isCommitControl) {
+        String key = connectionName + ":" + libraryName + ":commit=" + isCommitControl;
+        return key;
     }
 
     private void closeAllConnection() {

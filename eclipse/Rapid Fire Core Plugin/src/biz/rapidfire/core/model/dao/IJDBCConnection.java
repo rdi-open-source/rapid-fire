@@ -45,4 +45,6 @@ public interface IJDBCConnection {
     public String insertLibraryQualifier(String sqlStatement);
 
     public boolean convertYesNo(String yesNoValue);
+
+    public boolean isCommitControl();
 }
