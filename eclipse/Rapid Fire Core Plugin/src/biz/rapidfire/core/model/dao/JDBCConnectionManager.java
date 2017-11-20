@@ -110,7 +110,7 @@ public class JDBCConnectionManager extends AbstractDAOManager {
         String libraryName = jdbcConnection.getLibraryName();
         boolean isCommitControl = jdbcConnection.isCommitControl();
 
-        jdbcConnectionImpl.setConnection(produceConnection(connectionName, system, libraryName, isCommitControl));
+        jdbcConnectionImpl.setConnection(produceConnection(system, libraryName, isCommitControl));
 
         return true;
     }
@@ -160,12 +160,12 @@ public class JDBCConnectionManager extends AbstractDAOManager {
 
         AS400 system = getSystem(connectionName);
 
-        Connection connection = produceConnection(connectionName, system, libraryName, isCommitControl);
+        Connection connection = produceConnection(system, libraryName, isCommitControl);
 
         return new JDBCConnection(connectionName, system, connection, libraryName, isCommitControl);
     }
 
-    private Connection produceConnection(String connectionName, AS400 system, String libraryName, boolean isCommitControl) throws SQLException {
+    private Connection produceConnection(AS400 system, String libraryName, boolean isCommitControl) throws SQLException {
 
         // Properties of ToolboxConnectorService
         Properties jdbcProperties = new Properties();
