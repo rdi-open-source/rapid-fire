@@ -69,7 +69,7 @@ public abstract class AbstractJobMaintenanceHandler extends AbstractResourceHand
 
         String connectionName = job.getParentSubSystem().getConnectionName();
 
-        manager = new JobManager(JDBCConnectionManager.getInstance().getBaseDAO(connectionName, job.getDataLibrary(), isCommitControl()));
+        manager = new JobManager(JDBCConnectionManager.getInstance().getConnection(connectionName, job.getDataLibrary(), isCommitControl()));
         manager.openFiles();
 
         Result status = manager.initialize(getMode(), new JobKey(job.getName()));

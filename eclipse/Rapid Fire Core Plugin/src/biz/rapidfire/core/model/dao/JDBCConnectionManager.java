@@ -12,10 +12,13 @@ import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
-import java.util.Collection;
 import java.util.HashMap;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Map;
+import java.util.Map.Entry;
 import java.util.Properties;
+import java.util.Set;
 
 import biz.rapidfire.core.RapidFireCorePlugin;
 import biz.rapidfire.core.dialogs.MessageDialogAsync;
@@ -48,14 +51,14 @@ public class JDBCConnectionManager extends AbstractDAOManager {
 
     private AS400JDBCDriver as400JDBCDriver;
 
-    private Map<String, JDBCConnection> cachedJdbcConnections;
+    private Map<String, Map<String, JDBCConnection>> cachedHosts;
 
     /**
      * Private constructor to ensure the Singleton pattern.
      */
     private JDBCConnectionManager() {
 
-        this.cachedJdbcConnections = new HashMap<String, JDBCConnection>();
+        this.cachedHosts = new HashMap<String, Map<String, JDBCConnection>>();
 
         try {
 
@@ -79,17 +82,15 @@ public class JDBCConnectionManager extends AbstractDAOManager {
         return instance;
     }
 
-    public IJDBCConnection getBaseDAO(String connectionName, String libraryName, boolean isCommitControl) throws Exception {
+    public IJDBCConnection getConnection(String connectionName, String libraryName, boolean isCommitControl) throws Exception {
 
-        String key = createKey(connectionName, libraryName, isCommitControl);
-
-        JDBCConnection baseDAO = cachedJdbcConnections.get(key);
-        if (baseDAO == null) {
-            baseDAO = produceJdbcConnection(connectionName, libraryName, isCommitControl);
-            cachedJdbcConnections.put(key, baseDAO);
+        JDBCConnection jdbcConnection = findJdbcConnection(connectionName, libraryName, isCommitControl);
+        if (jdbcConnection == null) {
+            jdbcConnection = produceJdbcConnection(connectionName, libraryName, isCommitControl);
+            storeJdbcConnection(connectionName, libraryName, isCommitControl, jdbcConnection);
         }
 
-        return baseDAO;
+        return jdbcConnection;
     }
 
     public boolean reconnect(IJDBCConnection jdbcConnection) throws Exception {
@@ -112,6 +113,47 @@ public class JDBCConnectionManager extends AbstractDAOManager {
         jdbcConnectionImpl.setConnection(produceConnection(connectionName, system, libraryName, isCommitControl));
 
         return true;
+    }
+
+    public void connected(String connectionName) {
+        // There is nothing to do here. Connections are created on request.
+    }
+
+    public void disconnected(String connectionName) {
+
+        Map<String, JDBCConnection> cachedHostConnections = cachedHosts.get(connectionName);
+        if (cachedHostConnections != null) {
+            closeHostConnections(cachedHostConnections);
+        }
+    }
+
+    private JDBCConnection findJdbcConnection(String connectionName, String libraryName, boolean isCommitControl) {
+
+        Map<String, JDBCConnection> cachedHostConnections = findHostConnections(connectionName);
+
+        String key = createKey(connectionName, libraryName, isCommitControl);
+        JDBCConnection jdbcConnection = cachedHostConnections.get(key);
+
+        return jdbcConnection;
+    }
+
+    private Map<String, JDBCConnection> findHostConnections(String connectionName) {
+
+        Map<String, JDBCConnection> cachedHostConnections = cachedHosts.get(connectionName);
+        if (cachedHostConnections == null) {
+            cachedHostConnections = new HashMap<String, JDBCConnection>();
+            cachedHosts.put(connectionName, cachedHostConnections);
+        }
+
+        return cachedHostConnections;
+    }
+
+    private void storeJdbcConnection(String connectionName, String libraryName, boolean isCommitControl, JDBCConnection jdbcConnection) {
+
+        Map<String, JDBCConnection> cachedHostConnections = findHostConnections(connectionName);
+
+        String key = createKey(connectionName, libraryName, isCommitControl);
+        cachedHostConnections.put(key, jdbcConnection);
     }
 
     private JDBCConnection produceJdbcConnection(String connectionName, String libraryName, boolean isCommitControl) throws Exception {
@@ -145,7 +187,7 @@ public class JDBCConnectionManager extends AbstractDAOManager {
 
         CallableStatement statement = null;
         try {
-            statement = connection.prepareCall("CALL QCMDEXC('CALL STRCNN')");
+            statement = connection.prepareCall("CALL QCMDEXC('CALL STRCNN')"); //$NON-NLS-1$
             statement.execute();
         } finally {
             if (statement != null) {
@@ -156,37 +198,64 @@ public class JDBCConnectionManager extends AbstractDAOManager {
         return connection;
     }
 
-    private String createKey(JDBCConnection jdbcConnection) {
-        return createKey(jdbcConnection.getConnectionName(), jdbcConnection.getLibraryName(), jdbcConnection.isCommitControl());
-    }
-
     private String createKey(String connectionName, String libraryName, boolean isCommitControl) {
-        String key = connectionName + ":" + libraryName + ":commit=" + isCommitControl;
+
+        String key = connectionName + ":" + libraryName + ":commit=" + isCommitControl; //$NON-NLS-1$ //$NON-NLS-2$
+
         return key;
     }
 
     private void closeAllConnection() {
 
-        Collection<JDBCConnection> jdbcConnections = cachedJdbcConnections.values();
-        for (JDBCConnection jdbcConnection : jdbcConnections) {
-            try {
-                if (!jdbcConnection.isClosed()) {
+        List<String> closedHostKeys = new LinkedList<String>();
 
-                    CallableStatement statement = null;
-                    try {
-                        statement = jdbcConnection.prepareCall("CALL QCMDEXC('CALL ENDCNN')");
-                        statement.execute();
-                    } finally {
-                        if (statement != null) {
-                            statement.close();
-                        }
+        Set<Entry<String, Map<String, JDBCConnection>>> cachedHostEntries = cachedHosts.entrySet();
+        for (Entry<String, Map<String, JDBCConnection>> cachedHost : cachedHostEntries) {
+            closeHostConnections(cachedHost.getValue());
+            closedHostKeys.add(cachedHost.getKey());
+        }
+
+        for (String closedHost : closedHostKeys) {
+            cachedHosts.remove(closedHost);
+        }
+    }
+
+    private void closeHostConnections(Map<String, JDBCConnection> cachedConnections) {
+
+        List<String> closedConnectionKeys = new LinkedList<String>();
+
+        Set<Entry<String, JDBCConnection>> cachedJdbcConnectionEntries = cachedConnections.entrySet();
+        for (Entry<String, JDBCConnection> jdbcConnection : cachedJdbcConnectionEntries) {
+            closeConnection(jdbcConnection.getValue());
+            closedConnectionKeys.add(jdbcConnection.getKey());
+        }
+
+        for (String closedConnection : closedConnectionKeys) {
+            cachedConnections.remove(closedConnection);
+        }
+    }
+
+    private void closeConnection(JDBCConnection jdbcConnection) {
+
+        try {
+
+            if (!jdbcConnection.isClosed()) {
+
+                CallableStatement statement = null;
+                try {
+                    statement = jdbcConnection.prepareCall("CALL QCMDEXC('CALL ENDCNN')"); //$NON-NLS-1$
+                    statement.execute();
+                } finally {
+                    if (statement != null) {
+                        statement.close();
                     }
-
-                    jdbcConnection.close();
                 }
-            } catch (Exception e) {
-                RapidFireCorePlugin.logError("*** Could not close JDBC connection '" + jdbcConnection.getConnectionName() + "' ***", e); //$NON-NLS-1$ //$NON-NLS-2$
+
+                jdbcConnection.close();
             }
+
+        } catch (Exception e) {
+            RapidFireCorePlugin.logError("*** Could not close JDBC connection '" + jdbcConnection.getConnectionName() + "' ***", e); //$NON-NLS-1$ //$NON-NLS-2$
         }
     }
 
