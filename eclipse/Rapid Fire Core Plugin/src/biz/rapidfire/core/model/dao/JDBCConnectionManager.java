@@ -112,6 +112,8 @@ public class JDBCConnectionManager extends AbstractDAOManager {
 
         jdbcConnectionImpl.setConnection(produceConnection(system, libraryName, isCommitControl));
 
+        startConnection(jdbcConnectionImpl);
+
         return true;
     }
 
@@ -162,7 +164,11 @@ public class JDBCConnectionManager extends AbstractDAOManager {
 
         Connection connection = produceConnection(system, libraryName, isCommitControl);
 
-        return new JDBCConnection(connectionName, system, connection, libraryName, isCommitControl);
+        JDBCConnection jdbcConnection = new JDBCConnection(connectionName, system, connection, libraryName, isCommitControl);
+
+        startConnection(jdbcConnection);
+
+        return jdbcConnection;
     }
 
     private Connection produceConnection(AS400 system, String libraryName, boolean isCommitControl) throws SQLException {
@@ -184,16 +190,6 @@ public class JDBCConnectionManager extends AbstractDAOManager {
         }
 
         Connection connection = as400JDBCDriver.connect(system, jdbcProperties, libraryName, true);
-
-        CallableStatement statement = null;
-        try {
-            statement = connection.prepareCall("CALL QCMDEXC('CALL STRCNN')"); //$NON-NLS-1$
-            statement.execute();
-        } finally {
-            if (statement != null) {
-                statement.close();
-            }
-        }
 
         return connection;
     }
@@ -241,21 +237,41 @@ public class JDBCConnectionManager extends AbstractDAOManager {
 
             if (!jdbcConnection.isClosed()) {
 
-                CallableStatement statement = null;
-                try {
-                    statement = jdbcConnection.prepareCall("CALL QCMDEXC('CALL ENDCNN')"); //$NON-NLS-1$
-                    statement.execute();
-                } finally {
-                    if (statement != null) {
-                        statement.close();
-                    }
-                }
+                stopConnection(jdbcConnection);
 
                 jdbcConnection.close();
             }
 
         } catch (Exception e) {
             RapidFireCorePlugin.logError("*** Could not close JDBC connection '" + jdbcConnection.getConnectionName() + "' ***", e); //$NON-NLS-1$ //$NON-NLS-2$
+        }
+    }
+
+    private void startConnection(JDBCConnection jdbcConnection) throws Exception, SQLException {
+
+        CallableStatement statement = null;
+        try {
+            statement = jdbcConnection.prepareCall(jdbcConnection
+                .insertLibraryQualifier("{CALL " + IJDBCConnection.LIBRARY + "\"RAPIDFIRE_start\"()}")); //$NON-NLS-1$
+            statement.execute();
+        } finally {
+            if (statement != null) {
+                statement.close();
+            }
+        }
+    }
+
+    private void stopConnection(JDBCConnection jdbcConnection) throws Exception, SQLException {
+
+        CallableStatement statement = null;
+        try {
+            statement = jdbcConnection.prepareCall(jdbcConnection
+                .insertLibraryQualifier("{CALL " + IJDBCConnection.LIBRARY + "\"RAPIDFIRE_stop\"()}")); //$NON-NLS-1$
+            statement.execute();
+        } finally {
+            if (statement != null) {
+                statement.close();
+            }
         }
     }
 
