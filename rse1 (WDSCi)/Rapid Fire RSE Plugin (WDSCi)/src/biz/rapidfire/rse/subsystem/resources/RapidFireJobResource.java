@@ -20,7 +20,7 @@ import biz.rapidfire.core.subsystem.resources.RapidFireJobResourceDelegate;
 import com.ibm.etools.systems.subsystems.SubSystem;
 import com.ibm.etools.systems.subsystems.impl.AbstractResource;
 
-public class RapidFireJobResource extends AbstractResource implements IRapidFireJobResource, Comparable<Object> {
+public class RapidFireJobResource extends AbstractResource implements IRapidFireJobResource, Comparable<IRapidFireJobResource> {
 
     private RapidFireJobResourceDelegate delegate;
 
@@ -153,8 +153,8 @@ public class RapidFireJobResource extends AbstractResource implements IRapidFire
         delegate.setBatchJob(job);
     }
 
-    public int compareTo(Object object) {
-        return delegate.compareTo(object);
+    public int compareTo(IRapidFireJobResource resource) {
+        return delegate.compareTo(resource);
     }
 
     @Override
