@@ -65,11 +65,13 @@ public abstract class AbstractJobMaintenanceHandler extends AbstractResourceHand
         return null;
     }
 
-    protected String initialize(IRapidFireJobResource job) throws Exception {
+    private String initialize(IRapidFireJobResource job) throws Exception {
 
         String connectionName = job.getParentSubSystem().getConnectionName();
+        String dataLibrary = job.getDataLibrary();
+        boolean commitControl = isCommitControl();
 
-        manager = new JobManager(JDBCConnectionManager.getInstance().getConnection(connectionName, job.getDataLibrary(), isCommitControl()));
+        manager = new JobManager(JDBCConnectionManager.getInstance().getConnection(connectionName, dataLibrary, commitControl));
         manager.openFiles();
 
         Result status = manager.initialize(getMode(), new JobKey(job.getName()));
@@ -82,7 +84,7 @@ public abstract class AbstractJobMaintenanceHandler extends AbstractResourceHand
 
     protected abstract void performAction(IRapidFireJobResource job) throws Exception;
 
-    protected void terminate() throws Exception {
+    private void terminate() throws Exception {
 
         if (manager != null) {
             manager.closeFiles();
