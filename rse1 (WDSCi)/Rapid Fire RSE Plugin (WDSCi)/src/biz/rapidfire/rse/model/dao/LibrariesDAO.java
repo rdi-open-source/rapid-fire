@@ -17,7 +17,7 @@ import biz.rapidfire.rse.subsystem.resources.RapidFireLibraryResource;
 public class LibrariesDAO extends AbstractLibrariesDAO implements ILibrariesDAO {
 
     public LibrariesDAO(String connectionName, String libraryName) throws Exception {
-        super(JDBCConnectionManager.getInstance().getBaseDAO(connectionName, libraryName, false));
+        super(JDBCConnectionManager.getInstance().getConnection(connectionName, libraryName, false));
     }
 
     @Override
