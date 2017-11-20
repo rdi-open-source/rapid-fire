@@ -133,7 +133,7 @@ public class RapidFireSubSystem extends SubSystem implements IISeriesSubSystem, 
             return new IRapidFireJobResource[0];
         }
 
-        IJobsDAO dao = new JobsDAO(getHostAliasName(), libraryName);
+        IJobsDAO dao = new JobsDAO(getConnectionName(), libraryName);
         List<IRapidFireJobResource> jobs = dao.load(shell);
         if (jobs == null) {
             return null;
@@ -148,7 +148,7 @@ public class RapidFireSubSystem extends SubSystem implements IISeriesSubSystem, 
             return new IRapidFireFileResource[0];
         }
 
-        IFilesDAO dao = new FilesDAO(getHostAliasName(), libraryName);
+        IFilesDAO dao = new FilesDAO(getConnectionName(), libraryName);
         List<IRapidFireFileResource> files = dao.load(jobName, shell);
 
         return files.toArray(new IRapidFireFileResource[files.size()]);
@@ -160,7 +160,7 @@ public class RapidFireSubSystem extends SubSystem implements IISeriesSubSystem, 
             return new IRapidFireLibraryResource[0];
         }
 
-        ILibrariesDAO dao = new LibrariesDAO(getHostAliasName(), libraryName);
+        ILibrariesDAO dao = new LibrariesDAO(getConnectionName(), libraryName);
         List<IRapidFireLibraryResource> libraries = dao.load(jobName, shell);
 
         return libraries.toArray(new IRapidFireLibraryResource[libraries.size()]);
@@ -172,7 +172,7 @@ public class RapidFireSubSystem extends SubSystem implements IISeriesSubSystem, 
             return new IFileCopyStatus[0];
         }
 
-        IFileCopyStatusDAO dao = new FileCopyStatusDAO(getHostAliasName(), libraryName);
+        IFileCopyStatusDAO dao = new FileCopyStatusDAO(getConnectionName(), libraryName);
         List<IFileCopyStatus> fileCopyStatuses = dao.load(jobName, shell);
 
         return fileCopyStatuses.toArray(new FileCopyStatus[fileCopyStatuses.size()]);
