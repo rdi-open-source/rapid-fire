@@ -16,8 +16,8 @@ import java.util.Vector;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.ui.IWorkbenchWindow;
 import org.eclipse.ui.progress.WorkbenchJob;
 
 import biz.rapidfire.core.RapidFireCorePlugin;
@@ -28,9 +28,7 @@ import biz.rapidfire.core.model.IRapidFireFileResource;
 import biz.rapidfire.core.model.IRapidFireJobResource;
 import biz.rapidfire.core.model.IRapidFireLibraryResource;
 import biz.rapidfire.core.model.IRapidFireResource;
-import biz.rapidfire.core.model.dao.JDBCConnectionManager;
 import biz.rapidfire.core.model.list.FileCopyStatus;
-import biz.rapidfire.core.model.maintenance.job.JobManager;
 import biz.rapidfire.core.subsystem.IRapidFireSubSystem;
 import biz.rapidfire.core.subsystem.RapidFireFilter;
 import biz.rapidfire.rse.model.dao.FileCopyStatusDAO;
@@ -48,6 +46,7 @@ import com.ibm.etools.iseries.core.api.ISeriesConnection;
 import com.ibm.etools.systems.as400cmdsubsys.CmdSubSystem;
 import com.ibm.etools.systems.as400cmdsubsys.impl.CmdSubSystemImpl;
 import com.ibm.etools.systems.as400filesubsys.FileSubSystem;
+import com.ibm.etools.systems.core.SystemBasePlugin;
 import com.ibm.etools.systems.core.SystemPlugin;
 import com.ibm.etools.systems.core.messages.SystemMessage;
 import com.ibm.etools.systems.dftsubsystem.impl.DefaultSubSystemImpl;
@@ -73,12 +72,9 @@ public class RapidFireSubSystem extends DefaultSubSystemImpl implements IISeries
             @Override
             public IStatus runInUIThread(IProgressMonitor arg0) {
 
-                Shell[] shells = Display.getCurrent().getShells();
-                for (int i = 0; (i < shells.length) && (shell == null); i++) {
-                    if ((!shells[i].isDisposed()) && (shells[i].isVisible()) && (shells[i].isEnabled())) {
-                        setShell(shells[i]);
-                        break;
-                    }
+                IWorkbenchWindow win = SystemBasePlugin.getActiveWorkbenchWindow();
+                if (win != null) {
+                    setShell(SystemBasePlugin.getActiveWorkbenchShell());
                 }
 
                 isLoading = false;
@@ -94,7 +90,7 @@ public class RapidFireSubSystem extends DefaultSubSystemImpl implements IISeries
     }
 
     public String getConnectionName() {
-        return getHostName();
+        return getSystemConnectionName();
     }
 
     @Override
@@ -134,7 +130,7 @@ public class RapidFireSubSystem extends DefaultSubSystemImpl implements IISeries
             return new IRapidFireJobResource[0];
         }
 
-        JobsDAO dao = new JobsDAO(getSystemConnectionName(), libraryName);
+        JobsDAO dao = new JobsDAO(getConnectionName(), libraryName);
         List<IRapidFireJobResource> jobs = dao.load(shell);
 
         return jobs.toArray(new IRapidFireJobResource[jobs.size()]);
@@ -146,7 +142,7 @@ public class RapidFireSubSystem extends DefaultSubSystemImpl implements IISeries
             return new IRapidFireFileResource[0];
         }
 
-        FilesDAO dao = new FilesDAO(getSystemConnectionName(), libraryName);
+        FilesDAO dao = new FilesDAO(getConnectionName(), libraryName);
         List<IRapidFireFileResource> files = dao.load(jobName, shell);
 
         return files.toArray(new IRapidFireFileResource[files.size()]);
@@ -158,7 +154,7 @@ public class RapidFireSubSystem extends DefaultSubSystemImpl implements IISeries
             return new IRapidFireLibraryResource[0];
         }
 
-        LibrariesDAO dao = new LibrariesDAO(getSystemConnectionName(), libraryName);
+        LibrariesDAO dao = new LibrariesDAO(getConnectionName(), libraryName);
         List<IRapidFireLibraryResource> libraries = dao.load(jobName, shell);
 
         return libraries.toArray(new IRapidFireLibraryResource[libraries.size()]);
@@ -221,10 +217,6 @@ public class RapidFireSubSystem extends DefaultSubSystemImpl implements IISeries
         }
     }
 
-    private void debugPrint(String message) {
-        // System.out.println(message);
-    }
-
     /*
      * Start of RDi/WDSCi specific methods.
      */
@@ -259,15 +251,6 @@ public class RapidFireSubSystem extends DefaultSubSystemImpl implements IISeries
 
     public FileSubSystem getObjectSubSystem() {
         return ISeriesConnection.getConnection(getSystemConnection()).getISeriesFileSubSystem();
-    }
-
-    private SystemMessageObject createErrorMessage(Throwable e) {
-
-        SystemMessage msg = SystemPlugin.getPluginMessage("RSEO1012"); //$NON-NLS-1$
-        msg.makeSubstitution(e.getMessage());
-        SystemMessageObject msgObj = new SystemMessageObject(msg, 0, null);
-
-        return msgObj;
     }
 
     public AS400 getToolboxAS400Object() {
