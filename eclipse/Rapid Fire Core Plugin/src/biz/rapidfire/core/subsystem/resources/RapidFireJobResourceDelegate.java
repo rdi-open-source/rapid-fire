@@ -13,7 +13,7 @@ import biz.rapidfire.core.model.JobName;
 import biz.rapidfire.core.model.Phase;
 import biz.rapidfire.core.model.Status;
 
-public class RapidFireJobResourceDelegate implements Comparable<Object> {
+public class RapidFireJobResourceDelegate implements Comparable<IRapidFireJobResource> {
 
     private String dataLibrary;
     private String job;
@@ -139,20 +139,7 @@ public class RapidFireJobResourceDelegate implements Comparable<Object> {
         return batchJob;
     }
 
-    public int compareTo(Object object) {
-
-        if (object instanceof IRapidFireJobResource) {
-            return compareTo((IRapidFireJobResource)object);
-        }
-
-        return 1;
-    }
-
-    private int compareTo(IRapidFireJobResource resource) {
-
-        if (resource == null) {
-            return 1;
-        }
+    public int compareTo(IRapidFireJobResource resource) {
 
         int result = resource.getDataLibrary().compareTo(getDataLibrary());
         if (result != 0) {
