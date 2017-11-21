@@ -17,7 +17,7 @@ import biz.rapidfire.core.dialogs.MessageDialogAsync;
 import biz.rapidfire.core.model.IRapidFireJobResource;
 import biz.rapidfire.rse.Messages;
 import biz.rapidfire.rse.RapidFireRSEPlugin;
-import biz.rapidfire.rse.subsystem.actions.library.NewLibraryAction;
+import biz.rapidfire.rse.subsystem.actions.library.NewLibrariesNodePopupMenuAction;
 import biz.rapidfire.rse.subsystem.resources.LibrariesNode;
 
 import com.ibm.etools.systems.core.ui.SystemMenuManager;
@@ -41,7 +41,7 @@ public class LibrariesNodeAdapter extends AbstractNodeAdapter {
 
     @Override
     public void addActions(SystemMenuManager menuManager, IStructuredSelection selection, Shell shell, String paramString) {
-        menuManager.add(null, new NewLibraryAction(shell));
+        menuManager.add(null, new NewLibrariesNodePopupMenuAction(shell));
     }
 
     @Override
