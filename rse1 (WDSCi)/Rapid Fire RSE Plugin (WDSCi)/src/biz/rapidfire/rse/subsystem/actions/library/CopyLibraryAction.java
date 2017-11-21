@@ -11,12 +11,12 @@ package biz.rapidfire.rse.subsystem.actions.library;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 
-import biz.rapidfire.core.handlers.library.NewLibraryHandler;
+import biz.rapidfire.core.handlers.library.CopyLibraryHandler;
 import biz.rapidfire.rse.subsystem.actions.AbstractResourceAction;
 
-public class NewLibraryAction extends AbstractResourceAction {
+public class CopyLibraryAction extends AbstractResourceAction {
 
-    private NewLibraryHandler handler = new NewLibraryHandler();
+    private CopyLibraryHandler handler = new CopyLibraryHandler();
 
     @Override
     public void execute(ExecutionEvent event) throws ExecutionException {

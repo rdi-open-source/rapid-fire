@@ -221,5 +221,70 @@
       </objectContribution>
       
    </extension>
+   
+      	<!--
+      	  ==========================================
+      	    Rapid Fire 'Library' Object Contributions
+      	  ==========================================
+      	-->
+
+   <extension
+         point="com.ibm.etools.systems.core.popupMenus">
+      <objectContribution
+            subsystemfactoryid="biz.rapidfire.rse.subsystem.RapidFireSubSystemFactory"
+            typecategoryfilter="rapid fire"
+            typefilter="library"
+            subtypefilter="*"
+            namefilter="*"
+            id="biz.rapidfire.rse.job.actions">
+            
+         <action
+               label="%command_Display_Library"
+               tooltip="%command_Display_Library_Description"
+               icon="icons/display.gif"
+               class="biz.rapidfire.rse.subsystem.actions.library.DisplayLibraryAction"
+               enablesFor="1"
+               id="biz.rapidfire.rse.subsystem.actions.library.DisplayLibraryAction">
+         </action>
+            
+         <action
+               label="%command_Delete_Library"
+               tooltip="%command_Delete_Library_Description"
+               icon="icons/delete.gif"
+               class="biz.rapidfire.rse.subsystem.actions.library.DeleteLibraryAction"
+               enablesFor="+"
+               id="biz.rapidfire.rse.subsystem.actions.library.DeleteLibraryAction">
+         </action>
+            
+         <action
+               label="%command_Copy_Library"
+               tooltip="%command_Copy_Library_Description"
+               icon="icons/copy.gif"
+               class="biz.rapidfire.rse.subsystem.actions.library.CopyLibraryAction"
+               enablesFor="1"
+               id="biz.rapidfire.rse.subsystem.actions.library.CopyLibraryAction">
+         </action>
+            
+         <action
+               label="%command_Change_Library"
+               tooltip="%command_Change_Library_Description"
+               icon="icons/change.gif"
+               class="biz.rapidfire.rse.subsystem.actions.library.ChangeLibraryAction"
+               enablesFor="+"
+               id="biz.rapidfire.rse.subsystem.actions.library.ChangeLibraryAction">
+         </action>
+            
+         <action
+               label="%command_New_Library"
+               tooltip="%command_New_Library_Description"
+               icon="icons/new_file.gif"
+               class="biz.rapidfire.rse.subsystem.actions.library.NewLibraryAction"
+               enablesFor="+"
+               id="biz.rapidfire.rse.subsystem.actions.library.NewLibraryAction">
+         </action>
+         
+      </objectContribution>
+      
+   </extension>
 
 </plugin>

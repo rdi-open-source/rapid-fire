@@ -21,6 +21,10 @@ public class RapidFireLibraryResource extends AbstractResource implements IRapid
 
     private RapidFireLibraryResourceDelegate delegate;
 
+    public static RapidFireLibraryResource createEmptyInstance(String dataLibrary, String job) {
+        return new RapidFireLibraryResource(dataLibrary, job, ""); //$NON-NLS-1$
+    }
+
     public RapidFireLibraryResource(String dataLibrary, String job, String library) {
 
         if (StringHelper.isNullOrEmpty(dataLibrary)) {
@@ -31,7 +35,7 @@ public class RapidFireLibraryResource extends AbstractResource implements IRapid
             throw new IllegalParameterException("job", job); //$NON-NLS-1$
         }
 
-        if (StringHelper.isNullOrEmpty(library)) {
+        if (library == null) {
             throw new IllegalParameterException("library", library); //$NON-NLS-1$
         }
 
