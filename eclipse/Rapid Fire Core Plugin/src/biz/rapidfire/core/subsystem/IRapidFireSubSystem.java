@@ -22,7 +22,7 @@ public interface IRapidFireSubSystem {
 
     public IRapidFireFileResource[] getFiles(String library, String job, Shell shell) throws Exception;
 
-    public IRapidFireLibraryListResource[] getLibraryList(String libraryName, String jobName, Shell shell) throws Exception;
+    public IRapidFireLibraryListResource[] getLibraryLists(String libraryName, String jobName, Shell shell) throws Exception;
 
     public IRapidFireLibraryResource[] getLibraries(String library, String job, Shell shell) throws Exception;
 
