@@ -392,6 +392,18 @@
       <menuContribution
          locationURI="popup:org.eclipse.ui.popup.any?before=additions">
          
+         <separator
+            name="maintenance"
+            visible="true">
+	        <visibleWhen>
+	           <with variable="selection">
+	              <iterate operator="and">
+	                 <adapt type="biz.rapidfire.rse.subsystem.resources.RapidFireJobResource" />
+	              </iterate>
+	           </with>
+	        </visibleWhen>
+         </separator>
+         
          <command
             commandId="biz.rapidfire.core.command.Job.new" 
             icon="icons/new_job.gif"
@@ -456,6 +468,18 @@
 	           </with>
 	        </visibleWhen>
          </command>
+         
+         <separator
+            name="status"
+            visible="true">
+	        <visibleWhen>
+	           <with variable="selection">
+	              <iterate operator="and">
+	                 <adapt type="biz.rapidfire.rse.subsystem.resources.RapidFireJobResource" />
+	              </iterate>
+	           </with>
+	        </visibleWhen>
+         </separator>
          
          <command
             commandId="biz.rapidfire.core.command.Job.displaycopystatus" 
@@ -558,12 +582,33 @@
 	           </with>
 	        </visibleWhen>
          </command>
+         
+      </menuContribution>
+   </extension>
    
       	<!--
       	  ==========================================
       	    Rapid Fire 'File' Object Contributions
       	  ==========================================
       	-->
+
+   <extension
+      point="org.eclipse.ui.menus">
+         
+      <menuContribution
+         locationURI="popup:org.eclipse.ui.popup.any?before=additions">
+         
+         <separator
+            name="maintenance"
+            visible="true">
+	        <visibleWhen>
+	           <with variable="selection">
+	              <iterate operator="and">
+	                 <adapt type="biz.rapidfire.rse.subsystem.resources.RapidFireFileResource" />
+	              </iterate>
+	           </with>
+	        </visibleWhen>
+         </separator>
          
          <command
             commandId="biz.rapidfire.core.command.File.new" 
