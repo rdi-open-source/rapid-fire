@@ -23,7 +23,7 @@
    
       	<!--
       	  ==========================================
-      	    Rapid Fire Commands
+      	    Rapid Fire 'Job' Commands
       	  ==========================================
       	-->
 
@@ -111,12 +111,53 @@
          name="%command_Reset_Job_After_Abortion"
          description="%command_Reset_Job_After_Abortion_Description">
       </command>
+   
+      	<!--
+      	  ==========================================
+      	    Rapid Fire 'File' Commands
+      	  ==========================================
+      	-->
+         
+      <command
+         id="biz.rapidfire.core.command.File.new"
+         categoryId="biz.rapidfire.category.Commands"
+         name="%command_New_File"
+         description="%command_New_File_Description">
+      </command>
+         
+      <command
+         id="biz.rapidfire.core.command.File.change"
+         categoryId="biz.rapidfire.category.Commands"
+         name="%command_Change_File"
+         description="%command_Change_File_Description">
+      </command>
+         
+      <command
+         id="biz.rapidfire.core.command.File.copy"
+         categoryId="biz.rapidfire.category.Commands"
+         name="%command_Copy_File"
+         description="%command_Copy_File_Description">
+      </command>
+         
+      <command
+         id="biz.rapidfire.core.command.File.delete"
+         categoryId="biz.rapidfire.category.Commands"
+         name="%command_Delete_File"
+         description="%command_Delete_File_Description">
+      </command>
+         
+      <command
+         id="biz.rapidfire.core.command.File.display"
+         categoryId="biz.rapidfire.category.Commands"
+         name="%command_Display_File"
+         description="%command_Display_File_Description">
+      </command>
 
    </extension>
 
       	<!--
       	  ==========================================
-      	    Rapid Fire Command Handler
+      	    Rapid Fire 'Job' Command Handler
       	  ==========================================
       	-->
    
@@ -125,7 +166,7 @@
       
       <handler
          commandId="biz.rapidfire.core.command.Job.new"
-         class="biz.rapidfire.core.handlers.NewJobHandler">
+         class="biz.rapidfire.core.handlers.job.NewJobHandler">
          <enabledWhen>
             <with variable="selection">
                <count value="+" />
@@ -138,7 +179,7 @@
       
       <handler
          commandId="biz.rapidfire.core.command.Job.change"
-         class="biz.rapidfire.core.handlers.ChangeJobHandler">
+         class="biz.rapidfire.core.handlers.job.ChangeJobHandler">
          <enabledWhen>
             <with variable="selection">
                <count value="+" />
@@ -151,7 +192,7 @@
       
       <handler
          commandId="biz.rapidfire.core.command.Job.copy"
-         class="biz.rapidfire.core.handlers.CopyJobHandler">
+         class="biz.rapidfire.core.handlers.job.CopyJobHandler">
          <enabledWhen>
             <with variable="selection">
                <count value="1" />
@@ -164,7 +205,7 @@
       
       <handler
          commandId="biz.rapidfire.core.command.Job.delete"
-         class="biz.rapidfire.core.handlers.DeleteJobHandler">
+         class="biz.rapidfire.core.handlers.job.DeleteJobHandler">
          <enabledWhen>
             <with variable="selection">
                <count value="+" />
@@ -177,7 +218,7 @@
       
       <handler
          commandId="biz.rapidfire.core.command.Job.display"
-         class="biz.rapidfire.core.handlers.DisplayJobHandler">
+         class="biz.rapidfire.core.handlers.job.DisplayJobHandler">
          <enabledWhen>
             <with variable="selection">
                <count value="1" />
@@ -190,7 +231,7 @@
       
       <handler
          commandId="biz.rapidfire.core.command.Job.displaycopystatus"
-         class="biz.rapidfire.core.handlers.DisplayCopyStatusHandler">
+         class="biz.rapidfire.core.handlers.job.DisplayCopyStatusHandler">
          <enabledWhen>
             <with variable="selection">
                <count value="1" />
@@ -203,7 +244,7 @@
       
       <handler
          commandId="biz.rapidfire.core.command.Job.test"
-         class="biz.rapidfire.core.handlers.TestJobHandler">
+         class="biz.rapidfire.core.handlers.job.TestJobHandler">
          <enabledWhen>
             <with variable="selection">
                <count value="+" />
@@ -216,7 +257,7 @@
       
       <handler
          commandId="biz.rapidfire.core.command.Job.start"
-         class="biz.rapidfire.core.handlers.StartJobHandler">
+         class="biz.rapidfire.core.handlers.job.StartJobHandler">
          <enabledWhen>
             <with variable="selection">
                <count value="+" />
@@ -229,7 +270,7 @@
       
       <handler
          commandId="biz.rapidfire.core.command.Job.end"
-         class="biz.rapidfire.core.handlers.EndJobHandler">
+         class="biz.rapidfire.core.handlers.job.EndJobHandler">
          <enabledWhen>
             <with variable="selection">
                <count value="+" />
@@ -242,7 +283,7 @@
       
       <handler
          commandId="biz.rapidfire.core.command.Job.reset"
-         class="biz.rapidfire.core.handlers.ResetJobHandler">
+         class="biz.rapidfire.core.handlers.job.ResetJobHandler">
          <enabledWhen>
             <with variable="selection">
                <count value="+" />
@@ -255,7 +296,7 @@
       
       <handler
          commandId="biz.rapidfire.core.command.Job.resetabortion"
-         class="biz.rapidfire.core.handlers.ResetJobAfterAbortionHandler">
+         class="biz.rapidfire.core.handlers.job.ResetJobAfterAbortionHandler">
          <enabledWhen>
             <with variable="selection">
                <count value="+" />
@@ -265,12 +306,83 @@
             </with>
          </enabledWhen>
       </handler>
+
+      	<!--
+      	  ==========================================
+      	    Rapid Fire 'File' Command Handler
+      	  ==========================================
+      	-->
+      
+      <handler
+         commandId="biz.rapidfire.core.command.File.new"
+         class="biz.rapidfire.core.handlers.file.NewFileHandler">
+         <enabledWhen>
+            <with variable="selection">
+               <count value="+" />
+               <iterate operator="and">
+                  <adapt type="biz.rapidfire.rse.subsystem.resources.RapidFireFileResource" />
+               </iterate>
+            </with>
+         </enabledWhen>
+      </handler>
+      
+      <handler
+         commandId="biz.rapidfire.core.command.File.change"
+         class="biz.rapidfire.core.handlers.file.ChangeFileHandler">
+         <enabledWhen>
+            <with variable="selection">
+               <count value="+" />
+               <iterate operator="and">
+                  <adapt type="biz.rapidfire.rse.subsystem.resources.RapidFireFileResource" />
+               </iterate>
+            </with>
+         </enabledWhen>
+      </handler>
+      
+      <handler
+         commandId="biz.rapidfire.core.command.File.copy"
+         class="biz.rapidfire.core.handlers.file.CopyFileHandler">
+         <enabledWhen>
+            <with variable="selection">
+               <count value="1" />
+               <iterate operator="and">
+                  <adapt type="biz.rapidfire.rse.subsystem.resources.RapidFireFileResource" />
+               </iterate>
+            </with>
+         </enabledWhen>
+      </handler>
+      
+      <handler
+         commandId="biz.rapidfire.core.command.File.delete"
+         class="biz.rapidfire.core.handlers.file.DeleteFileHandler">
+         <enabledWhen>
+            <with variable="selection">
+               <count value="+" />
+               <iterate operator="and">
+                  <adapt type="biz.rapidfire.rse.subsystem.resources.RapidFireFileResource" />
+               </iterate>
+            </with>
+         </enabledWhen>
+      </handler>
+      
+      <handler
+         commandId="biz.rapidfire.core.command.File.display"
+         class="biz.rapidfire.core.handlers.file.DisplayFileHandler">
+         <enabledWhen>
+            <with variable="selection">
+               <count value="1" />
+               <iterate operator="and">
+                  <adapt type="biz.rapidfire.rse.subsystem.resources.RapidFireFileResource" />
+               </iterate>
+            </with>
+         </enabledWhen>
+      </handler>
       
    </extension>
    
       	<!--
       	  ==========================================
-      	    Rapid Fire Object Contributions
+      	    Rapid Fire 'Job' Object Contributions
       	  ==========================================
       	-->
 
@@ -442,6 +554,77 @@
 	           <with variable="selection">
 	              <iterate operator="and">
 	                 <adapt type="biz.rapidfire.rse.subsystem.resources.RapidFireJobResource" />
+	              </iterate>
+	           </with>
+	        </visibleWhen>
+         </command>
+   
+      	<!--
+      	  ==========================================
+      	    Rapid Fire 'File' Object Contributions
+      	  ==========================================
+      	-->
+         
+         <command
+            commandId="biz.rapidfire.core.command.File.new" 
+            icon="icons/new_file.gif"
+            >
+	        <visibleWhen>
+	           <with variable="selection">
+	              <iterate operator="and">
+	                 <adapt type="biz.rapidfire.rse.subsystem.resources.RapidFireFileResource" />
+	              </iterate>
+	           </with>
+	        </visibleWhen>
+         </command>
+         
+         <command
+            commandId="biz.rapidfire.core.command.File.change" 
+            icon="icons/change.gif"
+            >
+	        <visibleWhen>
+	           <with variable="selection">
+	              <iterate operator="and">
+	                 <adapt type="biz.rapidfire.rse.subsystem.resources.RapidFireFileResource" />
+	              </iterate>
+	           </with>
+	        </visibleWhen>
+         </command>
+         
+         <command
+            commandId="biz.rapidfire.core.command.File.copy" 
+            icon="icons/copy.gif"
+            >
+	        <visibleWhen>
+	           <with variable="selection">
+	              <iterate operator="and">
+	                 <adapt type="biz.rapidfire.rse.subsystem.resources.RapidFireFileResource" />
+	              </iterate>
+	           </with>
+	        </visibleWhen>
+         </command>
+         
+         <command
+            commandId="biz.rapidfire.core.command.File.delete" 
+            icon="icons/delete.gif"
+            >
+	        <visibleWhen>
+	           <with variable="selection">
+	              <iterate operator="and">
+	                 <adapt type="biz.rapidfire.rse.subsystem.resources.RapidFireFileResource" />
+	              </iterate>
+	           </with>
+	        </visibleWhen>
+         </command>
+         
+         <command
+            commandId="biz.rapidfire.core.command.File.display" 
+            icon="icons/display.gif"
+            >
+	        <visibleWhen>
+	           <with variable="selection">
+	              <iterate operator="and">
+	                 <adapt type="biz.rapidfire.rse.subsystem.resources.RapidFireFileResource" />
 	              </iterate>
 	           </with>
 	        </visibleWhen>

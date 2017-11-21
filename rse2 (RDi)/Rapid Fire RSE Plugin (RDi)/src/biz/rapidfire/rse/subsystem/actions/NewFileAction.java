@@ -10,18 +10,17 @@ package biz.rapidfire.rse.subsystem.actions;
 
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.StructuredSelection;
-import org.eclipse.rse.core.filters.ISystemFilter;
-import org.eclipse.rse.core.filters.ISystemFilterReference;
-import org.eclipse.rse.core.subsystems.SubSystemHelpers;
+import org.eclipse.rse.core.subsystems.ISubSystem;
 import org.eclipse.rse.ui.actions.SystemBaseAction;
 import org.eclipse.swt.widgets.Shell;
 
 import biz.rapidfire.core.RapidFireCorePlugin;
-import biz.rapidfire.core.handlers.NewJobHandler;
-import biz.rapidfire.core.subsystem.RapidFireFilter;
+import biz.rapidfire.core.handlers.file.NewFileHandler;
+import biz.rapidfire.core.model.IRapidFireJobResource;
 import biz.rapidfire.rse.Messages;
 import biz.rapidfire.rse.RapidFireRSEPlugin;
-import biz.rapidfire.rse.subsystem.resources.RapidFireJobResource;
+import biz.rapidfire.rse.subsystem.resources.FilesNode;
+import biz.rapidfire.rse.subsystem.resources.RapidFireFileResource;
 
 public class NewFileAction extends SystemBaseAction {
 
@@ -38,19 +37,15 @@ public class NewFileAction extends SystemBaseAction {
         try {
 
             Object element = getFirstSelection();
-            ISystemFilterReference filterReference = (ISystemFilterReference)element;
-            ISystemFilter systemFilter = filterReference.getReferencedFilter();
+            FilesNode filesNode = (FilesNode)element;
+            IRapidFireJobResource job = filesNode.getJob();
 
-            if (systemFilter.getFilterStringCount() == 1) {
-                RapidFireFilter filter = new RapidFireFilter(systemFilter.getFilterStrings()[0]);
+            RapidFireFileResource file = RapidFireFileResource.createEmptyInstance(job.getDataLibrary(), job.getName());
+            file.setSubSystem((ISubSystem)job.getParentSubSystem());
 
-                RapidFireJobResource job = RapidFireJobResource.createEmptyInstance(filter.getDataLibrary());
-                job.setSubSystem(SubSystemHelpers.getParentSubSystem(filterReference.getParentSystemFilterReferencePool()));
-
-                NewJobHandler handler = new NewJobHandler();
-                IStructuredSelection selection = new StructuredSelection(job);
-                handler.executeWithSelection(selection);
-            }
+            NewFileHandler handler = new NewFileHandler();
+            IStructuredSelection selection = new StructuredSelection(file);
+            handler.executeWithSelection(selection);
 
         } catch (Exception e) {
             RapidFireCorePlugin.logError("*** Could not execute 'New File' handler ***", e); //$NON-NLS-1$

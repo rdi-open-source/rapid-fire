@@ -136,6 +136,41 @@ public final class WidgetFactory {
     }
 
     /**
+     * Produces a 'name' text field. The field is upper-case only and limited to
+     * 10 characters.
+     * 
+     * @param parent - parent composite
+     * @return text field
+     */
+    public static Combo createNameCombo(Composite parent) {
+
+        return createNameCombo(parent, true);
+    }
+
+    /**
+     * Produces a 'name' text field. The field is upper-case only and limited to
+     * 10 characters.
+     * 
+     * @param parent - parent composite
+     * @param widthHint - set default text width
+     * @return text field
+     */
+    public static Combo createNameCombo(Composite parent, boolean widthHint) {
+
+        Combo text = createCombo(parent);
+        text.addVerifyListener(new UpperCaseOnlyVerifier());
+        text.setTextLimit(10);
+
+        if (widthHint) {
+            GridData gd = new GridData();
+            gd.widthHint = NAME_FIELD_WIDTH_HINT;
+            text.setLayoutData(gd);
+        }
+
+        return text;
+    }
+
+    /**
      * Produces a single line text field with a border.
      * 
      * @param parent - parent composite

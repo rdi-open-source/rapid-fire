@@ -57,13 +57,28 @@ public class Messages extends NLS {
     public static String Label_Status_colon;
     public static String Label_Full_generic_string;
     public static String Label_Enable_large_progress_bar;
+    public static String Label_Position_colon;
+    public static String Label_File_colon;
+    public static String Label_Type_colon;
+    public static String Label_Copy_program_name_colon;
+    public static String Label_Copy_program_library_name_colon;
+    public static String Label_Conversion_program_name_colon;
+    public static String Label_Conversion_program_library_name_colon;
 
+    public static String Tooltip_Library_colon;
     public static String Tooltip_Job;
     public static String Tooltip_Description;
     public static String Tooltip_Create_environment;
     public static String Tooltip_Job_queue_name;
     public static String Tooltip_Job_queue_library_name;
     public static String Tooltip_Enable_large_progress_bar;
+    public static String Tooltip_Position;
+    public static String Tooltip_File;
+    public static String Tooltip_Type;
+    public static String Tooltip_Copy_program_name;
+    public static String Tooltip_Copy_program_library_name;
+    public static String Tooltip_Conversion_program_name;
+    public static String Tooltip_Conversion_program_library_name;
 
     // Action labels
     public static String ActionLabel_Auto_refresh_menu_item;
@@ -100,6 +115,12 @@ public class Messages extends NLS {
     public static String Rapid_Fire_library_A_does_not_exist_on_system_B_Please_install_Rapid_Fire_library_A_on_system_B;
     public static String The_specified_library_A_on_system_B_is_not_a_Rapid_Fire_library;
     public static String Could_not_initialize_job_manager_for_job_A_in_library_B;
+    public static String Could_not_initialize_file_manager_for_file_at_position_C_of_job_A_in_library_B;
+    public static String File_position_A_is_not_valid;
+    public static String File_name_A_is_not_valid;
+    public static String Type_A_is_not_valid;
+    public static String Copy_program_name_A_is_not_valid;
+    public static String Conversion_program_name_A_is_not_valid;
 
     private Messages() {
     }

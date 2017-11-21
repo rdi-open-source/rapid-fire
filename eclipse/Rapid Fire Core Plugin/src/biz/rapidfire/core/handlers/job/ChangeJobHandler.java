@@ -6,20 +6,20 @@
  * http://www.eclipse.org/legal/cpl-v10.html
  *******************************************************************************/
 
-package biz.rapidfire.core.handlers;
+package biz.rapidfire.core.handlers.job;
 
 import org.eclipse.core.commands.IHandler;
 import org.eclipse.jface.dialogs.Dialog;
 
-import biz.rapidfire.core.dialogs.maintenance.JobMaintenanceDialog;
+import biz.rapidfire.core.dialogs.maintenance.job.JobMaintenanceDialog;
 import biz.rapidfire.core.model.IRapidFireJobResource;
 import biz.rapidfire.core.model.maintenance.IMaintenance;
 import biz.rapidfire.core.model.maintenance.job.JobValues;
 
-public class NewJobHandler extends AbstractJobMaintenanceHandler implements IHandler {
+public class ChangeJobHandler extends AbstractJobMaintenanceHandler implements IHandler {
 
-    public NewJobHandler() {
-        super(IMaintenance.MODE_CREATE);
+    public ChangeJobHandler() {
+        super(IMaintenance.MODE_CHANGE);
     }
 
     @Override
@@ -27,7 +27,7 @@ public class NewJobHandler extends AbstractJobMaintenanceHandler implements IHan
 
         JobValues values = getManager().getValues();
 
-        JobMaintenanceDialog dialog = JobMaintenanceDialog.getCreateDialog(getShell(), getManager());
+        JobMaintenanceDialog dialog = JobMaintenanceDialog.getChangeDialog(getShell(), getManager());
         dialog.setValue(values);
 
         if (dialog.open() == Dialog.OK) {

@@ -6,33 +6,33 @@
  * http://www.eclipse.org/legal/cpl-v10.html
  *******************************************************************************/
 
-package biz.rapidfire.core.handlers;
+package biz.rapidfire.core.handlers.file;
 
 import org.eclipse.core.commands.IHandler;
 import org.eclipse.jface.dialogs.Dialog;
 
-import biz.rapidfire.core.dialogs.maintenance.JobMaintenanceDialog;
-import biz.rapidfire.core.model.IRapidFireJobResource;
+import biz.rapidfire.core.dialogs.maintenance.file.FileMaintenanceDialog;
+import biz.rapidfire.core.model.IRapidFireFileResource;
 import biz.rapidfire.core.model.maintenance.IMaintenance;
-import biz.rapidfire.core.model.maintenance.job.JobValues;
+import biz.rapidfire.core.model.maintenance.file.FileValues;
 
-public class CopyJobHandler extends AbstractJobMaintenanceHandler implements IHandler {
+public class CopyFileHandler extends AbstractFileMaintenanceHandler implements IHandler {
 
-    public CopyJobHandler() {
+    public CopyFileHandler() {
         super(IMaintenance.MODE_COPY);
     }
 
     @Override
-    protected void performAction(IRapidFireJobResource job) throws Exception {
+    protected void performAction(IRapidFireFileResource file) throws Exception {
 
-        JobValues values = getManager().getValues();
+        FileValues values = getManager().getValues();
 
-        JobMaintenanceDialog dialog = JobMaintenanceDialog.getCopyDialog(getShell(), getManager());
+        FileMaintenanceDialog dialog = FileMaintenanceDialog.getCopyDialog(getShell(), getManager());
         dialog.setValue(values);
 
         if (dialog.open() == Dialog.OK) {
             getManager().book();
-            refreshUI(job);
+            refreshUI(file);
         }
     }
 }

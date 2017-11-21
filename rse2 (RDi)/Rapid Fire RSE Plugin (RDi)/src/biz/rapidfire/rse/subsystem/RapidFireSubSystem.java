@@ -112,7 +112,6 @@ public class RapidFireSubSystem extends SubSystem implements IISeriesSubSystem, 
 
             for (IRapidFireJobResource job : allJobs) {
                 if (filter.matches(job)) {
-                    job.setParentSubSystem(this);
                     filteredJobs.addElement(job);
                 }
             }
@@ -139,6 +138,10 @@ public class RapidFireSubSystem extends SubSystem implements IISeriesSubSystem, 
             return null;
         }
 
+        for (IRapidFireJobResource job : jobs) {
+            job.setParentSubSystem(this);
+        }
+
         return jobs.toArray(new IRapidFireJobResource[jobs.size()]);
     }
 
@@ -150,6 +153,13 @@ public class RapidFireSubSystem extends SubSystem implements IISeriesSubSystem, 
 
         IFilesDAO dao = new FilesDAO(getConnectionName(), libraryName);
         List<IRapidFireFileResource> files = dao.load(jobName, shell);
+        if (files == null) {
+            return null;
+        }
+
+        for (IRapidFireFileResource file : files) {
+            file.setParentSubSystem(this);
+        }
 
         return files.toArray(new IRapidFireFileResource[files.size()]);
     }
@@ -162,6 +172,13 @@ public class RapidFireSubSystem extends SubSystem implements IISeriesSubSystem, 
 
         ILibrariesDAO dao = new LibrariesDAO(getConnectionName(), libraryName);
         List<IRapidFireLibraryResource> libraries = dao.load(jobName, shell);
+        if (libraries == null) {
+            return null;
+        }
+
+        for (IRapidFireLibraryResource library : libraries) {
+            library.setParentSubSystem(this);
+        }
 
         return libraries.toArray(new IRapidFireLibraryResource[libraries.size()]);
     }
@@ -174,6 +191,9 @@ public class RapidFireSubSystem extends SubSystem implements IISeriesSubSystem, 
 
         IFileCopyStatusDAO dao = new FileCopyStatusDAO(getConnectionName(), libraryName);
         List<IFileCopyStatus> fileCopyStatuses = dao.load(jobName, shell);
+        if (fileCopyStatuses == null) {
+            return null;
+        }
 
         return fileCopyStatuses.toArray(new FileCopyStatus[fileCopyStatuses.size()]);
     }

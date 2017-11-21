@@ -15,7 +15,7 @@ public class Result {
     private Success success;
 
     public Result(Success success) {
-        this(null, null, success.toString());
+        this(null, null, success.label());
     }
 
     public Result(String fieldName, String message, String success) {

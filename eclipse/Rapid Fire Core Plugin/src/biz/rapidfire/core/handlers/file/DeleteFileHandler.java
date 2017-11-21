@@ -6,33 +6,33 @@
  * http://www.eclipse.org/legal/cpl-v10.html
  *******************************************************************************/
 
-package biz.rapidfire.core.handlers;
+package biz.rapidfire.core.handlers.file;
 
 import org.eclipse.core.commands.IHandler;
 import org.eclipse.jface.dialogs.Dialog;
 
-import biz.rapidfire.core.dialogs.maintenance.JobMaintenanceDialog;
-import biz.rapidfire.core.model.IRapidFireJobResource;
+import biz.rapidfire.core.dialogs.maintenance.file.FileMaintenanceDialog;
+import biz.rapidfire.core.model.IRapidFireFileResource;
 import biz.rapidfire.core.model.maintenance.IMaintenance;
-import biz.rapidfire.core.model.maintenance.job.JobValues;
+import biz.rapidfire.core.model.maintenance.file.FileValues;
 
-public class DeleteJobHandler extends AbstractJobMaintenanceHandler implements IHandler {
+public class DeleteFileHandler extends AbstractFileMaintenanceHandler implements IHandler {
 
-    public DeleteJobHandler() {
+    public DeleteFileHandler() {
         super(IMaintenance.MODE_DELETE);
     }
 
     @Override
-    protected void performAction(IRapidFireJobResource job) throws Exception {
+    protected void performAction(IRapidFireFileResource file) throws Exception {
 
-        JobValues values = getManager().getValues();
+        FileValues values = getManager().getValues();
 
-        JobMaintenanceDialog dialog = JobMaintenanceDialog.getDeleteDialog(getShell(), getManager());
+        FileMaintenanceDialog dialog = FileMaintenanceDialog.getDeleteDialog(getShell(), getManager());
         dialog.setValue(values);
 
         if (dialog.open() == Dialog.OK) {
             getManager().book();
-            refreshUI(job);
+            refreshUI(file);
         }
     }
 }

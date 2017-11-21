@@ -6,25 +6,16 @@
  * http://www.eclipse.org/legal/cpl-v10.html
  *******************************************************************************/
 
-package biz.rapidfire.core.model.maintenance;
+package biz.rapidfire.core.model.maintenance.file;
 
-public enum Success {
-    YES ("Y"),
-    NO ("N");
+public enum Type {
+    PHYSICAL ("*PHYSICAL"),
+    LOGICAL ("*LOGICAL");
 
     private String label;
 
-    private Success(String value) {
-        this.label = value;
-    }
-
-    public static Success fromValue(String value) {
-
-        if (Success.YES.label.equalsIgnoreCase(value)) {
-            return Success.YES;
-        } else {
-            return Success.NO;
-        }
+    private Type(String label) {
+        this.label = label;
     }
 
     public String label() {

@@ -17,7 +17,7 @@ import org.eclipse.rse.ui.actions.SystemBaseAction;
 import org.eclipse.swt.widgets.Shell;
 
 import biz.rapidfire.core.RapidFireCorePlugin;
-import biz.rapidfire.core.handlers.NewJobHandler;
+import biz.rapidfire.core.handlers.job.NewJobHandler;
 import biz.rapidfire.core.subsystem.RapidFireFilter;
 import biz.rapidfire.rse.Messages;
 import biz.rapidfire.rse.RapidFireRSEPlugin;

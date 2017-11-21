@@ -36,20 +36,27 @@ public class JobManager extends AbstractManager<JobKey, JobValues> {
     @Override
     public Result initialize(String mode, JobKey key) throws Exception {
 
-        CallableStatement statement = dao.prepareCall(dao.insertLibraryQualifier("{CALL " + IJDBCConnection.LIBRARY + "\"MNTJOB_initialize\"(?, ?, ?)}")); //$NON-NLS-1$ //$NON-NLS-2$
+        CallableStatement statement = dao.prepareCall(dao
+            .insertLibraryQualifier("{CALL " + IJDBCConnection.LIBRARY + "\"MNTJOB_initialize\"(?, ?, ?)}")); //$NON-NLS-1$ //$NON-NLS-2$
 
         statement.setString(IJobInitialize.MODE, mode);
         statement.setString(IJobInitialize.JOB, key.getJobName());
-        statement.setString(IJobInitialize.SUCCESS, Success.NO.toString());
+        statement.setString(IJobInitialize.SUCCESS, Success.NO.label());
 
         statement.registerOutParameter(IJobInitialize.SUCCESS, Types.CHAR);
 
         statement.execute();
 
-        String success = statement.getString(3);
+        String success = statement.getString(IJobInitialize.SUCCESS);
 
-        Result status = new Result(null, Messages.bind(Messages.Could_not_initialize_job_manager_for_job_A_in_library_B, key.getJobName(),
-            dao.getLibraryName()), success);
+        String message;
+        if (Success.YES.label().equals(success)) {
+            message = ""; //$NON-NLS-1$
+        } else {
+            message = Messages.bind(Messages.Could_not_initialize_job_manager_for_job_A_in_library_B, key.getJobName(), dao.getLibraryName());
+        }
+
+        Result status = new Result(null, message, success);
 
         return status;
     }
@@ -106,7 +113,7 @@ public class JobManager extends AbstractManager<JobKey, JobValues> {
 
         statement.setString(IJobCheck.FIELD_NAME, EMPTY_STRING);
         statement.setString(IJobCheck.MESSAGE, EMPTY_STRING);
-        statement.setString(IJobCheck.SUCCESS, Success.NO.toString());
+        statement.setString(IJobCheck.SUCCESS, Success.NO.label());
 
         statement.registerOutParameter(1, Types.CHAR);
         statement.registerOutParameter(2, Types.CHAR);
