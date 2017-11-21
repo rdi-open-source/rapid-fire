@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2017-2017 Rapid Fire Project Team
+ * Copyright (c) 2017-2017 Rapid Fire Project Owners
  * All rights reserved. This program and the accompanying materials 
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
@@ -13,13 +13,13 @@ import org.eclipse.rse.core.subsystems.AbstractResource;
 import biz.rapidfire.core.model.IRapidFireJobResource;
 import biz.rapidfire.rse.Messages;
 
-public class LibrariesNode extends AbstractResource {
+public class LibraryListsNode extends AbstractResource {
 
     private String label;
     private IRapidFireJobResource job;
 
-    public LibrariesNode(IRapidFireJobResource job) {
-        this.label = Messages.NodeText_Libraries;
+    public LibraryListsNode(IRapidFireJobResource job) {
+        this.label = Messages.NodeText_LibraryLists;
         this.job = job;
     }
 

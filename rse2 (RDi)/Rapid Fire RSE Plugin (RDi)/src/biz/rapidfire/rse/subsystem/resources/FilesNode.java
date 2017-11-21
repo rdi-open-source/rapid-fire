@@ -11,6 +11,7 @@ package biz.rapidfire.rse.subsystem.resources;
 import org.eclipse.rse.core.subsystems.AbstractResource;
 
 import biz.rapidfire.core.model.IRapidFireJobResource;
+import biz.rapidfire.rse.Messages;
 
 public class FilesNode extends AbstractResource {
 
@@ -18,7 +19,7 @@ public class FilesNode extends AbstractResource {
     private IRapidFireJobResource job;
 
     public FilesNode(IRapidFireJobResource job) {
-        this.label = "Files";
+        this.label = Messages.NodeText_Files;
         this.job = job;
     }
 

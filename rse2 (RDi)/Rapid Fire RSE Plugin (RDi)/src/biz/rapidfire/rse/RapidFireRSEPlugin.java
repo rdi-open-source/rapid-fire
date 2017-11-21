@@ -23,8 +23,10 @@ import biz.rapidfire.rse.subsystem.RapidFireAdapterFactory;
 import biz.rapidfire.rse.subsystem.RapidFireSubSystemConfigurationAdapterFactory;
 import biz.rapidfire.rse.subsystem.resources.FilesNode;
 import biz.rapidfire.rse.subsystem.resources.LibrariesNode;
+import biz.rapidfire.rse.subsystem.resources.LibraryListsNode;
 import biz.rapidfire.rse.subsystem.resources.RapidFireFileResource;
 import biz.rapidfire.rse.subsystem.resources.RapidFireJobResource;
+import biz.rapidfire.rse.subsystem.resources.RapidFireLibraryListResource;
 import biz.rapidfire.rse.subsystem.resources.RapidFireLibraryResource;
 
 /**
@@ -43,6 +45,7 @@ public class RapidFireRSEPlugin extends AbstractUIPlugin {
     public static final String IMAGE_RAPID_FIRE_FILTER = "rapidfire_filter.gif"; //$NON-NLS-1$
     public static final String IMAGE_RAPID_FIRE_JOB = "rapidfire_job.gif"; //$NON-NLS-1$
     public static final String IMAGE_FILE = "file.gif"; //$NON-NLS-1$
+    public static final String IMAGE_LIBRARY_LIST = "library_list.gif"; //$NON-NLS-1$
     public static final String IMAGE_LIBRARY = "library.gif"; //$NON-NLS-1$
     public static final String IMAGE_NEW_JOB = "new_job.gif"; //$NON-NLS-1$
     public static final String IMAGE_NEW_FILE = "new_file.gif"; //$NON-NLS-1$
@@ -99,9 +102,11 @@ public class RapidFireRSEPlugin extends AbstractUIPlugin {
         RapidFireAdapterFactory adapterFactory = new RapidFireAdapterFactory();
         manager.registerAdapters(adapterFactory, RapidFireJobResource.class);
         manager.registerAdapters(adapterFactory, RapidFireFileResource.class);
+        manager.registerAdapters(adapterFactory, RapidFireLibraryListResource.class);
         manager.registerAdapters(adapterFactory, RapidFireLibraryResource.class);
 
         manager.registerAdapters(adapterFactory, FilesNode.class);
+        manager.registerAdapters(adapterFactory, LibraryListsNode.class);
         manager.registerAdapters(adapterFactory, LibrariesNode.class);
 
         RapidFireSubSystemConfigurationAdapterFactory subSystemConfigurationAdapterFactory = new RapidFireSubSystemConfigurationAdapterFactory();
@@ -116,6 +121,7 @@ public class RapidFireRSEPlugin extends AbstractUIPlugin {
         reg.put(IMAGE_RAPID_FIRE_FILTER, getImageDescriptor(IMAGE_RAPID_FIRE_FILTER));
         reg.put(IMAGE_RAPID_FIRE_JOB, getImageDescriptor(IMAGE_RAPID_FIRE_JOB));
         reg.put(IMAGE_FILE, getImageDescriptor(IMAGE_FILE));
+        reg.put(IMAGE_LIBRARY_LIST, getImageDescriptor(IMAGE_LIBRARY_LIST));
         reg.put(IMAGE_LIBRARY, getImageDescriptor(IMAGE_LIBRARY));
         reg.put(IMAGE_NEW_JOB, getImageDescriptor(IMAGE_NEW_JOB));
         reg.put(IMAGE_NEW_FILE, getImageDescriptor(IMAGE_NEW_FILE));

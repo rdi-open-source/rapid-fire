@@ -37,6 +37,7 @@ import biz.rapidfire.core.helpers.ExceptionHelper;
 import biz.rapidfire.core.model.IFileCopyStatus;
 import biz.rapidfire.core.model.IRapidFireFileResource;
 import biz.rapidfire.core.model.IRapidFireJobResource;
+import biz.rapidfire.core.model.IRapidFireLibraryListResource;
 import biz.rapidfire.core.model.IRapidFireLibraryResource;
 import biz.rapidfire.core.model.IRapidFireResource;
 import biz.rapidfire.core.model.dao.IFileCopyStatusDAO;
@@ -51,6 +52,7 @@ import biz.rapidfire.rse.model.dao.FileCopyStatusDAO;
 import biz.rapidfire.rse.model.dao.FilesDAO;
 import biz.rapidfire.rse.model.dao.JobsDAO;
 import biz.rapidfire.rse.model.dao.LibrariesDAO;
+import biz.rapidfire.rse.model.dao.LibraryListsDAO;
 
 import com.ibm.as400.access.AS400;
 import com.ibm.etools.iseries.subsystems.qsys.IISeriesSubSystem;
@@ -162,6 +164,25 @@ public class RapidFireSubSystem extends SubSystem implements IISeriesSubSystem, 
         }
 
         return files.toArray(new IRapidFireFileResource[files.size()]);
+    }
+
+    public IRapidFireLibraryListResource[] getLibraryLists(String libraryName, String jobName, Shell shell) throws Exception {
+
+        if (!successFullyLoaded()) {
+            return new IRapidFireLibraryListResource[0];
+        }
+
+        LibraryListsDAO dao = new LibraryListsDAO(getConnectionName(), libraryName);
+        List<IRapidFireLibraryListResource> libraryLists = dao.load(jobName, shell);
+        if (libraryLists == null) {
+            return null;
+        }
+
+        for (IRapidFireLibraryListResource libraryList : libraryLists) {
+            libraryList.setParentSubSystem(this);
+        }
+
+        return libraryLists.toArray(new IRapidFireLibraryListResource[libraryLists.size()]);
     }
 
     public IRapidFireLibraryResource[] getLibraries(String libraryName, String jobName, Shell shell) throws Exception {
