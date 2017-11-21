@@ -38,67 +38,18 @@
             namefilter="*"
             id="biz.rapidfire.rse.job.actions">
             
-         <action
-               label="%command_Reset_Job_After_Abortion"
-               tooltip="%command_Reset_Job_After_Abortion_Description"
-               icon="icons/resetabortion.gif"
-               class="biz.rapidfire.rse.subsystem.actions.job.ResetJobAfterAbortionAction"
-               enablesFor="+"
-               id="biz.rapidfire.rse.subsystem.actions.ResetJobAction">
-         </action>
-            
-         <action
-               label="%command_Reset_Job"
-               tooltip="%command_Reset_Job_Description"
-               icon="icons/reset.gif"
-               class="biz.rapidfire.rse.subsystem.actions.job.ResetJobAction"
-               enablesFor="+"
-               id="biz.rapidfire.rse.subsystem.actions.ResetJobAction">
-         </action>
-            
-         <action
-               label="%command_End_Job"
-               tooltip="%command_End_Job_Description"
-               icon="icons/end.gif"
-               class="biz.rapidfire.rse.subsystem.actions.job.EndJobAction"
-               enablesFor="+"
-               id="biz.rapidfire.rse.subsystem.actions.EndJobAction">
-         </action>
-            
-         <action
-               label="%command_Start_Job"
-               tooltip="%command_Start_Job_Description"
-               icon="icons/start.gif"
-               class="biz.rapidfire.rse.subsystem.actions.job.StartJobAction"
-               enablesFor="+"
-               id="biz.rapidfire.rse.subsystem.actions.StartJobAction">
-         </action>
-            
-         <action
-               label="%command_Test_Job"
-               tooltip="%command_Test_Job_Description"
-               icon="icons/test.gif"
-               class="biz.rapidfire.rse.subsystem.actions.job.TestJobAction"
-               enablesFor="+"
-               id="biz.rapidfire.rse.subsystem.actions.TestJobAction">
-         </action>
-            
-         <action
-               label="%command_Display_copy_status"
-               tooltip="%command_Display_copy_status_Description"
-               icon="icons/job_status.gif"
-               class="biz.rapidfire.rse.subsystem.actions.job.DisplayCopyStatusAction"
-               enablesFor="1"
-               id="biz.rapidfire.rse.subsystem.actions.DisplayCopyStatusAction">
-         </action>
-            
+            <separator name="maintenance"/>
+            <separator name="status"/>
+            <separator name="run"/>
+         
          <action
                label="%command_Display_Job"
                tooltip="%command_Display_Job_Description"
                icon="icons/display.gif"
                class="biz.rapidfire.rse.subsystem.actions.job.DisplayJobAction"
                enablesFor="1"
-               id="biz.rapidfire.rse.subsystem.actions.DisplayJobAction">
+               id="biz.rapidfire.rse.subsystem.actions.DisplayJobAction"
+               menubarPath="maintenance">
          </action>
             
          <action
@@ -107,7 +58,8 @@
                icon="icons/delete.gif"
                class="biz.rapidfire.rse.subsystem.actions.job.DeleteJobAction"
                enablesFor="+"
-               id="biz.rapidfire.rse.subsystem.actions.DeleteJobAction">
+               id="biz.rapidfire.rse.subsystem.actions.DeleteJobAction"
+               menubarPath="maintenance">
          </action>
             
          <action
@@ -116,7 +68,8 @@
                icon="icons/copy.gif"
                class="biz.rapidfire.rse.subsystem.actions.job.CopyJobAction"
                enablesFor="1"
-               id="biz.rapidfire.rse.subsystem.actions.CopyJobAction">
+               id="biz.rapidfire.rse.subsystem.actions.CopyJobAction"
+               menubarPath="maintenance">
          </action>
             
          <action
@@ -125,7 +78,8 @@
                icon="icons/change.gif"
                class="biz.rapidfire.rse.subsystem.actions.job.ChangeJobAction"
                enablesFor="+"
-               id="biz.rapidfire.rse.subsystem.actions.ChangeJobAction">
+               id="biz.rapidfire.rse.subsystem.actions.ChangeJobAction"
+               menubarPath="maintenance">
          </action>
             
          <action
@@ -134,7 +88,68 @@
                icon="icons/new_job.gif"
                class="biz.rapidfire.rse.subsystem.actions.job.NewJobAction"
                enablesFor="+"
-               id="biz.rapidfire.rse.subsystem.actions.NewJobAction">
+               id="biz.rapidfire.rse.subsystem.actions.NewJobAction"
+               menubarPath="maintenance">
+         </action>
+            
+         <action
+               label="%command_Display_copy_status"
+               tooltip="%command_Display_copy_status_Description"
+               icon="icons/job_status.gif"
+               class="biz.rapidfire.rse.subsystem.actions.job.DisplayCopyStatusAction"
+               enablesFor="1"
+               id="biz.rapidfire.rse.subsystem.actions.DisplayCopyStatusAction"
+               menubarPath="status">
+         </action>
+                        
+         <action
+               label="%command_Reset_Job_After_Abortion"
+               tooltip="%command_Reset_Job_After_Abortion_Description"
+               icon="icons/resetabortion.gif"
+               class="biz.rapidfire.rse.subsystem.actions.job.ResetJobAfterAbortionAction"
+               enablesFor="+"
+               id="biz.rapidfire.rse.subsystem.actions.ResetJobAction"
+               menubarPath="run">
+         </action>
+            
+         <action
+               label="%command_Reset_Job"
+               tooltip="%command_Reset_Job_Description"
+               icon="icons/reset.gif"
+               class="biz.rapidfire.rse.subsystem.actions.job.ResetJobAction"
+               enablesFor="+"
+               id="biz.rapidfire.rse.subsystem.actions.ResetJobAction"
+               menubarPath="run">
+         </action>
+            
+         <action
+               label="%command_End_Job"
+               tooltip="%command_End_Job_Description"
+               icon="icons/end.gif"
+               class="biz.rapidfire.rse.subsystem.actions.job.EndJobAction"
+               enablesFor="+"
+               id="biz.rapidfire.rse.subsystem.actions.EndJobAction"
+               menubarPath="run">
+         </action>
+            
+         <action
+               label="%command_Start_Job"
+               tooltip="%command_Start_Job_Description"
+               icon="icons/start.gif"
+               class="biz.rapidfire.rse.subsystem.actions.job.StartJobAction"
+               enablesFor="+"
+               id="biz.rapidfire.rse.subsystem.actions.StartJobAction"
+               menubarPath="run">
+         </action>
+            
+         <action
+               label="%command_Test_Job"
+               tooltip="%command_Test_Job_Description"
+               icon="icons/test.gif"
+               class="biz.rapidfire.rse.subsystem.actions.job.TestJobAction"
+               enablesFor="+"
+               id="biz.rapidfire.rse.subsystem.actions.TestJobAction"
+               menubarPath="run">
          </action>
          
       </objectContribution>
@@ -203,324 +218,6 @@
          </action>
          
       </objectContribution>
-      
-   </extension>
-   
-      	<!--
-      	  ==========================================
-      	    Rapid Fire 'Job' Commands
-      	  ==========================================
-      	-->
-
-   <extension
-      point="org.eclipse.ui.commands">
-         
-      <category
-         name="Rapid Fire"
-         id="biz.rapidfire.category.Commands">
-      </category>
-         
-      <command
-         id="biz.rapidfire.core.command.Job.new"
-         categoryId="biz.rapidfire.category.Commands"
-         name="%command_New_Job"
-         description="%command_New_Job_Description">
-      </command>
-         
-      <command
-         id="biz.rapidfire.core.command.Job.change"
-         categoryId="biz.rapidfire.category.Commands"
-         name="%command_Change_Job"
-         description="%command_Change_Job_Description">
-      </command>
-         
-      <command
-         id="biz.rapidfire.core.command.Job.copy"
-         categoryId="biz.rapidfire.category.Commands"
-         name="%command_Copy_Job"
-         description="%command_Copy_Job_Description">
-      </command>
-         
-      <command
-         id="biz.rapidfire.core.command.Job.delete"
-         categoryId="biz.rapidfire.category.Commands"
-         name="%command_Delete_Job"
-         description="%command_Delete_Job_Description">
-      </command>
-         
-      <command
-         id="biz.rapidfire.core.command.Job.display"
-         categoryId="biz.rapidfire.category.Commands"
-         name="%command_Display_Job"
-         description="%command_Display_Job_Description">
-      </command>
-         
-      <command
-         id="biz.rapidfire.core.command.Job.displaycopystatus"
-         categoryId="biz.rapidfire.category.Commands"
-         name="%command_Display_copy_status"
-         description="%command_Display_copy_status_Description">
-      </command>
-         
-      <command
-         id="biz.rapidfire.core.command.Job.test"
-         categoryId="biz.rapidfire.category.Commands"
-         name="%command_Test_Job"
-         description="%command_Test_Job_Description">
-      </command>
-         
-      <command
-         id="biz.rapidfire.core.command.Job.start"
-         categoryId="biz.rapidfire.category.Commands"
-         name="%command_Start_Job"
-         description="%command_Start_Job_Description">
-      </command>
-         
-      <command
-         id="biz.rapidfire.core.command.Job.end"
-         categoryId="biz.rapidfire.category.Commands"
-         name="%command_End_Job"
-         description="%command_End_Job_Description">
-      </command>
-         
-      <command
-         id="biz.rapidfire.core.command.Job.reset"
-         categoryId="biz.rapidfire.category.Commands"
-         name="%command_Reset_Job"
-         description="%command_Reset_Job_Description">
-      </command>
-         
-      <command
-         id="biz.rapidfire.core.command.Job.resetabortion"
-         categoryId="biz.rapidfire.category.Commands"
-         name="%command_Reset_Job_After_Abortion"
-         description="%command_Reset_Job_After_Abortion_Description">
-      </command>
-
-   </extension>
-
-      	<!--
-      	  ==========================================
-      	    Rapid Fire 'Job' Command Handlers
-      	  ==========================================
-      	-->
-   
-   <extension
-      point="org.eclipse.ui.handlers">
-      
-      <handler
-         commandId="biz.rapidfire.core.command.Job.new"
-         class="biz.rapidfire.core.handlers.NewJobHandler">
-         <enabledWhen>
-            <with variable="selection">
-               <count value="*" />
-               <iterate operator="and">
-                  <adapt type="biz.rapidfire.rse.model.RapidFireJobResource" />
-               </iterate>
-            </with>
-         </enabledWhen>
-      </handler>
-      
-      <handler
-         commandId="biz.rapidfire.core.command.Job.change"
-         class="biz.rapidfire.core.handlers.ChangeJobHandler">
-         <enabledWhen>
-            <with variable="selection">
-               <count value="*" />
-               <iterate operator="and">
-                  <adapt type="biz.rapidfire.rse.model.RapidFireJobResource" />
-               </iterate>
-            </with>
-         </enabledWhen>
-      </handler>
-      
-      <handler
-         commandId="biz.rapidfire.core.command.Job.copy"
-         class="biz.rapidfire.core.handlers.CopyJobHandler">
-         <enabledWhen>
-            <with variable="selection">
-               <count value="1" />
-               <iterate operator="and">
-                  <adapt type="biz.rapidfire.rse.model.RapidFireJobResource" />
-               </iterate>
-            </with>
-         </enabledWhen>
-      </handler>
-      
-      <handler
-         commandId="biz.rapidfire.core.command.Job.delete"
-         class="biz.rapidfire.core.handlers.DeleteJobHandler">
-         <enabledWhen>
-            <with variable="selection">
-               <count value="*" />
-               <iterate operator="and">
-                  <adapt type="biz.rapidfire.rse.model.RapidFireJobResource" />
-               </iterate>
-            </with>
-         </enabledWhen>
-      </handler>
-      
-      <handler
-         commandId="biz.rapidfire.core.command.Job.display"
-         class="biz.rapidfire.core.handlers.DisplayJobHandler">
-         <enabledWhen>
-            <with variable="selection">
-               <count value="1" />
-               <iterate operator="and">
-                  <adapt type="biz.rapidfire.rse.model.RapidFireJobResource" />
-               </iterate>
-            </with>
-         </enabledWhen>
-      </handler>
-      
-      <handler
-         commandId="biz.rapidfire.core.command.Job.displaycopystatus"
-         class="biz.rapidfire.core.handlers.DisplayCopyStatusHandler">
-         <enabledWhen>
-            <with variable="selection">
-               <count value="1" />
-               <iterate operator="and">
-                  <adapt type="biz.rapidfire.rse.model.RapidFireJobResource" />
-               </iterate>
-            </with>
-         </enabledWhen>
-      </handler>
-      
-      <handler
-         commandId="biz.rapidfire.core.command.Job.test"
-         class="biz.rapidfire.core.handlers.TestJobHandler">
-         <enabledWhen>
-            <with variable="selection">
-               <count value="*" />
-               <iterate operator="and">
-                  <adapt type="biz.rapidfire.rse.model.RapidFireJobResource" />
-               </iterate>
-            </with>
-         </enabledWhen>
-      </handler>
-      
-      <handler
-         commandId="biz.rapidfire.core.command.Job.start"
-         class="biz.rapidfire.core.handlers.StartJobHandler">
-         <enabledWhen>
-            <with variable="selection">
-               <count value="*" />
-               <iterate operator="and">
-                  <adapt type="biz.rapidfire.rse.model.RapidFireJobResource" />
-               </iterate>
-            </with>
-         </enabledWhen>
-      </handler>
-      
-      <handler
-         commandId="biz.rapidfire.core.command.Job.end"
-         class="biz.rapidfire.core.handlers.EndJobHandler">
-         <enabledWhen>
-            <with variable="selection">
-               <count value="*" />
-               <iterate operator="and">
-                  <adapt type="biz.rapidfire.rse.model.RapidFireJobResource" />
-               </iterate>
-            </with>
-         </enabledWhen>
-      </handler>
-      
-      <handler
-         commandId="biz.rapidfire.core.command.Job.reset"
-         class="biz.rapidfire.core.handlers.ResetJobHandler">
-         <enabledWhen>
-            <with variable="selection">
-               <count value="*" />
-               <iterate operator="and">
-                  <adapt type="biz.rapidfire.rse.model.RapidFireJobResource" />
-               </iterate>
-            </with>
-         </enabledWhen>
-      </handler>
-      
-      <handler
-         commandId="biz.rapidfire.core.command.Job.resetabortion"
-         class="biz.rapidfire.core.handlers.ResetJobAfterAbortionHandler">
-         <enabledWhen>
-            <with variable="selection">
-               <count value="*" />
-               <iterate operator="and">
-                  <adapt type="biz.rapidfire.rse.model.RapidFireJobResource" />
-               </iterate>
-            </with>
-         </enabledWhen>
-      </handler>
-
-      	<!--
-      	  ==========================================
-      	    Rapid Fire 'File' Command Handlers
-      	  ==========================================
-      	-->
-      
-      <handler
-         commandId="biz.rapidfire.core.command.File.new"
-         class="biz.rapidfire.core.handlers.file.NewFileHandler">
-         <enabledWhen>
-            <with variable="selection">
-               <count value="*" />
-               <iterate operator="and">
-                  <adapt type="biz.rapidfire.rse.model.RapidFireFileResource" />
-               </iterate>
-            </with>
-         </enabledWhen>
-      </handler>
-      
-      <handler
-         commandId="biz.rapidfire.core.command.File.change"
-         class="biz.rapidfire.core.handlers.file.ChangeFileHandler">
-         <enabledWhen>
-            <with variable="selection">
-               <count value="*" />
-               <iterate operator="and">
-                  <adapt type="biz.rapidfire.rse.model.RapidFireFileResource" />
-               </iterate>
-            </with>
-         </enabledWhen>
-      </handler>
-      
-      <handler
-         commandId="biz.rapidfire.core.command.File.copy"
-         class="biz.rapidfire.core.handlers.file.CopyFileHandler">
-         <enabledWhen>
-            <with variable="selection">
-               <count value="1" />
-               <iterate operator="and">
-                  <adapt type="biz.rapidfire.rse.model.RapidFireFileResource" />
-               </iterate>
-            </with>
-         </enabledWhen>
-      </handler>
-      
-      <handler
-         commandId="biz.rapidfire.core.command.File.delete"
-         class="biz.rapidfire.core.handlers.file.DeleteFileHandler">
-         <enabledWhen>
-            <with variable="selection">
-               <count value="*" />
-               <iterate operator="and">
-                  <adapt type="biz.rapidfire.rse.model.RapidFireFileResource" />
-               </iterate>
-            </with>
-         </enabledWhen>
-      </handler>
-      
-      <handler
-         commandId="biz.rapidfire.core.command.File.display"
-         class="biz.rapidfire.core.handlers.file.DisplayFileHandler">
-         <enabledWhen>
-            <with variable="selection">
-               <count value="1" />
-               <iterate operator="and">
-                  <adapt type="biz.rapidfire.rse.model.RapidFireFileResource" />
-               </iterate>
-            </with>
-         </enabledWhen>
-      </handler>
       
    </extension>
 
