@@ -6,30 +6,28 @@
  * http://www.eclipse.org/legal/cpl-v10.html
  *******************************************************************************/
 
-package biz.rapidfire.rse.subsystem.actions;
+package biz.rapidfire.rse.subsystem.actions.library;
 
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.swt.widgets.Shell;
 
 import biz.rapidfire.core.RapidFireCorePlugin;
-import biz.rapidfire.core.handlers.NewJobHandler;
-import biz.rapidfire.core.subsystem.RapidFireFilter;
+import biz.rapidfire.core.handlers.job.NewJobHandler;
 import biz.rapidfire.rse.Messages;
 import biz.rapidfire.rse.RapidFireRSEPlugin;
+import biz.rapidfire.rse.subsystem.resources.LibrariesNode;
 import biz.rapidfire.rse.subsystem.resources.RapidFireJobResource;
 
 import com.ibm.etools.systems.core.ui.actions.SystemBaseAction;
-import com.ibm.etools.systems.filters.SystemFilter;
-import com.ibm.etools.systems.filters.SystemFilterReference;
-import com.ibm.etools.systems.subsystems.SubSystemHelpers;
+import com.ibm.etools.systems.subsystems.SubSystem;
 
-public class NewJobFilterPopupMenuAction extends SystemBaseAction {
+public class NewLibraryAction extends SystemBaseAction {
 
-    public NewJobFilterPopupMenuAction(Shell shell) {
-        super(Messages.ActionLabel_New_Job, Messages.ActionTooltip_New_Job, shell);
+    public NewLibraryAction(Shell shell) {
+        super(Messages.ActionLabel_New_Library, Messages.ActionTooltip_New_Library, shell);
 
-        setImageDescriptor(RapidFireRSEPlugin.getDefault().getImageRegistry().getDescriptor(RapidFireRSEPlugin.IMAGE_NEW_JOB));
+        setImageDescriptor(RapidFireRSEPlugin.getDefault().getImageRegistry().getDescriptor(RapidFireRSEPlugin.IMAGE_NEW_LIBRARY));
         setContextMenuGroup("group.new");
     }
 
@@ -39,14 +37,12 @@ public class NewJobFilterPopupMenuAction extends SystemBaseAction {
         try {
 
             Object element = getFirstSelection();
-            SystemFilterReference filterReference = (SystemFilterReference)element;
-            SystemFilter systemFilter = filterReference.getReferencedFilter();
 
-            if (systemFilter.getFilterStringCount() == 1) {
-                RapidFireFilter filter = new RapidFireFilter(systemFilter.getFilterStrings()[0]);
+            if (element instanceof LibrariesNode) {
+                LibrariesNode filesNode = (LibrariesNode)element;
 
-                RapidFireJobResource job = RapidFireJobResource.createEmptyInstance(filter.getDataLibrary());
-                job.setSubSystem(SubSystemHelpers.getParentSubSystem(filterReference.getParentSystemFilterReferencePool()));
+                RapidFireJobResource job = RapidFireJobResource.createEmptyInstance(filesNode.getJob().getDataLibrary());
+                job.setSubSystem((SubSystem)filesNode.getJob().getParentSubSystem());
 
                 NewJobHandler handler = new NewJobHandler();
                 IStructuredSelection selection = new StructuredSelection(job);
@@ -54,7 +50,7 @@ public class NewJobFilterPopupMenuAction extends SystemBaseAction {
             }
 
         } catch (Exception e) {
-            RapidFireCorePlugin.logError("*** Could not execute 'New Job' handler ***", e); //$NON-NLS-1$
+            RapidFireCorePlugin.logError("*** Could not execute 'New Library' handler ***", e); //$NON-NLS-1$
         }
 
     }

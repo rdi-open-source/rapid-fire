@@ -17,7 +17,7 @@ import org.eclipse.swt.widgets.Shell;
 import biz.rapidfire.core.subsystem.RapidFireFilter;
 import biz.rapidfire.rse.Messages;
 import biz.rapidfire.rse.RapidFireRSEPlugin;
-import biz.rapidfire.rse.subsystem.actions.NewJobFilterPopupMenuAction;
+import biz.rapidfire.rse.subsystem.actions.job.NewJobFilterPopupMenuAction;
 
 import com.ibm.etools.iseries.core.api.ISeriesConnection;
 import com.ibm.etools.iseries.core.api.ISeriesDataElementWrapper;

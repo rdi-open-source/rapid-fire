@@ -6,16 +6,17 @@
  * http://www.eclipse.org/legal/cpl-v10.html
  *******************************************************************************/
 
-package biz.rapidfire.rse.subsystem.actions;
+package biz.rapidfire.rse.subsystem.actions.file;
 
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 
-import biz.rapidfire.core.handlers.NewJobHandler;
+import biz.rapidfire.core.handlers.file.DisplayFileHandler;
+import biz.rapidfire.rse.subsystem.actions.AbstractResourceAction;
 
-public class NewJobAction extends AbstractJobAction {
+public class DisplayFileAction extends AbstractResourceAction {
 
-    private NewJobHandler handler = new NewJobHandler();
+    private DisplayFileHandler handler = new DisplayFileHandler();
 
     @Override
     public void execute(ExecutionEvent event) throws ExecutionException {

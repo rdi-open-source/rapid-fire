@@ -6,16 +6,17 @@
  * http://www.eclipse.org/legal/cpl-v10.html
  *******************************************************************************/
 
-package biz.rapidfire.rse.subsystem.actions;
+package biz.rapidfire.rse.subsystem.actions.file;
 
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 
-import biz.rapidfire.core.handlers.DisplayCopyStatusHandler;
+import biz.rapidfire.core.handlers.file.CopyFileHandler;
+import biz.rapidfire.rse.subsystem.actions.AbstractResourceAction;
 
-public class DisplayCopyStatusAction extends AbstractJobAction {
+public class CopyFileAction extends AbstractResourceAction {
 
-    private DisplayCopyStatusHandler handler = new DisplayCopyStatusHandler();
+    private CopyFileHandler handler = new CopyFileHandler();
 
     @Override
     public void execute(ExecutionEvent event) throws ExecutionException {

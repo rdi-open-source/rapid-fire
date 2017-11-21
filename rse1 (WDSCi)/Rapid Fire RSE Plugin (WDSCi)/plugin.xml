@@ -21,6 +21,12 @@
       </configuration>
       
    </extension>
+   
+      	<!--
+      	  ==========================================
+      	    Rapid Fire 'Job' Object Contributions
+      	  ==========================================
+      	-->
 
    <extension
          point="com.ibm.etools.systems.core.popupMenus">
@@ -36,7 +42,7 @@
                label="%command_Reset_Job_After_Abortion"
                tooltip="%command_Reset_Job_After_Abortion_Description"
                icon="icons/resetabortion.gif"
-               class="biz.rapidfire.rse.subsystem.actions.ResetJobAfterAbortionAction"
+               class="biz.rapidfire.rse.subsystem.actions.job.ResetJobAfterAbortionAction"
                enablesFor="+"
                id="biz.rapidfire.rse.subsystem.actions.ResetJobAction">
          </action>
@@ -45,7 +51,7 @@
                label="%command_Reset_Job"
                tooltip="%command_Reset_Job_Description"
                icon="icons/reset.gif"
-               class="biz.rapidfire.rse.subsystem.actions.ResetJobAction"
+               class="biz.rapidfire.rse.subsystem.actions.job.ResetJobAction"
                enablesFor="+"
                id="biz.rapidfire.rse.subsystem.actions.ResetJobAction">
          </action>
@@ -54,7 +60,7 @@
                label="%command_End_Job"
                tooltip="%command_End_Job_Description"
                icon="icons/end.gif"
-               class="biz.rapidfire.rse.subsystem.actions.EndJobAction"
+               class="biz.rapidfire.rse.subsystem.actions.job.EndJobAction"
                enablesFor="+"
                id="biz.rapidfire.rse.subsystem.actions.EndJobAction">
          </action>
@@ -63,7 +69,7 @@
                label="%command_Start_Job"
                tooltip="%command_Start_Job_Description"
                icon="icons/start.gif"
-               class="biz.rapidfire.rse.subsystem.actions.StartJobAction"
+               class="biz.rapidfire.rse.subsystem.actions.job.StartJobAction"
                enablesFor="+"
                id="biz.rapidfire.rse.subsystem.actions.StartJobAction">
          </action>
@@ -72,7 +78,7 @@
                label="%command_Test_Job"
                tooltip="%command_Test_Job_Description"
                icon="icons/test.gif"
-               class="biz.rapidfire.rse.subsystem.actions.TestJobAction"
+               class="biz.rapidfire.rse.subsystem.actions.job.TestJobAction"
                enablesFor="+"
                id="biz.rapidfire.rse.subsystem.actions.TestJobAction">
          </action>
@@ -81,7 +87,7 @@
                label="%command_Display_copy_status"
                tooltip="%command_Display_copy_status_Description"
                icon="icons/job_status.gif"
-               class="biz.rapidfire.rse.subsystem.actions.DisplayCopyStatusAction"
+               class="biz.rapidfire.rse.subsystem.actions.job.DisplayCopyStatusAction"
                enablesFor="1"
                id="biz.rapidfire.rse.subsystem.actions.DisplayCopyStatusAction">
          </action>
@@ -90,7 +96,7 @@
                label="%command_Display_Job"
                tooltip="%command_Display_Job_Description"
                icon="icons/display.gif"
-               class="biz.rapidfire.rse.subsystem.actions.DisplayJobAction"
+               class="biz.rapidfire.rse.subsystem.actions.job.DisplayJobAction"
                enablesFor="1"
                id="biz.rapidfire.rse.subsystem.actions.DisplayJobAction">
          </action>
@@ -99,7 +105,7 @@
                label="%command_Delete_Job"
                tooltip="%command_Delete_Job_Description"
                icon="icons/delete.gif"
-               class="biz.rapidfire.rse.subsystem.actions.DeleteJobAction"
+               class="biz.rapidfire.rse.subsystem.actions.job.DeleteJobAction"
                enablesFor="+"
                id="biz.rapidfire.rse.subsystem.actions.DeleteJobAction">
          </action>
@@ -108,7 +114,7 @@
                label="%command_Copy_Job"
                tooltip="%command_Copy_Job_Description"
                icon="icons/copy.gif"
-               class="biz.rapidfire.rse.subsystem.actions.CopyJobAction"
+               class="biz.rapidfire.rse.subsystem.actions.job.CopyJobAction"
                enablesFor="1"
                id="biz.rapidfire.rse.subsystem.actions.CopyJobAction">
          </action>
@@ -117,7 +123,7 @@
                label="%command_Change_Job"
                tooltip="%command_Change_Job_Description"
                icon="icons/change.gif"
-               class="biz.rapidfire.rse.subsystem.actions.ChangeJobAction"
+               class="biz.rapidfire.rse.subsystem.actions.job.ChangeJobAction"
                enablesFor="+"
                id="biz.rapidfire.rse.subsystem.actions.ChangeJobAction">
          </action>
@@ -126,7 +132,7 @@
                label="%command_New_Job"
                tooltip="%command_New_Job_Description"
                icon="icons/new_job.gif"
-               class="biz.rapidfire.rse.subsystem.actions.NewJobAction"
+               class="biz.rapidfire.rse.subsystem.actions.job.NewJobAction"
                enablesFor="+"
                id="biz.rapidfire.rse.subsystem.actions.NewJobAction">
          </action>
@@ -137,7 +143,72 @@
    
       	<!--
       	  ==========================================
-      	    Rapid Fire Commands
+      	    Rapid Fire 'File' Object Contributions
+      	  ==========================================
+      	-->
+
+   <extension
+         point="com.ibm.etools.systems.core.popupMenus">
+      <objectContribution
+            subsystemfactoryid="biz.rapidfire.rse.subsystem.RapidFireSubSystemFactory"
+            typecategoryfilter="rapid fire"
+            typefilter="file"
+            subtypefilter="*"
+            namefilter="*"
+            id="biz.rapidfire.rse.job.actions">
+            
+         <action
+               label="%command_Display_File"
+               tooltip="%command_Display_File_Description"
+               icon="icons/display.gif"
+               class="biz.rapidfire.rse.subsystem.actions.file.DisplayFileAction"
+               enablesFor="1"
+               id="biz.rapidfire.rse.subsystem.actions.file.DisplayFileAction">
+         </action>
+            
+         <action
+               label="%command_Delete_File"
+               tooltip="%command_Delete_File_Description"
+               icon="icons/delete.gif"
+               class="biz.rapidfire.rse.subsystem.actions.file.DeleteFileAction"
+               enablesFor="+"
+               id="biz.rapidfire.rse.subsystem.actions.file.DeleteFileAction">
+         </action>
+            
+         <action
+               label="%command_Copy_File"
+               tooltip="%command_Copy_File_Description"
+               icon="icons/copy.gif"
+               class="biz.rapidfire.rse.subsystem.actions.file.CopyFileAction"
+               enablesFor="1"
+               id="biz.rapidfire.rse.subsystem.actions.file.CopyFileAction">
+         </action>
+            
+         <action
+               label="%command_Change_File"
+               tooltip="%command_Change_File_Description"
+               icon="icons/change.gif"
+               class="biz.rapidfire.rse.subsystem.actions.file.ChangeFileAction"
+               enablesFor="+"
+               id="biz.rapidfire.rse.subsystem.actions.file.ChangeFileAction">
+         </action>
+            
+         <action
+               label="%command_New_File"
+               tooltip="%command_New_File_Description"
+               icon="icons/new_file.gif"
+               class="biz.rapidfire.rse.subsystem.actions.file.NewFileAction"
+               enablesFor="+"
+               id="biz.rapidfire.rse.subsystem.actions.file.NewFileAction">
+         </action>
+         
+      </objectContribution>
+      
+   </extension>
+   
+      	<!--
+      	  ==========================================
+      	    Rapid Fire 'Job' Commands
       	  ==========================================
       	-->
 
@@ -230,7 +301,7 @@
 
       	<!--
       	  ==========================================
-      	    Rapid Fire Command Handler
+      	    Rapid Fire 'Job' Command Handlers
       	  ==========================================
       	-->
    
@@ -375,6 +446,77 @@
                <count value="*" />
                <iterate operator="and">
                   <adapt type="biz.rapidfire.rse.model.RapidFireJobResource" />
+               </iterate>
+            </with>
+         </enabledWhen>
+      </handler>
+
+      	<!--
+      	  ==========================================
+      	    Rapid Fire 'File' Command Handlers
+      	  ==========================================
+      	-->
+      
+      <handler
+         commandId="biz.rapidfire.core.command.File.new"
+         class="biz.rapidfire.core.handlers.file.NewFileHandler">
+         <enabledWhen>
+            <with variable="selection">
+               <count value="*" />
+               <iterate operator="and">
+                  <adapt type="biz.rapidfire.rse.model.RapidFireFileResource" />
+               </iterate>
+            </with>
+         </enabledWhen>
+      </handler>
+      
+      <handler
+         commandId="biz.rapidfire.core.command.File.change"
+         class="biz.rapidfire.core.handlers.file.ChangeFileHandler">
+         <enabledWhen>
+            <with variable="selection">
+               <count value="*" />
+               <iterate operator="and">
+                  <adapt type="biz.rapidfire.rse.model.RapidFireFileResource" />
+               </iterate>
+            </with>
+         </enabledWhen>
+      </handler>
+      
+      <handler
+         commandId="biz.rapidfire.core.command.File.copy"
+         class="biz.rapidfire.core.handlers.file.CopyFileHandler">
+         <enabledWhen>
+            <with variable="selection">
+               <count value="1" />
+               <iterate operator="and">
+                  <adapt type="biz.rapidfire.rse.model.RapidFireFileResource" />
+               </iterate>
+            </with>
+         </enabledWhen>
+      </handler>
+      
+      <handler
+         commandId="biz.rapidfire.core.command.File.delete"
+         class="biz.rapidfire.core.handlers.file.DeleteFileHandler">
+         <enabledWhen>
+            <with variable="selection">
+               <count value="*" />
+               <iterate operator="and">
+                  <adapt type="biz.rapidfire.rse.model.RapidFireFileResource" />
+               </iterate>
+            </with>
+         </enabledWhen>
+      </handler>
+      
+      <handler
+         commandId="biz.rapidfire.core.command.File.display"
+         class="biz.rapidfire.core.handlers.file.DisplayFileHandler">
+         <enabledWhen>
+            <with variable="selection">
+               <count value="1" />
+               <iterate operator="and">
+                  <adapt type="biz.rapidfire.rse.model.RapidFireFileResource" />
                </iterate>
             </with>
          </enabledWhen>

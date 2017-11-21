@@ -22,6 +22,10 @@ public class RapidFireFileResource extends AbstractResource implements IRapidFir
 
     private RapidFireFileResourceDelegate delegate;
 
+    public static RapidFireFileResource createEmptyInstance(String dataLibrary, String job) {
+        return new RapidFireFileResource(dataLibrary, job, 0); //$NON-NLS-1$
+    }
+
     public RapidFireFileResource(String dataLibrary, String job, int position) {
 
         if (StringHelper.isNullOrEmpty(dataLibrary)) {

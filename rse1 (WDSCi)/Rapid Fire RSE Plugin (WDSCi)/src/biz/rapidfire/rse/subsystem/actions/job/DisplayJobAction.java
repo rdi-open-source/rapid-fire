@@ -6,21 +6,21 @@
  * http://www.eclipse.org/legal/cpl-v10.html
  *******************************************************************************/
 
-package biz.rapidfire.rse.subsystem.actions;
+package biz.rapidfire.rse.subsystem.actions.job;
 
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 
-import biz.rapidfire.core.handlers.DisplayJobHandler;
+import biz.rapidfire.core.handlers.job.DisplayJobHandler;
+import biz.rapidfire.rse.subsystem.actions.AbstractResourceAction;
 
-public class DisplayJobAction extends AbstractJobAction {
+public class DisplayJobAction extends AbstractResourceAction {
 
     private DisplayJobHandler handler = new DisplayJobHandler();
 
     @Override
     public void execute(ExecutionEvent event) throws ExecutionException {
 
-        System.out.println("Calling handler: Displaying Rapid Fire job ...");
         handler.execute(event);
     }
 

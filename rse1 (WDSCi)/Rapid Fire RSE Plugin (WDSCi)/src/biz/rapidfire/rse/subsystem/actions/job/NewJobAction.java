@@ -6,21 +6,21 @@
  * http://www.eclipse.org/legal/cpl-v10.html
  *******************************************************************************/
 
-package biz.rapidfire.rse.subsystem.actions;
+package biz.rapidfire.rse.subsystem.actions.job;
 
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 
-import biz.rapidfire.core.handlers.CopyJobHandler;
+import biz.rapidfire.core.handlers.job.NewJobHandler;
+import biz.rapidfire.rse.subsystem.actions.AbstractResourceAction;
 
-public class CopyJobAction extends AbstractJobAction {
+public class NewJobAction extends AbstractResourceAction {
 
-    private CopyJobHandler handler = new CopyJobHandler();
+    private NewJobHandler handler = new NewJobHandler();
 
     @Override
     public void execute(ExecutionEvent event) throws ExecutionException {
 
-        System.out.println("Calling handler: Copying Rapid Fire job ...");
         handler.execute(event);
     }
 
