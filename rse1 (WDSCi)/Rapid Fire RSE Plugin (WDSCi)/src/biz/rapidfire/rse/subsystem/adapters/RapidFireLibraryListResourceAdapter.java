@@ -14,22 +14,22 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.views.properties.IPropertyDescriptor;
 import org.eclipse.ui.views.properties.PropertyDescriptor;
 
-import biz.rapidfire.core.model.IRapidFireLibraryResource;
+import biz.rapidfire.core.model.IRapidFireLibraryListResource;
 import biz.rapidfire.rse.Messages;
 import biz.rapidfire.rse.RapidFireRSEPlugin;
-import biz.rapidfire.rse.subsystem.resources.RapidFireLibraryResource;
+import biz.rapidfire.rse.subsystem.resources.RapidFireLibraryListResource;
 
 import com.ibm.etools.systems.core.ui.SystemMenuManager;
 import com.ibm.etools.systems.core.ui.view.ISystemRemoteElementAdapter;
 
-public class RapidFireLibraryResourceAdapter extends AbstractResourceAdapter implements ISystemRemoteElementAdapter {
+public class RapidFireLibraryListResourceAdapter extends AbstractResourceAdapter implements ISystemRemoteElementAdapter {
 
     private static final String DATA_LIBRARY = "DATA_LIBRARY"; //$NON-NLS-1$
     private static final String JOB = "JOB"; //$NON-NLS-1$
-    private static final String LIBRARY = "LIBRARY"; //$NON-NLS-1$
-    private static final String SHADOW_LIBRARY = "SHADOW_LIBRARY"; //$NON-NLS-1$
+    private static final String LIBRARY_LIST = "LIBRARY_LIST"; //$NON-NLS-1$
+    private static final String DESCRIPTION = "DESCRIPTION"; //$NON-NLS-1$
 
-    public RapidFireLibraryResourceAdapter() {
+    public RapidFireLibraryListResourceAdapter() {
         super();
     }
 
@@ -39,7 +39,7 @@ public class RapidFireLibraryResourceAdapter extends AbstractResourceAdapter imp
 
     @Override
     public ImageDescriptor getImageDescriptor(Object object) {
-        return RapidFireRSEPlugin.getDefault().getImageRegistry().getDescriptor(RapidFireRSEPlugin.IMAGE_LIBRARY);
+        return RapidFireRSEPlugin.getDefault().getImageRegistry().getDescriptor(RapidFireRSEPlugin.IMAGE_LIBRARY_LIST);
     }
 
     @Override
@@ -54,9 +54,9 @@ public class RapidFireLibraryResourceAdapter extends AbstractResourceAdapter imp
     @Override
     public String getText(Object element) {
 
-        RapidFireLibraryResource resource = (RapidFireLibraryResource)element;
+        RapidFireLibraryListResource resource = (RapidFireLibraryListResource)element;
 
-        return resource.getName() + " -> " + resource.getShadowLibrary();
+        return resource.getName() + " (" + resource.getDescription() + ")"; //$NON-NLS-1$ //$NON-NLS-2$
     }
 
     /**
@@ -65,9 +65,9 @@ public class RapidFireLibraryResourceAdapter extends AbstractResourceAdapter imp
     @Override
     public String getAbsoluteName(Object element) {
 
-        RapidFireLibraryResource resource = (RapidFireLibraryResource)element;
+        RapidFireLibraryListResource resource = (RapidFireLibraryListResource)element;
 
-        String name = "RapidFireLibrary." + resource.getDataLibrary() + "." + resource.getJob() + "." + resource.getName(); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+        String name = "RapidFireLibraryList." + resource.getDataLibrary() + "." + resource.getJob() + "." + resource.getName(); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
         return name;
     }
@@ -83,7 +83,7 @@ public class RapidFireLibraryResourceAdapter extends AbstractResourceAdapter imp
 
     @Override
     public String getRemoteType(Object element) {
-        return "library"; //$NON-NLS-1$
+        return "library.list"; //$NON-NLS-1$
     }
 
     @Override
@@ -110,10 +110,10 @@ public class RapidFireLibraryResourceAdapter extends AbstractResourceAdapter imp
         ourPDs[0].setDescription(Messages.Tooltip_DataLibrary_name);
         ourPDs[1] = new PropertyDescriptor(JOB, Messages.Job_name);
         ourPDs[1].setDescription(Messages.Tooltip_Job_name);
-        ourPDs[2] = new PropertyDescriptor(LIBRARY, Messages.Library_name);
-        ourPDs[2].setDescription(Messages.Tooltip_Library_name);
-        ourPDs[3] = new PropertyDescriptor(SHADOW_LIBRARY, Messages.ShadowLibrary_name);
-        ourPDs[3].setDescription(Messages.Tooltip_ShadowLibrary_name);
+        ourPDs[2] = new PropertyDescriptor(LIBRARY_LIST, Messages.Library_list_name);
+        ourPDs[2].setDescription(Messages.Tooltip_Library_list_name);
+        ourPDs[3] = new PropertyDescriptor(DESCRIPTION, Messages.Description);
+        ourPDs[3].setDescription(Messages.Tooltip_Description);
 
         return ourPDs;
     }
@@ -121,16 +121,16 @@ public class RapidFireLibraryResourceAdapter extends AbstractResourceAdapter imp
     @Override
     public Object internalGetPropertyValue(Object propKey) {
 
-        final IRapidFireLibraryResource resource = (IRapidFireLibraryResource)propertySourceInput;
+        final IRapidFireLibraryListResource resource = (IRapidFireLibraryListResource)propertySourceInput;
 
         if (propKey.equals(DATA_LIBRARY)) {
             return resource.getDataLibrary();
         } else if (propKey.equals(JOB)) {
             return resource.getJob();
-        } else if (propKey.equals(LIBRARY)) {
+        } else if (propKey.equals(LIBRARY_LIST)) {
             return resource.getName();
-        } else if (propKey.equals(SHADOW_LIBRARY)) {
-            return resource.getShadowLibrary();
+        } else if (propKey.equals(DESCRIPTION)) {
+            return resource.getDescription();
         }
         return null;
     }

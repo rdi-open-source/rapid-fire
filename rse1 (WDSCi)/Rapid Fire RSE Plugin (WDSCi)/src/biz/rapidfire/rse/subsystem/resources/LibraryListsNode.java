@@ -13,13 +13,13 @@ import biz.rapidfire.rse.Messages;
 
 import com.ibm.etools.systems.subsystems.impl.AbstractResource;
 
-public class LibrariesNode extends AbstractResource {
+public class LibraryListsNode extends AbstractResource {
 
     private String label;
     private IRapidFireJobResource job;
 
-    public LibrariesNode(IRapidFireJobResource job) {
-        this.label = Messages.NodeText_Libraries;
+    public LibraryListsNode(IRapidFireJobResource job) {
+        this.label = Messages.NodeText_LibraryLists;
         this.job = job;
     }
 

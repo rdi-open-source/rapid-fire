@@ -20,6 +20,7 @@ import biz.rapidfire.rse.Messages;
 import biz.rapidfire.rse.RapidFireRSEPlugin;
 import biz.rapidfire.rse.subsystem.resources.FilesNode;
 import biz.rapidfire.rse.subsystem.resources.LibrariesNode;
+import biz.rapidfire.rse.subsystem.resources.LibraryListsNode;
 import biz.rapidfire.rse.subsystem.resources.RapidFireJobResource;
 
 import com.ibm.etools.systems.core.ui.SystemMenuManager;
@@ -97,7 +98,7 @@ public class RapidFireJobResourceAdapter extends AbstractResourceAdapter impleme
 
     @Override
     public String getRemoteType(Object element) {
-        return "job";
+        return "job"; //$NON-NLS-1$
     }
 
     @Override
@@ -113,9 +114,10 @@ public class RapidFireJobResourceAdapter extends AbstractResourceAdapter impleme
     @Override
     public Object[] getChildren(Object element) {
 
-        AbstractResource[] children = new AbstractResource[2];
+        AbstractResource[] children = new AbstractResource[3];
         children[0] = new FilesNode((RapidFireJobResource)element);
-        children[1] = new LibrariesNode((RapidFireJobResource)element);
+        children[1] = new LibraryListsNode((RapidFireJobResource)element);
+        children[2] = new LibrariesNode((RapidFireJobResource)element);
 
         return children;
     }

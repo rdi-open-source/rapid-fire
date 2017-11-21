@@ -88,7 +88,7 @@ public class RapidFireFileResourceAdapter extends AbstractResourceAdapter implem
 
     @Override
     public String getRemoteType(Object element) {
-        return "file";
+        return "file"; //$NON-NLS-1$
     }
 
     @Override
