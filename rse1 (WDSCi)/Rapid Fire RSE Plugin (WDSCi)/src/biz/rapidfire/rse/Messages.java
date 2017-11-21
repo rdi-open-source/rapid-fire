@@ -62,8 +62,9 @@ public class Messages extends NLS {
     public static String Copy_program_library;
     public static String Conversion_program_name;
     public static String Conversion_program_library;
-    public static String Library_name;;
-    public static String ShadowLibrary_name;;
+    public static String Library_name;
+    public static String ShadowLibrary_name;
+    public static String Library_list_name;
 
     public static String Tooltip_DataLibrary_name;
     public static String Tooltip_Job_name;
@@ -85,6 +86,7 @@ public class Messages extends NLS {
     public static String Tooltip_Conversion_program_library;
     public static String Tooltip_Library_name;
     public static String Tooltip_ShadowLibrary_name;
+    public static String Tooltip_Library_list_name;
 
     /*
      * Filter types
@@ -99,9 +101,11 @@ public class Messages extends NLS {
     public static String Resource_Rapid_Fire_Library;
 
     public static String NodeText_Files;
+    public static String NodeText_LibraryLists;
     public static String NodeText_Libraries;
 
     public static String NodeType_Files;
+    public static String NodeType_LibraryLists;
     public static String NodeType_Libraries;
 
     // Action labels

@@ -13,13 +13,17 @@ import org.eclipse.ui.views.properties.IPropertySource;
 
 import biz.rapidfire.rse.subsystem.adapters.FilesNodeAdapter;
 import biz.rapidfire.rse.subsystem.adapters.LibrariesNodeAdapter;
+import biz.rapidfire.rse.subsystem.adapters.LibraryListsNodeAdapter;
 import biz.rapidfire.rse.subsystem.adapters.RapidFireFileResourceAdapter;
 import biz.rapidfire.rse.subsystem.adapters.RapidFireJobResourceAdapter;
+import biz.rapidfire.rse.subsystem.adapters.RapidFireLibraryListResourceAdapter;
 import biz.rapidfire.rse.subsystem.adapters.RapidFireLibraryResourceAdapter;
 import biz.rapidfire.rse.subsystem.resources.FilesNode;
 import biz.rapidfire.rse.subsystem.resources.LibrariesNode;
+import biz.rapidfire.rse.subsystem.resources.LibraryListsNode;
 import biz.rapidfire.rse.subsystem.resources.RapidFireFileResource;
 import biz.rapidfire.rse.subsystem.resources.RapidFireJobResource;
+import biz.rapidfire.rse.subsystem.resources.RapidFireLibraryListResource;
 import biz.rapidfire.rse.subsystem.resources.RapidFireLibraryResource;
 
 import com.ibm.etools.systems.core.ui.view.AbstractSystemRemoteAdapterFactory;
@@ -29,9 +33,11 @@ public class RapidFireAdapterFactory extends AbstractSystemRemoteAdapterFactory 
 
     private RapidFireJobResourceAdapter jobResourceAdapter = new RapidFireJobResourceAdapter();
     private RapidFireFileResourceAdapter fileResourceAdapter = new RapidFireFileResourceAdapter();
+    private RapidFireLibraryListResourceAdapter libraryListResourceAdapter = new RapidFireLibraryListResourceAdapter();
     private RapidFireLibraryResourceAdapter libraryResourceAdapter = new RapidFireLibraryResourceAdapter();
 
     private FilesNodeAdapter filesNodeAdapter = new FilesNodeAdapter();
+    private LibraryListsNodeAdapter libraryListsNodeAdapter = new LibraryListsNodeAdapter();
     private LibrariesNodeAdapter librariesNodeAdapter = new LibrariesNodeAdapter();
 
     public RapidFireAdapterFactory() {
@@ -46,10 +52,14 @@ public class RapidFireAdapterFactory extends AbstractSystemRemoteAdapterFactory 
             adapter = jobResourceAdapter;
         } else if (adaptableObject instanceof RapidFireFileResource) {
             adapter = fileResourceAdapter;
+        } else if (adaptableObject instanceof RapidFireLibraryListResource) {
+            adapter = libraryListResourceAdapter;
         } else if (adaptableObject instanceof RapidFireLibraryResource) {
             adapter = libraryResourceAdapter;
         } else if (adaptableObject instanceof FilesNode) {
             adapter = filesNodeAdapter;
+        } else if (adaptableObject instanceof LibraryListsNode) {
+            adapter = libraryListsNodeAdapter;
         } else if (adaptableObject instanceof LibrariesNode) {
             adapter = librariesNodeAdapter;
         }
