@@ -103,7 +103,7 @@ public class FileMaintenanceDialog extends XDialog {
     protected void configureShell(Shell newShell) {
         super.configureShell(newShell);
 
-        newShell.setText(Messages.DialogTitle_Job);
+        newShell.setText(Messages.DialogTitle_File);
     }
 
     @Override

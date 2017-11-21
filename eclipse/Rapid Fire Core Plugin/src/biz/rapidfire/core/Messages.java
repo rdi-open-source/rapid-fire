@@ -22,6 +22,7 @@ public class Messages extends NLS {
     // Dialog titles
     public static String DialogTitle_Specify_a_filter;
     public static String DialogTitle_Job;
+    public static String DialogTitle_File;
 
     // Dialog action titles
     public static String DialogMode_CREATE;
