@@ -161,7 +161,7 @@ public class RapidFireSubSystem extends DefaultSubSystemImpl implements IISeries
         return files.toArray(new IRapidFireFileResource[files.size()]);
     }
 
-    public IRapidFireLibraryListResource[] getLibraryList(String libraryName, String jobName, Shell shell) throws Exception {
+    public IRapidFireLibraryListResource[] getLibraryLists(String libraryName, String jobName, Shell shell) throws Exception {
 
         if (!successFullyLoaded()) {
             return new IRapidFireLibraryListResource[0];

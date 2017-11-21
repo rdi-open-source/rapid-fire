@@ -115,9 +115,9 @@ public class RapidFireJobResourceAdapter extends AbstractResourceAdapter impleme
     public Object[] getChildren(Object element) {
 
         AbstractResource[] children = new AbstractResource[3];
-        children[0] = new FilesNode((RapidFireJobResource)element);
+        children[0] = new LibrariesNode((RapidFireJobResource)element);
         children[1] = new LibraryListsNode((RapidFireJobResource)element);
-        children[2] = new LibrariesNode((RapidFireJobResource)element);
+        children[2] = new FilesNode((RapidFireJobResource)element);
 
         return children;
     }
