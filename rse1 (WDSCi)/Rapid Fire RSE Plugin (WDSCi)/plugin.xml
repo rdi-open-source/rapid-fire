@@ -41,6 +41,7 @@
             <separator name="maintenance"/>
             <separator name="status"/>
             <separator name="run"/>
+            <separator name="reset"/>
          
          <action
                label="%command_Display_Job"
@@ -101,26 +102,6 @@
                id="biz.rapidfire.rse.subsystem.actions.DisplayCopyStatusAction"
                menubarPath="status">
          </action>
-                        
-         <action
-               label="%command_Reset_Job_After_Abortion"
-               tooltip="%command_Reset_Job_After_Abortion_Description"
-               icon="icons/resetabortion.gif"
-               class="biz.rapidfire.rse.subsystem.actions.job.ResetJobAfterAbortionAction"
-               enablesFor="+"
-               id="biz.rapidfire.rse.subsystem.actions.ResetJobAction"
-               menubarPath="run">
-         </action>
-            
-         <action
-               label="%command_Reset_Job"
-               tooltip="%command_Reset_Job_Description"
-               icon="icons/reset.gif"
-               class="biz.rapidfire.rse.subsystem.actions.job.ResetJobAction"
-               enablesFor="+"
-               id="biz.rapidfire.rse.subsystem.actions.ResetJobAction"
-               menubarPath="run">
-         </action>
             
          <action
                label="%command_End_Job"
@@ -150,6 +131,26 @@
                enablesFor="+"
                id="biz.rapidfire.rse.subsystem.actions.TestJobAction"
                menubarPath="run">
+         </action>
+                        
+         <action
+               label="%command_Reset_Job_After_Abortion"
+               tooltip="%command_Reset_Job_After_Abortion_Description"
+               icon="icons/resetabortion.gif"
+               class="biz.rapidfire.rse.subsystem.actions.job.ResetJobAfterAbortionAction"
+               enablesFor="+"
+               id="biz.rapidfire.rse.subsystem.actions.ResetJobAction"
+               menubarPath="reset">
+         </action>
+            
+         <action
+               label="%command_Reset_Job"
+               tooltip="%command_Reset_Job_Description"
+               icon="icons/reset.gif"
+               class="biz.rapidfire.rse.subsystem.actions.job.ResetJobAction"
+               enablesFor="+"
+               id="biz.rapidfire.rse.subsystem.actions.ResetJobAction"
+               menubarPath="reset">
          </action>
          
       </objectContribution>
