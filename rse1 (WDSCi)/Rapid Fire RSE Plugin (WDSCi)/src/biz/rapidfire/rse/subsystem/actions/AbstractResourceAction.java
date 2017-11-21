@@ -18,7 +18,7 @@ import org.eclipse.ui.ISources;
 
 import com.ibm.etools.iseries.core.ui.actions.isv.ISeriesAbstractQSYSPopupMenuExtensionAction;
 
-public abstract class AbstractJobAction extends ISeriesAbstractQSYSPopupMenuExtensionAction {
+public abstract class AbstractResourceAction extends ISeriesAbstractQSYSPopupMenuExtensionAction {
 
     @Override
     public void run() {

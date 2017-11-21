@@ -17,7 +17,7 @@ import biz.rapidfire.core.dialogs.MessageDialogAsync;
 import biz.rapidfire.core.model.IRapidFireJobResource;
 import biz.rapidfire.rse.Messages;
 import biz.rapidfire.rse.RapidFireRSEPlugin;
-import biz.rapidfire.rse.subsystem.actions.NewFileAction;
+import biz.rapidfire.rse.subsystem.actions.file.NewFileNodePopupMenuAction;
 import biz.rapidfire.rse.subsystem.resources.FilesNode;
 
 import com.ibm.etools.systems.core.ui.SystemMenuManager;
@@ -41,7 +41,7 @@ public class FilesNodeAdapter extends AbstractNodeAdapter {
 
     @Override
     public void addActions(SystemMenuManager menuManager, IStructuredSelection selection, Shell shell, String paramString) {
-        menuManager.add(null, new NewFileAction(shell));
+        menuManager.add(null, new NewFileNodePopupMenuAction(shell));
     }
 
     @Override

@@ -6,25 +6,26 @@
  * http://www.eclipse.org/legal/cpl-v10.html
  *******************************************************************************/
 
-package biz.rapidfire.rse.subsystem.actions;
+package biz.rapidfire.rse.subsystem.actions.file;
 
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.swt.widgets.Shell;
 
 import biz.rapidfire.core.RapidFireCorePlugin;
-import biz.rapidfire.core.handlers.NewJobHandler;
+import biz.rapidfire.core.handlers.file.NewFileHandler;
+import biz.rapidfire.core.model.IRapidFireJobResource;
 import biz.rapidfire.rse.Messages;
 import biz.rapidfire.rse.RapidFireRSEPlugin;
 import biz.rapidfire.rse.subsystem.resources.FilesNode;
-import biz.rapidfire.rse.subsystem.resources.RapidFireJobResource;
+import biz.rapidfire.rse.subsystem.resources.RapidFireFileResource;
 
 import com.ibm.etools.systems.core.ui.actions.SystemBaseAction;
 import com.ibm.etools.systems.subsystems.SubSystem;
 
-public class NewFileAction extends SystemBaseAction {
+public class NewFileNodePopupMenuAction extends SystemBaseAction {
 
-    public NewFileAction(Shell shell) {
+    public NewFileNodePopupMenuAction(Shell shell) {
         super(Messages.ActionLabel_New_File, Messages.ActionTooltip_New_File, shell);
 
         setImageDescriptor(RapidFireRSEPlugin.getDefault().getImageRegistry().getDescriptor(RapidFireRSEPlugin.IMAGE_NEW_FILE));
@@ -40,12 +41,13 @@ public class NewFileAction extends SystemBaseAction {
 
             if (element instanceof FilesNode) {
                 FilesNode filesNode = (FilesNode)element;
+                IRapidFireJobResource job = filesNode.getJob();
 
-                RapidFireJobResource job = RapidFireJobResource.createEmptyInstance(filesNode.getJob().getDataLibrary());
-                job.setSubSystem((SubSystem)filesNode.getJob().getParentSubSystem());
+                RapidFireFileResource file = RapidFireFileResource.createEmptyInstance(job.getDataLibrary(), job.getName());
+                file.setSubSystem((SubSystem)job.getParentSubSystem());
 
-                NewJobHandler handler = new NewJobHandler();
-                IStructuredSelection selection = new StructuredSelection(job);
+                NewFileHandler handler = new NewFileHandler();
+                IStructuredSelection selection = new StructuredSelection(file);
                 handler.executeWithSelection(selection);
             }
 

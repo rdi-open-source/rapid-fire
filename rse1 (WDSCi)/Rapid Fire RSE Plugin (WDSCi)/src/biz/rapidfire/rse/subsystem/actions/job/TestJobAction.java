@@ -6,21 +6,21 @@
  * http://www.eclipse.org/legal/cpl-v10.html
  *******************************************************************************/
 
-package biz.rapidfire.rse.subsystem.actions;
+package biz.rapidfire.rse.subsystem.actions.job;
 
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 
-import biz.rapidfire.core.handlers.TestJobHandler;
+import biz.rapidfire.core.handlers.job.TestJobHandler;
+import biz.rapidfire.rse.subsystem.actions.AbstractResourceAction;
 
-public class TestJobAction extends AbstractJobAction {
+public class TestJobAction extends AbstractResourceAction {
 
     private TestJobHandler handler = new TestJobHandler();
 
     @Override
     public void execute(ExecutionEvent event) throws ExecutionException {
 
-        System.out.println("Calling handler: Testing Rapid Fire job ...");
         handler.execute(event);
     }
 

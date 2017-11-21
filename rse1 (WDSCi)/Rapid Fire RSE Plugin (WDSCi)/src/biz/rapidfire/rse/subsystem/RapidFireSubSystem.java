@@ -48,11 +48,9 @@ import com.ibm.etools.systems.as400cmdsubsys.impl.CmdSubSystemImpl;
 import com.ibm.etools.systems.as400filesubsys.FileSubSystem;
 import com.ibm.etools.systems.core.SystemBasePlugin;
 import com.ibm.etools.systems.core.SystemPlugin;
-import com.ibm.etools.systems.core.messages.SystemMessage;
 import com.ibm.etools.systems.dftsubsystem.impl.DefaultSubSystemImpl;
 import com.ibm.etools.systems.model.SystemConnection;
 import com.ibm.etools.systems.model.SystemRegistry;
-import com.ibm.etools.systems.model.impl.SystemMessageObject;
 import com.ibm.etools.systems.subsystems.SubSystem;
 import com.ibm.etools.systems.subsystems.impl.AbstractSystemManager;
 
@@ -109,7 +107,6 @@ public class RapidFireSubSystem extends DefaultSubSystemImpl implements IISeries
 
             for (IRapidFireJobResource job : allJobs) {
                 if (filter.matches(job)) {
-                    job.setParentSubSystem(this);
                     filteredJobs.addElement(job);
                 }
             }
@@ -132,6 +129,13 @@ public class RapidFireSubSystem extends DefaultSubSystemImpl implements IISeries
 
         JobsDAO dao = new JobsDAO(getConnectionName(), libraryName);
         List<IRapidFireJobResource> jobs = dao.load(shell);
+        if (jobs == null) {
+            return null;
+        }
+
+        for (IRapidFireJobResource job : jobs) {
+            job.setParentSubSystem(this);
+        }
 
         return jobs.toArray(new IRapidFireJobResource[jobs.size()]);
     }
@@ -144,6 +148,13 @@ public class RapidFireSubSystem extends DefaultSubSystemImpl implements IISeries
 
         FilesDAO dao = new FilesDAO(getConnectionName(), libraryName);
         List<IRapidFireFileResource> files = dao.load(jobName, shell);
+        if (files == null) {
+            return null;
+        }
+
+        for (IRapidFireFileResource file : files) {
+            file.setParentSubSystem(this);
+        }
 
         return files.toArray(new IRapidFireFileResource[files.size()]);
     }
@@ -156,6 +167,13 @@ public class RapidFireSubSystem extends DefaultSubSystemImpl implements IISeries
 
         LibrariesDAO dao = new LibrariesDAO(getConnectionName(), libraryName);
         List<IRapidFireLibraryResource> libraries = dao.load(jobName, shell);
+        if (libraries == null) {
+            return null;
+        }
+
+        for (IRapidFireLibraryResource library : libraries) {
+            library.setParentSubSystem(this);
+        }
 
         return libraries.toArray(new IRapidFireLibraryResource[libraries.size()]);
     }
@@ -168,6 +186,9 @@ public class RapidFireSubSystem extends DefaultSubSystemImpl implements IISeries
 
         FileCopyStatusDAO dao = new FileCopyStatusDAO(getHostName(), libraryName);
         List<IFileCopyStatus> fileCopyStatuses = dao.load(jobName, shell);
+        if (fileCopyStatuses == null) {
+            return null;
+        }
 
         return fileCopyStatuses.toArray(new FileCopyStatus[fileCopyStatuses.size()]);
     }

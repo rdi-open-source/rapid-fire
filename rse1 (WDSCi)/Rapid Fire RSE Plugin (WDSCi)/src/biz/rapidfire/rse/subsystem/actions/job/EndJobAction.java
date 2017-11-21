@@ -6,21 +6,21 @@
  * http://www.eclipse.org/legal/cpl-v10.html
  *******************************************************************************/
 
-package biz.rapidfire.rse.subsystem.actions;
+package biz.rapidfire.rse.subsystem.actions.job;
 
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 
-import biz.rapidfire.core.handlers.EndJobHandler;
+import biz.rapidfire.core.handlers.job.EndJobHandler;
+import biz.rapidfire.rse.subsystem.actions.AbstractResourceAction;
 
-public class EndJobAction extends AbstractJobAction {
+public class EndJobAction extends AbstractResourceAction {
 
     private EndJobHandler handler = new EndJobHandler();
 
     @Override
     public void execute(ExecutionEvent event) throws ExecutionException {
 
-        System.out.println("Calling handler: Ending Rapid Fire job ...");
         handler.execute(event);
     }
 

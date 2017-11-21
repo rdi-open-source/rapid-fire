@@ -6,21 +6,21 @@
  * http://www.eclipse.org/legal/cpl-v10.html
  *******************************************************************************/
 
-package biz.rapidfire.rse.subsystem.actions;
+package biz.rapidfire.rse.subsystem.actions.job;
 
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 
-import biz.rapidfire.core.handlers.DeleteJobHandler;
+import biz.rapidfire.core.handlers.job.StartJobHandler;
+import biz.rapidfire.rse.subsystem.actions.AbstractResourceAction;
 
-public class DeleteJobAction extends AbstractJobAction {
+public class StartJobAction extends AbstractResourceAction {
 
-    private DeleteJobHandler handler = new DeleteJobHandler();
+    private StartJobHandler handler = new StartJobHandler();
 
     @Override
     public void execute(ExecutionEvent event) throws ExecutionException {
 
-        System.out.println("Calling handler: Deleting Rapid Fire job ...");
         handler.execute(event);
     }
 

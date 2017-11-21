@@ -6,21 +6,21 @@
  * http://www.eclipse.org/legal/cpl-v10.html
  *******************************************************************************/
 
-package biz.rapidfire.rse.subsystem.actions;
+package biz.rapidfire.rse.subsystem.actions.file;
 
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 
-import biz.rapidfire.core.handlers.ResetJobAfterAbortionHandler;
+import biz.rapidfire.core.handlers.file.NewFileHandler;
+import biz.rapidfire.rse.subsystem.actions.AbstractResourceAction;
 
-public class ResetJobAfterAbortionAction extends AbstractJobAction {
+public class NewFileAction extends AbstractResourceAction {
 
-    private ResetJobAfterAbortionHandler handler = new ResetJobAfterAbortionHandler();
+    private NewFileHandler handler = new NewFileHandler();
 
     @Override
     public void execute(ExecutionEvent event) throws ExecutionException {
 
-        System.out.println("Calling handler: Resetting Rapid Fire job after abortion ...");
         handler.execute(event);
     }
 
