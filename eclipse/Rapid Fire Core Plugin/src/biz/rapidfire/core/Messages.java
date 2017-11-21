@@ -23,6 +23,7 @@ public class Messages extends NLS {
     public static String DialogTitle_Specify_a_filter;
     public static String DialogTitle_Job;
     public static String DialogTitle_File;
+    public static String DialogTitle_Library;
 
     // Dialog action titles
     public static String DialogMode_CREATE;
@@ -65,8 +66,9 @@ public class Messages extends NLS {
     public static String Label_Copy_program_library_name_colon;
     public static String Label_Conversion_program_name_colon;
     public static String Label_Conversion_program_library_name_colon;
+    public static String Label_Shadow_library_colon;
 
-    public static String Tooltip_Library_colon;
+    public static String Tooltip_Library;
     public static String Tooltip_Job;
     public static String Tooltip_Description;
     public static String Tooltip_Create_environment;
@@ -80,6 +82,7 @@ public class Messages extends NLS {
     public static String Tooltip_Copy_program_library_name;
     public static String Tooltip_Conversion_program_name;
     public static String Tooltip_Conversion_program_library_name;
+    public static String Tooltip_Shadow_library;
 
     // Action labels
     public static String ActionLabel_Auto_refresh_menu_item;

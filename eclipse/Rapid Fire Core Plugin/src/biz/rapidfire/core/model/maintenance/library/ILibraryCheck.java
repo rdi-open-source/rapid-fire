@@ -6,15 +6,13 @@
  * http://www.eclipse.org/legal/cpl-v10.html
  *******************************************************************************/
 
-package biz.rapidfire.core.model.maintenance.job;
+package biz.rapidfire.core.model.maintenance.library;
 
 import biz.rapidfire.core.model.maintenance.ICheck;
 
-public interface IJobCheck extends ICheck {
+public interface ILibraryCheck extends ICheck {
 
     public static final String FIELD_JOB = "JOB"; //$NON-NLS-1$
-    public static final String FIELD_DESCRIPTION = "DSCR"; //$NON-NLS-1$
-    public static final String FIELD_CREATE_ENVIRONMENT = "CRTE"; //$NON-NLS-1$
-    public static final String FIELD_JOB_QUEUE_NAME = "JQ"; //$NON-NLS-1$
-    public static final String FIELD_JOB_QUEUE_LIBRARY_NAME = "JQL"; //$NON-NLS-1$
+    public static final String FIELD_LIBRARY = "LIB"; //$NON-NLS-1$
+    public static final String FIELD_SHADOW_LIBRARY = "SLIB"; //$NON-NLS-1$
 }

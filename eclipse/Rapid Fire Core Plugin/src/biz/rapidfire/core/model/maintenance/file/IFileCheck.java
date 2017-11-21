@@ -8,11 +8,9 @@
 
 package biz.rapidfire.core.model.maintenance.file;
 
-public interface IFileCheck {
+import biz.rapidfire.core.model.maintenance.ICheck;
 
-    public static final int FIELD_NAME = 1;
-    public static final int MESSAGE = 2;
-    public static final int SUCCESS = 3;
+public interface IFileCheck extends ICheck {
 
     public static final String FIELD_JOB = "JOB"; //$NON-NLS-1$
     public static final String FIELD_POSITION = "POS"; //$NON-NLS-1$
