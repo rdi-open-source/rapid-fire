@@ -13,8 +13,13 @@ import java.util.Map;
 
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.ui.ISources;
+
+import biz.rapidfire.core.Messages;
+import biz.rapidfire.core.RapidFireCorePlugin;
+import biz.rapidfire.core.helpers.ExceptionHelper;
 
 import com.ibm.etools.iseries.core.ui.actions.isv.ISeriesAbstractQSYSPopupMenuExtensionAction;
 
@@ -30,14 +35,15 @@ public abstract class AbstractResourceAction extends ISeriesAbstractQSYSPopupMen
             Map<String, Object> properties = new HashMap<String, Object>();
             properties.put(ISources.ACTIVE_CURRENT_SELECTION_NAME, new StructuredSelection(selection));
             ExecutionEvent event = new ExecutionEvent(null, properties, null, null);
-            
+
             execute(event);
-            
+
         } catch (ExecutionException e) {
-            e.printStackTrace(); // TODO: fix it
+            RapidFireCorePlugin.logError("*** Could not execute the requested action ***", e); //$NON-NLS-1$
+            MessageDialog.openError(getShell(), Messages.E_R_R_O_R, ExceptionHelper.getLocalizedMessage(e));
         }
     }
 
-    public abstract void execute(ExecutionEvent event) throws ExecutionException ;
+    public abstract void execute(ExecutionEvent event) throws ExecutionException;
 
 }
