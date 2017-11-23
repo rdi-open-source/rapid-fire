@@ -8,6 +8,9 @@
 
 package biz.rapidfire.rse;
 
+import java.util.LinkedList;
+import java.util.List;
+
 import org.eclipse.osgi.util.NLS;
 
 public class Messages extends NLS {
@@ -125,5 +128,15 @@ public class Messages extends NLS {
     static {
         // initialize resource bundle
         NLS.initializeMessages(BUNDLE_NAME, Messages.class);
+    }
+
+    public static String bindParameters(String message, Object... values) {
+
+        List<Object> bindings = new LinkedList<Object>();
+        for (Object value : values) {
+            bindings.add(value);
+        }
+
+        return bind(message, bindings.toArray());
     }
 }
