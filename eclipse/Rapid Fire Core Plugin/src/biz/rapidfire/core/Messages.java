@@ -8,6 +8,9 @@
 
 package biz.rapidfire.core;
 
+import java.util.LinkedList;
+import java.util.List;
+
 import org.eclipse.osgi.util.NLS;
 
 public class Messages extends NLS {
@@ -132,6 +135,11 @@ public class Messages extends NLS {
     public static String Could_not_initialize_library_list_manager_for_library_list_C_of_job_A_in_library_B;
     public static String Could_not_start_a_Rapid_Fire_JDBC_connection;
     public static String Could_not_stop_the_Rapid_Fire_JDBC_connection;
+    public static String Name_of_library_A_is_not_valid;
+    public static String Name_of_shadow_library_A_is_not_valid;
+    public static String Library_list_name_A_is_not_valid;
+    public static String Library_list_description_A_is_not_valid;
+    public static String Invalid_sequence_number_A;
 
     // API error messages
     public static String EntityManager_Unknown_error_code_A;
@@ -162,5 +170,15 @@ public class Messages extends NLS {
     static {
         // initialize resource bundle
         NLS.initializeMessages(BUNDLE_NAME, Messages.class);
+    }
+
+    public static String bindParameters(String message, Object... values) {
+
+        List<Object> bindings = new LinkedList<Object>();
+        for (Object value : values) {
+            bindings.add(value);
+        }
+
+        return bind(message, bindings.toArray());
     }
 }

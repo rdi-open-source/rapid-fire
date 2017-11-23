@@ -278,7 +278,8 @@ public class JDBCConnectionManager extends AbstractDAOManager {
             String errorCode = statement.getString(IRapidFireStart.ERROR_CODE);
 
             if (!Success.YES.label().equals(success)) {
-                String message = Messages.bind(Messages.Could_not_start_a_Rapid_Fire_JDBC_connection, getStartConnectionErrorMessage(errorCode));
+                String message = Messages.bindParameters(Messages.Could_not_start_a_Rapid_Fire_JDBC_connection,
+                    getStartConnectionErrorMessage(errorCode));
                 throw new RapidFireStartConnectionException(message);
             }
 
@@ -302,7 +303,7 @@ public class JDBCConnectionManager extends AbstractDAOManager {
             return Messages.RapidFire_Start_001;
         }
 
-        return Messages.bind(Messages.EntityManager_Unknown_error_code_A, errorCode);
+        return Messages.bindParameters(Messages.EntityManager_Unknown_error_code_A, errorCode);
     }
 
     private void stopConnection(JDBCConnection jdbcConnection) throws Exception, SQLException {
@@ -324,7 +325,8 @@ public class JDBCConnectionManager extends AbstractDAOManager {
             String errorCode = statement.getString(IRapidFireStop.ERROR_CODE);
 
             if (!Success.YES.label().equals(success)) {
-                String message = Messages.bind(Messages.Could_not_stop_the_Rapid_Fire_JDBC_connection, getStopConnectionErrorMessage(errorCode));
+                String message = Messages.bindParameters(Messages.Could_not_stop_the_Rapid_Fire_JDBC_connection,
+                    getStopConnectionErrorMessage(errorCode));
                 throw new RapidFireStopConnectionException(message);
             }
 
@@ -348,7 +350,7 @@ public class JDBCConnectionManager extends AbstractDAOManager {
             return Messages.RapidFire_Stop_001;
         }
 
-        return Messages.bind(Messages.EntityManager_Unknown_error_code_A, errorCode);
+        return Messages.bindParameters(Messages.EntityManager_Unknown_error_code_A, errorCode);
     }
 
     public void destroy() {

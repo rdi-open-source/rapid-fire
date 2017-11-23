@@ -53,16 +53,15 @@ public class JobManager extends AbstractManager<JobKey, JobValues> {
 
         statement.execute();
 
-        // TODO: add error handling
         String success = statement.getString(IJobInitialize.SUCCESS);
         String errorCode = statement.getString(IJobInitialize.ERROR_CODE);
 
         String message;
         if (Success.YES.label().equals(success)) {
-            message = ""; //$NON-NLS-1$
+            message = null;
         } else {
-            message = Messages.bind(Messages.Could_not_initialize_job_manager_for_job_A_in_library_B,
-                new Object[] { key.getJobName(), dao.getLibraryName(), getErrorMessage(errorCode) });
+            message = Messages.bindParameters(Messages.Could_not_initialize_job_manager_for_job_A_in_library_B, key.getJobName(),
+                dao.getLibraryName(), getErrorMessage(errorCode));
         }
 
         Result status = new Result(null, message, success);

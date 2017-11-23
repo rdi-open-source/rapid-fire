@@ -59,16 +59,15 @@ public class LibraryManager extends AbstractManager<LibraryKey, LibraryValues> {
 
         statement.execute();
 
-        // TODO: add error handling
         String success = statement.getString(ILibraryInitialize.SUCCESS);
         String errorCode = statement.getString(IJobInitialize.ERROR_CODE);
 
         String message;
         if (Success.YES.label().equals(success)) {
-            message = ""; //$NON-NLS-1$
+            message = null;
         } else {
-            message = Messages.bind(Messages.Could_not_initialize_library_manager_for_library_C_of_job_A_in_library_B,
-                new Object[] { key.getJobName(), dao.getLibraryName(), key.getLibrary(), getErrorMessage(errorCode) });
+            message = Messages.bindParameters(Messages.Could_not_initialize_library_manager_for_library_C_of_job_A_in_library_B, key.getJobName(),
+                dao.getLibraryName(), key.getLibrary(), getErrorMessage(errorCode));
         }
 
         Result status = new Result(null, message, success);

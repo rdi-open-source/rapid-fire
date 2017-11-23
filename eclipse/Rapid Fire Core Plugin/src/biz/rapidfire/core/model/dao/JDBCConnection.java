@@ -96,7 +96,7 @@ class JDBCConnection implements IJDBCConnection {
 
             } catch (SQLException e) {
                 if ("08003".equals(e.getSQLState())) {
-                    // TODO: ask user for reconnection.
+                    // TODO: ask user for reconnection?
                     if (!JDBCConnectionManager.getInstance().reconnect(this)) {
                         throw e;
                     } else {
@@ -139,7 +139,7 @@ class JDBCConnection implements IJDBCConnection {
 
             } catch (SQLException e) {
                 if ("08003".equals(e.getSQLState())) {
-                    // TODO: ask user for reconnection.
+                    // TODO: ask user for reconnection?
                     if (!JDBCConnectionManager.getInstance().reconnect(this)) {
                         throw e;
                     } else {

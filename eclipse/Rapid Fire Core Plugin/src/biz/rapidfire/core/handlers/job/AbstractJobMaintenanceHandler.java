@@ -43,9 +43,9 @@ public abstract class AbstractJobMaintenanceHandler extends AbstractResourceMain
 
             IRapidFireJobResource job = (IRapidFireJobResource)resource;
 
-            String message = initialize(job);
-            if (message != null) {
-                MessageDialog.openError(getShell(), Messages.E_R_R_O_R, message);
+            Result result = initialize(job);
+            if (result != null && result.isError()) {
+                MessageDialog.openError(getShell(), Messages.E_R_R_O_R, result.getMessage());
             } else {
                 performAction(job);
             }
@@ -63,7 +63,7 @@ public abstract class AbstractJobMaintenanceHandler extends AbstractResourceMain
         return null;
     }
 
-    private String initialize(IRapidFireJobResource job) throws Exception {
+    private Result initialize(IRapidFireJobResource job) throws Exception {
 
         String connectionName = job.getParentSubSystem().getConnectionName();
         String dataLibrary = job.getDataLibrary();
@@ -72,9 +72,9 @@ public abstract class AbstractJobMaintenanceHandler extends AbstractResourceMain
         manager = new JobManager(JDBCConnectionManager.getInstance().getConnection(connectionName, dataLibrary, commitControl));
         manager.openFiles();
 
-        Result status = manager.initialize(getMode(), new JobKey(job.getName()));
-        if (status.isError()) {
-            return status.getMessage();
+        Result result = manager.initialize(getMode(), new JobKey(job.getName()));
+        if (result.isError()) {
+            return result;
         }
 
         return null;

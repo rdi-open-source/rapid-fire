@@ -149,7 +149,7 @@ public class LibraryMaintenanceDialog extends AbstractMaintenanceDialog {
                 manager.setValues(newValues);
                 Result result = manager.check();
                 if (result.isError()) {
-                    setErrorFocus(result.getFieldName());
+                    setErrorFocus(result);
                     return;
                 }
             } catch (Exception e) {
@@ -163,17 +163,22 @@ public class LibraryMaintenanceDialog extends AbstractMaintenanceDialog {
         super.okPressed();
     }
 
-    private void setErrorFocus(String fieldName) {
+    private void setErrorFocus(Result result) {
+
+        String fieldName = result.getFieldName();
+        String message = null;
 
         if (ILibraryCheck.FIELD_JOB.equals(fieldName)) {
             textJobName.setFocus();
-            setErrorMessage(Messages.bind(Messages.Job_name_A_is_not_valid, textJobName.getText()));
+            message = Messages.bind(Messages.Job_name_A_is_not_valid, textJobName.getText());
         } else if (ILibraryCheck.FIELD_LIBRARY.equals(fieldName)) {
             textLibrary.setFocus();
-            setErrorMessage(Messages.bind(Messages.File_position_A_is_not_valid, textLibrary.getText()));
+            message = Messages.bind(Messages.Name_of_library_A_is_not_valid, textLibrary.getText());
         } else if (ILibraryCheck.FIELD_SHADOW_LIBRARY.equals(fieldName)) {
             textShadowLibrary.setFocus();
-            setErrorMessage(Messages.bind(Messages.File_name_A_is_not_valid, textShadowLibrary.getText()));
+            message = Messages.bind(Messages.Name_of_shadow_library_A_is_not_valid, textShadowLibrary.getText());
         }
+
+        setErrorMessage(message, result);
     }
 }

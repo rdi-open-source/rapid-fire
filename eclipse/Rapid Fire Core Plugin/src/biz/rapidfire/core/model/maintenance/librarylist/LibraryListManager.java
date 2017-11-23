@@ -58,16 +58,15 @@ public class LibraryListManager extends AbstractManager<LibraryListKey, LibraryL
 
         statement.execute();
 
-        // TODO: add error handling
         String success = statement.getString(ILibraryListInitialize.SUCCESS);
         String errorCode = statement.getString(ILibraryListInitialize.ERROR_CODE);
 
         String message;
         if (Success.YES.label().equals(success)) {
-            message = ""; //$NON-NLS-1$
+            message = null;
         } else {
-            message = Messages.bind(Messages.Could_not_initialize_library_list_manager_for_library_list_C_of_job_A_in_library_B,
-                new Object[] { key.getJobName(), dao.getLibraryName(), key.getLibraryList(), getErrorMessage(errorCode) });
+            message = Messages.bindParameters(Messages.Could_not_initialize_library_list_manager_for_library_list_C_of_job_A_in_library_B,
+                key.getJobName(), dao.getLibraryName(), key.getLibraryList(), getErrorMessage(errorCode));
         }
 
         Result status = new Result(null, message, success);
@@ -144,24 +143,24 @@ public class LibraryListManager extends AbstractManager<LibraryListKey, LibraryL
         CallableStatement statement = dao.prepareCall(dao
             .insertLibraryQualifier("{CALL " + IJDBCConnection.LIBRARY + "\"MNTLIBL_check\"(?, ?, ?, ?)}")); //$NON-NLS-1$ //$NON-NLS-2$
 
-        statement.setString(ILibraryListCheck.FIELD_NAME, EMPTY_STRING);
-        statement.setFloat(ILibraryListCheck.RECORD, 0);
-        statement.setString(ILibraryListCheck.MESSAGE, EMPTY_STRING);
         statement.setString(ILibraryListCheck.SUCCESS, Success.NO.label());
+        statement.setString(ILibraryListCheck.FIELD_NAME, EMPTY_STRING);
+        statement.setInt(ILibraryListCheck.RECORD, 0);
+        statement.setString(ILibraryListCheck.MESSAGE, EMPTY_STRING);
 
-        statement.registerOutParameter(ILibraryListCheck.FIELD_NAME, Types.CHAR);
-        statement.registerOutParameter(ILibraryListCheck.RECORD, Types.FLOAT);
-        statement.registerOutParameter(ILibraryListCheck.MESSAGE, Types.CHAR);
         statement.registerOutParameter(ILibraryListCheck.SUCCESS, Types.CHAR);
+        statement.registerOutParameter(ILibraryListCheck.FIELD_NAME, Types.CHAR);
+        statement.registerOutParameter(ILibraryListCheck.RECORD, Types.DECIMAL);
+        statement.registerOutParameter(ILibraryListCheck.MESSAGE, Types.CHAR);
 
         statement.execute();
 
-        String fieldName = statement.getString(ILibraryListCheck.FIELD_NAME);
-        float record = statement.getFloat(ILibraryListCheck.RECORD);
-        String message = statement.getString(ILibraryListCheck.MESSAGE);
         String success = statement.getString(ILibraryListCheck.SUCCESS);
+        String fieldName = statement.getString(ILibraryListCheck.FIELD_NAME);
+        int recordNbr = statement.getBigDecimal(ILibraryListCheck.RECORD).intValue();
+        String message = statement.getString(ILibraryListCheck.MESSAGE);
 
-        return new Result(fieldName, record, message, success);
+        return new Result(fieldName, recordNbr, message, success);
     }
 
     @Override

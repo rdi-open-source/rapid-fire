@@ -10,7 +10,7 @@ package biz.rapidfire.core.model.maintenance;
 
 public interface ICheck {
 
-    public static final int FIELD_NAME = 1;
-    public static final int MESSAGE = 2;
-    public static final int SUCCESS = 3;
+    public static final int SUCCESS = 1;
+    public static final int FIELD_NAME = 2;
+    public static final int MESSAGE = 3;
 }

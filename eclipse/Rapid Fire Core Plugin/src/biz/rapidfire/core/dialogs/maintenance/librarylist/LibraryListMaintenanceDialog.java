@@ -26,7 +26,7 @@ import biz.rapidfire.core.dialogs.maintenance.AbstractMaintenanceDialog;
 import biz.rapidfire.core.helpers.ExceptionHelper;
 import biz.rapidfire.core.model.maintenance.IMaintenance;
 import biz.rapidfire.core.model.maintenance.Result;
-import biz.rapidfire.core.model.maintenance.library.ILibraryCheck;
+import biz.rapidfire.core.model.maintenance.librarylist.ILibraryListCheck;
 import biz.rapidfire.core.model.maintenance.librarylist.LibraryListEntry;
 import biz.rapidfire.core.model.maintenance.librarylist.LibraryListManager;
 import biz.rapidfire.core.model.maintenance.librarylist.LibraryListValues;
@@ -123,7 +123,7 @@ public class LibraryListMaintenanceDialog extends AbstractMaintenanceDialog {
         labelShadowLibrary.setText(Messages.Label_Description_colon);
         labelShadowLibrary.setToolTipText(Messages.Tooltip_Description);
 
-        textDescription = WidgetFactory.createNameText(parent);
+        textDescription = WidgetFactory.createText(parent);
         textDescription.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
         textDescription.setToolTipText(Messages.Tooltip_Description);
         textDescription.setEnabled(enableFields);
@@ -173,13 +173,14 @@ public class LibraryListMaintenanceDialog extends AbstractMaintenanceDialog {
         LibraryListValues newValues = values.clone();
         newValues.getKey().setLibraryList(textLibraryList.getText());
         newValues.setDescription(textDescription.getText());
+        newValues.setLibraryList(getLibraryList(editorLibraryList.getItems()));
 
         if (!IMaintenance.MODE_DISPLAY.equals(mode)) {
             try {
                 manager.setValues(newValues);
                 Result result = manager.check();
                 if (result.isError()) {
-                    setErrorFocus(result.getFieldName());
+                    setErrorFocus(result);
                     return;
                 }
             } catch (Exception e) {
@@ -193,17 +194,47 @@ public class LibraryListMaintenanceDialog extends AbstractMaintenanceDialog {
         super.okPressed();
     }
 
-    private void setErrorFocus(String fieldName) {
+    private LibraryListEntry[] getLibraryList(LibraryListItem[] items) {
 
-        if (ILibraryCheck.FIELD_JOB.equals(fieldName)) {
-            textJobName.setFocus();
-            setErrorMessage(Messages.bind(Messages.Job_name_A_is_not_valid, textJobName.getText()));
-        } else if (ILibraryCheck.FIELD_LIBRARY.equals(fieldName)) {
-            textLibraryList.setFocus();
-            setErrorMessage(Messages.bind(Messages.File_position_A_is_not_valid, textLibraryList.getText()));
-        } else if (ILibraryCheck.FIELD_SHADOW_LIBRARY.equals(fieldName)) {
-            textDescription.setFocus();
-            setErrorMessage(Messages.bind(Messages.File_name_A_is_not_valid, textDescription.getText()));
+        List<LibraryListEntry> libraries = new LinkedList<LibraryListEntry>();
+        for (LibraryListItem item : items) {
+            libraries.add(new LibraryListEntry(item.getSequenceNumber(), item.getLibrary()));
         }
+
+        return libraries.toArray(new LibraryListEntry[libraries.size()]);
+    }
+
+    private void setErrorFocus(Result result) {
+
+        String fieldName = result.getFieldName();
+        int recordNumber = result.getRecordNbr();
+        String message = null;
+
+        if (ILibraryListCheck.FIELD_JOB.equals(fieldName)) {
+            textJobName.setFocus();
+            message = Messages.bind(Messages.Job_name_A_is_not_valid, textJobName.getText());
+        } else if (ILibraryListCheck.FIELD_LIBRARY_LIST.equals(fieldName)) {
+            textLibraryList.setFocus();
+            message = Messages.bind(Messages.Library_list_name_A_is_not_valid, textLibraryList.getText());
+        } else if (ILibraryListCheck.FIELD_DESCRIPTION.equals(fieldName)) {
+            textDescription.setFocus();
+            message = Messages.bind(Messages.Library_list_description_A_is_not_valid, textDescription.getText());
+        } else if (ILibraryListCheck.FIELD_SEQUENCE.equals(fieldName)) {
+            LibraryListItem item = editorLibraryList.getItem(recordNumber - 1);
+            int sequenceNumber;
+            if (item == null) {
+                sequenceNumber = -1;
+                editorLibraryList.setFocus();
+            } else {
+                sequenceNumber = item.getSequenceNumber();
+                editorLibraryList.setFocus(recordNumber - 1);
+            }
+            message = Messages.bind(Messages.Invalid_sequence_number_A, sequenceNumber);
+        } else if (ILibraryListCheck.FIELD_DUPLICATE.equals(fieldName)) {
+            textDescription.setFocus();
+            setErrorMessage(Messages.bind(Messages.Description_A_is_not_valid, textDescription.getText()));
+        }
+
+        setErrorMessage(message, result);
     }
 }

@@ -20,8 +20,10 @@ import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
 
 import biz.rapidfire.core.RapidFireCorePlugin;
+import biz.rapidfire.core.helpers.StringHelper;
 import biz.rapidfire.core.jface.dialogs.Size;
 import biz.rapidfire.core.jface.dialogs.XDialog;
+import biz.rapidfire.core.model.maintenance.Result;
 import biz.rapidfire.core.swt.widgets.WidgetFactory;
 
 public abstract class AbstractMaintenanceDialog extends XDialog {
@@ -65,6 +67,15 @@ public abstract class AbstractMaintenanceDialog extends XDialog {
 
         return container;
     }
+
+    protected void setErrorMessage(String errorMessage, Result apiCallResult) {
+
+        if (!StringHelper.isNullOrEmpty(apiCallResult.getMessage())) {
+            setErrorMessage(errorMessage + " " + apiCallResult.getMessage()); //$NON-NLS-1$
+        } else {
+            setErrorMessage(errorMessage);
+        }
+    };
 
     protected abstract String getDialogTitle();
 

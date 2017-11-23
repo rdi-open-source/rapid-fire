@@ -173,7 +173,7 @@ public class JobMaintenanceDialog extends AbstractMaintenanceDialog {
                 manager.setValues(newValues);
                 Result result = manager.check();
                 if (result.isError()) {
-                    setErrorFocus(result.getFieldName());
+                    setErrorFocus(result);
                     return;
                 }
             } catch (Exception e) {
@@ -187,7 +187,10 @@ public class JobMaintenanceDialog extends AbstractMaintenanceDialog {
         super.okPressed();
     }
 
-    private void setErrorFocus(String fieldName) {
+    private void setErrorFocus(Result result) {
+
+        String fieldName = result.getFieldName();
+        String message = null;
 
         if (IJobCheck.FIELD_JOB.equals(fieldName)) {
             textJobName.setFocus();
@@ -208,5 +211,7 @@ public class JobMaintenanceDialog extends AbstractMaintenanceDialog {
             textJobQueueLibraryName.setFocus();
             setErrorMessage(Messages.bind(Messages.Library_name_A_is_not_valid, textJobQueueLibraryName.getText()));
         }
+
+        setErrorMessage(message, result);
     }
 }

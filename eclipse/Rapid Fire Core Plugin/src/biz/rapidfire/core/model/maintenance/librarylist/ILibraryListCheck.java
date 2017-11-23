@@ -10,10 +10,10 @@ package biz.rapidfire.core.model.maintenance.librarylist;
 
 public interface ILibraryListCheck {
 
-    public static final int FIELD_NAME = 1;
-    public static final int RECORD = 2;
-    public static final int MESSAGE = 3;
-    public static final int SUCCESS = 4;
+    public static final int SUCCESS = 1;
+    public static final int FIELD_NAME = 2;
+    public static final int RECORD = 3;
+    public static final int MESSAGE = 4;
 
     public static final String FIELD_JOB = "JOB"; //$NON-NLS-1$
     public static final String FIELD_SEQUENCE = "SEQ"; //$NON-NLS-1$

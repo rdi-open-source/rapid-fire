@@ -47,9 +47,9 @@ public abstract class AbstractFileMaintenanceHandler extends AbstractResourceHan
 
             IRapidFireFileResource file = (IRapidFireFileResource)resource;
 
-            String message = initialize(file);
-            if (message != null) {
-                MessageDialog.openError(getShell(), Messages.E_R_R_O_R, message);
+            Result result = initialize(file);
+            if (result != null && result.isError()) {
+                MessageDialog.openError(getShell(), Messages.E_R_R_O_R, result.getMessage());
             } else {
                 performAction(file);
             }
@@ -67,7 +67,7 @@ public abstract class AbstractFileMaintenanceHandler extends AbstractResourceHan
         return null;
     }
 
-    private String initialize(IRapidFireFileResource file) throws Exception {
+    private Result initialize(IRapidFireFileResource file) throws Exception {
 
         String connectionName = file.getParentSubSystem().getConnectionName();
         String dataLibrary = file.getDataLibrary();
@@ -76,9 +76,9 @@ public abstract class AbstractFileMaintenanceHandler extends AbstractResourceHan
         manager = new FileManager(JDBCConnectionManager.getInstance().getConnection(connectionName, dataLibrary, commitControl));
         manager.openFiles();
 
-        Result status = manager.initialize(getMode(), new FileKey(new JobKey(file.getJob()), file.getPosition()));
-        if (status.isError()) {
-            return status.getMessage();
+        Result result = manager.initialize(getMode(), new FileKey(new JobKey(file.getJob()), file.getPosition()));
+        if (result.isError()) {
+            return result;
         }
 
         return null;

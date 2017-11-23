@@ -63,10 +63,10 @@ public class FileManager extends AbstractManager<FileKey, FileValues> {
 
         String message;
         if (Success.YES.label().equals(success)) {
-            message = ""; //$NON-NLS-1$
+            message = null;
         } else {
-            message = Messages.bind(Messages.Could_not_initialize_file_manager_for_file_at_position_C_of_job_A_in_library_B,
-                new Object[] { key.getJobName(), dao.getLibraryName(), key.getPosition(), getErrorMessage(errorCode) });
+            message = Messages.bindParameters(Messages.Could_not_initialize_file_manager_for_file_at_position_C_of_job_A_in_library_B,
+                key.getJobName(), dao.getLibraryName(), key.getPosition(), getErrorMessage(errorCode));
         }
 
         Result status = new Result(success, message);
@@ -91,7 +91,7 @@ public class FileManager extends AbstractManager<FileKey, FileValues> {
             return Messages.FileManager_003;
         }
 
-        return Messages.bind(Messages.EntityManager_Unknown_error_code_A, errorCode);
+        return Messages.bindParameters(Messages.EntityManager_Unknown_error_code_A, errorCode);
     }
 
     @Override

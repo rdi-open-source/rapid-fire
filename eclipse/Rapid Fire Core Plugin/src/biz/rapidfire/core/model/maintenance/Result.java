@@ -67,4 +67,22 @@ public class Result {
     public boolean isError() {
         return !isSuccessfull();
     }
+
+    @Override
+    public String toString() {
+
+        StringBuilder buffer = new StringBuilder();
+
+        buffer.append("Success:"); //$NON-NLS-1$
+        buffer.append(success.label());
+        buffer.append(" ("); //$NON-NLS-1$
+        buffer.append(fieldName);
+        buffer.append(", "); //$NON-NLS-1$
+        buffer.append(message);
+        buffer.append(", "); //$NON-NLS-1$
+        buffer.append(recordNbr);
+        buffer.append(")"); //$NON-NLS-1$
+
+        return buffer.toString();
+    }
 }

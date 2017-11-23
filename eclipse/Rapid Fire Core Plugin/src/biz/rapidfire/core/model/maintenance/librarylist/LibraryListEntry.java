@@ -35,7 +35,8 @@ public class LibraryListEntry implements Comparable<LibraryListEntry> {
 
     public void setSequenceNumber(int sequenceNumber) {
         this.sequenceNumber = sequenceNumber;
-        this.sequenceNumberFixLengthString = StringHelper.getFixLength(Integer.toString(sequenceNumber), LENGTH_SEQUENCE_NUMBER).replace(" ", "0"); //$NON-NLS-1$ //$NON-NLS-2$
+        this.sequenceNumberFixLengthString = StringHelper.getFixLengthLeading(Integer.toString(sequenceNumber), LENGTH_SEQUENCE_NUMBER).replace(
+            " ", "0"); //$NON-NLS-1$ //$NON-NLS-2$
     }
 
     public String getLibrary() {
@@ -48,6 +49,7 @@ public class LibraryListEntry implements Comparable<LibraryListEntry> {
 
     public void setLibrary(String library) {
         this.library = library;
+        this.libraryFixLengthString = StringHelper.getFixLength(library, LENGTH_LIBRARY);
     }
 
     public int compareTo(LibraryListEntry element) {

@@ -151,6 +151,15 @@ public class LibraryListEditor extends Composite implements SelectionListener {
         return items;
     }
 
+    public LibraryListItem getItem(int index) {
+
+        if (index >= 0 && index < itemsList.size()) {
+            return itemsList.get(index);
+        }
+
+        return null;
+    }
+
     public int getItemCount() {
         return itemsTable.getItemCount();
     }

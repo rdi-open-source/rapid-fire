@@ -15,8 +15,12 @@ import java.util.List;
 import biz.rapidfire.core.RapidFireCorePlugin;
 import biz.rapidfire.core.helpers.ExceptionHelper;
 import biz.rapidfire.core.helpers.IntHelper;
+import biz.rapidfire.core.helpers.StringHelper;
 
 public class LibraryListValues implements Cloneable {
+
+    static final int LENGTH_SEQUENCE_NUMBERS = 1000;
+    static final int LENGTH_LIBRARIES = 2500;
 
     private LibraryListKey key;
     private String description;
@@ -56,10 +60,12 @@ public class LibraryListValues implements Cloneable {
 
     public String getLibraryListAsString() {
         return libraryListString;
+        // return StringHelper.getFixLength(libraryListString,
+        // LENGTH_LIBRARIES);
     }
 
     public String getSequenceNumberAsString() {
-        return sequenceNumbersString;
+        return StringHelper.getFixLength(sequenceNumbersString, LENGTH_SEQUENCE_NUMBERS).replaceAll(" ", "0"); //$NON-NLS-1$ //$NON-NLS-1$
     }
 
     public void setLibraryList(LibraryListEntry[] libraryList) {
@@ -78,8 +84,8 @@ public class LibraryListValues implements Cloneable {
 
     void setLibraryList(String sequenceNumbers, String libraries) {
 
-        this.libraryListString = libraries;
-        this.sequenceNumbersString = sequenceNumbers;
+        this.libraryListString = libraries.trim();
+        this.sequenceNumbersString = sequenceNumbers.trim();
 
         libraryList.clear();
 
@@ -88,22 +94,36 @@ public class LibraryListValues implements Cloneable {
         String sequenceNumberStr;
         int sequenceNumber;
         String library;
-        while (libOffs + LibraryListEntry.LENGTH_LIBRARY <= libraries.length()
-            && seqNbrOffs + LibraryListEntry.LENGTH_SEQUENCE_NUMBER <= sequenceNumbers.length()) {
-            sequenceNumberStr = sequenceNumbers.substring(libOffs, libOffs + LibraryListEntry.LENGTH_SEQUENCE_NUMBER);
+
+        while (seqNbrOffs < sequenceNumbersString.length() && libOffs < libraryListString.length()) {
+
+            if (seqNbrOffs + LibraryListEntry.LENGTH_SEQUENCE_NUMBER < sequenceNumbersString.length()) {
+                sequenceNumberStr = sequenceNumbersString.substring(seqNbrOffs, seqNbrOffs + LibraryListEntry.LENGTH_SEQUENCE_NUMBER);
+            } else {
+                sequenceNumberStr = sequenceNumbersString.substring(seqNbrOffs);
+            }
+
             sequenceNumber = IntHelper.tryParseInt(sequenceNumberStr, -1);
-            library = libraries.substring(libOffs, libOffs + LibraryListEntry.LENGTH_LIBRARY);
+
+            if (libOffs + LibraryListEntry.LENGTH_LIBRARY < libraryListString.length()) {
+                library = libraryListString.substring(libOffs, libOffs + LibraryListEntry.LENGTH_LIBRARY);
+            } else {
+                library = libraryListString.substring(libOffs);
+            }
 
             libraryList.add(new LibraryListEntry(sequenceNumber, library));
 
-            libOffs += LibraryListEntry.LENGTH_SEQUENCE_NUMBER;
-            seqNbrOffs += LibraryListEntry.LENGTH_LIBRARY;
+            seqNbrOffs += LibraryListEntry.LENGTH_SEQUENCE_NUMBER;
+            libOffs += LibraryListEntry.LENGTH_LIBRARY;
         }
 
         LibraryListEntry[] tempArray = libraryList.toArray(new LibraryListEntry[libraryList.size()]);
         Arrays.sort(tempArray);
 
-        libraryList = Arrays.asList(tempArray);
+        libraryList.clear();
+        for (LibraryListEntry entry : tempArray) {
+            libraryList.add(entry);
+        }
     }
 
     public void clear() {
@@ -119,12 +139,12 @@ public class LibraryListValues implements Cloneable {
 
     private List<LibraryListEntry> createLibraryList(LibraryListEntry[] libraries) {
 
-        List<LibraryListEntry> libraryList;
+        List<LibraryListEntry> libraryList = new LinkedList<LibraryListEntry>();
 
         if (libraries != null) {
-            libraryList = new LinkedList<LibraryListEntry>(Arrays.asList(libraries));
-        } else {
-            libraryList = new LinkedList<LibraryListEntry>();
+            for (LibraryListEntry library : libraries) {
+                libraryList.add(library);
+            }
         }
 
         return libraryList;
@@ -137,6 +157,7 @@ public class LibraryListValues implements Cloneable {
 
             LibraryListValues libraryListValues = (LibraryListValues)super.clone();
             libraryListValues.setKey((LibraryListKey)getKey().clone());
+            libraryListValues.setLibraryList(getSequenceNumberAsString(), getLibraryListAsString());
 
             return libraryListValues;
 
