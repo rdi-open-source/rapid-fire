@@ -112,10 +112,12 @@ public class Messages extends NLS {
     public static String ActionLabel_New_Job;
     public static String ActionLabel_New_File;
     public static String ActionLabel_New_Library;
+    public static String ActionLabel_New_Library_List;
 
     public static String ActionTooltip_New_Job;
     public static String ActionTooltip_New_File;
     public static String ActionTooltip_New_Library;
+    public static String ActionTooltip_New_Library_List;
 
     private Messages() {
     }

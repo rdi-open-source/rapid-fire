@@ -49,6 +49,7 @@ public class RapidFireRSEPlugin extends AbstractUIPlugin {
     public static final String IMAGE_NEW_JOB = "new_job.gif"; //$NON-NLS-1$
     public static final String IMAGE_NEW_FILE = "new_file.gif"; //$NON-NLS-1$
     public static final String IMAGE_NEW_LIBRARY = "new_library.gif"; //$NON-NLS-1$
+    public static final String IMAGE_NEW_LIBRARY_LIST = "new_library_list.gif"; //$NON-NLS-1$
 
     /**
      * The constructor
@@ -120,6 +121,7 @@ public class RapidFireRSEPlugin extends AbstractUIPlugin {
         reg.put(IMAGE_NEW_JOB, getImageDescriptor(IMAGE_NEW_JOB));
         reg.put(IMAGE_NEW_FILE, getImageDescriptor(IMAGE_NEW_FILE));
         reg.put(IMAGE_NEW_LIBRARY, getImageDescriptor(IMAGE_NEW_LIBRARY));
+        reg.put(IMAGE_NEW_LIBRARY_LIST, getImageDescriptor(IMAGE_NEW_LIBRARY_LIST));
     }
 
     private ImageDescriptor getImageDescriptor(String name) {
