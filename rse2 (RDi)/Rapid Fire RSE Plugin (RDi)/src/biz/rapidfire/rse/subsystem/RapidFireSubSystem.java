@@ -45,7 +45,7 @@ import biz.rapidfire.core.model.dao.IFilesDAO;
 import biz.rapidfire.core.model.dao.IJobsDAO;
 import biz.rapidfire.core.model.dao.ILibrariesDAO;
 import biz.rapidfire.core.model.dao.JDBCConnectionManager;
-import biz.rapidfire.core.model.list.FileCopyStatus;
+import biz.rapidfire.core.model.queries.FileCopyStatus;
 import biz.rapidfire.core.subsystem.IRapidFireSubSystem;
 import biz.rapidfire.core.subsystem.RapidFireFilter;
 import biz.rapidfire.rse.model.dao.FileCopyStatusDAO;

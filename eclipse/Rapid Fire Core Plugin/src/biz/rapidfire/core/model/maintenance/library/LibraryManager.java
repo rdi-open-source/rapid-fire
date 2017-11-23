@@ -16,9 +16,14 @@ import biz.rapidfire.core.model.dao.IJDBCConnection;
 import biz.rapidfire.core.model.maintenance.AbstractManager;
 import biz.rapidfire.core.model.maintenance.Result;
 import biz.rapidfire.core.model.maintenance.Success;
+import biz.rapidfire.core.model.maintenance.job.IJobInitialize;
 import biz.rapidfire.core.model.maintenance.job.JobKey;
 
 public class LibraryManager extends AbstractManager<LibraryKey, LibraryValues> {
+
+    private static final String ERROR_001 = "001"; //$NON-NLS-1$
+    private static final String ERROR_002 = "002"; //$NON-NLS-1$
+    private static final String ERROR_003 = "003"; //$NON-NLS-1$
 
     private static final String EMPTY_STRING = ""; //$NON-NLS-1$
     private IJDBCConnection dao;
@@ -41,30 +46,54 @@ public class LibraryManager extends AbstractManager<LibraryKey, LibraryValues> {
         jobKey = new JobKey(key.getJobName());
 
         CallableStatement statement = dao.prepareCall(dao
-            .insertLibraryQualifier("{CALL " + IJDBCConnection.LIBRARY + "\"MNTLIB_initialize\"(?, ?, ?, ?)}")); //$NON-NLS-1$ //$NON-NLS-2$
+            .insertLibraryQualifier("{CALL " + IJDBCConnection.LIBRARY + "\"MNTLIB_initialize\"(?, ?, ?, ?, ?)}")); //$NON-NLS-1$ //$NON-NLS-2$
 
         statement.setString(ILibraryInitialize.MODE, mode);
         statement.setString(ILibraryInitialize.JOB, key.getJobName());
         statement.setString(ILibraryInitialize.LIBRARY, key.getLibrary());
         statement.setString(ILibraryInitialize.SUCCESS, Success.NO.label());
+        statement.setString(ILibraryInitialize.ERROR_CODE, EMPTY_STRING);
 
         statement.registerOutParameter(ILibraryInitialize.SUCCESS, Types.CHAR);
+        statement.registerOutParameter(ILibraryInitialize.ERROR_CODE, Types.CHAR);
 
         statement.execute();
 
+        // TODO: add error handling
         String success = statement.getString(ILibraryInitialize.SUCCESS);
+        String errorCode = statement.getString(IJobInitialize.ERROR_CODE);
 
         String message;
         if (Success.YES.label().equals(success)) {
             message = ""; //$NON-NLS-1$
         } else {
-            message = Messages.bind(Messages.Could_not_initialize_file_manager_for_file_at_position_C_of_job_A_in_library_B,
-                new Object[] { key.getJobName(), dao.getLibraryName(), key.getLibrary() });
+            message = Messages.bind(Messages.Could_not_initialize_library_manager_for_library_C_of_job_A_in_library_B,
+                new Object[] { key.getJobName(), dao.getLibraryName(), key.getLibrary(), getErrorMessage(errorCode) });
         }
 
         Result status = new Result(null, message, success);
 
         return status;
+    }
+
+    /**
+     * Translates the API error code to message text.
+     * 
+     * @param errorCode - Error code that was returned by the API.
+     * @return message text
+     */
+    private String getErrorMessage(String errorCode) {
+
+        // TODO: use reflection
+        if (ERROR_001.equals(errorCode)) {
+            return Messages.LibraryManager_001;
+        } else if (ERROR_002.equals(errorCode)) {
+            return Messages.LibraryManager_002;
+        } else if (ERROR_003.equals(errorCode)) {
+            return Messages.LibraryManager_003;
+        }
+
+        return Messages.bind(Messages.EntityManager_Unknown_error_code_A, errorCode);
     }
 
     @Override

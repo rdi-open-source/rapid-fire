@@ -22,7 +22,7 @@ public class DisplayLibraryHandler extends AbstractLibraryMaintenanceHandler imp
     }
 
     @Override
-    protected void performAction(IRapidFireLibraryResource file) throws Exception {
+    protected void performAction(IRapidFireLibraryResource library) throws Exception {
 
         LibraryValues values = getManager().getValues();
 

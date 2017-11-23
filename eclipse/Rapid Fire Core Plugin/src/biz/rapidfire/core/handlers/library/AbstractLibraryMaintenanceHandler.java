@@ -42,13 +42,13 @@ public abstract class AbstractLibraryMaintenanceHandler extends AbstractResource
 
         try {
 
-            IRapidFireLibraryResource file = (IRapidFireLibraryResource)resource;
+            IRapidFireLibraryResource library = (IRapidFireLibraryResource)resource;
 
-            String message = initialize(file);
+            String message = initialize(library);
             if (message != null) {
                 MessageDialog.openError(getShell(), Messages.E_R_R_O_R, message);
             } else {
-                performAction(file);
+                performAction(library);
             }
 
         } catch (Throwable e) {
@@ -92,6 +92,6 @@ public abstract class AbstractLibraryMaintenanceHandler extends AbstractResource
     }
 
     private void logError(Throwable e) {
-        logError("*** Could not handle Rapid Fire file resource request ***", e); //$NON-NLS-1$
+        logError("*** Could not handle Rapid Fire library resource request ***", e); //$NON-NLS-1$
     }
 }

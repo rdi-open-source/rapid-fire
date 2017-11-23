@@ -6,7 +6,7 @@
  * http://www.eclipse.org/legal/cpl-v10.html
  *******************************************************************************/
 
-package biz.rapidfire.core.model.list;
+package biz.rapidfire.core.model.queries;
 
 import biz.rapidfire.core.model.IFileCopyStatus;
 

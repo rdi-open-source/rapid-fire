@@ -25,6 +25,8 @@ import biz.rapidfire.core.Messages;
 import biz.rapidfire.core.RapidFireCorePlugin;
 import biz.rapidfire.core.exceptions.IllegalParameterException;
 import biz.rapidfire.core.model.maintenance.IMaintenance;
+import biz.rapidfire.core.swt.widgets.listeditors.librarylist.LibraryListEditor;
+import biz.rapidfire.core.swt.widgets.listeditors.stringlist.StringListEditor;
 
 /**
  * Factory for creating SWT widgets.
@@ -54,6 +56,52 @@ public final class WidgetFactory {
             instance = new WidgetFactory();
         }
         return instance;
+    }
+
+    /**
+     * Produces a StringListEditor.
+     * 
+     * @param parent a composite control which will be the parent of the new
+     *        instance (cannot be null)
+     * @return editor for editing a list of strings
+     */
+    public static StringListEditor createStringListEditor(Composite parent) {
+        return createStringListEditor(parent, SWT.NONE);
+    }
+
+    /**
+     * Produces a StringListEditor.
+     * 
+     * @param parent a composite control which will be the parent of the new
+     *        instance (cannot be null)
+     * @param style the style of control to construct
+     * @return editor for editing a list of strings
+     */
+    public static StringListEditor createStringListEditor(Composite parent, int style) {
+        return WidgetFactory.getInstance().produceStringListEditor(parent, style);
+    }
+
+    /**
+     * Produces a LibraryListEditor.
+     * 
+     * @param parent a composite control which will be the parent of the new
+     *        instance (cannot be null)
+     * @return editor for editing a library list
+     */
+    public static LibraryListEditor createLibraryListEditor(Composite parent) {
+        return createLibraryListEditor(parent, SWT.NONE);
+    }
+
+    /**
+     * Produces a LibraryListEditor.
+     * 
+     * @param parent a composite control which will be the parent of the new
+     *        instance (cannot be null)
+     * @param style the style of control to construct
+     * @return editor for editing a library lists
+     */
+    public static LibraryListEditor createLibraryListEditor(Composite parent, int style) {
+        return WidgetFactory.getInstance().produceLibraryListEditor(parent, style);
     }
 
     /**
@@ -734,6 +782,14 @@ public final class WidgetFactory {
         label.setText(title);
 
         return label;
+    }
+
+    private StringListEditor produceStringListEditor(Composite parent, int style) {
+        return new StringListEditor(parent, style);
+    }
+
+    private LibraryListEditor produceLibraryListEditor(Composite parent, int style) {
+        return new LibraryListEditor(parent, style);
     }
 
     /**

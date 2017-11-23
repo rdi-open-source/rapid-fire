@@ -18,7 +18,7 @@ import java.util.Random;
 import org.eclipse.swt.widgets.Shell;
 
 import biz.rapidfire.core.model.IFileCopyStatus;
-import biz.rapidfire.core.model.list.FileCopyStatus;
+import biz.rapidfire.core.model.queries.FileCopyStatus;
 
 public abstract class AbstractFileCopyStatusDAO {
 

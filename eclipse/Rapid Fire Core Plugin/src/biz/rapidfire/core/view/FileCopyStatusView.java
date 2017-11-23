@@ -54,7 +54,7 @@ import biz.rapidfire.core.helpers.ExceptionHelper;
 import biz.rapidfire.core.job.IJobFinishedListener;
 import biz.rapidfire.core.model.IFileCopyStatus;
 import biz.rapidfire.core.model.IRapidFireJobResource;
-import biz.rapidfire.core.model.list.FileCopyStatus;
+import biz.rapidfire.core.model.queries.FileCopyStatus;
 import biz.rapidfire.core.preferences.Preferences;
 import biz.rapidfire.core.subsystem.IRapidFireSubSystem;
 import biz.rapidfire.core.swt.widgets.ProgressBarPainter;

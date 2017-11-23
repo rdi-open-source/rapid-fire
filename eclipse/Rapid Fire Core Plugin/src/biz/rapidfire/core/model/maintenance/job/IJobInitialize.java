@@ -13,4 +13,5 @@ public interface IJobInitialize {
     public static final int MODE = 1;
     public static final int JOB = 2;
     public static final int SUCCESS = 3;
+    public static final int ERROR_CODE = 4;
 }

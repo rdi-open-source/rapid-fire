@@ -13,16 +13,15 @@ import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
 import biz.rapidfire.core.Messages;
 import biz.rapidfire.core.RapidFireCorePlugin;
+import biz.rapidfire.core.dialogs.maintenance.AbstractMaintenanceDialog;
 import biz.rapidfire.core.helpers.ExceptionHelper;
 import biz.rapidfire.core.helpers.IntHelper;
 import biz.rapidfire.core.jface.dialogs.Size;
@@ -34,7 +33,7 @@ import biz.rapidfire.core.model.maintenance.file.FileValues;
 import biz.rapidfire.core.model.maintenance.file.IFileCheck;
 import biz.rapidfire.core.swt.widgets.WidgetFactory;
 
-public class FileMaintenanceDialog extends XDialog {
+public class FileMaintenanceDialog extends AbstractMaintenanceDialog {
 
     private String mode;
     private FileManager manager;
@@ -100,112 +99,104 @@ public class FileMaintenanceDialog extends XDialog {
     }
 
     @Override
-    protected void configureShell(Shell newShell) {
-        super.configureShell(newShell);
+    protected void createEditorAreaContent(Composite parent) {
 
-        newShell.setText(Messages.DialogTitle_File);
-    }
-
-    @Override
-    protected Control createDialogArea(Composite parent) {
-
-        Composite container = (Composite)super.createDialogArea(parent);
-        container.setLayout(new GridLayout(2, false));
-
-        WidgetFactory.createDialogSubTitle(container, mode);
-
-        Label labelJobName = new Label(container, SWT.NONE);
+        Label labelJobName = new Label(parent, SWT.NONE);
         labelJobName.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false));
         labelJobName.setText(Messages.Label_Job_colon);
         labelJobName.setToolTipText(Messages.Tooltip_Job);
 
-        textJobName = WidgetFactory.createNameText(container);
+        textJobName = WidgetFactory.createNameText(parent);
         textJobName.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
         textJobName.setToolTipText(Messages.Tooltip_Job);
         textJobName.setEnabled(enableParentKeyFields);
 
-        Label labelPosition = new Label(container, SWT.NONE);
+        Label labelPosition = new Label(parent, SWT.NONE);
         labelPosition.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false));
         labelPosition.setText(Messages.Label_Position_colon);
         labelPosition.setToolTipText(Messages.Tooltip_Position);
 
-        textPosition = WidgetFactory.createIntegerText(container);
+        textPosition = WidgetFactory.createIntegerText(parent);
         textPosition.setTextLimit(6);
         textPosition.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
         textPosition.setToolTipText(Messages.Tooltip_Position);
         textPosition.setEnabled(enableKeyFields);
 
-        Label labelFileName = new Label(container, SWT.NONE);
+        Label labelFileName = new Label(parent, SWT.NONE);
         labelFileName.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false));
         labelFileName.setText(Messages.Label_File_colon);
         labelFileName.setToolTipText(Messages.Tooltip_File);
 
-        textFileName = WidgetFactory.createNameText(container);
+        textFileName = WidgetFactory.createNameText(parent);
         textFileName.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
         textFileName.setToolTipText(Messages.Tooltip_File);
         textFileName.setEnabled(enableFields);
 
-        Label labelType = new Label(container, SWT.NONE);
+        Label labelType = new Label(parent, SWT.NONE);
         labelType.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false));
         labelType.setText(Messages.Label_Create_environment_colon);
         labelType.setToolTipText(Messages.Tooltip_Create_environment);
 
-        textType = WidgetFactory.createReadOnlyCombo(container);
+        textType = WidgetFactory.createReadOnlyCombo(parent);
         textType.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
         textType.setToolTipText(Messages.Tooltip_Create_environment);
         textType.setEnabled(enableFields);
         textType.setItems(FileValues.getTypeLabels());
 
-        Label labelCopyProgramName = new Label(container, SWT.NONE);
+        Label labelCopyProgramName = new Label(parent, SWT.NONE);
         labelCopyProgramName.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false));
         labelCopyProgramName.setText(Messages.Label_Copy_program_name_colon);
         labelCopyProgramName.setToolTipText(Messages.Tooltip_Copy_program_name);
 
-        textCopyProgramName = WidgetFactory.createNameCombo(container);
+        textCopyProgramName = WidgetFactory.createNameCombo(parent);
         textCopyProgramName.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
         textCopyProgramName.setToolTipText(Messages.Tooltip_Copy_program_name);
         textCopyProgramName.setEnabled(enableFields);
         textCopyProgramName.setItems(FileValues.getCopyProgramSpecialValues());
 
-        Label labelCopyProgramLibraryName = new Label(container, SWT.NONE);
+        Label labelCopyProgramLibraryName = new Label(parent, SWT.NONE);
         labelCopyProgramLibraryName.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false));
         labelCopyProgramLibraryName.setText(Messages.Label_Copy_program_library_name_colon);
         labelCopyProgramLibraryName.setToolTipText(Messages.Tooltip_Copy_program_library_name);
 
-        textCopyProgramLibraryName = WidgetFactory.createNameText(container);
+        textCopyProgramLibraryName = WidgetFactory.createNameText(parent);
         textCopyProgramLibraryName.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
         textCopyProgramLibraryName.setToolTipText(Messages.Tooltip_Copy_program_library_name);
         textCopyProgramLibraryName.setEnabled(enableFields);
 
-        Label labelConversionProgramName = new Label(container, SWT.NONE);
+        Label labelConversionProgramName = new Label(parent, SWT.NONE);
         labelConversionProgramName.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false));
         labelConversionProgramName.setText(Messages.Label_Conversion_program_name_colon);
         labelConversionProgramName.setToolTipText(Messages.Tooltip_Conversion_program_name);
 
-        textConversionProgramName = WidgetFactory.createNameCombo(container);
+        textConversionProgramName = WidgetFactory.createNameCombo(parent);
         textConversionProgramName.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
         textConversionProgramName.setToolTipText(Messages.Tooltip_Conversion_program_name);
         textConversionProgramName.setEnabled(enableFields);
         textConversionProgramName.setItems(FileValues.getConversionProgramSpecialValues());
 
-        Label labelConversionProgramLibraryName = new Label(container, SWT.NONE);
+        Label labelConversionProgramLibraryName = new Label(parent, SWT.NONE);
         labelConversionProgramLibraryName.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false));
         labelConversionProgramLibraryName.setText(Messages.Label_Conversion_program_library_name_colon);
         labelConversionProgramLibraryName.setToolTipText(Messages.Tooltip_Conversion_program_library_name);
 
-        textConversionProgramLibraryName = WidgetFactory.createNameText(container);
+        textConversionProgramLibraryName = WidgetFactory.createNameText(parent);
         textConversionProgramLibraryName.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
         textConversionProgramLibraryName.setToolTipText(Messages.Tooltip_Conversion_program_library_name);
         textConversionProgramLibraryName.setEnabled(enableFields);
-
-        createStatusLine(container);
-
-        setScreenValues();
-
-        return container;
     }
 
-    private void setScreenValues() {
+    @Override
+    protected String getDialogTitle() {
+        return Messages.DialogTitle_File;
+    }
+
+    @Override
+    protected String getMode() {
+        return mode;
+    }
+
+    protected void setScreenValues() {
 
         textJobName.setText(values.getKey().getJobName());
         textPosition.setText(Integer.toString(values.getKey().getPosition()));

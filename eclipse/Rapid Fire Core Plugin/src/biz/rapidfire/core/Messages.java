@@ -24,6 +24,7 @@ public class Messages extends NLS {
     public static String DialogTitle_Job;
     public static String DialogTitle_File;
     public static String DialogTitle_Library;
+    public static String DialogTitle_Library_List;
 
     // Dialog action titles
     public static String DialogMode_CREATE;
@@ -67,6 +68,7 @@ public class Messages extends NLS {
     public static String Label_Conversion_program_name_colon;
     public static String Label_Conversion_program_library_name_colon;
     public static String Label_Shadow_library_colon;
+    public static String Label_Library_list_colon;
 
     public static String Tooltip_Library;
     public static String Tooltip_Job;
@@ -83,6 +85,7 @@ public class Messages extends NLS {
     public static String Tooltip_Conversion_program_name;
     public static String Tooltip_Conversion_program_library_name;
     public static String Tooltip_Shadow_library;
+    public static String Tooltip_Library_list;
 
     // Action labels
     public static String ActionLabel_Auto_refresh_menu_item;
@@ -125,6 +128,33 @@ public class Messages extends NLS {
     public static String Type_A_is_not_valid;
     public static String Copy_program_name_A_is_not_valid;
     public static String Conversion_program_name_A_is_not_valid;
+    public static String Could_not_initialize_library_manager_for_library_C_of_job_A_in_library_B;
+    public static String Could_not_initialize_library_list_manager_for_library_list_C_of_job_A_in_library_B;
+    public static String Could_not_start_a_Rapid_Fire_JDBC_connection;
+    public static String Could_not_stop_the_Rapid_Fire_JDBC_connection;
+
+    // API error messages
+    public static String EntityManager_Unknown_error_code_A;
+
+    public static String RapidFire_Start_001;
+
+    public static String RapidFire_Stop_001;
+
+    public static String JobManager_001;
+    public static String JobManager_002;
+    public static String JobManager_003;
+
+    public static String FileManager_001;
+    public static String FileManager_002;
+    public static String FileManager_003;
+
+    public static String LibraryManager_001;
+    public static String LibraryManager_002;
+    public static String LibraryManager_003;
+
+    public static String LibraryListManager_001;
+    public static String LibraryListManager_002;
+    public static String LibraryListManager_003;
 
     private Messages() {
     }

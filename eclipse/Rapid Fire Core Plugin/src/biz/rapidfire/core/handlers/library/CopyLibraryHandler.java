@@ -23,7 +23,7 @@ public class CopyLibraryHandler extends AbstractLibraryMaintenanceHandler implem
     }
 
     @Override
-    protected void performAction(IRapidFireLibraryResource file) throws Exception {
+    protected void performAction(IRapidFireLibraryResource library) throws Exception {
 
         LibraryValues values = getManager().getValues();
 
@@ -32,7 +32,7 @@ public class CopyLibraryHandler extends AbstractLibraryMaintenanceHandler implem
 
         if (dialog.open() == Dialog.OK) {
             getManager().book();
-            refreshUI(file);
+            refreshUI(library);
         }
     }
 }

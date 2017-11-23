@@ -14,4 +14,5 @@ public interface IFileInitialize {
     public static final int JOB = 2;
     public static final int POSITION = 3;
     public static final int SUCCESS = 4;
+    public static final int ERROR_CODE = 5;
 }

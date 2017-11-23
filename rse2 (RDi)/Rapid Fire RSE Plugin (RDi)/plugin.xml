@@ -193,6 +193,47 @@
          name="%command_Display_Library"
          description="%command_Display_Library_Description">
       </command>
+   
+      	<!--
+      	  ==========================================
+      	    Rapid Fire 'Library List' Commands
+      	  ==========================================
+      	-->
+         
+      <command
+         id="biz.rapidfire.core.command.LibraryList.new"
+         categoryId="biz.rapidfire.category.Commands"
+         name="%command_New_Library_List"
+         description="%command_New_Library_List_Description">
+      </command>
+         
+      <command
+         id="biz.rapidfire.core.command.LibraryList.change"
+         categoryId="biz.rapidfire.category.Commands"
+         name="%command_Change_Library_List"
+         description="%command_Change_Library_List_Description">
+      </command>
+         
+      <command
+         id="biz.rapidfire.core.command.LibraryList.copy"
+         categoryId="biz.rapidfire.category.Commands"
+         name="%command_Copy_Library_List"
+         description="%command_Copy_Library_List_Description">
+      </command>
+         
+      <command
+         id="biz.rapidfire.core.command.LibraryList.delete"
+         categoryId="biz.rapidfire.category.Commands"
+         name="%command_Delete_Library_List"
+         description="%command_Delete_Library_List_Description">
+      </command>
+         
+      <command
+         id="biz.rapidfire.core.command.LibraryList.display"
+         categoryId="biz.rapidfire.category.Commands"
+         name="%command_Display_Library_List"
+         description="%command_Display_Library_List_Description">
+      </command>
 
    </extension>
 
@@ -485,6 +526,77 @@
                <count value="1" />
                <iterate operator="and">
                   <adapt type="biz.rapidfire.rse.subsystem.resources.RapidFireLibraryResource" />
+               </iterate>
+            </with>
+         </enabledWhen>
+      </handler>
+
+      	<!--
+      	  ==========================================
+      	    Rapid Fire 'Library List' Command Handlers
+      	  ==========================================
+      	-->
+      
+      <handler
+         commandId="biz.rapidfire.core.command.LibraryList.new"
+         class="biz.rapidfire.core.handlers.librarylist.NewLibraryListHandler">
+         <enabledWhen>
+            <with variable="selection">
+               <count value="+" />
+               <iterate operator="and">
+                  <adapt type="biz.rapidfire.rse.subsystem.resources.RapidFireLibraryListResource" />
+               </iterate>
+            </with>
+         </enabledWhen>
+      </handler>
+      
+      <handler
+         commandId="biz.rapidfire.core.command.LibraryList.change"
+         class="biz.rapidfire.core.handlers.librarylist.ChangeLibraryListHandler">
+         <enabledWhen>
+            <with variable="selection">
+               <count value="+" />
+               <iterate operator="and">
+                  <adapt type="biz.rapidfire.rse.subsystem.resources.RapidFireLibraryListResource" />
+               </iterate>
+            </with>
+         </enabledWhen>
+      </handler>
+      
+      <handler
+         commandId="biz.rapidfire.core.command.LibraryList.copy"
+         class="biz.rapidfire.core.handlers.librarylist.CopyLibraryListHandler">
+         <enabledWhen>
+            <with variable="selection">
+               <count value="1" />
+               <iterate operator="and">
+                  <adapt type="biz.rapidfire.rse.subsystem.resources.RapidFireLibraryListResource" />
+               </iterate>
+            </with>
+         </enabledWhen>
+      </handler>
+      
+      <handler
+         commandId="biz.rapidfire.core.command.LibraryList.delete"
+         class="biz.rapidfire.core.handlers.librarylist.DeleteLibraryListHandler">
+         <enabledWhen>
+            <with variable="selection">
+               <count value="+" />
+               <iterate operator="and">
+                  <adapt type="biz.rapidfire.rse.subsystem.resources.RapidFireLibraryListResource" />
+               </iterate>
+            </with>
+         </enabledWhen>
+      </handler>
+      
+      <handler
+         commandId="biz.rapidfire.core.command.LibraryList.display"
+         class="biz.rapidfire.core.handlers.librarylist.DisplayLibraryListHandler">
+         <enabledWhen>
+            <with variable="selection">
+               <count value="1" />
+               <iterate operator="and">
+                  <adapt type="biz.rapidfire.rse.subsystem.resources.RapidFireLibraryListResource" />
                </iterate>
             </with>
          </enabledWhen>
@@ -816,7 +928,7 @@
          
          <command
             commandId="biz.rapidfire.core.command.Library.new" 
-            icon="icons/new_file.gif"
+            icon="icons/new_library.gif"
             >
 	        <visibleWhen>
 	           <with variable="selection">
@@ -874,6 +986,98 @@
 	           <with variable="selection">
 	              <iterate operator="and">
 	                 <adapt type="biz.rapidfire.rse.subsystem.resources.RapidFireLibraryResource" />
+	              </iterate>
+	           </with>
+	        </visibleWhen>
+         </command>
+         
+      </menuContribution>
+   </extension>
+   
+      	<!--
+      	  ==========================================
+      	    Rapid Fire 'Library List' Object Contributions
+      	  ==========================================
+      	-->
+
+   <extension
+      point="org.eclipse.ui.menus">
+         
+      <menuContribution
+         locationURI="popup:org.eclipse.ui.popup.any?before=additions">
+         
+         <separator
+            name="maintenance"
+            visible="true">
+	        <visibleWhen>
+	           <with variable="selection">
+	              <iterate operator="and">
+	                 <adapt type="biz.rapidfire.rse.subsystem.resources.RapidFireLibraryListResource" />
+	              </iterate>
+	           </with>
+	        </visibleWhen>
+         </separator>
+         
+         <command
+            commandId="biz.rapidfire.core.command.LibraryList.new" 
+            icon="icons/new_library_list.gif"
+            >
+	        <visibleWhen>
+	           <with variable="selection">
+	              <iterate operator="and">
+	                 <adapt type="biz.rapidfire.rse.subsystem.resources.RapidFireLibraryListResource" />
+	              </iterate>
+	           </with>
+	        </visibleWhen>
+         </command>
+         
+         <command
+            commandId="biz.rapidfire.core.command.LibraryList.change" 
+            icon="icons/change.gif"
+            >
+	        <visibleWhen>
+	           <with variable="selection">
+	              <iterate operator="and">
+	                 <adapt type="biz.rapidfire.rse.subsystem.resources.RapidFireLibraryListResource" />
+	              </iterate>
+	           </with>
+	        </visibleWhen>
+         </command>
+         
+         <command
+            commandId="biz.rapidfire.core.command.LibraryList.copy" 
+            icon="icons/copy.gif"
+            >
+	        <visibleWhen>
+	           <with variable="selection">
+	              <iterate operator="and">
+	                 <adapt type="biz.rapidfire.rse.subsystem.resources.RapidFireLibraryListResource" />
+	              </iterate>
+	           </with>
+	        </visibleWhen>
+         </command>
+         
+         <command
+            commandId="biz.rapidfire.core.command.LibraryList.delete" 
+            icon="icons/delete.gif"
+            >
+	        <visibleWhen>
+	           <with variable="selection">
+	              <iterate operator="and">
+	                 <adapt type="biz.rapidfire.rse.subsystem.resources.RapidFireLibraryListResource" />
+	              </iterate>
+	           </with>
+	        </visibleWhen>
+         </command>
+         
+         <command
+            commandId="biz.rapidfire.core.command.LibraryList.display" 
+            icon="icons/display.gif"
+            >
+	        <visibleWhen>
+	           <with variable="selection">
+	              <iterate operator="and">
+	                 <adapt type="biz.rapidfire.rse.subsystem.resources.RapidFireLibraryListResource" />
 	              </iterate>
 	           </with>
 	        </visibleWhen>

@@ -8,23 +8,17 @@
 
 package biz.rapidfire.core.dialogs.maintenance.library;
 
-import org.eclipse.jface.dialogs.IDialogSettings;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
 import biz.rapidfire.core.Messages;
-import biz.rapidfire.core.RapidFireCorePlugin;
+import biz.rapidfire.core.dialogs.maintenance.AbstractMaintenanceDialog;
 import biz.rapidfire.core.helpers.ExceptionHelper;
-import biz.rapidfire.core.jface.dialogs.Size;
-import biz.rapidfire.core.jface.dialogs.XDialog;
 import biz.rapidfire.core.model.maintenance.IMaintenance;
 import biz.rapidfire.core.model.maintenance.Result;
 import biz.rapidfire.core.model.maintenance.library.ILibraryCheck;
@@ -32,7 +26,7 @@ import biz.rapidfire.core.model.maintenance.library.LibraryManager;
 import biz.rapidfire.core.model.maintenance.library.LibraryValues;
 import biz.rapidfire.core.swt.widgets.WidgetFactory;
 
-public class LibraryMaintenanceDialog extends XDialog {
+public class LibraryMaintenanceDialog extends AbstractMaintenanceDialog {
 
     private String mode;
     private LibraryManager manager;
@@ -93,58 +87,50 @@ public class LibraryMaintenanceDialog extends XDialog {
     }
 
     @Override
-    protected void configureShell(Shell newShell) {
-        super.configureShell(newShell);
+    protected void createEditorAreaContent(Composite parent) {
 
-        newShell.setText(Messages.DialogTitle_Library);
-    }
-
-    @Override
-    protected Control createDialogArea(Composite parent) {
-
-        Composite container = (Composite)super.createDialogArea(parent);
-        container.setLayout(new GridLayout(2, false));
-
-        WidgetFactory.createDialogSubTitle(container, mode);
-
-        Label labelJobName = new Label(container, SWT.NONE);
+        Label labelJobName = new Label(parent, SWT.NONE);
         labelJobName.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false));
         labelJobName.setText(Messages.Label_Job_colon);
         labelJobName.setToolTipText(Messages.Tooltip_Job);
 
-        textJobName = WidgetFactory.createNameText(container);
+        textJobName = WidgetFactory.createNameText(parent);
         textJobName.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
         textJobName.setToolTipText(Messages.Tooltip_Job);
         textJobName.setEnabled(enableParentKeyFields);
 
-        Label labelLibrary = new Label(container, SWT.NONE);
+        Label labelLibrary = new Label(parent, SWT.NONE);
         labelLibrary.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false));
         labelLibrary.setText(Messages.Label_Library_colon);
         labelLibrary.setToolTipText(Messages.Tooltip_Library);
 
-        textLibrary = WidgetFactory.createNameText(container);
+        textLibrary = WidgetFactory.createNameText(parent);
         textLibrary.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
         textLibrary.setToolTipText(Messages.Tooltip_Library);
         textLibrary.setEnabled(enableKeyFields);
 
-        Label labelShadwLibrary = new Label(container, SWT.NONE);
+        Label labelShadwLibrary = new Label(parent, SWT.NONE);
         labelShadwLibrary.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false));
         labelShadwLibrary.setText(Messages.Label_Shadow_library_colon);
         labelShadwLibrary.setToolTipText(Messages.Tooltip_Shadow_library);
 
-        textShadowLibrary = WidgetFactory.createNameText(container);
+        textShadowLibrary = WidgetFactory.createNameText(parent);
         textShadowLibrary.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
         textShadowLibrary.setToolTipText(Messages.Tooltip_Shadow_library);
         textShadowLibrary.setEnabled(enableFields);
-
-        createStatusLine(container);
-
-        setScreenValues();
-
-        return container;
     }
 
-    private void setScreenValues() {
+    @Override
+    protected String getDialogTitle() {
+        return Messages.DialogTitle_Library;
+    }
+
+    @Override
+    protected String getMode() {
+        return mode;
+    }
+
+    protected void setScreenValues() {
 
         textJobName.setText(values.getKey().getJobName());
         textLibrary.setText(values.getKey().getLibrary());
@@ -189,30 +175,5 @@ public class LibraryMaintenanceDialog extends XDialog {
             textShadowLibrary.setFocus();
             setErrorMessage(Messages.bind(Messages.File_name_A_is_not_valid, textShadowLibrary.getText()));
         }
-    }
-
-    /**
-     * Overridden to make this dialog resizable.
-     */
-    @Override
-    protected boolean isResizable() {
-        return true;
-    }
-
-    /**
-     * Overridden to provide a default size to {@link XDialog}.
-     */
-    @Override
-    protected Point getDefaultSize() {
-        return getShell().computeSize(Size.getSize(510), SWT.DEFAULT, true);
-    }
-
-    /**
-     * Overridden to let {@link XDialog} store the state of this dialog in a
-     * separate section of the dialog settings file.
-     */
-    @Override
-    protected IDialogSettings getDialogBoundsSettings() {
-        return super.getDialogBoundsSettings(RapidFireCorePlugin.getDefault().getDialogSettings());
     }
 }

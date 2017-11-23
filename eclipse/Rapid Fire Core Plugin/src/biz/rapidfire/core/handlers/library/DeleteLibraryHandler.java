@@ -23,7 +23,7 @@ public class DeleteLibraryHandler extends AbstractLibraryMaintenanceHandler impl
     }
 
     @Override
-    protected void performAction(IRapidFireLibraryResource file) throws Exception {
+    protected void performAction(IRapidFireLibraryResource library) throws Exception {
 
         LibraryValues values = getManager().getValues();
 
@@ -32,7 +32,7 @@ public class DeleteLibraryHandler extends AbstractLibraryMaintenanceHandler impl
 
         if (dialog.open() == Dialog.OK) {
             getManager().book();
-            refreshUI(file);
+            refreshUI(library);
         }
     }
 }

@@ -8,10 +8,8 @@
 
 package biz.rapidfire.core.handlers;
 
-import org.eclipse.jface.dialogs.MessageDialog;
-
-import biz.rapidfire.core.Messages;
 import biz.rapidfire.core.RapidFireCorePlugin;
+import biz.rapidfire.core.dialogs.MessageDialogAsync;
 import biz.rapidfire.core.helpers.ExceptionHelper;
 import biz.rapidfire.core.model.maintenance.IMaintenance;
 
@@ -34,6 +32,6 @@ public abstract class AbstractResourceMaintenanceHandler extends AbstractResourc
     protected void logError(String message, Throwable e) {
 
         RapidFireCorePlugin.logError(message, e); //$NON-NLS-1$
-        MessageDialog.openError(getShell(), Messages.E_R_R_O_R, ExceptionHelper.getLocalizedMessage(e));
+        MessageDialogAsync.displayError(getShell(), ExceptionHelper.getLocalizedMessage(e));
     }
 }

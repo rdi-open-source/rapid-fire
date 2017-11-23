@@ -20,6 +20,10 @@ import biz.rapidfire.core.model.maintenance.job.JobKey;
 
 public class FileManager extends AbstractManager<FileKey, FileValues> {
 
+    private static final String ERROR_001 = "001"; //$NON-NLS-1$
+    private static final String ERROR_002 = "002"; //$NON-NLS-1$
+    private static final String ERROR_003 = "003"; //$NON-NLS-1$
+
     private static final String EMPTY_STRING = ""; //$NON-NLS-1$
     private IJDBCConnection dao;
     private JobKey jobKey;
@@ -41,30 +45,53 @@ public class FileManager extends AbstractManager<FileKey, FileValues> {
         jobKey = new JobKey(key.getJobName());
 
         CallableStatement statement = dao.prepareCall(dao
-            .insertLibraryQualifier("{CALL " + IJDBCConnection.LIBRARY + "\"MNTFILE_initialize\"(?, ?, ?, ?)}")); //$NON-NLS-1$ //$NON-NLS-2$
+            .insertLibraryQualifier("{CALL " + IJDBCConnection.LIBRARY + "\"MNTFILE_initialize\"(?, ?, ?, ?, ?)}")); //$NON-NLS-1$ //$NON-NLS-2$
 
         statement.setString(IFileInitialize.MODE, mode);
         statement.setString(IFileInitialize.JOB, key.getJobName());
         statement.setInt(IFileInitialize.POSITION, key.getPosition());
         statement.setString(IFileInitialize.SUCCESS, Success.NO.label());
+        statement.setString(IFileInitialize.ERROR_CODE, EMPTY_STRING);
 
         statement.registerOutParameter(IFileInitialize.SUCCESS, Types.CHAR);
+        statement.registerOutParameter(IFileInitialize.ERROR_CODE, Types.CHAR);
 
         statement.execute();
 
         String success = statement.getString(IFileInitialize.SUCCESS);
+        String errorCode = statement.getString(IFileInitialize.ERROR_CODE);
 
         String message;
         if (Success.YES.label().equals(success)) {
             message = ""; //$NON-NLS-1$
         } else {
             message = Messages.bind(Messages.Could_not_initialize_file_manager_for_file_at_position_C_of_job_A_in_library_B,
-                new Object[] { key.getJobName(), dao.getLibraryName(), key.getPosition() });
+                new Object[] { key.getJobName(), dao.getLibraryName(), key.getPosition(), getErrorMessage(errorCode) });
         }
 
-        Result status = new Result(null, message, success);
+        Result status = new Result(success, message);
 
         return status;
+    }
+
+    /**
+     * Translates the API error code to message text.
+     * 
+     * @param errorCode - Error code that was returned by the API.
+     * @return message text
+     */
+    private String getErrorMessage(String errorCode) {
+
+        // TODO: use reflection
+        if (ERROR_001.equals(errorCode)) {
+            return Messages.FileManager_001;
+        } else if (ERROR_002.equals(errorCode)) {
+            return Messages.FileManager_002;
+        } else if (ERROR_003.equals(errorCode)) {
+            return Messages.FileManager_003;
+        }
+
+        return Messages.bind(Messages.EntityManager_Unknown_error_code_A, errorCode);
     }
 
     @Override

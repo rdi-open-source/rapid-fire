@@ -11,11 +11,24 @@ package biz.rapidfire.core.model.maintenance;
 public class Result {
 
     private String fieldName;
+    private int recordNbr;
     private String message;
     private Success success;
 
-    public Result(Success success) {
-        this(null, null, success.label());
+    public Result(String success, String message) {
+        this(null, message, success);
+    }
+
+    public Result(String fieldName, float recordNbr, String message, String success) {
+        this(fieldName, message, success);
+
+        this.recordNbr = Math.round(recordNbr);
+    }
+
+    public Result(String fieldName, int recordNbr, String message, String success) {
+        this(fieldName, message, success);
+
+        this.recordNbr = recordNbr;
     }
 
     public Result(String fieldName, String message, String success) {
@@ -33,6 +46,10 @@ public class Result {
 
     public String getFieldName() {
         return fieldName;
+    }
+
+    public int getRecordNbr() {
+        return recordNbr;
     }
 
     public String getMessage() {

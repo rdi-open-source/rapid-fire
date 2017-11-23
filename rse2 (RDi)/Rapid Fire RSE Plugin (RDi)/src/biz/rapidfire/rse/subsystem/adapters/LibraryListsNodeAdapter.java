@@ -20,6 +20,7 @@ import biz.rapidfire.core.dialogs.MessageDialogAsync;
 import biz.rapidfire.core.model.IRapidFireJobResource;
 import biz.rapidfire.rse.Messages;
 import biz.rapidfire.rse.RapidFireRSEPlugin;
+import biz.rapidfire.rse.subsystem.actions.NewLibraryListAction;
 import biz.rapidfire.rse.subsystem.resources.LibraryListsNode;
 
 public class LibraryListsNodeAdapter extends AbstractNodeAdapter {
@@ -41,7 +42,7 @@ public class LibraryListsNodeAdapter extends AbstractNodeAdapter {
 
     @Override
     public void addActions(SystemMenuManager menuManager, IStructuredSelection selection, Shell shell, String paramString) {
-        // menuManager.add(null, new NewLibraryListsNodePopupMenuAction(shell));
+        menuManager.add(null, new NewLibraryListAction(shell));
     }
 
     @Override

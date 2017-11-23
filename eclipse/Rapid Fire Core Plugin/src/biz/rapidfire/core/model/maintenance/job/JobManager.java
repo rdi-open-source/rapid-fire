@@ -19,6 +19,10 @@ import biz.rapidfire.core.model.maintenance.Success;
 
 public class JobManager extends AbstractManager<JobKey, JobValues> {
 
+    private static final String ERROR_001 = "001"; //$NON-NLS-1$
+    private static final String ERROR_002 = "002"; //$NON-NLS-1$
+    private static final String ERROR_003 = "003"; //$NON-NLS-1$
+
     private static final String EMPTY_STRING = ""; //$NON-NLS-1$
     private IJDBCConnection dao;
 
@@ -37,28 +41,53 @@ public class JobManager extends AbstractManager<JobKey, JobValues> {
     public Result initialize(String mode, JobKey key) throws Exception {
 
         CallableStatement statement = dao.prepareCall(dao
-            .insertLibraryQualifier("{CALL " + IJDBCConnection.LIBRARY + "\"MNTJOB_initialize\"(?, ?, ?)}")); //$NON-NLS-1$ //$NON-NLS-2$
+            .insertLibraryQualifier("{CALL " + IJDBCConnection.LIBRARY + "\"MNTJOB_initialize\"(?, ?, ?, ?)}")); //$NON-NLS-1$ //$NON-NLS-2$
 
         statement.setString(IJobInitialize.MODE, mode);
         statement.setString(IJobInitialize.JOB, key.getJobName());
         statement.setString(IJobInitialize.SUCCESS, Success.NO.label());
+        statement.setString(IJobInitialize.ERROR_CODE, EMPTY_STRING);
 
         statement.registerOutParameter(IJobInitialize.SUCCESS, Types.CHAR);
+        statement.registerOutParameter(IJobInitialize.ERROR_CODE, Types.CHAR);
 
         statement.execute();
 
+        // TODO: add error handling
         String success = statement.getString(IJobInitialize.SUCCESS);
+        String errorCode = statement.getString(IJobInitialize.ERROR_CODE);
 
         String message;
         if (Success.YES.label().equals(success)) {
             message = ""; //$NON-NLS-1$
         } else {
-            message = Messages.bind(Messages.Could_not_initialize_job_manager_for_job_A_in_library_B, key.getJobName(), dao.getLibraryName());
+            message = Messages.bind(Messages.Could_not_initialize_job_manager_for_job_A_in_library_B,
+                new Object[] { key.getJobName(), dao.getLibraryName(), getErrorMessage(errorCode) });
         }
 
         Result status = new Result(null, message, success);
 
         return status;
+    }
+
+    /**
+     * Translates the API error code to message text.
+     * 
+     * @param errorCode - Error code that was returned by the API.
+     * @return message text
+     */
+    private String getErrorMessage(String errorCode) {
+
+        // TODO: use reflection
+        if (ERROR_001.equals(errorCode)) {
+            return Messages.FileManager_001;
+        } else if (ERROR_002.equals(errorCode)) {
+            return Messages.FileManager_002;
+        } else if (ERROR_003.equals(errorCode)) {
+            return Messages.FileManager_003;
+        }
+
+        return Messages.bind(Messages.EntityManager_Unknown_error_code_A, errorCode);
     }
 
     @Override

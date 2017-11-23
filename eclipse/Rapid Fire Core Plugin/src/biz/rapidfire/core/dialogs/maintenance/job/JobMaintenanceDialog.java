@@ -8,24 +8,18 @@
 
 package biz.rapidfire.core.dialogs.maintenance.job;
 
-import org.eclipse.jface.dialogs.IDialogSettings;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
 import biz.rapidfire.core.Messages;
-import biz.rapidfire.core.RapidFireCorePlugin;
+import biz.rapidfire.core.dialogs.maintenance.AbstractMaintenanceDialog;
 import biz.rapidfire.core.helpers.ExceptionHelper;
-import biz.rapidfire.core.jface.dialogs.Size;
-import biz.rapidfire.core.jface.dialogs.XDialog;
 import biz.rapidfire.core.model.maintenance.IMaintenance;
 import biz.rapidfire.core.model.maintenance.Result;
 import biz.rapidfire.core.model.maintenance.job.IJobCheck;
@@ -33,7 +27,7 @@ import biz.rapidfire.core.model.maintenance.job.JobManager;
 import biz.rapidfire.core.model.maintenance.job.JobValues;
 import biz.rapidfire.core.swt.widgets.WidgetFactory;
 
-public class JobMaintenanceDialog extends XDialog {
+public class JobMaintenanceDialog extends AbstractMaintenanceDialog {
 
     private String mode;
     private JobManager manager;
@@ -92,78 +86,70 @@ public class JobMaintenanceDialog extends XDialog {
     }
 
     @Override
-    protected void configureShell(Shell newShell) {
-        super.configureShell(newShell);
+    protected void createEditorAreaContent(Composite parent) {
 
-        newShell.setText(Messages.DialogTitle_Job);
-    }
-
-    @Override
-    protected Control createDialogArea(Composite parent) {
-
-        Composite container = (Composite)super.createDialogArea(parent);
-        container.setLayout(new GridLayout(2, false));
-
-        WidgetFactory.createDialogSubTitle(container, mode);
-
-        Label labelJobName = new Label(container, SWT.NONE);
+        Label labelJobName = new Label(parent, SWT.NONE);
         labelJobName.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false));
         labelJobName.setText(Messages.Label_Job_colon);
         labelJobName.setToolTipText(Messages.Tooltip_Job);
 
-        textJobName = WidgetFactory.createNameText(container);
+        textJobName = WidgetFactory.createNameText(parent);
         textJobName.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
         textJobName.setToolTipText(Messages.Tooltip_Job);
         textJobName.setEnabled(enableKeyFields);
 
-        Label labelDescription = new Label(container, SWT.NONE);
+        Label labelDescription = new Label(parent, SWT.NONE);
         labelDescription.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false));
         labelDescription.setText(Messages.Label_Description_colon);
         labelDescription.setToolTipText(Messages.Tooltip_Description);
 
-        textDescription = WidgetFactory.createDescriptionText(container);
+        textDescription = WidgetFactory.createDescriptionText(parent);
         textDescription.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
         textDescription.setToolTipText(Messages.Tooltip_Description);
         textDescription.setEnabled(enableFields);
 
-        Label labelCreateEnvironment = new Label(container, SWT.NONE);
+        Label labelCreateEnvironment = new Label(parent, SWT.NONE);
         labelCreateEnvironment.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false));
         labelCreateEnvironment.setText(Messages.Label_Create_environment_colon);
         labelCreateEnvironment.setToolTipText(Messages.Tooltip_Create_environment);
 
-        buttonCreateEnvironment = WidgetFactory.createCheckbox(container);
+        buttonCreateEnvironment = WidgetFactory.createCheckbox(parent);
         buttonCreateEnvironment.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
         buttonCreateEnvironment.setToolTipText(Messages.Tooltip_Create_environment);
         buttonCreateEnvironment.setEnabled(enableFields);
 
-        Label labelJobQueueName = new Label(container, SWT.NONE);
+        Label labelJobQueueName = new Label(parent, SWT.NONE);
         labelJobQueueName.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false));
         labelJobQueueName.setText(Messages.Label_Job_queue_name_colon);
         labelJobQueueName.setToolTipText(Messages.Tooltip_Job_queue_name);
 
-        textJobQueueName = WidgetFactory.createNameText(container);
+        textJobQueueName = WidgetFactory.createNameText(parent);
         textJobQueueName.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
         textJobQueueName.setToolTipText(Messages.Tooltip_Job_queue_name);
         textJobQueueName.setEnabled(enableFields);
 
-        Label labelJobQueueLibraryName = new Label(container, SWT.NONE);
+        Label labelJobQueueLibraryName = new Label(parent, SWT.NONE);
         labelJobQueueLibraryName.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false));
         labelJobQueueLibraryName.setText(Messages.Label_Job_queue_library_name_colon);
         labelJobQueueLibraryName.setToolTipText(Messages.Tooltip_Job_queue_library_name);
 
-        textJobQueueLibraryName = WidgetFactory.createNameText(container);
+        textJobQueueLibraryName = WidgetFactory.createNameText(parent);
         textJobQueueLibraryName.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
         textJobQueueLibraryName.setToolTipText(Messages.Tooltip_Job_queue_library_name);
         textJobQueueLibraryName.setEnabled(enableFields);
-
-        createStatusLine(container);
-
-        setScreenValues();
-
-        return container;
     }
 
-    private void setScreenValues() {
+    @Override
+    protected String getDialogTitle() {
+        return Messages.DialogTitle_Job;
+    }
+
+    @Override
+    protected String getMode() {
+        return mode;
+    }
+
+    protected void setScreenValues() {
 
         textJobName.setText(values.getKey().getJobName());
         textDescription.setText(values.getDescription());
@@ -222,30 +208,5 @@ public class JobMaintenanceDialog extends XDialog {
             textJobQueueLibraryName.setFocus();
             setErrorMessage(Messages.bind(Messages.Library_name_A_is_not_valid, textJobQueueLibraryName.getText()));
         }
-    }
-
-    /**
-     * Overridden to make this dialog resizable.
-     */
-    @Override
-    protected boolean isResizable() {
-        return true;
-    }
-
-    /**
-     * Overridden to provide a default size to {@link XDialog}.
-     */
-    @Override
-    protected Point getDefaultSize() {
-        return getShell().computeSize(Size.getSize(510), SWT.DEFAULT, true);
-    }
-
-    /**
-     * Overridden to let {@link XDialog} store the state of this dialog in a
-     * separate section of the dialog settings file.
-     */
-    @Override
-    protected IDialogSettings getDialogBoundsSettings() {
-        return super.getDialogBoundsSettings(RapidFireCorePlugin.getDefault().getDialogSettings());
     }
 }

@@ -12,6 +12,7 @@ import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.sql.Types;
 import java.util.HashMap;
 import java.util.LinkedList;
 import java.util.List;
@@ -20,15 +21,25 @@ import java.util.Map.Entry;
 import java.util.Properties;
 import java.util.Set;
 
+import biz.rapidfire.core.Messages;
 import biz.rapidfire.core.RapidFireCorePlugin;
 import biz.rapidfire.core.dialogs.MessageDialogAsync;
+import biz.rapidfire.core.exceptions.RapidFireStartConnectionException;
+import biz.rapidfire.core.exceptions.RapidFireStopConnectionException;
 import biz.rapidfire.core.helpers.ExceptionHelper;
+import biz.rapidfire.core.model.maintenance.Success;
 import biz.rapidfire.rsebase.model.dao.AbstractDAOManager;
 
 import com.ibm.as400.access.AS400;
 import com.ibm.as400.access.AS400JDBCDriver;
 
 public class JDBCConnectionManager extends AbstractDAOManager {
+
+    private static final String ERROR_START_CONNECTION_001 = "001"; //$NON-NLS-1$
+
+    private static final String ERROR_STOP_CONNECTION_001 = "001"; //$NON-NLS-1$
+
+    private static final String EMPTY_STRING = ""; //$NON-NLS-1$
 
     private static final String PROPERTY_PROMPT = "prompt";
     private static final String PROPERTY_BIG_DECIMAL = "big decimal";
@@ -244,6 +255,7 @@ public class JDBCConnectionManager extends AbstractDAOManager {
 
         } catch (Exception e) {
             RapidFireCorePlugin.logError("*** Could not close JDBC connection '" + jdbcConnection.getConnectionName() + "' ***", e); //$NON-NLS-1$ //$NON-NLS-2$
+            MessageDialogAsync.displayError(ExceptionHelper.getLocalizedMessage(e));
         }
     }
 
@@ -252,8 +264,24 @@ public class JDBCConnectionManager extends AbstractDAOManager {
         CallableStatement statement = null;
         try {
             statement = jdbcConnection.prepareCall(jdbcConnection
-                .insertLibraryQualifier("{CALL " + IJDBCConnection.LIBRARY + "\"RAPIDFIRE_start\"()}")); //$NON-NLS-1$
+                .insertLibraryQualifier("{CALL " + IJDBCConnection.LIBRARY + "\"RAPIDFIRE_start\"(?, ?)}")); //$NON-NLS-1$
+
+            statement.setString(IRapidFireStart.SUCCESS, EMPTY_STRING);
+            statement.setString(IRapidFireStart.ERROR_CODE, EMPTY_STRING);
+
+            statement.registerOutParameter(IRapidFireStart.SUCCESS, Types.CHAR);
+            statement.registerOutParameter(IRapidFireStart.ERROR_CODE, Types.CHAR);
+
             statement.execute();
+
+            String success = statement.getString(IRapidFireStart.SUCCESS);
+            String errorCode = statement.getString(IRapidFireStart.ERROR_CODE);
+
+            if (!Success.YES.label().equals(success)) {
+                String message = Messages.bind(Messages.Could_not_start_a_Rapid_Fire_JDBC_connection, getStartConnectionErrorMessage(errorCode));
+                throw new RapidFireStartConnectionException(message);
+            }
+
         } finally {
             if (statement != null) {
                 statement.close();
@@ -261,18 +289,66 @@ public class JDBCConnectionManager extends AbstractDAOManager {
         }
     }
 
+    /**
+     * Translates the API error code to message text.
+     * 
+     * @param errorCode - Error code that was returned by the API.
+     * @return message text
+     */
+    private String getStartConnectionErrorMessage(String errorCode) {
+
+        // TODO: use reflection
+        if (ERROR_START_CONNECTION_001.equals(errorCode)) {
+            return Messages.RapidFire_Start_001;
+        }
+
+        return Messages.bind(Messages.EntityManager_Unknown_error_code_A, errorCode);
+    }
+
     private void stopConnection(JDBCConnection jdbcConnection) throws Exception, SQLException {
 
         CallableStatement statement = null;
         try {
             statement = jdbcConnection.prepareCall(jdbcConnection
-                .insertLibraryQualifier("{CALL " + IJDBCConnection.LIBRARY + "\"RAPIDFIRE_stop\"()}")); //$NON-NLS-1$
+                .insertLibraryQualifier("{CALL " + IJDBCConnection.LIBRARY + "\"RAPIDFIRE_stop\"(?, ?)}")); //$NON-NLS-1$
+
+            statement.setString(IRapidFireStop.SUCCESS, EMPTY_STRING);
+            statement.setString(IRapidFireStop.ERROR_CODE, EMPTY_STRING);
+
+            statement.registerOutParameter(IRapidFireStop.SUCCESS, Types.CHAR);
+            statement.registerOutParameter(IRapidFireStop.ERROR_CODE, Types.CHAR);
+
             statement.execute();
+
+            String success = statement.getString(IRapidFireStop.SUCCESS);
+            String errorCode = statement.getString(IRapidFireStop.ERROR_CODE);
+
+            if (!Success.YES.label().equals(success)) {
+                String message = Messages.bind(Messages.Could_not_stop_the_Rapid_Fire_JDBC_connection, getStopConnectionErrorMessage(errorCode));
+                throw new RapidFireStopConnectionException(message);
+            }
+
         } finally {
             if (statement != null) {
                 statement.close();
             }
         }
+    }
+
+    /**
+     * Translates the API error code to message text.
+     * 
+     * @param errorCode - Error code that was returned by the API.
+     * @return message text
+     */
+    private String getStopConnectionErrorMessage(String errorCode) {
+
+        // TODO: use reflection
+        if (ERROR_STOP_CONNECTION_001.equals(errorCode)) {
+            return Messages.RapidFire_Stop_001;
+        }
+
+        return Messages.bind(Messages.EntityManager_Unknown_error_code_A, errorCode);
     }
 
     public void destroy() {
