@@ -15,6 +15,7 @@ import biz.rapidfire.core.model.IRapidFireFileResource;
 import biz.rapidfire.core.model.IRapidFireJobResource;
 import biz.rapidfire.core.model.IRapidFireLibraryListResource;
 import biz.rapidfire.core.model.IRapidFireLibraryResource;
+import biz.rapidfire.core.model.IRapidFireNotificationResource;
 
 public interface IRapidFireSubSystem {
 
@@ -25,6 +26,8 @@ public interface IRapidFireSubSystem {
     public IRapidFireLibraryListResource[] getLibraryLists(String libraryName, String jobName, Shell shell) throws Exception;
 
     public IRapidFireLibraryResource[] getLibraries(String library, String job, Shell shell) throws Exception;
+
+    public IRapidFireNotificationResource[] getNotifications(String library, String job, Shell shell) throws Exception;
 
     public IFileCopyStatus[] getFileCopyStatus(String library, String job, Shell shell) throws Exception;
 

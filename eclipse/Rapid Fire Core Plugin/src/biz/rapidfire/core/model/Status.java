@@ -33,7 +33,15 @@ public enum Status {
         this.label = label;
     }
 
+    public String[] labels() {
+        return statuses.keySet().toArray(new String[statuses.size()]);
+    }
+
     public static Status find(String label) {
+        // TODO: remove debug code
+        if (label.length() != label.trim().length()) {
+            throw new IllegalArgumentException("Expect to see a trimmed value here."); //$NON-NLS-1$
+        }
         return statuses.get(label);
     }
 }

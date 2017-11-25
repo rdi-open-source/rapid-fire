@@ -256,7 +256,7 @@ public class FileMaintenanceDialog extends AbstractMaintenanceDialog {
         }
         if (IFileCheck.FIELD_TYPE.equals(fieldName)) {
             textType.setFocus();
-            setErrorMessage(Messages.Type_A_is_not_valid);
+            setErrorMessage(Messages.File_type_A_is_not_valid);
         }
         if (IFileCheck.FIELD_COPY_PROGRAM_NAME.equals(fieldName)) {
             textCopyProgramName.setFocus();

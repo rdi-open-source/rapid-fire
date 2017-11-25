@@ -8,6 +8,9 @@
 
 package biz.rapidfire.rse;
 
+import java.util.LinkedList;
+import java.util.List;
+
 import org.eclipse.osgi.util.NLS;
 
 public class Messages extends NLS {
@@ -65,6 +68,8 @@ public class Messages extends NLS {
     public static String Library_name;;
     public static String ShadowLibrary_name;;
     public static String Library_list_name;
+    public static String User_name;
+    public static String NotificationType;
 
     public static String Tooltip_DataLibrary_name;
     public static String Tooltip_Job_name;
@@ -87,6 +92,8 @@ public class Messages extends NLS {
     public static String Tooltip_Library_name;
     public static String Tooltip_ShadowLibrary_name;
     public static String Tooltip_Library_list_name;
+    public static String Tooltip_User_name;
+    public static String Tooltip_NotificationType;
 
     /*
      * Filter types
@@ -99,25 +106,30 @@ public class Messages extends NLS {
     public static String Resource_Rapid_Fire_Job;
     public static String Resource_Rapid_Fire_File;
     public static String Resource_Rapid_Fire_Library;
+    public static String Resource_Rapid_Fire_Notification;
 
     public static String NodeText_Files;
     public static String NodeText_LibraryLists;
     public static String NodeText_Libraries;
+    public static String NodeText_Notifications;
 
     public static String NodeType_Files;
     public static String NodeType_LibraryLists;
     public static String NodeType_Libraries;
+    public static String NodeType_Notifications;
 
     // Action labels
     public static String ActionLabel_New_Job;
     public static String ActionLabel_New_File;
     public static String ActionLabel_New_Library;
     public static String ActionLabel_New_Library_List;
+    public static String ActionLabel_New_Notification;
 
     public static String ActionTooltip_New_Job;
     public static String ActionTooltip_New_File;
     public static String ActionTooltip_New_Library;
     public static String ActionTooltip_New_Library_List;
+    public static String ActionTooltip_New_Notification;
 
     private Messages() {
     }
@@ -125,5 +137,15 @@ public class Messages extends NLS {
     static {
         // initialize resource bundle
         NLS.initializeMessages(BUNDLE_NAME, Messages.class);
+    }
+
+    public static String bindParameters(String message, Object... values) {
+
+        List<Object> bindings = new LinkedList<Object>();
+        for (Object value : values) {
+            bindings.add(value);
+        }
+
+        return bind(message, bindings.toArray());
     }
 }

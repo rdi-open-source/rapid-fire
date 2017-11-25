@@ -13,8 +13,8 @@ import org.eclipse.rse.core.subsystems.ISubSystem;
 
 import biz.rapidfire.core.exceptions.IllegalParameterException;
 import biz.rapidfire.core.helpers.StringHelper;
-import biz.rapidfire.core.model.FileType;
 import biz.rapidfire.core.model.IRapidFireFileResource;
+import biz.rapidfire.core.model.maintenance.file.shared.FileType;
 import biz.rapidfire.core.subsystem.IRapidFireSubSystem;
 import biz.rapidfire.core.subsystem.resources.RapidFireFileResourceDelegate;
 

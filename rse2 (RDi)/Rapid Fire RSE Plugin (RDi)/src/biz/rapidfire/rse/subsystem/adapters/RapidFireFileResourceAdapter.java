@@ -11,10 +11,7 @@ package biz.rapidfire.rse.subsystem.adapters;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.resource.ImageDescriptor;
-import org.eclipse.jface.viewers.IStructuredSelection;
-import org.eclipse.rse.ui.SystemMenuManager;
 import org.eclipse.rse.ui.view.ISystemRemoteElementAdapter;
-import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.views.properties.IPropertyDescriptor;
 import org.eclipse.ui.views.properties.PropertyDescriptor;
 
@@ -58,7 +55,13 @@ public class RapidFireFileResourceAdapter extends AbstractResourceAdapter implem
 
         RapidFireFileResource resource = (RapidFireFileResource)element;
 
-        return resource.getName();
+        StringBuilder text = new StringBuilder();
+
+        text.append(resource.getPosition());
+        text.append(": "); //$NON-NLS-1$
+        text.append(resource.getName());
+
+        return text.toString();
     }
 
     /**
@@ -69,7 +72,7 @@ public class RapidFireFileResourceAdapter extends AbstractResourceAdapter implem
 
         RapidFireFileResource resource = (RapidFireFileResource)element;
 
-        String name = "RapidFireFile." + resource.getDataLibrary() + "." + resource.getJob() + "." + resource.getName(); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+        String name = "RapidFireFile." + resource.getDataLibrary() + "." + resource.getJob() + "." + resource.getPosition(); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
         return name;
     }
@@ -157,7 +160,7 @@ public class RapidFireFileResourceAdapter extends AbstractResourceAdapter implem
         } else if (propKey.equals(FILE)) {
             return resource.getName();
         } else if (propKey.equals(FILE_TYPE)) {
-            return resource.getFileType().label;
+            return resource.getFileType().label();
         } else if (propKey.equals(COPY_PROGRAM_NAME)) {
             return resource.getCopyProgramName();
         } else if (propKey.equals(COPY_PROGRAM_LIBRARY)) {

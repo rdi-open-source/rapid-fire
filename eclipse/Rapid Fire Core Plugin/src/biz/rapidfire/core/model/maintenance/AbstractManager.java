@@ -8,10 +8,10 @@
 
 package biz.rapidfire.core.model.maintenance;
 
-public abstract class AbstractManager<K, V> {
+import java.sql.CallableStatement;
+import java.sql.SQLException;
 
-    public final String SUCCESS_NO = "N";
-    public final String SUCCESS_YES = "Y";
+public abstract class AbstractManager<K, V> {
 
     public abstract void openFiles() throws Exception;
 
@@ -27,4 +27,16 @@ public abstract class AbstractManager<K, V> {
     public abstract void book() throws Exception;
 
     public abstract void closeFiles() throws Exception;
+
+    protected String getStringTrim(CallableStatement statement, int parameterIndex) throws SQLException {
+        return statement.getString(parameterIndex).trim();
+    }
+
+    protected int getInt(CallableStatement statement, int parameterIndex) throws SQLException {
+        return statement.getInt(parameterIndex);
+    }
+
+    protected Float getFloat(CallableStatement statement, int parameterIndex) throws SQLException {
+        return statement.getFloat(parameterIndex);
+    }
 }

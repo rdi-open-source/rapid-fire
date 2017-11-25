@@ -58,8 +58,8 @@ public class FileManager extends AbstractManager<FileKey, FileValues> {
 
         statement.execute();
 
-        String success = statement.getString(IFileInitialize.SUCCESS);
-        String errorCode = statement.getString(IFileInitialize.ERROR_CODE);
+        String success = getStringTrim(statement, IFileInitialize.SUCCESS);
+        String errorCode = getStringTrim(statement, IFileInitialize.ERROR_CODE);
 
         String message;
         if (Success.YES.label().equals(success)) {
@@ -119,13 +119,13 @@ public class FileManager extends AbstractManager<FileKey, FileValues> {
         statement.execute();
 
         FileValues values = new FileValues();
-        values.setKey(new FileKey(jobKey, statement.getInt(IFileGetValues.POSITION)));
-        values.setFileName(statement.getString(IFileGetValues.FILE));
-        values.setType(statement.getString(IFileGetValues.TYPE));
-        values.setCopyProgramLibraryName(statement.getString(IFileGetValues.COPY_PROGRAM_LIBRARY_NAME));
-        values.setCopyProgramName(statement.getString(IFileGetValues.COPY_PROGRAM_NAME));
-        values.setConversionProgramLibraryName(statement.getString(IFileGetValues.CONVERSION_PROGRAM_LIBRARY_NAME));
-        values.setConversionProgramName(statement.getString(IFileGetValues.CONVERSION_PROGRAM_NAME));
+        values.setKey(new FileKey(jobKey, getInt(statement, IFileGetValues.POSITION)));
+        values.setFileName(getStringTrim(statement, IFileGetValues.FILE));
+        values.setType(getStringTrim(statement, IFileGetValues.TYPE));
+        values.setCopyProgramLibraryName(getStringTrim(statement, IFileGetValues.COPY_PROGRAM_LIBRARY_NAME));
+        values.setCopyProgramName(getStringTrim(statement, IFileGetValues.COPY_PROGRAM_NAME));
+        values.setConversionProgramLibraryName(getStringTrim(statement, IFileGetValues.CONVERSION_PROGRAM_LIBRARY_NAME));
+        values.setConversionProgramName(getStringTrim(statement, IFileGetValues.CONVERSION_PROGRAM_NAME));
 
         return values;
     }
@@ -162,9 +162,9 @@ public class FileManager extends AbstractManager<FileKey, FileValues> {
 
         statement.execute();
 
-        String fieldName = statement.getString(IFileCheck.FIELD_NAME);
-        String message = statement.getString(IFileCheck.MESSAGE);
-        String success = statement.getString(IFileCheck.SUCCESS);
+        String fieldName = getStringTrim(statement, IFileCheck.FIELD_NAME);
+        String message = getStringTrim(statement, IFileCheck.MESSAGE);
+        String success = getStringTrim(statement, IFileCheck.SUCCESS);
 
         return new Result(fieldName, message, success);
     }

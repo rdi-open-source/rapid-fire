@@ -9,9 +9,10 @@
 package biz.rapidfire.rse.model.dao;
 
 import biz.rapidfire.core.model.dao.AbstractFileCopyStatusDAO;
-import biz.rapidfire.core.model.dao.JDBCConnectionManager;
 import biz.rapidfire.core.model.dao.IFileCopyStatusDAO;
+import biz.rapidfire.core.model.dao.JDBCConnectionManager;
 
+// TODO: move to core plugin
 public class FileCopyStatusDAO extends AbstractFileCopyStatusDAO implements IFileCopyStatusDAO {
 
     public FileCopyStatusDAO(String connectionName, String libraryName) throws Exception {

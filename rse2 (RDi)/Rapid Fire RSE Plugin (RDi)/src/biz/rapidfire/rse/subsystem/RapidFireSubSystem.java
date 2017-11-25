@@ -39,11 +39,13 @@ import biz.rapidfire.core.model.IRapidFireFileResource;
 import biz.rapidfire.core.model.IRapidFireJobResource;
 import biz.rapidfire.core.model.IRapidFireLibraryListResource;
 import biz.rapidfire.core.model.IRapidFireLibraryResource;
+import biz.rapidfire.core.model.IRapidFireNotificationResource;
 import biz.rapidfire.core.model.IRapidFireResource;
 import biz.rapidfire.core.model.dao.IFileCopyStatusDAO;
 import biz.rapidfire.core.model.dao.IFilesDAO;
 import biz.rapidfire.core.model.dao.IJobsDAO;
 import biz.rapidfire.core.model.dao.ILibrariesDAO;
+import biz.rapidfire.core.model.dao.INotificationsDAO;
 import biz.rapidfire.core.model.dao.JDBCConnectionManager;
 import biz.rapidfire.core.model.queries.FileCopyStatus;
 import biz.rapidfire.core.subsystem.IRapidFireSubSystem;
@@ -53,6 +55,7 @@ import biz.rapidfire.rse.model.dao.FilesDAO;
 import biz.rapidfire.rse.model.dao.JobsDAO;
 import biz.rapidfire.rse.model.dao.LibrariesDAO;
 import biz.rapidfire.rse.model.dao.LibraryListsDAO;
+import biz.rapidfire.rse.model.dao.NotificationsDAO;
 
 import com.ibm.as400.access.AS400;
 import com.ibm.etools.iseries.subsystems.qsys.IISeriesSubSystem;
@@ -202,6 +205,25 @@ public class RapidFireSubSystem extends SubSystem implements IISeriesSubSystem, 
         }
 
         return libraries.toArray(new IRapidFireLibraryResource[libraries.size()]);
+    }
+
+    public IRapidFireNotificationResource[] getNotifications(String libraryName, String jobName, Shell shell) throws Exception {
+
+        if (!successFullyLoaded()) {
+            return new IRapidFireNotificationResource[0];
+        }
+
+        INotificationsDAO dao = new NotificationsDAO(getConnectionName(), libraryName);
+        List<IRapidFireNotificationResource> notification = dao.load(jobName, shell);
+        if (notification == null) {
+            return null;
+        }
+
+        for (IRapidFireNotificationResource library : notification) {
+            library.setParentSubSystem(this);
+        }
+
+        return notification.toArray(new IRapidFireNotificationResource[notification.size()]);
     }
 
     public IFileCopyStatus[] getFileCopyStatus(String libraryName, String jobName, Shell shell) throws Exception {

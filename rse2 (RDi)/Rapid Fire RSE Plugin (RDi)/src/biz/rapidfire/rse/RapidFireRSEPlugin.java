@@ -24,10 +24,12 @@ import biz.rapidfire.rse.subsystem.RapidFireSubSystemConfigurationAdapterFactory
 import biz.rapidfire.rse.subsystem.resources.FilesNode;
 import biz.rapidfire.rse.subsystem.resources.LibrariesNode;
 import biz.rapidfire.rse.subsystem.resources.LibraryListsNode;
+import biz.rapidfire.rse.subsystem.resources.NotificationsNode;
 import biz.rapidfire.rse.subsystem.resources.RapidFireFileResource;
 import biz.rapidfire.rse.subsystem.resources.RapidFireJobResource;
 import biz.rapidfire.rse.subsystem.resources.RapidFireLibraryListResource;
 import biz.rapidfire.rse.subsystem.resources.RapidFireLibraryResource;
+import biz.rapidfire.rse.subsystem.resources.RapidFireNotificationResource;
 
 /**
  * The activator class controls the plug-in life cycle
@@ -45,12 +47,14 @@ public class RapidFireRSEPlugin extends AbstractUIPlugin {
     public static final String IMAGE_RAPID_FIRE_FILTER = "rapidfire_filter.gif"; //$NON-NLS-1$
     public static final String IMAGE_RAPID_FIRE_JOB = "rapidfire_job.gif"; //$NON-NLS-1$
     public static final String IMAGE_FILE = "file.gif"; //$NON-NLS-1$
-    public static final String IMAGE_LIBRARY_LIST = "library_list.gif"; //$NON-NLS-1$
     public static final String IMAGE_LIBRARY = "library.gif"; //$NON-NLS-1$
+    public static final String IMAGE_LIBRARY_LIST = "library_list.gif"; //$NON-NLS-1$
+    public static final String IMAGE_NOTIFICATION = "notification.gif"; //$NON-NLS-1$
     public static final String IMAGE_NEW_JOB = "new_job.gif"; //$NON-NLS-1$
     public static final String IMAGE_NEW_FILE = "new_file.gif"; //$NON-NLS-1$
     public static final String IMAGE_NEW_LIBRARY = "new_library.gif"; //$NON-NLS-1$
     public static final String IMAGE_NEW_LIBRARY_LIST = "new_library_list.gif"; //$NON-NLS-1$
+    public static final String IMAGE_NEW_NOTIFICATION = "new_notification.gif"; //$NON-NLS-1$
 
     /**
      * The constructor
@@ -105,10 +109,12 @@ public class RapidFireRSEPlugin extends AbstractUIPlugin {
         manager.registerAdapters(adapterFactory, RapidFireFileResource.class);
         manager.registerAdapters(adapterFactory, RapidFireLibraryListResource.class);
         manager.registerAdapters(adapterFactory, RapidFireLibraryResource.class);
+        manager.registerAdapters(adapterFactory, RapidFireNotificationResource.class);
 
         manager.registerAdapters(adapterFactory, FilesNode.class);
         manager.registerAdapters(adapterFactory, LibraryListsNode.class);
         manager.registerAdapters(adapterFactory, LibrariesNode.class);
+        manager.registerAdapters(adapterFactory, NotificationsNode.class);
 
         RapidFireSubSystemConfigurationAdapterFactory subSystemConfigurationAdapterFactory = new RapidFireSubSystemConfigurationAdapterFactory();
         subSystemConfigurationAdapterFactory.registerWithManager(manager);
@@ -124,10 +130,12 @@ public class RapidFireRSEPlugin extends AbstractUIPlugin {
         reg.put(IMAGE_FILE, getImageDescriptor(IMAGE_FILE));
         reg.put(IMAGE_LIBRARY_LIST, getImageDescriptor(IMAGE_LIBRARY_LIST));
         reg.put(IMAGE_LIBRARY, getImageDescriptor(IMAGE_LIBRARY));
+        reg.put(IMAGE_NOTIFICATION, getImageDescriptor(IMAGE_NOTIFICATION));
         reg.put(IMAGE_NEW_JOB, getImageDescriptor(IMAGE_NEW_JOB));
         reg.put(IMAGE_NEW_FILE, getImageDescriptor(IMAGE_NEW_FILE));
-        reg.put(IMAGE_NEW_LIBRARY, getImageDescriptor(IMAGE_NEW_LIBRARY));
         reg.put(IMAGE_NEW_LIBRARY_LIST, getImageDescriptor(IMAGE_NEW_LIBRARY_LIST));
+        reg.put(IMAGE_NEW_LIBRARY, getImageDescriptor(IMAGE_NEW_LIBRARY));
+        reg.put(IMAGE_NEW_NOTIFICATION, getImageDescriptor(IMAGE_NEW_NOTIFICATION));
     }
 
     private ImageDescriptor getImageDescriptor(String name) {

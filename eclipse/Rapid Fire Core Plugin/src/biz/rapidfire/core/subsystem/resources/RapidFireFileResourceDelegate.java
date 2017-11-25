@@ -8,8 +8,8 @@
 
 package biz.rapidfire.core.subsystem.resources;
 
-import biz.rapidfire.core.model.FileType;
 import biz.rapidfire.core.model.IRapidFireFileResource;
+import biz.rapidfire.core.model.maintenance.file.shared.FileType;
 
 public class RapidFireFileResourceDelegate implements Comparable<IRapidFireFileResource> {
 

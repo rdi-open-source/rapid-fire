@@ -10,10 +10,11 @@ package biz.rapidfire.rse.model.dao;
 
 import biz.rapidfire.core.model.IRapidFireJobResource;
 import biz.rapidfire.core.model.dao.AbstractJobsDAO;
-import biz.rapidfire.core.model.dao.JDBCConnectionManager;
 import biz.rapidfire.core.model.dao.IJobsDAO;
+import biz.rapidfire.core.model.dao.JDBCConnectionManager;
 import biz.rapidfire.rse.subsystem.resources.RapidFireJobResource;
 
+//TODO: move to core plugin
 public class JobsDAO extends AbstractJobsDAO implements IJobsDAO {
 
     public JobsDAO(String connectionName, String libraryName) throws Exception {

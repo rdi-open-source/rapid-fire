@@ -234,6 +234,47 @@
          name="%command_Display_Library_List"
          description="%command_Display_Library_List_Description">
       </command>
+   
+      	<!--
+      	  ==========================================
+      	    Rapid Fire 'Notification' Commands
+      	  ==========================================
+      	-->
+         
+      <command
+         id="biz.rapidfire.core.command.Notification.new"
+         categoryId="biz.rapidfire.category.Commands"
+         name="%command_New_Notification"
+         description="%command_New_Notification_Description">
+      </command>
+         
+      <command
+         id="biz.rapidfire.core.command.Notification.change"
+         categoryId="biz.rapidfire.category.Commands"
+         name="%command_Change_Notification"
+         description="%command_Change_Notification_Description">
+      </command>
+         
+      <command
+         id="biz.rapidfire.core.command.Notification.copy"
+         categoryId="biz.rapidfire.category.Commands"
+         name="%command_Copy_Notification"
+         description="%command_Copy_Notification_Description">
+      </command>
+         
+      <command
+         id="biz.rapidfire.core.command.Notification.delete"
+         categoryId="biz.rapidfire.category.Commands"
+         name="%command_Delete_Notification"
+         description="%command_Delete_Notification_Description">
+      </command>
+         
+      <command
+         id="biz.rapidfire.core.command.Notification.display"
+         categoryId="biz.rapidfire.category.Commands"
+         name="%command_Display_Notification"
+         description="%command_Display_Notification_Description">
+      </command>
 
    </extension>
 
@@ -597,6 +638,77 @@
                <count value="1" />
                <iterate operator="and">
                   <adapt type="biz.rapidfire.rse.subsystem.resources.RapidFireLibraryListResource" />
+               </iterate>
+            </with>
+         </enabledWhen>
+      </handler>
+
+      	<!--
+      	  ==========================================
+      	    Rapid Fire 'Notification' Command Handlers
+      	  ==========================================
+      	-->
+      
+      <handler
+         commandId="biz.rapidfire.core.command.Notification.new"
+         class="biz.rapidfire.core.handlers.notification.NewNotificationHandler">
+         <enabledWhen>
+            <with variable="selection">
+               <count value="+" />
+               <iterate operator="and">
+                  <adapt type="biz.rapidfire.rse.subsystem.resources.RapidFireNotificationResource" />
+               </iterate>
+            </with>
+         </enabledWhen>
+      </handler>
+      
+      <handler
+         commandId="biz.rapidfire.core.command.Notification.change"
+         class="biz.rapidfire.core.handlers.notification.ChangeNotificationHandler">
+         <enabledWhen>
+            <with variable="selection">
+               <count value="+" />
+               <iterate operator="and">
+                  <adapt type="biz.rapidfire.rse.subsystem.resources.RapidFireNotificationResource" />
+               </iterate>
+            </with>
+         </enabledWhen>
+      </handler>
+      
+      <handler
+         commandId="biz.rapidfire.core.command.Notification.copy"
+         class="biz.rapidfire.core.handlers.notification.CopyNotificationHandler">
+         <enabledWhen>
+            <with variable="selection">
+               <count value="1" />
+               <iterate operator="and">
+                  <adapt type="biz.rapidfire.rse.subsystem.resources.RapidFireNotificationResource" />
+               </iterate>
+            </with>
+         </enabledWhen>
+      </handler>
+      
+      <handler
+         commandId="biz.rapidfire.core.command.Notification.delete"
+         class="biz.rapidfire.core.handlers.notification.DeleteNotificationHandler">
+         <enabledWhen>
+            <with variable="selection">
+               <count value="+" />
+               <iterate operator="and">
+                  <adapt type="biz.rapidfire.rse.subsystem.resources.RapidFireNotificationResource" />
+               </iterate>
+            </with>
+         </enabledWhen>
+      </handler>
+      
+      <handler
+         commandId="biz.rapidfire.core.command.Notification.display"
+         class="biz.rapidfire.core.handlers.notification.DisplayNotificationHandler">
+         <enabledWhen>
+            <with variable="selection">
+               <count value="1" />
+               <iterate operator="and">
+                  <adapt type="biz.rapidfire.rse.subsystem.resources.RapidFireNotificationResource" />
                </iterate>
             </with>
          </enabledWhen>
@@ -1078,6 +1190,98 @@
 	           <with variable="selection">
 	              <iterate operator="and">
 	                 <adapt type="biz.rapidfire.rse.subsystem.resources.RapidFireLibraryListResource" />
+	              </iterate>
+	           </with>
+	        </visibleWhen>
+         </command>
+         
+      </menuContribution>
+   </extension>
+   
+      	<!--
+      	  ==========================================
+      	    Rapid Fire 'Notification' Object Contributions
+      	  ==========================================
+      	-->
+
+   <extension
+      point="org.eclipse.ui.menus">
+         
+      <menuContribution
+         locationURI="popup:org.eclipse.ui.popup.any?before=additions">
+         
+         <separator
+            name="maintenance"
+            visible="true">
+	        <visibleWhen>
+	           <with variable="selection">
+	              <iterate operator="and">
+	                 <adapt type="biz.rapidfire.rse.subsystem.resources.RapidFireNotificationResource" />
+	              </iterate>
+	           </with>
+	        </visibleWhen>
+         </separator>
+         
+         <command
+            commandId="biz.rapidfire.core.command.Notification.new" 
+            icon="icons/new_library_list.gif"
+            >
+	        <visibleWhen>
+	           <with variable="selection">
+	              <iterate operator="and">
+	                 <adapt type="biz.rapidfire.rse.subsystem.resources.RapidFireNotificationResource" />
+	              </iterate>
+	           </with>
+	        </visibleWhen>
+         </command>
+         
+         <command
+            commandId="biz.rapidfire.core.command.Notification.change" 
+            icon="icons/change.gif"
+            >
+	        <visibleWhen>
+	           <with variable="selection">
+	              <iterate operator="and">
+	                 <adapt type="biz.rapidfire.rse.subsystem.resources.RapidFireNotificationResource" />
+	              </iterate>
+	           </with>
+	        </visibleWhen>
+         </command>
+         
+         <command
+            commandId="biz.rapidfire.core.command.Notification.copy" 
+            icon="icons/copy.gif"
+            >
+	        <visibleWhen>
+	           <with variable="selection">
+	              <iterate operator="and">
+	                 <adapt type="biz.rapidfire.rse.subsystem.resources.RapidFireNotificationResource" />
+	              </iterate>
+	           </with>
+	        </visibleWhen>
+         </command>
+         
+         <command
+            commandId="biz.rapidfire.core.command.Notification.delete" 
+            icon="icons/delete.gif"
+            >
+	        <visibleWhen>
+	           <with variable="selection">
+	              <iterate operator="and">
+	                 <adapt type="biz.rapidfire.rse.subsystem.resources.RapidFireNotificationResource" />
+	              </iterate>
+	           </with>
+	        </visibleWhen>
+         </command>
+         
+         <command
+            commandId="biz.rapidfire.core.command.Notification.display" 
+            icon="icons/display.gif"
+            >
+	        <visibleWhen>
+	           <with variable="selection">
+	              <iterate operator="and">
+	                 <adapt type="biz.rapidfire.rse.subsystem.resources.RapidFireNotificationResource" />
 	              </iterate>
 	           </with>
 	        </visibleWhen>

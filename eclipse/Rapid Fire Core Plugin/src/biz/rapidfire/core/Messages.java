@@ -28,6 +28,7 @@ public class Messages extends NLS {
     public static String DialogTitle_File;
     public static String DialogTitle_Library;
     public static String DialogTitle_Library_List;
+    public static String DialogTitle_Notification;
 
     // Dialog action titles
     public static String DialogMode_CREATE;
@@ -65,13 +66,17 @@ public class Messages extends NLS {
     public static String Label_Enable_large_progress_bar;
     public static String Label_Position_colon;
     public static String Label_File_colon;
-    public static String Label_Type_colon;
+    public static String Label_FileType_colon;
     public static String Label_Copy_program_name_colon;
     public static String Label_Copy_program_library_name_colon;
     public static String Label_Conversion_program_name_colon;
     public static String Label_Conversion_program_library_name_colon;
     public static String Label_Shadow_library_colon;
     public static String Label_Library_list_colon;
+    public static String Label_NotificationType_colon;
+    public static String Label_User_colon;
+    public static String Label_Message_queue_name_colon;
+    public static String Label_Message_queue_library_name_colon;
 
     public static String Tooltip_Library;
     public static String Tooltip_Job;
@@ -82,13 +87,17 @@ public class Messages extends NLS {
     public static String Tooltip_Enable_large_progress_bar;
     public static String Tooltip_Position;
     public static String Tooltip_File;
-    public static String Tooltip_Type;
+    public static String Tooltip_FileType;
     public static String Tooltip_Copy_program_name;
     public static String Tooltip_Copy_program_library_name;
     public static String Tooltip_Conversion_program_name;
     public static String Tooltip_Conversion_program_library_name;
     public static String Tooltip_Shadow_library;
     public static String Tooltip_Library_list;
+    public static String Tooltip_NotificationType;
+    public static String Tooltip_User;
+    public static String Tooltip_Message_queue_name;
+    public static String Tooltip_Message_queue_library_name;
 
     // Action labels
     public static String ActionLabel_Auto_refresh_menu_item;
@@ -128,18 +137,23 @@ public class Messages extends NLS {
     public static String Could_not_initialize_file_manager_for_file_at_position_C_of_job_A_in_library_B;
     public static String File_position_A_is_not_valid;
     public static String File_name_A_is_not_valid;
-    public static String Type_A_is_not_valid;
+    public static String File_type_A_is_not_valid;
     public static String Copy_program_name_A_is_not_valid;
     public static String Conversion_program_name_A_is_not_valid;
     public static String Could_not_initialize_library_manager_for_library_C_of_job_A_in_library_B;
     public static String Could_not_initialize_library_list_manager_for_library_list_C_of_job_A_in_library_B;
     public static String Could_not_start_a_Rapid_Fire_JDBC_connection;
     public static String Could_not_stop_the_Rapid_Fire_JDBC_connection;
+    public static String Could_not_initialize_notification_manager_for_notification_at_position_C_of_job_A_in_library_B;
     public static String Name_of_library_A_is_not_valid;
     public static String Name_of_shadow_library_A_is_not_valid;
     public static String Library_list_name_A_is_not_valid;
     public static String Library_list_description_A_is_not_valid;
     public static String Invalid_sequence_number_A;
+    public static String Notification_position_A_is_not_valid;
+    public static String Notification_type_A_is_not_valid;
+    public static String User_name_A_is_not_valid;
+    public static String Message_queue_name_A_is_not_valid;
 
     // API error messages
     public static String EntityManager_Unknown_error_code_A;
@@ -163,6 +177,10 @@ public class Messages extends NLS {
     public static String LibraryListManager_001;
     public static String LibraryListManager_002;
     public static String LibraryListManager_003;
+
+    public static String NotificationManager_001;
+    public static String NotificationManager_002;
+    public static String NotificationManager_003;
 
     private Messages() {
     }

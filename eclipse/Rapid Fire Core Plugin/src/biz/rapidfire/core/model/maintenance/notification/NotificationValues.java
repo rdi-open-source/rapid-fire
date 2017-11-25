@@ -1,0 +1,126 @@
+/*******************************************************************************
+ * Copyright (c) 2017-2017 Rapid Fire Project Owners
+ * All rights reserved. This program and the accompanying materials 
+ * are made available under the terms of the Common Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/cpl-v10.html
+ *******************************************************************************/
+
+package biz.rapidfire.core.model.maintenance.notification;
+
+import biz.rapidfire.core.RapidFireCorePlugin;
+import biz.rapidfire.core.helpers.ExceptionHelper;
+import biz.rapidfire.core.helpers.StringHelper;
+import biz.rapidfire.core.model.maintenance.notification.shared.MessageQueueLibrary;
+import biz.rapidfire.core.model.maintenance.notification.shared.NotificationType;
+import biz.rapidfire.core.model.maintenance.notification.shared.User;
+
+public class NotificationValues implements Cloneable {
+
+    private NotificationKey key;
+    private NotificationType type;
+    private String user;
+    private String messageQueueLibraryName;
+    private String messageQueueName;
+
+    public static String[] getTypeLabels() {
+
+        String[] labels = new String[2];
+
+        labels[0] = NotificationType.USR.label();
+        labels[1] = NotificationType.MSGQ.label();
+
+        return labels;
+    }
+
+    public static String[] getUserSpecialValues() {
+        return User.labels();
+    }
+
+    public static String[] getMessageQueueLibrarySpecialValues() {
+        return MessageQueueLibrary.labels();
+    }
+
+    public NotificationKey getKey() {
+        ensureKey();
+        return key;
+    }
+
+    public void setKey(NotificationKey key) {
+        ensureKey();
+        this.key = key;
+    }
+
+    public String getType() {
+
+        if (type == null) {
+            return ""; //$NON-NLS-1$
+        } else {
+            return type.label();
+        }
+    }
+
+    public void setType(String type) {
+
+        String localType = type.trim();
+        if (StringHelper.isNullOrEmpty(localType)) {
+            this.type = null;
+        } else {
+            this.type = NotificationType.find(localType);
+        }
+    }
+
+    public String getUser() {
+        return user;
+    }
+
+    public void setUser(String user) {
+        this.user = user.trim();
+    }
+
+    public String getMessageQueueLibraryName() {
+        return messageQueueLibraryName;
+    }
+
+    public void setMessageQueueLibraryName(String copyProgramLibraryName) {
+        this.messageQueueLibraryName = copyProgramLibraryName.trim();
+    }
+
+    public String getMessageQueueName() {
+        return messageQueueName;
+    }
+
+    public void setMessageQueueName(String copyProgramName) {
+        this.messageQueueName = copyProgramName.trim();
+    }
+
+    public void clear() {
+        setType(null);
+        setUser(null);
+        setMessageQueueLibraryName(null);
+        setMessageQueueName(null);
+    }
+
+    private void ensureKey() {
+
+        if (key == null) {
+            key = new NotificationKey(null, 0);
+        }
+    }
+
+    @Override
+    public NotificationValues clone() {
+
+        try {
+
+            NotificationValues notificationValues = (NotificationValues)super.clone();
+            notificationValues.setKey((NotificationKey)getKey().clone());
+
+            return notificationValues;
+
+        } catch (CloneNotSupportedException e) {
+            RapidFireCorePlugin.logError("*** Clone not supported. ***", e); //$NON-NLS-1$
+            throw new biz.rapidfire.core.exceptions.CloneNotSupportedException(ExceptionHelper.getLocalizedMessage(e), e);
+        }
+    }
+}

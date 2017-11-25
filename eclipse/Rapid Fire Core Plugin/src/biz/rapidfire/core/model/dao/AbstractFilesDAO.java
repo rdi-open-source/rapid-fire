@@ -16,8 +16,8 @@ import java.util.List;
 
 import org.eclipse.swt.widgets.Shell;
 
-import biz.rapidfire.core.model.FileType;
 import biz.rapidfire.core.model.IRapidFireFileResource;
+import biz.rapidfire.core.model.maintenance.file.shared.FileType;
 
 public abstract class AbstractFilesDAO {
 

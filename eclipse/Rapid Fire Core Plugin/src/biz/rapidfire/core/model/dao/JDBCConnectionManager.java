@@ -274,8 +274,8 @@ public class JDBCConnectionManager extends AbstractDAOManager {
 
             statement.execute();
 
-            String success = statement.getString(IRapidFireStart.SUCCESS);
-            String errorCode = statement.getString(IRapidFireStart.ERROR_CODE);
+            String success = getStringTrim(statement, IRapidFireStart.SUCCESS);
+            String errorCode = getStringTrim(statement, IRapidFireStart.ERROR_CODE);
 
             if (!Success.YES.label().equals(success)) {
                 String message = Messages.bindParameters(Messages.Could_not_start_a_Rapid_Fire_JDBC_connection,
@@ -321,8 +321,8 @@ public class JDBCConnectionManager extends AbstractDAOManager {
 
             statement.execute();
 
-            String success = statement.getString(IRapidFireStop.SUCCESS);
-            String errorCode = statement.getString(IRapidFireStop.ERROR_CODE);
+            String success = getStringTrim(statement, IRapidFireStop.SUCCESS);
+            String errorCode = getStringTrim(statement, IRapidFireStop.ERROR_CODE);
 
             if (!Success.YES.label().equals(success)) {
                 String message = Messages.bindParameters(Messages.Could_not_stop_the_Rapid_Fire_JDBC_connection,

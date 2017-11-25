@@ -19,12 +19,6 @@ public class Result {
         this(null, message, success);
     }
 
-    public Result(String fieldName, float recordNbr, String message, String success) {
-        this(fieldName, message, success);
-
-        this.recordNbr = Math.round(recordNbr);
-    }
-
     public Result(String fieldName, int recordNbr, String message, String success) {
         this(fieldName, message, success);
 

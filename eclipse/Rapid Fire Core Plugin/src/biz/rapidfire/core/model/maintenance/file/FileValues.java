@@ -11,44 +11,30 @@ package biz.rapidfire.core.model.maintenance.file;
 import biz.rapidfire.core.RapidFireCorePlugin;
 import biz.rapidfire.core.helpers.ExceptionHelper;
 import biz.rapidfire.core.helpers.StringHelper;
+import biz.rapidfire.core.model.maintenance.file.shared.ConversionProgram;
+import biz.rapidfire.core.model.maintenance.file.shared.CopyProgram;
+import biz.rapidfire.core.model.maintenance.file.shared.FileType;
 
-public class FileValues implements Cloneable, CopyProgram, ConversionProgram {
+public class FileValues implements Cloneable {
 
     private FileKey key;
     private String fileName;
-    private Type type;
+    private FileType type;
     private String copyProgramLibraryName;
     private String copyProgramName;
     private String conversionProgramLibraryName;
     private String conversionProgramName;
 
     public static String[] getTypeLabels() {
-
-        String[] labels = new String[2];
-
-        labels[0] = Type.PHYSICAL.label();
-        labels[1] = Type.LOGICAL.label();
-
-        return labels;
+        return FileType.labels();
     }
 
     public static String[] getCopyProgramSpecialValues() {
-
-        String[] labels = new String[2];
-
-        labels[0] = CopyProgram.GEN;
-        labels[1] = CopyProgram.NONE;
-
-        return labels;
+        return CopyProgram.labels();
     }
 
     public static String[] getConversionProgramSpecialValues() {
-
-        String[] labels = new String[1];
-
-        labels[0] = ConversionProgram.NONE;
-
-        return labels;
+        return ConversionProgram.labels();
     }
 
     public FileKey getKey() {
@@ -80,10 +66,11 @@ public class FileValues implements Cloneable, CopyProgram, ConversionProgram {
 
     public void setType(String type) {
 
-        if (StringHelper.isNullOrEmpty(type.trim())) {
+        String localType = type.trim();
+        if (StringHelper.isNullOrEmpty(localType)) {
             this.type = null; //$NON-NLS-1$
         } else {
-            this.type = Type.valueOf(type.trim().substring(1));
+            this.type = FileType.find(localType);
         }
     }
 
