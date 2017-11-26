@@ -8,6 +8,7 @@
 
 package biz.rapidfire.rse.model.dao;
 
+import biz.rapidfire.core.model.IRapidFireJobResource;
 import biz.rapidfire.core.model.IRapidFireNotificationResource;
 import biz.rapidfire.core.model.dao.AbstractNotificationsDAO;
 import biz.rapidfire.core.model.dao.INotificationsDAO;
@@ -22,8 +23,8 @@ public class NotificationsDAO extends AbstractNotificationsDAO implements INotif
     }
 
     @Override
-    protected IRapidFireNotificationResource createNotificationInstance(String libraryName, String job, int position) {
-        return new RapidFireNotificationResource(libraryName, job, position);
+    protected IRapidFireNotificationResource createNotificationInstance(IRapidFireJobResource job, int position) {
+        return new RapidFireNotificationResource(job, position);
     }
 
 }

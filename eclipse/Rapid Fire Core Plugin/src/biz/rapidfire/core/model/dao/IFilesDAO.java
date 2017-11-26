@@ -13,8 +13,9 @@ import java.util.List;
 import org.eclipse.swt.widgets.Shell;
 
 import biz.rapidfire.core.model.IRapidFireFileResource;
+import biz.rapidfire.core.model.IRapidFireJobResource;
 
 public interface IFilesDAO {
 
-    public List<IRapidFireFileResource> load(String job, Shell shell) throws Exception;
+    public List<IRapidFireFileResource> load(IRapidFireJobResource job, Shell shell) throws Exception;
 }

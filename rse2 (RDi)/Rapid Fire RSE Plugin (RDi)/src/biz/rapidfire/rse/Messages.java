@@ -70,6 +70,11 @@ public class Messages extends NLS {
     public static String Library_list_name;
     public static String User_name;
     public static String NotificationType;
+    public static String Area_name;
+    public static String Area_library;
+    public static String Area_library_list;
+    public static String Area_library_CCSID;
+    public static String Area_command_extension;
 
     public static String Tooltip_DataLibrary_name;
     public static String Tooltip_Job_name;
@@ -94,6 +99,11 @@ public class Messages extends NLS {
     public static String Tooltip_Library_list_name;
     public static String Tooltip_User_name;
     public static String Tooltip_NotificationType;
+    public static String Tooltip_Area_name;
+    public static String Tooltip_Area_library;
+    public static String Tooltip_Area_library_list;
+    public static String Tooltip_Area_library_CCSID;
+    public static String Tooltip_Area_command_extension;
 
     /*
      * Filter types
@@ -107,16 +117,19 @@ public class Messages extends NLS {
     public static String Resource_Rapid_Fire_File;
     public static String Resource_Rapid_Fire_Library;
     public static String Resource_Rapid_Fire_Notification;
+    public static String Resource_Rapid_Fire_Area;
 
     public static String NodeText_Files;
     public static String NodeText_LibraryLists;
     public static String NodeText_Libraries;
     public static String NodeText_Notifications;
+    public static String NodeText_Areas;
 
     public static String NodeType_Files;
     public static String NodeType_LibraryLists;
     public static String NodeType_Libraries;
     public static String NodeType_Notifications;
+    public static String NodeType_Areas;
 
     // Action labels
     public static String ActionLabel_New_Job;
@@ -124,12 +137,14 @@ public class Messages extends NLS {
     public static String ActionLabel_New_Library;
     public static String ActionLabel_New_Library_List;
     public static String ActionLabel_New_Notification;
+    public static String ActionLabel_New_Area;
 
     public static String ActionTooltip_New_Job;
     public static String ActionTooltip_New_File;
     public static String ActionTooltip_New_Library;
     public static String ActionTooltip_New_Library_List;
     public static String ActionTooltip_New_Notification;
+    public static String ActionTooltip_New_Area;
 
     private Messages() {
     }

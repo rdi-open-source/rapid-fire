@@ -40,7 +40,7 @@ public class NewLibraryAction extends SystemBaseAction {
             LibrariesNode librariesNode = (LibrariesNode)element;
             IRapidFireJobResource job = librariesNode.getJob();
 
-            RapidFireLibraryResource library = RapidFireLibraryResource.createEmptyInstance(job.getDataLibrary(), job.getName());
+            RapidFireLibraryResource library = RapidFireLibraryResource.createEmptyInstance(job);
             library.setSubSystem((ISubSystem)job.getParentSubSystem());
 
             NewLibraryHandler handler = new NewLibraryHandler();

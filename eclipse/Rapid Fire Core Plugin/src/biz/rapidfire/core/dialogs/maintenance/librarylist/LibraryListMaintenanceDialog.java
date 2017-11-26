@@ -154,6 +154,7 @@ public class LibraryListMaintenanceDialog extends AbstractMaintenanceDialog {
     protected void setScreenValues() {
 
         textJobName.setText(values.getKey().getJobName());
+
         textLibraryList.setText(values.getKey().getLibraryList());
         textDescription.setText(values.getDescription());
         LibraryListEntry[] libraries = values.getLibraryList();

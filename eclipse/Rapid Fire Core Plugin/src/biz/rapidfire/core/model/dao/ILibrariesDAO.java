@@ -12,9 +12,10 @@ import java.util.List;
 
 import org.eclipse.swt.widgets.Shell;
 
+import biz.rapidfire.core.model.IRapidFireJobResource;
 import biz.rapidfire.core.model.IRapidFireLibraryResource;
 
 public interface ILibrariesDAO {
 
-    public List<IRapidFireLibraryResource> load(String job, Shell shell) throws Exception;
+    public List<IRapidFireLibraryResource> load(IRapidFireJobResource job, Shell shell) throws Exception;
 }

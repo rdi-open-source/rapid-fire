@@ -9,6 +9,7 @@
 package biz.rapidfire.rse.model.dao;
 
 import biz.rapidfire.core.model.IRapidFireFileResource;
+import biz.rapidfire.core.model.IRapidFireJobResource;
 import biz.rapidfire.core.model.dao.AbstractFilesDAO;
 import biz.rapidfire.core.model.dao.IFilesDAO;
 import biz.rapidfire.core.model.dao.JDBCConnectionManager;
@@ -22,8 +23,8 @@ public class FilesDAO extends AbstractFilesDAO implements IFilesDAO {
     }
 
     @Override
-    protected IRapidFireFileResource createFileInstance(String libraryName, String job, int position) {
-        return new RapidFireFileResource(libraryName, job, position);
+    protected IRapidFireFileResource createFileInstance(IRapidFireJobResource job, int position) {
+        return new RapidFireFileResource(job, position);
     }
 
 }

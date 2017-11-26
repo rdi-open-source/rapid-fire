@@ -6,10 +6,13 @@
  * http://www.eclipse.org/legal/cpl-v10.html
  *******************************************************************************/
 
-package biz.rapidfire.core.model.maintenance.file;
+package biz.rapidfire.core.model.maintenance.area;
 
-public interface CopyProgram {
+public interface IAreaSetValues {
 
-    public static final String GEN = "*GEN";
-    public static final String NONE = "*NONE";
+    public static final int AREA = 1;
+    public static final int LIBRARY = 2;
+    public static final int LIBRARY_LIST = 3;
+    public static final int LIBRARY_CCSID = 4;
+    public static final int COMMAND_EXTENSION = 5;
 }

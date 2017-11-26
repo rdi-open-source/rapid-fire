@@ -40,7 +40,7 @@ public class NewNotificationAction extends SystemBaseAction {
             NotificationsNode notificationNode = (NotificationsNode)element;
             IRapidFireJobResource job = notificationNode.getJob();
 
-            RapidFireNotificationResource notification = RapidFireNotificationResource.createEmptyInstance(job.getDataLibrary(), job.getName());
+            RapidFireNotificationResource notification = RapidFireNotificationResource.createEmptyInstance(job);
             notification.setSubSystem((ISubSystem)job.getParentSubSystem());
 
             NewNotificationHandler handler = new NewNotificationHandler();

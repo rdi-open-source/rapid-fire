@@ -12,7 +12,7 @@ import org.eclipse.rse.core.subsystems.AbstractResource;
 import org.eclipse.rse.core.subsystems.ISubSystem;
 
 import biz.rapidfire.core.exceptions.IllegalParameterException;
-import biz.rapidfire.core.helpers.StringHelper;
+import biz.rapidfire.core.model.IRapidFireJobResource;
 import biz.rapidfire.core.model.IRapidFireNotificationResource;
 import biz.rapidfire.core.model.maintenance.notification.shared.NotificationType;
 import biz.rapidfire.core.subsystem.IRapidFireSubSystem;
@@ -21,23 +21,22 @@ import biz.rapidfire.core.subsystem.resources.RapidFireNotificationResourceDeleg
 public class RapidFireNotificationResource extends AbstractResource implements IRapidFireNotificationResource,
     Comparable<IRapidFireNotificationResource> {
 
+    private IRapidFireJobResource parentJob;
     private RapidFireNotificationResourceDelegate delegate;
 
-    public static RapidFireNotificationResource createEmptyInstance(String dataLibrary, String job) {
-        return new RapidFireNotificationResource(dataLibrary, job, 0);
+    public static RapidFireNotificationResource createEmptyInstance(IRapidFireJobResource job) {
+        return new RapidFireNotificationResource(job, 0);
     }
 
-    public RapidFireNotificationResource(String dataLibrary, String job, int position) {
+    public RapidFireNotificationResource(IRapidFireJobResource job, int position) {
 
-        if (StringHelper.isNullOrEmpty(dataLibrary)) {
-            throw new IllegalParameterException("dataLibrary", dataLibrary); //$NON-NLS-1$
+        if (job == null) {
+            throw new IllegalParameterException("job", null); //$NON-NLS-1$
         }
 
-        if (StringHelper.isNullOrEmpty(job)) {
-            throw new IllegalParameterException("job", job); //$NON-NLS-1$
-        }
-
-        this.delegate = new RapidFireNotificationResourceDelegate(dataLibrary, job, position);
+        this.parentJob = job;
+        this.delegate = new RapidFireNotificationResourceDelegate(job.getDataLibrary(), job.getName(), position);
+        super.setSubSystem((ISubSystem)job.getParentSubSystem());
     }
 
     /*
@@ -52,8 +51,8 @@ public class RapidFireNotificationResource extends AbstractResource implements I
         return (IRapidFireSubSystem)super.getSubSystem();
     }
 
-    public void setParentSubSystem(IRapidFireSubSystem subSystem) {
-        super.setSubSystem((ISubSystem)subSystem);
+    public IRapidFireJobResource getParentJob() {
+        return this.parentJob;
     }
 
     /*

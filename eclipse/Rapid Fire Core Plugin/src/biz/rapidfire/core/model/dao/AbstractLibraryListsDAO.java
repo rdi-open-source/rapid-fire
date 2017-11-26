@@ -16,6 +16,7 @@ import java.util.List;
 
 import org.eclipse.swt.widgets.Shell;
 
+import biz.rapidfire.core.model.IRapidFireJobResource;
 import biz.rapidfire.core.model.IRapidFireLibraryListResource;
 
 public abstract class AbstractLibraryListsDAO {
@@ -31,7 +32,7 @@ public abstract class AbstractLibraryListsDAO {
         this.dao = dao;
     }
 
-    public List<IRapidFireLibraryListResource> load(String job, Shell shell) throws Exception {
+    public List<IRapidFireLibraryListResource> load(IRapidFireJobResource job, Shell shell) throws Exception {
 
         final List<IRapidFireLibraryListResource> libraries = new ArrayList<IRapidFireLibraryListResource>();
 
@@ -46,13 +47,13 @@ public abstract class AbstractLibraryListsDAO {
 
             String sqlStatement = getSqlStatement();
             preparedStatement = dao.prepareStatement(sqlStatement);
-            preparedStatement.setString(1, job);
+            preparedStatement.setString(1, job.getName());
             resultSet = preparedStatement.executeQuery();
             resultSet.setFetchSize(50);
 
             if (resultSet != null) {
                 while (resultSet.next()) {
-                    libraries.add(produceLibrary(dao.getLibraryName(), resultSet));
+                    libraries.add(produceLibrary(resultSet, job));
                 }
             }
         } finally {
@@ -63,12 +64,12 @@ public abstract class AbstractLibraryListsDAO {
         return libraries;
     }
 
-    private IRapidFireLibraryListResource produceLibrary(String dataLibrary, ResultSet resultSet) throws SQLException {
+    private IRapidFireLibraryListResource produceLibrary(ResultSet resultSet, IRapidFireJobResource job) throws SQLException {
 
-        String job = resultSet.getString(JOB).trim();
+        // String job = resultSet.getString(JOB).trim();
         String library = resultSet.getString(LIBRARY_LIST).trim();
 
-        IRapidFireLibraryListResource libraryListsResource = createLibraryListInstance(dataLibrary, job, library);
+        IRapidFireLibraryListResource libraryListsResource = createLibraryListInstance(job, library);
 
         String description = resultSet.getString(DESCRIPTION).trim();
 
@@ -77,7 +78,7 @@ public abstract class AbstractLibraryListsDAO {
         return libraryListsResource;
     }
 
-    protected abstract IRapidFireLibraryListResource createLibraryListInstance(String libraryName, String job, String library);
+    protected abstract IRapidFireLibraryListResource createLibraryListInstance(IRapidFireJobResource job, String library);
 
     private String getSqlStatement() throws Exception {
 

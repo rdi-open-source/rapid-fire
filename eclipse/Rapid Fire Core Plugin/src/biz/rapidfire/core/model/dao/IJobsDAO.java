@@ -13,8 +13,9 @@ import java.util.List;
 import org.eclipse.swt.widgets.Shell;
 
 import biz.rapidfire.core.model.IRapidFireJobResource;
+import biz.rapidfire.core.subsystem.IRapidFireSubSystem;
 
 public interface IJobsDAO {
 
-    public List<IRapidFireJobResource> load(Shell shell) throws Exception;
+    public List<IRapidFireJobResource> load(IRapidFireSubSystem subSystem, Shell shell) throws Exception;
 }

@@ -43,10 +43,10 @@ public class FileMaintenanceDialog extends AbstractMaintenanceDialog {
     private Text textJobName;
     private Text textPosition;
     private Text textFileName;
-    private Combo textType;
-    private Combo textCopyProgramName;
+    private Combo comboType;
+    private Combo comboCopyProgramName;
     private Text textCopyProgramLibraryName;
-    private Combo textConversionProgramName;
+    private Combo comboConversionProgramName;
     private Text textConversionProgramLibraryName;
 
     private boolean enableParentKeyFields;
@@ -137,22 +137,22 @@ public class FileMaintenanceDialog extends AbstractMaintenanceDialog {
         labelType.setText(Messages.Label_Create_environment_colon);
         labelType.setToolTipText(Messages.Tooltip_Create_environment);
 
-        textType = WidgetFactory.createReadOnlyCombo(parent);
-        textType.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
-        textType.setToolTipText(Messages.Tooltip_Create_environment);
-        textType.setEnabled(enableFields);
-        textType.setItems(FileValues.getTypeLabels());
+        comboType = WidgetFactory.createReadOnlyCombo(parent);
+        comboType.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+        comboType.setToolTipText(Messages.Tooltip_Create_environment);
+        comboType.setEnabled(enableFields);
+        comboType.setItems(FileValues.getTypeLabels());
 
         Label labelCopyProgramName = new Label(parent, SWT.NONE);
         labelCopyProgramName.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false));
         labelCopyProgramName.setText(Messages.Label_Copy_program_name_colon);
         labelCopyProgramName.setToolTipText(Messages.Tooltip_Copy_program_name);
 
-        textCopyProgramName = WidgetFactory.createNameCombo(parent);
-        textCopyProgramName.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
-        textCopyProgramName.setToolTipText(Messages.Tooltip_Copy_program_name);
-        textCopyProgramName.setEnabled(enableFields);
-        textCopyProgramName.setItems(FileValues.getCopyProgramSpecialValues());
+        comboCopyProgramName = WidgetFactory.createNameCombo(parent);
+        comboCopyProgramName.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+        comboCopyProgramName.setToolTipText(Messages.Tooltip_Copy_program_name);
+        comboCopyProgramName.setEnabled(enableFields);
+        comboCopyProgramName.setItems(FileValues.getCopyProgramSpecialValues());
 
         Label labelCopyProgramLibraryName = new Label(parent, SWT.NONE);
         labelCopyProgramLibraryName.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false));
@@ -169,11 +169,11 @@ public class FileMaintenanceDialog extends AbstractMaintenanceDialog {
         labelConversionProgramName.setText(Messages.Label_Conversion_program_name_colon);
         labelConversionProgramName.setToolTipText(Messages.Tooltip_Conversion_program_name);
 
-        textConversionProgramName = WidgetFactory.createNameCombo(parent);
-        textConversionProgramName.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
-        textConversionProgramName.setToolTipText(Messages.Tooltip_Conversion_program_name);
-        textConversionProgramName.setEnabled(enableFields);
-        textConversionProgramName.setItems(FileValues.getConversionProgramSpecialValues());
+        comboConversionProgramName = WidgetFactory.createNameCombo(parent);
+        comboConversionProgramName.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+        comboConversionProgramName.setToolTipText(Messages.Tooltip_Conversion_program_name);
+        comboConversionProgramName.setEnabled(enableFields);
+        comboConversionProgramName.setItems(FileValues.getConversionProgramSpecialValues());
 
         Label labelConversionProgramLibraryName = new Label(parent, SWT.NONE);
         labelConversionProgramLibraryName.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false));
@@ -199,12 +199,13 @@ public class FileMaintenanceDialog extends AbstractMaintenanceDialog {
     protected void setScreenValues() {
 
         textJobName.setText(values.getKey().getJobName());
+
         textPosition.setText(Integer.toString(values.getKey().getPosition()));
         textFileName.setText(values.getFileName());
-        textType.setText(values.getType());
-        textCopyProgramName.setText(values.getCopyProgramName());
+        comboType.setText(values.getType());
+        comboCopyProgramName.setText(values.getCopyProgramName());
         textCopyProgramLibraryName.setText(values.getCopyProgramLibraryName());
-        textConversionProgramName.setText(values.getConversionProgramName());
+        comboConversionProgramName.setText(values.getConversionProgramName());
         textConversionProgramLibraryName.setText(values.getConversionProgramLibraryName());
     }
 
@@ -214,10 +215,10 @@ public class FileMaintenanceDialog extends AbstractMaintenanceDialog {
         FileValues newValues = values.clone();
         newValues.getKey().setPosition(IntHelper.tryParseInt(textPosition.getText(), -1));
         newValues.setFileName(textFileName.getText());
-        newValues.setType(textType.getText());
-        newValues.setCopyProgramName(textCopyProgramName.getText());
+        newValues.setType(comboType.getText());
+        newValues.setCopyProgramName(comboCopyProgramName.getText());
         newValues.setCopyProgramLibraryName(textCopyProgramLibraryName.getText());
-        newValues.setConversionProgramName(textConversionProgramName.getText());
+        newValues.setConversionProgramName(comboConversionProgramName.getText());
         newValues.setConversionProgramLibraryName(textConversionProgramLibraryName.getText());
 
         if (!IMaintenance.MODE_DISPLAY.equals(mode)) {
@@ -246,33 +247,28 @@ public class FileMaintenanceDialog extends AbstractMaintenanceDialog {
 
         if (IFileCheck.FIELD_JOB.equals(fieldName)) {
             textJobName.setFocus();
-            setErrorMessage(Messages.bind(Messages.Job_name_A_is_not_valid, textJobName.getText()));
+            message = Messages.bind(Messages.Job_name_A_is_not_valid, textJobName.getText());
         } else if (IFileCheck.FIELD_POSITION.equals(fieldName)) {
             textPosition.setFocus();
-            setErrorMessage(Messages.bind(Messages.File_position_A_is_not_valid, textPosition.getText()));
+            message = Messages.bind(Messages.File_position_A_is_not_valid, textPosition.getText());
         } else if (IFileCheck.FIELD_FILE.equals(fieldName)) {
             textFileName.setFocus();
-            setErrorMessage(Messages.bind(Messages.File_name_A_is_not_valid, textFileName.getText()));
-        }
-        if (IFileCheck.FIELD_TYPE.equals(fieldName)) {
-            textType.setFocus();
-            setErrorMessage(Messages.File_type_A_is_not_valid);
-        }
-        if (IFileCheck.FIELD_COPY_PROGRAM_NAME.equals(fieldName)) {
-            textCopyProgramName.setFocus();
-            setErrorMessage(Messages.bind(Messages.Copy_program_name_A_is_not_valid, textCopyProgramName.getText()));
-        }
-        if (IFileCheck.FIELD_COPY_PROGRAM_LIBRARY_NAME.equals(fieldName)) {
+            message = Messages.bind(Messages.File_name_A_is_not_valid, textFileName.getText());
+        } else if (IFileCheck.FIELD_TYPE.equals(fieldName)) {
+            comboType.setFocus();
+            message = Messages.bindParameters(Messages.File_type_A_is_not_valid, comboType.getText());
+        } else if (IFileCheck.FIELD_COPY_PROGRAM_NAME.equals(fieldName)) {
+            comboCopyProgramName.setFocus();
+            message = Messages.bind(Messages.Copy_program_name_A_is_not_valid, comboCopyProgramName.getText());
+        } else if (IFileCheck.FIELD_COPY_PROGRAM_LIBRARY_NAME.equals(fieldName)) {
             textCopyProgramLibraryName.setFocus();
-            setErrorMessage(Messages.bind(Messages.Library_name_A_is_not_valid, textCopyProgramLibraryName.getText()));
-        }
-        if (IFileCheck.FIELD_CONVERSION_PROGRAM_NAME.equals(fieldName)) {
-            textConversionProgramName.setFocus();
-            setErrorMessage(Messages.bind(Messages.Conversion_program_name_A_is_not_valid, textConversionProgramName.getText()));
-        }
-        if (IFileCheck.FIELD_CONVERSION_PROGRAM_LIBRARY_NAME.equals(fieldName)) {
+            message = Messages.bind(Messages.Library_name_A_is_not_valid, textCopyProgramLibraryName.getText());
+        } else if (IFileCheck.FIELD_CONVERSION_PROGRAM_NAME.equals(fieldName)) {
+            comboConversionProgramName.setFocus();
+            message = Messages.bind(Messages.Conversion_program_name_A_is_not_valid, comboConversionProgramName.getText());
+        } else if (IFileCheck.FIELD_CONVERSION_PROGRAM_LIBRARY_NAME.equals(fieldName)) {
             textConversionProgramLibraryName.setFocus();
-            setErrorMessage(Messages.bind(Messages.Library_name_A_is_not_valid, textConversionProgramLibraryName.getText()));
+            message = Messages.bind(Messages.Library_name_A_is_not_valid, textConversionProgramLibraryName.getText());
         }
 
         setErrorMessage(message, result);

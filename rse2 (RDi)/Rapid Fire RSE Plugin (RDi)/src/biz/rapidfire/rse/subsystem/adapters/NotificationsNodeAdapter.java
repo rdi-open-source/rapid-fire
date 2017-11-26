@@ -56,9 +56,9 @@ public class NotificationsNodeAdapter extends AbstractNodeAdapter {
         try {
 
             NotificationsNode notification = (NotificationsNode)element;
-            IRapidFireJobResource resource = notification.getJob();
+            IRapidFireJobResource job = notification.getJob();
 
-            return resource.getParentSubSystem().getNotifications(resource.getDataLibrary(), resource.getName(), getShell());
+            return job.getParentSubSystem().getNotifications(job, getShell());
 
         } catch (Exception e) {
             RapidFireCorePlugin.logError("*** Could resolve filter string and load notifications ***", e); //$NON-NLS-1$

@@ -17,6 +17,7 @@ import java.util.List;
 import org.eclipse.swt.widgets.Shell;
 
 import biz.rapidfire.core.model.IRapidFireFileResource;
+import biz.rapidfire.core.model.IRapidFireJobResource;
 import biz.rapidfire.core.model.maintenance.file.shared.FileType;
 
 public abstract class AbstractFilesDAO {
@@ -37,7 +38,7 @@ public abstract class AbstractFilesDAO {
         this.dao = dao;
     }
 
-    public List<IRapidFireFileResource> load(String job, Shell shell) throws Exception {
+    public List<IRapidFireFileResource> load(IRapidFireJobResource job, Shell shell) throws Exception {
 
         final List<IRapidFireFileResource> files = new ArrayList<IRapidFireFileResource>();
 
@@ -52,13 +53,13 @@ public abstract class AbstractFilesDAO {
 
             String sqlStatement = getSqlStatement();
             preparedStatement = dao.prepareStatement(sqlStatement);
-            preparedStatement.setString(1, job);
+            preparedStatement.setString(1, job.getName());
             resultSet = preparedStatement.executeQuery();
             resultSet.setFetchSize(50);
 
             if (resultSet != null) {
                 while (resultSet.next()) {
-                    files.add(produceFile(resultSet));
+                    files.add(produceFile(resultSet, job));
                 }
             }
         } finally {
@@ -69,12 +70,12 @@ public abstract class AbstractFilesDAO {
         return files;
     }
 
-    private IRapidFireFileResource produceFile(ResultSet resultSet) throws SQLException {
+    private IRapidFireFileResource produceFile(ResultSet resultSet, IRapidFireJobResource job) throws SQLException {
 
-        String job = resultSet.getString(JOB).trim();
+        // String job = resultSet.getString(JOB).trim();
         int position = resultSet.getInt(POSITION);
 
-        IRapidFireFileResource fileResource = createFileInstance(dao.getLibraryName(), job, position);
+        IRapidFireFileResource fileResource = createFileInstance(job, position);
 
         String name = resultSet.getString(FILE).trim();
         String type = resultSet.getString(TYPE).trim();
@@ -95,7 +96,7 @@ public abstract class AbstractFilesDAO {
         return fileResource;
     }
 
-    protected abstract IRapidFireFileResource createFileInstance(String libraryName, String job, int position);
+    protected abstract IRapidFireFileResource createFileInstance(IRapidFireJobResource job, int position);
 
     private String getSqlStatement() throws Exception {
 

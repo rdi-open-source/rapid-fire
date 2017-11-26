@@ -35,12 +35,14 @@ import biz.rapidfire.core.RapidFireCorePlugin;
 import biz.rapidfire.core.dialogs.MessageDialogAsync;
 import biz.rapidfire.core.helpers.ExceptionHelper;
 import biz.rapidfire.core.model.IFileCopyStatus;
+import biz.rapidfire.core.model.IRapidFireAreaResource;
 import biz.rapidfire.core.model.IRapidFireFileResource;
 import biz.rapidfire.core.model.IRapidFireJobResource;
 import biz.rapidfire.core.model.IRapidFireLibraryListResource;
 import biz.rapidfire.core.model.IRapidFireLibraryResource;
 import biz.rapidfire.core.model.IRapidFireNotificationResource;
 import biz.rapidfire.core.model.IRapidFireResource;
+import biz.rapidfire.core.model.dao.IAreasDAO;
 import biz.rapidfire.core.model.dao.IFileCopyStatusDAO;
 import biz.rapidfire.core.model.dao.IFilesDAO;
 import biz.rapidfire.core.model.dao.IJobsDAO;
@@ -50,6 +52,7 @@ import biz.rapidfire.core.model.dao.JDBCConnectionManager;
 import biz.rapidfire.core.model.queries.FileCopyStatus;
 import biz.rapidfire.core.subsystem.IRapidFireSubSystem;
 import biz.rapidfire.core.subsystem.RapidFireFilter;
+import biz.rapidfire.rse.model.dao.AreasDAO;
 import biz.rapidfire.rse.model.dao.FileCopyStatusDAO;
 import biz.rapidfire.rse.model.dao.FilesDAO;
 import biz.rapidfire.rse.model.dao.JobsDAO;
@@ -138,92 +141,98 @@ public class RapidFireSubSystem extends SubSystem implements IISeriesSubSystem, 
         }
 
         IJobsDAO dao = new JobsDAO(getConnectionName(), libraryName);
-        List<IRapidFireJobResource> jobs = dao.load(shell);
+        List<IRapidFireJobResource> jobs = dao.load(this, shell);
         if (jobs == null) {
             return null;
-        }
-
-        for (IRapidFireJobResource job : jobs) {
-            job.setParentSubSystem(this);
         }
 
         return jobs.toArray(new IRapidFireJobResource[jobs.size()]);
     }
 
-    public IRapidFireFileResource[] getFiles(String libraryName, String jobName, Shell shell) throws Exception {
+    public IRapidFireFileResource[] getFiles(IRapidFireJobResource job, Shell shell) throws Exception {
 
         if (!successFullyLoaded()) {
             return new IRapidFireFileResource[0];
         }
 
+        String libraryName = job.getDataLibrary();
+
         IFilesDAO dao = new FilesDAO(getConnectionName(), libraryName);
-        List<IRapidFireFileResource> files = dao.load(jobName, shell);
+        List<IRapidFireFileResource> files = dao.load(job, shell);
         if (files == null) {
             return null;
-        }
-
-        for (IRapidFireFileResource file : files) {
-            file.setParentSubSystem(this);
         }
 
         return files.toArray(new IRapidFireFileResource[files.size()]);
     }
 
-    public IRapidFireLibraryListResource[] getLibraryLists(String libraryName, String jobName, Shell shell) throws Exception {
+    public IRapidFireLibraryListResource[] getLibraryLists(IRapidFireJobResource job, Shell shell) throws Exception {
 
         if (!successFullyLoaded()) {
             return new IRapidFireLibraryListResource[0];
         }
 
+        String libraryName = job.getDataLibrary();
+
         LibraryListsDAO dao = new LibraryListsDAO(getConnectionName(), libraryName);
-        List<IRapidFireLibraryListResource> libraryLists = dao.load(jobName, shell);
+        List<IRapidFireLibraryListResource> libraryLists = dao.load(job, shell);
         if (libraryLists == null) {
             return null;
-        }
-
-        for (IRapidFireLibraryListResource libraryList : libraryLists) {
-            libraryList.setParentSubSystem(this);
         }
 
         return libraryLists.toArray(new IRapidFireLibraryListResource[libraryLists.size()]);
     }
 
-    public IRapidFireLibraryResource[] getLibraries(String libraryName, String jobName, Shell shell) throws Exception {
+    public IRapidFireLibraryResource[] getLibraries(IRapidFireJobResource job, Shell shell) throws Exception {
 
         if (!successFullyLoaded()) {
             return new IRapidFireLibraryResource[0];
         }
 
+        String libraryName = job.getDataLibrary();
+
         ILibrariesDAO dao = new LibrariesDAO(getConnectionName(), libraryName);
-        List<IRapidFireLibraryResource> libraries = dao.load(jobName, shell);
+        List<IRapidFireLibraryResource> libraries = dao.load(job, shell);
         if (libraries == null) {
             return null;
-        }
-
-        for (IRapidFireLibraryResource library : libraries) {
-            library.setParentSubSystem(this);
         }
 
         return libraries.toArray(new IRapidFireLibraryResource[libraries.size()]);
     }
 
-    public IRapidFireNotificationResource[] getNotifications(String libraryName, String jobName, Shell shell) throws Exception {
+    public IRapidFireNotificationResource[] getNotifications(IRapidFireJobResource job, Shell shell) throws Exception {
 
         if (!successFullyLoaded()) {
             return new IRapidFireNotificationResource[0];
         }
 
+        String libraryName = job.getDataLibrary();
+
         INotificationsDAO dao = new NotificationsDAO(getConnectionName(), libraryName);
-        List<IRapidFireNotificationResource> notification = dao.load(jobName, shell);
+        List<IRapidFireNotificationResource> notification = dao.load(job, shell);
         if (notification == null) {
             return null;
         }
 
-        for (IRapidFireNotificationResource library : notification) {
-            library.setParentSubSystem(this);
+        return notification.toArray(new IRapidFireNotificationResource[notification.size()]);
+    }
+
+    public IRapidFireAreaResource[] getAreas(IRapidFireFileResource file, Shell shell) throws Exception {
+
+        if (!successFullyLoaded()) {
+            return new IRapidFireAreaResource[0];
         }
 
-        return notification.toArray(new IRapidFireNotificationResource[notification.size()]);
+        IRapidFireJobResource job = file.getParentJob();
+        String libraryName = job.getDataLibrary();
+
+        IAreasDAO dao = new AreasDAO(getConnectionName(), libraryName);
+        List<IRapidFireAreaResource> areas = dao.load(file, shell);
+        if (areas == null) {
+            return null;
+        }
+
+        return areas.toArray(new IRapidFireAreaResource[areas.size()]);
     }
 
     public IFileCopyStatus[] getFileCopyStatus(String libraryName, String jobName, Shell shell) throws Exception {

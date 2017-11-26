@@ -15,6 +15,4 @@ public interface IRapidFireResource {
     public String getDataLibrary();
 
     public IRapidFireSubSystem getParentSubSystem();
-
-    public void setParentSubSystem(IRapidFireSubSystem subSystem);
 }

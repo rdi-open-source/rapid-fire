@@ -29,6 +29,7 @@ public class Messages extends NLS {
     public static String DialogTitle_Library;
     public static String DialogTitle_Library_List;
     public static String DialogTitle_Notification;
+    public static String DialogTitle_Area;
 
     // Dialog action titles
     public static String DialogMode_CREATE;
@@ -77,6 +78,11 @@ public class Messages extends NLS {
     public static String Label_User_colon;
     public static String Label_Message_queue_name_colon;
     public static String Label_Message_queue_library_name_colon;
+    public static String Label_Area_colon;
+    public static String Label_Area_library_colon;
+    public static String Label_Area_library_list_colon;
+    public static String Label_Area_library_ccsid;
+    public static String Label_Command_extension_colon;
 
     public static String Tooltip_Library;
     public static String Tooltip_Job;
@@ -98,6 +104,11 @@ public class Messages extends NLS {
     public static String Tooltip_User;
     public static String Tooltip_Message_queue_name;
     public static String Tooltip_Message_queue_library_name;
+    public static String Tooltip_Area;
+    public static String Tooltip_Area_library;
+    public static String Tooltip_Area_library_list;
+    public static String Tooltip_Area_library_ccsid;
+    public static String Tooltip_Command_extension;
 
     // Action labels
     public static String ActionLabel_Auto_refresh_menu_item;
@@ -154,6 +165,10 @@ public class Messages extends NLS {
     public static String Notification_type_A_is_not_valid;
     public static String User_name_A_is_not_valid;
     public static String Message_queue_name_A_is_not_valid;
+    public static String Could_not_initialize_area_manager_for_area_D_of_file_C_of_job_A_in_library_B;
+    public static String Area_name_A_is_not_valid;
+    public static String Ccsid_A_is_not_valid;
+    public static String Command_extension_A_is_not_valid;
 
     // API error messages
     public static String EntityManager_Unknown_error_code_A;
@@ -181,6 +196,11 @@ public class Messages extends NLS {
     public static String NotificationManager_001;
     public static String NotificationManager_002;
     public static String NotificationManager_003;
+
+    public static String AreaManager_001;
+    public static String vManager_002;
+    public static String AreaManager_003;
+    public static String AreaManager_004;
 
     private Messages() {
     }

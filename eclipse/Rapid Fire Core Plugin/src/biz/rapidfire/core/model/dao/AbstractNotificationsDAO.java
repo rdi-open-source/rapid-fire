@@ -16,6 +16,7 @@ import java.util.List;
 
 import org.eclipse.swt.widgets.Shell;
 
+import biz.rapidfire.core.model.IRapidFireJobResource;
 import biz.rapidfire.core.model.IRapidFireNotificationResource;
 import biz.rapidfire.core.model.maintenance.notification.shared.NotificationType;
 
@@ -35,7 +36,7 @@ public abstract class AbstractNotificationsDAO {
         this.dao = dao;
     }
 
-    public List<IRapidFireNotificationResource> load(String job, Shell shell) throws Exception {
+    public List<IRapidFireNotificationResource> load(IRapidFireJobResource job, Shell shell) throws Exception {
 
         final List<IRapidFireNotificationResource> notifications = new ArrayList<IRapidFireNotificationResource>();
 
@@ -50,13 +51,13 @@ public abstract class AbstractNotificationsDAO {
 
             String sqlStatement = getSqlStatement();
             preparedStatement = dao.prepareStatement(sqlStatement);
-            preparedStatement.setString(1, job);
+            preparedStatement.setString(1, job.getName());
             resultSet = preparedStatement.executeQuery();
             resultSet.setFetchSize(50);
 
             if (resultSet != null) {
                 while (resultSet.next()) {
-                    notifications.add(produceNotification(resultSet));
+                    notifications.add(produceNotification(resultSet, job));
                 }
             }
         } finally {
@@ -67,12 +68,12 @@ public abstract class AbstractNotificationsDAO {
         return notifications;
     }
 
-    private IRapidFireNotificationResource produceNotification(ResultSet resultSet) throws SQLException {
+    private IRapidFireNotificationResource produceNotification(ResultSet resultSet, IRapidFireJobResource job) throws SQLException {
 
-        String job = resultSet.getString(JOB).trim();
+        // String job = resultSet.getString(JOB).trim();
         int position = resultSet.getInt(POSITION);
 
-        IRapidFireNotificationResource notificationResource = createNotificationInstance(dao.getLibraryName(), job, position);
+        IRapidFireNotificationResource notificationResource = createNotificationInstance(job, position);
 
         String type = resultSet.getString(TYPE).trim();
         String user = resultSet.getString(USER).trim();
@@ -89,7 +90,7 @@ public abstract class AbstractNotificationsDAO {
         return notificationResource;
     }
 
-    protected abstract IRapidFireNotificationResource createNotificationInstance(String libraryName, String job, int position);
+    protected abstract IRapidFireNotificationResource createNotificationInstance(IRapidFireJobResource job, int position);
 
     private String getSqlStatement() throws Exception {
 

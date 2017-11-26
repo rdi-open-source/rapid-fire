@@ -20,6 +20,7 @@ import biz.rapidfire.core.model.IRapidFireJobResource;
 import biz.rapidfire.core.model.JobName;
 import biz.rapidfire.core.model.Phase;
 import biz.rapidfire.core.model.Status;
+import biz.rapidfire.core.subsystem.IRapidFireSubSystem;
 
 public abstract class AbstractJobsDAO {
 
@@ -44,7 +45,7 @@ public abstract class AbstractJobsDAO {
         this.dao = dao;
     }
 
-    public List<IRapidFireJobResource> load(Shell shell) throws Exception {
+    public List<IRapidFireJobResource> load(IRapidFireSubSystem subSystem, Shell shell) throws Exception {
 
         final List<IRapidFireJobResource> jobs = new ArrayList<IRapidFireJobResource>();
 
@@ -64,7 +65,7 @@ public abstract class AbstractJobsDAO {
 
             if (resultSet != null) {
                 while (resultSet.next()) {
-                    jobs.add(produceJob(dao.getLibraryName(), resultSet));
+                    jobs.add(produceJob(subSystem, dao.getLibraryName(), resultSet));
                 }
             }
         } finally {
@@ -75,11 +76,11 @@ public abstract class AbstractJobsDAO {
         return jobs;
     }
 
-    private IRapidFireJobResource produceJob(String dataLibrary, ResultSet resultSet) throws SQLException {
+    private IRapidFireJobResource produceJob(IRapidFireSubSystem subSystem, String dataLibrary, ResultSet resultSet) throws SQLException {
 
         String name = resultSet.getString(JOB).trim();
 
-        IRapidFireJobResource jobResource = createJobInstance(dataLibrary, name);
+        IRapidFireJobResource jobResource = createJobInstance(subSystem, dataLibrary, name);
 
         String description = resultSet.getString(DESCRIPTION).trim();
         String createEnvironment = resultSet.getString(CREATE_ENVIRONMENT).trim();
@@ -110,7 +111,7 @@ public abstract class AbstractJobsDAO {
         return jobResource;
     }
 
-    protected abstract IRapidFireJobResource createJobInstance(String library, String name);
+    protected abstract IRapidFireJobResource createJobInstance(IRapidFireSubSystem subSystem, String library, String name);
 
     private String getSqlStatement() throws Exception {
 

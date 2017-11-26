@@ -8,6 +8,7 @@
 
 package biz.rapidfire.rse.model.dao;
 
+import biz.rapidfire.core.model.IRapidFireJobResource;
 import biz.rapidfire.core.model.IRapidFireLibraryResource;
 import biz.rapidfire.core.model.dao.AbstractLibrariesDAO;
 import biz.rapidfire.core.model.dao.ILibrariesDAO;
@@ -22,7 +23,7 @@ public class LibrariesDAO extends AbstractLibrariesDAO implements ILibrariesDAO 
     }
 
     @Override
-    protected IRapidFireLibraryResource createLibraryInstance(String dataLibrary, String job, String library) {
-        return new RapidFireLibraryResource(dataLibrary, job, library);
+    protected IRapidFireLibraryResource createLibraryInstance(IRapidFireJobResource job, String library) {
+        return new RapidFireLibraryResource(job, library);
     }
 }

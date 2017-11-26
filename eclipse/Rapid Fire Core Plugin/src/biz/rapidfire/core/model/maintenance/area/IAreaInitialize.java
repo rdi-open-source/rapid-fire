@@ -6,19 +6,14 @@
  * http://www.eclipse.org/legal/cpl-v10.html
  *******************************************************************************/
 
-package biz.rapidfire.core.model.maintenance.file;
+package biz.rapidfire.core.model.maintenance.area;
 
-public enum Type {
-    PHYSICAL ("*PHYSICAL"),
-    LOGICAL ("*LOGICAL");
+public interface IAreaInitialize {
 
-    private String label;
-
-    private Type(String label) {
-        this.label = label;
-    }
-
-    public String label() {
-        return label;
-    }
+    public static final int MODE = 1;
+    public static final int JOB = 2;
+    public static final int POSITION = 3;
+    public static final int AREA = 4;
+    public static final int SUCCESS = 5;
+    public static final int ERROR_CODE = 6; // TODO: rename to MESSAGE
 }

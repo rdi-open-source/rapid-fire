@@ -198,16 +198,13 @@ public class JobMaintenanceDialog extends AbstractMaintenanceDialog {
         } else if (IJobCheck.FIELD_DESCRIPTION.equals(fieldName)) {
             textDescription.setFocus();
             setErrorMessage(Messages.bind(Messages.Description_A_is_not_valid, textDescription.getText()));
-        }
-        if (IJobCheck.FIELD_CREATE_ENVIRONMENT.equals(fieldName)) {
+        } else if (IJobCheck.FIELD_CREATE_ENVIRONMENT.equals(fieldName)) {
             buttonCreateEnvironment.setFocus();
             setErrorMessage(Messages.Create_environment_value_has_been_rejected);
-        }
-        if (IJobCheck.FIELD_JOB_QUEUE_NAME.equals(fieldName)) {
+        } else if (IJobCheck.FIELD_JOB_QUEUE_NAME.equals(fieldName)) {
             textJobQueueName.setFocus();
             setErrorMessage(Messages.bind(Messages.Job_queue_name_A_is_not_valid, textJobQueueName.getText()));
-        }
-        if (IJobCheck.FIELD_JOB_QUEUE_LIBRARY_NAME.equals(fieldName)) {
+        } else if (IJobCheck.FIELD_JOB_QUEUE_LIBRARY_NAME.equals(fieldName)) {
             textJobQueueLibraryName.setFocus();
             setErrorMessage(Messages.bind(Messages.Library_name_A_is_not_valid, textJobQueueLibraryName.getText()));
         }

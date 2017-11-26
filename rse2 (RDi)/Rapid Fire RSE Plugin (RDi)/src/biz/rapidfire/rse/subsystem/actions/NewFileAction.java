@@ -40,7 +40,7 @@ public class NewFileAction extends SystemBaseAction {
             FilesNode filesNode = (FilesNode)element;
             IRapidFireJobResource job = filesNode.getJob();
 
-            RapidFireFileResource file = RapidFireFileResource.createEmptyInstance(job.getDataLibrary(), job.getName());
+            RapidFireFileResource file = RapidFireFileResource.createEmptyInstance(job);
             file.setSubSystem((ISubSystem)job.getParentSubSystem());
 
             NewFileHandler handler = new NewFileHandler();

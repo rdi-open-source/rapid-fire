@@ -11,6 +11,7 @@ package biz.rapidfire.core.subsystem;
 import org.eclipse.swt.widgets.Shell;
 
 import biz.rapidfire.core.model.IFileCopyStatus;
+import biz.rapidfire.core.model.IRapidFireAreaResource;
 import biz.rapidfire.core.model.IRapidFireFileResource;
 import biz.rapidfire.core.model.IRapidFireJobResource;
 import biz.rapidfire.core.model.IRapidFireLibraryListResource;
@@ -21,13 +22,15 @@ public interface IRapidFireSubSystem {
 
     public IRapidFireJobResource[] getJobs(String library, Shell shell) throws Exception;
 
-    public IRapidFireFileResource[] getFiles(String library, String job, Shell shell) throws Exception;
+    public IRapidFireFileResource[] getFiles(IRapidFireJobResource job, Shell shell) throws Exception;
 
-    public IRapidFireLibraryListResource[] getLibraryLists(String libraryName, String jobName, Shell shell) throws Exception;
+    public IRapidFireLibraryListResource[] getLibraryLists(IRapidFireJobResource job, Shell shell) throws Exception;
 
-    public IRapidFireLibraryResource[] getLibraries(String library, String job, Shell shell) throws Exception;
+    public IRapidFireLibraryResource[] getLibraries(IRapidFireJobResource job, Shell shell) throws Exception;
 
-    public IRapidFireNotificationResource[] getNotifications(String library, String job, Shell shell) throws Exception;
+    public IRapidFireNotificationResource[] getNotifications(IRapidFireJobResource job, Shell shell) throws Exception;
+
+    public IRapidFireAreaResource[] getAreas(IRapidFireFileResource file, Shell shell) throws Exception;
 
     public IFileCopyStatus[] getFileCopyStatus(String library, String job, Shell shell) throws Exception;
 

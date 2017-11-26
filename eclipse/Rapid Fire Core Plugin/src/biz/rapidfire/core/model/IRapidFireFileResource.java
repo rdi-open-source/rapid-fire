@@ -10,7 +10,7 @@ package biz.rapidfire.core.model;
 
 import biz.rapidfire.core.model.maintenance.file.shared.FileType;
 
-public interface IRapidFireFileResource extends IRapidFireResource {
+public interface IRapidFireFileResource extends IRapidFireChildResource {
 
     /*
      * Key attributes

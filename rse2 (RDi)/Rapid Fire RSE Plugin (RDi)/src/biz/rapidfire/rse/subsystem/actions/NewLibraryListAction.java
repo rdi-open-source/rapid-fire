@@ -40,7 +40,7 @@ public class NewLibraryListAction extends SystemBaseAction {
             LibraryListsNode libraryListsNode = (LibraryListsNode)element;
             IRapidFireJobResource job = libraryListsNode.getJob();
 
-            RapidFireLibraryListResource library = RapidFireLibraryListResource.createEmptyInstance(job.getDataLibrary(), job.getName());
+            RapidFireLibraryListResource library = RapidFireLibraryListResource.createEmptyInstance(job);
             library.setSubSystem((ISubSystem)job.getParentSubSystem());
 
             NewLibraryListHandler handler = new NewLibraryListHandler();

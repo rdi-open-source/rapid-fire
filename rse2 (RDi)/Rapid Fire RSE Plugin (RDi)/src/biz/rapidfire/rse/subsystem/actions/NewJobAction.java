@@ -12,12 +12,14 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.rse.core.filters.ISystemFilter;
 import org.eclipse.rse.core.filters.ISystemFilterReference;
+import org.eclipse.rse.core.subsystems.ISubSystem;
 import org.eclipse.rse.core.subsystems.SubSystemHelpers;
 import org.eclipse.rse.ui.actions.SystemBaseAction;
 import org.eclipse.swt.widgets.Shell;
 
 import biz.rapidfire.core.RapidFireCorePlugin;
 import biz.rapidfire.core.handlers.job.NewJobHandler;
+import biz.rapidfire.core.subsystem.IRapidFireSubSystem;
 import biz.rapidfire.core.subsystem.RapidFireFilter;
 import biz.rapidfire.rse.Messages;
 import biz.rapidfire.rse.RapidFireRSEPlugin;
@@ -44,8 +46,9 @@ public class NewJobAction extends SystemBaseAction {
             if (systemFilter.getFilterStringCount() == 1) {
                 RapidFireFilter filter = new RapidFireFilter(systemFilter.getFilterStrings()[0]);
 
-                RapidFireJobResource job = RapidFireJobResource.createEmptyInstance(filter.getDataLibrary());
-                job.setSubSystem(SubSystemHelpers.getParentSubSystem(filterReference.getParentSystemFilterReferencePool()));
+                ISubSystem subSystem = SubSystemHelpers.getParentSubSystem(filterReference.getParentSystemFilterReferencePool());
+                RapidFireJobResource job = RapidFireJobResource.createEmptyInstance((IRapidFireSubSystem)subSystem, filter.getDataLibrary());
+                job.setSubSystem(subSystem);
 
                 NewJobHandler handler = new NewJobHandler();
                 IStructuredSelection selection = new StructuredSelection(job);

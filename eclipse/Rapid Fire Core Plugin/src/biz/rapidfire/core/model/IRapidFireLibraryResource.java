@@ -8,7 +8,7 @@
 
 package biz.rapidfire.core.model;
 
-public interface IRapidFireLibraryResource extends IRapidFireResource {
+public interface IRapidFireLibraryResource extends IRapidFireChildResource {
 
     /*
      * Key attributes

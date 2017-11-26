@@ -11,6 +11,7 @@ package biz.rapidfire.rse.subsystem.adapters;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.resource.ImageDescriptor;
+import org.eclipse.rse.core.subsystems.AbstractResource;
 import org.eclipse.rse.ui.view.ISystemRemoteElementAdapter;
 import org.eclipse.ui.views.properties.IPropertyDescriptor;
 import org.eclipse.ui.views.properties.PropertyDescriptor;
@@ -18,6 +19,7 @@ import org.eclipse.ui.views.properties.PropertyDescriptor;
 import biz.rapidfire.core.model.IRapidFireFileResource;
 import biz.rapidfire.rse.Messages;
 import biz.rapidfire.rse.RapidFireRSEPlugin;
+import biz.rapidfire.rse.subsystem.resources.AreasNode;
 import biz.rapidfire.rse.subsystem.resources.RapidFireFileResource;
 
 public class RapidFireFileResourceAdapter extends AbstractResourceAdapter implements ISystemRemoteElementAdapter {
@@ -98,26 +100,18 @@ public class RapidFireFileResourceAdapter extends AbstractResourceAdapter implem
 
     @Override
     public boolean hasChildren(IAdaptable element) {
-        return false;
+        return true;
     }
 
     @Override
     public Object[] getChildren(IAdaptable element, IProgressMonitor progressMonitor) {
 
-        // try {
-        //
-        // RapidFireJobResource resource = (RapidFireJobResource)element;
-        //
-        // return
-        // resource.getParentSubSystem().getFiles(resource.getDataLibrary(),
-        // resource.getName());
-        //
-        // } catch (Exception e) {
-        //            RapidFireCorePlugin.logError("*** Could resolve filter string and load files ***", e); //$NON-NLS-1$
-        // MessageDialogAsync.displayError(e.getLocalizedMessage());
-        // }
+        IRapidFireFileResource file = (IRapidFireFileResource)element;
 
-        return new Object[0];
+        AbstractResource[] children = new AbstractResource[1];
+        children[0] = new AreasNode(file);
+
+        return children;
     }
 
     @Override

@@ -200,6 +200,7 @@ public class NotificationMaintenanceDialog extends AbstractMaintenanceDialog {
     protected void setScreenValues() {
 
         setText(textJobName, values.getKey().getJobName());
+
         setText(textPosition, Integer.toString(values.getKey().getPosition()));
         setText(comboType, values.getType());
         setText(textUser, values.getUser());

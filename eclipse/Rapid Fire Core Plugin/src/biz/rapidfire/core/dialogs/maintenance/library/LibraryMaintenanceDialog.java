@@ -133,6 +133,7 @@ public class LibraryMaintenanceDialog extends AbstractMaintenanceDialog {
     protected void setScreenValues() {
 
         textJobName.setText(values.getKey().getJobName());
+
         textLibrary.setText(values.getKey().getLibrary());
         textShadowLibrary.setText(values.getShadowLibrary());
     }

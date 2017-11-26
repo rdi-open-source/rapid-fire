@@ -10,7 +10,7 @@ package biz.rapidfire.core.model;
 
 import biz.rapidfire.core.model.maintenance.notification.shared.NotificationType;
 
-public interface IRapidFireNotificationResource extends IRapidFireResource {
+public interface IRapidFireNotificationResource extends IRapidFireChildResource {
 
     /*
      * Key attributes
