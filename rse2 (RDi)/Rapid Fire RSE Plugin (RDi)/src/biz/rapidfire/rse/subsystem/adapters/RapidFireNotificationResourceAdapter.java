@@ -112,20 +112,6 @@ public class RapidFireNotificationResourceAdapter extends AbstractResourceAdapte
 
     @Override
     public Object[] getChildren(IAdaptable element, IProgressMonitor progressMonitor) {
-
-        // try {
-        //
-        // RapidFireJobResource resource = (RapidFireJobResource)element;
-        //
-        // return
-        // resource.getParentSubSystem().getFiles(resource.getDataLibrary(),
-        // resource.getName());
-        //
-        // } catch (Exception e) {
-        //            RapidFireCorePlugin.logError("*** Could resolve filter string and load files ***", e); //$NON-NLS-1$
-        // MessageDialogAsync.displayError(e.getLocalizedMessage());
-        // }
-
         return new Object[0];
     }
 
