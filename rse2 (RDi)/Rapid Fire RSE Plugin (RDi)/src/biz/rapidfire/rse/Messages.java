@@ -65,8 +65,8 @@ public class Messages extends NLS {
     public static String Copy_program_library;
     public static String Conversion_program_name;
     public static String Conversion_program_library;
-    public static String Library_name;;
-    public static String ShadowLibrary_name;;
+    public static String Library_name;
+    public static String ShadowLibrary_name;
     public static String Library_list_name;
     public static String User_name;
     public static String NotificationType;
