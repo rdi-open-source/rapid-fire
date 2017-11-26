@@ -24,11 +24,15 @@ public class RapidFireJobResource extends AbstractResource implements IRapidFire
 
     private RapidFireJobResourceDelegate delegate;
 
-    public static RapidFireJobResource createEmptyInstance(String dataLibrary) {
-        return new RapidFireJobResource(dataLibrary, ""); //$NON-NLS-1$
+    public static RapidFireJobResource createEmptyInstance(IRapidFireSubSystem subSystem, String dataLibrary) {
+        return new RapidFireJobResource(subSystem, dataLibrary, ""); //$NON-NLS-1$
     }
 
-    public RapidFireJobResource(String dataLibrary, String job) {
+    public RapidFireJobResource(IRapidFireSubSystem subSystem, String dataLibrary, String job) {
+
+        if (subSystem == null) {
+            throw new IllegalParameterException("subSystem", null); //$NON-NLS-1$
+        }
 
         if (StringHelper.isNullOrEmpty(dataLibrary)) {
             throw new IllegalParameterException("dataLibrary", dataLibrary); //$NON-NLS-1$
@@ -39,6 +43,7 @@ public class RapidFireJobResource extends AbstractResource implements IRapidFire
         }
 
         this.delegate = new RapidFireJobResourceDelegate(dataLibrary, job);
+        super.setSubSystem((SubSystem)subSystem);
     }
 
     /*
@@ -51,10 +56,6 @@ public class RapidFireJobResource extends AbstractResource implements IRapidFire
 
     public IRapidFireSubSystem getParentSubSystem() {
         return (IRapidFireSubSystem)super.getSubSystem();
-    }
-
-    public void setParentSubSystem(IRapidFireSubSystem subSystem) {
-        super.setSubSystem((SubSystem)subSystem);
     }
 
     /*

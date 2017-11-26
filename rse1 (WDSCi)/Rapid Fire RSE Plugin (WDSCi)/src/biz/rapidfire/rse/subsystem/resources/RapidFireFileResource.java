@@ -9,9 +9,9 @@
 package biz.rapidfire.rse.subsystem.resources;
 
 import biz.rapidfire.core.exceptions.IllegalParameterException;
-import biz.rapidfire.core.helpers.StringHelper;
-import biz.rapidfire.core.model.FileType;
 import biz.rapidfire.core.model.IRapidFireFileResource;
+import biz.rapidfire.core.model.IRapidFireJobResource;
+import biz.rapidfire.core.model.maintenance.file.shared.FileType;
 import biz.rapidfire.core.subsystem.IRapidFireSubSystem;
 import biz.rapidfire.core.subsystem.resources.RapidFireFileResourceDelegate;
 
@@ -20,23 +20,22 @@ import com.ibm.etools.systems.subsystems.impl.AbstractResource;
 
 public class RapidFireFileResource extends AbstractResource implements IRapidFireFileResource, Comparable<IRapidFireFileResource> {
 
+    private IRapidFireJobResource parentJob;
     private RapidFireFileResourceDelegate delegate;
 
-    public static RapidFireFileResource createEmptyInstance(String dataLibrary, String job) {
-        return new RapidFireFileResource(dataLibrary, job, 0); //$NON-NLS-1$
+    public static RapidFireFileResource createEmptyInstance(IRapidFireJobResource job) {
+        return new RapidFireFileResource(job, 0); //$NON-NLS-1$
     }
 
-    public RapidFireFileResource(String dataLibrary, String job, int position) {
+    public RapidFireFileResource(IRapidFireJobResource job, int position) {
 
-        if (StringHelper.isNullOrEmpty(dataLibrary)) {
-            throw new IllegalParameterException("dataLibrary", dataLibrary); //$NON-NLS-1$
+        if (job == null) {
+            throw new IllegalParameterException("job", null); //$NON-NLS-1$
         }
 
-        if (StringHelper.isNullOrEmpty(job)) {
-            throw new IllegalParameterException("job", job); //$NON-NLS-1$
-        }
-
-        this.delegate = new RapidFireFileResourceDelegate(dataLibrary, job, position);
+        this.parentJob = job;
+        this.delegate = new RapidFireFileResourceDelegate(job.getDataLibrary(), job.getName(), position);
+        super.setSubSystem((SubSystem)job.getParentSubSystem());
     }
 
     /*
@@ -51,8 +50,8 @@ public class RapidFireFileResource extends AbstractResource implements IRapidFir
         return (IRapidFireSubSystem)super.getSubSystem();
     }
 
-    public void setParentSubSystem(IRapidFireSubSystem subSystem) {
-        super.setSubSystem((SubSystem)subSystem);
+    public IRapidFireJobResource getParentJob() {
+        return this.parentJob;
     }
 
     /*

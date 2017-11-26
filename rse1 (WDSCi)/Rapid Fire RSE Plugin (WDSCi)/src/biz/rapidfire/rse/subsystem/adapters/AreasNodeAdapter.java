@@ -14,15 +14,15 @@ import org.eclipse.swt.widgets.Shell;
 
 import biz.rapidfire.core.RapidFireCorePlugin;
 import biz.rapidfire.core.dialogs.MessageDialogAsync;
-import biz.rapidfire.core.model.IRapidFireJobResource;
+import biz.rapidfire.core.model.IRapidFireFileResource;
 import biz.rapidfire.rse.Messages;
 import biz.rapidfire.rse.RapidFireRSEPlugin;
-import biz.rapidfire.rse.subsystem.actions.file.NewFilesNodePopupMenuAction;
-import biz.rapidfire.rse.subsystem.resources.FilesNode;
+import biz.rapidfire.rse.subsystem.actions.area.NewAreasNodePopupMenuAction;
+import biz.rapidfire.rse.subsystem.resources.AreasNode;
 
 import com.ibm.etools.systems.core.ui.SystemMenuManager;
 
-public class FilesNodeAdapter extends AbstractNodeAdapter {
+public class AreasNodeAdapter extends AbstractNodeAdapter {
 
     @Override
     public final boolean hasChildren(Object element) {
@@ -31,22 +31,22 @@ public class FilesNodeAdapter extends AbstractNodeAdapter {
 
     @Override
     public String getText(Object element) {
-        return Messages.NodeText_Files;
+        return Messages.NodeText_Areas;
     }
 
     @Override
     public String getAbsoluteName(Object element) {
-        return "node.files"; //$NON-NLS-1$
+        return "node.areas"; //$NON-NLS-1$
     }
 
     @Override
-    public void addActions(SystemMenuManager menuManager, IStructuredSelection selection, Shell shell, String paramString) {
-        menuManager.add(null, new NewFilesNodePopupMenuAction(shell));
+    public void addActions(SystemMenuManager menuManager, IStructuredSelection selection, Shell shell, String menuGroup) {
+        menuManager.add(null, new NewAreasNodePopupMenuAction(shell));
     }
 
     @Override
     public ImageDescriptor getImageDescriptor(Object element) {
-        return RapidFireRSEPlugin.getDefault().getImageRegistry().getDescriptor(RapidFireRSEPlugin.IMAGE_FILE);
+        return RapidFireRSEPlugin.getDefault().getImageRegistry().getDescriptor(RapidFireRSEPlugin.IMAGE_AREA);
     }
 
     @Override
@@ -54,13 +54,13 @@ public class FilesNodeAdapter extends AbstractNodeAdapter {
 
         try {
 
-            FilesNode files = (FilesNode)element;
-            IRapidFireJobResource job = files.getJob();
+            AreasNode areas = (AreasNode)element;
+            IRapidFireFileResource file = areas.getFile();
 
-            return job.getParentSubSystem().getFiles(job, getShell());
+            return file.getParentSubSystem().getAreas(file, getShell());
 
         } catch (Exception e) {
-            RapidFireCorePlugin.logError("*** Could resolve filter string and load files ***", e); //$NON-NLS-1$
+            RapidFireCorePlugin.logError("*** Could resolve filter string and load areas ***", e); //$NON-NLS-1$
             MessageDialogAsync.displayError(e.getLocalizedMessage());
         }
 
@@ -69,12 +69,12 @@ public class FilesNodeAdapter extends AbstractNodeAdapter {
 
     @Override
     public String getType(Object element) {
-        return Messages.NodeType_Files;
+        return Messages.NodeType_Areas;
     }
 
     @Override
     public String getRemoteType(Object element) {
-        return "node.files"; //$NON-NLS-1$
+        return "node.areas"; //$NON-NLS-1$
     }
 
 }

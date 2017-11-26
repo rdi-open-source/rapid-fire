@@ -17,10 +17,12 @@ import org.eclipse.ui.views.properties.PropertyDescriptor;
 import biz.rapidfire.core.model.IRapidFireFileResource;
 import biz.rapidfire.rse.Messages;
 import biz.rapidfire.rse.RapidFireRSEPlugin;
+import biz.rapidfire.rse.subsystem.resources.AreasNode;
 import biz.rapidfire.rse.subsystem.resources.RapidFireFileResource;
 
 import com.ibm.etools.systems.core.ui.SystemMenuManager;
 import com.ibm.etools.systems.core.ui.view.ISystemRemoteElementAdapter;
+import com.ibm.etools.systems.subsystems.impl.AbstractResource;
 
 public class RapidFireFileResourceAdapter extends AbstractResourceAdapter implements ISystemRemoteElementAdapter {
 
@@ -104,21 +106,12 @@ public class RapidFireFileResourceAdapter extends AbstractResourceAdapter implem
     @Override
     public Object[] getChildren(Object element) {
 
-        // try {
-        //
-        // RapidFireJobResource resource = (RapidFireJobResource)element;
-        //
-        // return
-        // resource.getParentSubSystem().getFiles(resource.getDataLibrary(),
-        // resource.getName());
-        //
-        // } catch (Exception e) {
-        // RapidFireCorePlugin.logError("*** Could resolve filter string and
-        // load files ***", e); //$NON-NLS-1$
-        // MessageDialogAsync.displayError(e.getLocalizedMessage());
-        // }
+        IRapidFireFileResource file = (IRapidFireFileResource)element;
 
-        return new Object[0];
+        AbstractResource[] children = new AbstractResource[1];
+        children[0] = new AreasNode(file);
+
+        return children;
     }
 
     @Override
@@ -161,7 +154,7 @@ public class RapidFireFileResourceAdapter extends AbstractResourceAdapter implem
         } else if (propKey.equals(FILE)) {
             return resource.getName();
         } else if (propKey.equals(FILE_TYPE)) {
-            return resource.getFileType().label;
+            return resource.getFileType().label();
         } else if (propKey.equals(COPY_PROGRAM_NAME)) {
             return resource.getCopyProgramName();
         } else if (propKey.equals(COPY_PROGRAM_LIBRARY)) {

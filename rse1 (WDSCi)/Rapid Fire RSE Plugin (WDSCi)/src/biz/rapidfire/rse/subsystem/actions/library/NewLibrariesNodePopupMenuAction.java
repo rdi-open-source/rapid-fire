@@ -43,8 +43,7 @@ public class NewLibrariesNodePopupMenuAction extends SystemBaseAction {
                 LibrariesNode librariesNode = (LibrariesNode)element;
                 IRapidFireJobResource job = librariesNode.getJob();
 
-                RapidFireLibraryResource library = RapidFireLibraryResource.createEmptyInstance(job.getDataLibrary(), job.getName());
-                library.setSubSystem((SubSystem)job.getParentSubSystem());
+                RapidFireLibraryResource library = RapidFireLibraryResource.createEmptyInstance(job);
 
                 NewLibraryHandler handler = new NewLibraryHandler();
                 IStructuredSelection selection = new StructuredSelection(library);
