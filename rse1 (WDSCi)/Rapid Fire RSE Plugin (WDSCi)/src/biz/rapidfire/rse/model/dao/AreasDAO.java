@@ -8,21 +8,23 @@
 
 package biz.rapidfire.rse.model.dao;
 
-import biz.rapidfire.core.model.IRapidFireJobResource;
-import biz.rapidfire.core.model.IRapidFireLibraryResource;
-import biz.rapidfire.core.model.dao.AbstractLibrariesDAO;
-import biz.rapidfire.core.model.dao.ILibrariesDAO;
+import biz.rapidfire.core.model.IRapidFireAreaResource;
+import biz.rapidfire.core.model.IRapidFireFileResource;
+import biz.rapidfire.core.model.dao.AbstractAreasDAO;
+import biz.rapidfire.core.model.dao.IAreasDAO;
 import biz.rapidfire.core.model.dao.JDBCConnectionManager;
-import biz.rapidfire.rse.subsystem.resources.RapidFireLibraryResource;
+import biz.rapidfire.rse.subsystem.resources.RapidFireAreaResource;
 
-public class LibrariesDAO extends AbstractLibrariesDAO implements ILibrariesDAO {
+//TODO: move to core plugin
+public class AreasDAO extends AbstractAreasDAO implements IAreasDAO {
 
-    public LibrariesDAO(String connectionName, String libraryName) throws Exception {
+    public AreasDAO(String connectionName, String libraryName) throws Exception {
         super(JDBCConnectionManager.getInstance().getConnection(connectionName, libraryName, false));
     }
 
     @Override
-    protected IRapidFireLibraryResource createLibraryInstance(IRapidFireJobResource job, String library) {
-        return new RapidFireLibraryResource(job, library);
+    protected IRapidFireAreaResource createAreaInstance(IRapidFireFileResource file, String area) {
+        return new RapidFireAreaResource(file, area);
     }
+
 }

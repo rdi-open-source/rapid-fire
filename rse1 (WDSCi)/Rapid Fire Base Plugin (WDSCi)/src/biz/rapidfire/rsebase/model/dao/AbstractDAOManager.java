@@ -8,6 +8,9 @@
 
 package biz.rapidfire.rsebase.model.dao;
 
+import java.sql.CallableStatement;
+import java.sql.SQLException;
+
 import com.ibm.as400.access.AS400;
 import com.ibm.etools.iseries.core.api.ISeriesConnection;
 
@@ -21,5 +24,9 @@ public abstract class AbstractDAOManager {
         }
 
         return connection.getAS400ToolboxObject(null);
+    }
+
+    protected String getStringTrim(CallableStatement statement, int parameterIndex) throws SQLException {
+        return statement.getString(parameterIndex);
     }
 }

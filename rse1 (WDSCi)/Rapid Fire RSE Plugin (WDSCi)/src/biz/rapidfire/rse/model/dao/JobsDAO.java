@@ -12,6 +12,7 @@ import biz.rapidfire.core.model.IRapidFireJobResource;
 import biz.rapidfire.core.model.dao.AbstractJobsDAO;
 import biz.rapidfire.core.model.dao.IJobsDAO;
 import biz.rapidfire.core.model.dao.JDBCConnectionManager;
+import biz.rapidfire.core.subsystem.IRapidFireSubSystem;
 import biz.rapidfire.rse.subsystem.resources.RapidFireJobResource;
 
 public class JobsDAO extends AbstractJobsDAO implements IJobsDAO {
@@ -21,7 +22,7 @@ public class JobsDAO extends AbstractJobsDAO implements IJobsDAO {
     }
 
     @Override
-    protected IRapidFireJobResource createJobInstance(String dataLibrary, String name) {
-        return new RapidFireJobResource(dataLibrary, name);
+    protected IRapidFireJobResource createJobInstance(IRapidFireSubSystem subSystem, String dataLibrary, String name) {
+        return new RapidFireJobResource(subSystem, dataLibrary, name);
     }
 }

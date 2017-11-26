@@ -6,30 +6,29 @@
  * http://www.eclipse.org/legal/cpl-v10.html
  *******************************************************************************/
 
-package biz.rapidfire.rse.subsystem.actions.file;
+package biz.rapidfire.rse.subsystem.actions.area;
 
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.swt.widgets.Shell;
 
 import biz.rapidfire.core.RapidFireCorePlugin;
-import biz.rapidfire.core.handlers.file.NewFileHandler;
+import biz.rapidfire.core.handlers.area.NewAreaHandler;
 import biz.rapidfire.core.model.IRapidFireFileResource;
-import biz.rapidfire.core.model.IRapidFireJobResource;
 import biz.rapidfire.rse.Messages;
 import biz.rapidfire.rse.RapidFireRSEPlugin;
-import biz.rapidfire.rse.subsystem.resources.FilesNode;
-import biz.rapidfire.rse.subsystem.resources.RapidFireFileResource;
+import biz.rapidfire.rse.subsystem.resources.AreasNode;
+import biz.rapidfire.rse.subsystem.resources.RapidFireAreaResource;
 
 import com.ibm.etools.systems.core.ui.actions.SystemBaseAction;
 import com.ibm.etools.systems.subsystems.SubSystem;
 
-public class NewFilesNodePopupMenuAction extends SystemBaseAction {
+public class NewAreasNodePopupMenuAction extends SystemBaseAction {
 
-    public NewFilesNodePopupMenuAction(Shell shell) {
-        super(Messages.ActionLabel_New_File, Messages.ActionTooltip_New_File, shell);
+    public NewAreasNodePopupMenuAction(Shell shell) {
+        super(Messages.ActionLabel_New_Area, Messages.ActionTooltip_New_Area, shell);
 
-        setImageDescriptor(RapidFireRSEPlugin.getDefault().getImageRegistry().getDescriptor(RapidFireRSEPlugin.IMAGE_NEW_FILE));
+        setImageDescriptor(RapidFireRSEPlugin.getDefault().getImageRegistry().getDescriptor(RapidFireRSEPlugin.IMAGE_NEW_AREA));
         setContextMenuGroup("group.new");
     }
 
@@ -40,19 +39,19 @@ public class NewFilesNodePopupMenuAction extends SystemBaseAction {
 
             Object element = getFirstSelection();
 
-            if (element instanceof FilesNode) {
-                FilesNode filesNode = (FilesNode)element;
-                IRapidFireJobResource job = filesNode.getJob();
+            if (element instanceof AreasNode) {
+                AreasNode areasNode = (AreasNode)element;
+                IRapidFireFileResource file = areasNode.getFile();
 
-                RapidFireFileResource file = RapidFireFileResource.createEmptyInstance(job);
+                RapidFireAreaResource area = RapidFireAreaResource.createEmptyInstance(file);
 
-                NewFileHandler handler = new NewFileHandler();
-                IStructuredSelection selection = new StructuredSelection(file);
+                NewAreaHandler handler = new NewAreaHandler();
+                IStructuredSelection selection = new StructuredSelection(area);
                 handler.executeWithSelection(selection);
             }
 
         } catch (Exception e) {
-            RapidFireCorePlugin.logError("*** Could not execute 'New File' handler ***", e); //$NON-NLS-1$
+            RapidFireCorePlugin.logError("*** Could not execute 'New Area' handler ***", e); //$NON-NLS-1$
         }
 
     }

@@ -21,6 +21,7 @@ import biz.rapidfire.rse.RapidFireRSEPlugin;
 import biz.rapidfire.rse.subsystem.resources.FilesNode;
 import biz.rapidfire.rse.subsystem.resources.LibrariesNode;
 import biz.rapidfire.rse.subsystem.resources.LibraryListsNode;
+import biz.rapidfire.rse.subsystem.resources.NotificationsNode;
 import biz.rapidfire.rse.subsystem.resources.RapidFireJobResource;
 
 import com.ibm.etools.systems.core.ui.SystemMenuManager;
@@ -114,10 +115,11 @@ public class RapidFireJobResourceAdapter extends AbstractResourceAdapter impleme
     @Override
     public Object[] getChildren(Object element) {
 
-        AbstractResource[] children = new AbstractResource[3];
+        AbstractResource[] children = new AbstractResource[4];
         children[0] = new LibrariesNode((RapidFireJobResource)element);
         children[1] = new LibraryListsNode((RapidFireJobResource)element);
         children[2] = new FilesNode((RapidFireJobResource)element);
+        children[3] = new NotificationsNode((RapidFireJobResource)element);
 
         return children;
     }

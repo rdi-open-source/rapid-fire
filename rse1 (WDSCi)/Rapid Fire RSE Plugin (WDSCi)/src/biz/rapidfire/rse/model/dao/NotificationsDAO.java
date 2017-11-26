@@ -9,20 +9,22 @@
 package biz.rapidfire.rse.model.dao;
 
 import biz.rapidfire.core.model.IRapidFireJobResource;
-import biz.rapidfire.core.model.IRapidFireLibraryResource;
-import biz.rapidfire.core.model.dao.AbstractLibrariesDAO;
-import biz.rapidfire.core.model.dao.ILibrariesDAO;
+import biz.rapidfire.core.model.IRapidFireNotificationResource;
+import biz.rapidfire.core.model.dao.AbstractNotificationsDAO;
+import biz.rapidfire.core.model.dao.INotificationsDAO;
 import biz.rapidfire.core.model.dao.JDBCConnectionManager;
-import biz.rapidfire.rse.subsystem.resources.RapidFireLibraryResource;
+import biz.rapidfire.rse.subsystem.resources.RapidFireNotificationResource;
 
-public class LibrariesDAO extends AbstractLibrariesDAO implements ILibrariesDAO {
+// TODO: move to core plugin
+public class NotificationsDAO extends AbstractNotificationsDAO implements INotificationsDAO {
 
-    public LibrariesDAO(String connectionName, String libraryName) throws Exception {
+    public NotificationsDAO(String connectionName, String libraryName) throws Exception {
         super(JDBCConnectionManager.getInstance().getConnection(connectionName, libraryName, false));
     }
 
     @Override
-    protected IRapidFireLibraryResource createLibraryInstance(IRapidFireJobResource job, String library) {
-        return new RapidFireLibraryResource(job, library);
+    protected IRapidFireNotificationResource createNotificationInstance(IRapidFireJobResource job, int position) {
+        return new RapidFireNotificationResource(job, position);
     }
+
 }

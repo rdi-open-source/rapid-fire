@@ -351,5 +351,135 @@
       </objectContribution>
       
    </extension>
+   
+      	<!--
+      	  ==========================================
+      	    Rapid Fire 'Notification' Object Contributions
+      	  ==========================================
+      	-->
+
+   <extension
+         point="com.ibm.etools.systems.core.popupMenus">
+      <objectContribution
+            subsystemfactoryid="biz.rapidfire.rse.subsystem.RapidFireSubSystemFactory"
+            typecategoryfilter="rapid fire"
+            typefilter="notification"
+            subtypefilter="*"
+            namefilter="*"
+            id="biz.rapidfire.rse.job.actions">
+            
+         <action
+               label="%command_Display_Notification"
+               tooltip="%command_Display_Notification_Description"
+               icon="icons/display.gif"
+               class="biz.rapidfire.rse.subsystem.actions.notification.DisplayNotificationAction"
+               enablesFor="1"
+               id="biz.rapidfire.rse.subsystem.actions.notification.DisplayNotificationAction">
+         </action>
+            
+         <action
+               label="%command_Delete_Notification"
+               tooltip="%command_Delete_Notification_Description"
+               icon="icons/delete.gif"
+               class="biz.rapidfire.rse.subsystem.actions.notification.DeleteNotificationAction"
+               enablesFor="+"
+               id="biz.rapidfire.rse.subsystem.actions.notification.DeleteNotificationAction">
+         </action>
+            
+         <action
+               label="%command_Copy_Notification"
+               tooltip="%command_Copy_Notification_Description"
+               icon="icons/copy.gif"
+               class="biz.rapidfire.rse.subsystem.actions.notification.CopyNotificationAction"
+               enablesFor="1"
+               id="biz.rapidfire.rse.subsystem.actions.notification.CopyNotificationAction">
+         </action>
+            
+         <action
+               label="%command_Change_Notification"
+               tooltip="%command_Change_Notification_Description"
+               icon="icons/change.gif"
+               class="biz.rapidfire.rse.subsystem.actions.notification.ChangeNotificationAction"
+               enablesFor="+"
+               id="biz.rapidfire.rse.subsystem.actions.notification.ChangeNotificationAction">
+         </action>
+            
+         <action
+               label="%command_New_Notification"
+               tooltip="%command_New_Notification_Description"
+               icon="icons/new_notification.gif"
+               class="biz.rapidfire.rse.subsystem.actions.notification.NewNotificationAction"
+               enablesFor="+"
+               id="biz.rapidfire.rse.subsystem.actions.notification.NewNotificationAction">
+         </action>
+         
+      </objectContribution>
+      
+   </extension>
+   
+      	<!--
+      	  ==========================================
+      	    Rapid Fire 'Area' Object Contributions
+      	  ==========================================
+      	-->
+
+   <extension
+         point="com.ibm.etools.systems.core.popupMenus">
+      <objectContribution
+            subsystemfactoryid="biz.rapidfire.rse.subsystem.RapidFireSubSystemFactory"
+            typecategoryfilter="rapid fire"
+            typefilter="area"
+            subtypefilter="*"
+            namefilter="*"
+            id="biz.rapidfire.rse.job.actions">
+            
+         <action
+               label="%command_Display_Area"
+               tooltip="%command_Display_Area_Description"
+               icon="icons/display.gif"
+               class="biz.rapidfire.rse.subsystem.actions.area.DisplayAreaAction"
+               enablesFor="1"
+               id="biz.rapidfire.rse.subsystem.actions.area.DisplayAreaAction">
+         </action>
+            
+         <action
+               label="%command_Delete_Area"
+               tooltip="%command_Delete_Area_Description"
+               icon="icons/delete.gif"
+               class="biz.rapidfire.rse.subsystem.actions.area.DeleteAreaAction"
+               enablesFor="+"
+               id="biz.rapidfire.rse.subsystem.actions.area.DeleteAreaAction">
+         </action>
+            
+         <action
+               label="%command_Copy_Area"
+               tooltip="%command_Copy_Area_Description"
+               icon="icons/copy.gif"
+               class="biz.rapidfire.rse.subsystem.actions.area.CopyAreaAction"
+               enablesFor="1"
+               id="biz.rapidfire.rse.subsystem.actions.area.CopyAreaAction">
+         </action>
+            
+         <action
+               label="%command_Change_Area"
+               tooltip="%command_Change_Area_Description"
+               icon="icons/change.gif"
+               class="biz.rapidfire.rse.subsystem.actions.area.ChangeAreaAction"
+               enablesFor="+"
+               id="biz.rapidfire.rse.subsystem.actions.area.ChangeAreaAction">
+         </action>
+            
+         <action
+               label="%command_New_Area"
+               tooltip="%command_New_Area_Description"
+               icon="icons/new_area.gif"
+               class="biz.rapidfire.rse.subsystem.actions.area.NewAreaAction"
+               enablesFor="+"
+               id="biz.rapidfire.rse.subsystem.actions.area.NewAreaAction">
+         </action>
+         
+      </objectContribution>
+      
+   </extension>
 
 </plugin>
