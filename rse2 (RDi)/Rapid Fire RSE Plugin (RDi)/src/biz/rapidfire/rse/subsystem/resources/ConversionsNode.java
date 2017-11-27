@@ -13,13 +13,13 @@ import org.eclipse.rse.core.subsystems.AbstractResource;
 import biz.rapidfire.core.model.IRapidFireFileResource;
 import biz.rapidfire.rse.Messages;
 
-public class AreasNode extends AbstractResource {
+public class ConversionsNode extends AbstractResource {
 
     private String label;
     private IRapidFireFileResource file;
 
-    public AreasNode(IRapidFireFileResource file) {
-        this.label = Messages.NodeText_Areas;
+    public ConversionsNode(IRapidFireFileResource file) {
+        this.label = Messages.NodeText_Conversions;
         this.file = file;
     }
 

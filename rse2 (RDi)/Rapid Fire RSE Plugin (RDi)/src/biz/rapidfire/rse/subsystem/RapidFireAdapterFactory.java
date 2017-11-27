@@ -14,22 +14,26 @@ import org.eclipse.rse.ui.view.ISystemViewElementAdapter;
 import org.eclipse.ui.views.properties.IPropertySource;
 
 import biz.rapidfire.rse.subsystem.adapters.AreasNodeAdapter;
+import biz.rapidfire.rse.subsystem.adapters.ConversionsNodeAdapter;
 import biz.rapidfire.rse.subsystem.adapters.FilesNodeAdapter;
 import biz.rapidfire.rse.subsystem.adapters.LibrariesNodeAdapter;
 import biz.rapidfire.rse.subsystem.adapters.LibraryListsNodeAdapter;
 import biz.rapidfire.rse.subsystem.adapters.NotificationsNodeAdapter;
 import biz.rapidfire.rse.subsystem.adapters.RapidFireAreaResourceAdapter;
+import biz.rapidfire.rse.subsystem.adapters.RapidFireConversionResourceAdapter;
 import biz.rapidfire.rse.subsystem.adapters.RapidFireFileResourceAdapter;
 import biz.rapidfire.rse.subsystem.adapters.RapidFireJobResourceAdapter;
 import biz.rapidfire.rse.subsystem.adapters.RapidFireLibraryListResourceAdapter;
 import biz.rapidfire.rse.subsystem.adapters.RapidFireLibraryResourceAdapter;
 import biz.rapidfire.rse.subsystem.adapters.RapidFireNotificationResourceAdapter;
 import biz.rapidfire.rse.subsystem.resources.AreasNode;
+import biz.rapidfire.rse.subsystem.resources.ConversionsNode;
 import biz.rapidfire.rse.subsystem.resources.FilesNode;
 import biz.rapidfire.rse.subsystem.resources.LibrariesNode;
 import biz.rapidfire.rse.subsystem.resources.LibraryListsNode;
 import biz.rapidfire.rse.subsystem.resources.NotificationsNode;
 import biz.rapidfire.rse.subsystem.resources.RapidFireAreaResource;
+import biz.rapidfire.rse.subsystem.resources.RapidFireConversionResource;
 import biz.rapidfire.rse.subsystem.resources.RapidFireFileResource;
 import biz.rapidfire.rse.subsystem.resources.RapidFireJobResource;
 import biz.rapidfire.rse.subsystem.resources.RapidFireLibraryListResource;
@@ -44,12 +48,14 @@ public class RapidFireAdapterFactory extends AbstractSystemRemoteAdapterFactory 
     private RapidFireLibraryResourceAdapter libraryResourceAdapter = new RapidFireLibraryResourceAdapter();
     private RapidFireNotificationResourceAdapter notificationResourceAdapter = new RapidFireNotificationResourceAdapter();
     private RapidFireAreaResourceAdapter areaResourceAdapter = new RapidFireAreaResourceAdapter();
+    private RapidFireConversionResourceAdapter conversionResourceAdapter = new RapidFireConversionResourceAdapter();
 
     private FilesNodeAdapter filesNodeAdapter = new FilesNodeAdapter();
     private LibraryListsNodeAdapter libraryListsNodeAdapter = new LibraryListsNodeAdapter();
     private LibrariesNodeAdapter librariesNodeAdapter = new LibrariesNodeAdapter();
     private NotificationsNodeAdapter notificationsNodeAdapter = new NotificationsNodeAdapter();
     private AreasNodeAdapter areasNodeAdapter = new AreasNodeAdapter();
+    private ConversionsNodeAdapter conversionsNodeAdapter = new ConversionsNodeAdapter();
 
     public RapidFireAdapterFactory() {
         super();
@@ -71,6 +77,8 @@ public class RapidFireAdapterFactory extends AbstractSystemRemoteAdapterFactory 
             adapter = notificationResourceAdapter;
         } else if (adaptableObject instanceof RapidFireAreaResource) {
             adapter = areaResourceAdapter;
+        } else if (adaptableObject instanceof RapidFireConversionResource) {
+            adapter = conversionResourceAdapter;
         } else if (adaptableObject instanceof FilesNode) {
             adapter = filesNodeAdapter;
         } else if (adaptableObject instanceof LibraryListsNode) {
@@ -81,6 +89,8 @@ public class RapidFireAdapterFactory extends AbstractSystemRemoteAdapterFactory 
             adapter = notificationsNodeAdapter;
         } else if (adaptableObject instanceof AreasNode) {
             adapter = areasNodeAdapter;
+        } else if (adaptableObject instanceof ConversionsNode) {
+            adapter = conversionsNodeAdapter;
         }
 
         if ((adapter != null) && (adapterType == IPropertySource.class)) {

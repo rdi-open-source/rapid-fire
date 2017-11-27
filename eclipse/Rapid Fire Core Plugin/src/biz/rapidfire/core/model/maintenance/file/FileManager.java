@@ -152,19 +152,19 @@ public class FileManager extends AbstractManager<FileKey, FileValues> {
 
         CallableStatement statement = dao.prepareCall(dao.insertLibraryQualifier("{CALL " + IJDBCConnection.LIBRARY + "\"MNTFILE_check\"(?, ?, ?)}")); //$NON-NLS-1$ //$NON-NLS-2$
 
+        statement.setString(IFileCheck.SUCCESS, Success.NO.label());
         statement.setString(IFileCheck.FIELD_NAME, EMPTY_STRING);
         statement.setString(IFileCheck.MESSAGE, EMPTY_STRING);
-        statement.setString(IFileCheck.SUCCESS, Success.NO.label());
 
-        statement.registerOutParameter(1, Types.CHAR);
-        statement.registerOutParameter(2, Types.CHAR);
-        statement.registerOutParameter(3, Types.CHAR);
+        statement.registerOutParameter(IFileCheck.SUCCESS, Types.CHAR);
+        statement.registerOutParameter(IFileCheck.FIELD_NAME, Types.CHAR);
+        statement.registerOutParameter(IFileCheck.MESSAGE, Types.CHAR);
 
         statement.execute();
 
+        String success = getStringTrim(statement, IFileCheck.SUCCESS);
         String fieldName = getStringTrim(statement, IFileCheck.FIELD_NAME);
         String message = getStringTrim(statement, IFileCheck.MESSAGE);
-        String success = getStringTrim(statement, IFileCheck.SUCCESS);
 
         return new Result(fieldName, message, success);
     }

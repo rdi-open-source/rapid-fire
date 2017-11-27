@@ -131,19 +131,19 @@ public class LibraryManager extends AbstractManager<LibraryKey, LibraryValues> {
 
         CallableStatement statement = dao.prepareCall(dao.insertLibraryQualifier("{CALL " + IJDBCConnection.LIBRARY + "\"MNTLIB_check\"(?, ?, ?)}")); //$NON-NLS-1$ //$NON-NLS-2$
 
+        statement.setString(ILibraryCheck.SUCCESS, Success.NO.label());
         statement.setString(ILibraryCheck.FIELD_NAME, EMPTY_STRING);
         statement.setString(ILibraryCheck.MESSAGE, EMPTY_STRING);
-        statement.setString(ILibraryCheck.SUCCESS, Success.NO.label());
 
-        statement.registerOutParameter(1, Types.CHAR);
-        statement.registerOutParameter(2, Types.CHAR);
-        statement.registerOutParameter(3, Types.CHAR);
+        statement.registerOutParameter(ILibraryCheck.SUCCESS, Types.CHAR);
+        statement.registerOutParameter(ILibraryCheck.FIELD_NAME, Types.CHAR);
+        statement.registerOutParameter(ILibraryCheck.MESSAGE, Types.CHAR);
 
         statement.execute();
 
+        String success = statement.getString(ILibraryCheck.SUCCESS);
         String fieldName = statement.getString(ILibraryCheck.FIELD_NAME);
         String message = statement.getString(ILibraryCheck.MESSAGE);
-        String success = statement.getString(ILibraryCheck.SUCCESS);
 
         return new Result(fieldName, message, success);
     }

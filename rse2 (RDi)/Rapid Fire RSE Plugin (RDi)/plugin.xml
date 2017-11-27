@@ -278,7 +278,7 @@
    
       	<!--
       	  ==========================================
-      	    Rapid Fire 'Notification' Commands
+      	    Rapid Fire 'Area' Commands
       	  ==========================================
       	-->
          
@@ -315,6 +315,47 @@
          categoryId="biz.rapidfire.category.Commands"
          name="%command_Display_Area"
          description="%command_Display_Area_Description">
+      </command>
+   
+      	<!--
+      	  ==========================================
+      	    Rapid Fire 'Conversion' Commands
+      	  ==========================================
+      	-->
+         
+      <command
+         id="biz.rapidfire.core.command.Conversion.new"
+         categoryId="biz.rapidfire.category.Commands"
+         name="%command_New_Conversion"
+         description="%command_New_Conversion_Description">
+      </command>
+         
+      <command
+         id="biz.rapidfire.core.command.Conversion.change"
+         categoryId="biz.rapidfire.category.Commands"
+         name="%command_Change_Conversion"
+         description="%command_Change_Conversion_Description">
+      </command>
+         
+      <command
+         id="biz.rapidfire.core.command.Conversion.copy"
+         categoryId="biz.rapidfire.category.Commands"
+         name="%command_Copy_Conversion"
+         description="%command_Copy_Conversion_Description">
+      </command>
+         
+      <command
+         id="biz.rapidfire.core.command.Conversion.delete"
+         categoryId="biz.rapidfire.category.Commands"
+         name="%command_Delete_Conversion"
+         description="%command_Delete_Conversion_Description">
+      </command>
+         
+      <command
+         id="biz.rapidfire.core.command.Conversion.display"
+         categoryId="biz.rapidfire.category.Commands"
+         name="%command_Display_Conversion"
+         description="%command_Display_Conversion_Description">
       </command>
 
    </extension>
@@ -821,6 +862,77 @@
                <count value="1" />
                <iterate operator="and">
                   <adapt type="biz.rapidfire.rse.subsystem.resources.RapidFireAreaResource" />
+               </iterate>
+            </with>
+         </enabledWhen>
+      </handler>
+
+      	<!--
+      	  ==========================================
+      	    Rapid Fire 'Conversion' Command Handlers
+      	  ==========================================
+      	-->
+      
+      <handler
+         commandId="biz.rapidfire.core.command.Conversion.new"
+         class="biz.rapidfire.core.handlers.conversion.NewConversionHandler">
+         <enabledWhen>
+            <with variable="selection">
+               <count value="+" />
+               <iterate operator="and">
+                  <adapt type="biz.rapidfire.rse.subsystem.resources.RapidFireConversionResource" />
+               </iterate>
+            </with>
+         </enabledWhen>
+      </handler>
+      
+      <handler
+         commandId="biz.rapidfire.core.command.Conversion.change"
+         class="biz.rapidfire.core.handlers.conversion.ChangeConversionHandler">
+         <enabledWhen>
+            <with variable="selection">
+               <count value="+" />
+               <iterate operator="and">
+                  <adapt type="biz.rapidfire.rse.subsystem.resources.RapidFireConversionResource" />
+               </iterate>
+            </with>
+         </enabledWhen>
+      </handler>
+      
+      <handler
+         commandId="biz.rapidfire.core.command.Conversion.copy"
+         class="biz.rapidfire.core.handlers.conversion.CopyConversionHandler">
+         <enabledWhen>
+            <with variable="selection">
+               <count value="1" />
+               <iterate operator="and">
+                  <adapt type="biz.rapidfire.rse.subsystem.resources.RapidFireConversionResource" />
+               </iterate>
+            </with>
+         </enabledWhen>
+      </handler>
+      
+      <handler
+         commandId="biz.rapidfire.core.command.Conversion.delete"
+         class="biz.rapidfire.core.handlers.conversion.DeleteConversionHandler">
+         <enabledWhen>
+            <with variable="selection">
+               <count value="+" />
+               <iterate operator="and">
+                  <adapt type="biz.rapidfire.rse.subsystem.resources.RapidFireConversionResource" />
+               </iterate>
+            </with>
+         </enabledWhen>
+      </handler>
+      
+      <handler
+         commandId="biz.rapidfire.core.command.Conversion.display"
+         class="biz.rapidfire.core.handlers.conversion.DisplayConversionHandler">
+         <enabledWhen>
+            <with variable="selection">
+               <count value="1" />
+               <iterate operator="and">
+                  <adapt type="biz.rapidfire.rse.subsystem.resources.RapidFireConversionResource" />
                </iterate>
             </with>
          </enabledWhen>
@@ -1486,6 +1598,98 @@
 	           <with variable="selection">
 	              <iterate operator="and">
 	                 <adapt type="biz.rapidfire.rse.subsystem.resources.RapidFireAreaResource" />
+	              </iterate>
+	           </with>
+	        </visibleWhen>
+         </command>
+         
+      </menuContribution>
+   </extension>
+   
+      	<!--
+      	  ==========================================
+      	    Rapid Fire 'Conversion' Object Contributions
+      	  ==========================================
+      	-->
+
+   <extension
+      point="org.eclipse.ui.menus">
+         
+      <menuContribution
+         locationURI="popup:org.eclipse.ui.popup.any?before=additions">
+         
+         <separator
+            name="maintenance"
+            visible="true">
+	        <visibleWhen>
+	           <with variable="selection">
+	              <iterate operator="and">
+	                 <adapt type="biz.rapidfire.rse.subsystem.resources.RapidFireConversionResource" />
+	              </iterate>
+	           </with>
+	        </visibleWhen>
+         </separator>
+         
+         <command
+            commandId="biz.rapidfire.core.command.Conversion.new" 
+            icon="icons/new_library_list.gif"
+            >
+	        <visibleWhen>
+	           <with variable="selection">
+	              <iterate operator="and">
+	                 <adapt type="biz.rapidfire.rse.subsystem.resources.RapidFireConversionResource" />
+	              </iterate>
+	           </with>
+	        </visibleWhen>
+         </command>
+         
+         <command
+            commandId="biz.rapidfire.core.command.Conversion.change" 
+            icon="icons/change.gif"
+            >
+	        <visibleWhen>
+	           <with variable="selection">
+	              <iterate operator="and">
+	                 <adapt type="biz.rapidfire.rse.subsystem.resources.RapidFireConversionResource" />
+	              </iterate>
+	           </with>
+	        </visibleWhen>
+         </command>
+         
+         <command
+            commandId="biz.rapidfire.core.command.Conversion.copy" 
+            icon="icons/copy.gif"
+            >
+	        <visibleWhen>
+	           <with variable="selection">
+	              <iterate operator="and">
+	                 <adapt type="biz.rapidfire.rse.subsystem.resources.RapidFireConversionResource" />
+	              </iterate>
+	           </with>
+	        </visibleWhen>
+         </command>
+         
+         <command
+            commandId="biz.rapidfire.core.command.Conversion.delete" 
+            icon="icons/delete.gif"
+            >
+	        <visibleWhen>
+	           <with variable="selection">
+	              <iterate operator="and">
+	                 <adapt type="biz.rapidfire.rse.subsystem.resources.RapidFireConversionResource" />
+	              </iterate>
+	           </with>
+	        </visibleWhen>
+         </command>
+         
+         <command
+            commandId="biz.rapidfire.core.command.Conversion.display" 
+            icon="icons/display.gif"
+            >
+	        <visibleWhen>
+	           <with variable="selection">
+	              <iterate operator="and">
+	                 <adapt type="biz.rapidfire.rse.subsystem.resources.RapidFireConversionResource" />
 	              </iterate>
 	           </with>
 	        </visibleWhen>

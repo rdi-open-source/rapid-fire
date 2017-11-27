@@ -148,19 +148,19 @@ public class AreaManager extends AbstractManager<AreaKey, AreaValues> {
 
         CallableStatement statement = dao.prepareCall(dao.insertLibraryQualifier("{CALL " + IJDBCConnection.LIBRARY + "\"MNTAREA_check\"(?, ?, ?)}")); //$NON-NLS-1$ //$NON-NLS-2$
 
+        statement.setString(IAreaCheck.SUCCESS, Success.NO.label());
         statement.setString(IAreaCheck.FIELD_NAME, EMPTY_STRING);
         statement.setString(IAreaCheck.MESSAGE, EMPTY_STRING);
-        statement.setString(IAreaCheck.SUCCESS, Success.NO.label());
 
-        statement.registerOutParameter(1, Types.CHAR);
-        statement.registerOutParameter(2, Types.CHAR);
-        statement.registerOutParameter(3, Types.CHAR);
+        statement.registerOutParameter(IAreaCheck.SUCCESS, Types.CHAR);
+        statement.registerOutParameter(IAreaCheck.FIELD_NAME, Types.CHAR);
+        statement.registerOutParameter(IAreaCheck.MESSAGE, Types.CHAR);
 
         statement.execute();
 
+        String success = getStringTrim(statement, IAreaCheck.SUCCESS);
         String fieldName = getStringTrim(statement, IAreaCheck.FIELD_NAME);
         String message = getStringTrim(statement, IAreaCheck.MESSAGE);
-        String success = getStringTrim(statement, IAreaCheck.SUCCESS);
 
         return new Result(fieldName, message, success);
     }

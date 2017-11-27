@@ -118,18 +118,21 @@ public class Messages extends NLS {
     public static String Resource_Rapid_Fire_Library;
     public static String Resource_Rapid_Fire_Notification;
     public static String Resource_Rapid_Fire_Area;
+    public static String Resource_Rapid_Fire_Conversion;
 
     public static String NodeText_Files;
     public static String NodeText_LibraryLists;
     public static String NodeText_Libraries;
     public static String NodeText_Notifications;
     public static String NodeText_Areas;
+    public static String NodeText_Conversions;
 
     public static String NodeType_Files;
     public static String NodeType_LibraryLists;
     public static String NodeType_Libraries;
     public static String NodeType_Notifications;
     public static String NodeType_Areas;
+    public static String NodeType_Conversions;
 
     // Action labels
     public static String ActionLabel_New_Job;
@@ -138,6 +141,7 @@ public class Messages extends NLS {
     public static String ActionLabel_New_Library_List;
     public static String ActionLabel_New_Notification;
     public static String ActionLabel_New_Area;
+    public static String ActionLabel_New_Conversion;
 
     public static String ActionTooltip_New_Job;
     public static String ActionTooltip_New_File;
@@ -145,6 +149,7 @@ public class Messages extends NLS {
     public static String ActionTooltip_New_Library_List;
     public static String ActionTooltip_New_Notification;
     public static String ActionTooltip_New_Area;
+    public static String ActionTooltip_New_Conversion;
 
     private Messages() {
     }

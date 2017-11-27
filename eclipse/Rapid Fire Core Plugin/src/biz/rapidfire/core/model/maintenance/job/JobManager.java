@@ -139,19 +139,19 @@ public class JobManager extends AbstractManager<JobKey, JobValues> {
 
         CallableStatement statement = dao.prepareCall(dao.insertLibraryQualifier("{CALL " + IJDBCConnection.LIBRARY + "\"MNTJOB_check\"(?, ?, ?)}")); //$NON-NLS-1$ //$NON-NLS-2$
 
+        statement.setString(IJobCheck.SUCCESS, Success.NO.label());
         statement.setString(IJobCheck.FIELD_NAME, EMPTY_STRING);
         statement.setString(IJobCheck.MESSAGE, EMPTY_STRING);
-        statement.setString(IJobCheck.SUCCESS, Success.NO.label());
 
-        statement.registerOutParameter(1, Types.CHAR);
-        statement.registerOutParameter(2, Types.CHAR);
-        statement.registerOutParameter(3, Types.CHAR);
+        statement.registerOutParameter(IJobCheck.SUCCESS, Types.CHAR);
+        statement.registerOutParameter(IJobCheck.FIELD_NAME, Types.CHAR);
+        statement.registerOutParameter(IJobCheck.MESSAGE, Types.CHAR);
 
         statement.execute();
 
+        String success = statement.getString(IJobCheck.SUCCESS);
         String fieldName = statement.getString(IJobCheck.FIELD_NAME);
         String message = statement.getString(IJobCheck.MESSAGE);
-        String success = statement.getString(IJobCheck.SUCCESS);
 
         return new Result(fieldName, message, success);
     }
