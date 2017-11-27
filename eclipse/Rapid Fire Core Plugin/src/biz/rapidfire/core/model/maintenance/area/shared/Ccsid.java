@@ -6,26 +6,26 @@
  * http://www.eclipse.org/legal/cpl-v10.html
  *******************************************************************************/
 
-package biz.rapidfire.core.handlers.area.shared;
+package biz.rapidfire.core.model.maintenance.area.shared;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public enum Area {
-    NONE ("*NONE"); //$NON-NLS-1$
+public enum Ccsid {
+    JOB ("*JOB"); //$NON-NLS-1$
 
     private String label;
 
-    private static Map<String, Area> copyPrograms;
+    private static Map<String, Ccsid> copyPrograms;
 
     static {
-        copyPrograms = new HashMap<String, Area>();
-        for (Area status : Area.values()) {
+        copyPrograms = new HashMap<String, Ccsid>();
+        for (Ccsid status : Ccsid.values()) {
             copyPrograms.put(status.label, status);
         }
     }
 
-    private Area(String label) {
+    private Ccsid(String label) {
         this.label = label;
     }
 
@@ -37,7 +37,7 @@ public enum Area {
         return copyPrograms.keySet().toArray(new String[copyPrograms.size()]);
     }
 
-    public static Area find(String label) {
+    public static Ccsid find(String label) {
         // TODO: remove debug code
         if (label.length() != label.trim().length()) {
             throw new IllegalArgumentException("Expect to see a trimmed value here."); //$NON-NLS-1$

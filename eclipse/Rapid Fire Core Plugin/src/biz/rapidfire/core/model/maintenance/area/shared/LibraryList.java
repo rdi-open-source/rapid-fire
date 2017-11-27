@@ -6,7 +6,7 @@
  * http://www.eclipse.org/legal/cpl-v10.html
  *******************************************************************************/
 
-package biz.rapidfire.core.handlers.area.shared;
+package biz.rapidfire.core.model.maintenance.area.shared;
 
 import java.util.HashMap;
 import java.util.Map;
