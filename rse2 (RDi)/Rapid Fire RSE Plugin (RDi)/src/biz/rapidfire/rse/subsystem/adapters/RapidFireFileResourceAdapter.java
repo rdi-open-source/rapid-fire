@@ -20,6 +20,7 @@ import biz.rapidfire.core.model.IRapidFireFileResource;
 import biz.rapidfire.rse.Messages;
 import biz.rapidfire.rse.RapidFireRSEPlugin;
 import biz.rapidfire.rse.subsystem.resources.AreasNode;
+import biz.rapidfire.rse.subsystem.resources.CommandsNode;
 import biz.rapidfire.rse.subsystem.resources.ConversionsNode;
 import biz.rapidfire.rse.subsystem.resources.RapidFireFileResource;
 
@@ -109,9 +110,10 @@ public class RapidFireFileResourceAdapter extends AbstractResourceAdapter implem
 
         IRapidFireFileResource file = (IRapidFireFileResource)element;
 
-        AbstractResource[] children = new AbstractResource[2];
+        AbstractResource[] children = new AbstractResource[3];
         children[0] = new AreasNode(file);
         children[1] = new ConversionsNode(file);
+        children[2] = new CommandsNode(file);
 
         return children;
     }

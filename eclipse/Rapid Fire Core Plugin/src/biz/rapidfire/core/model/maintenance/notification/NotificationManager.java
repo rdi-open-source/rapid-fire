@@ -117,7 +117,7 @@ public class NotificationManager extends AbstractManager<NotificationKey, Notifi
 
         NotificationValues values = new NotificationValues();
         values.setKey(new NotificationKey(jobKey, getInt(statement, INotificationGetValues.POSITION)));
-        values.setType(getStringTrim(statement, INotificationGetValues.TYPE));
+        values.setNotificationType(getStringTrim(statement, INotificationGetValues.TYPE));
         values.setUser(getStringTrim(statement, INotificationGetValues.USER));
         values.setMessageQueueLibraryName(getStringTrim(statement, INotificationGetValues.MESSAGE_QUEUE_LIBRARY_NAME));
         values.setMessageQueueName(getStringTrim(statement, INotificationGetValues.MESSAGE_QUEUE_NAME));
@@ -132,7 +132,7 @@ public class NotificationManager extends AbstractManager<NotificationKey, Notifi
             .insertLibraryQualifier("{CALL " + IJDBCConnection.LIBRARY + "\"MNTSTBN_setValues\"(?, ?, ?, ?, ?)}")); //$NON-NLS-1$ //$NON-NLS-2$
 
         statement.setInt(INotificationSetValues.POSITION, values.getKey().getPosition());
-        statement.setString(INotificationSetValues.TYPE, values.getType());
+        statement.setString(INotificationSetValues.TYPE, values.getNotificationType());
         statement.setString(INotificationSetValues.USER, values.getUser());
         statement.setString(INotificationSetValues.MESSAGE_QUEUE_LIBRARY_NAME, values.getMessageQueueLibraryName());
         statement.setString(INotificationSetValues.MESSAGE_QUEUE_NAME, values.getMessageQueueName());

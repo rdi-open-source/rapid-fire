@@ -121,7 +121,7 @@ public class FileManager extends AbstractManager<FileKey, FileValues> {
         FileValues values = new FileValues();
         values.setKey(new FileKey(jobKey, getInt(statement, IFileGetValues.POSITION)));
         values.setFileName(getStringTrim(statement, IFileGetValues.FILE));
-        values.setType(getStringTrim(statement, IFileGetValues.TYPE));
+        values.setFileType(getStringTrim(statement, IFileGetValues.TYPE));
         values.setCopyProgramLibraryName(getStringTrim(statement, IFileGetValues.COPY_PROGRAM_LIBRARY_NAME));
         values.setCopyProgramName(getStringTrim(statement, IFileGetValues.COPY_PROGRAM_NAME));
         values.setConversionProgramLibraryName(getStringTrim(statement, IFileGetValues.CONVERSION_PROGRAM_LIBRARY_NAME));
@@ -138,7 +138,7 @@ public class FileManager extends AbstractManager<FileKey, FileValues> {
 
         statement.setInt(IFileSetValues.POSITION, values.getKey().getPosition());
         statement.setString(IFileSetValues.FILE, values.getFileName());
-        statement.setString(IFileSetValues.TYPE, values.getType());
+        statement.setString(IFileSetValues.TYPE, values.getFileType());
         statement.setString(IFileSetValues.COPY_PROGRAM_LIBRARY_NAME, values.getCopyProgramLibraryName());
         statement.setString(IFileSetValues.COPY_PROGRAM_NAME, values.getCopyProgramName());
         statement.setString(IFileSetValues.CONVERSION_PROGRAM_LIBRARY_NAME, values.getConversionProgramLibraryName());

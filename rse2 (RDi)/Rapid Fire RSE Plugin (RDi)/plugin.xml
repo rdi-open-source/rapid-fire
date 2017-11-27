@@ -357,6 +357,47 @@
          name="%command_Display_Conversion"
          description="%command_Display_Conversion_Description">
       </command>
+   
+      	<!--
+      	  ==========================================
+      	    Rapid Fire 'Command' Commands
+      	  ==========================================
+      	-->
+         
+      <command
+         id="biz.rapidfire.core.command.Command.new"
+         categoryId="biz.rapidfire.category.Commands"
+         name="%command_New_Command"
+         description="%command_New_Command_Description">
+      </command>
+         
+      <command
+         id="biz.rapidfire.core.command.Command.change"
+         categoryId="biz.rapidfire.category.Commands"
+         name="%command_Change_Command"
+         description="%command_Change_Command_Description">
+      </command>
+         
+      <command
+         id="biz.rapidfire.core.command.Command.copy"
+         categoryId="biz.rapidfire.category.Commands"
+         name="%command_Copy_Command"
+         description="%command_Copy_Command_Description">
+      </command>
+         
+      <command
+         id="biz.rapidfire.core.command.Command.delete"
+         categoryId="biz.rapidfire.category.Commands"
+         name="%command_Delete_Command"
+         description="%command_Delete_Command_Description">
+      </command>
+         
+      <command
+         id="biz.rapidfire.core.command.Command.display"
+         categoryId="biz.rapidfire.category.Commands"
+         name="%command_Display_Command"
+         description="%command_Display_Command_Description">
+      </command>
 
    </extension>
 
@@ -933,6 +974,77 @@
                <count value="1" />
                <iterate operator="and">
                   <adapt type="biz.rapidfire.rse.subsystem.resources.RapidFireConversionResource" />
+               </iterate>
+            </with>
+         </enabledWhen>
+      </handler>
+
+      	<!--
+      	  ==========================================
+      	    Rapid Fire 'Command' Command Handlers
+      	  ==========================================
+      	-->
+      
+      <handler
+         commandId="biz.rapidfire.core.command.Command.new"
+         class="biz.rapidfire.core.handlers.command.NewCommandHandler">
+         <enabledWhen>
+            <with variable="selection">
+               <count value="+" />
+               <iterate operator="and">
+                  <adapt type="biz.rapidfire.rse.subsystem.resources.RapidFireCommandResource" />
+               </iterate>
+            </with>
+         </enabledWhen>
+      </handler>
+      
+      <handler
+         commandId="biz.rapidfire.core.command.Command.change"
+         class="biz.rapidfire.core.handlers.command.ChangeCommandHandler">
+         <enabledWhen>
+            <with variable="selection">
+               <count value="+" />
+               <iterate operator="and">
+                  <adapt type="biz.rapidfire.rse.subsystem.resources.RapidFireCommandResource" />
+               </iterate>
+            </with>
+         </enabledWhen>
+      </handler>
+      
+      <handler
+         commandId="biz.rapidfire.core.command.Command.copy"
+         class="biz.rapidfire.core.handlers.command.CopyCommandHandler">
+         <enabledWhen>
+            <with variable="selection">
+               <count value="1" />
+               <iterate operator="and">
+                  <adapt type="biz.rapidfire.rse.subsystem.resources.RapidFireCommandResource" />
+               </iterate>
+            </with>
+         </enabledWhen>
+      </handler>
+      
+      <handler
+         commandId="biz.rapidfire.core.command.Command.delete"
+         class="biz.rapidfire.core.handlers.command.DeleteCommandHandler">
+         <enabledWhen>
+            <with variable="selection">
+               <count value="+" />
+               <iterate operator="and">
+                  <adapt type="biz.rapidfire.rse.subsystem.resources.RapidFireCommandResource" />
+               </iterate>
+            </with>
+         </enabledWhen>
+      </handler>
+      
+      <handler
+         commandId="biz.rapidfire.core.command.Command.display"
+         class="biz.rapidfire.core.handlers.command.DisplayCommandHandler">
+         <enabledWhen>
+            <with variable="selection">
+               <count value="1" />
+               <iterate operator="and">
+                  <adapt type="biz.rapidfire.rse.subsystem.resources.RapidFireCommandResource" />
                </iterate>
             </with>
          </enabledWhen>
@@ -1690,6 +1802,98 @@
 	           <with variable="selection">
 	              <iterate operator="and">
 	                 <adapt type="biz.rapidfire.rse.subsystem.resources.RapidFireConversionResource" />
+	              </iterate>
+	           </with>
+	        </visibleWhen>
+         </command>
+         
+      </menuContribution>
+   </extension>
+   
+      	<!--
+      	  ==========================================
+      	    Rapid Fire 'Command' Object Contributions
+      	  ==========================================
+      	-->
+
+   <extension
+      point="org.eclipse.ui.menus">
+         
+      <menuContribution
+         locationURI="popup:org.eclipse.ui.popup.any?before=additions">
+         
+         <separator
+            name="maintenance"
+            visible="true">
+	        <visibleWhen>
+	           <with variable="selection">
+	              <iterate operator="and">
+	                 <adapt type="biz.rapidfire.rse.subsystem.resources.RapidFireCommandResource" />
+	              </iterate>
+	           </with>
+	        </visibleWhen>
+         </separator>
+         
+         <command
+            commandId="biz.rapidfire.core.command.Command.new" 
+            icon="icons/new_library_list.gif"
+            >
+	        <visibleWhen>
+	           <with variable="selection">
+	              <iterate operator="and">
+	                 <adapt type="biz.rapidfire.rse.subsystem.resources.RapidFireCommandResource" />
+	              </iterate>
+	           </with>
+	        </visibleWhen>
+         </command>
+         
+         <command
+            commandId="biz.rapidfire.core.command.Command.change" 
+            icon="icons/change.gif"
+            >
+	        <visibleWhen>
+	           <with variable="selection">
+	              <iterate operator="and">
+	                 <adapt type="biz.rapidfire.rse.subsystem.resources.RapidFireCommandResource" />
+	              </iterate>
+	           </with>
+	        </visibleWhen>
+         </command>
+         
+         <command
+            commandId="biz.rapidfire.core.command.Command.copy" 
+            icon="icons/copy.gif"
+            >
+	        <visibleWhen>
+	           <with variable="selection">
+	              <iterate operator="and">
+	                 <adapt type="biz.rapidfire.rse.subsystem.resources.RapidFireCommandResource" />
+	              </iterate>
+	           </with>
+	        </visibleWhen>
+         </command>
+         
+         <command
+            commandId="biz.rapidfire.core.command.Command.delete" 
+            icon="icons/delete.gif"
+            >
+	        <visibleWhen>
+	           <with variable="selection">
+	              <iterate operator="and">
+	                 <adapt type="biz.rapidfire.rse.subsystem.resources.RapidFireCommandResource" />
+	              </iterate>
+	           </with>
+	        </visibleWhen>
+         </command>
+         
+         <command
+            commandId="biz.rapidfire.core.command.Command.display" 
+            icon="icons/display.gif"
+            >
+	        <visibleWhen>
+	           <with variable="selection">
+	              <iterate operator="and">
+	                 <adapt type="biz.rapidfire.rse.subsystem.resources.RapidFireCommandResource" />
 	              </iterate>
 	           </with>
 	        </visibleWhen>

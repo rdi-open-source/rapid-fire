@@ -202,11 +202,11 @@ public class NotificationMaintenanceDialog extends AbstractMaintenanceDialog {
         setText(textJobName, values.getKey().getJobName());
 
         setText(textPosition, Integer.toString(values.getKey().getPosition()));
-        setText(comboType, values.getType());
+        setText(comboType, values.getNotificationType());
         setText(textUser, values.getUser());
         setText(textMessageQueueName, values.getMessageQueueName());
 
-        if (NotificationType.MSGQ.equals(values.getType())) {
+        if (NotificationType.MSGQ.equals(values.getNotificationType())) {
             setText(comboMessageQueueLibraryName, values.getMessageQueueLibraryName());
         } else {
             comboMessageQueueLibraryName.setText(values.getMessageQueueLibraryName());
@@ -246,7 +246,7 @@ public class NotificationMaintenanceDialog extends AbstractMaintenanceDialog {
 
         NotificationValues newValues = values.clone();
         newValues.getKey().setPosition(IntHelper.tryParseInt(textPosition.getText(), -1));
-        newValues.setType(comboType.getText());
+        newValues.setNotificationType(comboType.getText());
         newValues.setUser(textUser.getText());
         newValues.setMessageQueueName(textMessageQueueName.getText());
         newValues.setMessageQueueLibraryName(comboMessageQueueLibraryName.getText());

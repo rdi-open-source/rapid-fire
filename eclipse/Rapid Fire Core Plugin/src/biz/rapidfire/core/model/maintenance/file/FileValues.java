@@ -10,7 +10,6 @@ package biz.rapidfire.core.model.maintenance.file;
 
 import biz.rapidfire.core.RapidFireCorePlugin;
 import biz.rapidfire.core.helpers.ExceptionHelper;
-import biz.rapidfire.core.helpers.StringHelper;
 import biz.rapidfire.core.model.maintenance.file.shared.ConversionProgram;
 import biz.rapidfire.core.model.maintenance.file.shared.CopyProgram;
 import biz.rapidfire.core.model.maintenance.file.shared.FileType;
@@ -19,7 +18,7 @@ public class FileValues implements Cloneable {
 
     private FileKey key;
     private String fileName;
-    private FileType type;
+    private FileType fileType;
     private String copyProgramLibraryName;
     private String copyProgramName;
     private String conversionProgramLibraryName;
@@ -55,22 +54,21 @@ public class FileValues implements Cloneable {
         this.fileName = fileName.trim();
     }
 
-    public String getType() {
+    public String getFileType() {
 
-        if (type == null) {
+        if (fileType == null) {
             return ""; //$NON-NLS-1$
         } else {
-            return type.label();
+            return fileType.label();
         }
     }
 
-    public void setType(String type) {
+    public void setFileType(String type) {
 
-        String localType = type.trim();
-        if (StringHelper.isNullOrEmpty(localType)) {
-            this.type = null; //$NON-NLS-1$
+        if (type == null || type.trim().length() == 0) {
+            this.fileType = null; //$NON-NLS-1$
         } else {
-            this.type = FileType.find(localType);
+            this.fileType = FileType.find(type.trim());
         }
     }
 
@@ -108,7 +106,7 @@ public class FileValues implements Cloneable {
 
     public void clear() {
         setFileName(null);
-        setType(null);
+        setFileType(null);
         setCopyProgramLibraryName(null);
         setCopyProgramName(null);
         setConversionProgramLibraryName(null);

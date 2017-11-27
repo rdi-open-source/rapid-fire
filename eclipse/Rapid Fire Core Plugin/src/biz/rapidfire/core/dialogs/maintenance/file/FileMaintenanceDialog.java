@@ -202,7 +202,7 @@ public class FileMaintenanceDialog extends AbstractMaintenanceDialog {
 
         textPosition.setText(Integer.toString(values.getKey().getPosition()));
         textFileName.setText(values.getFileName());
-        comboType.setText(values.getType());
+        comboType.setText(values.getFileType());
         comboCopyProgramName.setText(values.getCopyProgramName());
         textCopyProgramLibraryName.setText(values.getCopyProgramLibraryName());
         comboConversionProgramName.setText(values.getConversionProgramName());
@@ -215,7 +215,7 @@ public class FileMaintenanceDialog extends AbstractMaintenanceDialog {
         FileValues newValues = values.clone();
         newValues.getKey().setPosition(IntHelper.tryParseInt(textPosition.getText(), -1));
         newValues.setFileName(textFileName.getText());
-        newValues.setType(comboType.getText());
+        newValues.setFileType(comboType.getText());
         newValues.setCopyProgramName(comboCopyProgramName.getText());
         newValues.setCopyProgramLibraryName(textCopyProgramLibraryName.getText());
         newValues.setConversionProgramName(comboConversionProgramName.getText());

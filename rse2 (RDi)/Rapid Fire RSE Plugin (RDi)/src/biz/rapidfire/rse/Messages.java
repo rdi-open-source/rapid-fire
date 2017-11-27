@@ -75,6 +75,9 @@ public class Messages extends NLS {
     public static String Area_library_list;
     public static String Area_library_CCSID;
     public static String Area_command_extension;
+    public static String Command_type;
+    public static String Command_sequence;
+    public static String Command_command;
 
     public static String Tooltip_DataLibrary_name;
     public static String Tooltip_Job_name;
@@ -104,6 +107,9 @@ public class Messages extends NLS {
     public static String Tooltip_Area_library_list;
     public static String Tooltip_Area_library_CCSID;
     public static String Tooltip_Area_command_extension;
+    public static String Tooltip_Command_type;
+    public static String Tooltip_Command_sequence;
+    public static String Tooltip_Command_command;
 
     /*
      * Filter types
@@ -119,6 +125,7 @@ public class Messages extends NLS {
     public static String Resource_Rapid_Fire_Notification;
     public static String Resource_Rapid_Fire_Area;
     public static String Resource_Rapid_Fire_Conversion;
+    public static String Resource_Rapid_Fire_Command;
 
     public static String NodeText_Files;
     public static String NodeText_LibraryLists;
@@ -126,6 +133,7 @@ public class Messages extends NLS {
     public static String NodeText_Notifications;
     public static String NodeText_Areas;
     public static String NodeText_Conversions;
+    public static String NodeText_Commands;
 
     public static String NodeType_Files;
     public static String NodeType_LibraryLists;
@@ -133,6 +141,7 @@ public class Messages extends NLS {
     public static String NodeType_Notifications;
     public static String NodeType_Areas;
     public static String NodeType_Conversions;
+    public static String NodeType_Commands;
 
     // Action labels
     public static String ActionLabel_New_Job;
@@ -142,6 +151,7 @@ public class Messages extends NLS {
     public static String ActionLabel_New_Notification;
     public static String ActionLabel_New_Area;
     public static String ActionLabel_New_Conversion;
+    public static String ActionLabel_New_Command;
 
     public static String ActionTooltip_New_Job;
     public static String ActionTooltip_New_File;
@@ -150,6 +160,7 @@ public class Messages extends NLS {
     public static String ActionTooltip_New_Notification;
     public static String ActionTooltip_New_Area;
     public static String ActionTooltip_New_Conversion;
+    public static String ActionTooltip_New_Command;
 
     private Messages() {
     }

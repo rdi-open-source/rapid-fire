@@ -10,7 +10,6 @@ package biz.rapidfire.core.model.maintenance.notification;
 
 import biz.rapidfire.core.RapidFireCorePlugin;
 import biz.rapidfire.core.helpers.ExceptionHelper;
-import biz.rapidfire.core.helpers.StringHelper;
 import biz.rapidfire.core.model.maintenance.notification.shared.MessageQueueLibrary;
 import biz.rapidfire.core.model.maintenance.notification.shared.NotificationType;
 import biz.rapidfire.core.model.maintenance.notification.shared.User;
@@ -18,7 +17,7 @@ import biz.rapidfire.core.model.maintenance.notification.shared.User;
 public class NotificationValues implements Cloneable {
 
     private NotificationKey key;
-    private NotificationType type;
+    private NotificationType notificationType;
     private String user;
     private String messageQueueLibraryName;
     private String messageQueueName;
@@ -51,22 +50,21 @@ public class NotificationValues implements Cloneable {
         this.key = key;
     }
 
-    public String getType() {
+    public String getNotificationType() {
 
-        if (type == null) {
+        if (notificationType == null) {
             return ""; //$NON-NLS-1$
         } else {
-            return type.label();
+            return notificationType.label();
         }
     }
 
-    public void setType(String type) {
+    public void setNotificationType(String type) {
 
-        String localType = type.trim();
-        if (StringHelper.isNullOrEmpty(localType)) {
-            this.type = null;
+        if (type == null || type.trim().length() == 0) {
+            this.notificationType = null; //$NON-NLS-1$
         } else {
-            this.type = NotificationType.find(localType);
+            this.notificationType = NotificationType.find(type.trim());
         }
     }
 
@@ -95,7 +93,7 @@ public class NotificationValues implements Cloneable {
     }
 
     public void clear() {
-        setType(null);
+        setNotificationType(null);
         setUser(null);
         setMessageQueueLibraryName(null);
         setMessageQueueName(null);

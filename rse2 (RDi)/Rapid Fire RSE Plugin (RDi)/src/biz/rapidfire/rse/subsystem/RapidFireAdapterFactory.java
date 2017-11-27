@@ -14,12 +14,14 @@ import org.eclipse.rse.ui.view.ISystemViewElementAdapter;
 import org.eclipse.ui.views.properties.IPropertySource;
 
 import biz.rapidfire.rse.subsystem.adapters.AreasNodeAdapter;
+import biz.rapidfire.rse.subsystem.adapters.CommandsNodeAdapter;
 import biz.rapidfire.rse.subsystem.adapters.ConversionsNodeAdapter;
 import biz.rapidfire.rse.subsystem.adapters.FilesNodeAdapter;
 import biz.rapidfire.rse.subsystem.adapters.LibrariesNodeAdapter;
 import biz.rapidfire.rse.subsystem.adapters.LibraryListsNodeAdapter;
 import biz.rapidfire.rse.subsystem.adapters.NotificationsNodeAdapter;
 import biz.rapidfire.rse.subsystem.adapters.RapidFireAreaResourceAdapter;
+import biz.rapidfire.rse.subsystem.adapters.RapidFireCommandResourceAdapter;
 import biz.rapidfire.rse.subsystem.adapters.RapidFireConversionResourceAdapter;
 import biz.rapidfire.rse.subsystem.adapters.RapidFireFileResourceAdapter;
 import biz.rapidfire.rse.subsystem.adapters.RapidFireJobResourceAdapter;
@@ -27,12 +29,14 @@ import biz.rapidfire.rse.subsystem.adapters.RapidFireLibraryListResourceAdapter;
 import biz.rapidfire.rse.subsystem.adapters.RapidFireLibraryResourceAdapter;
 import biz.rapidfire.rse.subsystem.adapters.RapidFireNotificationResourceAdapter;
 import biz.rapidfire.rse.subsystem.resources.AreasNode;
+import biz.rapidfire.rse.subsystem.resources.CommandsNode;
 import biz.rapidfire.rse.subsystem.resources.ConversionsNode;
 import biz.rapidfire.rse.subsystem.resources.FilesNode;
 import biz.rapidfire.rse.subsystem.resources.LibrariesNode;
 import biz.rapidfire.rse.subsystem.resources.LibraryListsNode;
 import biz.rapidfire.rse.subsystem.resources.NotificationsNode;
 import biz.rapidfire.rse.subsystem.resources.RapidFireAreaResource;
+import biz.rapidfire.rse.subsystem.resources.RapidFireCommandResource;
 import biz.rapidfire.rse.subsystem.resources.RapidFireConversionResource;
 import biz.rapidfire.rse.subsystem.resources.RapidFireFileResource;
 import biz.rapidfire.rse.subsystem.resources.RapidFireJobResource;
@@ -49,6 +53,7 @@ public class RapidFireAdapterFactory extends AbstractSystemRemoteAdapterFactory 
     private RapidFireNotificationResourceAdapter notificationResourceAdapter = new RapidFireNotificationResourceAdapter();
     private RapidFireAreaResourceAdapter areaResourceAdapter = new RapidFireAreaResourceAdapter();
     private RapidFireConversionResourceAdapter conversionResourceAdapter = new RapidFireConversionResourceAdapter();
+    private RapidFireCommandResourceAdapter commandResourceAdapter = new RapidFireCommandResourceAdapter();
 
     private FilesNodeAdapter filesNodeAdapter = new FilesNodeAdapter();
     private LibraryListsNodeAdapter libraryListsNodeAdapter = new LibraryListsNodeAdapter();
@@ -56,6 +61,7 @@ public class RapidFireAdapterFactory extends AbstractSystemRemoteAdapterFactory 
     private NotificationsNodeAdapter notificationsNodeAdapter = new NotificationsNodeAdapter();
     private AreasNodeAdapter areasNodeAdapter = new AreasNodeAdapter();
     private ConversionsNodeAdapter conversionsNodeAdapter = new ConversionsNodeAdapter();
+    private CommandsNodeAdapter commandsNodeAdapter = new CommandsNodeAdapter();
 
     public RapidFireAdapterFactory() {
         super();
@@ -79,6 +85,8 @@ public class RapidFireAdapterFactory extends AbstractSystemRemoteAdapterFactory 
             adapter = areaResourceAdapter;
         } else if (adaptableObject instanceof RapidFireConversionResource) {
             adapter = conversionResourceAdapter;
+        } else if (adaptableObject instanceof RapidFireCommandResource) {
+            adapter = commandResourceAdapter;
         } else if (adaptableObject instanceof FilesNode) {
             adapter = filesNodeAdapter;
         } else if (adaptableObject instanceof LibraryListsNode) {
@@ -91,6 +99,8 @@ public class RapidFireAdapterFactory extends AbstractSystemRemoteAdapterFactory 
             adapter = areasNodeAdapter;
         } else if (adaptableObject instanceof ConversionsNode) {
             adapter = conversionsNodeAdapter;
+        } else if (adaptableObject instanceof CommandsNode) {
+            adapter = commandsNodeAdapter;
         }
 
         if ((adapter != null) && (adapterType == IPropertySource.class)) {

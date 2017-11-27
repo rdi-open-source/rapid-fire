@@ -12,6 +12,7 @@ import org.eclipse.swt.widgets.Shell;
 
 import biz.rapidfire.core.model.IFileCopyStatus;
 import biz.rapidfire.core.model.IRapidFireAreaResource;
+import biz.rapidfire.core.model.IRapidFireCommandResource;
 import biz.rapidfire.core.model.IRapidFireConversionResource;
 import biz.rapidfire.core.model.IRapidFireFileResource;
 import biz.rapidfire.core.model.IRapidFireJobResource;
@@ -34,6 +35,8 @@ public interface IRapidFireSubSystem {
     public IRapidFireAreaResource[] getAreas(IRapidFireFileResource file, Shell shell) throws Exception;
 
     public IRapidFireConversionResource[] getConversions(IRapidFireFileResource file, Shell shell) throws Exception;
+
+    public IRapidFireCommandResource[] getCommands(IRapidFireFileResource file, Shell shell) throws Exception;
 
     public IFileCopyStatus[] getFileCopyStatus(String library, String job, Shell shell) throws Exception;
 
