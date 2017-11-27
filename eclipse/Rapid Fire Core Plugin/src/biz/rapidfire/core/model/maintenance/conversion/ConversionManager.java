@@ -90,11 +90,13 @@ public class ConversionManager extends AbstractManager<ConversionKey, Conversion
 
         // TODO: use reflection
         if (ERROR_001.equals(errorCode)) {
-            return Messages.FileManager_001;
+            return Messages.ConversionManager_001;
         } else if (ERROR_002.equals(errorCode)) {
-            return Messages.FileManager_002;
+            return Messages.ConversionManager_002;
         } else if (ERROR_003.equals(errorCode)) {
-            return Messages.FileManager_003;
+            return Messages.ConversionManager_003;
+        } else if (ERROR_004.equals(errorCode)) {
+            return Messages.ConversionManager_004;
         }
 
         return Messages.bindParameters(Messages.EntityManager_Unknown_error_code_A, errorCode);

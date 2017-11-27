@@ -208,9 +208,19 @@ public class Messages extends NLS {
     public static String NotificationManager_003;
 
     public static String AreaManager_001;
-    public static String vManager_002;
+    public static String AreaManager_002;
     public static String AreaManager_003;
     public static String AreaManager_004;
+
+    public static String ConversionManager_001;
+    public static String ConversionManager_002;
+    public static String ConversionManager_003;
+    public static String ConversionManager_004;
+
+    public static String CommandManager_001;
+    public static String CommandManager_002;
+    public static String CommandManager_003;
+    public static String CommandManager_004;
 
     private Messages() {
     }
