@@ -36,7 +36,7 @@ public class RapidFireConversionResourceAdapter extends AbstractResourceAdapter 
 
     @Override
     public ImageDescriptor getImageDescriptor(Object object) {
-        return RapidFireRSEPlugin.getDefault().getImageRegistry().getDescriptor(RapidFireRSEPlugin.IMAGE_AREA);
+        return RapidFireRSEPlugin.getDefault().getImageRegistry().getDescriptor(RapidFireRSEPlugin.IMAGE_CONVERSION);
     }
 
     @Override
