@@ -65,10 +65,10 @@ public class ConversionValues implements Cloneable {
 
         try {
 
-            ConversionValues fileValues = (ConversionValues)super.clone();
-            fileValues.setKey((ConversionKey)getKey().clone());
+            ConversionValues conversionValues = (ConversionValues)super.clone();
+            conversionValues.setKey((ConversionKey)getKey().clone());
 
-            return fileValues;
+            return conversionValues;
 
         } catch (CloneNotSupportedException e) {
             RapidFireCorePlugin.logError("*** Clone not supported. ***", e); //$NON-NLS-1$

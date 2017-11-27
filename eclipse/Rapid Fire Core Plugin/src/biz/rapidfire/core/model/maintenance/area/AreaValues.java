@@ -95,10 +95,10 @@ public class AreaValues implements Cloneable {
 
         try {
 
-            AreaValues fileValues = (AreaValues)super.clone();
-            fileValues.setKey((AreaKey)getKey().clone());
+            AreaValues areaValues = (AreaValues)super.clone();
+            areaValues.setKey((AreaKey)getKey().clone());
 
-            return fileValues;
+            return areaValues;
 
         } catch (CloneNotSupportedException e) {
             RapidFireCorePlugin.logError("*** Clone not supported. ***", e); //$NON-NLS-1$
