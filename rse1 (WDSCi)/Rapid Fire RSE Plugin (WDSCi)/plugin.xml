@@ -481,5 +481,70 @@
       </objectContribution>
       
    </extension>
+   
+      	<!--
+      	  ==========================================
+      	    Rapid Fire 'Conversion' Object Contributions
+      	  ==========================================
+      	-->
+
+   <extension
+         point="com.ibm.etools.systems.core.popupMenus">
+      <objectContribution
+            subsystemfactoryid="biz.rapidfire.rse.subsystem.RapidFireSubSystemFactory"
+            typecategoryfilter="rapid fire"
+            typefilter="conversion"
+            subtypefilter="*"
+            namefilter="*"
+            id="biz.rapidfire.rse.job.actions">
+            
+         <action
+               label="%command_Display_Conversion"
+               tooltip="%command_Display_Conversion_Description"
+               icon="icons/display.gif"
+               class="biz.rapidfire.rse.subsystem.actions.conversion.DisplayConversionAction"
+               enablesFor="1"
+               id="biz.rapidfire.rse.subsystem.actions.conversion.DisplayConversionAction">
+         </action>
+            
+         <action
+               label="%command_Delete_Conversion"
+               tooltip="%command_Delete_Conversion_Description"
+               icon="icons/delete.gif"
+               class="biz.rapidfire.rse.subsystem.actions.conversion.DeleteConversionAction"
+               enablesFor="+"
+               id="biz.rapidfire.rse.subsystem.actions.conversion.DeleteConversionAction">
+         </action>
+            
+         <action
+               label="%command_Copy_Conversion"
+               tooltip="%command_Copy_Conversion_Description"
+               icon="icons/copy.gif"
+               class="biz.rapidfire.rse.subsystem.actions.conversion.CopyConversionAction"
+               enablesFor="1"
+               id="biz.rapidfire.rse.subsystem.actions.conversion.CopyConversionAction">
+         </action>
+            
+         <action
+               label="%command_Change_Conversion"
+               tooltip="%command_Change_Conversion_Description"
+               icon="icons/change.gif"
+               class="biz.rapidfire.rse.subsystem.actions.conversion.ChangeConversionAction"
+               enablesFor="+"
+               id="biz.rapidfire.rse.subsystem.actions.conversion.ChangeConversionAction">
+         </action>
+            
+         <action
+               label="%command_New_Conversion"
+               tooltip="%command_New_Conversion_Description"
+               icon="icons/new_conversion.gif"
+               class="biz.rapidfire.rse.subsystem.actions.conversion.NewConversionAction"
+               enablesFor="+"
+               id="biz.rapidfire.rse.subsystem.actions.conversion.NewConversionAction">
+         </action>
+         
+      </objectContribution>
+      
+   </extension>
 
 </plugin>

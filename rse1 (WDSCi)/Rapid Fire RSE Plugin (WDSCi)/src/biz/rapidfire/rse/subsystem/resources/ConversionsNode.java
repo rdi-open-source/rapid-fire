@@ -13,14 +13,14 @@ import biz.rapidfire.rse.Messages;
 
 import com.ibm.etools.systems.subsystems.impl.AbstractResource;
 
-public class AreasNode extends AbstractResource {
+public class ConversionsNode extends AbstractResource {
 
     private String label;
     private IRapidFireFileResource file;
 
-    public AreasNode(IRapidFireFileResource job) {
-        this.label = Messages.NodeText_Areas;
-        this.file = job;
+    public ConversionsNode(IRapidFireFileResource file) {
+        this.label = Messages.NodeText_Conversions;
+        this.file = file;
     }
 
     public String getLabel() {
