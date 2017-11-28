@@ -15,6 +15,7 @@ import biz.rapidfire.core.exceptions.IllegalParameterException;
 import biz.rapidfire.core.model.IRapidFireCommandResource;
 import biz.rapidfire.core.model.IRapidFireFileResource;
 import biz.rapidfire.core.model.IRapidFireJobResource;
+import biz.rapidfire.core.model.maintenance.command.shared.CommandType;
 import biz.rapidfire.core.subsystem.IRapidFireSubSystem;
 import biz.rapidfire.core.subsystem.resources.RapidFireCommandResourceDelegate;
 
@@ -24,10 +25,10 @@ public class RapidFireCommandResource extends AbstractResource implements IRapid
     private RapidFireCommandResourceDelegate delegate;
 
     public static RapidFireCommandResource createEmptyInstance(IRapidFireFileResource file) {
-        return new RapidFireCommandResource(file, "", 0); //$NON-NLS-1$
+        return new RapidFireCommandResource(file, CommandType.COMPILE, 0); //$NON-NLS-1$
     }
 
-    public RapidFireCommandResource(IRapidFireFileResource file, String commandType, int sequence) {
+    public RapidFireCommandResource(IRapidFireFileResource file, CommandType commandType, int sequence) {
 
         if (commandType == null) {
             throw new IllegalParameterException("fieldToConvert", null); //$NON-NLS-1$
@@ -67,7 +68,7 @@ public class RapidFireCommandResource extends AbstractResource implements IRapid
         return delegate.getPosition();
     }
 
-    public String getCommandType() {
+    public CommandType getCommandType() {
         return delegate.getCommandType();
     }
 

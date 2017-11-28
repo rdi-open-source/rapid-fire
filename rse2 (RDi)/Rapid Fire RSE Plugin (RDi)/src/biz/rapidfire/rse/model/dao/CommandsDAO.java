@@ -13,6 +13,7 @@ import biz.rapidfire.core.model.IRapidFireFileResource;
 import biz.rapidfire.core.model.dao.AbstractCommandsDAO;
 import biz.rapidfire.core.model.dao.ICommandsDAO;
 import biz.rapidfire.core.model.dao.JDBCConnectionManager;
+import biz.rapidfire.core.model.maintenance.command.shared.CommandType;
 import biz.rapidfire.rse.subsystem.resources.RapidFireCommandResource;
 
 //TODO: move to core plugin
@@ -23,7 +24,7 @@ public class CommandsDAO extends AbstractCommandsDAO implements ICommandsDAO {
     }
 
     @Override
-    protected IRapidFireCommandResource createCommandInstance(IRapidFireFileResource file, String commandType, int sequence) {
+    protected IRapidFireCommandResource createCommandInstance(IRapidFireFileResource file, CommandType commandType, int sequence) {
         return new RapidFireCommandResource(file, commandType, sequence);
     }
 

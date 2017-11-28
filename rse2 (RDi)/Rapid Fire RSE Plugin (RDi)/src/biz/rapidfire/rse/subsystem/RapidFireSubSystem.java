@@ -35,6 +35,7 @@ import biz.rapidfire.core.RapidFireCorePlugin;
 import biz.rapidfire.core.dialogs.MessageDialogAsync;
 import biz.rapidfire.core.helpers.ExceptionHelper;
 import biz.rapidfire.core.model.IFileCopyStatus;
+import biz.rapidfire.core.model.IRapidFireActivityResource;
 import biz.rapidfire.core.model.IRapidFireAreaResource;
 import biz.rapidfire.core.model.IRapidFireCommandResource;
 import biz.rapidfire.core.model.IRapidFireConversionResource;
@@ -44,6 +45,7 @@ import biz.rapidfire.core.model.IRapidFireLibraryListResource;
 import biz.rapidfire.core.model.IRapidFireLibraryResource;
 import biz.rapidfire.core.model.IRapidFireNotificationResource;
 import biz.rapidfire.core.model.IRapidFireResource;
+import biz.rapidfire.core.model.dao.IActivitiesDAO;
 import biz.rapidfire.core.model.dao.IAreasDAO;
 import biz.rapidfire.core.model.dao.ICommandsDAO;
 import biz.rapidfire.core.model.dao.IConversionsDAO;
@@ -56,6 +58,7 @@ import biz.rapidfire.core.model.dao.JDBCConnectionManager;
 import biz.rapidfire.core.model.queries.FileCopyStatus;
 import biz.rapidfire.core.subsystem.IRapidFireSubSystem;
 import biz.rapidfire.core.subsystem.RapidFireFilter;
+import biz.rapidfire.rse.model.dao.ActivitiesDAO;
 import biz.rapidfire.rse.model.dao.AreasDAO;
 import biz.rapidfire.rse.model.dao.CommandsDAO;
 import biz.rapidfire.rse.model.dao.ConversionsDAO;
@@ -153,6 +156,23 @@ public class RapidFireSubSystem extends SubSystem implements IISeriesSubSystem, 
         }
 
         return jobs.toArray(new IRapidFireJobResource[jobs.size()]);
+    }
+
+    public IRapidFireActivityResource[] getActivities(IRapidFireJobResource job, Shell shell) throws Exception {
+
+        if (!successFullyLoaded()) {
+            return new IRapidFireActivityResource[0];
+        }
+
+        String libraryName = job.getDataLibrary();
+
+        IActivitiesDAO dao = new ActivitiesDAO(getConnectionName(), libraryName);
+        List<IRapidFireActivityResource> activities = dao.load(job, shell);
+        if (activities == null) {
+            return null;
+        }
+
+        return activities.toArray(new IRapidFireActivityResource[activities.size()]);
     }
 
     public IRapidFireFileResource[] getFiles(IRapidFireJobResource job, Shell shell) throws Exception {

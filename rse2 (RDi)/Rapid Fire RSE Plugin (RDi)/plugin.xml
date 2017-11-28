@@ -36,6 +36,13 @@
       </category>
          
       <command
+         id="biz.rapidfire.core.command.Activity.change"
+         categoryId="biz.rapidfire.category.Commands"
+         name="%command_Change_Activity_Plan"
+         description="%command_Change_Activity_Plan_Description">
+      </command>
+         
+      <command
          id="biz.rapidfire.core.command.Job.new"
          categoryId="biz.rapidfire.category.Commands"
          name="%command_New_Job"
@@ -409,6 +416,19 @@
    
    <extension
       point="org.eclipse.ui.handlers">
+      
+      <handler
+         commandId="biz.rapidfire.core.command.Activity.change"
+         class="biz.rapidfire.core.handlers.activity.ChangeActivitiesHandler">
+         <enabledWhen>
+            <with variable="selection">
+               <count value="+" />
+               <iterate operator="and">
+                  <adapt type="biz.rapidfire.rse.subsystem.resources.RapidFireJobResource" />
+               </iterate>
+            </with>
+         </enabledWhen>
+      </handler>
       
       <handler
          commandId="biz.rapidfire.core.command.Job.new"
@@ -1063,6 +1083,31 @@
          
       <menuContribution
          locationURI="popup:org.eclipse.ui.popup.any?before=additions">
+         
+         <separator
+            name="activity"
+            visible="true">
+	        <visibleWhen>
+	           <with variable="selection">
+	              <iterate operator="and">
+	                 <adapt type="biz.rapidfire.rse.subsystem.resources.RapidFireJobResource" />
+	              </iterate>
+	           </with>
+	        </visibleWhen>
+         </separator>
+         
+         <command
+            commandId="biz.rapidfire.core.command.Activity.change" 
+            icon="icons/activity.gif"
+            >
+	        <visibleWhen>
+	           <with variable="selection">
+	              <iterate operator="and">
+	                 <adapt type="biz.rapidfire.rse.subsystem.resources.RapidFireJobResource" />
+	              </iterate>
+	           </with>
+	        </visibleWhen>
+         </command>
          
          <separator
             name="maintenance"
