@@ -8,6 +8,8 @@
 
 package biz.rapidfire.rse.subsystem.adapters;
 
+import java.util.Arrays;
+
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.resource.ImageDescriptor;
@@ -17,6 +19,7 @@ import org.eclipse.swt.widgets.Shell;
 
 import biz.rapidfire.core.RapidFireCorePlugin;
 import biz.rapidfire.core.dialogs.MessageDialogAsync;
+import biz.rapidfire.core.model.IRapidFireCommandResource;
 import biz.rapidfire.core.model.IRapidFireFileResource;
 import biz.rapidfire.rse.Messages;
 import biz.rapidfire.rse.RapidFireRSEPlugin;
@@ -55,10 +58,14 @@ public class CommandsNodeAdapter extends AbstractNodeAdapter {
 
         try {
 
-            CommandsNode commands = (CommandsNode)element;
-            IRapidFireFileResource file = commands.getFile();
+            CommandsNode commandsNode = (CommandsNode)element;
+            IRapidFireFileResource fileResource = commandsNode.getFile();
 
-            return file.getParentSubSystem().getCommands(file, getShell());
+            IRapidFireCommandResource[] commands = fileResource.getParentSubSystem().getCommands(fileResource, getShell());
+
+            Arrays.sort(commands);
+
+            return commands;
 
         } catch (Exception e) {
             RapidFireCorePlugin.logError("*** Could resolve filter string and load commands ***", e); //$NON-NLS-1$

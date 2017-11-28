@@ -8,6 +8,8 @@
 
 package biz.rapidfire.rse.subsystem.adapters;
 
+import java.util.Arrays;
+
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.resource.ImageDescriptor;
@@ -18,6 +20,7 @@ import org.eclipse.swt.widgets.Shell;
 import biz.rapidfire.core.RapidFireCorePlugin;
 import biz.rapidfire.core.dialogs.MessageDialogAsync;
 import biz.rapidfire.core.model.IRapidFireJobResource;
+import biz.rapidfire.core.model.IRapidFireLibraryListResource;
 import biz.rapidfire.rse.Messages;
 import biz.rapidfire.rse.RapidFireRSEPlugin;
 import biz.rapidfire.rse.subsystem.actions.NewLibraryListAction;
@@ -55,10 +58,14 @@ public class LibraryListsNodeAdapter extends AbstractNodeAdapter {
 
         try {
 
-            LibraryListsNode libraryLists = (LibraryListsNode)element;
-            IRapidFireJobResource resource = libraryLists.getJob();
+            LibraryListsNode libraryListsNode = (LibraryListsNode)element;
+            IRapidFireJobResource jobResource = libraryListsNode.getJob();
 
-            return resource.getParentSubSystem().getLibraryLists(resource, getShell());
+            IRapidFireLibraryListResource[] libraryLists = jobResource.getParentSubSystem().getLibraryLists(jobResource, getShell());
+
+            Arrays.sort(libraryLists);
+
+            return libraryLists;
 
         } catch (Exception e) {
             RapidFireCorePlugin.logError("*** Could resolve filter string and load library lists ***", e); //$NON-NLS-1$

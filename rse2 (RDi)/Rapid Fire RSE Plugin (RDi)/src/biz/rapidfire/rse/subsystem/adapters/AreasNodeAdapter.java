@@ -8,6 +8,8 @@
 
 package biz.rapidfire.rse.subsystem.adapters;
 
+import java.util.Arrays;
+
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.resource.ImageDescriptor;
@@ -17,6 +19,7 @@ import org.eclipse.swt.widgets.Shell;
 
 import biz.rapidfire.core.RapidFireCorePlugin;
 import biz.rapidfire.core.dialogs.MessageDialogAsync;
+import biz.rapidfire.core.model.IRapidFireAreaResource;
 import biz.rapidfire.core.model.IRapidFireFileResource;
 import biz.rapidfire.rse.Messages;
 import biz.rapidfire.rse.RapidFireRSEPlugin;
@@ -55,10 +58,14 @@ public class AreasNodeAdapter extends AbstractNodeAdapter {
 
         try {
 
-            AreasNode areas = (AreasNode)element;
-            IRapidFireFileResource file = areas.getFile();
+            AreasNode areasNode = (AreasNode)element;
+            IRapidFireFileResource fileResource = areasNode.getFile();
 
-            return file.getParentSubSystem().getAreas(file, getShell());
+            IRapidFireAreaResource[] areas = fileResource.getParentSubSystem().getAreas(fileResource, getShell());
+
+            Arrays.sort(areas);
+
+            return areas;
 
         } catch (Exception e) {
             RapidFireCorePlugin.logError("*** Could resolve filter string and load areas ***", e); //$NON-NLS-1$

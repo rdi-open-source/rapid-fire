@@ -8,6 +8,8 @@
 
 package biz.rapidfire.rse.subsystem.adapters;
 
+import java.util.Arrays;
+
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.resource.ImageDescriptor;
@@ -18,6 +20,7 @@ import org.eclipse.swt.widgets.Shell;
 import biz.rapidfire.core.RapidFireCorePlugin;
 import biz.rapidfire.core.dialogs.MessageDialogAsync;
 import biz.rapidfire.core.model.IRapidFireJobResource;
+import biz.rapidfire.core.model.IRapidFireNotificationResource;
 import biz.rapidfire.rse.Messages;
 import biz.rapidfire.rse.RapidFireRSEPlugin;
 import biz.rapidfire.rse.subsystem.actions.NewNotificationAction;
@@ -55,10 +58,14 @@ public class NotificationsNodeAdapter extends AbstractNodeAdapter {
 
         try {
 
-            NotificationsNode notification = (NotificationsNode)element;
-            IRapidFireJobResource job = notification.getJob();
+            NotificationsNode notificationsNode = (NotificationsNode)element;
+            IRapidFireJobResource jobResource = notificationsNode.getJob();
 
-            return job.getParentSubSystem().getNotifications(job, getShell());
+            IRapidFireNotificationResource[] notifications = jobResource.getParentSubSystem().getNotifications(jobResource, getShell());
+
+            Arrays.sort(notifications);
+
+            return notifications;
 
         } catch (Exception e) {
             RapidFireCorePlugin.logError("*** Could resolve filter string and load notifications ***", e); //$NON-NLS-1$
