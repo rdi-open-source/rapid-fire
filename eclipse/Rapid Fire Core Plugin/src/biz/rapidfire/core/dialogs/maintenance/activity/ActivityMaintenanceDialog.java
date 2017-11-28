@@ -27,6 +27,7 @@ import org.eclipse.swt.events.MenuEvent;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Image;
+import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Menu;
@@ -41,6 +42,8 @@ import biz.rapidfire.core.Messages;
 import biz.rapidfire.core.RapidFireCorePlugin;
 import biz.rapidfire.core.dialogs.maintenance.AbstractMaintenanceDialog;
 import biz.rapidfire.core.helpers.ExceptionHelper;
+import biz.rapidfire.core.jface.dialogs.Size;
+import biz.rapidfire.core.jface.dialogs.XDialog;
 import biz.rapidfire.core.model.maintenance.IMaintenance;
 import biz.rapidfire.core.model.maintenance.activity.ActivityManager;
 import biz.rapidfire.core.model.maintenance.activity.ActivityValues;
@@ -158,6 +161,14 @@ public class ActivityMaintenanceDialog extends AbstractMaintenanceDialog {
         super.okPressed();
     }
 
+    /**
+     * Overridden to provide a default size to {@link XDialog}.
+     */
+    @Override
+    protected Point getDefaultSize() {
+        return getShell().computeSize(Size.getSize(350), 500, true);
+    }
+
     private class ActivitiesContentProvider implements IStructuredContentProvider {
 
         public void dispose() {
@@ -244,7 +255,6 @@ public class ActivityMaintenanceDialog extends AbstractMaintenanceDialog {
                     for (ActivityValues activityValues : selectedItems) {
                         activityValues.setActivity(true);
                     }
-                    deSelectAllItems();
                     tableViewer.refresh();
                 }
             });
@@ -261,7 +271,6 @@ public class ActivityMaintenanceDialog extends AbstractMaintenanceDialog {
                     for (ActivityValues activityValues : selectedItems) {
                         activityValues.setActivity(false);
                     }
-                    deSelectAllItems();
                     tableViewer.refresh();
                 }
             });
@@ -278,10 +287,6 @@ public class ActivityMaintenanceDialog extends AbstractMaintenanceDialog {
             }
 
             return values.toArray(new ActivityValues[values.size()]);
-        }
-
-        protected void deSelectAllItems() {
-            tableViewer.setSelection(new StructuredSelection(), true);
         }
     }
 
@@ -301,7 +306,6 @@ public class ActivityMaintenanceDialog extends AbstractMaintenanceDialog {
                 activity.setActivity(!activity.isActive());
             }
 
-            deSelectAllItems();
             tableViewer.refresh();
         }
 
@@ -324,10 +328,6 @@ public class ActivityMaintenanceDialog extends AbstractMaintenanceDialog {
             }
 
             return null;
-        }
-
-        protected void deSelectAllItems() {
-            tableViewer.setSelection(new StructuredSelection(), true);
         }
     }
 }
