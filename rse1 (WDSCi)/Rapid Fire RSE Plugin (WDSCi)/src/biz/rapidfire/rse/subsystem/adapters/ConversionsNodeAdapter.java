@@ -8,16 +8,18 @@
 
 package biz.rapidfire.rse.subsystem.adapters;
 
+import java.util.Arrays;
+
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.swt.widgets.Shell;
 
 import biz.rapidfire.core.RapidFireCorePlugin;
 import biz.rapidfire.core.dialogs.MessageDialogAsync;
+import biz.rapidfire.core.model.IRapidFireConversionResource;
 import biz.rapidfire.core.model.IRapidFireFileResource;
 import biz.rapidfire.rse.Messages;
 import biz.rapidfire.rse.RapidFireRSEPlugin;
-import biz.rapidfire.rse.subsystem.actions.conversion.NewConversionAction;
 import biz.rapidfire.rse.subsystem.actions.conversion.NewConversionsNodePopupMenuAction;
 import biz.rapidfire.rse.subsystem.resources.ConversionsNode;
 
@@ -55,10 +57,14 @@ public class ConversionsNodeAdapter extends AbstractNodeAdapter {
 
         try {
 
-            ConversionsNode conversions = (ConversionsNode)element;
-            IRapidFireFileResource file = conversions.getFile();
+            ConversionsNode conversionsNode = (ConversionsNode)element;
+            IRapidFireFileResource fileResource = conversionsNode.getFile();
 
-            return file.getParentSubSystem().getConversions(file, getShell());
+            IRapidFireConversionResource[] conversions = fileResource.getParentSubSystem().getConversions(fileResource, getShell());
+
+            Arrays.sort(conversions);
+
+            return conversions;
 
         } catch (Exception e) {
             RapidFireCorePlugin.logError("*** Could resolve filter string and load conversions ***", e); //$NON-NLS-1$
