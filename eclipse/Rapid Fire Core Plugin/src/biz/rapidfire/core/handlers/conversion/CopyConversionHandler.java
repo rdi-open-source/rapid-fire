@@ -15,11 +15,12 @@ import biz.rapidfire.core.dialogs.maintenance.conversion.ConversionMaintenanceDi
 import biz.rapidfire.core.model.IRapidFireConversionResource;
 import biz.rapidfire.core.model.maintenance.IMaintenance;
 import biz.rapidfire.core.model.maintenance.conversion.ConversionValues;
+import biz.rapidfire.core.model.maintenance.conversion.shared.ConversionAction;
 
 public class CopyConversionHandler extends AbstractConversionMaintenanceHandler implements IHandler {
 
     public CopyConversionHandler() {
-        super(IMaintenance.MODE_COPY);
+        super(IMaintenance.MODE_COPY, ConversionAction.COPY);
     }
 
     @Override

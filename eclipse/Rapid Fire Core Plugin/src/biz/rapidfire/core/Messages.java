@@ -196,6 +196,7 @@ public class Messages extends NLS {
     public static String Field_names_must_not_match;
     public static String Conversion_statement_is_missing;
     public static String Could_not_initialize_command_manager_for_command_type_D_and_sequence_E_of_file_C_of_job_A_in_library_B;
+    public static String The_requested_operation_is_invalid_for_job_status_A;
 
     // API error messages
     public static String EntityManager_Unknown_error_code_A;

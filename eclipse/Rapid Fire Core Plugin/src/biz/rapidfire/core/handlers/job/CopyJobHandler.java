@@ -15,11 +15,12 @@ import biz.rapidfire.core.dialogs.maintenance.job.JobMaintenanceDialog;
 import biz.rapidfire.core.model.IRapidFireJobResource;
 import biz.rapidfire.core.model.maintenance.IMaintenance;
 import biz.rapidfire.core.model.maintenance.job.JobValues;
+import biz.rapidfire.core.model.maintenance.job.shared.JobAction;
 
 public class CopyJobHandler extends AbstractJobMaintenanceHandler implements IHandler {
 
     public CopyJobHandler() {
-        super(IMaintenance.MODE_COPY);
+        super(IMaintenance.MODE_COPY, JobAction.COPY);
     }
 
     @Override

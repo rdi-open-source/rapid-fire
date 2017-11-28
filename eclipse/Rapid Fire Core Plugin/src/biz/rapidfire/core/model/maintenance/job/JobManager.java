@@ -16,6 +16,7 @@ import biz.rapidfire.core.model.dao.IJDBCConnection;
 import biz.rapidfire.core.model.maintenance.AbstractManager;
 import biz.rapidfire.core.model.maintenance.Result;
 import biz.rapidfire.core.model.maintenance.Success;
+import biz.rapidfire.core.model.maintenance.job.shared.JobAction;
 
 public class JobManager extends AbstractManager<JobKey, JobValues> {
 
@@ -168,6 +169,27 @@ public class JobManager extends AbstractManager<JobKey, JobValues> {
 
         CallableStatement statement = dao.prepareCall(dao.insertLibraryQualifier("{CALL " + IJDBCConnection.LIBRARY + "\"MNTJOB_closeFiles\"()}")); //$NON-NLS-1$ //$NON-NLS-2$
         statement.execute();
+    }
+
+    public Result checkAction(JobKey key, JobAction jobAction) throws Exception {
+
+        CallableStatement statement = dao.prepareCall(dao
+            .insertLibraryQualifier("{CALL " + IJDBCConnection.LIBRARY + "\"MNTJOB_checkAction\"(?, ?, ?, ?)}")); //$NON-NLS-1$ //$NON-NLS-2$
+
+        statement.setString(IJobCheckAction.ACTION, jobAction.label());
+        statement.setString(IJobCheckAction.JOB, key.getJobName());
+        statement.setString(IJobCheckAction.SUCCESS, Success.NO.label());
+        statement.setString(IJobCheckAction.MESSAGE, EMPTY_STRING);
+
+        statement.registerOutParameter(IJobCheckAction.SUCCESS, Types.CHAR);
+        statement.registerOutParameter(IJobCheckAction.MESSAGE, Types.CHAR);
+
+        statement.execute();
+
+        String success = statement.getString(IJobCheckAction.SUCCESS);
+        String message = statement.getString(IJobCheckAction.MESSAGE);
+
+        return new Result(null, message, success);
     }
 
 }

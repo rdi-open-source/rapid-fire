@@ -14,11 +14,12 @@ import biz.rapidfire.core.dialogs.maintenance.conversion.ConversionMaintenanceDi
 import biz.rapidfire.core.model.IRapidFireConversionResource;
 import biz.rapidfire.core.model.maintenance.IMaintenance;
 import biz.rapidfire.core.model.maintenance.conversion.ConversionValues;
+import biz.rapidfire.core.model.maintenance.conversion.shared.ConversionAction;
 
 public class DisplayConversionHandler extends AbstractConversionMaintenanceHandler implements IHandler {
 
     public DisplayConversionHandler() {
-        super(IMaintenance.MODE_DISPLAY);
+        super(IMaintenance.MODE_DISPLAY, ConversionAction.DISPLAY);
     }
 
     @Override

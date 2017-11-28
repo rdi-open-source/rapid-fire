@@ -15,11 +15,12 @@ import biz.rapidfire.core.dialogs.maintenance.librarylist.LibraryListMaintenance
 import biz.rapidfire.core.model.IRapidFireLibraryListResource;
 import biz.rapidfire.core.model.maintenance.IMaintenance;
 import biz.rapidfire.core.model.maintenance.librarylist.LibraryListValues;
+import biz.rapidfire.core.model.maintenance.librarylist.shared.LibraryListAction;
 
 public class ChangeLibraryListHandler extends AbstractLibraryListMaintenanceHandler implements IHandler {
 
     public ChangeLibraryListHandler() {
-        super(IMaintenance.MODE_CHANGE);
+        super(IMaintenance.MODE_CHANGE, LibraryListAction.CHANGE);
     }
 
     @Override

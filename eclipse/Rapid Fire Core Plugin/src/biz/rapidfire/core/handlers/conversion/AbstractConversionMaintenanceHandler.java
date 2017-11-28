@@ -16,21 +16,27 @@ import biz.rapidfire.core.RapidFireCorePlugin;
 import biz.rapidfire.core.handlers.AbstractResourceHandler;
 import biz.rapidfire.core.helpers.ExceptionHelper;
 import biz.rapidfire.core.model.IRapidFireConversionResource;
+import biz.rapidfire.core.model.IRapidFireJobResource;
 import biz.rapidfire.core.model.IRapidFireResource;
 import biz.rapidfire.core.model.dao.JDBCConnectionManager;
 import biz.rapidfire.core.model.maintenance.IMaintenance;
 import biz.rapidfire.core.model.maintenance.Result;
+import biz.rapidfire.core.model.maintenance.Success;
 import biz.rapidfire.core.model.maintenance.conversion.ConversionKey;
 import biz.rapidfire.core.model.maintenance.conversion.ConversionManager;
+import biz.rapidfire.core.model.maintenance.conversion.shared.ConversionAction;
 import biz.rapidfire.core.model.maintenance.file.FileKey;
 import biz.rapidfire.core.model.maintenance.job.JobKey;
 
 public abstract class AbstractConversionMaintenanceHandler extends AbstractResourceHandler {
 
     private ConversionManager manager;
+    private ConversionAction conversionAction;
 
-    public AbstractConversionMaintenanceHandler(String mode) {
+    public AbstractConversionMaintenanceHandler(String mode, ConversionAction conversionAction) {
         super(mode);
+
+        this.conversionAction = conversionAction;
     }
 
     protected ConversionManager getManager() {
@@ -47,12 +53,15 @@ public abstract class AbstractConversionMaintenanceHandler extends AbstractResou
         try {
 
             IRapidFireConversionResource conversion = (IRapidFireConversionResource)resource;
+            manager = getOrCreateManager(conversion.getParentJob());
 
-            Result result = initialize(conversion);
-            if (result != null && result.isError()) {
-                MessageDialog.openError(getShell(), Messages.E_R_R_O_R, result.getMessage());
-            } else {
-                performAction(conversion);
+            if (canExecuteAction(conversion.getParentJob(), conversionAction)) {
+                Result result = initialize(conversion);
+                if (result != null && result.isError()) {
+                    MessageDialog.openError(getShell(), Messages.E_R_R_O_R, result.getMessage());
+                } else {
+                    performAction(conversion);
+                }
             }
 
         } catch (Throwable e) {
@@ -66,6 +75,48 @@ public abstract class AbstractConversionMaintenanceHandler extends AbstractResou
         }
 
         return null;
+    }
+
+    private ConversionManager getOrCreateManager(IRapidFireJobResource job) throws Exception {
+
+        if (manager == null) {
+            String connectionName = job.getParentSubSystem().getConnectionName();
+            String dataLibrary = job.getDataLibrary();
+            boolean commitControl = isCommitControl();
+            manager = new ConversionManager(JDBCConnectionManager.getInstance().getConnection(connectionName, dataLibrary, commitControl));
+        }
+
+        return manager;
+    }
+
+    protected boolean canExecuteAction(IRapidFireJobResource job, ConversionAction conversionAction) {
+
+        String message = null;
+
+        try {
+
+            // TODO: check action!
+            // Result result = libraryManager.checkAction(new
+            // JobKey(job.getName()),
+            // libraryAction);
+            Result result = new Result(Success.YES.label(), null);
+
+            if (result.isSuccessfull()) {
+                return true;
+            } else {
+                message = Messages.bindParameters(Messages.The_requested_operation_is_invalid_for_job_status_A, job.getStatus().label);
+            }
+
+        } catch (Exception e) {
+            message = "*** Could not check job action. Failed creating the job manager ***";
+            RapidFireCorePlugin.logError(message, e); //$NON-NLS-1$
+        }
+
+        if (message != null) {
+            MessageDialog.openError(getShell(), Messages.E_R_R_O_R, message);
+        }
+
+        return false;
     }
 
     private Result initialize(IRapidFireConversionResource conversion) throws Exception {

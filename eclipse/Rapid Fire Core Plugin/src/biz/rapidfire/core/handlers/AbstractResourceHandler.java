@@ -33,6 +33,10 @@ public abstract class AbstractResourceHandler extends AbstractSelectionHandler {
         return mode;
     }
 
+    protected void setMode(String mode) {
+        this.mode = mode;
+    }
+
     /*
      * (non-Javadoc)
      * @see

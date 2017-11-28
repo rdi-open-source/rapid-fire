@@ -15,11 +15,12 @@ import biz.rapidfire.core.dialogs.maintenance.job.JobMaintenanceDialog;
 import biz.rapidfire.core.model.IRapidFireJobResource;
 import biz.rapidfire.core.model.maintenance.IMaintenance;
 import biz.rapidfire.core.model.maintenance.job.JobValues;
+import biz.rapidfire.core.model.maintenance.job.shared.JobAction;
 
 public class DeleteJobHandler extends AbstractJobMaintenanceHandler implements IHandler {
 
     public DeleteJobHandler() {
-        super(IMaintenance.MODE_DELETE);
+        super(IMaintenance.MODE_DELETE, JobAction.DELETE);
     }
 
     @Override

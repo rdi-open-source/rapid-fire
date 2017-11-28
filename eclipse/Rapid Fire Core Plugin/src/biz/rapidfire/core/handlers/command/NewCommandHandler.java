@@ -15,11 +15,12 @@ import biz.rapidfire.core.dialogs.maintenance.command.CommandMaintenanceDialog;
 import biz.rapidfire.core.model.IRapidFireCommandResource;
 import biz.rapidfire.core.model.maintenance.IMaintenance;
 import biz.rapidfire.core.model.maintenance.command.CommandValues;
+import biz.rapidfire.core.model.maintenance.command.shared.CommandAction;
 
 public class NewCommandHandler extends AbstractCommandMaintenanceHandler implements IHandler {
 
     public NewCommandHandler() {
-        super(IMaintenance.MODE_CREATE);
+        super(IMaintenance.MODE_CREATE, CommandAction.CREATE);
     }
 
     protected void performAction(IRapidFireCommandResource command) throws Exception {

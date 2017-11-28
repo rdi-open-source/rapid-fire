@@ -14,11 +14,12 @@ import biz.rapidfire.core.dialogs.maintenance.librarylist.LibraryListMaintenance
 import biz.rapidfire.core.model.IRapidFireLibraryListResource;
 import biz.rapidfire.core.model.maintenance.IMaintenance;
 import biz.rapidfire.core.model.maintenance.librarylist.LibraryListValues;
+import biz.rapidfire.core.model.maintenance.librarylist.shared.LibraryListAction;
 
 public class DisplayLibraryListHandler extends AbstractLibraryListMaintenanceHandler implements IHandler {
 
     public DisplayLibraryListHandler() {
-        super(IMaintenance.MODE_DISPLAY);
+        super(IMaintenance.MODE_DISPLAY, LibraryListAction.DISPLAY);
     }
 
     @Override

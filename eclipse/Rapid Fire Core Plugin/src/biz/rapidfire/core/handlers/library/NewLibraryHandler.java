@@ -15,11 +15,12 @@ import biz.rapidfire.core.dialogs.maintenance.library.LibraryMaintenanceDialog;
 import biz.rapidfire.core.model.IRapidFireLibraryResource;
 import biz.rapidfire.core.model.maintenance.IMaintenance;
 import biz.rapidfire.core.model.maintenance.library.LibraryValues;
+import biz.rapidfire.core.model.maintenance.library.shared.LibraryAction;
 
 public class NewLibraryHandler extends AbstractLibraryMaintenanceHandler implements IHandler {
 
     public NewLibraryHandler() {
-        super(IMaintenance.MODE_CREATE);
+        super(IMaintenance.MODE_CREATE, LibraryAction.CREATE);
     }
 
     @Override

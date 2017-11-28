@@ -15,11 +15,12 @@ import biz.rapidfire.core.dialogs.maintenance.librarylist.LibraryListMaintenance
 import biz.rapidfire.core.model.IRapidFireLibraryListResource;
 import biz.rapidfire.core.model.maintenance.IMaintenance;
 import biz.rapidfire.core.model.maintenance.librarylist.LibraryListValues;
+import biz.rapidfire.core.model.maintenance.librarylist.shared.LibraryListAction;
 
 public class CopyLibraryListHandler extends AbstractLibraryListMaintenanceHandler implements IHandler {
 
     public CopyLibraryListHandler() {
-        super(IMaintenance.MODE_COPY);
+        super(IMaintenance.MODE_COPY, LibraryListAction.COPY);
     }
 
     @Override

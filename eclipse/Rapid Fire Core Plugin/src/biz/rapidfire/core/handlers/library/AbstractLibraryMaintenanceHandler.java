@@ -12,21 +12,28 @@ import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.jface.dialogs.MessageDialog;
 
 import biz.rapidfire.core.Messages;
+import biz.rapidfire.core.RapidFireCorePlugin;
 import biz.rapidfire.core.handlers.AbstractResourceMaintenanceHandler;
+import biz.rapidfire.core.model.IRapidFireJobResource;
 import biz.rapidfire.core.model.IRapidFireLibraryResource;
 import biz.rapidfire.core.model.IRapidFireResource;
 import biz.rapidfire.core.model.dao.JDBCConnectionManager;
 import biz.rapidfire.core.model.maintenance.Result;
+import biz.rapidfire.core.model.maintenance.Success;
 import biz.rapidfire.core.model.maintenance.job.JobKey;
 import biz.rapidfire.core.model.maintenance.library.LibraryKey;
 import biz.rapidfire.core.model.maintenance.library.LibraryManager;
+import biz.rapidfire.core.model.maintenance.library.shared.LibraryAction;
 
-public abstract class AbstractLibraryMaintenanceHandler extends AbstractResourceMaintenanceHandler {
+public abstract class AbstractLibraryMaintenanceHandler extends AbstractResourceMaintenanceHandler<IRapidFireLibraryResource> {
 
     private LibraryManager manager;
+    private LibraryAction libraryAction;
 
-    public AbstractLibraryMaintenanceHandler(String mode) {
+    public AbstractLibraryMaintenanceHandler(String mode, LibraryAction libraryAction) {
         super(mode);
+
+        this.libraryAction = libraryAction;
     }
 
     protected LibraryManager getManager() {
@@ -43,12 +50,15 @@ public abstract class AbstractLibraryMaintenanceHandler extends AbstractResource
         try {
 
             IRapidFireLibraryResource library = (IRapidFireLibraryResource)resource;
+            manager = getOrCreateManager(library.getParentJob());
 
-            Result result = initialize(library);
-            if (result != null && result.isError()) {
-                MessageDialog.openError(getShell(), Messages.E_R_R_O_R, result.getMessage());
-            } else {
-                performAction(library);
+            if (canExecuteAction(library.getParentJob(), libraryAction)) {
+                Result result = initialize(library);
+                if (result != null && result.isError()) {
+                    MessageDialog.openError(getShell(), Messages.E_R_R_O_R, result.getMessage());
+                } else {
+                    performAction(library);
+                }
             }
 
         } catch (Throwable e) {
@@ -62,6 +72,48 @@ public abstract class AbstractLibraryMaintenanceHandler extends AbstractResource
         }
 
         return null;
+    }
+
+    private LibraryManager getOrCreateManager(IRapidFireJobResource job) throws Exception {
+
+        if (manager == null) {
+            String connectionName = job.getParentSubSystem().getConnectionName();
+            String dataLibrary = job.getDataLibrary();
+            boolean commitControl = isCommitControl();
+            manager = new LibraryManager(JDBCConnectionManager.getInstance().getConnection(connectionName, dataLibrary, commitControl));
+        }
+
+        return manager;
+    }
+
+    protected boolean canExecuteAction(IRapidFireJobResource job, LibraryAction libraryAction) {
+
+        String message = null;
+
+        try {
+
+            // TODO: check action!
+            // Result result = libraryManager.checkAction(new
+            // JobKey(job.getName()),
+            // libraryAction);
+            Result result = new Result(Success.YES.label(), null);
+
+            if (result.isSuccessfull()) {
+                return true;
+            } else {
+                message = Messages.bindParameters(Messages.The_requested_operation_is_invalid_for_job_status_A, job.getStatus().label);
+            }
+
+        } catch (Exception e) {
+            message = "*** Could not check job action. Failed creating the job manager ***";
+            RapidFireCorePlugin.logError(message, e); //$NON-NLS-1$
+        }
+
+        if (message != null) {
+            MessageDialog.openError(getShell(), Messages.E_R_R_O_R, message);
+        }
+
+        return false;
     }
 
     private Result initialize(IRapidFireLibraryResource file) throws Exception {

@@ -15,11 +15,12 @@ import biz.rapidfire.core.dialogs.maintenance.command.CommandMaintenanceDialog;
 import biz.rapidfire.core.model.IRapidFireCommandResource;
 import biz.rapidfire.core.model.maintenance.IMaintenance;
 import biz.rapidfire.core.model.maintenance.command.CommandValues;
+import biz.rapidfire.core.model.maintenance.command.shared.CommandAction;
 
 public class ChangeCommandHandler extends AbstractCommandMaintenanceHandler implements IHandler {
 
     public ChangeCommandHandler() {
-        super(IMaintenance.MODE_CHANGE);
+        super(IMaintenance.MODE_CHANGE, CommandAction.CHANGE);
     }
 
     @Override

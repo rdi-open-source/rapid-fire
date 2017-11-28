@@ -15,11 +15,12 @@ import biz.rapidfire.core.dialogs.maintenance.conversion.ConversionMaintenanceDi
 import biz.rapidfire.core.model.IRapidFireConversionResource;
 import biz.rapidfire.core.model.maintenance.IMaintenance;
 import biz.rapidfire.core.model.maintenance.conversion.ConversionValues;
+import biz.rapidfire.core.model.maintenance.conversion.shared.ConversionAction;
 
 public class DeleteConversionHandler extends AbstractConversionMaintenanceHandler implements IHandler {
 
     public DeleteConversionHandler() {
-        super(IMaintenance.MODE_DELETE);
+        super(IMaintenance.MODE_DELETE, ConversionAction.DELETE);
     }
 
     @Override

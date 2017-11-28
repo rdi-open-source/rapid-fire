@@ -12,6 +12,7 @@ import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.jface.dialogs.MessageDialog;
 
 import biz.rapidfire.core.Messages;
+import biz.rapidfire.core.RapidFireCorePlugin;
 import biz.rapidfire.core.handlers.AbstractResourceMaintenanceHandler;
 import biz.rapidfire.core.model.IRapidFireJobResource;
 import biz.rapidfire.core.model.IRapidFireResource;
@@ -19,13 +20,17 @@ import biz.rapidfire.core.model.dao.JDBCConnectionManager;
 import biz.rapidfire.core.model.maintenance.Result;
 import biz.rapidfire.core.model.maintenance.job.JobKey;
 import biz.rapidfire.core.model.maintenance.job.JobManager;
+import biz.rapidfire.core.model.maintenance.job.shared.JobAction;
 
-public abstract class AbstractJobMaintenanceHandler extends AbstractResourceMaintenanceHandler {
+public abstract class AbstractJobMaintenanceHandler extends AbstractResourceMaintenanceHandler<IRapidFireJobResource> {
 
     private JobManager manager;
+    private JobAction jobAction;
 
-    public AbstractJobMaintenanceHandler(String mode) {
+    public AbstractJobMaintenanceHandler(String mode, JobAction jobAction) {
         super(mode);
+
+        this.jobAction = jobAction;
     }
 
     protected JobManager getManager() {
@@ -42,12 +47,15 @@ public abstract class AbstractJobMaintenanceHandler extends AbstractResourceMain
         try {
 
             IRapidFireJobResource job = (IRapidFireJobResource)resource;
+            manager = getOrCreateManager(job);
 
-            Result result = initialize(job);
-            if (result != null && result.isError()) {
-                MessageDialog.openError(getShell(), Messages.E_R_R_O_R, result.getMessage());
-            } else {
-                performAction(job);
+            if (canExecuteAction(job, jobAction)) {
+                Result result = initialize(job);
+                if (result != null && result.isError()) {
+                    MessageDialog.openError(getShell(), Messages.E_R_R_O_R, result.getMessage());
+                } else {
+                    performAction(job);
+                }
             }
 
         } catch (Throwable e) {
@@ -63,13 +71,46 @@ public abstract class AbstractJobMaintenanceHandler extends AbstractResourceMain
         return null;
     }
 
+    private JobManager getOrCreateManager(IRapidFireJobResource job) throws Exception {
+
+        if (manager == null) {
+            String connectionName = job.getParentSubSystem().getConnectionName();
+            String dataLibrary = job.getDataLibrary();
+            boolean commitControl = isCommitControl();
+            manager = new JobManager(JDBCConnectionManager.getInstance().getConnection(connectionName, dataLibrary, commitControl));
+        }
+
+        return manager;
+    }
+
+    protected boolean canExecuteAction(IRapidFireJobResource job, JobAction jobAction) {
+
+        String message = null;
+
+        try {
+
+            Result result = manager.checkAction(new JobKey(job.getName()), jobAction);
+
+            if (result.isSuccessfull()) {
+                return true;
+            } else {
+                message = Messages.bindParameters(Messages.The_requested_operation_is_invalid_for_job_status_A, job.getStatus().label);
+            }
+
+        } catch (Exception e) {
+            message = "*** Could not check job action. Failed creating the job manager ***"; //$NON-NLS-1$
+            RapidFireCorePlugin.logError(message, e);
+        }
+
+        if (message != null) {
+            MessageDialog.openError(getShell(), Messages.E_R_R_O_R, message);
+        }
+
+        return false;
+    }
+
     private Result initialize(IRapidFireJobResource job) throws Exception {
 
-        String connectionName = job.getParentSubSystem().getConnectionName();
-        String dataLibrary = job.getDataLibrary();
-        boolean commitControl = isCommitControl();
-
-        manager = new JobManager(JDBCConnectionManager.getInstance().getConnection(connectionName, dataLibrary, commitControl));
         manager.openFiles();
 
         Result result = manager.initialize(getMode(), new JobKey(job.getName()));

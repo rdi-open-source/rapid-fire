@@ -15,11 +15,12 @@ import biz.rapidfire.core.dialogs.maintenance.command.CommandMaintenanceDialog;
 import biz.rapidfire.core.model.IRapidFireCommandResource;
 import biz.rapidfire.core.model.maintenance.IMaintenance;
 import biz.rapidfire.core.model.maintenance.command.CommandValues;
+import biz.rapidfire.core.model.maintenance.command.shared.CommandAction;
 
 public class CopyCommandHandler extends AbstractCommandMaintenanceHandler implements IHandler {
 
     public CopyCommandHandler() {
-        super(IMaintenance.MODE_COPY);
+        super(IMaintenance.MODE_COPY, CommandAction.COPY);
     }
 
     @Override

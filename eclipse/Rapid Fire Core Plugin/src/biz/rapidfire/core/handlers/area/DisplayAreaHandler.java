@@ -14,11 +14,12 @@ import biz.rapidfire.core.dialogs.maintenance.area.AreaMaintenanceDialog;
 import biz.rapidfire.core.model.IRapidFireAreaResource;
 import biz.rapidfire.core.model.maintenance.IMaintenance;
 import biz.rapidfire.core.model.maintenance.area.AreaValues;
+import biz.rapidfire.core.model.maintenance.area.shared.AreaAction;
 
 public class DisplayAreaHandler extends AbstractAreaMaintenanceHandler implements IHandler {
 
     public DisplayAreaHandler() {
-        super(IMaintenance.MODE_DISPLAY);
+        super(IMaintenance.MODE_DISPLAY, AreaAction.DISPLAY);
     }
 
     @Override

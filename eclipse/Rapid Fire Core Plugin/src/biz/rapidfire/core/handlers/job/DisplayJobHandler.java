@@ -14,11 +14,12 @@ import biz.rapidfire.core.dialogs.maintenance.job.JobMaintenanceDialog;
 import biz.rapidfire.core.model.IRapidFireJobResource;
 import biz.rapidfire.core.model.maintenance.IMaintenance;
 import biz.rapidfire.core.model.maintenance.job.JobValues;
+import biz.rapidfire.core.model.maintenance.job.shared.JobAction;
 
 public class DisplayJobHandler extends AbstractJobMaintenanceHandler implements IHandler {
 
     public DisplayJobHandler() {
-        super(IMaintenance.MODE_DISPLAY);
+        super(IMaintenance.MODE_DISPLAY, JobAction.DISPLAY);
     }
 
     @Override

@@ -15,11 +15,12 @@ import biz.rapidfire.core.dialogs.maintenance.librarylist.LibraryListMaintenance
 import biz.rapidfire.core.model.IRapidFireLibraryListResource;
 import biz.rapidfire.core.model.maintenance.IMaintenance;
 import biz.rapidfire.core.model.maintenance.librarylist.LibraryListValues;
+import biz.rapidfire.core.model.maintenance.librarylist.shared.LibraryListAction;
 
 public class DeleteLibraryListHandler extends AbstractLibraryListMaintenanceHandler implements IHandler {
 
     public DeleteLibraryListHandler() {
-        super(IMaintenance.MODE_DELETE);
+        super(IMaintenance.MODE_DELETE, LibraryListAction.DELETE);
     }
 
     @Override

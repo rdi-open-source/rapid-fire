@@ -12,11 +12,16 @@ import biz.rapidfire.core.RapidFireCorePlugin;
 import biz.rapidfire.core.dialogs.MessageDialogAsync;
 import biz.rapidfire.core.helpers.ExceptionHelper;
 import biz.rapidfire.core.model.maintenance.IMaintenance;
+import biz.rapidfire.core.model.maintenance.job.shared.JobAction;
 
-public abstract class AbstractResourceMaintenanceHandler extends AbstractResourceHandler {
+public abstract class AbstractResourceMaintenanceHandler<M> extends AbstractResourceHandler {
 
     public AbstractResourceMaintenanceHandler(String mode) {
         super(mode);
+    }
+
+    protected boolean canExecuteAction(M rapidFireResource, JobAction jobAction) {
+        return true;
     }
 
     protected boolean isCommitControl() {

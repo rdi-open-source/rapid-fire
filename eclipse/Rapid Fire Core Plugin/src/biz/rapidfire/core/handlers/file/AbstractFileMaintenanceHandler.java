@@ -16,20 +16,26 @@ import biz.rapidfire.core.RapidFireCorePlugin;
 import biz.rapidfire.core.handlers.AbstractResourceHandler;
 import biz.rapidfire.core.helpers.ExceptionHelper;
 import biz.rapidfire.core.model.IRapidFireFileResource;
+import biz.rapidfire.core.model.IRapidFireJobResource;
 import biz.rapidfire.core.model.IRapidFireResource;
 import biz.rapidfire.core.model.dao.JDBCConnectionManager;
 import biz.rapidfire.core.model.maintenance.IMaintenance;
 import biz.rapidfire.core.model.maintenance.Result;
+import biz.rapidfire.core.model.maintenance.Success;
 import biz.rapidfire.core.model.maintenance.file.FileKey;
 import biz.rapidfire.core.model.maintenance.file.FileManager;
+import biz.rapidfire.core.model.maintenance.file.shared.FileAction;
 import biz.rapidfire.core.model.maintenance.job.JobKey;
 
 public abstract class AbstractFileMaintenanceHandler extends AbstractResourceHandler {
 
     private FileManager manager;
+    private FileAction fileAction;
 
-    public AbstractFileMaintenanceHandler(String mode) {
+    public AbstractFileMaintenanceHandler(String mode, FileAction fileAction) {
         super(mode);
+
+        this.fileAction = fileAction;
     }
 
     protected FileManager getManager() {
@@ -46,12 +52,15 @@ public abstract class AbstractFileMaintenanceHandler extends AbstractResourceHan
         try {
 
             IRapidFireFileResource file = (IRapidFireFileResource)resource;
+            manager = getOrCreateManager(file.getParentJob());
 
-            Result result = initialize(file);
-            if (result != null && result.isError()) {
-                MessageDialog.openError(getShell(), Messages.E_R_R_O_R, result.getMessage());
-            } else {
-                performAction(file);
+            if (canExecuteAction(file.getParentJob(), fileAction)) {
+                Result result = initialize(file);
+                if (result != null && result.isError()) {
+                    MessageDialog.openError(getShell(), Messages.E_R_R_O_R, result.getMessage());
+                } else {
+                    performAction(file);
+                }
             }
 
         } catch (Throwable e) {
@@ -65,6 +74,48 @@ public abstract class AbstractFileMaintenanceHandler extends AbstractResourceHan
         }
 
         return null;
+    }
+
+    private FileManager getOrCreateManager(IRapidFireJobResource file) throws Exception {
+
+        if (manager == null) {
+            String connectionName = file.getParentSubSystem().getConnectionName();
+            String dataLibrary = file.getDataLibrary();
+            boolean commitControl = isCommitControl();
+            manager = new FileManager(JDBCConnectionManager.getInstance().getConnection(connectionName, dataLibrary, commitControl));
+        }
+
+        return manager;
+    }
+
+    protected boolean canExecuteAction(IRapidFireJobResource job, FileAction libraryAction) {
+
+        String message = null;
+
+        try {
+
+            // TODO: check action!
+            // Result result = libraryManager.checkAction(new
+            // JobKey(job.getName()),
+            // libraryAction);
+            Result result = new Result(Success.YES.label(), null);
+
+            if (result.isSuccessfull()) {
+                return true;
+            } else {
+                message = Messages.bindParameters(Messages.The_requested_operation_is_invalid_for_job_status_A, job.getStatus().label);
+            }
+
+        } catch (Exception e) {
+            message = "*** Could not check job action. Failed creating the job manager ***";
+            RapidFireCorePlugin.logError(message, e); //$NON-NLS-1$
+        }
+
+        if (message != null) {
+            MessageDialog.openError(getShell(), Messages.E_R_R_O_R, message);
+        }
+
+        return false;
     }
 
     private Result initialize(IRapidFireFileResource file) throws Exception {

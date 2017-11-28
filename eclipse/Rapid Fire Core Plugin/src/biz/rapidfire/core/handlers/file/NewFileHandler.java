@@ -15,11 +15,12 @@ import biz.rapidfire.core.dialogs.maintenance.file.FileMaintenanceDialog;
 import biz.rapidfire.core.model.IRapidFireFileResource;
 import biz.rapidfire.core.model.maintenance.IMaintenance;
 import biz.rapidfire.core.model.maintenance.file.FileValues;
+import biz.rapidfire.core.model.maintenance.file.shared.FileAction;
 
 public class NewFileHandler extends AbstractFileMaintenanceHandler implements IHandler {
 
     public NewFileHandler() {
-        super(IMaintenance.MODE_CREATE);
+        super(IMaintenance.MODE_CREATE, FileAction.CREATE);
     }
 
     @Override
