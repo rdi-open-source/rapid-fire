@@ -18,6 +18,7 @@ import java.util.Random;
 import org.eclipse.swt.widgets.Shell;
 
 import biz.rapidfire.core.model.IFileCopyStatus;
+import biz.rapidfire.core.model.IRapidFireJobResource;
 import biz.rapidfire.core.model.queries.FileCopyStatus;
 
 public abstract class AbstractFileCopyStatusDAO {
@@ -43,7 +44,7 @@ public abstract class AbstractFileCopyStatusDAO {
         this.dao = dao;
     }
 
-    public List<IFileCopyStatus> load(String job, Shell shell) throws Exception {
+    public List<IFileCopyStatus> load(IRapidFireJobResource job, Shell shell) throws Exception {
 
         final List<IFileCopyStatus> fileCopyStatuses = new ArrayList<IFileCopyStatus>();
 
@@ -56,7 +57,7 @@ public abstract class AbstractFileCopyStatusDAO {
 
         try {
 
-            String sqlStatement = getSqlStatement(job);
+            String sqlStatement = getSqlStatement(job.getName());
             preparedStatement = dao.prepareStatement(sqlStatement);
             resultSet = preparedStatement.executeQuery();
             resultSet.setFetchSize(50);

@@ -41,7 +41,7 @@ public interface IRapidFireSubSystem {
 
     public IRapidFireCommandResource[] getCommands(IRapidFireFileResource file, Shell shell) throws Exception;
 
-    public IFileCopyStatus[] getFileCopyStatus(String library, String job, Shell shell) throws Exception;
+    public IFileCopyStatus[] getFileCopyStatus(IRapidFireJobResource job, Shell shell) throws Exception;
 
     public String getConnectionName();
 }

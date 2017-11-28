@@ -13,8 +13,9 @@ import java.util.List;
 import org.eclipse.swt.widgets.Shell;
 
 import biz.rapidfire.core.model.IFileCopyStatus;
+import biz.rapidfire.core.model.IRapidFireJobResource;
 
 public interface IFileCopyStatusDAO {
 
-    public List<IFileCopyStatus> load(String job, Shell shell) throws Exception;
+    public List<IFileCopyStatus> load(IRapidFireJobResource job, Shell shell) throws Exception;
 }

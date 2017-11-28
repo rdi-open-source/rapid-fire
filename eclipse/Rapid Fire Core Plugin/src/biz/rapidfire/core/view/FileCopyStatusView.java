@@ -316,7 +316,7 @@ public class FileCopyStatusView extends ViewPart implements IPropertyChangeListe
 
             IRapidFireSubSystem subSystem = job.getParentSubSystem();
 
-            IFileCopyStatus[] fileCopyStatuses = subSystem.getFileCopyStatus(job.getDataLibrary(), job.getName(), getShell());
+            IFileCopyStatus[] fileCopyStatuses = subSystem.getFileCopyStatus(job, getShell());
 
             return fileCopyStatuses;
 
