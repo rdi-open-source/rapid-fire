@@ -546,5 +546,70 @@
       </objectContribution>
       
    </extension>
+   
+      	<!--
+      	  ==========================================
+      	    Rapid Fire 'Command' Object Contributions
+      	  ==========================================
+      	-->
+
+   <extension
+         point="com.ibm.etools.systems.core.popupMenus">
+      <objectContribution
+            subsystemfactoryid="biz.rapidfire.rse.subsystem.RapidFireSubSystemFactory"
+            typecategoryfilter="rapid fire"
+            typefilter="command"
+            subtypefilter="*"
+            namefilter="*"
+            id="biz.rapidfire.rse.job.actions">
+            
+         <action
+               label="%command_Display_Command"
+               tooltip="%command_Display_Command_Description"
+               icon="icons/display.gif"
+               class="biz.rapidfire.rse.subsystem.actions.command.DisplayCommandAction"
+               enablesFor="1"
+               id="biz.rapidfire.rse.subsystem.actions.command.DisplayCommandAction">
+         </action>
+            
+         <action
+               label="%command_Delete_Command"
+               tooltip="%command_Delete_Command_Description"
+               icon="icons/delete.gif"
+               class="biz.rapidfire.rse.subsystem.actions.command.DeleteCommandAction"
+               enablesFor="+"
+               id="biz.rapidfire.rse.subsystem.actions.command.DeleteCommandAction">
+         </action>
+            
+         <action
+               label="%command_Copy_Command"
+               tooltip="%command_Copy_Command_Description"
+               icon="icons/copy.gif"
+               class="biz.rapidfire.rse.subsystem.actions.command.CopyCommandAction"
+               enablesFor="1"
+               id="biz.rapidfire.rse.subsystem.actions.command.CopyCommandAction">
+         </action>
+            
+         <action
+               label="%command_Change_Command"
+               tooltip="%command_Change_Command_Description"
+               icon="icons/change.gif"
+               class="biz.rapidfire.rse.subsystem.actions.command.ChangeCommandAction"
+               enablesFor="+"
+               id="biz.rapidfire.rse.subsystem.actions.command.ChangeCommandAction">
+         </action>
+            
+         <action
+               label="%command_New_Command"
+               tooltip="%command_New_Command_Description"
+               icon="icons/new_command.gif"
+               class="biz.rapidfire.rse.subsystem.actions.command.NewCommandAction"
+               enablesFor="+"
+               id="biz.rapidfire.rse.subsystem.actions.command.NewCommandAction">
+         </action>
+         
+      </objectContribution>
+      
+   </extension>
 
 </plugin>

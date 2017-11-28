@@ -25,6 +25,7 @@ import biz.rapidfire.core.dialogs.MessageDialogAsync;
 import biz.rapidfire.core.helpers.ExceptionHelper;
 import biz.rapidfire.core.model.IFileCopyStatus;
 import biz.rapidfire.core.model.IRapidFireAreaResource;
+import biz.rapidfire.core.model.IRapidFireCommandResource;
 import biz.rapidfire.core.model.IRapidFireConversionResource;
 import biz.rapidfire.core.model.IRapidFireFileResource;
 import biz.rapidfire.core.model.IRapidFireJobResource;
@@ -33,12 +34,14 @@ import biz.rapidfire.core.model.IRapidFireLibraryResource;
 import biz.rapidfire.core.model.IRapidFireNotificationResource;
 import biz.rapidfire.core.model.IRapidFireResource;
 import biz.rapidfire.core.model.dao.IAreasDAO;
+import biz.rapidfire.core.model.dao.ICommandsDAO;
 import biz.rapidfire.core.model.dao.IConversionsDAO;
 import biz.rapidfire.core.model.dao.INotificationsDAO;
 import biz.rapidfire.core.model.queries.FileCopyStatus;
 import biz.rapidfire.core.subsystem.IRapidFireSubSystem;
 import biz.rapidfire.core.subsystem.RapidFireFilter;
 import biz.rapidfire.rse.model.dao.AreasDAO;
+import biz.rapidfire.rse.model.dao.CommandsDAO;
 import biz.rapidfire.rse.model.dao.ConversionsDAO;
 import biz.rapidfire.rse.model.dao.FileCopyStatusDAO;
 import biz.rapidfire.rse.model.dao.FilesDAO;
@@ -249,6 +252,24 @@ public class RapidFireSubSystem extends DefaultSubSystemImpl implements IISeries
         }
 
         return conversions.toArray(new IRapidFireConversionResource[conversions.size()]);
+    }
+
+    public IRapidFireCommandResource[] getCommands(IRapidFireFileResource file, Shell shell) throws Exception {
+
+        if (!successFullyLoaded()) {
+            return new IRapidFireCommandResource[0];
+        }
+
+        IRapidFireJobResource job = file.getParentJob();
+        String libraryName = job.getDataLibrary();
+
+        ICommandsDAO dao = new CommandsDAO(getConnectionName(), libraryName);
+        List<IRapidFireCommandResource> commands = dao.load(file, shell);
+        if (commands == null) {
+            return null;
+        }
+
+        return commands.toArray(new IRapidFireCommandResource[commands.size()]);
     }
 
     public IFileCopyStatus[] getFileCopyStatus(String libraryName, String jobName, Shell shell) throws Exception {
