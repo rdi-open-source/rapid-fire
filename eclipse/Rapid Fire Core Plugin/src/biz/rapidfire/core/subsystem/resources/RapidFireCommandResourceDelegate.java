@@ -9,6 +9,7 @@
 package biz.rapidfire.core.subsystem.resources;
 
 import biz.rapidfire.core.model.IRapidFireCommandResource;
+import biz.rapidfire.core.model.maintenance.command.shared.CommandType;
 
 public class RapidFireCommandResourceDelegate implements Comparable<IRapidFireCommandResource> {
 
@@ -19,6 +20,8 @@ public class RapidFireCommandResourceDelegate implements Comparable<IRapidFireCo
     private int sequence;
     private String command;
 
+    private int commandTypeSortSequence;
+
     public RapidFireCommandResourceDelegate(String dataLibrary, String job, int position, String commandType, int sequence) {
 
         this.dataLibrary = dataLibrary;
@@ -26,6 +29,8 @@ public class RapidFireCommandResourceDelegate implements Comparable<IRapidFireCo
         this.position = position;
         this.commandType = commandType;
         this.sequence = sequence;
+
+        updateCommandTypeSortSequence();
     }
 
     /*
@@ -54,6 +59,7 @@ public class RapidFireCommandResourceDelegate implements Comparable<IRapidFireCo
 
     public void setCommandType(String commandType) {
         this.commandType = commandType;
+        updateCommandTypeSortSequence();
     }
 
     public int getSequence() {
@@ -70,6 +76,16 @@ public class RapidFireCommandResourceDelegate implements Comparable<IRapidFireCo
 
     public void setCommand(String command) {
         this.command = command;
+    }
+
+    private void updateCommandTypeSortSequence() {
+
+        CommandType commandType = CommandType.find(this.commandType);
+        if (commandType == null) {
+            commandTypeSortSequence = 1;
+        } else {
+            commandTypeSortSequence = commandType.ordinal();
+        }
     }
 
     public int compareTo(IRapidFireCommandResource resource) {
@@ -94,9 +110,11 @@ public class RapidFireCommandResourceDelegate implements Comparable<IRapidFireCo
             return -1;
         }
 
-        result = resource.getCommandType().compareTo(getCommandType());
-        if (result != 0) {
-            return result;
+        int resourceCommandTypeSortSequence = CommandType.find(resource.getCommandType()).ordinal();
+        if (commandTypeSortSequence > resourceCommandTypeSortSequence) {
+            return 1;
+        } else if (commandTypeSortSequence < resourceCommandTypeSortSequence) {
+            return -1;
         }
 
         if (sequence > resource.getSequence()) {
