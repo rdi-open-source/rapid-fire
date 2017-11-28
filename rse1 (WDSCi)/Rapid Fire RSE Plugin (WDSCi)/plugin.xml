@@ -38,10 +38,21 @@
             namefilter="*"
             id="biz.rapidfire.rse.job.actions">
             
+            <separator name="activity"/>
             <separator name="maintenance"/>
             <separator name="status"/>
             <separator name="run"/>
             <separator name="reset"/>
+         
+         <action
+               label="%command_Change_Activity_Plan"
+               tooltip="%command_Change_Activity_Plan_Description"
+               icon="icons/activity.gif"
+               class="biz.rapidfire.rse.subsystem.actions.activity.ChangeActivitiesAction"
+               enablesFor="1"
+               id="biz.rapidfire.rse.subsystem.actions.activity.ChangeActivitiesAction"
+               menubarPath="activity">
+         </action>
          
          <action
                label="%command_Display_Job"
@@ -49,7 +60,7 @@
                icon="icons/display.gif"
                class="biz.rapidfire.rse.subsystem.actions.job.DisplayJobAction"
                enablesFor="1"
-               id="biz.rapidfire.rse.subsystem.actions.DisplayJobAction"
+               id="biz.rapidfire.rse.subsystem.actions.job.DisplayJobAction"
                menubarPath="maintenance">
          </action>
             
@@ -59,7 +70,7 @@
                icon="icons/delete.gif"
                class="biz.rapidfire.rse.subsystem.actions.job.DeleteJobAction"
                enablesFor="+"
-               id="biz.rapidfire.rse.subsystem.actions.DeleteJobAction"
+               id="biz.rapidfire.rse.subsystem.actions.job.DeleteJobAction"
                menubarPath="maintenance">
          </action>
             
@@ -69,7 +80,7 @@
                icon="icons/copy.gif"
                class="biz.rapidfire.rse.subsystem.actions.job.CopyJobAction"
                enablesFor="1"
-               id="biz.rapidfire.rse.subsystem.actions.CopyJobAction"
+               id="biz.rapidfire.rse.subsystem.actions.job.CopyJobAction"
                menubarPath="maintenance">
          </action>
             
@@ -79,7 +90,7 @@
                icon="icons/change.gif"
                class="biz.rapidfire.rse.subsystem.actions.job.ChangeJobAction"
                enablesFor="+"
-               id="biz.rapidfire.rse.subsystem.actions.ChangeJobAction"
+               id="biz.rapidfire.rse.subsystem.actions.job.ChangeJobAction"
                menubarPath="maintenance">
          </action>
             
@@ -89,7 +100,7 @@
                icon="icons/new_job.gif"
                class="biz.rapidfire.rse.subsystem.actions.job.NewJobAction"
                enablesFor="+"
-               id="biz.rapidfire.rse.subsystem.actions.NewJobAction"
+               id="biz.rapidfire.rse.subsystem.actions.job.NewJobAction"
                menubarPath="maintenance">
          </action>
             
@@ -99,7 +110,7 @@
                icon="icons/job_status.gif"
                class="biz.rapidfire.rse.subsystem.actions.job.DisplayCopyStatusAction"
                enablesFor="1"
-               id="biz.rapidfire.rse.subsystem.actions.DisplayCopyStatusAction"
+               id="biz.rapidfire.rse.subsystem.actions.job.DisplayCopyStatusAction"
                menubarPath="status">
          </action>
             
@@ -109,7 +120,7 @@
                icon="icons/end.gif"
                class="biz.rapidfire.rse.subsystem.actions.job.EndJobAction"
                enablesFor="+"
-               id="biz.rapidfire.rse.subsystem.actions.EndJobAction"
+               id="biz.rapidfire.rse.subsystem.actions.job.EndJobAction"
                menubarPath="run">
          </action>
             
@@ -119,7 +130,7 @@
                icon="icons/start.gif"
                class="biz.rapidfire.rse.subsystem.actions.job.StartJobAction"
                enablesFor="+"
-               id="biz.rapidfire.rse.subsystem.actions.StartJobAction"
+               id="biz.rapidfire.rse.subsystem.actions.job.StartJobAction"
                menubarPath="run">
          </action>
             
@@ -129,7 +140,7 @@
                icon="icons/test.gif"
                class="biz.rapidfire.rse.subsystem.actions.job.TestJobAction"
                enablesFor="+"
-               id="biz.rapidfire.rse.subsystem.actions.TestJobAction"
+               id="biz.rapidfire.rse.subsystem.actions.job.TestJobAction"
                menubarPath="run">
          </action>
                         
@@ -139,7 +150,7 @@
                icon="icons/resetabortion.gif"
                class="biz.rapidfire.rse.subsystem.actions.job.ResetJobAfterAbortionAction"
                enablesFor="+"
-               id="biz.rapidfire.rse.subsystem.actions.ResetJobAction"
+               id="biz.rapidfire.rse.subsystem.actions.job.ResetJobAfterAbortionAction"
                menubarPath="reset">
          </action>
             
@@ -149,7 +160,7 @@
                icon="icons/reset.gif"
                class="biz.rapidfire.rse.subsystem.actions.job.ResetJobAction"
                enablesFor="+"
-               id="biz.rapidfire.rse.subsystem.actions.ResetJobAction"
+               id="biz.rapidfire.rse.subsystem.actions.job.ResetJobAction"
                menubarPath="reset">
          </action>
          
