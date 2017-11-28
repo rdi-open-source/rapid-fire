@@ -35,7 +35,7 @@ public class Result {
             this.message = message.trim();
         }
 
-        this.success = Success.fromValue(success);
+        this.success = Success.find(success);
     }
 
     public String getFieldName() {

@@ -8,26 +8,41 @@
 
 package biz.rapidfire.core.model.maintenance;
 
+import java.util.HashMap;
+import java.util.Map;
+
 public enum Success {
     YES ("Y"),
     NO ("N");
 
     private String label;
 
+    private static Map<String, Success> success;
+
+    static {
+        success = new HashMap<String, Success>();
+        for (Success successItem : Success.values()) {
+            success.put(successItem.label, successItem);
+        }
+    }
+
     private Success(String value) {
         this.label = value;
     }
 
-    public static Success fromValue(String value) {
-
-        if (Success.YES.label.equalsIgnoreCase(value)) {
-            return Success.YES;
-        } else {
-            return Success.NO;
-        }
-    }
-
     public String label() {
         return label;
+    }
+
+    public static String[] labels() {
+        return success.keySet().toArray(new String[success.size()]);
+    }
+
+    public static Success find(String label) {
+        // TODO: remove debug code
+        if (label.length() != label.trim().length()) {
+            throw new IllegalArgumentException("Expect to see a trimmed value here."); //$NON-NLS-1$
+        }
+        return success.get(label);
     }
 }
