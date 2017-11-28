@@ -11,6 +11,7 @@ import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.TextCellEditor;
 import org.eclipse.jface.viewers.Viewer;
+import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.FocusAdapter;
 import org.eclipse.swt.events.FocusEvent;
 import org.eclipse.swt.events.ModifyEvent;
@@ -278,7 +279,7 @@ public class StringListEditor extends Composite implements SelectionListener {
         addButton.setText(Messages.Add);
         addButton.addSelectionListener(this);
 
-        itemsTable = new Table(mainPanel, 68354);
+        itemsTable = new Table(mainPanel, SWT.BORDER | SWT.FULL_SELECTION | SWT.MULTI); // 68354?
         itemsTable.setLinesVisible(true);
         itemsTable.setHeaderVisible(true);
         itemsTable.addSelectionListener(this);

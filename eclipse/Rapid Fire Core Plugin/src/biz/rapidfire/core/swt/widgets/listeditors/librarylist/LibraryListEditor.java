@@ -303,7 +303,7 @@ public class LibraryListEditor extends Composite implements SelectionListener {
         addButton.setText(Messages.Add);
         addButton.addSelectionListener(this);
 
-        itemsTable = new Table(mainPanel, 68354);
+        itemsTable = new Table(mainPanel, SWT.BORDER | SWT.FULL_SELECTION | SWT.MULTI); // 68354?
         itemsTable.setLinesVisible(true);
         itemsTable.setHeaderVisible(true);
         itemsTable.addSelectionListener(this);
@@ -315,7 +315,7 @@ public class LibraryListEditor extends Composite implements SelectionListener {
         itemsTable.setLayoutData(gd);
 
         TableColumn itemSequenceNumber = new TableColumn(itemsTable, 0);
-        itemSequenceNumber.setText("Sequence");
+        itemSequenceNumber.setText(Messages.Sequence);
         itemSequenceNumber.setWidth(80);
 
         TableColumn itemColumn = new TableColumn(itemsTable, 0);

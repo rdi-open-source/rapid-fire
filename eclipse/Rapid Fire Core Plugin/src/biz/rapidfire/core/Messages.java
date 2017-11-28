@@ -30,6 +30,7 @@ public class Messages extends NLS {
     public static String DialogTitle_Library_List;
     public static String DialogTitle_Notification;
     public static String DialogTitle_Area;
+    public static String DialogTitle_Activity_Schedule;
 
     // Dialog action titles
     public static String DialogMode_CREATE;
@@ -49,12 +50,17 @@ public class Messages extends NLS {
     public static String ColumnLabel_Changes_to_apply;
     public static String ColumnLabel_Changes_applied;
     public static String ColumnLabel_Progress;
+    public static String ColumnLabel_Active;
+    public static String ColumnLabel_Start_time;
+    public static String ColumnLabel_End_time;
 
     // Dialog labels
     public static String Label_E_Mail_colon;
     public static String Label_Internet_colon;
     public static String Label_Telefax_colon;
     public static String Label_Telefon_colon;
+
+    public static String Label_Maintain_ativity_status_usage_info;
 
     public static String Label_Library_colon;
     public static String Label_Job_colon;
@@ -126,10 +132,14 @@ public class Messages extends NLS {
     public static String ActionLabel_Auto_refresh_menu_item;
     public static String ActionLabel_Auto_refresh_menu_item_stop;
     public static String ActionLabel_Auto_refresh_menu_item_every_A_seconds;
+    public static String ActionLabel_Enable_activity_time_frame;
+    public static String ActionLabel_Disable_activity_time_frame;
 
     public static String ActionTooltip_Refresh;
     public static String ActionTooltip_Auto_refresh_menu_item_every_A_seconds;
     public static String ActionTooltip_Auto_refresh_menu_item_stop;
+    public static String ActionTooltip_Enable_activity_time_frame;
+    public static String ActionTooltip_Disable_activity_time_frame;
 
     // Property labels
     public static String Batch_job_name;

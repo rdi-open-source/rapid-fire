@@ -16,13 +16,13 @@ public class RapidFireCommandResourceDelegate implements Comparable<IRapidFireCo
     private String dataLibrary;
     private String job;
     private int position;
-    private String commandType;
+    private CommandType commandType;
     private int sequence;
     private String command;
 
     private int commandTypeSortSequence;
 
-    public RapidFireCommandResourceDelegate(String dataLibrary, String job, int position, String commandType, int sequence) {
+    public RapidFireCommandResourceDelegate(String dataLibrary, String job, int position, CommandType commandType, int sequence) {
 
         this.dataLibrary = dataLibrary;
         this.job = job;
@@ -53,11 +53,11 @@ public class RapidFireCommandResourceDelegate implements Comparable<IRapidFireCo
         return position;
     }
 
-    public String getCommandType() {
+    public CommandType getCommandType() {
         return commandType;
     }
 
-    public void setCommandType(String commandType) {
+    public void setCommandType(CommandType commandType) {
         this.commandType = commandType;
         updateCommandTypeSortSequence();
     }
@@ -80,7 +80,6 @@ public class RapidFireCommandResourceDelegate implements Comparable<IRapidFireCo
 
     private void updateCommandTypeSortSequence() {
 
-        CommandType commandType = CommandType.find(this.commandType);
         if (commandType == null) {
             commandTypeSortSequence = 1;
         } else {
@@ -110,7 +109,7 @@ public class RapidFireCommandResourceDelegate implements Comparable<IRapidFireCo
             return -1;
         }
 
-        int resourceCommandTypeSortSequence = CommandType.find(resource.getCommandType()).ordinal();
+        int resourceCommandTypeSortSequence = resource.getCommandType().ordinal();
         if (commandTypeSortSequence > resourceCommandTypeSortSequence) {
             return 1;
         } else if (commandTypeSortSequence < resourceCommandTypeSortSequence) {

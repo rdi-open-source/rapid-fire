@@ -19,10 +19,10 @@ public class CommandKey implements Cloneable {
     private CommandType commandType;
     private int sequence;
 
-    public CommandKey(FileKey fileKey, String commandType, int sequence) {
+    public CommandKey(FileKey fileKey, CommandType commandType, int sequence) {
 
         this.fileKey = fileKey;
-        setCommandType(commandType);
+        this.commandType = commandType;
         this.sequence = sequence;
     }
 

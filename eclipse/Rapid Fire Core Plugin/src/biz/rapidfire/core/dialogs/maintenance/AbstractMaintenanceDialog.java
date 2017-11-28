@@ -28,8 +28,16 @@ import biz.rapidfire.core.swt.widgets.WidgetFactory;
 
 public abstract class AbstractMaintenanceDialog extends XDialog {
 
+    private boolean isScrollable;
+
     public AbstractMaintenanceDialog(Shell shell) {
         super(shell);
+
+        isScrollable = true;
+    }
+
+    public void setScrollable(boolean enabled) {
+        this.isScrollable = enabled;
     }
 
     @Override
@@ -45,13 +53,19 @@ public abstract class AbstractMaintenanceDialog extends XDialog {
         Composite container = (Composite)super.createDialogArea(parent);
         container.setLayout(new FillLayout());
 
-        ScrolledComposite scrollable = new ScrolledComposite(container, SWT.H_SCROLL | SWT.V_SCROLL | SWT.NONE);
-        scrollable.setExpandHorizontal(true);
-        scrollable.setExpandVertical(true);
+        ScrolledComposite scrollable = null;
+        Composite editorArea = null;
+        if (isScrollable) {
+            scrollable = new ScrolledComposite(container, SWT.H_SCROLL | SWT.V_SCROLL | SWT.NONE);
+            scrollable.setExpandHorizontal(true);
+            scrollable.setExpandVertical(true);
+            editorArea = new Composite(scrollable, SWT.NONE);
+            editorArea.setLayoutData(new GridData(GridData.FILL_BOTH));
+        } else {
+            editorArea = new Composite(container, SWT.NONE);
+        }
 
-        Composite editorArea = new Composite(scrollable, SWT.NONE);
         editorArea.setLayout(new GridLayout(2, false));
-        editorArea.setLayoutData(new GridData(GridData.FILL_BOTH));
 
         WidgetFactory.createDialogSubTitle(editorArea, getMode());
 
@@ -62,8 +76,10 @@ public abstract class AbstractMaintenanceDialog extends XDialog {
 
         editorArea.layout();
 
-        scrollable.setContent(editorArea);
-        scrollable.setMinSize(editorArea.computeSize(SWT.DEFAULT, SWT.DEFAULT));
+        if (scrollable != null) {
+            scrollable.setContent(editorArea);
+            scrollable.setMinSize(editorArea.computeSize(SWT.DEFAULT, SWT.DEFAULT));
+        }
 
         return container;
     }

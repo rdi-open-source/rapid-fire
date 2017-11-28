@@ -8,9 +8,9 @@
 
 package biz.rapidfire.core.model;
 
-import biz.rapidfire.core.model.maintenance.command.shared.CommandType;
+import java.sql.Time;
 
-public interface IRapidFireCommandResource extends IRapidFireChildResource {
+public interface IRapidFireActivityResource extends IRapidFireChildResource {
 
     /*
      * Key attributes
@@ -18,17 +18,19 @@ public interface IRapidFireCommandResource extends IRapidFireChildResource {
 
     public String getJob();
 
-    public int getPosition();
-
-    public CommandType getCommandType();
-
-    public int getSequence();
+    public Time getStartTime();
 
     /*
      * Other attributes
      */
 
-    public String getCommand();
+    public void setStartTime(Time startTime);
 
-    public void setCommand(String command);
+    public Time getEndTime();
+
+    public void setEndTime(Time endTime);
+
+    public boolean isActive();
+
+    public void setActivity(boolean active);
 }

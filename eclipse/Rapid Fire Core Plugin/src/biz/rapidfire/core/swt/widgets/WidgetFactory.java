@@ -366,6 +366,20 @@ public final class WidgetFactory {
     }
 
     /**
+     * Produces a multi-line line text field with a border. If the text does not
+     * fit into the field, a vertical scroll bar is displayed.
+     * 
+     * @param parent - parent composite
+     * @param wordWrap - <code>true</code>, to enable word wrap
+     * @param autoSelect - <code>true</code>, to select the field content when
+     *        entering the field wit the cursor
+     * @return multi-line text field
+     */
+    public static Text createMultilineLabel(Composite parent) {
+        return WidgetFactory.getInstance().produceMultilineLabel(parent, SWT.NONE);
+    }
+
+    /**
      * Produces a read-only multiline line text field. If the text does not fit
      * into the field, a vertical scroll bar is displayed.
      * 
@@ -693,6 +707,18 @@ public final class WidgetFactory {
         if (autoSelect) {
             text.addFocusListener(new SelectAllFocusListener());
         }
+
+        return text;
+    }
+
+    private Text produceMultilineLabel(Composite parent, int style) {
+
+        Text text = new Text(parent, SWT.MULTI | SWT.WRAP | style);
+        text.setEditable(false);
+
+        Listener scrollBarListener = new AutoScrollbarsListener();
+        text.addListener(SWT.Resize, scrollBarListener);
+        text.addListener(SWT.Modify, scrollBarListener);
 
         return text;
     }

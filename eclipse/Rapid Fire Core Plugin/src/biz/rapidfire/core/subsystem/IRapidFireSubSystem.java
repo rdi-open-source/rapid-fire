@@ -11,6 +11,7 @@ package biz.rapidfire.core.subsystem;
 import org.eclipse.swt.widgets.Shell;
 
 import biz.rapidfire.core.model.IFileCopyStatus;
+import biz.rapidfire.core.model.IRapidFireActivityResource;
 import biz.rapidfire.core.model.IRapidFireAreaResource;
 import biz.rapidfire.core.model.IRapidFireCommandResource;
 import biz.rapidfire.core.model.IRapidFireConversionResource;
@@ -23,6 +24,8 @@ import biz.rapidfire.core.model.IRapidFireNotificationResource;
 public interface IRapidFireSubSystem {
 
     public IRapidFireJobResource[] getJobs(String library, Shell shell) throws Exception;
+
+    public IRapidFireActivityResource[] getActivities(IRapidFireJobResource file, Shell shell) throws Exception;
 
     public IRapidFireFileResource[] getFiles(IRapidFireJobResource job, Shell shell) throws Exception;
 

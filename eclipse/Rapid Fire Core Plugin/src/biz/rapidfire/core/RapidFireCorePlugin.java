@@ -42,6 +42,9 @@ public class RapidFireCorePlugin extends AbstractExtendedUIPlugin {
     public static final String IMAGE_REFRESH = "refresh.gif"; //$NON-NLS-1$
     public static final String IMAGE_AUTO_REFRESH_OFF = "auto_refresh_off.gif"; //$NON-NLS-1$
 
+    public static final String IMAGE_DISABLED = "disabled.gif"; //$NON-NLS-1$
+    public static final String IMAGE_ENABLED = "enabled.gif"; //$NON-NLS-1$
+
     public static final String COLOR_PROGRESS_BAR_FOREGROUND = "COLOR_PROGRESS_BAR_FOREGROUND"; //$NON-NLS-1$
     public static final String COLOR_PROGRESS_BAR_BACKGROUND = "COLOR_PROGRESS_BAR_BACKGROUND"; //$NON-NLS-1$
 
@@ -126,6 +129,8 @@ public class RapidFireCorePlugin extends AbstractExtendedUIPlugin {
         reg.put(IMAGE_ERROR, getImageDescriptor(IMAGE_ERROR));
         reg.put(IMAGE_REFRESH, getImageDescriptor(IMAGE_REFRESH));
         reg.put(IMAGE_AUTO_REFRESH_OFF, getImageDescriptor(IMAGE_AUTO_REFRESH_OFF));
+        reg.put(IMAGE_ENABLED, getImageDescriptor(IMAGE_ENABLED));
+        reg.put(IMAGE_DISABLED, getImageDescriptor(IMAGE_DISABLED));
     }
 
     @Override

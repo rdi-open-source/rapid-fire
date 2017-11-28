@@ -17,6 +17,7 @@ public class Messages extends NLS {
     public static String Add;
     public static String Remove;
     public static String Remove_all;
+    public static String Sequence;
     public static String Item;
     public static String Move_up;
     public static String Move_down;

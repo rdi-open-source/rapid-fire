@@ -17,6 +17,7 @@ import biz.rapidfire.core.model.dao.IJDBCConnection;
 import biz.rapidfire.core.model.maintenance.AbstractManager;
 import biz.rapidfire.core.model.maintenance.Result;
 import biz.rapidfire.core.model.maintenance.Success;
+import biz.rapidfire.core.model.maintenance.command.shared.CommandType;
 import biz.rapidfire.core.model.maintenance.file.FileKey;
 import biz.rapidfire.core.model.maintenance.job.JobKey;
 
@@ -120,7 +121,8 @@ public class CommandManager extends AbstractManager<CommandKey, CommandValues> {
         statement.execute();
 
         CommandValues values = new CommandValues();
-        values.setKey(new CommandKey(fileKey, getStringTrim(statement, ICommandGetValues.TYPE), getInt(statement, ICommandGetValues.SEQUENCE)));
+        values.setKey(new CommandKey(fileKey, CommandType.find(getStringTrim(statement, ICommandGetValues.TYPE)), getInt(statement,
+            ICommandGetValues.SEQUENCE)));
         values.setCommand(getStringTrim(statement, ICommandGetValues.COMMAND));
 
         return values;

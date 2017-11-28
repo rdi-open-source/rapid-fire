@@ -11,53 +11,52 @@ package biz.rapidfire.core.model.dao;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Time;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.swt.widgets.Shell;
 
-import biz.rapidfire.core.model.IRapidFireCommandResource;
-import biz.rapidfire.core.model.IRapidFireFileResource;
-import biz.rapidfire.core.model.maintenance.command.shared.CommandType;
+import biz.rapidfire.core.model.IRapidFireActivityResource;
+import biz.rapidfire.core.model.IRapidFireJobResource;
+import biz.rapidfire.core.model.maintenance.activity.shared.Active;
 
-public abstract class AbstractCommandsDAO {
+public abstract class AbstractActivitiesDAO {
 
     public static final String JOB = "JOB"; //$NON-NLS-1$
-    public static final String POSITION = "POSITION"; //$NON-NLS-1$
-    public static final String TYPE = "TYPE"; //$NON-NLS-1$
-    public static final String SEQUENCE = "SEQUENCE"; //$NON-NLS-1$
-    public static final String COMMAND = "COMMAND"; //$NON-NLS-1$
+    public static final String START_TIME = "START_TIME"; //$NON-NLS-1$
+    public static final String END_TIME = "END_TIME"; //$NON-NLS-1$
+    public static final String ACTIVITY = "ACTIVITY"; //$NON-NLS-1$
 
     private IJDBCConnection dao;
 
-    public AbstractCommandsDAO(IJDBCConnection dao) {
+    public AbstractActivitiesDAO(IJDBCConnection dao) {
 
         this.dao = dao;
     }
 
-    public List<IRapidFireCommandResource> load(IRapidFireFileResource file, Shell shell) throws Exception {
+    public List<IRapidFireActivityResource> load(IRapidFireJobResource job, Shell shell) throws Exception {
 
-        final List<IRapidFireCommandResource> conversions = new ArrayList<IRapidFireCommandResource>();
+        final List<IRapidFireActivityResource> activities = new ArrayList<IRapidFireActivityResource>();
 
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
 
         if (!dao.checkRapidFireLibrary(shell)) {
-            return conversions;
+            return activities;
         }
 
         try {
 
             String sqlStatement = getSqlStatement();
             preparedStatement = dao.prepareStatement(sqlStatement);
-            preparedStatement.setString(1, file.getJob());
-            preparedStatement.setInt(2, file.getPosition());
+            preparedStatement.setString(1, job.getName());
             resultSet = preparedStatement.executeQuery();
             resultSet.setFetchSize(50);
 
             if (resultSet != null) {
                 while (resultSet.next()) {
-                    conversions.add(produceCommand(resultSet, file));
+                    activities.add(produceActivity(resultSet, job));
                 }
             }
         } finally {
@@ -65,25 +64,30 @@ public abstract class AbstractCommandsDAO {
             dao.closeResultSet(resultSet);
         }
 
-        return conversions;
+        return activities;
     }
 
-    private IRapidFireCommandResource produceCommand(ResultSet resultSet, IRapidFireFileResource file) throws SQLException {
+    private IRapidFireActivityResource produceActivity(ResultSet resultSet, IRapidFireJobResource job) throws SQLException {
 
         // String job = resultSet.getString(JOB).trim();
-        String commandType = resultSet.getString(TYPE).trim();
-        int sequence = resultSet.getBigDecimal(SEQUENCE).intValue();
+        Time startTime = resultSet.getTime(START_TIME);
 
-        IRapidFireCommandResource conversionResource = createCommandInstance(file, CommandType.find(commandType), sequence);
+        IRapidFireActivityResource activityResource = createActivityInstance(job, startTime);
 
-        String command = resultSet.getString(COMMAND).trim();
+        Time endTime = resultSet.getTime(END_TIME);
+        String activity = resultSet.getString(ACTIVITY).trim();
 
-        conversionResource.setCommand(command);
+        activityResource.setEndTime(endTime);
+        if (Active.TRUE.label().equals(activity)) {
+            activityResource.setActivity(true);
+        } else {
+            activityResource.setActivity(false);
+        }
 
-        return conversionResource;
+        return activityResource;
     }
 
-    protected abstract IRapidFireCommandResource createCommandInstance(IRapidFireFileResource file, CommandType commandType, int sequence);
+    protected abstract IRapidFireActivityResource createActivityInstance(IRapidFireJobResource job, Time startTime);
 
     private String getSqlStatement() throws Exception {
 
@@ -91,16 +95,14 @@ public abstract class AbstractCommandsDAO {
         String sqlStatement = 
         "SELECT " +
             "JOB, " +
-            "POSITION, " +
-            "TYPE, " +
-            "SEQUENCE, " +
-            "COMMAND " +
+            "START_TIME, " +
+            "END_TIME, " +
+            "ACTIVITY " +
         "FROM " +
             IJDBCConnection.LIBRARY +
-            "COMMANDS " +
+            "ACTSCHD " +
         "WHERE " +
-            "JOB = ? AND " +
-            "POSITION = ?";
+            "JOB = ?";
         // @formatter:on
 
         return dao.insertLibraryQualifier(sqlStatement);
