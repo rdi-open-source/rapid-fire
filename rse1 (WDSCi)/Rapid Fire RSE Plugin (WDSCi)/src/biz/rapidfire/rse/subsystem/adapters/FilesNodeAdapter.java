@@ -8,12 +8,15 @@
 
 package biz.rapidfire.rse.subsystem.adapters;
 
+import java.util.Arrays;
+
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.swt.widgets.Shell;
 
 import biz.rapidfire.core.RapidFireCorePlugin;
 import biz.rapidfire.core.dialogs.MessageDialogAsync;
+import biz.rapidfire.core.model.IRapidFireFileResource;
 import biz.rapidfire.core.model.IRapidFireJobResource;
 import biz.rapidfire.rse.Messages;
 import biz.rapidfire.rse.RapidFireRSEPlugin;
@@ -54,10 +57,14 @@ public class FilesNodeAdapter extends AbstractNodeAdapter {
 
         try {
 
-            FilesNode files = (FilesNode)element;
-            IRapidFireJobResource job = files.getJob();
+            FilesNode filesNode = (FilesNode)element;
+            IRapidFireJobResource jobResource = filesNode.getJob();
 
-            return job.getParentSubSystem().getFiles(job, getShell());
+            IRapidFireFileResource[] files = jobResource.getParentSubSystem().getFiles(jobResource, getShell());
+
+            Arrays.sort(files);
+
+            return files;
 
         } catch (Exception e) {
             RapidFireCorePlugin.logError("*** Could resolve filter string and load files ***", e); //$NON-NLS-1$
