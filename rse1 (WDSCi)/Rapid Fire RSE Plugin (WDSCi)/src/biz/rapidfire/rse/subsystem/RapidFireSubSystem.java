@@ -292,14 +292,16 @@ public class RapidFireSubSystem extends DefaultSubSystemImpl implements IISeries
         return commands.toArray(new IRapidFireCommandResource[commands.size()]);
     }
 
-    public IFileCopyStatus[] getFileCopyStatus(String libraryName, String jobName, Shell shell) throws Exception {
+    public IFileCopyStatus[] getFileCopyStatus(IRapidFireJobResource job, Shell shell) throws Exception {
 
         if (!successFullyLoaded()) {
             return new IFileCopyStatus[0];
         }
+        
+        String libraryName = job.getDataLibrary();
 
         FileCopyStatusDAO dao = new FileCopyStatusDAO(getHostName(), libraryName);
-        List<IFileCopyStatus> fileCopyStatuses = dao.load(jobName, shell);
+        List<IFileCopyStatus> fileCopyStatuses = dao.load(job, shell);
         if (fileCopyStatuses == null) {
             return null;
         }
