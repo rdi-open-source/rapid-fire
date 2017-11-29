@@ -8,6 +8,8 @@
 
 package biz.rapidfire.core.preferences;
 
+import java.text.SimpleDateFormat;
+
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.util.IPropertyChangeListener;
 
@@ -41,6 +43,10 @@ public final class Preferences {
     private static final String DOMAIN = RapidFireCorePlugin.PLUGIN_ID + "."; //$NON-NLS-1$
 
     public static final String PROGRESS_BAR_SIZE = DOMAIN + "PROGRESS_BAR_SIZE"; //$NON-NLS-1$
+
+    private static final String HOST_NAME = DOMAIN + "HOST_NAME"; //$NON-NLS-1$
+    private static final String FTP_PORT_NUMBER = DOMAIN + "FTP_PORT_NUMBER"; //$NON-NLS-1$
+    private static final String RAPID_FIRE_LIBRARY = DOMAIN + "LIBRARY"; //$NON-NLS-1$
 
     /**
      * Private constructor to ensure the Singleton pattern.
@@ -76,6 +82,18 @@ public final class Preferences {
      * Preferences: GETTER
      */
 
+    public String getHostName() {
+        return preferenceStore.getString(HOST_NAME);
+    }
+
+    public int getFtpPortNumber() {
+        return preferenceStore.getInt(FTP_PORT_NUMBER);
+    }
+
+    public String getRapidFireLibrary() {
+        return preferenceStore.getString(RAPID_FIRE_LIBRARY);
+    }
+
     public boolean isLargeProgressBar() {
         return preferenceStore.getBoolean(PROGRESS_BAR_SIZE);
     }
@@ -83,6 +101,18 @@ public final class Preferences {
     /*
      * Preferences: SETTER
      */
+
+    public void setHostName(String aHostName) {
+        preferenceStore.setValue(HOST_NAME, aHostName);
+    }
+
+    public void setFtpPortNumber(int aPortNumber) {
+        preferenceStore.setValue(FTP_PORT_NUMBER, aPortNumber);
+    }
+
+    public void setRapidFireLibrary(String aLibrary) {
+        preferenceStore.setValue(RAPID_FIRE_LIBRARY, aLibrary.trim());
+    }
 
     public void setLargeProgressBar(boolean isLarge) {
         preferenceStore.setValue(PROGRESS_BAR_SIZE, isLarge);
@@ -94,12 +124,42 @@ public final class Preferences {
 
     public void initializeDefaultPreferences() {
 
+        preferenceStore.setDefault(HOST_NAME, getDefaultHostName());
+        preferenceStore.setDefault(FTP_PORT_NUMBER, getDefaultFtpPortNumber());
+        preferenceStore.setDefault(RAPID_FIRE_LIBRARY, getDefaultRapidFireLibrary());
         preferenceStore.setDefault(PROGRESS_BAR_SIZE, getDefaultIsLargeProgressBar());
     }
 
     /*
      * Preferences: Default Values
      */
+
+    /**
+     * Returns the default host name where to upload the Rapid Fire library.
+     * 
+     * @return default host name
+     */
+    public String getDefaultHostName() {
+        return "";
+    }
+
+    /**
+     * Returns the default FTP port number.
+     * 
+     * @return default FTPport number
+     */
+    public int getDefaultFtpPortNumber() {
+        return 21;
+    }
+
+    /**
+     * Returns the default Rapid Fire library name.
+     * 
+     * @return default Rapid Fire library name
+     */
+    public String getDefaultRapidFireLibrary() {
+        return "RAPIDFIRE";
+    }
 
     public boolean getDefaultIsLargeProgressBar() {
 
@@ -112,5 +172,20 @@ public final class Preferences {
 
     public void removePreferencesListener(IPropertyChangeListener listener) {
         preferenceStore.removePropertyChangeListener(listener);
+    }
+
+    public SimpleDateFormat getDateFormatter() {
+        String pattern = "dd.MM.yyyy";
+        // String pattern = getDateFormatsMap().get(getDateFormatLabel());
+        // if (pattern == null) {
+        // pattern = getDateFormatsMap().get(getDefaultDateFormatLabel());
+        // }
+        //
+        // if (pattern == null) {
+        // return new
+        // SimpleDateFormat(FastDateFormat.getDateInstance(FastDateFormat.SHORT).getPattern());
+        // }
+
+        return new SimpleDateFormat(pattern);
     }
 }

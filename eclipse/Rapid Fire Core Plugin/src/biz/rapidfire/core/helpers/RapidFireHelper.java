@@ -101,11 +101,11 @@ public class RapidFireHelper extends AbstractRapidFireHelper {
         return true;
     }
 
-    private static boolean checkLibrary(AS400 system, String library) {
+    public static boolean checkLibrary(AS400 system, String library) {
         return checkObject(system, new QSYSObjectPathName("QSYS", library, "LIB")); //$NON-NLS-1$ //$NON-NLS-2$
     }
 
-    private static boolean checkObject(AS400 system, QSYSObjectPathName pathName) {
+    public static boolean checkObject(AS400 system, QSYSObjectPathName pathName) {
 
         StringBuilder command = new StringBuilder();
         command.append("CHKOBJ OBJ("); //$NON-NLS-1$

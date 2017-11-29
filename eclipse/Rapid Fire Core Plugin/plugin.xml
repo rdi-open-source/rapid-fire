@@ -42,6 +42,11 @@
             name="%PrefencePage_General"
             id="biz.rapidfire.core.preferencepages.General"/>
       <page
+            class="biz.rapidfire.core.preferencepages.RapidFireLibrary"
+            category="biz.rapidfire.core.preferencepages.General"
+            name="%PrefencePage_Library"
+            id="biz.rapidfire.core.preferencepages.RapidFireLibrary"/>
+      <page
             class="biz.rapidfire.core.preferencepages.AppearancePage"
             category="biz.rapidfire.core.preferencepages.General"
             name="%PrefencePage_Appearance"

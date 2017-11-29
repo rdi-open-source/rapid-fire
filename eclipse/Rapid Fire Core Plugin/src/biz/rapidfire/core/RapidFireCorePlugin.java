@@ -8,6 +8,8 @@
 
 package biz.rapidfire.core;
 
+import java.net.URL;
+
 import org.eclipse.core.runtime.Status;
 import org.eclipse.jface.resource.ColorRegistry;
 import org.eclipse.jface.resource.ImageRegistry;
@@ -33,6 +35,9 @@ public class RapidFireCorePlugin extends AbstractExtendedUIPlugin {
     // The shared instance
     private static RapidFireCorePlugin plugin;
 
+    // URL, where the plug-in is installed
+    private static URL installURL;
+
     // Contributor logos
     public static final String IMAGE_RAPIDFIRE = "rapidfire.gif"; //$NON-NLS-1$
     public static final String IMAGE_TASKFORCE = "TaskForce.png";
@@ -44,6 +49,8 @@ public class RapidFireCorePlugin extends AbstractExtendedUIPlugin {
 
     public static final String IMAGE_DISABLED = "disabled.gif"; //$NON-NLS-1$
     public static final String IMAGE_ENABLED = "enabled.gif"; //$NON-NLS-1$
+
+    public static final String IMAGE_TRANSFER_LIBRARY = "transfer_library.gif";
 
     public static final String COLOR_PROGRESS_BAR_FOREGROUND = "COLOR_PROGRESS_BAR_FOREGROUND"; //$NON-NLS-1$
     public static final String COLOR_PROGRESS_BAR_BACKGROUND = "COLOR_PROGRESS_BAR_BACKGROUND"; //$NON-NLS-1$
@@ -72,6 +79,7 @@ public class RapidFireCorePlugin extends AbstractExtendedUIPlugin {
         super.start(context);
 
         plugin = this;
+        installURL = context.getBundle().getEntry("/");
     }
 
     /*
@@ -119,6 +127,10 @@ public class RapidFireCorePlugin extends AbstractExtendedUIPlugin {
         return MIN_SERVER_VERSION;
     }
 
+    public static URL getInstallURL() {
+        return installURL;
+    }
+
     @Override
     protected void initializeImageRegistry(ImageRegistry reg) {
         super.initializeImageRegistry(reg);
@@ -131,6 +143,7 @@ public class RapidFireCorePlugin extends AbstractExtendedUIPlugin {
         reg.put(IMAGE_AUTO_REFRESH_OFF, getImageDescriptor(IMAGE_AUTO_REFRESH_OFF));
         reg.put(IMAGE_ENABLED, getImageDescriptor(IMAGE_ENABLED));
         reg.put(IMAGE_DISABLED, getImageDescriptor(IMAGE_DISABLED));
+        reg.put(IMAGE_TRANSFER_LIBRARY, getImageDescriptor(IMAGE_TRANSFER_LIBRARY));
     }
 
     @Override

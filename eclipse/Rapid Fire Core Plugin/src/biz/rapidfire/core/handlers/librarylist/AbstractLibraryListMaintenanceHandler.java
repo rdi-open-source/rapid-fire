@@ -98,6 +98,7 @@ public abstract class AbstractLibraryListMaintenanceHandler extends
             if (result.isSuccessfull()) {
                 return true;
             } else {
+                // TODO: fix message
                 message = Messages.bindParameters(Messages.The_requested_operation_is_invalid_for_job_status_A, libraryList.getParentJob()
                     .getStatus().label);
             }

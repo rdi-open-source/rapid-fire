@@ -31,6 +31,9 @@ public class Messages extends NLS {
     public static String DialogTitle_Notification;
     public static String DialogTitle_Area;
     public static String DialogTitle_Activity_Schedule;
+    public static String Dialog_Title_Transfer_Rapid_Fire_library;
+    public static String DialogTitle_Delete_Object;
+    public static String Dialog_Title_Sign_On;
 
     // Dialog action titles
     public static String DialogMode_CREATE;
@@ -95,6 +98,12 @@ public class Messages extends NLS {
     public static String Label_Command_type_colon;
     public static String Label_Command_sequence_colon;
     public static String Label_Command_command_colon;
+    public static String Label_Host_name_colon;
+    public static String Label_FTP_port_number_colon;
+    public static String Label_Signon_User_colon;
+    public static String Label_Password_colon;
+    public static String Label_Rapid_Fire_library_colon;
+    public static String Label_Version_colon;
 
     public static String Tooltip_Library;
     public static String Tooltip_Job;
@@ -127,6 +136,28 @@ public class Messages extends NLS {
     public static String Tooltip_Command_type;
     public static String Tooltip_Command_sequence;
     public static String Tooltip_Command_command;
+    public static String Tooltip_Host_name;
+    public static String Tooltip_FTP_port_number;
+    public static String Tooltip_Signon_User;
+    public static String Tooltip_Password_colon;
+    public static String Tooltip_Rapid_Fire_library;
+    public static String Tooltip_Version;
+
+    // Questions
+    public static String Do_you_want_to_delete_library_A;
+    public static String Do_you_want_to_delete_object_A_B_type_C;
+
+    // Status messages
+    public static String About_to_transfer_library_A_to_host_B_using_port_C;
+    public static String Checking_library_A_for_existence;
+    public static String Checking_file_B_in_library_A_for_existence;
+    public static String Creating_save_file_B_in_library_A;
+    public static String Sending_save_file_to_host;
+    public static String Using_Ftp_port_number;
+    public static String Deleting_library_A;
+    public static String Deleting_object_A_B_of_type_C;
+    public static String Restoring_library_A;
+    public static String Library_A_successfull_transfered;
 
     // Action labels
     public static String ActionLabel_Auto_refresh_menu_item;
@@ -134,12 +165,20 @@ public class Messages extends NLS {
     public static String ActionLabel_Auto_refresh_menu_item_every_A_seconds;
     public static String ActionLabel_Enable_activity_time_frame;
     public static String ActionLabel_Disable_activity_time_frame;
+    public static String ActionLabel_Start_Transfer;
+    public static String ActionLabel_Close;
+    public static String ActionLabel_Copy;
+    public static String ActionLabel_Transfer_Rapid_Fire_library;
 
     public static String ActionTooltip_Refresh;
     public static String ActionTooltip_Auto_refresh_menu_item_every_A_seconds;
     public static String ActionTooltip_Auto_refresh_menu_item_stop;
     public static String ActionTooltip_Enable_activity_time_frame;
     public static String ActionTooltip_Disable_activity_time_frame;
+    public static String ActionTooltip_Start_Transfer;
+    public static String ActionTooltip_Close;
+    public static String ActionTooltip_Copy;
+    public static String ActionTooltip_Transfer_Rapid_Fire_library;
 
     // Property labels
     public static String Batch_job_name;
@@ -197,6 +236,19 @@ public class Messages extends NLS {
     public static String Conversion_statement_is_missing;
     public static String Could_not_initialize_command_manager_for_command_type_D_and_sequence_E_of_file_C_of_job_A_in_library_B;
     public static String The_requested_operation_is_invalid_for_job_status_A;
+    public static String Enter_a_host_name;
+    public static String Enter_a_user_name;
+    public static String Enter_a_password;
+    public static String Library_A_does_already_exist;
+    public static String File_B_in_library_A_does_already_exist;
+    public static String Could_not_create_save_file_B_in_library_A;
+    public static String Could_not_restore_library_A;
+    public static String Could_not_send_save_file_to_host;
+    public static String Rapid_Fire_library_not_set_in_preferences;
+    public static String The_name_of_the_Rapid_Fire_library_is_invalid;
+    public static String Host_A_not_found_in_configured_RSE_connections;
+    public static String Rapid_Fire_version_information_not_found_in_library_A;
+    public static String Could_not_rereieve_Rapid_Fire_version_information_due_to_backend_error_A;
 
     // API error messages
     public static String EntityManager_Unknown_error_code_A;

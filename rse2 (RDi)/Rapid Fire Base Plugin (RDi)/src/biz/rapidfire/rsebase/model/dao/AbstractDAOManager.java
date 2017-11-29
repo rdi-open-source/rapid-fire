@@ -26,6 +26,19 @@ public abstract class AbstractDAOManager {
         return connection.getAS400ToolboxObject();
     }
 
+    public AS400 findSystem(String hostName) throws Exception {
+
+        IBMiConnection[] connections = IBMiConnection.getConnections();
+        for (IBMiConnection ibMiConnection : connections) {
+            if (ibMiConnection.getHostName().equalsIgnoreCase(hostName)) {
+                return ibMiConnection.getAS400ToolboxObject();
+            }
+        }
+
+        return null;
+
+    }
+
     protected String getStringTrim(CallableStatement statement, int parameterIndex) throws SQLException {
         return statement.getString(parameterIndex);
     }

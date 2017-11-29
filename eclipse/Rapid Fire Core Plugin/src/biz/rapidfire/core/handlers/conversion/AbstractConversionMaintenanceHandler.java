@@ -98,6 +98,7 @@ public abstract class AbstractConversionMaintenanceHandler extends AbstractResou
             if (result.isSuccessfull()) {
                 return true;
             } else {
+                // TODO: fix message
                 message = Messages.bindParameters(Messages.The_requested_operation_is_invalid_for_job_status_A,
                     conversion.getParentJob().getStatus().label);
             }
