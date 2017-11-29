@@ -24,6 +24,7 @@ public class ActivitiesDAO extends AbstractActivitiesDAO implements IActivitiesD
         super(JDBCConnectionManager.getInstance().getConnection(connectionName, libraryName, false));
     }
 
+    @Override
     protected IRapidFireActivityResource createActivityInstance(IRapidFireJobResource job, Time startTime) {
         return new RapidFireActivityResource(job, startTime);
     }

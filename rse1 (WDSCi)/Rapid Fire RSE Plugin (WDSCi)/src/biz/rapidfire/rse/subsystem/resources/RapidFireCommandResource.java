@@ -27,7 +27,7 @@ public class RapidFireCommandResource extends AbstractResource implements IRapid
     private RapidFireCommandResourceDelegate delegate;
 
     public static RapidFireCommandResource createEmptyInstance(IRapidFireFileResource file) {
-        return new RapidFireCommandResource(file, CommandType.COMPILE, 0); //$NON-NLS-1$
+        return new RapidFireCommandResource(file, CommandType.COMPILE, 0); 
     }
 
     public RapidFireCommandResource(IRapidFireFileResource file, CommandType commandType, int sequence) {

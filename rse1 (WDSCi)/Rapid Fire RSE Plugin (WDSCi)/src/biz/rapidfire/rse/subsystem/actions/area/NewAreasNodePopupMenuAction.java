@@ -21,7 +21,6 @@ import biz.rapidfire.rse.subsystem.resources.AreasNode;
 import biz.rapidfire.rse.subsystem.resources.RapidFireAreaResource;
 
 import com.ibm.etools.systems.core.ui.actions.SystemBaseAction;
-import com.ibm.etools.systems.subsystems.SubSystem;
 
 public class NewAreasNodePopupMenuAction extends SystemBaseAction {
 

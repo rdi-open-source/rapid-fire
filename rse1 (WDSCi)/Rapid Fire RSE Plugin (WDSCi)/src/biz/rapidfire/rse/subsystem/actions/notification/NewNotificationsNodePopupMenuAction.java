@@ -21,7 +21,6 @@ import biz.rapidfire.rse.subsystem.resources.NotificationsNode;
 import biz.rapidfire.rse.subsystem.resources.RapidFireNotificationResource;
 
 import com.ibm.etools.systems.core.ui.actions.SystemBaseAction;
-import com.ibm.etools.systems.subsystems.SubSystem;
 
 public class NewNotificationsNodePopupMenuAction extends SystemBaseAction {
 

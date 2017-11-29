@@ -25,7 +25,7 @@ public class RapidFireFileResource extends AbstractResource implements IRapidFir
     private RapidFireFileResourceDelegate delegate;
 
     public static RapidFireFileResource createEmptyInstance(IRapidFireJobResource job) {
-        return new RapidFireFileResource(job, 0); //$NON-NLS-1$
+        return new RapidFireFileResource(job, 0); 
     }
 
     public RapidFireFileResource(IRapidFireJobResource job, int position) {

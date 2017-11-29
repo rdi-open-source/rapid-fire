@@ -113,6 +113,7 @@ public class RapidFireSubSystemFactory extends DefaultSubSystemFactoryImpl {
     // return null;
     // };
 
+    @Override
     public IAction[] getFilterActions(SystemFilter filter, Shell shell) {
 
         Vector<IAction> actions = new Vector<IAction>();
