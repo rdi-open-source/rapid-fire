@@ -139,9 +139,10 @@ public class Messages extends NLS {
     public static String Tooltip_Host_name;
     public static String Tooltip_FTP_port_number;
     public static String Tooltip_Signon_User;
-    public static String Tooltip_Password_colon;
+    public static String Tooltip_Password;
     public static String Tooltip_Rapid_Fire_library;
     public static String Tooltip_Version;
+    public static String Tooltip_Connection_name;
 
     // Questions
     public static String Do_you_want_to_delete_library_A;
@@ -249,6 +250,7 @@ public class Messages extends NLS {
     public static String Host_A_not_found_in_configured_RSE_connections;
     public static String Rapid_Fire_version_information_not_found_in_library_A;
     public static String Could_not_rereieve_Rapid_Fire_version_information_due_to_backend_error_A;
+    public static String Connection_A_not_found;
 
     // API error messages
     public static String EntityManager_Unknown_error_code_A;

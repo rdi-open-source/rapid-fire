@@ -41,15 +41,16 @@ import biz.rapidfire.core.model.dao.JDBCConnectionManager;
 import biz.rapidfire.core.preferences.Preferences;
 import biz.rapidfire.core.swt.widgets.WidgetFactory;
 import biz.rapidfire.core.validators.Validator;
+import biz.rapidfire.rsebase.swt.widgets.SystemHostCombo;
 
 import com.ibm.as400.access.AS400;
 
-public class RapidFireLibrary extends PreferencePage implements IWorkbenchPreferencePage {
+public class Library extends PreferencePage implements IWorkbenchPreferencePage {
 
     private String rapidFireLibrary;
     private Validator validatorLibrary;
 
-    private Text textHostName;
+    private SystemHostCombo comboConnection;
     private Text textFtpPortNumber;
     private Text textProductLibrary;
     private Label textProductLibraryVersion;
@@ -58,7 +59,7 @@ public class RapidFireLibrary extends PreferencePage implements IWorkbenchPrefer
 
     private boolean updateProductLibraryVersion;
 
-    public RapidFireLibrary() {
+    public Library() {
         super();
 
         setPreferenceStore(RapidFireCorePlugin.getDefault().getPreferenceStore());
@@ -75,20 +76,20 @@ public class RapidFireLibrary extends PreferencePage implements IWorkbenchPrefer
         gridLayout.numColumns = 3;
         container.setLayout(gridLayout);
 
-        Label labelHostName = new Label(container, SWT.NONE);
-        labelHostName.setLayoutData(createLabelLayoutData());
-        labelHostName.setText(Messages.Label_Host_name_colon);
-        labelHostName.setToolTipText(Messages.Tooltip_Host_name);
-
-        textHostName = WidgetFactory.createText(container);
-        textHostName.setToolTipText(Messages.Tooltip_Host_name);
-        textHostName.addModifyListener(new ModifyListener() {
-            public void modifyText(ModifyEvent arg0) {
+        comboConnection = new SystemHostCombo(container, SWT.BORDER);
+        comboConnection.setLayoutData(new GridData(SWT.FILL, SWT.DEFAULT, true, false, 3, 1));
+        comboConnection.setToolTipText(Messages.Tooltip_Connection_name);
+        comboConnection.getCombo().setToolTipText(Messages.Tooltip_Connection_name);
+        comboConnection.addSelectionListener(new SelectionListener() {
+            public void widgetSelected(SelectionEvent event) {
+                setErrorMessage(null);
                 updateProductLibraryVersion();
-                return;
+            }
+
+            public void widgetDefaultSelected(SelectionEvent event) {
+                widgetSelected(event);
             }
         });
-        textHostName.setLayoutData(createTextLayoutData());
 
         Label labelFtpPortNumber = new Label(container, SWT.NONE);
         labelFtpPortNumber.setLayoutData(createLabelLayoutData());
@@ -156,7 +157,7 @@ public class RapidFireLibrary extends PreferencePage implements IWorkbenchPrefer
         buttonTransfer.addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent event) {
-                String hostName = textHostName.getText();
+                String hostName = comboConnection.getHostName();
                 int ftpPort = IntHelper.tryParseInt(textFtpPortNumber.getText(), Preferences.getInstance().getDefaultFtpPortNumber());
                 TransferRapidFireLibraryHandler handler = new TransferRapidFireLibraryHandler(hostName, ftpPort, rapidFireLibrary);
                 try {
@@ -205,16 +206,18 @@ public class RapidFireLibrary extends PreferencePage implements IWorkbenchPrefer
     protected void setStoreToValues() {
 
         Preferences.getInstance().setRapidFireLibrary(rapidFireLibrary);
-        Preferences.getInstance().setHostName(textHostName.getText());
+        Preferences.getInstance().setConnectionName(comboConnection.getConnectionName());
         Preferences.getInstance().setFtpPortNumber(
             IntHelper.tryParseInt(textFtpPortNumber.getText(), Preferences.getInstance().getDefaultFtpPortNumber()));
-
     }
 
     protected void setScreenToValues() {
 
         rapidFireLibrary = Preferences.getInstance().getRapidFireLibrary();
-        textHostName.setText(Preferences.getInstance().getHostName());
+        String connectionName = Preferences.getInstance().getHostName();
+        if (!comboConnection.selectConnection(connectionName)) {
+            setErrorMessage(Messages.bindParameters(Messages.Connection_A_not_found, connectionName));
+        }
         textFtpPortNumber.setText(Integer.toString(Preferences.getInstance().getFtpPortNumber()));
 
         setScreenValues();
@@ -223,7 +226,10 @@ public class RapidFireLibrary extends PreferencePage implements IWorkbenchPrefer
     protected void setScreenToDefaultValues() {
 
         rapidFireLibrary = Preferences.getInstance().getDefaultRapidFireLibrary();
-        textHostName.setText(Preferences.getInstance().getDefaultHostName());
+        String connectionName = Preferences.getInstance().getDefaultHostName();
+        if (!comboConnection.selectConnection(connectionName)) {
+            setErrorMessage(Messages.bindParameters(Messages.Connection_A_not_found, connectionName));
+        }
         textFtpPortNumber.setText(Integer.toString(Preferences.getInstance().getDefaultFtpPortNumber()));
 
         setScreenValues();
@@ -250,7 +256,7 @@ public class RapidFireLibrary extends PreferencePage implements IWorkbenchPrefer
     }
 
     private void updateProductLibraryVersion() {
-        String text = getProductLibraryVersion(textHostName.getText(), textProductLibrary.getText());
+        String text = getProductLibraryVersion(comboConnection.getHostName(), textProductLibrary.getText());
         if (text == null) {
             return;
         }

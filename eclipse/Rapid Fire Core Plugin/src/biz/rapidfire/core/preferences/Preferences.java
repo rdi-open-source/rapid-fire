@@ -102,7 +102,7 @@ public final class Preferences {
      * Preferences: SETTER
      */
 
-    public void setHostName(String aHostName) {
+    public void setConnectionName(String aHostName) {
         preferenceStore.setValue(HOST_NAME, aHostName);
     }
 
