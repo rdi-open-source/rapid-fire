@@ -37,18 +37,25 @@
 		<format property="today.date.iso" pattern="yyyy-MM-dd" locale="de,DE" />
 		<format property="today.year" pattern="yyyy" locale="de,DE" />
 	</tstamp>
-	 
-	<property name="workspace.home"    location="./../.."/>
-	<property name="build.dir"         location="./.."/>
-	<property name="build.upload.dir"  location="${build.dir}/upload" />
 
-	<property name="site.dir"          location="${workspace.home}/${build.updatesite}"  />
+	<property name="workspace.home" location="./../.." />
+	<property name="build.dir" location="./.." />
+	<property name="build.upload.dir" location="${build.dir}/upload" />
+
+	<!-- Set local FTP properties -->
+	<property name="local.download.directory" location="${basedir}/temp-downloads" />
+	<property name="local.savefile.name" value="${IBMi.ftp.savefile.name}" />
+	<property name="local.savefile.directory" location="${workspace.home}/${build.project.core}/Server" />
+
+	<!-- Set update site properties -->
+	<property name="site.dir" location="${workspace.home}/${build.updatesite}" />
 	<property name="site.features.dir" location="${site.dir}/features" />
-	<property name="site.plugins.dir"  location="${site.dir}/plugins"  />
+	<property name="site.plugins.dir" location="${site.dir}/plugins" />
 
-	<property name="temp.dir"          location="${basedir}/temp" />
+	<!-- Set temp directories -->
+	<property name="temp.dir" location="${basedir}/temp" />
 	<property name="temp.dir.local_updatesite" location="${temp.dir}/local_updatesite" />
-	
+
 	<!-- Target IDE -->
 	<if>
 		<equals arg1="${build.target}" arg2="RDi" />
@@ -56,10 +63,10 @@
 			<property name="do.copy.site.xml" value="false" />
 		</then>
 		<else>
-			<property name="do.copy.site.xml" value="true"/>
+			<property name="do.copy.site.xml" value="true" />
 		</else>
 	</if>
-	
+
 	<!-- Check for BETA or RELEASE version -->
 	<property name="release.flag.regex" value="^(?:[1-9]+\.[0-9]+(?:\.[0-9]+)?(?:\.(?:b[0-9]{3}|(r)))?)$" />
 	<propertyregex property="release.flag" input="${build.version}" regexp="${release.flag.regex}" select="\1" casesensitive="true" />
@@ -78,13 +85,13 @@
 			<property name="version.info" value="&lt;div class=&quot;beta&quot;&gt;Beta Version - ${build.version}&lt;/div&gt;" />
 		</else>
 	</if>
-	
-	<property name="build.upload.dir.files"         location="${build.upload.dir}/sf-files/${beta.dir}" />
+
+	<property name="build.upload.dir.files" location="${build.upload.dir}/sf-files/${beta.dir}" />
 	<property name="build.upload.dir.files.eclipse" location="${build.upload.dir}/sf-files/${beta.dir}/eclipse" />
 
 	<!-- Set regular expressions and replacement values -->
 	<property name="validate.version.regex" value="^([1-9]+\.[0-9]+(?:\.[0-9]+)?(?:\.(?:b[0-9]{3}|r))?)$" />
-	
+
 	<property name="manifest.version.regex" value="(Bundle-Version:\s)([1-9]+\.[0-9]+(?:\.[0-9]+)?(?:\.(?:b[0-9]{1,3}|r))?)" />
 	<property name="manifest.version.replace" value="\1${build.version}" />
 
@@ -99,127 +106,153 @@
 
 	<property name="site.2.version.regex" value="(&lt;feature.*version=&quot;)([0-9]+\.[0-9]+(?:\.[0-9]+)?(?:\.(?:b[0-9]{1,3}|r))?)(&quot;)" />
 	<property name="site.2.version.replace" value="\1${build.version}\3" />
-	
+
 	<property name="local.zipfile" value="${build.zip.file.name}_v${build.version}.zip" />
 
 	<!-- Set update site values -->
 	<property name="updatesite.tag.file" location="${workspace.home}\${build.updatesite}\${build.updatesite} v${build.version}.tag" />
-	
+
+	<!--
+    * =====================================================================
+    *   Downloads the library from the System i.
+    *   This target requires a patched version of commons-net-3.3.jar
+    *   where bug NET-512 has been fixed.
+    *   (https://issues.apache.org/jira/browse/NET-512)
+    * ===================================================================== -->
+	<target name="downloadIBMiLibrary" depends="ftpCredentialsIBMi" description="Download library from IBM i">
+
+		<echo>Downloading save file ${IBMi.ftp.savefile.name} ...</echo>
+
+		<mkdir dir="${local.download.directory}" />
+
+		<ftp action="get" server="${IBMi.ftp.server}" userid="${IBMi.ftp.user}" password="${IBMi.ftp.password}" binary="true" verbose="true" remotedir="${IBMi.ftp.savefile.library}" systemTypeKey="OS/400">
+			<fileset dir="${local.download.directory}" casesensitive="false">
+				<include name="${IBMi.ftp.savefile.name}" />
+			</fileset>
+		</ftp>
+
+		<move file="${local.download.directory}/${IBMi.ftp.savefile.name}" tofile="${local.savefile.directory}/${local.savefile.name}" overwrite="true" />
+
+		<eclipse.refreshLocal resource="${build.project.name}" depth="infinite" />
+		<eclipse.refreshLocal resource="${build.project.core}" depth="infinite" />
+
+	</target>
+
 	<!-- =============================================================
 	      Erstellt eine neue Update-Site.
 	      Alle alten Dateien werden überschrieben, bzw. gelöscht.
 	     ============================================================= -->
 	<target name="build" depends="checkBuildTarget, clean, updateVersionNumber, createTagFile" description="Step 1">
-		
-			<echo>+------------------------------------------------------+</echo>
-			<echo>|  Finished RPGUnit build ${build.version}             |</echo>
-			<echo>|                                                      |</echo>
-			<echo>|  Right-click 'site.xml' and select 'PDE Tools' ->    |</echo>
-			<echo>|  'Build Site' to build the update site.              |</echo>
-			<echo>|                                                      |</echo>
-			<echo>|  Then proceed with:   createSourceForgeFiles         |</echo>
-			<echo>|                      -uploadSourceForgeFiles-        |</echo>
-			<echo>+------------------------------------------------------+</echo>
-			<echo>*** Finished ***</echo>
-		
+
+		<echo>+------------------------------------------------------+</echo>
+		<echo>|  Finished RPGUnit build ${build.version}             |</echo>
+		<echo>|                                                      |</echo>
+		<echo>|  Right-click 'site.xml' and select 'PDE Tools' ->    |</echo>
+		<echo>|  'Build Site' to build the update site.              |</echo>
+		<echo>|                                                      |</echo>
+		<echo>|  Then proceed with:   createSourceForgeFiles         |</echo>
+		<echo>|                      -uploadSourceForgeFiles-        |</echo>
+		<echo>+------------------------------------------------------+</echo>
+		<echo>*** Finished ***</echo>
+
 	</target>
-	
+
 	<!-- =============================================================
 	      Kopiert alle erforderlichen Assets-Dateien.
 	     ============================================================= -->
 	<target name="createSourceForgeFiles" depends="createZipFile, createUpdateSite" description="Step 3">
-		
+
 		<antcall target="cleanTempAndPDE" />
 		<antcall target="refreshProjects" />
-		
+
 	</target>
-	
+
 	<!-- =============================================================
 	      Erzeugt die ZIP Datei.
 	     ============================================================= -->
 	<target name="createZipFile" depends="prepareZipFile">
-		
+
 		<echo>Erzeuge zip Datei: ${version.file}</echo>
-		
+
 		<mkdir dir="${build.upload.dir.files}" />
-		
-	  	<zip destfile="${build.upload.dir.files}/${version.file}">
-		    <fileset dir="${temp.dir.local_updatesite}"/>
-		</zip>		
-		
+
+		<zip destfile="${build.upload.dir.files}/${version.file}">
+			<fileset dir="${temp.dir.local_updatesite}" />
+		</zip>
+
 	</target>
-	
+
 	<!-- =============================================================
 	      Erzeugt die Update Site.
 	     ============================================================= -->
 	<target name="createUpdateSite" depends="prepareUpdateSite">
-		
+
 		<echo>Erzeuge Update Site Datei: ${version.file}</echo>
-		
+
 		<mkdir dir="${build.upload.dir.files.eclipse}" />
-		
-		<copy todir="${build.upload.dir.files.eclipse}/features" >
-			<fileset dir="${temp.dir.local_updatesite}/features"/>
+
+		<copy todir="${build.upload.dir.files.eclipse}/features">
+			<fileset dir="${temp.dir.local_updatesite}/features" />
 		</copy>
-		
-		<copy todir="${build.upload.dir.files.eclipse}/plugins" >
-			<fileset dir="${temp.dir.local_updatesite}/plugins"/>
+
+		<copy todir="${build.upload.dir.files.eclipse}/plugins">
+			<fileset dir="${temp.dir.local_updatesite}/plugins" />
 		</copy>
-		
-		<copy todir="${build.upload.dir.files.eclipse}" >
-			<fileset dir="${temp.dir.local_updatesite}" includes="artifacts.jar"/>
-			<fileset dir="${temp.dir.local_updatesite}" includes="content.jar"/>
+
+		<copy todir="${build.upload.dir.files.eclipse}">
+			<fileset dir="${temp.dir.local_updatesite}" includes="artifacts.jar" />
+			<fileset dir="${temp.dir.local_updatesite}" includes="content.jar" />
 		</copy>
-		
+
 		<if>
 			<equals arg1="${do.copy.site.xml}" arg2="true" />
 			<then>
-				<copy todir="${build.upload.dir.files.eclipse}" >
+				<copy todir="${build.upload.dir.files.eclipse}">
 					<fileset dir="${site.dir}" includes="site.xml" />
 				</copy>
 			</then>
 		</if>
-		
+
 	</target>
-	
+
 	<!-- =============================================================
 	      Bereitet das Erstellen der ZIP Datei vor.
 	     ============================================================= -->
 	<target name="prepareZipFile" depends="retrieveVersionInfo">
-		
+
 		<mkdir dir="${temp.dir.local_updatesite}" />
 		<mkdir dir="${temp.dir.local_updatesite}/features" />
 		<mkdir dir="${temp.dir.local_updatesite}/plugins" />
-		
-		<copy todir="${temp.dir.local_updatesite}/features" >
+
+		<copy todir="${temp.dir.local_updatesite}/features">
 			<fileset dir="${site.dir}/features" />
 		</copy>
-		
-		<copy todir="${temp.dir.local_updatesite}/plugins" >
+
+		<copy todir="${temp.dir.local_updatesite}/plugins">
 			<fileset dir="${site.dir}/plugins" />
 		</copy>
-		
-		<copy todir="${temp.dir.local_updatesite}" >
+
+		<copy todir="${temp.dir.local_updatesite}">
 			<fileset dir="${site.dir}" includes="artifacts.jar" />
 			<fileset dir="${site.dir}" includes="content.jar" />
 			<fileset dir="${site.dir}" includes="*.tag" />
 		</copy>
-		
+
 		<if>
 			<equals arg1="${do.copy.site.xml}" arg2="true" />
 			<then>
-				<copy todir="${temp.dir.local_updatesite}" >
+				<copy todir="${temp.dir.local_updatesite}">
 					<fileset dir="${site.dir}" includes="site.xml" />
 				</copy>
 			</then>
 		</if>
 	</target>
-	
+
 	<!-- =============================================================
 	      Bereitet das Erstellen der Update-Site Datei vor.
 	     ============================================================= -->
 	<target name="prepareUpdateSite" depends="retrieveVersionInfo">
-		
+
 	</target>
 
 	<!--
@@ -232,18 +265,18 @@
 		<echo>Creating version tag file ${updatesite.tag.file} ...</echo>
 
 		<touch file="${updatesite.tag.file}" />
-		
+
 		<eclipse.refreshLocal resource="${build.updatesite}" depth="infinite" />
 
 	</target>
-	
+
 	<!-- =============================================================
 	      Kopiert die Versions-Informationen.
 	     ============================================================= -->
 	<target name="retrieveVersionInfo" depends="">
-		
-		<property name="version.file" value="${local.zipfile}"/>
-		
+
+		<property name="version.file" value="${local.zipfile}" />
+
 		<echo>Ermittelter Dateiname ist: ${version.file}</echo>
 	</target>
 
@@ -251,49 +284,51 @@
 	      Löscht alle bestehenden Dateien.
 	     ============================================================= -->
 	<target name="clean" depends="cleanTempAndPDE" description="Cleans all build directories">
-		
+
 		<mkdir dir="${build.upload.dir}" />
-		
+		<mkdir dir="${local.download.directory}" />
+
 		<!-- 'upload' folder -->
 		<delete includeemptydirs="true">
-			<fileset dir="${build.upload.dir}" includes="**/*"/>
+			<fileset dir="${build.upload.dir}" includes="**/*" />
+			<fileset dir="${local.download.directory}" includes="**/*" />
 		</delete>
-		
+
 		<antcall target="refreshProjects" />
-		
+
 	</target>
 
 	<!-- =============================================================
 	      Löscht alle bestehenden Dateien.
 	     ============================================================= -->
 	<target name="cleanTempAndPDE" depends="" description="Cleans only temp and PDE folders">
-		
+
 		<mkdir dir="${temp.dir}" />
-		
+
 		<!-- 'temp' folder -->
 		<delete includeemptydirs="true">
-			<fileset dir="${temp.dir}" includes="**/*"/>
+			<fileset dir="${temp.dir}" includes="**/*" />
 		</delete>
 
 		<!-- Files created by PDE Tools -->
-		<delete failonerror="true" >
+		<delete failonerror="true">
 			<fileset dir="${site.features.dir}" />
 			<fileset dir="${site.plugins.dir}" />
 		</delete>
-		
-		<delete failonerror="true" >
+
+		<delete failonerror="true">
 			<fileset dir="${site.dir}" includes="artifacts.jar" />
 			<fileset dir="${site.dir}" includes="content.jar" />
 			<fileset dir="${site.dir}" includes="*.tag" />
 		</delete>
-		
+
 		<!-- Files created by PDE Tools -->
-		<delete failonerror="true" >
+		<delete failonerror="true">
 			<fileset dir="${site.dir}" includes="*.tag" />
 		</delete>
-		
+
 		<antcall target="refreshProjects" />
-		
+
 	</target>
 
 	<!--
@@ -311,7 +346,7 @@
 			<sequential>
 
 				<if>
-					<available file="${workspace.home}\@{project}" type="dir"/>
+					<available file="${workspace.home}\@{project}" type="dir" />
 					<then>
 
 						<echo message="${workspace.home}\@{project}" />
@@ -324,19 +359,19 @@
 								</replaceregexp>
 							</then>
 						</if>
-		
+
 						<replaceregexp match="${feature.1.version.regex}" replace="${feature.1.version.replace}" flags="s" byline="false">
 							<fileset dir="${workspace.home}\@{project}" includes="feature.xml" />
 						</replaceregexp>
-		
+
 						<replaceregexp match="${feature.2.version.regex}" replace="${feature.2.version.replace}" flags="s" byline="false">
 							<fileset dir="${workspace.home}\@{project}" includes="feature.xml" />
 						</replaceregexp>
-		
+
 						<replaceregexp match="${site.1.version.regex}" replace="${site.1.version.replace}" flags="g" byline="false">
 							<fileset dir="${workspace.home}\@{project}" includes="site.xml" />
 						</replaceregexp>
-		
+
 						<replaceregexp match="${site.2.version.regex}" replace="${site.2.version.replace}" flags="g" byline="false">
 							<fileset dir="${workspace.home}\@{project}" includes="site.xml" />
 						</replaceregexp>
@@ -396,11 +431,11 @@
 	<target name="checkBuildTarget">
 
 		<echo>Checking build target: ${build.target}</echo>
-		
+
 		<condition property="build.updatesite.exists">
-			<available file="${workspace.home}\${build.updatesite}" type="dir"/>
+			<available file="${workspace.home}\${build.updatesite}" type="dir" />
 		</condition>
-		
+
 		<if>
 			<equals arg1="${build.updatesite.exists}" arg2="true" />
 			<then>
@@ -410,6 +445,17 @@
 				<fail>*** Error: Update site ${build.updatesite} not found! ***</fail>
 			</else>
 		</if>
+
+	</target>
+
+	<!--
+    * =====================================================================
+    *   Asks for FTP credentials: username and password.
+    *   Property 'IBMi.ftp.user' is loaded from 'ftp.properties'.
+    * ===================================================================== -->
+	<target name="ftpCredentialsIBMi" unless="IBMi.ftp.password">
+
+		<input message="Please enter FTP password:" addproperty="IBMi.ftp.password" defaultvalue="" />
 
 	</target>
 
@@ -430,7 +476,7 @@
 
 		<echo>* ${ant.project.name}</echo>
 		<eclipse.refreshLocal resource="${ant.project.name}" depth="infinite" />
-		
+
 		<echo>Done.</echo>
 
 	</target>
