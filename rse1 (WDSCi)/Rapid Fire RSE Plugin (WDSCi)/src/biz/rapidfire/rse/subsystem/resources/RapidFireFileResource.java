@@ -11,6 +11,7 @@ package biz.rapidfire.rse.subsystem.resources;
 import biz.rapidfire.core.exceptions.IllegalParameterException;
 import biz.rapidfire.core.model.IRapidFireFileResource;
 import biz.rapidfire.core.model.IRapidFireJobResource;
+import biz.rapidfire.core.model.maintenance.file.shared.FileKey;
 import biz.rapidfire.core.model.maintenance.file.shared.FileType;
 import biz.rapidfire.core.subsystem.IRapidFireSubSystem;
 import biz.rapidfire.core.subsystem.resources.RapidFireFileResourceDelegate;
@@ -36,6 +37,10 @@ public class RapidFireFileResource extends AbstractResource implements IRapidFir
         this.parentJob = job;
         this.delegate = new RapidFireFileResourceDelegate(job.getDataLibrary(), job.getName(), position);
         super.setSubSystem((SubSystem)job.getParentSubSystem());
+    }
+
+    public FileKey getKey() {
+        return new FileKey(parentJob.getKey(), delegate.getPosition());
     }
 
     /*

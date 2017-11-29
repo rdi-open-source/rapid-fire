@@ -11,6 +11,7 @@ package biz.rapidfire.rse.subsystem.resources;
 import biz.rapidfire.core.exceptions.IllegalParameterException;
 import biz.rapidfire.core.model.IRapidFireJobResource;
 import biz.rapidfire.core.model.IRapidFireLibraryListResource;
+import biz.rapidfire.core.model.maintenance.librarylist.shared.LibraryListKey;
 import biz.rapidfire.core.subsystem.IRapidFireSubSystem;
 import biz.rapidfire.core.subsystem.resources.RapidFireLibraryListResourceDelegate;
 
@@ -40,6 +41,10 @@ public class RapidFireLibraryListResource extends AbstractResource implements IR
         this.parentJob = job;
         this.delegate = new RapidFireLibraryListResourceDelegate(job.getDataLibrary(), job.getName(), library);
         super.setSubSystem((SubSystem)job.getParentSubSystem());
+    }
+
+    public LibraryListKey getKey() {
+        return new LibraryListKey(parentJob.getKey(), delegate.getName());
     }
 
     /*
