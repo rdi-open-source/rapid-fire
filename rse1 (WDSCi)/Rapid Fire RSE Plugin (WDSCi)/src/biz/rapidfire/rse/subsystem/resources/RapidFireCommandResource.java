@@ -12,6 +12,7 @@ import biz.rapidfire.core.exceptions.IllegalParameterException;
 import biz.rapidfire.core.model.IRapidFireCommandResource;
 import biz.rapidfire.core.model.IRapidFireFileResource;
 import biz.rapidfire.core.model.IRapidFireJobResource;
+import biz.rapidfire.core.model.maintenance.command.shared.CommandKey;
 import biz.rapidfire.core.model.maintenance.command.shared.CommandType;
 import biz.rapidfire.core.subsystem.IRapidFireSubSystem;
 import biz.rapidfire.core.subsystem.resources.RapidFireCommandResourceDelegate;
@@ -22,6 +23,7 @@ import com.ibm.etools.systems.subsystems.impl.AbstractResource;
 public class RapidFireCommandResource extends AbstractResource implements IRapidFireCommandResource, Comparable<IRapidFireCommandResource> {
 
     private IRapidFireJobResource parentJob;
+    private IRapidFireFileResource parentFile;
     private RapidFireCommandResourceDelegate delegate;
 
     public static RapidFireCommandResource createEmptyInstance(IRapidFireFileResource file) {
@@ -35,9 +37,14 @@ public class RapidFireCommandResource extends AbstractResource implements IRapid
         }
 
         this.parentJob = file.getParentJob();
+        this.parentFile = file;
         this.delegate = new RapidFireCommandResourceDelegate(parentJob.getDataLibrary(), parentJob.getName(), file.getPosition(), commandType,
             sequence);
         super.setSubSystem((SubSystem)file.getParentSubSystem());
+    }
+
+    public CommandKey getKey() {
+        return new CommandKey(parentFile.getKey(), delegate.getCommandType(), delegate.getSequence());
     }
 
     /*
