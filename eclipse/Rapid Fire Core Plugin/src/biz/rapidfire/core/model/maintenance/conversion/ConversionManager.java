@@ -16,12 +16,15 @@ import java.util.List;
 import biz.rapidfire.core.Messages;
 import biz.rapidfire.core.model.dao.IJDBCConnection;
 import biz.rapidfire.core.model.maintenance.AbstractManager;
+import biz.rapidfire.core.model.maintenance.MaintenanceMode;
 import biz.rapidfire.core.model.maintenance.Result;
 import biz.rapidfire.core.model.maintenance.Success;
-import biz.rapidfire.core.model.maintenance.file.FileKey;
-import biz.rapidfire.core.model.maintenance.job.JobKey;
+import biz.rapidfire.core.model.maintenance.conversion.shared.ConversionAction;
+import biz.rapidfire.core.model.maintenance.conversion.shared.ConversionKey;
+import biz.rapidfire.core.model.maintenance.file.shared.FileKey;
+import biz.rapidfire.core.model.maintenance.job.shared.JobKey;
 
-public class ConversionManager extends AbstractManager<ConversionKey, ConversionValues> {
+public class ConversionManager extends AbstractManager<ConversionKey, ConversionValues, ConversionAction> {
 
     private static final String ERROR_001 = "001"; //$NON-NLS-1$
     private static final String ERROR_002 = "002"; //$NON-NLS-1$
@@ -44,7 +47,7 @@ public class ConversionManager extends AbstractManager<ConversionKey, Conversion
     }
 
     @Override
-    public Result initialize(String mode, ConversionKey key) throws Exception {
+    public Result initialize(MaintenanceMode mode, ConversionKey key) throws Exception {
 
         JobKey jobKey = new JobKey(key.getJobName());
         fileKey = new FileKey(jobKey, key.getPosition());
@@ -52,7 +55,7 @@ public class ConversionManager extends AbstractManager<ConversionKey, Conversion
         CallableStatement statement = dao.prepareCall(dao
             .insertLibraryQualifier("{CALL " + IJDBCConnection.LIBRARY + "\"MNTCNV_initialize\"(?, ?, ?, ?, ?, ?)}")); //$NON-NLS-1$ //$NON-NLS-2$
 
-        statement.setString(IConversionInitialize.MODE, mode);
+        statement.setString(IConversionInitialize.MODE, mode.label());
         statement.setString(IConversionInitialize.JOB, key.getJobName());
         statement.setInt(IConversionInitialize.POSITION, key.getPosition());
         statement.setString(IConversionInitialize.FIELD_TO_CONVERT, key.getFieldToConvert());
@@ -200,4 +203,9 @@ public class ConversionManager extends AbstractManager<ConversionKey, Conversion
         statement.execute();
     }
 
+    public Result checkAction(ConversionKey key, ConversionAction conversionAction) throws Exception {
+        // TODO: check action!
+        Result result = new Result(Success.YES.label(), null);
+        return result;
+    }
 }

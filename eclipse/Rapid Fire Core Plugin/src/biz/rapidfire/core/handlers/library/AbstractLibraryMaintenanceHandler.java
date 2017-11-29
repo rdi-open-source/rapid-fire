@@ -18,19 +18,19 @@ import biz.rapidfire.core.model.IRapidFireJobResource;
 import biz.rapidfire.core.model.IRapidFireLibraryResource;
 import biz.rapidfire.core.model.IRapidFireResource;
 import biz.rapidfire.core.model.dao.JDBCConnectionManager;
+import biz.rapidfire.core.model.maintenance.MaintenanceMode;
 import biz.rapidfire.core.model.maintenance.Result;
-import biz.rapidfire.core.model.maintenance.Success;
-import biz.rapidfire.core.model.maintenance.job.JobKey;
-import biz.rapidfire.core.model.maintenance.library.LibraryKey;
+import biz.rapidfire.core.model.maintenance.job.shared.JobKey;
 import biz.rapidfire.core.model.maintenance.library.LibraryManager;
 import biz.rapidfire.core.model.maintenance.library.shared.LibraryAction;
+import biz.rapidfire.core.model.maintenance.library.shared.LibraryKey;
 
-public abstract class AbstractLibraryMaintenanceHandler extends AbstractResourceMaintenanceHandler<IRapidFireLibraryResource> {
+public abstract class AbstractLibraryMaintenanceHandler extends AbstractResourceMaintenanceHandler<IRapidFireLibraryResource, LibraryAction> {
 
     private LibraryManager manager;
     private LibraryAction libraryAction;
 
-    public AbstractLibraryMaintenanceHandler(String mode, LibraryAction libraryAction) {
+    public AbstractLibraryMaintenanceHandler(MaintenanceMode mode, LibraryAction libraryAction) {
         super(mode);
 
         this.libraryAction = libraryAction;
@@ -52,7 +52,7 @@ public abstract class AbstractLibraryMaintenanceHandler extends AbstractResource
             IRapidFireLibraryResource library = (IRapidFireLibraryResource)resource;
             manager = getOrCreateManager(library.getParentJob());
 
-            if (canExecuteAction(library.getParentJob(), libraryAction)) {
+            if (canExecuteAction(library, libraryAction)) {
                 Result result = initialize(library);
                 if (result != null && result.isError()) {
                     MessageDialog.openError(getShell(), Messages.E_R_R_O_R, result.getMessage());
@@ -86,22 +86,19 @@ public abstract class AbstractLibraryMaintenanceHandler extends AbstractResource
         return manager;
     }
 
-    protected boolean canExecuteAction(IRapidFireJobResource job, LibraryAction libraryAction) {
+    protected boolean canExecuteAction(IRapidFireLibraryResource library, LibraryAction libraryAction) {
 
         String message = null;
 
         try {
 
             // TODO: check action!
-            // Result result = libraryManager.checkAction(new
-            // JobKey(job.getName()),
-            // libraryAction);
-            Result result = new Result(Success.YES.label(), null);
-
+            Result result = manager.checkAction(library.getKey(), libraryAction);
             if (result.isSuccessfull()) {
                 return true;
             } else {
-                message = Messages.bindParameters(Messages.The_requested_operation_is_invalid_for_job_status_A, job.getStatus().label);
+                message = Messages.bindParameters(Messages.The_requested_operation_is_invalid_for_job_status_A,
+                    library.getParentJob().getStatus().label);
             }
 
         } catch (Exception e) {
@@ -118,11 +115,6 @@ public abstract class AbstractLibraryMaintenanceHandler extends AbstractResource
 
     private Result initialize(IRapidFireLibraryResource file) throws Exception {
 
-        String connectionName = file.getParentSubSystem().getConnectionName();
-        String dataLibrary = file.getDataLibrary();
-        boolean commitControl = isCommitControl();
-
-        manager = new LibraryManager(JDBCConnectionManager.getInstance().getConnection(connectionName, dataLibrary, commitControl));
         manager.openFiles();
 
         Result result = manager.initialize(getMode(), new LibraryKey(new JobKey(file.getJob()), file.getName()));

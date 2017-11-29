@@ -12,14 +12,14 @@ import org.eclipse.core.commands.IHandler;
 
 import biz.rapidfire.core.dialogs.maintenance.command.CommandMaintenanceDialog;
 import biz.rapidfire.core.model.IRapidFireCommandResource;
-import biz.rapidfire.core.model.maintenance.IMaintenance;
+import biz.rapidfire.core.model.maintenance.MaintenanceMode;
 import biz.rapidfire.core.model.maintenance.command.CommandValues;
 import biz.rapidfire.core.model.maintenance.command.shared.CommandAction;
 
 public class DisplayCommandHandler extends AbstractCommandMaintenanceHandler implements IHandler {
 
     public DisplayCommandHandler() {
-        super(IMaintenance.MODE_DISPLAY, CommandAction.DISPLAY);
+        super(MaintenanceMode.MODE_DISPLAY, CommandAction.DISPLAY);
     }
 
     @Override

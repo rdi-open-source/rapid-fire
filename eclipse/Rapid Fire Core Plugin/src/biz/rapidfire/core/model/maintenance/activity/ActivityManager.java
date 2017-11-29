@@ -17,7 +17,8 @@ import org.eclipse.swt.widgets.Shell;
 import biz.rapidfire.core.model.IRapidFireActivityResource;
 import biz.rapidfire.core.model.IRapidFireJobResource;
 import biz.rapidfire.core.model.dao.IJDBCConnection;
-import biz.rapidfire.core.model.maintenance.job.JobKey;
+import biz.rapidfire.core.model.maintenance.MaintenanceMode;
+import biz.rapidfire.core.model.maintenance.job.shared.JobKey;
 
 public class ActivityManager {
 
@@ -30,7 +31,7 @@ public class ActivityManager {
         this.dao = dao;
     }
 
-    public void initialize(String mode, JobKey key) throws Exception {
+    public void initialize(MaintenanceMode mode, JobKey key) throws Exception {
 
         jobKey = key;
     }

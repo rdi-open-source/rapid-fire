@@ -14,11 +14,14 @@ import java.sql.Types;
 import biz.rapidfire.core.Messages;
 import biz.rapidfire.core.model.dao.IJDBCConnection;
 import biz.rapidfire.core.model.maintenance.AbstractManager;
+import biz.rapidfire.core.model.maintenance.MaintenanceMode;
 import biz.rapidfire.core.model.maintenance.Result;
 import biz.rapidfire.core.model.maintenance.Success;
-import biz.rapidfire.core.model.maintenance.job.JobKey;
+import biz.rapidfire.core.model.maintenance.job.shared.JobKey;
+import biz.rapidfire.core.model.maintenance.librarylist.shared.LibraryListAction;
+import biz.rapidfire.core.model.maintenance.librarylist.shared.LibraryListKey;
 
-public class LibraryListManager extends AbstractManager<LibraryListKey, LibraryListValues> {
+public class LibraryListManager extends AbstractManager<LibraryListKey, LibraryListValues, LibraryListAction> {
 
     private static final String ERROR_001 = "001"; //$NON-NLS-1$
     private static final String ERROR_002 = "002"; //$NON-NLS-1$
@@ -40,14 +43,14 @@ public class LibraryListManager extends AbstractManager<LibraryListKey, LibraryL
     }
 
     @Override
-    public Result initialize(String mode, LibraryListKey key) throws Exception {
+    public Result initialize(MaintenanceMode mode, LibraryListKey key) throws Exception {
 
         jobKey = new JobKey(key.getJobName());
 
         CallableStatement statement = dao.prepareCall(dao
             .insertLibraryQualifier("{CALL " + IJDBCConnection.LIBRARY + "\"MNTLIBL_initialize\"(?, ?, ?, ?, ?)}")); //$NON-NLS-1$ //$NON-NLS-2$
 
-        statement.setString(ILibraryListInitialize.MODE, mode);
+        statement.setString(ILibraryListInitialize.MODE, mode.label());
         statement.setString(ILibraryListInitialize.JOB, key.getJobName());
         statement.setString(ILibraryListInitialize.LIBRARY_LIST, key.getLibraryList());
         statement.setString(ILibraryListInitialize.SUCCESS, Success.NO.label());
@@ -175,5 +178,11 @@ public class LibraryListManager extends AbstractManager<LibraryListKey, LibraryL
 
         CallableStatement statement = dao.prepareCall(dao.insertLibraryQualifier("{CALL " + IJDBCConnection.LIBRARY + "\"MNTLIBL_closeFiles\"()}")); //$NON-NLS-1$ //$NON-NLS-2$
         statement.execute();
+    }
+
+    public Result checkAction(LibraryListKey key, LibraryListAction libraryListAction) throws Exception {
+        // TODO: check action!
+        Result result = new Result(Success.YES.label(), null);
+        return result;
     }
 }

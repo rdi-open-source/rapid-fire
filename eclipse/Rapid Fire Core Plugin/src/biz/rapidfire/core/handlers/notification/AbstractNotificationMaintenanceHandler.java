@@ -13,23 +13,29 @@ import org.eclipse.jface.dialogs.MessageDialog;
 
 import biz.rapidfire.core.Messages;
 import biz.rapidfire.core.RapidFireCorePlugin;
-import biz.rapidfire.core.handlers.AbstractResourceHandler;
+import biz.rapidfire.core.handlers.AbstractResourceMaintenanceHandler;
 import biz.rapidfire.core.helpers.ExceptionHelper;
+import biz.rapidfire.core.model.IRapidFireJobResource;
 import biz.rapidfire.core.model.IRapidFireNotificationResource;
 import biz.rapidfire.core.model.IRapidFireResource;
 import biz.rapidfire.core.model.dao.JDBCConnectionManager;
-import biz.rapidfire.core.model.maintenance.IMaintenance;
+import biz.rapidfire.core.model.maintenance.MaintenanceMode;
 import biz.rapidfire.core.model.maintenance.Result;
-import biz.rapidfire.core.model.maintenance.job.JobKey;
-import biz.rapidfire.core.model.maintenance.notification.NotificationKey;
+import biz.rapidfire.core.model.maintenance.job.shared.JobKey;
 import biz.rapidfire.core.model.maintenance.notification.NotificationManager;
+import biz.rapidfire.core.model.maintenance.notification.shared.NotificationAction;
+import biz.rapidfire.core.model.maintenance.notification.shared.NotificationKey;
 
-public abstract class AbstractNotificationMaintenanceHandler extends AbstractResourceHandler {
+public abstract class AbstractNotificationMaintenanceHandler extends
+    AbstractResourceMaintenanceHandler<IRapidFireNotificationResource, NotificationAction> {
 
     private NotificationManager manager;
+    private NotificationAction notificationAction;
 
-    public AbstractNotificationMaintenanceHandler(String mode) {
+    public AbstractNotificationMaintenanceHandler(MaintenanceMode mode, NotificationAction notificationAction) {
         super(mode);
+
+        this.notificationAction = notificationAction;
     }
 
     protected NotificationManager getManager() {
@@ -46,12 +52,15 @@ public abstract class AbstractNotificationMaintenanceHandler extends AbstractRes
         try {
 
             IRapidFireNotificationResource notification = (IRapidFireNotificationResource)resource;
+            manager = getOrCreateManager(notification.getParentJob());
 
-            String message = initialize(notification);
-            if (message != null) {
-                MessageDialog.openError(getShell(), Messages.E_R_R_O_R, message);
-            } else {
-                performAction(notification);
+            if (canExecuteAction(notification, notificationAction)) {
+                String message = initialize(notification);
+                if (message != null) {
+                    MessageDialog.openError(getShell(), Messages.E_R_R_O_R, message);
+                } else {
+                    performAction(notification);
+                }
             }
 
         } catch (Throwable e) {
@@ -67,13 +76,47 @@ public abstract class AbstractNotificationMaintenanceHandler extends AbstractRes
         return null;
     }
 
+    private NotificationManager getOrCreateManager(IRapidFireJobResource job) throws Exception {
+
+        if (manager == null) {
+            String connectionName = job.getParentSubSystem().getConnectionName();
+            String dataLibrary = job.getDataLibrary();
+            boolean commitControl = isCommitControl();
+            manager = new NotificationManager(JDBCConnectionManager.getInstance().getConnection(connectionName, dataLibrary, commitControl));
+        }
+
+        return manager;
+    }
+
+    protected boolean canExecuteAction(IRapidFireNotificationResource notification, NotificationAction notificationAction) {
+
+        String message = null;
+
+        try {
+
+            // TODO: check action!
+            Result result = manager.checkAction(notification.getKey(), notificationAction);
+            if (result.isSuccessfull()) {
+                return true;
+            } else {
+                message = Messages.bindParameters(Messages.The_requested_operation_is_invalid_for_job_status_A, notification.getParentJob()
+                    .getStatus().label);
+            }
+
+        } catch (Exception e) {
+            message = "*** Could not check job action. Failed creating the job manager ***";
+            RapidFireCorePlugin.logError(message, e); //$NON-NLS-1$
+        }
+
+        if (message != null) {
+            MessageDialog.openError(getShell(), Messages.E_R_R_O_R, message);
+        }
+
+        return false;
+    }
+
     private String initialize(IRapidFireNotificationResource notification) throws Exception {
 
-        String connectionName = notification.getParentSubSystem().getConnectionName();
-        String dataLibrary = notification.getDataLibrary();
-        boolean commitControl = isCommitControl();
-
-        manager = new NotificationManager(JDBCConnectionManager.getInstance().getConnection(connectionName, dataLibrary, commitControl));
         manager.openFiles();
 
         Result status = manager.initialize(getMode(), new NotificationKey(new JobKey(notification.getJob()), notification.getPosition()));
@@ -92,16 +135,6 @@ public abstract class AbstractNotificationMaintenanceHandler extends AbstractRes
             manager.closeFiles();
             manager = null;
         }
-    }
-
-    private boolean isCommitControl() {
-
-        String mode = getMode();
-        if (IMaintenance.MODE_CHANGE.equals(mode) || IMaintenance.MODE_DELETE.equals(mode)) {
-            return true;
-        }
-
-        return false;
     }
 
     private void logError(Throwable e) {

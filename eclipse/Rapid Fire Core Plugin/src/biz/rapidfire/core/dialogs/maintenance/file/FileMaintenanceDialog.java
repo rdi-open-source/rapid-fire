@@ -26,7 +26,7 @@ import biz.rapidfire.core.helpers.ExceptionHelper;
 import biz.rapidfire.core.helpers.IntHelper;
 import biz.rapidfire.core.jface.dialogs.Size;
 import biz.rapidfire.core.jface.dialogs.XDialog;
-import biz.rapidfire.core.model.maintenance.IMaintenance;
+import biz.rapidfire.core.model.maintenance.MaintenanceMode;
 import biz.rapidfire.core.model.maintenance.Result;
 import biz.rapidfire.core.model.maintenance.file.FileManager;
 import biz.rapidfire.core.model.maintenance.file.FileValues;
@@ -35,7 +35,6 @@ import biz.rapidfire.core.swt.widgets.WidgetFactory;
 
 public class FileMaintenanceDialog extends AbstractMaintenanceDialog {
 
-    private String mode;
     private FileManager manager;
 
     private FileValues values;
@@ -54,40 +53,39 @@ public class FileMaintenanceDialog extends AbstractMaintenanceDialog {
     private boolean enableFields;
 
     public static FileMaintenanceDialog getCreateDialog(Shell shell, FileManager manager) {
-        return new FileMaintenanceDialog(shell, IMaintenance.MODE_CREATE, manager);
+        return new FileMaintenanceDialog(shell, MaintenanceMode.MODE_CREATE, manager);
     }
 
     public static FileMaintenanceDialog getCopyDialog(Shell shell, FileManager manager) {
-        return new FileMaintenanceDialog(shell, IMaintenance.MODE_COPY, manager);
+        return new FileMaintenanceDialog(shell, MaintenanceMode.MODE_COPY, manager);
     }
 
     public static FileMaintenanceDialog getChangeDialog(Shell shell, FileManager manager) {
-        return new FileMaintenanceDialog(shell, IMaintenance.MODE_CHANGE, manager);
+        return new FileMaintenanceDialog(shell, MaintenanceMode.MODE_CHANGE, manager);
     }
 
     public static FileMaintenanceDialog getDeleteDialog(Shell shell, FileManager manager) {
-        return new FileMaintenanceDialog(shell, IMaintenance.MODE_DELETE, manager);
+        return new FileMaintenanceDialog(shell, MaintenanceMode.MODE_DELETE, manager);
     }
 
     public static FileMaintenanceDialog getDisplayDialog(Shell shell, FileManager manager) {
-        return new FileMaintenanceDialog(shell, IMaintenance.MODE_DISPLAY, manager);
+        return new FileMaintenanceDialog(shell, MaintenanceMode.MODE_DISPLAY, manager);
     }
 
     public void setValue(FileValues values) {
         this.values = values;
     }
 
-    private FileMaintenanceDialog(Shell shell, String mode, FileManager manager) {
-        super(shell);
+    private FileMaintenanceDialog(Shell shell, MaintenanceMode mode, FileManager manager) {
+        super(shell, mode);
 
-        this.mode = mode;
         this.manager = manager;
 
-        if (IMaintenance.MODE_CREATE.equals(mode) || IMaintenance.MODE_COPY.equals(mode)) {
+        if (MaintenanceMode.MODE_CREATE.equals(mode) || MaintenanceMode.MODE_COPY.equals(mode)) {
             enableParentKeyFields = false;
             enableKeyFields = true;
             enableFields = true;
-        } else if (IMaintenance.MODE_CHANGE.equals(mode)) {
+        } else if (MaintenanceMode.MODE_CHANGE.equals(mode)) {
             enableParentKeyFields = false;
             enableKeyFields = false;
             enableFields = true;
@@ -191,11 +189,6 @@ public class FileMaintenanceDialog extends AbstractMaintenanceDialog {
         return Messages.DialogTitle_File;
     }
 
-    @Override
-    protected String getMode() {
-        return mode;
-    }
-
     protected void setScreenValues() {
 
         textJobName.setText(values.getKey().getJobName());
@@ -221,7 +214,7 @@ public class FileMaintenanceDialog extends AbstractMaintenanceDialog {
         newValues.setConversionProgramName(comboConversionProgramName.getText());
         newValues.setConversionProgramLibraryName(textConversionProgramLibraryName.getText());
 
-        if (!IMaintenance.MODE_DISPLAY.equals(mode)) {
+        if (!isDisplayMode()) {
             try {
                 manager.setValues(newValues);
                 Result result = manager.check();

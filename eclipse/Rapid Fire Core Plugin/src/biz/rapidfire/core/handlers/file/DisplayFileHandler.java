@@ -12,14 +12,14 @@ import org.eclipse.core.commands.IHandler;
 
 import biz.rapidfire.core.dialogs.maintenance.file.FileMaintenanceDialog;
 import biz.rapidfire.core.model.IRapidFireFileResource;
-import biz.rapidfire.core.model.maintenance.IMaintenance;
+import biz.rapidfire.core.model.maintenance.MaintenanceMode;
 import biz.rapidfire.core.model.maintenance.file.FileValues;
 import biz.rapidfire.core.model.maintenance.file.shared.FileAction;
 
 public class DisplayFileHandler extends AbstractFileMaintenanceHandler implements IHandler {
 
     public DisplayFileHandler() {
-        super(IMaintenance.MODE_DISPLAY, FileAction.DISPLAY);
+        super(MaintenanceMode.MODE_DISPLAY, FileAction.DISPLAY);
     }
 
     @Override

@@ -20,13 +20,13 @@ import biz.rapidfire.core.handlers.AbstractResourceHandler;
 import biz.rapidfire.core.helpers.ExceptionHelper;
 import biz.rapidfire.core.model.IRapidFireJobResource;
 import biz.rapidfire.core.model.IRapidFireResource;
-import biz.rapidfire.core.model.maintenance.IMaintenance;
+import biz.rapidfire.core.model.maintenance.MaintenanceMode;
 import biz.rapidfire.core.view.FileCopyStatusView;
 
 public class DisplayCopyStatusHandler extends AbstractResourceHandler implements IHandler {
 
     public DisplayCopyStatusHandler() {
-        super(IMaintenance.MODE_DISPLAY);
+        super(MaintenanceMode.MODE_DISPLAY);
     }
 
     @Override

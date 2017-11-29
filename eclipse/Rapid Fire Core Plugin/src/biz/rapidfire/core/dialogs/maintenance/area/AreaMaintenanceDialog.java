@@ -25,7 +25,7 @@ import biz.rapidfire.core.dialogs.maintenance.AbstractMaintenanceDialog;
 import biz.rapidfire.core.helpers.ExceptionHelper;
 import biz.rapidfire.core.jface.dialogs.Size;
 import biz.rapidfire.core.jface.dialogs.XDialog;
-import biz.rapidfire.core.model.maintenance.IMaintenance;
+import biz.rapidfire.core.model.maintenance.MaintenanceMode;
 import biz.rapidfire.core.model.maintenance.Result;
 import biz.rapidfire.core.model.maintenance.area.AreaManager;
 import biz.rapidfire.core.model.maintenance.area.AreaValues;
@@ -34,7 +34,6 @@ import biz.rapidfire.core.swt.widgets.WidgetFactory;
 
 public class AreaMaintenanceDialog extends AbstractMaintenanceDialog {
 
-    private String mode;
     private AreaManager manager;
 
     private AreaValues values;
@@ -52,40 +51,39 @@ public class AreaMaintenanceDialog extends AbstractMaintenanceDialog {
     private boolean enableFields;
 
     public static AreaMaintenanceDialog getCreateDialog(Shell shell, AreaManager manager) {
-        return new AreaMaintenanceDialog(shell, IMaintenance.MODE_CREATE, manager);
+        return new AreaMaintenanceDialog(shell, MaintenanceMode.MODE_CREATE, manager);
     }
 
     public static AreaMaintenanceDialog getCopyDialog(Shell shell, AreaManager manager) {
-        return new AreaMaintenanceDialog(shell, IMaintenance.MODE_COPY, manager);
+        return new AreaMaintenanceDialog(shell, MaintenanceMode.MODE_COPY, manager);
     }
 
     public static AreaMaintenanceDialog getChangeDialog(Shell shell, AreaManager manager) {
-        return new AreaMaintenanceDialog(shell, IMaintenance.MODE_CHANGE, manager);
+        return new AreaMaintenanceDialog(shell, MaintenanceMode.MODE_CHANGE, manager);
     }
 
     public static AreaMaintenanceDialog getDeleteDialog(Shell shell, AreaManager manager) {
-        return new AreaMaintenanceDialog(shell, IMaintenance.MODE_DELETE, manager);
+        return new AreaMaintenanceDialog(shell, MaintenanceMode.MODE_DELETE, manager);
     }
 
     public static AreaMaintenanceDialog getDisplayDialog(Shell shell, AreaManager manager) {
-        return new AreaMaintenanceDialog(shell, IMaintenance.MODE_DISPLAY, manager);
+        return new AreaMaintenanceDialog(shell, MaintenanceMode.MODE_DISPLAY, manager);
     }
 
     public void setValue(AreaValues values) {
         this.values = values;
     }
 
-    private AreaMaintenanceDialog(Shell shell, String mode, AreaManager manager) {
-        super(shell);
+    private AreaMaintenanceDialog(Shell shell, MaintenanceMode mode, AreaManager manager) {
+        super(shell, mode);
 
-        this.mode = mode;
         this.manager = manager;
 
-        if (IMaintenance.MODE_CREATE.equals(mode) || IMaintenance.MODE_COPY.equals(mode)) {
+        if (MaintenanceMode.MODE_CREATE.equals(mode) || MaintenanceMode.MODE_COPY.equals(mode)) {
             enableParentKeyFields = false;
             enableKeyFields = true;
             enableFields = true;
-        } else if (IMaintenance.MODE_CHANGE.equals(mode)) {
+        } else if (MaintenanceMode.MODE_CHANGE.equals(mode)) {
             enableParentKeyFields = false;
             enableKeyFields = false;
             enableFields = true;
@@ -179,11 +177,6 @@ public class AreaMaintenanceDialog extends AbstractMaintenanceDialog {
         return Messages.DialogTitle_Area;
     }
 
-    @Override
-    protected String getMode() {
-        return mode;
-    }
-
     protected void setScreenValues() {
 
         textJobName.setText(values.getKey().getJobName());
@@ -205,7 +198,7 @@ public class AreaMaintenanceDialog extends AbstractMaintenanceDialog {
         newValues.setLibraryList(comboLibraryList.getText());
         newValues.setLibraryCcsid(comboLibraryCcsid.getText());
 
-        if (!IMaintenance.MODE_DISPLAY.equals(mode)) {
+        if (!isDisplayMode()) {
             try {
                 manager.setValues(newValues);
                 Result result = manager.check();

@@ -13,27 +13,26 @@ import org.eclipse.jface.dialogs.MessageDialog;
 
 import biz.rapidfire.core.Messages;
 import biz.rapidfire.core.RapidFireCorePlugin;
-import biz.rapidfire.core.handlers.AbstractResourceHandler;
+import biz.rapidfire.core.handlers.AbstractResourceMaintenanceHandler;
 import biz.rapidfire.core.helpers.ExceptionHelper;
 import biz.rapidfire.core.model.IRapidFireCommandResource;
 import biz.rapidfire.core.model.IRapidFireJobResource;
 import biz.rapidfire.core.model.IRapidFireResource;
 import biz.rapidfire.core.model.dao.JDBCConnectionManager;
-import biz.rapidfire.core.model.maintenance.IMaintenance;
+import biz.rapidfire.core.model.maintenance.MaintenanceMode;
 import biz.rapidfire.core.model.maintenance.Result;
-import biz.rapidfire.core.model.maintenance.Success;
-import biz.rapidfire.core.model.maintenance.command.CommandKey;
 import biz.rapidfire.core.model.maintenance.command.CommandManager;
 import biz.rapidfire.core.model.maintenance.command.shared.CommandAction;
-import biz.rapidfire.core.model.maintenance.file.FileKey;
-import biz.rapidfire.core.model.maintenance.job.JobKey;
+import biz.rapidfire.core.model.maintenance.command.shared.CommandKey;
+import biz.rapidfire.core.model.maintenance.file.shared.FileKey;
+import biz.rapidfire.core.model.maintenance.job.shared.JobKey;
 
-public abstract class AbstractCommandMaintenanceHandler extends AbstractResourceHandler {
+public abstract class AbstractCommandMaintenanceHandler extends AbstractResourceMaintenanceHandler<IRapidFireCommandResource, CommandAction> {
 
     private CommandManager manager;
     private CommandAction commandAction;
 
-    public AbstractCommandMaintenanceHandler(String mode, CommandAction commandAction) {
+    public AbstractCommandMaintenanceHandler(MaintenanceMode mode, CommandAction commandAction) {
         super(mode);
 
         this.commandAction = commandAction;
@@ -55,7 +54,7 @@ public abstract class AbstractCommandMaintenanceHandler extends AbstractResource
             IRapidFireCommandResource command = (IRapidFireCommandResource)resource;
             manager = getOrCreateManager(command.getParentJob());
 
-            if (canExecuteAction(command.getParentJob(), commandAction)) {
+            if (canExecuteAction(command, commandAction)) {
                 Result result = initialize(command);
                 if (result != null && result.isError()) {
                     MessageDialog.openError(getShell(), Messages.E_R_R_O_R, result.getMessage());
@@ -89,22 +88,19 @@ public abstract class AbstractCommandMaintenanceHandler extends AbstractResource
         return manager;
     }
 
-    protected boolean canExecuteAction(IRapidFireJobResource job, CommandAction commanddAction) {
+    protected boolean canExecuteAction(IRapidFireCommandResource command, CommandAction commanddAction) {
 
         String message = null;
 
         try {
 
             // TODO: check action!
-            // Result result = libraryManager.checkAction(new
-            // JobKey(job.getName()),
-            // libraryAction);
-            Result result = new Result(Success.YES.label(), null);
-
+            Result result = manager.checkAction(command.getKey(), commandAction);
             if (result.isSuccessfull()) {
                 return true;
             } else {
-                message = Messages.bindParameters(Messages.The_requested_operation_is_invalid_for_job_status_A, job.getStatus().label);
+                message = Messages.bindParameters(Messages.The_requested_operation_is_invalid_for_job_status_A,
+                    command.getParentJob().getStatus().label);
             }
 
         } catch (Exception e) {
@@ -121,11 +117,6 @@ public abstract class AbstractCommandMaintenanceHandler extends AbstractResource
 
     private Result initialize(IRapidFireCommandResource command) throws Exception {
 
-        String connectionName = command.getParentSubSystem().getConnectionName();
-        String dataLibrary = command.getDataLibrary();
-        boolean commitControl = isCommitControl();
-
-        manager = new CommandManager(JDBCConnectionManager.getInstance().getConnection(connectionName, dataLibrary, commitControl));
         manager.openFiles();
 
         JobKey jobKey = new JobKey(command.getJob());
@@ -146,16 +137,6 @@ public abstract class AbstractCommandMaintenanceHandler extends AbstractResource
             manager.closeFiles();
             manager = null;
         }
-    }
-
-    private boolean isCommitControl() {
-
-        String mode = getMode();
-        if (IMaintenance.MODE_CHANGE.equals(mode) || IMaintenance.MODE_DELETE.equals(mode)) {
-            return true;
-        }
-
-        return false;
     }
 
     private void logError(Throwable e) {

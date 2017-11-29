@@ -11,23 +11,20 @@ package biz.rapidfire.core.handlers;
 import biz.rapidfire.core.RapidFireCorePlugin;
 import biz.rapidfire.core.dialogs.MessageDialogAsync;
 import biz.rapidfire.core.helpers.ExceptionHelper;
-import biz.rapidfire.core.model.maintenance.IMaintenance;
-import biz.rapidfire.core.model.maintenance.job.shared.JobAction;
+import biz.rapidfire.core.model.maintenance.MaintenanceMode;
 
-public abstract class AbstractResourceMaintenanceHandler<M> extends AbstractResourceHandler {
+public abstract class AbstractResourceMaintenanceHandler<M, A> extends AbstractResourceHandler {
 
-    public AbstractResourceMaintenanceHandler(String mode) {
+    public AbstractResourceMaintenanceHandler(MaintenanceMode mode) {
         super(mode);
     }
 
-    protected boolean canExecuteAction(M rapidFireResource, JobAction jobAction) {
-        return true;
-    }
+    protected abstract boolean canExecuteAction(M rapidFireResource, A resourceAction);
 
     protected boolean isCommitControl() {
 
-        String mode = getMode();
-        if (IMaintenance.MODE_CHANGE.equals(mode) || IMaintenance.MODE_DELETE.equals(mode)) {
+        MaintenanceMode mode = getMode();
+        if (MaintenanceMode.MODE_CHANGE == mode || MaintenanceMode.MODE_DELETE == mode) {
             return true;
         }
 

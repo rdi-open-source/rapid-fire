@@ -13,13 +13,14 @@ import org.eclipse.jface.dialogs.Dialog;
 
 import biz.rapidfire.core.dialogs.maintenance.notification.NotificationMaintenanceDialog;
 import biz.rapidfire.core.model.IRapidFireNotificationResource;
-import biz.rapidfire.core.model.maintenance.IMaintenance;
+import biz.rapidfire.core.model.maintenance.MaintenanceMode;
 import biz.rapidfire.core.model.maintenance.notification.NotificationValues;
+import biz.rapidfire.core.model.maintenance.notification.shared.NotificationAction;
 
 public class CopyNotificationHandler extends AbstractNotificationMaintenanceHandler implements IHandler {
 
     public CopyNotificationHandler() {
-        super(IMaintenance.MODE_COPY);
+        super(MaintenanceMode.MODE_COPY, NotificationAction.COPY);
     }
 
     @Override

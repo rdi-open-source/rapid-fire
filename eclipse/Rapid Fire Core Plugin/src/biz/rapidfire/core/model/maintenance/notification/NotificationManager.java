@@ -14,11 +14,14 @@ import java.sql.Types;
 import biz.rapidfire.core.Messages;
 import biz.rapidfire.core.model.dao.IJDBCConnection;
 import biz.rapidfire.core.model.maintenance.AbstractManager;
+import biz.rapidfire.core.model.maintenance.MaintenanceMode;
 import biz.rapidfire.core.model.maintenance.Result;
 import biz.rapidfire.core.model.maintenance.Success;
-import biz.rapidfire.core.model.maintenance.job.JobKey;
+import biz.rapidfire.core.model.maintenance.job.shared.JobKey;
+import biz.rapidfire.core.model.maintenance.notification.shared.NotificationAction;
+import biz.rapidfire.core.model.maintenance.notification.shared.NotificationKey;
 
-public class NotificationManager extends AbstractManager<NotificationKey, NotificationValues> {
+public class NotificationManager extends AbstractManager<NotificationKey, NotificationValues, NotificationAction> {
 
     private static final String ERROR_001 = "001"; //$NON-NLS-1$
     private static final String ERROR_002 = "002"; //$NON-NLS-1$
@@ -40,14 +43,14 @@ public class NotificationManager extends AbstractManager<NotificationKey, Notifi
     }
 
     @Override
-    public Result initialize(String mode, NotificationKey key) throws Exception {
+    public Result initialize(MaintenanceMode mode, NotificationKey key) throws Exception {
 
         jobKey = new JobKey(key.getJobName());
 
         CallableStatement statement = dao.prepareCall(dao
             .insertLibraryQualifier("{CALL " + IJDBCConnection.LIBRARY + "\"MNTSTBN_initialize\"(?, ?, ?, ?, ?)}")); //$NON-NLS-1$ //$NON-NLS-2$
 
-        statement.setString(INotificationInitialize.MODE, mode);
+        statement.setString(INotificationInitialize.MODE, mode.label());
         statement.setString(INotificationInitialize.JOB, key.getJobName());
         statement.setInt(INotificationInitialize.POSITION, key.getPosition());
         statement.setString(INotificationInitialize.SUCCESS, Success.NO.label());
@@ -176,4 +179,9 @@ public class NotificationManager extends AbstractManager<NotificationKey, Notifi
         statement.execute();
     }
 
+    public Result checkAction(NotificationKey key, NotificationAction areaAction) throws Exception {
+        // TODO: check action!
+        Result result = new Result(Success.YES.label(), null);
+        return result;
+    }
 }

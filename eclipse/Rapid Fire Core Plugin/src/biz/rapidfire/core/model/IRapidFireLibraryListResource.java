@@ -8,7 +8,11 @@
 
 package biz.rapidfire.core.model;
 
+import biz.rapidfire.core.model.maintenance.librarylist.shared.LibraryListKey;
+
 public interface IRapidFireLibraryListResource extends IRapidFireChildResource {
+
+    public LibraryListKey getKey();
 
     /*
      * Key attributes

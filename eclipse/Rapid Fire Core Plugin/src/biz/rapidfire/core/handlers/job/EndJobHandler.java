@@ -13,12 +13,12 @@ import org.eclipse.core.commands.IHandler;
 
 import biz.rapidfire.core.handlers.AbstractResourceHandler;
 import biz.rapidfire.core.model.IRapidFireResource;
-import biz.rapidfire.core.model.maintenance.IMaintenance;
+import biz.rapidfire.core.model.maintenance.MaintenanceMode;
 
 public class EndJobHandler extends AbstractResourceHandler implements IHandler {
 
     public EndJobHandler() {
-        super(IMaintenance.MODE_CHANGE);
+        super(MaintenanceMode.MODE_CHANGE);
     }
 
     @Override

@@ -13,14 +13,14 @@ import org.eclipse.jface.dialogs.Dialog;
 
 import biz.rapidfire.core.dialogs.maintenance.conversion.ConversionMaintenanceDialog;
 import biz.rapidfire.core.model.IRapidFireConversionResource;
-import biz.rapidfire.core.model.maintenance.IMaintenance;
+import biz.rapidfire.core.model.maintenance.MaintenanceMode;
 import biz.rapidfire.core.model.maintenance.conversion.ConversionValues;
 import biz.rapidfire.core.model.maintenance.conversion.shared.ConversionAction;
 
 public class NewConversionHandler extends AbstractConversionMaintenanceHandler implements IHandler {
 
     public NewConversionHandler() {
-        super(IMaintenance.MODE_CREATE, ConversionAction.CREATE);
+        super(MaintenanceMode.MODE_CREATE, ConversionAction.CREATE);
     }
 
     protected void performAction(IRapidFireConversionResource conversion) throws Exception {

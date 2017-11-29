@@ -24,7 +24,7 @@ import org.eclipse.swt.widgets.Text;
 import biz.rapidfire.core.Messages;
 import biz.rapidfire.core.RapidFireCorePlugin;
 import biz.rapidfire.core.exceptions.IllegalParameterException;
-import biz.rapidfire.core.model.maintenance.IMaintenance;
+import biz.rapidfire.core.model.maintenance.MaintenanceMode;
 import biz.rapidfire.core.swt.widgets.listeditors.librarylist.LibraryListEditor;
 import biz.rapidfire.core.swt.widgets.listeditors.stringlist.StringListEditor;
 
@@ -121,7 +121,7 @@ public final class WidgetFactory {
      * @param mode - dialog mode
      * @return dialog sub-title
      */
-    public static Label createDialogSubTitle(Composite parent, String mode) {
+    public static Label createDialogSubTitle(Composite parent, MaintenanceMode mode) {
         return WidgetFactory.getInstance().produceDialogSubTitle(parent, mode);
     }
 
@@ -777,28 +777,28 @@ public final class WidgetFactory {
         return separator;
     }
 
-    private Label produceDialogSubTitle(Composite parent, String mode) {
+    private Label produceDialogSubTitle(Composite parent, MaintenanceMode mode) {
 
         Color color = null;
 
         String title;
-        if (IMaintenance.MODE_CREATE.equals(mode)) {
+        if (MaintenanceMode.MODE_CREATE.equals(mode)) {
             title = Messages.DialogMode_CREATE;
             color = RapidFireCorePlugin.getDefault().getColor(RapidFireCorePlugin.COLOR_DIALOG_MODE_CREATE);
-        } else if (IMaintenance.MODE_COPY.equals(mode)) {
+        } else if (MaintenanceMode.MODE_COPY.equals(mode)) {
             title = Messages.DialogMode_COPY;
             color = RapidFireCorePlugin.getDefault().getColor(RapidFireCorePlugin.COLOR_DIALOG_MODE_COPY);
-        } else if (IMaintenance.MODE_CHANGE.equals(mode)) {
+        } else if (MaintenanceMode.MODE_CHANGE.equals(mode)) {
             title = Messages.DialogMode_CHANGE;
             color = RapidFireCorePlugin.getDefault().getColor(RapidFireCorePlugin.COLOR_DIALOG_MODE_CHANGE);
-        } else if (IMaintenance.MODE_DELETE.equals(mode)) {
+        } else if (MaintenanceMode.MODE_DELETE.equals(mode)) {
             title = Messages.DialogMode_DELETE;
             color = RapidFireCorePlugin.getDefault().getColor(RapidFireCorePlugin.COLOR_DIALOG_MODE_DELETE);
-        } else if (IMaintenance.MODE_DISPLAY.equals(mode)) {
+        } else if (MaintenanceMode.MODE_DISPLAY.equals(mode)) {
             title = Messages.DialogMode_DISPLAY;
             color = RapidFireCorePlugin.getDefault().getColor(RapidFireCorePlugin.COLOR_DIALOG_MODE_DISPLAY);
         } else {
-            throw new IllegalParameterException("mode", mode); //$NON-NLS-1$
+            throw new IllegalParameterException("mode", mode.label()); //$NON-NLS-1$
         }
 
         Label label = new Label(parent, SWT.CENTER);

@@ -11,12 +11,12 @@ package biz.rapidfire.core.model.maintenance;
 import java.sql.CallableStatement;
 import java.sql.SQLException;
 
-public abstract class AbstractManager<K, V> {
+public abstract class AbstractManager<K, V, A> {
 
     public abstract void openFiles() throws Exception;
 
     // Return succes: Y or N
-    public abstract Result initialize(String mode, K key) throws Exception;
+    public abstract Result initialize(MaintenanceMode mode, K key) throws Exception;
 
     public abstract V getValues() throws Exception;
 
@@ -27,6 +27,8 @@ public abstract class AbstractManager<K, V> {
     public abstract void book() throws Exception;
 
     public abstract void closeFiles() throws Exception;
+
+    public abstract Result checkAction(K key, A jobAction) throws Exception;
 
     protected String getStringTrim(CallableStatement statement, int parameterIndex) throws SQLException {
         return statement.getString(parameterIndex).trim();

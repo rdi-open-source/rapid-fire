@@ -13,14 +13,14 @@ import org.eclipse.jface.dialogs.Dialog;
 
 import biz.rapidfire.core.dialogs.maintenance.command.CommandMaintenanceDialog;
 import biz.rapidfire.core.model.IRapidFireCommandResource;
-import biz.rapidfire.core.model.maintenance.IMaintenance;
+import biz.rapidfire.core.model.maintenance.MaintenanceMode;
 import biz.rapidfire.core.model.maintenance.command.CommandValues;
 import biz.rapidfire.core.model.maintenance.command.shared.CommandAction;
 
 public class DeleteCommandHandler extends AbstractCommandMaintenanceHandler implements IHandler {
 
     public DeleteCommandHandler() {
-        super(IMaintenance.MODE_DELETE, CommandAction.DELETE);
+        super(MaintenanceMode.MODE_DELETE, CommandAction.DELETE);
     }
 
     @Override

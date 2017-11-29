@@ -20,7 +20,7 @@ import org.eclipse.swt.widgets.Text;
 import biz.rapidfire.core.Messages;
 import biz.rapidfire.core.dialogs.maintenance.AbstractMaintenanceDialog;
 import biz.rapidfire.core.helpers.ExceptionHelper;
-import biz.rapidfire.core.model.maintenance.IMaintenance;
+import biz.rapidfire.core.model.maintenance.MaintenanceMode;
 import biz.rapidfire.core.model.maintenance.Result;
 import biz.rapidfire.core.model.maintenance.job.IJobCheck;
 import biz.rapidfire.core.model.maintenance.job.JobManager;
@@ -29,7 +29,6 @@ import biz.rapidfire.core.swt.widgets.WidgetFactory;
 
 public class JobMaintenanceDialog extends AbstractMaintenanceDialog {
 
-    private String mode;
     private JobManager manager;
 
     private JobValues values;
@@ -44,39 +43,38 @@ public class JobMaintenanceDialog extends AbstractMaintenanceDialog {
     private boolean enableFields;
 
     public static JobMaintenanceDialog getCreateDialog(Shell shell, JobManager manager) {
-        return new JobMaintenanceDialog(shell, IMaintenance.MODE_CREATE, manager);
+        return new JobMaintenanceDialog(shell, MaintenanceMode.MODE_CREATE, manager);
     }
 
     public static JobMaintenanceDialog getCopyDialog(Shell shell, JobManager manager) {
-        return new JobMaintenanceDialog(shell, IMaintenance.MODE_COPY, manager);
+        return new JobMaintenanceDialog(shell, MaintenanceMode.MODE_COPY, manager);
     }
 
     public static JobMaintenanceDialog getChangeDialog(Shell shell, JobManager manager) {
-        return new JobMaintenanceDialog(shell, IMaintenance.MODE_CHANGE, manager);
+        return new JobMaintenanceDialog(shell, MaintenanceMode.MODE_CHANGE, manager);
     }
 
     public static JobMaintenanceDialog getDeleteDialog(Shell shell, JobManager manager) {
-        return new JobMaintenanceDialog(shell, IMaintenance.MODE_DELETE, manager);
+        return new JobMaintenanceDialog(shell, MaintenanceMode.MODE_DELETE, manager);
     }
 
     public static JobMaintenanceDialog getDisplayDialog(Shell shell, JobManager manager) {
-        return new JobMaintenanceDialog(shell, IMaintenance.MODE_DISPLAY, manager);
+        return new JobMaintenanceDialog(shell, MaintenanceMode.MODE_DISPLAY, manager);
     }
 
     public void setValue(JobValues values) {
         this.values = values;
     }
 
-    private JobMaintenanceDialog(Shell shell, String mode, JobManager manager) {
-        super(shell);
+    private JobMaintenanceDialog(Shell shell, MaintenanceMode mode, JobManager manager) {
+        super(shell, mode);
 
-        this.mode = mode;
         this.manager = manager;
 
-        if (IMaintenance.MODE_CREATE.equals(mode) || IMaintenance.MODE_COPY.equals(mode)) {
+        if (MaintenanceMode.MODE_CREATE.equals(mode) || MaintenanceMode.MODE_COPY.equals(mode)) {
             enableKeyFields = true;
             enableFields = true;
-        } else if (IMaintenance.MODE_CHANGE.equals(mode)) {
+        } else if (MaintenanceMode.MODE_CHANGE.equals(mode)) {
             enableKeyFields = false;
             enableFields = true;
         } else {
@@ -144,11 +142,6 @@ public class JobMaintenanceDialog extends AbstractMaintenanceDialog {
         return Messages.DialogTitle_Job;
     }
 
-    @Override
-    protected String getMode() {
-        return mode;
-    }
-
     protected void setScreenValues() {
 
         textJobName.setText(values.getKey().getJobName());
@@ -168,7 +161,7 @@ public class JobMaintenanceDialog extends AbstractMaintenanceDialog {
         newValues.setJobQueueName(textJobQueueName.getText());
         newValues.setJobQueueLibraryName(textJobQueueLibraryName.getText());
 
-        if (!IMaintenance.MODE_DISPLAY.equals(mode)) {
+        if (!isDisplayMode()) {
             try {
                 manager.setValues(newValues);
                 Result result = manager.check();

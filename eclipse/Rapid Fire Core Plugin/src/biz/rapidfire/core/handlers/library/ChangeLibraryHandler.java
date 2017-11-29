@@ -13,14 +13,14 @@ import org.eclipse.jface.dialogs.Dialog;
 
 import biz.rapidfire.core.dialogs.maintenance.library.LibraryMaintenanceDialog;
 import biz.rapidfire.core.model.IRapidFireLibraryResource;
-import biz.rapidfire.core.model.maintenance.IMaintenance;
+import biz.rapidfire.core.model.maintenance.MaintenanceMode;
 import biz.rapidfire.core.model.maintenance.library.LibraryValues;
 import biz.rapidfire.core.model.maintenance.library.shared.LibraryAction;
 
 public class ChangeLibraryHandler extends AbstractLibraryMaintenanceHandler implements IHandler {
 
     public ChangeLibraryHandler() {
-        super(IMaintenance.MODE_CHANGE, LibraryAction.CHANGE);
+        super(MaintenanceMode.MODE_CHANGE, LibraryAction.CHANGE);
     }
 
     @Override

@@ -18,23 +18,19 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.PlatformUI;
 
 import biz.rapidfire.core.model.IRapidFireResource;
-import biz.rapidfire.core.model.maintenance.IMaintenance;
+import biz.rapidfire.core.model.maintenance.MaintenanceMode;
 import biz.rapidfire.rsebase.handlers.AbstractSelectionHandler;
 
 public abstract class AbstractResourceHandler extends AbstractSelectionHandler {
 
-    private String mode;
+    private MaintenanceMode mode;
 
-    public AbstractResourceHandler(String mode) {
+    public AbstractResourceHandler(MaintenanceMode mode) {
         this.mode = mode;
     }
 
-    protected String getMode() {
+    protected MaintenanceMode getMode() {
         return mode;
-    }
-
-    protected void setMode(String mode) {
-        this.mode = mode;
     }
 
     /*
@@ -69,7 +65,7 @@ public abstract class AbstractResourceHandler extends AbstractSelectionHandler {
 
     @Override
     protected boolean isDeleteMode() {
-        return IMaintenance.MODE_DELETE.equals(mode);
+        return MaintenanceMode.MODE_DELETE.equals(mode);
     }
 
     protected abstract Object executeWithResource(IRapidFireResource resource) throws ExecutionException;

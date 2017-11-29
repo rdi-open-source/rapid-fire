@@ -15,13 +15,16 @@ import java.sql.Types;
 import biz.rapidfire.core.Messages;
 import biz.rapidfire.core.model.dao.IJDBCConnection;
 import biz.rapidfire.core.model.maintenance.AbstractManager;
+import biz.rapidfire.core.model.maintenance.MaintenanceMode;
 import biz.rapidfire.core.model.maintenance.Result;
 import biz.rapidfire.core.model.maintenance.Success;
+import biz.rapidfire.core.model.maintenance.command.shared.CommandAction;
+import biz.rapidfire.core.model.maintenance.command.shared.CommandKey;
 import biz.rapidfire.core.model.maintenance.command.shared.CommandType;
-import biz.rapidfire.core.model.maintenance.file.FileKey;
-import biz.rapidfire.core.model.maintenance.job.JobKey;
+import biz.rapidfire.core.model.maintenance.file.shared.FileKey;
+import biz.rapidfire.core.model.maintenance.job.shared.JobKey;
 
-public class CommandManager extends AbstractManager<CommandKey, CommandValues> {
+public class CommandManager extends AbstractManager<CommandKey, CommandValues, CommandAction> {
 
     private static final String ERROR_001 = "001"; //$NON-NLS-1$
     private static final String ERROR_002 = "002"; //$NON-NLS-1$
@@ -44,7 +47,7 @@ public class CommandManager extends AbstractManager<CommandKey, CommandValues> {
     }
 
     @Override
-    public Result initialize(String mode, CommandKey key) throws Exception {
+    public Result initialize(MaintenanceMode mode, CommandKey key) throws Exception {
 
         JobKey jobKey = new JobKey(key.getJobName());
         fileKey = new FileKey(jobKey, key.getPosition());
@@ -52,7 +55,7 @@ public class CommandManager extends AbstractManager<CommandKey, CommandValues> {
         CallableStatement statement = dao.prepareCall(dao
             .insertLibraryQualifier("{CALL " + IJDBCConnection.LIBRARY + "\"MNTCMD_initialize\"(?, ?, ?, ?, ?, ?, ?)}")); //$NON-NLS-1$ //$NON-NLS-2$
 
-        statement.setString(ICommandInitialize.MODE, mode);
+        statement.setString(ICommandInitialize.MODE, mode.label());
         statement.setString(ICommandInitialize.JOB, key.getJobName());
         statement.setInt(ICommandInitialize.POSITION, key.getPosition());
         statement.setString(ICommandInitialize.TYPE, key.getCommandType());
@@ -177,4 +180,9 @@ public class CommandManager extends AbstractManager<CommandKey, CommandValues> {
         statement.execute();
     }
 
+    public Result checkAction(CommandKey key, CommandAction commandAction) throws Exception {
+        // TODO: check action!
+        Result result = new Result(Success.YES.label(), null);
+        return result;
+    }
 }

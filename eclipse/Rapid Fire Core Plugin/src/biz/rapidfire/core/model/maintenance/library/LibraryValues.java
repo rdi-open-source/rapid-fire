@@ -10,6 +10,7 @@ package biz.rapidfire.core.model.maintenance.library;
 
 import biz.rapidfire.core.RapidFireCorePlugin;
 import biz.rapidfire.core.helpers.ExceptionHelper;
+import biz.rapidfire.core.model.maintenance.library.shared.LibraryKey;
 
 public class LibraryValues implements Cloneable {
 

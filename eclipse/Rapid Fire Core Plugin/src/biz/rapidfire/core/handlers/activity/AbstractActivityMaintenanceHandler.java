@@ -17,18 +17,19 @@ import biz.rapidfire.core.handlers.AbstractResourceMaintenanceHandler;
 import biz.rapidfire.core.model.IRapidFireJobResource;
 import biz.rapidfire.core.model.IRapidFireResource;
 import biz.rapidfire.core.model.dao.JDBCConnectionManager;
+import biz.rapidfire.core.model.maintenance.MaintenanceMode;
 import biz.rapidfire.core.model.maintenance.Result;
 import biz.rapidfire.core.model.maintenance.activity.ActivityManager;
-import biz.rapidfire.core.model.maintenance.job.JobKey;
 import biz.rapidfire.core.model.maintenance.job.JobManager;
 import biz.rapidfire.core.model.maintenance.job.shared.JobAction;
+import biz.rapidfire.core.model.maintenance.job.shared.JobKey;
 
-public abstract class AbstractActivityMaintenanceHandler extends AbstractResourceMaintenanceHandler<IRapidFireJobResource> {
+public abstract class AbstractActivityMaintenanceHandler extends AbstractResourceMaintenanceHandler<IRapidFireJobResource, JobAction> {
 
     private ActivityManager manager;
     private JobAction jobAction;
 
-    public AbstractActivityMaintenanceHandler(String mode, JobAction jobAction) {
+    public AbstractActivityMaintenanceHandler(MaintenanceMode mode, JobAction jobAction) {
         super(mode);
 
         this.jobAction = jobAction;
@@ -84,8 +85,7 @@ public abstract class AbstractActivityMaintenanceHandler extends AbstractResourc
         try {
 
             JobManager jobManager = new JobManager(JDBCConnectionManager.getInstance().getConnection(connectionName, dataLibrary, false));
-            Result result = jobManager.checkAction(new JobKey(job.getName()), jobAction);
-
+            Result result = jobManager.checkAction(job.getKey(), jobAction);
             if (result.isSuccessfull()) {
                 return true;
             } else {
@@ -105,12 +105,6 @@ public abstract class AbstractActivityMaintenanceHandler extends AbstractResourc
     }
 
     private void initialize(IRapidFireJobResource job) throws Exception {
-
-        String connectionName = job.getParentSubSystem().getConnectionName();
-        String dataLibrary = job.getDataLibrary();
-        boolean commitControl = isCommitControl();
-
-        manager = new ActivityManager(JDBCConnectionManager.getInstance().getConnection(connectionName, dataLibrary, commitControl));
 
         manager.initialize(getMode(), new JobKey(job.getName()));
     }

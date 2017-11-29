@@ -8,11 +8,15 @@
 
 package biz.rapidfire.core.model;
 
+import biz.rapidfire.core.model.maintenance.area.shared.AreaKey;
+
 public interface IRapidFireAreaResource extends IRapidFireChildResource {
 
     /*
      * Key attributes
      */
+
+    public AreaKey getKey();
 
     public String getJob();
 

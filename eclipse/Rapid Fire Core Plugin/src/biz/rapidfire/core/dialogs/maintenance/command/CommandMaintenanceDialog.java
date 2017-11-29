@@ -26,7 +26,7 @@ import biz.rapidfire.core.helpers.ExceptionHelper;
 import biz.rapidfire.core.helpers.IntHelper;
 import biz.rapidfire.core.jface.dialogs.Size;
 import biz.rapidfire.core.jface.dialogs.XDialog;
-import biz.rapidfire.core.model.maintenance.IMaintenance;
+import biz.rapidfire.core.model.maintenance.MaintenanceMode;
 import biz.rapidfire.core.model.maintenance.Result;
 import biz.rapidfire.core.model.maintenance.command.CommandManager;
 import biz.rapidfire.core.model.maintenance.command.CommandValues;
@@ -36,7 +36,6 @@ import biz.rapidfire.core.swt.widgets.WidgetFactory;
 
 public class CommandMaintenanceDialog extends AbstractMaintenanceDialog {
 
-    private String mode;
     private CommandManager manager;
 
     private CommandValues values;
@@ -52,40 +51,39 @@ public class CommandMaintenanceDialog extends AbstractMaintenanceDialog {
     private boolean enableFields;
 
     public static CommandMaintenanceDialog getCreateDialog(Shell shell, CommandManager manager) {
-        return new CommandMaintenanceDialog(shell, IMaintenance.MODE_CREATE, manager);
+        return new CommandMaintenanceDialog(shell, MaintenanceMode.MODE_CREATE, manager);
     }
 
     public static CommandMaintenanceDialog getCopyDialog(Shell shell, CommandManager manager) {
-        return new CommandMaintenanceDialog(shell, IMaintenance.MODE_COPY, manager);
+        return new CommandMaintenanceDialog(shell, MaintenanceMode.MODE_COPY, manager);
     }
 
     public static CommandMaintenanceDialog getChangeDialog(Shell shell, CommandManager manager) {
-        return new CommandMaintenanceDialog(shell, IMaintenance.MODE_CHANGE, manager);
+        return new CommandMaintenanceDialog(shell, MaintenanceMode.MODE_CHANGE, manager);
     }
 
     public static CommandMaintenanceDialog getDeleteDialog(Shell shell, CommandManager manager) {
-        return new CommandMaintenanceDialog(shell, IMaintenance.MODE_DELETE, manager);
+        return new CommandMaintenanceDialog(shell, MaintenanceMode.MODE_DELETE, manager);
     }
 
     public static CommandMaintenanceDialog getDisplayDialog(Shell shell, CommandManager manager) {
-        return new CommandMaintenanceDialog(shell, IMaintenance.MODE_DISPLAY, manager);
+        return new CommandMaintenanceDialog(shell, MaintenanceMode.MODE_DISPLAY, manager);
     }
 
     public void setValue(CommandValues values) {
         this.values = values;
     }
 
-    private CommandMaintenanceDialog(Shell shell, String mode, CommandManager manager) {
-        super(shell);
+    private CommandMaintenanceDialog(Shell shell, MaintenanceMode mode, CommandManager manager) {
+        super(shell, mode);
 
-        this.mode = mode;
         this.manager = manager;
 
-        if (IMaintenance.MODE_CREATE.equals(mode) || IMaintenance.MODE_COPY.equals(mode)) {
+        if (MaintenanceMode.MODE_CREATE.equals(mode) || MaintenanceMode.MODE_COPY.equals(mode)) {
             enableParentKeyFields = false;
             enableKeyFields = true;
             enableFields = true;
-        } else if (IMaintenance.MODE_CHANGE.equals(mode)) {
+        } else if (MaintenanceMode.MODE_CHANGE.equals(mode)) {
             enableParentKeyFields = false;
             enableKeyFields = false;
             enableFields = true;
@@ -157,11 +155,6 @@ public class CommandMaintenanceDialog extends AbstractMaintenanceDialog {
         return Messages.DialogTitle_Area;
     }
 
-    @Override
-    protected String getMode() {
-        return mode;
-    }
-
     protected void setScreenValues() {
 
         textJobName.setText(values.getKey().getJobName());
@@ -180,7 +173,7 @@ public class CommandMaintenanceDialog extends AbstractMaintenanceDialog {
         newValues.getKey().setSequence(IntHelper.tryParseInt(textSequence.getText(), -1));
         newValues.setCommand(textCommand.getText());
 
-        if (!IMaintenance.MODE_DISPLAY.equals(mode)) {
+        if (!isDisplayMode()) {
             try {
                 manager.setValues(newValues);
                 Result result = manager.check();

@@ -8,11 +8,15 @@
 
 package biz.rapidfire.core.model;
 
+import biz.rapidfire.core.model.maintenance.job.shared.JobKey;
+
 public interface IRapidFireJobResource extends IRapidFireResource {
 
     /*
      * Key attributes
      */
+
+    public JobKey getKey();
 
     public String getName();
 

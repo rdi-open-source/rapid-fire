@@ -14,11 +14,13 @@ import java.sql.Types;
 import biz.rapidfire.core.Messages;
 import biz.rapidfire.core.model.dao.IJDBCConnection;
 import biz.rapidfire.core.model.maintenance.AbstractManager;
+import biz.rapidfire.core.model.maintenance.MaintenanceMode;
 import biz.rapidfire.core.model.maintenance.Result;
 import biz.rapidfire.core.model.maintenance.Success;
 import biz.rapidfire.core.model.maintenance.job.shared.JobAction;
+import biz.rapidfire.core.model.maintenance.job.shared.JobKey;
 
-public class JobManager extends AbstractManager<JobKey, JobValues> {
+public class JobManager extends AbstractManager<JobKey, JobValues, JobAction> {
 
     private static final String ERROR_001 = "001"; //$NON-NLS-1$
     private static final String ERROR_002 = "002"; //$NON-NLS-1$
@@ -39,12 +41,12 @@ public class JobManager extends AbstractManager<JobKey, JobValues> {
     }
 
     @Override
-    public Result initialize(String mode, JobKey key) throws Exception {
+    public Result initialize(MaintenanceMode mode, JobKey key) throws Exception {
 
         CallableStatement statement = dao.prepareCall(dao
             .insertLibraryQualifier("{CALL " + IJDBCConnection.LIBRARY + "\"MNTJOB_initialize\"(?, ?, ?, ?)}")); //$NON-NLS-1$ //$NON-NLS-2$
 
-        statement.setString(IJobInitialize.MODE, mode);
+        statement.setString(IJobInitialize.MODE, mode.label());
         statement.setString(IJobInitialize.JOB, key.getJobName());
         statement.setString(IJobInitialize.SUCCESS, Success.NO.label());
         statement.setString(IJobInitialize.ERROR_CODE, EMPTY_STRING);

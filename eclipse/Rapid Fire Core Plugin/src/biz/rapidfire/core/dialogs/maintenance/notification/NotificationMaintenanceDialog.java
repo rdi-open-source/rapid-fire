@@ -30,7 +30,7 @@ import biz.rapidfire.core.helpers.IntHelper;
 import biz.rapidfire.core.helpers.StringHelper;
 import biz.rapidfire.core.jface.dialogs.Size;
 import biz.rapidfire.core.jface.dialogs.XDialog;
-import biz.rapidfire.core.model.maintenance.IMaintenance;
+import biz.rapidfire.core.model.maintenance.MaintenanceMode;
 import biz.rapidfire.core.model.maintenance.Result;
 import biz.rapidfire.core.model.maintenance.notification.INotificationCheck;
 import biz.rapidfire.core.model.maintenance.notification.NotificationManager;
@@ -44,7 +44,7 @@ public class NotificationMaintenanceDialog extends AbstractMaintenanceDialog {
     private static final String DFT_VALUE = "dft.value";
     private static final String PREV_VALUE = "prev.value";
     private static final String EMPTY_STRING = "";
-    private String mode;
+
     private NotificationManager manager;
 
     private NotificationValues values;
@@ -61,40 +61,39 @@ public class NotificationMaintenanceDialog extends AbstractMaintenanceDialog {
     private boolean enableFields;
 
     public static NotificationMaintenanceDialog getCreateDialog(Shell shell, NotificationManager manager) {
-        return new NotificationMaintenanceDialog(shell, IMaintenance.MODE_CREATE, manager);
+        return new NotificationMaintenanceDialog(shell, MaintenanceMode.MODE_CREATE, manager);
     }
 
     public static NotificationMaintenanceDialog getCopyDialog(Shell shell, NotificationManager manager) {
-        return new NotificationMaintenanceDialog(shell, IMaintenance.MODE_COPY, manager);
+        return new NotificationMaintenanceDialog(shell, MaintenanceMode.MODE_COPY, manager);
     }
 
     public static NotificationMaintenanceDialog getChangeDialog(Shell shell, NotificationManager manager) {
-        return new NotificationMaintenanceDialog(shell, IMaintenance.MODE_CHANGE, manager);
+        return new NotificationMaintenanceDialog(shell, MaintenanceMode.MODE_CHANGE, manager);
     }
 
     public static NotificationMaintenanceDialog getDeleteDialog(Shell shell, NotificationManager manager) {
-        return new NotificationMaintenanceDialog(shell, IMaintenance.MODE_DELETE, manager);
+        return new NotificationMaintenanceDialog(shell, MaintenanceMode.MODE_DELETE, manager);
     }
 
     public static NotificationMaintenanceDialog getDisplayDialog(Shell shell, NotificationManager manager) {
-        return new NotificationMaintenanceDialog(shell, IMaintenance.MODE_DISPLAY, manager);
+        return new NotificationMaintenanceDialog(shell, MaintenanceMode.MODE_DISPLAY, manager);
     }
 
     public void setValue(NotificationValues values) {
         this.values = values;
     }
 
-    private NotificationMaintenanceDialog(Shell shell, String mode, NotificationManager manager) {
-        super(shell);
+    private NotificationMaintenanceDialog(Shell shell, MaintenanceMode mode, NotificationManager manager) {
+        super(shell, mode);
 
-        this.mode = mode;
         this.manager = manager;
 
-        if (IMaintenance.MODE_CREATE.equals(mode) || IMaintenance.MODE_COPY.equals(mode)) {
+        if (MaintenanceMode.MODE_CREATE.equals(mode) || MaintenanceMode.MODE_COPY.equals(mode)) {
             enableParentKeyFields = false;
             enableKeyFields = true;
             enableFields = true;
-        } else if (IMaintenance.MODE_CHANGE.equals(mode)) {
+        } else if (MaintenanceMode.MODE_CHANGE.equals(mode)) {
             enableParentKeyFields = false;
             enableKeyFields = false;
             enableFields = true;
@@ -192,11 +191,6 @@ public class NotificationMaintenanceDialog extends AbstractMaintenanceDialog {
         return Messages.DialogTitle_Notification;
     }
 
-    @Override
-    protected String getMode() {
-        return mode;
-    }
-
     protected void setScreenValues() {
 
         setText(textJobName, values.getKey().getJobName());
@@ -251,7 +245,7 @@ public class NotificationMaintenanceDialog extends AbstractMaintenanceDialog {
         newValues.setMessageQueueName(textMessageQueueName.getText());
         newValues.setMessageQueueLibraryName(comboMessageQueueLibraryName.getText());
 
-        if (!IMaintenance.MODE_DISPLAY.equals(mode)) {
+        if (!isDisplayMode()) {
             try {
                 manager.setValues(newValues);
                 Result result = manager.check();

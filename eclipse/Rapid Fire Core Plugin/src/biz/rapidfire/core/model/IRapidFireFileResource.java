@@ -8,6 +8,7 @@
 
 package biz.rapidfire.core.model;
 
+import biz.rapidfire.core.model.maintenance.file.shared.FileKey;
 import biz.rapidfire.core.model.maintenance.file.shared.FileType;
 
 public interface IRapidFireFileResource extends IRapidFireChildResource {
@@ -15,6 +16,8 @@ public interface IRapidFireFileResource extends IRapidFireChildResource {
     /*
      * Key attributes
      */
+
+    public FileKey getKey();
 
     public String getJob();
 

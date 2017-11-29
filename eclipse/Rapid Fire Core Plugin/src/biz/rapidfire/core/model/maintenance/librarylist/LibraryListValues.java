@@ -16,6 +16,7 @@ import biz.rapidfire.core.RapidFireCorePlugin;
 import biz.rapidfire.core.helpers.ExceptionHelper;
 import biz.rapidfire.core.helpers.IntHelper;
 import biz.rapidfire.core.helpers.StringHelper;
+import biz.rapidfire.core.model.maintenance.librarylist.shared.LibraryListKey;
 
 public class LibraryListValues implements Cloneable {
 

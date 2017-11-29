@@ -15,6 +15,10 @@ public class Result {
     private String message;
     private Success success;
 
+    public static Result createSuccessResult() {
+        return new Result(Success.YES.label(), null);
+    }
+
     public Result(String success, String message) {
         this(null, message, success);
     }

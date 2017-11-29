@@ -14,11 +14,14 @@ import java.sql.Types;
 import biz.rapidfire.core.Messages;
 import biz.rapidfire.core.model.dao.IJDBCConnection;
 import biz.rapidfire.core.model.maintenance.AbstractManager;
+import biz.rapidfire.core.model.maintenance.MaintenanceMode;
 import biz.rapidfire.core.model.maintenance.Result;
 import biz.rapidfire.core.model.maintenance.Success;
-import biz.rapidfire.core.model.maintenance.job.JobKey;
+import biz.rapidfire.core.model.maintenance.file.shared.FileAction;
+import biz.rapidfire.core.model.maintenance.file.shared.FileKey;
+import biz.rapidfire.core.model.maintenance.job.shared.JobKey;
 
-public class FileManager extends AbstractManager<FileKey, FileValues> {
+public class FileManager extends AbstractManager<FileKey, FileValues, FileAction> {
 
     private static final String ERROR_001 = "001"; //$NON-NLS-1$
     private static final String ERROR_002 = "002"; //$NON-NLS-1$
@@ -40,14 +43,14 @@ public class FileManager extends AbstractManager<FileKey, FileValues> {
     }
 
     @Override
-    public Result initialize(String mode, FileKey key) throws Exception {
+    public Result initialize(MaintenanceMode mode, FileKey key) throws Exception {
 
         jobKey = new JobKey(key.getJobName());
 
         CallableStatement statement = dao.prepareCall(dao
             .insertLibraryQualifier("{CALL " + IJDBCConnection.LIBRARY + "\"MNTFILE_initialize\"(?, ?, ?, ?, ?)}")); //$NON-NLS-1$ //$NON-NLS-2$
 
-        statement.setString(IFileInitialize.MODE, mode);
+        statement.setString(IFileInitialize.MODE, mode.label());
         statement.setString(IFileInitialize.JOB, key.getJobName());
         statement.setInt(IFileInitialize.POSITION, key.getPosition());
         statement.setString(IFileInitialize.SUCCESS, Success.NO.label());
@@ -183,4 +186,9 @@ public class FileManager extends AbstractManager<FileKey, FileValues> {
         statement.execute();
     }
 
+    public Result checkAction(FileKey key, FileAction fileAction) throws Exception {
+        // TODO: check action!
+        Result result = new Result(Success.YES.label(), null);
+        return result;
+    }
 }

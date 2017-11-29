@@ -6,12 +6,11 @@
  * http://www.eclipse.org/legal/cpl-v10.html
  *******************************************************************************/
 
-package biz.rapidfire.core.model.maintenance.command;
+package biz.rapidfire.core.model.maintenance.command.shared;
 
 import biz.rapidfire.core.RapidFireCorePlugin;
 import biz.rapidfire.core.helpers.ExceptionHelper;
-import biz.rapidfire.core.model.maintenance.command.shared.CommandType;
-import biz.rapidfire.core.model.maintenance.file.FileKey;
+import biz.rapidfire.core.model.maintenance.file.shared.FileKey;
 
 public class CommandKey implements Cloneable {
 

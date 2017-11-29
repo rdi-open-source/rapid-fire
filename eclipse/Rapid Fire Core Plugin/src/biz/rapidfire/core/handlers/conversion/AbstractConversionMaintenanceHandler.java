@@ -13,27 +13,26 @@ import org.eclipse.jface.dialogs.MessageDialog;
 
 import biz.rapidfire.core.Messages;
 import biz.rapidfire.core.RapidFireCorePlugin;
-import biz.rapidfire.core.handlers.AbstractResourceHandler;
+import biz.rapidfire.core.handlers.AbstractResourceMaintenanceHandler;
 import biz.rapidfire.core.helpers.ExceptionHelper;
 import biz.rapidfire.core.model.IRapidFireConversionResource;
 import biz.rapidfire.core.model.IRapidFireJobResource;
 import biz.rapidfire.core.model.IRapidFireResource;
 import biz.rapidfire.core.model.dao.JDBCConnectionManager;
-import biz.rapidfire.core.model.maintenance.IMaintenance;
+import biz.rapidfire.core.model.maintenance.MaintenanceMode;
 import biz.rapidfire.core.model.maintenance.Result;
-import biz.rapidfire.core.model.maintenance.Success;
-import biz.rapidfire.core.model.maintenance.conversion.ConversionKey;
 import biz.rapidfire.core.model.maintenance.conversion.ConversionManager;
 import biz.rapidfire.core.model.maintenance.conversion.shared.ConversionAction;
-import biz.rapidfire.core.model.maintenance.file.FileKey;
-import biz.rapidfire.core.model.maintenance.job.JobKey;
+import biz.rapidfire.core.model.maintenance.conversion.shared.ConversionKey;
+import biz.rapidfire.core.model.maintenance.file.shared.FileKey;
+import biz.rapidfire.core.model.maintenance.job.shared.JobKey;
 
-public abstract class AbstractConversionMaintenanceHandler extends AbstractResourceHandler {
+public abstract class AbstractConversionMaintenanceHandler extends AbstractResourceMaintenanceHandler<IRapidFireConversionResource, ConversionAction> {
 
     private ConversionManager manager;
     private ConversionAction conversionAction;
 
-    public AbstractConversionMaintenanceHandler(String mode, ConversionAction conversionAction) {
+    public AbstractConversionMaintenanceHandler(MaintenanceMode mode, ConversionAction conversionAction) {
         super(mode);
 
         this.conversionAction = conversionAction;
@@ -55,7 +54,7 @@ public abstract class AbstractConversionMaintenanceHandler extends AbstractResou
             IRapidFireConversionResource conversion = (IRapidFireConversionResource)resource;
             manager = getOrCreateManager(conversion.getParentJob());
 
-            if (canExecuteAction(conversion.getParentJob(), conversionAction)) {
+            if (canExecuteAction(conversion, conversionAction)) {
                 Result result = initialize(conversion);
                 if (result != null && result.isError()) {
                     MessageDialog.openError(getShell(), Messages.E_R_R_O_R, result.getMessage());
@@ -89,22 +88,18 @@ public abstract class AbstractConversionMaintenanceHandler extends AbstractResou
         return manager;
     }
 
-    protected boolean canExecuteAction(IRapidFireJobResource job, ConversionAction conversionAction) {
+    protected boolean canExecuteAction(IRapidFireConversionResource conversion, ConversionAction conversionAction) {
 
         String message = null;
 
         try {
 
-            // TODO: check action!
-            // Result result = libraryManager.checkAction(new
-            // JobKey(job.getName()),
-            // libraryAction);
-            Result result = new Result(Success.YES.label(), null);
-
+            Result result = manager.checkAction(conversion.getKey(), conversionAction);
             if (result.isSuccessfull()) {
                 return true;
             } else {
-                message = Messages.bindParameters(Messages.The_requested_operation_is_invalid_for_job_status_A, job.getStatus().label);
+                message = Messages.bindParameters(Messages.The_requested_operation_is_invalid_for_job_status_A,
+                    conversion.getParentJob().getStatus().label);
             }
 
         } catch (Exception e) {
@@ -121,11 +116,6 @@ public abstract class AbstractConversionMaintenanceHandler extends AbstractResou
 
     private Result initialize(IRapidFireConversionResource conversion) throws Exception {
 
-        String connectionName = conversion.getParentSubSystem().getConnectionName();
-        String dataLibrary = conversion.getDataLibrary();
-        boolean commitControl = isCommitControl();
-
-        manager = new ConversionManager(JDBCConnectionManager.getInstance().getConnection(connectionName, dataLibrary, commitControl));
         manager.openFiles();
 
         JobKey jobKey = new JobKey(conversion.getJob());
@@ -146,16 +136,6 @@ public abstract class AbstractConversionMaintenanceHandler extends AbstractResou
             manager.closeFiles();
             manager = null;
         }
-    }
-
-    private boolean isCommitControl() {
-
-        String mode = getMode();
-        if (IMaintenance.MODE_CHANGE.equals(mode) || IMaintenance.MODE_DELETE.equals(mode)) {
-            return true;
-        }
-
-        return false;
     }
 
     private void logError(Throwable e) {

@@ -24,7 +24,7 @@ import org.eclipse.swt.widgets.Text;
 import biz.rapidfire.core.Messages;
 import biz.rapidfire.core.dialogs.maintenance.AbstractMaintenanceDialog;
 import biz.rapidfire.core.helpers.ExceptionHelper;
-import biz.rapidfire.core.model.maintenance.IMaintenance;
+import biz.rapidfire.core.model.maintenance.MaintenanceMode;
 import biz.rapidfire.core.model.maintenance.Result;
 import biz.rapidfire.core.model.maintenance.librarylist.ILibraryListCheck;
 import biz.rapidfire.core.model.maintenance.librarylist.LibraryListEntry;
@@ -36,7 +36,6 @@ import biz.rapidfire.core.swt.widgets.listeditors.librarylist.LibraryListItem;
 
 public class LibraryListMaintenanceDialog extends AbstractMaintenanceDialog {
 
-    private String mode;
     private LibraryListManager manager;
 
     private LibraryListValues values;
@@ -51,40 +50,39 @@ public class LibraryListMaintenanceDialog extends AbstractMaintenanceDialog {
     private boolean enableFields;
 
     public static LibraryListMaintenanceDialog getCreateDialog(Shell shell, LibraryListManager manager) {
-        return new LibraryListMaintenanceDialog(shell, IMaintenance.MODE_CREATE, manager);
+        return new LibraryListMaintenanceDialog(shell, MaintenanceMode.MODE_CREATE, manager);
     }
 
     public static LibraryListMaintenanceDialog getCopyDialog(Shell shell, LibraryListManager manager) {
-        return new LibraryListMaintenanceDialog(shell, IMaintenance.MODE_COPY, manager);
+        return new LibraryListMaintenanceDialog(shell, MaintenanceMode.MODE_COPY, manager);
     }
 
     public static LibraryListMaintenanceDialog getChangeDialog(Shell shell, LibraryListManager manager) {
-        return new LibraryListMaintenanceDialog(shell, IMaintenance.MODE_CHANGE, manager);
+        return new LibraryListMaintenanceDialog(shell, MaintenanceMode.MODE_CHANGE, manager);
     }
 
     public static LibraryListMaintenanceDialog getDeleteDialog(Shell shell, LibraryListManager manager) {
-        return new LibraryListMaintenanceDialog(shell, IMaintenance.MODE_DELETE, manager);
+        return new LibraryListMaintenanceDialog(shell, MaintenanceMode.MODE_DELETE, manager);
     }
 
     public static LibraryListMaintenanceDialog getDisplayDialog(Shell shell, LibraryListManager manager) {
-        return new LibraryListMaintenanceDialog(shell, IMaintenance.MODE_DISPLAY, manager);
+        return new LibraryListMaintenanceDialog(shell, MaintenanceMode.MODE_DISPLAY, manager);
     }
 
     public void setValue(LibraryListValues values) {
         this.values = values;
     }
 
-    private LibraryListMaintenanceDialog(Shell shell, String mode, LibraryListManager manager) {
-        super(shell);
+    private LibraryListMaintenanceDialog(Shell shell, MaintenanceMode mode, LibraryListManager manager) {
+        super(shell, mode);
 
-        this.mode = mode;
         this.manager = manager;
 
-        if (IMaintenance.MODE_CREATE.equals(mode) || IMaintenance.MODE_COPY.equals(mode)) {
+        if (MaintenanceMode.MODE_CREATE.equals(mode) || MaintenanceMode.MODE_COPY.equals(mode)) {
             enableParentKeyFields = false;
             enableKeyFields = true;
             enableFields = true;
-        } else if (IMaintenance.MODE_CHANGE.equals(mode)) {
+        } else if (MaintenanceMode.MODE_CHANGE.equals(mode)) {
             enableParentKeyFields = false;
             enableKeyFields = false;
             enableFields = true;
@@ -146,11 +144,6 @@ public class LibraryListMaintenanceDialog extends AbstractMaintenanceDialog {
         return Messages.DialogTitle_Library_List;
     }
 
-    @Override
-    protected String getMode() {
-        return mode;
-    }
-
     protected void setScreenValues() {
 
         textJobName.setText(values.getKey().getJobName());
@@ -176,7 +169,7 @@ public class LibraryListMaintenanceDialog extends AbstractMaintenanceDialog {
         newValues.setDescription(textDescription.getText());
         newValues.setLibraryList(getLibraryList(editorLibraryList.getItems()));
 
-        if (!IMaintenance.MODE_DISPLAY.equals(mode)) {
+        if (!isDisplayMode()) {
             try {
                 manager.setValues(newValues);
                 Result result = manager.check();

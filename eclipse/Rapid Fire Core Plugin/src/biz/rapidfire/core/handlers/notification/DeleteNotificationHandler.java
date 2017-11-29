@@ -13,13 +13,14 @@ import org.eclipse.jface.dialogs.Dialog;
 
 import biz.rapidfire.core.dialogs.maintenance.notification.NotificationMaintenanceDialog;
 import biz.rapidfire.core.model.IRapidFireNotificationResource;
-import biz.rapidfire.core.model.maintenance.IMaintenance;
+import biz.rapidfire.core.model.maintenance.MaintenanceMode;
 import biz.rapidfire.core.model.maintenance.notification.NotificationValues;
+import biz.rapidfire.core.model.maintenance.notification.shared.NotificationAction;
 
 public class DeleteNotificationHandler extends AbstractNotificationMaintenanceHandler implements IHandler {
 
     public DeleteNotificationHandler() {
-        super(IMaintenance.MODE_DELETE);
+        super(MaintenanceMode.MODE_DELETE, NotificationAction.DELETE);
     }
 
     @Override

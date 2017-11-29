@@ -13,14 +13,14 @@ import org.eclipse.jface.dialogs.Dialog;
 
 import biz.rapidfire.core.dialogs.maintenance.area.AreaMaintenanceDialog;
 import biz.rapidfire.core.model.IRapidFireAreaResource;
-import biz.rapidfire.core.model.maintenance.IMaintenance;
+import biz.rapidfire.core.model.maintenance.MaintenanceMode;
 import biz.rapidfire.core.model.maintenance.area.AreaValues;
 import biz.rapidfire.core.model.maintenance.area.shared.AreaAction;
 
 public class ChangeAreaHandler extends AbstractAreaMaintenanceHandler implements IHandler {
 
     public ChangeAreaHandler() {
-        super(IMaintenance.MODE_CHANGE, AreaAction.CHANGE);
+        super(MaintenanceMode.MODE_CHANGE, AreaAction.CHANGE);
     }
 
     @Override

@@ -13,14 +13,14 @@ import org.eclipse.jface.dialogs.Dialog;
 
 import biz.rapidfire.core.dialogs.maintenance.activity.ActivityMaintenanceDialog;
 import biz.rapidfire.core.model.IRapidFireJobResource;
-import biz.rapidfire.core.model.maintenance.IMaintenance;
+import biz.rapidfire.core.model.maintenance.MaintenanceMode;
 import biz.rapidfire.core.model.maintenance.activity.ActivityValues;
 import biz.rapidfire.core.model.maintenance.job.shared.JobAction;
 
 public class ChangeActivitiesHandler extends AbstractActivityMaintenanceHandler implements IHandler {
 
     public ChangeActivitiesHandler() {
-        super(IMaintenance.MODE_CHANGE, JobAction.MNTSCDE);
+        super(MaintenanceMode.MODE_CHANGE, JobAction.MNTSCDE);
     }
 
     @Override

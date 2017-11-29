@@ -23,20 +23,31 @@ import biz.rapidfire.core.RapidFireCorePlugin;
 import biz.rapidfire.core.helpers.StringHelper;
 import biz.rapidfire.core.jface.dialogs.Size;
 import biz.rapidfire.core.jface.dialogs.XDialog;
+import biz.rapidfire.core.model.maintenance.MaintenanceMode;
 import biz.rapidfire.core.model.maintenance.Result;
 import biz.rapidfire.core.swt.widgets.WidgetFactory;
 
 public abstract class AbstractMaintenanceDialog extends XDialog {
 
+    private MaintenanceMode mode;
     private boolean isScrollable;
 
-    public AbstractMaintenanceDialog(Shell shell) {
+    public AbstractMaintenanceDialog(Shell shell, MaintenanceMode mode) {
         super(shell);
 
-        isScrollable = true;
+        this.mode = mode;
+        this.isScrollable = true;
     }
 
-    public void setScrollable(boolean enabled) {
+    protected boolean isDisplayMode() {
+        return MaintenanceMode.MODE_DISPLAY.equals(getMode());
+    }
+
+    protected MaintenanceMode getMode() {
+        return mode;
+    }
+
+    protected void setScrollable(boolean enabled) {
         this.isScrollable = enabled;
     }
 
@@ -94,8 +105,6 @@ public abstract class AbstractMaintenanceDialog extends XDialog {
     };
 
     protected abstract String getDialogTitle();
-
-    protected abstract String getMode();
 
     protected abstract void createEditorAreaContent(Composite editorArea);
 

@@ -17,17 +17,18 @@ import biz.rapidfire.core.handlers.AbstractResourceMaintenanceHandler;
 import biz.rapidfire.core.model.IRapidFireJobResource;
 import biz.rapidfire.core.model.IRapidFireResource;
 import biz.rapidfire.core.model.dao.JDBCConnectionManager;
+import biz.rapidfire.core.model.maintenance.MaintenanceMode;
 import biz.rapidfire.core.model.maintenance.Result;
-import biz.rapidfire.core.model.maintenance.job.JobKey;
 import biz.rapidfire.core.model.maintenance.job.JobManager;
 import biz.rapidfire.core.model.maintenance.job.shared.JobAction;
+import biz.rapidfire.core.model.maintenance.job.shared.JobKey;
 
-public abstract class AbstractJobMaintenanceHandler extends AbstractResourceMaintenanceHandler<IRapidFireJobResource> {
+public abstract class AbstractJobMaintenanceHandler extends AbstractResourceMaintenanceHandler<IRapidFireJobResource, JobAction> {
 
     private JobManager manager;
     private JobAction jobAction;
 
-    public AbstractJobMaintenanceHandler(String mode, JobAction jobAction) {
+    public AbstractJobMaintenanceHandler(MaintenanceMode mode, JobAction jobAction) {
         super(mode);
 
         this.jobAction = jobAction;

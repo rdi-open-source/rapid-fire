@@ -10,6 +10,7 @@ package biz.rapidfire.core.model.maintenance.conversion;
 
 import biz.rapidfire.core.RapidFireCorePlugin;
 import biz.rapidfire.core.helpers.ExceptionHelper;
+import biz.rapidfire.core.model.maintenance.conversion.shared.ConversionKey;
 import biz.rapidfire.core.model.maintenance.conversion.shared.NewFieldName;
 
 public class ConversionValues implements Cloneable {

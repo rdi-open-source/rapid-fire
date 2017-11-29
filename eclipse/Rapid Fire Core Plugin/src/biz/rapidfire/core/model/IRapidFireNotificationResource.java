@@ -8,9 +8,12 @@
 
 package biz.rapidfire.core.model;
 
+import biz.rapidfire.core.model.maintenance.notification.shared.NotificationKey;
 import biz.rapidfire.core.model.maintenance.notification.shared.NotificationType;
 
 public interface IRapidFireNotificationResource extends IRapidFireChildResource {
+
+    public NotificationKey getKey();
 
     /*
      * Key attributes

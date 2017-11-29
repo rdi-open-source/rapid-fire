@@ -13,14 +13,14 @@ import org.eclipse.jface.dialogs.Dialog;
 
 import biz.rapidfire.core.dialogs.maintenance.job.JobMaintenanceDialog;
 import biz.rapidfire.core.model.IRapidFireJobResource;
-import biz.rapidfire.core.model.maintenance.IMaintenance;
+import biz.rapidfire.core.model.maintenance.MaintenanceMode;
 import biz.rapidfire.core.model.maintenance.job.JobValues;
 import biz.rapidfire.core.model.maintenance.job.shared.JobAction;
 
 public class NewJobHandler extends AbstractJobMaintenanceHandler implements IHandler {
 
     public NewJobHandler() {
-        super(IMaintenance.MODE_CREATE, JobAction.CREATE);
+        super(MaintenanceMode.MODE_CREATE, JobAction.CREATE);
     }
 
     @Override

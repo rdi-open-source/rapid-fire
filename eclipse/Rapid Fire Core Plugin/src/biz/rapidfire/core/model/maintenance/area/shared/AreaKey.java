@@ -6,45 +6,47 @@
  * http://www.eclipse.org/legal/cpl-v10.html
  *******************************************************************************/
 
-package biz.rapidfire.core.model.maintenance.library;
+package biz.rapidfire.core.model.maintenance.area.shared;
 
 import biz.rapidfire.core.RapidFireCorePlugin;
 import biz.rapidfire.core.helpers.ExceptionHelper;
-import biz.rapidfire.core.model.maintenance.job.JobKey;
+import biz.rapidfire.core.model.maintenance.file.shared.FileKey;
 
-public class LibraryKey implements Cloneable {
+public class AreaKey implements Cloneable {
 
-    private JobKey jobKey;
-    private String library;
+    private FileKey fileKey;
+    private String area;
 
-    public LibraryKey(JobKey jobKey, String library) {
+    public AreaKey(FileKey fileKey, String area) {
 
-        this.jobKey = jobKey;
-        if (library != null) {
-            this.library = library.trim();
-        }
+        this.fileKey = fileKey;
+        this.area = area;
     }
 
     public String getJobName() {
-        return jobKey.getJobName();
+        return fileKey.getJobName();
     }
 
-    public String getLibrary() {
-        return library;
+    public int getPosition() {
+        return fileKey.getPosition();
     }
 
-    public void setLibrary(String library) {
-        this.library = library.trim();
+    public String getArea() {
+        return area;
+    }
+
+    public void setArea(String area) {
+        this.area = area;
     }
 
     @Override
     public Object clone() {
         try {
 
-            LibraryKey libraryKey = (LibraryKey)super.clone();
-            libraryKey.jobKey = (JobKey)jobKey.clone();
+            AreaKey areaKey = (AreaKey)super.clone();
+            areaKey.fileKey = (FileKey)fileKey.clone();
 
-            return libraryKey;
+            return areaKey;
 
         } catch (CloneNotSupportedException e) {
             RapidFireCorePlugin.logError("*** Clone not supported. ***", e); //$NON-NLS-1$

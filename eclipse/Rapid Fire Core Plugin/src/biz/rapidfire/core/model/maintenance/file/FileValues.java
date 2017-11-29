@@ -12,6 +12,7 @@ import biz.rapidfire.core.RapidFireCorePlugin;
 import biz.rapidfire.core.helpers.ExceptionHelper;
 import biz.rapidfire.core.model.maintenance.file.shared.ConversionProgram;
 import biz.rapidfire.core.model.maintenance.file.shared.CopyProgram;
+import biz.rapidfire.core.model.maintenance.file.shared.FileKey;
 import biz.rapidfire.core.model.maintenance.file.shared.FileType;
 
 public class FileValues implements Cloneable {

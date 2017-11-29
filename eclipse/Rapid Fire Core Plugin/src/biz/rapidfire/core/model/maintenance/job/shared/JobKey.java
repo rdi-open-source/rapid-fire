@@ -6,45 +6,36 @@
  * http://www.eclipse.org/legal/cpl-v10.html
  *******************************************************************************/
 
-package biz.rapidfire.core.model.maintenance.librarylist;
+package biz.rapidfire.core.model.maintenance.job.shared;
 
 import biz.rapidfire.core.RapidFireCorePlugin;
 import biz.rapidfire.core.helpers.ExceptionHelper;
-import biz.rapidfire.core.model.maintenance.job.JobKey;
 
-public class LibraryListKey implements Cloneable {
+public class JobKey implements Cloneable {
 
-    private JobKey jobKey;
-    private String libraryList;
+    private String jobName;
 
-    public LibraryListKey(JobKey jobKey, String libraryList) {
-
-        this.jobKey = jobKey;
-        if (libraryList != null) {
-            this.libraryList = libraryList.trim();
+    public JobKey(String jobName) {
+        if (jobName != null) {
+            this.jobName = jobName.trim();
         }
     }
 
     public String getJobName() {
-        return jobKey.getJobName();
+        return jobName;
     }
 
-    public String getLibraryList() {
-        return libraryList;
-    }
-
-    public void setLibraryList(String libraryList) {
-        this.libraryList = libraryList.trim();
+    public void setJobName(String jobName) {
+        this.jobName = jobName.trim();
     }
 
     @Override
     public Object clone() {
         try {
 
-            LibraryListKey libraryListKey = (LibraryListKey)super.clone();
-            libraryListKey.jobKey = (JobKey)jobKey.clone();
+            JobKey jobKey = (JobKey)super.clone();
 
-            return libraryListKey;
+            return jobKey;
 
         } catch (CloneNotSupportedException e) {
             RapidFireCorePlugin.logError("*** Clone not supported. ***", e); //$NON-NLS-1$

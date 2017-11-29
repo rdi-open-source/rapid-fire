@@ -13,27 +13,26 @@ import org.eclipse.jface.dialogs.MessageDialog;
 
 import biz.rapidfire.core.Messages;
 import biz.rapidfire.core.RapidFireCorePlugin;
-import biz.rapidfire.core.handlers.AbstractResourceHandler;
+import biz.rapidfire.core.handlers.AbstractResourceMaintenanceHandler;
 import biz.rapidfire.core.helpers.ExceptionHelper;
 import biz.rapidfire.core.model.IRapidFireAreaResource;
 import biz.rapidfire.core.model.IRapidFireJobResource;
 import biz.rapidfire.core.model.IRapidFireResource;
 import biz.rapidfire.core.model.dao.JDBCConnectionManager;
-import biz.rapidfire.core.model.maintenance.IMaintenance;
+import biz.rapidfire.core.model.maintenance.MaintenanceMode;
 import biz.rapidfire.core.model.maintenance.Result;
-import biz.rapidfire.core.model.maintenance.Success;
-import biz.rapidfire.core.model.maintenance.area.AreaKey;
 import biz.rapidfire.core.model.maintenance.area.AreaManager;
 import biz.rapidfire.core.model.maintenance.area.shared.AreaAction;
-import biz.rapidfire.core.model.maintenance.file.FileKey;
-import biz.rapidfire.core.model.maintenance.job.JobKey;
+import biz.rapidfire.core.model.maintenance.area.shared.AreaKey;
+import biz.rapidfire.core.model.maintenance.file.shared.FileKey;
+import biz.rapidfire.core.model.maintenance.job.shared.JobKey;
 
-public abstract class AbstractAreaMaintenanceHandler extends AbstractResourceHandler {
+public abstract class AbstractAreaMaintenanceHandler extends AbstractResourceMaintenanceHandler<IRapidFireAreaResource, AreaAction> {
 
     private AreaManager manager;
     private AreaAction areaAction;
 
-    public AbstractAreaMaintenanceHandler(String mode, AreaAction areaAction) {
+    public AbstractAreaMaintenanceHandler(MaintenanceMode mode, AreaAction areaAction) {
         super(mode);
 
         this.areaAction = areaAction;
@@ -55,7 +54,7 @@ public abstract class AbstractAreaMaintenanceHandler extends AbstractResourceHan
             IRapidFireAreaResource area = (IRapidFireAreaResource)resource;
             manager = getOrCreateManager(area.getParentJob());
 
-            if (canExecuteAction(area.getParentJob(), areaAction)) {
+            if (canExecuteAction(area, areaAction)) {
                 Result result = initialize(area);
                 if (result != null && result.isError()) {
                     MessageDialog.openError(getShell(), Messages.E_R_R_O_R, result.getMessage());
@@ -89,22 +88,19 @@ public abstract class AbstractAreaMaintenanceHandler extends AbstractResourceHan
         return manager;
     }
 
-    protected boolean canExecuteAction(IRapidFireJobResource job, AreaAction areaAction) {
+    protected boolean canExecuteAction(IRapidFireAreaResource area, AreaAction areaAction) {
 
         String message = null;
 
         try {
 
             // TODO: check action!
-            // Result result = libraryManager.checkAction(new
-            // JobKey(job.getName()),
-            // libraryAction);
-            Result result = new Result(Success.YES.label(), null);
-
+            Result result = manager.checkAction(area.getKey(), areaAction);
             if (result.isSuccessfull()) {
                 return true;
             } else {
-                message = Messages.bindParameters(Messages.The_requested_operation_is_invalid_for_job_status_A, job.getStatus().label);
+                message = Messages
+                    .bindParameters(Messages.The_requested_operation_is_invalid_for_job_status_A, area.getParentJob().getStatus().label);
             }
 
         } catch (Exception e) {
@@ -121,11 +117,6 @@ public abstract class AbstractAreaMaintenanceHandler extends AbstractResourceHan
 
     private Result initialize(IRapidFireAreaResource area) throws Exception {
 
-        String connectionName = area.getParentSubSystem().getConnectionName();
-        String dataLibrary = area.getDataLibrary();
-        boolean commitControl = isCommitControl();
-
-        manager = new AreaManager(JDBCConnectionManager.getInstance().getConnection(connectionName, dataLibrary, commitControl));
         manager.openFiles();
 
         JobKey jobKey = new JobKey(area.getJob());
@@ -145,16 +136,6 @@ public abstract class AbstractAreaMaintenanceHandler extends AbstractResourceHan
             manager.closeFiles();
             manager = null;
         }
-    }
-
-    private boolean isCommitControl() {
-
-        String mode = getMode();
-        if (IMaintenance.MODE_CHANGE.equals(mode) || IMaintenance.MODE_DELETE.equals(mode)) {
-            return true;
-        }
-
-        return false;
     }
 
     private void logError(Throwable e) {

@@ -6,47 +6,45 @@
  * http://www.eclipse.org/legal/cpl-v10.html
  *******************************************************************************/
 
-package biz.rapidfire.core.model.maintenance.conversion;
+package biz.rapidfire.core.model.maintenance.library.shared;
 
 import biz.rapidfire.core.RapidFireCorePlugin;
 import biz.rapidfire.core.helpers.ExceptionHelper;
-import biz.rapidfire.core.model.maintenance.file.FileKey;
+import biz.rapidfire.core.model.maintenance.job.shared.JobKey;
 
-public class ConversionKey implements Cloneable {
+public class LibraryKey implements Cloneable {
 
-    private FileKey fileKey;
-    private String fieldToConvert;
+    private JobKey jobKey;
+    private String library;
 
-    public ConversionKey(FileKey fileKey, String fieldName) {
+    public LibraryKey(JobKey jobKey, String library) {
 
-        this.fileKey = fileKey;
-        this.fieldToConvert = fieldName;
+        this.jobKey = jobKey;
+        if (library != null) {
+            this.library = library.trim();
+        }
     }
 
     public String getJobName() {
-        return fileKey.getJobName();
+        return jobKey.getJobName();
     }
 
-    public int getPosition() {
-        return fileKey.getPosition();
+    public String getLibrary() {
+        return library;
     }
 
-    public String getFieldToConvert() {
-        return fieldToConvert;
-    }
-
-    public void setFieldToConvert(String fieldToConvert) {
-        this.fieldToConvert = fieldToConvert;
+    public void setLibrary(String library) {
+        this.library = library.trim();
     }
 
     @Override
     public Object clone() {
         try {
 
-            ConversionKey conversionKey = (ConversionKey)super.clone();
-            conversionKey.fileKey = (FileKey)fileKey.clone();
+            LibraryKey libraryKey = (LibraryKey)super.clone();
+            libraryKey.jobKey = (JobKey)jobKey.clone();
 
-            return conversionKey;
+            return libraryKey;
 
         } catch (CloneNotSupportedException e) {
             RapidFireCorePlugin.logError("*** Clone not supported. ***", e); //$NON-NLS-1$

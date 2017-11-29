@@ -13,14 +13,14 @@ import org.eclipse.jface.dialogs.Dialog;
 
 import biz.rapidfire.core.dialogs.maintenance.file.FileMaintenanceDialog;
 import biz.rapidfire.core.model.IRapidFireFileResource;
-import biz.rapidfire.core.model.maintenance.IMaintenance;
+import biz.rapidfire.core.model.maintenance.MaintenanceMode;
 import biz.rapidfire.core.model.maintenance.file.FileValues;
 import biz.rapidfire.core.model.maintenance.file.shared.FileAction;
 
 public class DeleteFileHandler extends AbstractFileMaintenanceHandler implements IHandler {
 
     public DeleteFileHandler() {
-        super(IMaintenance.MODE_DELETE, FileAction.DELETE);
+        super(MaintenanceMode.MODE_DELETE, FileAction.DELETE);
     }
 
     @Override

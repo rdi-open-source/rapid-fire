@@ -14,12 +14,15 @@ import java.sql.Types;
 import biz.rapidfire.core.Messages;
 import biz.rapidfire.core.model.dao.IJDBCConnection;
 import biz.rapidfire.core.model.maintenance.AbstractManager;
+import biz.rapidfire.core.model.maintenance.MaintenanceMode;
 import biz.rapidfire.core.model.maintenance.Result;
 import biz.rapidfire.core.model.maintenance.Success;
-import biz.rapidfire.core.model.maintenance.file.FileKey;
-import biz.rapidfire.core.model.maintenance.job.JobKey;
+import biz.rapidfire.core.model.maintenance.area.shared.AreaAction;
+import biz.rapidfire.core.model.maintenance.area.shared.AreaKey;
+import biz.rapidfire.core.model.maintenance.file.shared.FileKey;
+import biz.rapidfire.core.model.maintenance.job.shared.JobKey;
 
-public class AreaManager extends AbstractManager<AreaKey, AreaValues> {
+public class AreaManager extends AbstractManager<AreaKey, AreaValues, AreaAction> {
 
     private static final String ERROR_001 = "001"; //$NON-NLS-1$
     private static final String ERROR_002 = "002"; //$NON-NLS-1$
@@ -42,7 +45,7 @@ public class AreaManager extends AbstractManager<AreaKey, AreaValues> {
     }
 
     @Override
-    public Result initialize(String mode, AreaKey key) throws Exception {
+    public Result initialize(MaintenanceMode mode, AreaKey key) throws Exception {
 
         JobKey jobKey = new JobKey(key.getJobName());
         fileKey = new FileKey(jobKey, key.getPosition());
@@ -50,7 +53,7 @@ public class AreaManager extends AbstractManager<AreaKey, AreaValues> {
         CallableStatement statement = dao.prepareCall(dao
             .insertLibraryQualifier("{CALL " + IJDBCConnection.LIBRARY + "\"MNTAREA_initialize\"(?, ?, ?, ?, ?, ?)}")); //$NON-NLS-1$ //$NON-NLS-2$
 
-        statement.setString(IAreaInitialize.MODE, mode);
+        statement.setString(IAreaInitialize.MODE, mode.label());
         statement.setString(IAreaInitialize.JOB, key.getJobName());
         statement.setInt(IAreaInitialize.POSITION, key.getPosition());
         statement.setString(IAreaInitialize.AREA, key.getArea());
@@ -181,4 +184,9 @@ public class AreaManager extends AbstractManager<AreaKey, AreaValues> {
         statement.execute();
     }
 
+    public Result checkAction(AreaKey key, AreaAction areaAction) throws Exception {
+        // TODO: check action!
+        Result result = new Result(Success.YES.label(), null);
+        return result;
+    }
 }

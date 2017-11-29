@@ -25,7 +25,7 @@ import biz.rapidfire.core.dialogs.maintenance.AbstractMaintenanceDialog;
 import biz.rapidfire.core.helpers.ExceptionHelper;
 import biz.rapidfire.core.jface.dialogs.Size;
 import biz.rapidfire.core.jface.dialogs.XDialog;
-import biz.rapidfire.core.model.maintenance.IMaintenance;
+import biz.rapidfire.core.model.maintenance.MaintenanceMode;
 import biz.rapidfire.core.model.maintenance.Result;
 import biz.rapidfire.core.model.maintenance.conversion.ConversionManager;
 import biz.rapidfire.core.model.maintenance.conversion.ConversionValues;
@@ -34,7 +34,6 @@ import biz.rapidfire.core.swt.widgets.WidgetFactory;
 
 public class ConversionMaintenanceDialog extends AbstractMaintenanceDialog {
 
-    private String mode;
     private ConversionManager manager;
 
     private ConversionValues values;
@@ -55,40 +54,39 @@ public class ConversionMaintenanceDialog extends AbstractMaintenanceDialog {
     private boolean enableFields;
 
     public static ConversionMaintenanceDialog getCreateDialog(Shell shell, ConversionManager manager) {
-        return new ConversionMaintenanceDialog(shell, IMaintenance.MODE_CREATE, manager);
+        return new ConversionMaintenanceDialog(shell, MaintenanceMode.MODE_CREATE, manager);
     }
 
     public static ConversionMaintenanceDialog getCopyDialog(Shell shell, ConversionManager manager) {
-        return new ConversionMaintenanceDialog(shell, IMaintenance.MODE_COPY, manager);
+        return new ConversionMaintenanceDialog(shell, MaintenanceMode.MODE_COPY, manager);
     }
 
     public static ConversionMaintenanceDialog getChangeDialog(Shell shell, ConversionManager manager) {
-        return new ConversionMaintenanceDialog(shell, IMaintenance.MODE_CHANGE, manager);
+        return new ConversionMaintenanceDialog(shell, MaintenanceMode.MODE_CHANGE, manager);
     }
 
     public static ConversionMaintenanceDialog getDeleteDialog(Shell shell, ConversionManager manager) {
-        return new ConversionMaintenanceDialog(shell, IMaintenance.MODE_DELETE, manager);
+        return new ConversionMaintenanceDialog(shell, MaintenanceMode.MODE_DELETE, manager);
     }
 
     public static ConversionMaintenanceDialog getDisplayDialog(Shell shell, ConversionManager manager) {
-        return new ConversionMaintenanceDialog(shell, IMaintenance.MODE_DISPLAY, manager);
+        return new ConversionMaintenanceDialog(shell, MaintenanceMode.MODE_DISPLAY, manager);
     }
 
     public void setValue(ConversionValues values) {
         this.values = values;
     }
 
-    private ConversionMaintenanceDialog(Shell shell, String mode, ConversionManager manager) {
-        super(shell);
+    private ConversionMaintenanceDialog(Shell shell, MaintenanceMode mode, ConversionManager manager) {
+        super(shell, mode);
 
-        this.mode = mode;
         this.manager = manager;
 
-        if (IMaintenance.MODE_CREATE.equals(mode) || IMaintenance.MODE_COPY.equals(mode)) {
+        if (MaintenanceMode.MODE_CREATE.equals(mode) || MaintenanceMode.MODE_COPY.equals(mode)) {
             enableParentKeyFields = false;
             enableKeyFields = true;
             enableFields = true;
-        } else if (IMaintenance.MODE_CHANGE.equals(mode)) {
+        } else if (MaintenanceMode.MODE_CHANGE.equals(mode)) {
             enableParentKeyFields = false;
             enableKeyFields = false;
             enableFields = true;
@@ -173,11 +171,6 @@ public class ConversionMaintenanceDialog extends AbstractMaintenanceDialog {
         return Messages.DialogTitle_Area;
     }
 
-    @Override
-    protected String getMode() {
-        return mode;
-    }
-
     protected void setScreenValues() {
 
         textJobName.setText(values.getKey().getJobName());
@@ -212,7 +205,7 @@ public class ConversionMaintenanceDialog extends AbstractMaintenanceDialog {
 
         newValues.setConversions(conversions);
 
-        if (!IMaintenance.MODE_DISPLAY.equals(mode)) {
+        if (!isDisplayMode()) {
             try {
                 manager.setValues(newValues);
                 Result result = manager.check();

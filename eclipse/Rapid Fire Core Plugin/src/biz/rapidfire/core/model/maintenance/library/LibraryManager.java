@@ -14,12 +14,15 @@ import java.sql.Types;
 import biz.rapidfire.core.Messages;
 import biz.rapidfire.core.model.dao.IJDBCConnection;
 import biz.rapidfire.core.model.maintenance.AbstractManager;
+import biz.rapidfire.core.model.maintenance.MaintenanceMode;
 import biz.rapidfire.core.model.maintenance.Result;
 import biz.rapidfire.core.model.maintenance.Success;
 import biz.rapidfire.core.model.maintenance.job.IJobInitialize;
-import biz.rapidfire.core.model.maintenance.job.JobKey;
+import biz.rapidfire.core.model.maintenance.job.shared.JobKey;
+import biz.rapidfire.core.model.maintenance.library.shared.LibraryAction;
+import biz.rapidfire.core.model.maintenance.library.shared.LibraryKey;
 
-public class LibraryManager extends AbstractManager<LibraryKey, LibraryValues> {
+public class LibraryManager extends AbstractManager<LibraryKey, LibraryValues, LibraryAction> {
 
     private static final String ERROR_001 = "001"; //$NON-NLS-1$
     private static final String ERROR_002 = "002"; //$NON-NLS-1$
@@ -41,14 +44,14 @@ public class LibraryManager extends AbstractManager<LibraryKey, LibraryValues> {
     }
 
     @Override
-    public Result initialize(String mode, LibraryKey key) throws Exception {
+    public Result initialize(MaintenanceMode mode, LibraryKey key) throws Exception {
 
         jobKey = new JobKey(key.getJobName());
 
         CallableStatement statement = dao.prepareCall(dao
             .insertLibraryQualifier("{CALL " + IJDBCConnection.LIBRARY + "\"MNTLIB_initialize\"(?, ?, ?, ?, ?)}")); //$NON-NLS-1$ //$NON-NLS-2$
 
-        statement.setString(ILibraryInitialize.MODE, mode);
+        statement.setString(ILibraryInitialize.MODE, mode.label());
         statement.setString(ILibraryInitialize.JOB, key.getJobName());
         statement.setString(ILibraryInitialize.LIBRARY, key.getLibrary());
         statement.setString(ILibraryInitialize.SUCCESS, Success.NO.label());
@@ -162,4 +165,9 @@ public class LibraryManager extends AbstractManager<LibraryKey, LibraryValues> {
         statement.execute();
     }
 
+    public Result checkAction(LibraryKey key, LibraryAction libraryAction) throws Exception {
+        // TODO: check action!
+        Result result = new Result(Success.YES.label(), null);
+        return result;
+    }
 }

@@ -44,14 +44,13 @@ import biz.rapidfire.core.dialogs.maintenance.AbstractMaintenanceDialog;
 import biz.rapidfire.core.helpers.ExceptionHelper;
 import biz.rapidfire.core.jface.dialogs.Size;
 import biz.rapidfire.core.jface.dialogs.XDialog;
-import biz.rapidfire.core.model.maintenance.IMaintenance;
+import biz.rapidfire.core.model.maintenance.MaintenanceMode;
 import biz.rapidfire.core.model.maintenance.activity.ActivityManager;
 import biz.rapidfire.core.model.maintenance.activity.ActivityValues;
 import biz.rapidfire.core.swt.widgets.WidgetFactory;
 
 public class ActivityMaintenanceDialog extends AbstractMaintenanceDialog {
 
-    private String mode;
     private ActivityManager manager;
 
     private Table itemsTable;
@@ -61,28 +60,27 @@ public class ActivityMaintenanceDialog extends AbstractMaintenanceDialog {
     private boolean enableFields;
 
     public static ActivityMaintenanceDialog getChangeDialog(Shell shell, ActivityManager manager) {
-        return new ActivityMaintenanceDialog(shell, IMaintenance.MODE_CHANGE, manager);
+        return new ActivityMaintenanceDialog(shell, MaintenanceMode.MODE_CHANGE, manager);
     }
 
     public static ActivityMaintenanceDialog getDisplayDialog(Shell shell, ActivityManager manager) {
-        return new ActivityMaintenanceDialog(shell, IMaintenance.MODE_DISPLAY, manager);
+        return new ActivityMaintenanceDialog(shell, MaintenanceMode.MODE_DISPLAY, manager);
     }
 
     public void setValue(ActivityValues[] values) {
         this.values = values;
     }
 
-    private ActivityMaintenanceDialog(Shell shell, String mode, ActivityManager manager) {
-        super(shell);
+    private ActivityMaintenanceDialog(Shell shell, MaintenanceMode mode, ActivityManager manager) {
+        super(shell, mode);
 
         setScrollable(false);
 
-        this.mode = mode;
         this.manager = manager;
 
-        if (IMaintenance.MODE_CREATE.equals(mode) || IMaintenance.MODE_COPY.equals(mode)) {
+        if (MaintenanceMode.MODE_CREATE.equals(mode) || MaintenanceMode.MODE_COPY.equals(mode)) {
             enableFields = true;
-        } else if (IMaintenance.MODE_CHANGE.equals(mode)) {
+        } else if (MaintenanceMode.MODE_CHANGE.equals(mode)) {
             enableFields = true;
         } else {
             enableFields = false;
@@ -133,11 +131,6 @@ public class ActivityMaintenanceDialog extends AbstractMaintenanceDialog {
         return Messages.DialogTitle_Activity_Schedule;
     }
 
-    @Override
-    protected String getMode() {
-        return mode;
-    }
-
     protected void setScreenValues() {
 
     }
@@ -147,7 +140,7 @@ public class ActivityMaintenanceDialog extends AbstractMaintenanceDialog {
 
         ActivityValues[] newValues = values.clone();
 
-        if (!IMaintenance.MODE_DISPLAY.equals(mode)) {
+        if (!isDisplayMode()) {
             try {
                 manager.setValues(newValues);
             } catch (Exception e) {
