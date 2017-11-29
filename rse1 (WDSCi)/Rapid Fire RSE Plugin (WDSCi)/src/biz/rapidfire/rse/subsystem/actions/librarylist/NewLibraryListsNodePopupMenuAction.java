@@ -21,7 +21,6 @@ import biz.rapidfire.rse.subsystem.resources.LibrariesNode;
 import biz.rapidfire.rse.subsystem.resources.RapidFireLibraryListResource;
 
 import com.ibm.etools.systems.core.ui.actions.SystemBaseAction;
-import com.ibm.etools.systems.subsystems.SubSystem;
 
 public class NewLibraryListsNodePopupMenuAction extends SystemBaseAction {
 

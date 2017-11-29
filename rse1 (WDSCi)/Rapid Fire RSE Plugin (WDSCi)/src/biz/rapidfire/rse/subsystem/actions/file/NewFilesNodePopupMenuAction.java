@@ -14,7 +14,6 @@ import org.eclipse.swt.widgets.Shell;
 
 import biz.rapidfire.core.RapidFireCorePlugin;
 import biz.rapidfire.core.handlers.file.NewFileHandler;
-import biz.rapidfire.core.model.IRapidFireFileResource;
 import biz.rapidfire.core.model.IRapidFireJobResource;
 import biz.rapidfire.rse.Messages;
 import biz.rapidfire.rse.RapidFireRSEPlugin;
@@ -22,7 +21,6 @@ import biz.rapidfire.rse.subsystem.resources.FilesNode;
 import biz.rapidfire.rse.subsystem.resources.RapidFireFileResource;
 
 import com.ibm.etools.systems.core.ui.actions.SystemBaseAction;
-import com.ibm.etools.systems.subsystems.SubSystem;
 
 public class NewFilesNodePopupMenuAction extends SystemBaseAction {
 
