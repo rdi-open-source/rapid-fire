@@ -17,6 +17,7 @@ import biz.rapidfire.core.model.IRapidFireJobResource;
 import biz.rapidfire.core.model.JobName;
 import biz.rapidfire.core.model.Phase;
 import biz.rapidfire.core.model.Status;
+import biz.rapidfire.core.model.maintenance.job.shared.JobKey;
 import biz.rapidfire.core.subsystem.IRapidFireSubSystem;
 import biz.rapidfire.core.subsystem.resources.RapidFireJobResourceDelegate;
 
@@ -44,6 +45,10 @@ public class RapidFireJobResource extends AbstractResource implements IRapidFire
 
         this.delegate = new RapidFireJobResourceDelegate(dataLibrary, job);
         super.setSubSystem((ISubSystem)subSystem);
+    }
+
+    public JobKey getKey() {
+        return new JobKey(delegate.getName());
     }
 
     /*

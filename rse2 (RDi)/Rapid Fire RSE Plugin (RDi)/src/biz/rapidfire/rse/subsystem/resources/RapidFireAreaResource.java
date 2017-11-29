@@ -15,12 +15,14 @@ import biz.rapidfire.core.exceptions.IllegalParameterException;
 import biz.rapidfire.core.model.IRapidFireAreaResource;
 import biz.rapidfire.core.model.IRapidFireFileResource;
 import biz.rapidfire.core.model.IRapidFireJobResource;
+import biz.rapidfire.core.model.maintenance.area.shared.AreaKey;
 import biz.rapidfire.core.subsystem.IRapidFireSubSystem;
 import biz.rapidfire.core.subsystem.resources.RapidFireAreaResourceDelegate;
 
 public class RapidFireAreaResource extends AbstractResource implements IRapidFireAreaResource, Comparable<IRapidFireAreaResource> {
 
     private IRapidFireJobResource parentJob;
+    private IRapidFireFileResource parentFile;
     private RapidFireAreaResourceDelegate delegate;
 
     public static RapidFireAreaResource createEmptyInstance(IRapidFireFileResource file) {
@@ -34,8 +36,13 @@ public class RapidFireAreaResource extends AbstractResource implements IRapidFir
         }
 
         this.parentJob = file.getParentJob();
+        this.parentFile = file;
         this.delegate = new RapidFireAreaResourceDelegate(parentJob.getDataLibrary(), parentJob.getName(), file.getPosition(), area);
         super.setSubSystem((ISubSystem)file.getParentSubSystem());
+    }
+
+    public AreaKey getKey() {
+        return new AreaKey(parentFile.getKey(), delegate.getName());
     }
 
     /*

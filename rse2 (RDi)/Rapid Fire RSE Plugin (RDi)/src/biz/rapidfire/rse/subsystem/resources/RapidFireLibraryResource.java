@@ -14,6 +14,7 @@ import org.eclipse.rse.core.subsystems.ISubSystem;
 import biz.rapidfire.core.exceptions.IllegalParameterException;
 import biz.rapidfire.core.model.IRapidFireJobResource;
 import biz.rapidfire.core.model.IRapidFireLibraryResource;
+import biz.rapidfire.core.model.maintenance.library.shared.LibraryKey;
 import biz.rapidfire.core.subsystem.IRapidFireSubSystem;
 import biz.rapidfire.core.subsystem.resources.RapidFireLibraryResourceDelegate;
 
@@ -39,6 +40,10 @@ public class RapidFireLibraryResource extends AbstractResource implements IRapid
         this.parentJob = job;
         this.delegate = new RapidFireLibraryResourceDelegate(job.getDataLibrary(), job.getName(), library);
         super.setSubSystem((ISubSystem)job.getParentSubSystem());
+    }
+
+    public LibraryKey getKey() {
+        return new LibraryKey(parentJob.getKey(), delegate.getName());
     }
 
     /*

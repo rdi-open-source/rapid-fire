@@ -15,12 +15,14 @@ import biz.rapidfire.core.exceptions.IllegalParameterException;
 import biz.rapidfire.core.model.IRapidFireConversionResource;
 import biz.rapidfire.core.model.IRapidFireFileResource;
 import biz.rapidfire.core.model.IRapidFireJobResource;
+import biz.rapidfire.core.model.maintenance.conversion.shared.ConversionKey;
 import biz.rapidfire.core.subsystem.IRapidFireSubSystem;
 import biz.rapidfire.core.subsystem.resources.RapidFireConversionResourceDelegate;
 
 public class RapidFireConversionResource extends AbstractResource implements IRapidFireConversionResource, Comparable<IRapidFireConversionResource> {
 
     private IRapidFireJobResource parentJob;
+    private IRapidFireFileResource parentFile;
     private RapidFireConversionResourceDelegate delegate;
 
     public static RapidFireConversionResource createEmptyInstance(IRapidFireFileResource file) {
@@ -34,8 +36,13 @@ public class RapidFireConversionResource extends AbstractResource implements IRa
         }
 
         this.parentJob = file.getParentJob();
+        this.parentFile = file;
         this.delegate = new RapidFireConversionResourceDelegate(parentJob.getDataLibrary(), parentJob.getName(), file.getPosition(), fieldToConvert);
         super.setSubSystem((ISubSystem)file.getParentSubSystem());
+    }
+
+    public ConversionKey getKey() {
+        return new ConversionKey(parentFile.getKey(), delegate.getFieldToConvert());
     }
 
     /*
