@@ -63,7 +63,7 @@ public class NotificationValues implements Cloneable {
     public void setNotificationType(String type) {
 
         if (type == null || type.trim().length() == 0) {
-            this.notificationType = null; //$NON-NLS-1$
+            this.notificationType = null;
         } else {
             this.notificationType = NotificationType.find(type.trim());
         }

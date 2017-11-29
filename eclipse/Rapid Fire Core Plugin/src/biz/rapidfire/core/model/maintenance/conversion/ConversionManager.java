@@ -203,6 +203,7 @@ public class ConversionManager extends AbstractManager<ConversionKey, Conversion
         statement.execute();
     }
 
+    @Override
     public Result checkAction(ConversionKey key, ConversionAction conversionAction) throws Exception {
         // TODO: check action!
         Result result = new Result(Success.YES.label(), null);

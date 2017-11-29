@@ -67,7 +67,7 @@ public class FileValues implements Cloneable {
     public void setFileType(String type) {
 
         if (type == null || type.trim().length() == 0) {
-            this.fileType = null; //$NON-NLS-1$
+            this.fileType = null;
         } else {
             this.fileType = FileType.find(type.trim());
         }

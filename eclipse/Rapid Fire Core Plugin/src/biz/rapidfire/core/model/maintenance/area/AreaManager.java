@@ -184,6 +184,7 @@ public class AreaManager extends AbstractManager<AreaKey, AreaValues, AreaAction
         statement.execute();
     }
 
+    @Override
     public Result checkAction(AreaKey key, AreaAction areaAction) throws Exception {
         // TODO: check action!
         Result result = new Result(Success.YES.label(), null);

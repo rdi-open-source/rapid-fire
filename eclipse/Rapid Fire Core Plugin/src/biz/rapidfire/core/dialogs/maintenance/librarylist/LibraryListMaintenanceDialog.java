@@ -144,6 +144,7 @@ public class LibraryListMaintenanceDialog extends AbstractMaintenanceDialog {
         return Messages.DialogTitle_Library_List;
     }
 
+    @Override
     protected void setScreenValues() {
 
         textJobName.setText(values.getKey().getJobName());

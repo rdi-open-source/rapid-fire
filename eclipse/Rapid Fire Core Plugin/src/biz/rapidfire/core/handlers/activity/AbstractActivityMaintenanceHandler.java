@@ -76,6 +76,7 @@ public abstract class AbstractActivityMaintenanceHandler extends AbstractResourc
         return manager;
     }
 
+    @Override
     protected boolean canExecuteAction(IRapidFireJobResource job, JobAction jobAction) {
 
         String connectionName = job.getParentSubSystem().getConnectionName();
@@ -95,7 +96,7 @@ public abstract class AbstractActivityMaintenanceHandler extends AbstractResourc
 
         } catch (Exception e) {
             message = "*** Could not check job action. Failed creating the job manager ***";
-            RapidFireCorePlugin.logError(message, e); //$NON-NLS-1$
+            RapidFireCorePlugin.logError(message, e);
         }
 
         if (message != null) {

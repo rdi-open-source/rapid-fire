@@ -165,6 +165,7 @@ public class LibraryManager extends AbstractManager<LibraryKey, LibraryValues, L
         statement.execute();
     }
 
+    @Override
     public Result checkAction(LibraryKey key, LibraryAction libraryAction) throws Exception {
         // TODO: check action!
         Result result = new Result(Success.YES.label(), null);

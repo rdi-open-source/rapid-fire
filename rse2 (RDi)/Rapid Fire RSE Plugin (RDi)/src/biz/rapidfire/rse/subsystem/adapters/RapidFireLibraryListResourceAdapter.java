@@ -11,10 +11,7 @@ package biz.rapidfire.rse.subsystem.adapters;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.resource.ImageDescriptor;
-import org.eclipse.jface.viewers.IStructuredSelection;
-import org.eclipse.rse.ui.SystemMenuManager;
 import org.eclipse.rse.ui.view.ISystemRemoteElementAdapter;
-import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.views.properties.IPropertyDescriptor;
 import org.eclipse.ui.views.properties.PropertyDescriptor;
 

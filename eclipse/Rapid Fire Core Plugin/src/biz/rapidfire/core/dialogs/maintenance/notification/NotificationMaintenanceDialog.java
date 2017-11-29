@@ -191,6 +191,7 @@ public class NotificationMaintenanceDialog extends AbstractMaintenanceDialog {
         return Messages.DialogTitle_Notification;
     }
 
+    @Override
     protected void setScreenValues() {
 
         setText(textJobName, values.getKey().getJobName());

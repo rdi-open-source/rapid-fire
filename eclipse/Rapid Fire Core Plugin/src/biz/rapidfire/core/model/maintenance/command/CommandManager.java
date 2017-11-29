@@ -180,6 +180,7 @@ public class CommandManager extends AbstractManager<CommandKey, CommandValues, C
         statement.execute();
     }
 
+    @Override
     public Result checkAction(CommandKey key, CommandAction commandAction) throws Exception {
         // TODO: check action!
         Result result = new Result(Success.YES.label(), null);

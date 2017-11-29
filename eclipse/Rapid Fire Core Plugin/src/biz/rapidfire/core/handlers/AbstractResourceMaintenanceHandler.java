@@ -33,7 +33,7 @@ public abstract class AbstractResourceMaintenanceHandler<M, A> extends AbstractR
 
     protected void logError(String message, Throwable e) {
 
-        RapidFireCorePlugin.logError(message, e); //$NON-NLS-1$
+        RapidFireCorePlugin.logError(message, e);
         MessageDialogAsync.displayError(getShell(), ExceptionHelper.getLocalizedMessage(e));
     }
 }

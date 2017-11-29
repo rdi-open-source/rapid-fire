@@ -66,7 +66,7 @@ public class LibraryListValues implements Cloneable {
     }
 
     public String getSequenceNumberAsString() {
-        return StringHelper.getFixLength(sequenceNumbersString, LENGTH_SEQUENCE_NUMBERS).replaceAll(" ", "0"); //$NON-NLS-1$ //$NON-NLS-1$
+        return StringHelper.getFixLength(sequenceNumbersString, LENGTH_SEQUENCE_NUMBERS).replaceAll(" ", "0"); //$NON-NLS-1$ 
     }
 
     public void setLibraryList(LibraryListEntry[] libraryList) {
@@ -134,7 +134,7 @@ public class LibraryListValues implements Cloneable {
     private void ensureKey() {
 
         if (key == null) {
-            key = new LibraryListKey(null, null); //$NON-NLS-1$
+            key = new LibraryListKey(null, null);
         }
     }
 

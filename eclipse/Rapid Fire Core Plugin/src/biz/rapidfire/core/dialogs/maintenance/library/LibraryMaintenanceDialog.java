@@ -123,6 +123,7 @@ public class LibraryMaintenanceDialog extends AbstractMaintenanceDialog {
         return Messages.DialogTitle_Library;
     }
 
+    @Override
     protected void setScreenValues() {
 
         textJobName.setText(values.getKey().getJobName());

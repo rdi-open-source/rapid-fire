@@ -177,6 +177,7 @@ public class AreaMaintenanceDialog extends AbstractMaintenanceDialog {
         return Messages.DialogTitle_Area;
     }
 
+    @Override
     protected void setScreenValues() {
 
         textJobName.setText(values.getKey().getJobName());

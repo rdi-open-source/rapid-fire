@@ -23,6 +23,7 @@ public class NewCommandHandler extends AbstractCommandMaintenanceHandler impleme
         super(MaintenanceMode.MODE_CREATE, CommandAction.CREATE);
     }
 
+    @Override
     protected void performAction(IRapidFireCommandResource command) throws Exception {
 
         CommandValues values = getManager().getValues();

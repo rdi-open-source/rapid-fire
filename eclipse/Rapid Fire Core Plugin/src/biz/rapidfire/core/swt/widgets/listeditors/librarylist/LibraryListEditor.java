@@ -51,7 +51,7 @@ public class LibraryListEditor extends Composite implements SelectionListener {
 
     private static final String COLUMN_PROPERTY_SEQUENCE = "SEQUENCE"; //$NON-NLS-1$
     private static final String COLUMN_PROPERTY_LIBRARY = "LIBRARY"; //$NON-NLS-1$
-    private static final String[] COLUMN_PROPERTIES = { COLUMN_PROPERTY_SEQUENCE, COLUMN_PROPERTY_LIBRARY }; //$NON-NLS-1$
+    private static final String[] COLUMN_PROPERTIES = { COLUMN_PROPERTY_SEQUENCE, COLUMN_PROPERTY_LIBRARY };
 
     private Shell shell;
     private Button parentDefaultButton;
@@ -285,6 +285,7 @@ public class LibraryListEditor extends Composite implements SelectionListener {
         });
 
         textItem.addFocusListener(new FocusAdapter() {
+            @Override
             public void focusGained(FocusEvent e) {
                 parentDefaultButton = addButton.getParent().getShell().getDefaultButton();
                 if (addButton.isEnabled()) {
@@ -292,6 +293,7 @@ public class LibraryListEditor extends Composite implements SelectionListener {
                 }
             }
 
+            @Override
             public void focusLost(FocusEvent e) {
                 shell.setDefaultButton(parentDefaultButton);
             }
@@ -432,7 +434,7 @@ public class LibraryListEditor extends Composite implements SelectionListener {
 
                 for (int loop = 0; loop < selections.length; loop++) {
                     if (selections[loop] > 0) {
-                        LibraryListItem temp = (LibraryListItem)itemsList.remove(selections[loop]);
+                        LibraryListItem temp = itemsList.remove(selections[loop]);
                         itemsList.add(selections[loop] - 1, temp);
                     }
                 }
@@ -454,7 +456,7 @@ public class LibraryListEditor extends Composite implements SelectionListener {
 
                 for (int loop = selections.length - 1; loop >= 0; loop--) {
                     if (selections[loop] < itemsList.size() - 1) {
-                        LibraryListItem temp = (LibraryListItem)itemsList.remove(selections[loop]);
+                        LibraryListItem temp = itemsList.remove(selections[loop]);
                         itemsList.add(selections[loop] + 1, temp);
                     }
                 }

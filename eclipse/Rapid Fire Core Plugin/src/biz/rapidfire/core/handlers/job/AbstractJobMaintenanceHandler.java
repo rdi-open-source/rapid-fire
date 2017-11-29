@@ -84,6 +84,7 @@ public abstract class AbstractJobMaintenanceHandler extends AbstractResourceMain
         return manager;
     }
 
+    @Override
     protected boolean canExecuteAction(IRapidFireJobResource job, JobAction jobAction) {
 
         String message = null;

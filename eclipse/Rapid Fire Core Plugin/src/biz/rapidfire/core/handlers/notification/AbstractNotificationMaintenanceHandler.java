@@ -88,6 +88,7 @@ public abstract class AbstractNotificationMaintenanceHandler extends
         return manager;
     }
 
+    @Override
     protected boolean canExecuteAction(IRapidFireNotificationResource notification, NotificationAction notificationAction) {
 
         String message = null;
@@ -106,7 +107,7 @@ public abstract class AbstractNotificationMaintenanceHandler extends
 
         } catch (Exception e) {
             message = "*** Could not check job action. Failed creating the job manager ***";
-            RapidFireCorePlugin.logError(message, e); //$NON-NLS-1$
+            RapidFireCorePlugin.logError(message, e);
         }
 
         if (message != null) {

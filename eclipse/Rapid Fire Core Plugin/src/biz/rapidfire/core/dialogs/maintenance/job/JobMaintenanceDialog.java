@@ -142,6 +142,7 @@ public class JobMaintenanceDialog extends AbstractMaintenanceDialog {
         return Messages.DialogTitle_Job;
     }
 
+    @Override
     protected void setScreenValues() {
 
         textJobName.setText(values.getKey().getJobName());

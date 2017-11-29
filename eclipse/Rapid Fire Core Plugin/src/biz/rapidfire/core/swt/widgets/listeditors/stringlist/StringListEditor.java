@@ -262,6 +262,7 @@ public class StringListEditor extends Composite implements SelectionListener {
         });
 
         textItem.addFocusListener(new FocusAdapter() {
+            @Override
             public void focusGained(FocusEvent e) {
                 parentDefaultButton = addButton.getParent().getShell().getDefaultButton();
                 if (addButton.isEnabled()) {
@@ -269,6 +270,7 @@ public class StringListEditor extends Composite implements SelectionListener {
                 }
             }
 
+            @Override
             public void focusLost(FocusEvent e) {
                 shell.setDefaultButton(parentDefaultButton);
             }
@@ -391,7 +393,7 @@ public class StringListEditor extends Composite implements SelectionListener {
 
                 for (int loop = 0; loop < selections.length; loop++) {
                     if (selections[loop] > 0) {
-                        Item temp = (Item)itemsList.remove(selections[loop]);
+                        Item temp = itemsList.remove(selections[loop]);
                         itemsList.add(selections[loop] - 1, temp);
                     }
                 }
@@ -413,7 +415,7 @@ public class StringListEditor extends Composite implements SelectionListener {
 
                 for (int loop = selections.length - 1; loop >= 0; loop--) {
                     if (selections[loop] < itemsList.size() - 1) {
-                        Item temp = (Item)itemsList.remove(selections[loop]);
+                        Item temp = itemsList.remove(selections[loop]);
                         itemsList.add(selections[loop] + 1, temp);
                     }
                 }

@@ -179,6 +179,7 @@ public class NotificationManager extends AbstractManager<NotificationKey, Notifi
         statement.execute();
     }
 
+    @Override
     public Result checkAction(NotificationKey key, NotificationAction areaAction) throws Exception {
         // TODO: check action!
         Result result = new Result(Success.YES.label(), null);

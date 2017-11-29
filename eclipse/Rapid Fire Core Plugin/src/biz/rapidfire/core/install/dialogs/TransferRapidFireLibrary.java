@@ -103,6 +103,7 @@ public class TransferRapidFireLibrary extends Shell {
         columnStatus.setWidth(getSize().x);
 
         tableStatus.addControlListener(new ControlAdapter() {
+            @Override
             public void controlResized(ControlEvent event) {
                 Table table = (Table)event.getSource();
                 if (table.getClientArea().width > 0) {

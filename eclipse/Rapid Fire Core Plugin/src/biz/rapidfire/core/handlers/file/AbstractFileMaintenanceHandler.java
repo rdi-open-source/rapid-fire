@@ -87,6 +87,7 @@ public abstract class AbstractFileMaintenanceHandler extends AbstractResourceMai
         return manager;
     }
 
+    @Override
     protected boolean canExecuteAction(IRapidFireFileResource file, FileAction fileAction) {
 
         String message = null;
@@ -105,7 +106,7 @@ public abstract class AbstractFileMaintenanceHandler extends AbstractResourceMai
 
         } catch (Exception e) {
             message = "*** Could not check job action. Failed creating the job manager ***";
-            RapidFireCorePlugin.logError(message, e); //$NON-NLS-1$
+            RapidFireCorePlugin.logError(message, e);
         }
 
         if (message != null) {

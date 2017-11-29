@@ -45,7 +45,7 @@ public class CommandKey implements Cloneable {
     public void setCommandType(String type) {
 
         if (type == null || type.trim().length() == 0) {
-            this.commandType = null; //$NON-NLS-1$
+            this.commandType = null;
         } else {
             this.commandType = CommandType.find(type.trim());
         }

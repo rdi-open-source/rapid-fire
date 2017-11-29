@@ -180,6 +180,7 @@ public class LibraryListManager extends AbstractManager<LibraryListKey, LibraryL
         statement.execute();
     }
 
+    @Override
     public Result checkAction(LibraryListKey key, LibraryListAction libraryListAction) throws Exception {
         // TODO: check action!
         Result result = new Result(Success.YES.label(), null);

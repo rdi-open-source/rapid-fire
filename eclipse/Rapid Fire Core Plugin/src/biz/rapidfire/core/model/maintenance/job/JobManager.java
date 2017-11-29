@@ -173,6 +173,7 @@ public class JobManager extends AbstractManager<JobKey, JobValues, JobAction> {
         statement.execute();
     }
 
+    @Override
     public Result checkAction(JobKey key, JobAction jobAction) throws Exception {
 
         CallableStatement statement = dao.prepareCall(dao

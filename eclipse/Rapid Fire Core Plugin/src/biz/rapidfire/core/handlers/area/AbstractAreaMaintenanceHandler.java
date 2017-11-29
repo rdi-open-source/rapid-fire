@@ -88,6 +88,7 @@ public abstract class AbstractAreaMaintenanceHandler extends AbstractResourceMai
         return manager;
     }
 
+    @Override
     protected boolean canExecuteAction(IRapidFireAreaResource area, AreaAction areaAction) {
 
         String message = null;
@@ -106,7 +107,7 @@ public abstract class AbstractAreaMaintenanceHandler extends AbstractResourceMai
 
         } catch (Exception e) {
             message = "*** Could not check job action. Failed creating the job manager ***";
-            RapidFireCorePlugin.logError(message, e); //$NON-NLS-1$
+            RapidFireCorePlugin.logError(message, e);
         }
 
         if (message != null) {

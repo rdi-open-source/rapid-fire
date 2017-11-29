@@ -131,6 +131,7 @@ public class ActivityMaintenanceDialog extends AbstractMaintenanceDialog {
         return Messages.DialogTitle_Activity_Schedule;
     }
 
+    @Override
     protected void setScreenValues() {
 
     }

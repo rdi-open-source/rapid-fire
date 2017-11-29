@@ -42,7 +42,7 @@ public class LibraryValues implements Cloneable {
     private void ensureKey() {
 
         if (key == null) {
-            key = new LibraryKey(null, null); //$NON-NLS-1$
+            key = new LibraryKey(null, null);
         }
     }
 
