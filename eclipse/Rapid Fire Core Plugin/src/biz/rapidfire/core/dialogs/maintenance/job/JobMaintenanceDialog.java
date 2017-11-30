@@ -43,23 +43,23 @@ public class JobMaintenanceDialog extends AbstractMaintenanceDialog {
     private boolean enableFields;
 
     public static JobMaintenanceDialog getCreateDialog(Shell shell, JobManager manager) {
-        return new JobMaintenanceDialog(shell, MaintenanceMode.MODE_CREATE, manager);
+        return new JobMaintenanceDialog(shell, MaintenanceMode.CREATE, manager);
     }
 
     public static JobMaintenanceDialog getCopyDialog(Shell shell, JobManager manager) {
-        return new JobMaintenanceDialog(shell, MaintenanceMode.MODE_COPY, manager);
+        return new JobMaintenanceDialog(shell, MaintenanceMode.COPY, manager);
     }
 
     public static JobMaintenanceDialog getChangeDialog(Shell shell, JobManager manager) {
-        return new JobMaintenanceDialog(shell, MaintenanceMode.MODE_CHANGE, manager);
+        return new JobMaintenanceDialog(shell, MaintenanceMode.CHANGE, manager);
     }
 
     public static JobMaintenanceDialog getDeleteDialog(Shell shell, JobManager manager) {
-        return new JobMaintenanceDialog(shell, MaintenanceMode.MODE_DELETE, manager);
+        return new JobMaintenanceDialog(shell, MaintenanceMode.DELETE, manager);
     }
 
     public static JobMaintenanceDialog getDisplayDialog(Shell shell, JobManager manager) {
-        return new JobMaintenanceDialog(shell, MaintenanceMode.MODE_DISPLAY, manager);
+        return new JobMaintenanceDialog(shell, MaintenanceMode.DISPLAY, manager);
     }
 
     public void setValue(JobValues values) {
@@ -71,10 +71,10 @@ public class JobMaintenanceDialog extends AbstractMaintenanceDialog {
 
         this.manager = manager;
 
-        if (MaintenanceMode.MODE_CREATE.equals(mode) || MaintenanceMode.MODE_COPY.equals(mode)) {
+        if (MaintenanceMode.CREATE.equals(mode) || MaintenanceMode.COPY.equals(mode)) {
             enableKeyFields = true;
             enableFields = true;
-        } else if (MaintenanceMode.MODE_CHANGE.equals(mode)) {
+        } else if (MaintenanceMode.CHANGE.equals(mode)) {
             enableKeyFields = false;
             enableFields = true;
         } else {

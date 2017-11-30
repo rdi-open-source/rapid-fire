@@ -52,12 +52,11 @@ public abstract class AbstractNotificationMaintenanceHandler extends
         try {
 
             IRapidFireNotificationResource notification = (IRapidFireNotificationResource)resource;
-            manager = getOrCreateManager(notification.getParentJob());
 
             if (canExecuteAction(notification, notificationAction)) {
-                String message = initialize(notification);
-                if (message != null) {
-                    MessageDialog.openError(getShell(), Messages.E_R_R_O_R, message);
+                Result result = initialize(notification);
+                if (result != null && result.isError()) {
+                    MessageDialog.openError(getShell(), Messages.E_R_R_O_R, result.getMessage());
                 } else {
                     performAction(notification);
                 }
@@ -89,14 +88,19 @@ public abstract class AbstractNotificationMaintenanceHandler extends
     }
 
     @Override
-    protected boolean canExecuteAction(IRapidFireNotificationResource notification, NotificationAction notificationAction) {
+    protected boolean canExecuteAction(IRapidFireResource resource, NotificationAction notificationAction) {
+
+        if (!(resource instanceof IRapidFireNotificationResource)) {
+            return false;
+        }
 
         String message = null;
 
         try {
 
             // TODO: check action!
-            Result result = manager.checkAction(notification.getKey(), notificationAction);
+            IRapidFireNotificationResource notification = (IRapidFireNotificationResource)resource;
+            Result result = getOrCreateManager(notification.getParentJob()).checkAction(notification.getKey(), notificationAction);
             if (result.isSuccessfull()) {
                 return true;
             } else {
@@ -106,8 +110,7 @@ public abstract class AbstractNotificationMaintenanceHandler extends
             }
 
         } catch (Exception e) {
-            message = "*** Could not check job action. Failed creating the job manager ***";
-            RapidFireCorePlugin.logError(message, e);
+            logError("*** Could not check job action. Failed creating the job manager ***", e); //$NON-NLS-1$
         }
 
         if (message != null) {
@@ -117,16 +120,13 @@ public abstract class AbstractNotificationMaintenanceHandler extends
         return false;
     }
 
-    private String initialize(IRapidFireNotificationResource notification) throws Exception {
+    private Result initialize(IRapidFireNotificationResource notification) throws Exception {
 
         manager.openFiles();
 
-        Result status = manager.initialize(getMode(), new NotificationKey(new JobKey(notification.getJob()), notification.getPosition()));
-        if (status.isError()) {
-            return status.getMessage();
-        }
+        Result result = manager.initialize(getMaintenanceMode(), new NotificationKey(new JobKey(notification.getJob()), notification.getPosition()));
 
-        return null;
+        return result;
     }
 
     protected abstract void performAction(IRapidFireNotificationResource notification) throws Exception;

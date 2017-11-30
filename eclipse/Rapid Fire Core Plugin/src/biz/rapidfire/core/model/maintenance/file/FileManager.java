@@ -72,9 +72,9 @@ public class FileManager extends AbstractManager<FileKey, FileValues, FileAction
                 key.getJobName(), dao.getLibraryName(), key.getPosition(), getErrorMessage(errorCode));
         }
 
-        Result status = new Result(success, message);
+        Result result = new Result(success, message);
 
-        return status;
+        return result;
     }
 
     /**

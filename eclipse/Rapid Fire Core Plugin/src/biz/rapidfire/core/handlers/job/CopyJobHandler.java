@@ -20,7 +20,7 @@ import biz.rapidfire.core.model.maintenance.job.shared.JobAction;
 public class CopyJobHandler extends AbstractJobMaintenanceHandler implements IHandler {
 
     public CopyJobHandler() {
-        super(MaintenanceMode.MODE_COPY, JobAction.COPY);
+        super(MaintenanceMode.COPY, JobAction.COPY);
     }
 
     @Override

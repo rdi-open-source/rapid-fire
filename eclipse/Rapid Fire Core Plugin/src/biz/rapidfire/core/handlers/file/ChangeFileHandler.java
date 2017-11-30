@@ -20,7 +20,7 @@ import biz.rapidfire.core.model.maintenance.file.shared.FileAction;
 public class ChangeFileHandler extends AbstractFileMaintenanceHandler implements IHandler {
 
     public ChangeFileHandler() {
-        super(MaintenanceMode.MODE_CHANGE, FileAction.CHANGE);
+        super(MaintenanceMode.CHANGE, FileAction.CHANGE);
     }
 
     @Override

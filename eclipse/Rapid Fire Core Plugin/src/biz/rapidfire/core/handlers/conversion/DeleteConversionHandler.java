@@ -20,7 +20,7 @@ import biz.rapidfire.core.model.maintenance.conversion.shared.ConversionAction;
 public class DeleteConversionHandler extends AbstractConversionMaintenanceHandler implements IHandler {
 
     public DeleteConversionHandler() {
-        super(MaintenanceMode.MODE_DELETE, ConversionAction.DELETE);
+        super(MaintenanceMode.DELETE, ConversionAction.DELETE);
     }
 
     @Override

@@ -20,7 +20,7 @@ import biz.rapidfire.core.model.maintenance.library.shared.LibraryAction;
 public class CopyLibraryHandler extends AbstractLibraryMaintenanceHandler implements IHandler {
 
     public CopyLibraryHandler() {
-        super(MaintenanceMode.MODE_COPY, LibraryAction.COPY);
+        super(MaintenanceMode.COPY, LibraryAction.COPY);
     }
 
     @Override

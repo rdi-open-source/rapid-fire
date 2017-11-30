@@ -17,8 +17,10 @@ import biz.rapidfire.core.model.maintenance.AbstractManager;
 import biz.rapidfire.core.model.maintenance.MaintenanceMode;
 import biz.rapidfire.core.model.maintenance.Result;
 import biz.rapidfire.core.model.maintenance.Success;
+import biz.rapidfire.core.model.maintenance.job.shared.DeleteShadowLibraries;
 import biz.rapidfire.core.model.maintenance.job.shared.JobAction;
 import biz.rapidfire.core.model.maintenance.job.shared.JobKey;
+import biz.rapidfire.core.model.maintenance.job.shared.JobTestMode;
 
 public class JobManager extends AbstractManager<JobKey, JobValues, JobAction> {
 
@@ -67,9 +69,9 @@ public class JobManager extends AbstractManager<JobKey, JobValues, JobAction> {
                 dao.getLibraryName(), getErrorMessage(errorCode));
         }
 
-        Result status = new Result(null, message, success);
+        Result result = new Result(null, message, success);
 
-        return status;
+        return result;
     }
 
     /**
@@ -193,6 +195,65 @@ public class JobManager extends AbstractManager<JobKey, JobValues, JobAction> {
         String message = statement.getString(IJobCheckAction.MESSAGE);
 
         return new Result(null, message, success);
+    }
+
+    public Result testJob(JobKey key) throws Exception {
+
+        CallableStatement statement = dao.prepareCall(dao.insertLibraryQualifier("{CALL " + IJDBCConnection.LIBRARY + "\"JOB_start\"(?, ?)}")); //$NON-NLS-1$ //$NON-NLS-2$
+
+        statement.setString(IJobStart.JOB, key.getJobName());
+        statement.setString(IJobStart.TEST, JobTestMode.NO.label());
+
+        statement.execute();
+
+        return Result.createSuccessResult();
+    }
+
+    public Result startJob(JobKey key) throws Exception {
+
+        CallableStatement statement = dao.prepareCall(dao.insertLibraryQualifier("{CALL " + IJDBCConnection.LIBRARY + "\"JOB_start\"(?, ?)}")); //$NON-NLS-1$ //$NON-NLS-2$
+
+        statement.setString(IJobStart.JOB, key.getJobName());
+        statement.setString(IJobStart.TEST, JobTestMode.YES.label());
+
+        statement.execute();
+
+        return Result.createSuccessResult();
+    }
+
+    public Result endJob(JobKey key) throws Exception {
+
+        CallableStatement statement = dao.prepareCall(dao.insertLibraryQualifier("{CALL " + IJDBCConnection.LIBRARY + "\"JOB_end\"(?)}")); //$NON-NLS-1$ //$NON-NLS-2$
+
+        statement.setString(IJobEnd.JOB, key.getJobName());
+
+        statement.execute();
+
+        return Result.createSuccessResult();
+    }
+
+    public Result resetJob(JobKey key, DeleteShadowLibraries deleteShadowLibraries) throws Exception {
+
+        CallableStatement statement = dao.prepareCall(dao.insertLibraryQualifier("{CALL " + IJDBCConnection.LIBRARY + "\"JOB_reset\"(?, ?)}")); //$NON-NLS-1$ //$NON-NLS-2$
+
+        statement.setString(IJobReset.JOB, key.getJobName());
+        statement.setString(IJobReset.DELETE_SHADOW_LIBRARIES, deleteShadowLibraries.label());
+
+        statement.execute();
+
+        return Result.createSuccessResult();
+    }
+
+    public Result resetJobAfterAbortion(JobKey key, DeleteShadowLibraries deleteShadowLibraries) throws Exception {
+
+        CallableStatement statement = dao.prepareCall(dao.insertLibraryQualifier("{CALL " + IJDBCConnection.LIBRARY + "\"JOB_reset\"(?, ?)}")); //$NON-NLS-1$ //$NON-NLS-2$
+
+        statement.setString(IJobReset.JOB, key.getJobName());
+        statement.setString(IJobReset.DELETE_SHADOW_LIBRARIES, deleteShadowLibraries.label());
+
+        statement.execute();
+
+        return Result.createSuccessResult();
     }
 
 }

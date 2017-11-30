@@ -52,7 +52,6 @@ public abstract class AbstractCommandMaintenanceHandler extends AbstractResource
         try {
 
             IRapidFireCommandResource command = (IRapidFireCommandResource)resource;
-            manager = getOrCreateManager(command.getParentJob());
 
             if (canExecuteAction(command, commandAction)) {
                 Result result = initialize(command);
@@ -89,14 +88,19 @@ public abstract class AbstractCommandMaintenanceHandler extends AbstractResource
     }
 
     @Override
-    protected boolean canExecuteAction(IRapidFireCommandResource command, CommandAction commanddAction) {
+    protected boolean canExecuteAction(IRapidFireResource resource, CommandAction commanddAction) {
+
+        if (!(resource instanceof IRapidFireCommandResource)) {
+            return false;
+        }
 
         String message = null;
 
         try {
 
             // TODO: check action!
-            Result result = manager.checkAction(command.getKey(), commandAction);
+            IRapidFireCommandResource command = (IRapidFireCommandResource)resource;
+            Result result = getOrCreateManager(command.getParentJob()).checkAction(command.getKey(), commandAction);
             if (result.isSuccessfull()) {
                 return true;
             } else {
@@ -106,8 +110,7 @@ public abstract class AbstractCommandMaintenanceHandler extends AbstractResource
             }
 
         } catch (Exception e) {
-            message = "*** Could not check job action. Failed creating the job manager ***";
-            RapidFireCorePlugin.logError(message, e);
+            logError("*** Could not check job action. Failed creating the job manager ***", e); //$NON-NLS-1$
         }
 
         if (message != null) {
@@ -122,13 +125,10 @@ public abstract class AbstractCommandMaintenanceHandler extends AbstractResource
         manager.openFiles();
 
         JobKey jobKey = new JobKey(command.getJob());
-        Result result = manager.initialize(getMode(),
+        Result result = manager.initialize(getMaintenanceMode(),
             new CommandKey(new FileKey(jobKey, command.getPosition()), command.getCommandType(), command.getSequence()));
-        if (result.isError()) {
-            return result;
-        }
 
-        return null;
+        return result;
     }
 
     protected abstract void performAction(IRapidFireCommandResource command) throws Exception;

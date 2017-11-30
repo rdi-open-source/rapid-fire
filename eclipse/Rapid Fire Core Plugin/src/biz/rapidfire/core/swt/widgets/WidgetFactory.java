@@ -782,19 +782,19 @@ public final class WidgetFactory {
         Color color = null;
 
         String title;
-        if (MaintenanceMode.MODE_CREATE.equals(mode)) {
+        if (MaintenanceMode.CREATE.equals(mode)) {
             title = Messages.DialogMode_CREATE;
             color = RapidFireCorePlugin.getDefault().getColor(RapidFireCorePlugin.COLOR_DIALOG_MODE_CREATE);
-        } else if (MaintenanceMode.MODE_COPY.equals(mode)) {
+        } else if (MaintenanceMode.COPY.equals(mode)) {
             title = Messages.DialogMode_COPY;
             color = RapidFireCorePlugin.getDefault().getColor(RapidFireCorePlugin.COLOR_DIALOG_MODE_COPY);
-        } else if (MaintenanceMode.MODE_CHANGE.equals(mode)) {
+        } else if (MaintenanceMode.CHANGE.equals(mode)) {
             title = Messages.DialogMode_CHANGE;
             color = RapidFireCorePlugin.getDefault().getColor(RapidFireCorePlugin.COLOR_DIALOG_MODE_CHANGE);
-        } else if (MaintenanceMode.MODE_DELETE.equals(mode)) {
+        } else if (MaintenanceMode.DELETE.equals(mode)) {
             title = Messages.DialogMode_DELETE;
             color = RapidFireCorePlugin.getDefault().getColor(RapidFireCorePlugin.COLOR_DIALOG_MODE_DELETE);
-        } else if (MaintenanceMode.MODE_DISPLAY.equals(mode)) {
+        } else if (MaintenanceMode.DISPLAY.equals(mode)) {
             title = Messages.DialogMode_DISPLAY;
             color = RapidFireCorePlugin.getDefault().getColor(RapidFireCorePlugin.COLOR_DIALOG_MODE_DISPLAY);
         } else {

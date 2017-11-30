@@ -52,7 +52,6 @@ public abstract class AbstractAreaMaintenanceHandler extends AbstractResourceMai
         try {
 
             IRapidFireAreaResource area = (IRapidFireAreaResource)resource;
-            manager = getOrCreateManager(area.getParentJob());
 
             if (canExecuteAction(area, areaAction)) {
                 Result result = initialize(area);
@@ -89,14 +88,19 @@ public abstract class AbstractAreaMaintenanceHandler extends AbstractResourceMai
     }
 
     @Override
-    protected boolean canExecuteAction(IRapidFireAreaResource area, AreaAction areaAction) {
+    protected boolean canExecuteAction(IRapidFireResource resource, AreaAction areaAction) {
+
+        if (!(resource instanceof IRapidFireAreaResource)) {
+            return false;
+        }
 
         String message = null;
 
         try {
 
             // TODO: check action!
-            Result result = manager.checkAction(area.getKey(), areaAction);
+            IRapidFireAreaResource area = (IRapidFireAreaResource)resource;
+            Result result = getOrCreateManager(area.getParentJob()).checkAction(area.getKey(), areaAction);
             if (result.isSuccessfull()) {
                 return true;
             } else {
@@ -106,8 +110,7 @@ public abstract class AbstractAreaMaintenanceHandler extends AbstractResourceMai
             }
 
         } catch (Exception e) {
-            message = "*** Could not check job action. Failed creating the job manager ***";
-            RapidFireCorePlugin.logError(message, e);
+            logError("*** Could not check job action. Failed creating the job manager ***", e); //$NON-NLS-1$
         }
 
         if (message != null) {
@@ -122,12 +125,9 @@ public abstract class AbstractAreaMaintenanceHandler extends AbstractResourceMai
         manager.openFiles();
 
         JobKey jobKey = new JobKey(area.getJob());
-        Result result = manager.initialize(getMode(), new AreaKey(new FileKey(jobKey, area.getPosition()), area.getName()));
-        if (result.isError()) {
-            return result;
-        }
+        Result result = manager.initialize(getMaintenanceMode(), new AreaKey(new FileKey(jobKey, area.getPosition()), area.getName()));
 
-        return null;
+        return result;
     }
 
     protected abstract void performAction(IRapidFireAreaResource area) throws Exception;

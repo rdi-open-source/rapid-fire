@@ -78,9 +78,9 @@ public class ConversionManager extends AbstractManager<ConversionKey, Conversion
                 key.getJobName(), dao.getLibraryName(), key.getPosition(), key.getFieldToConvert(), getErrorMessage(errorCode));
         }
 
-        Result status = new Result(success, message);
+        Result result = new Result(success, message);
 
-        return status;
+        return result;
     }
 
     /**

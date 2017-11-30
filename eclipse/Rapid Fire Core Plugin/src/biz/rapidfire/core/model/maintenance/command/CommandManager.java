@@ -80,9 +80,9 @@ public class CommandManager extends AbstractManager<CommandKey, CommandValues, C
                 dao.getLibraryName(), key.getPosition(), key.getCommandType(), key.getSequence(), getErrorMessage(errorCode));
         }
 
-        Result status = new Result(success, message);
+        Result result = new Result(success, message);
 
-        return status;
+        return result;
     }
 
     /**

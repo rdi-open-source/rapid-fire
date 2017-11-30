@@ -20,7 +20,7 @@ import biz.rapidfire.core.model.maintenance.job.shared.JobAction;
 public class ChangeJobHandler extends AbstractJobMaintenanceHandler implements IHandler {
 
     public ChangeJobHandler() {
-        super(MaintenanceMode.MODE_CHANGE, JobAction.CHANGE);
+        super(MaintenanceMode.CHANGE, JobAction.CHANGE);
     }
 
     @Override

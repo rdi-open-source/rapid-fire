@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2017-2017 Rapid Fire Project Team
+ * Copyright (c) 2017-2017 Rapid Fire Project Owners
  * All rights reserved. This program and the accompanying materials 
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
@@ -8,23 +8,22 @@
 
 package biz.rapidfire.core.handlers.job;
 
-import biz.rapidfire.core.dialogs.action.ConfirmActionDialog;
 import biz.rapidfire.core.model.IRapidFireJobResource;
+import biz.rapidfire.core.model.maintenance.Result;
 import biz.rapidfire.core.model.maintenance.job.shared.JobAction;
 
-public class StartJobHandler extends AbstractJobActionHandler {
+public abstract class AbstractJobActionHandler extends AbstractJobMaintenanceHandler {
 
-    public StartJobHandler() {
-        super(JobAction.STRJOB);
+    public AbstractJobActionHandler(JobAction jobAction) {
+        super(null, jobAction);
     }
 
-    @Override
-    protected void performAction(IRapidFireJobResource job) throws Exception {
+    protected Result initialize(IRapidFireJobResource job) throws Exception {
+        return Result.createSuccessResult();
+    }
 
-        ConfirmActionDialog dialog = ConfirmActionDialog.open(getShell(), getJobAction(), job.getName());
-        if (dialog.isConfirmed()) {
-            getManager().testJob(job.getKey());
-            refreshUI(job);
-        }
+    protected abstract void performAction(IRapidFireJobResource job) throws Exception;
+
+    protected void terminate() throws Exception {
     }
 }

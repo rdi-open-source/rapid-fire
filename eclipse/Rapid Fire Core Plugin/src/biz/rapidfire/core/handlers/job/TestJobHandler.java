@@ -8,25 +8,23 @@
 
 package biz.rapidfire.core.handlers.job;
 
-import org.eclipse.core.commands.ExecutionException;
-import org.eclipse.core.commands.IHandler;
+import biz.rapidfire.core.dialogs.action.ConfirmActionDialog;
+import biz.rapidfire.core.model.IRapidFireJobResource;
+import biz.rapidfire.core.model.maintenance.job.shared.JobAction;
 
-import biz.rapidfire.core.handlers.AbstractResourceHandler;
-import biz.rapidfire.core.model.IRapidFireResource;
-import biz.rapidfire.core.model.maintenance.MaintenanceMode;
-
-public class TestJobHandler extends AbstractResourceHandler implements IHandler {
+public class TestJobHandler extends AbstractJobActionHandler {
 
     public TestJobHandler() {
-        super(MaintenanceMode.MODE_CHANGE);
+        super(JobAction.TSTJOB);
     }
 
     @Override
-    protected Object executeWithResource(IRapidFireResource job) throws ExecutionException {
+    protected void performAction(IRapidFireJobResource job) throws Exception {
 
-        System.out.println("Testing Rapid Fire job ... " + job);
-
-        return null;
+        ConfirmActionDialog dialog = ConfirmActionDialog.open(getShell(), getJobAction(), job.getName());
+        if (dialog.isConfirmed()) {
+            getManager().testJob(job.getKey());
+            refreshUI(job);
+        }
     }
-
 }

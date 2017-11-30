@@ -20,7 +20,7 @@ import biz.rapidfire.core.model.maintenance.area.shared.AreaAction;
 public class DeleteAreaHandler extends AbstractAreaMaintenanceHandler implements IHandler {
 
     public DeleteAreaHandler() {
-        super(MaintenanceMode.MODE_DELETE, AreaAction.DELETE);
+        super(MaintenanceMode.DELETE, AreaAction.DELETE);
     }
 
     @Override

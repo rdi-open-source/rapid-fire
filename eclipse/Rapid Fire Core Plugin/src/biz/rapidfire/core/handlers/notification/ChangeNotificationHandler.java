@@ -20,7 +20,7 @@ import biz.rapidfire.core.model.maintenance.notification.shared.NotificationActi
 public class ChangeNotificationHandler extends AbstractNotificationMaintenanceHandler implements IHandler {
 
     public ChangeNotificationHandler() {
-        super(MaintenanceMode.MODE_CHANGE, NotificationAction.CHANGE);
+        super(MaintenanceMode.CHANGE, NotificationAction.CHANGE);
     }
 
     @Override

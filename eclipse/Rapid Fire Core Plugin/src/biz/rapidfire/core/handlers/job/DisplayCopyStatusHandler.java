@@ -26,7 +26,7 @@ import biz.rapidfire.core.view.FileCopyStatusView;
 public class DisplayCopyStatusHandler extends AbstractResourceHandler implements IHandler {
 
     public DisplayCopyStatusHandler() {
-        super(MaintenanceMode.MODE_DISPLAY);
+        super(MaintenanceMode.DISPLAY);
     }
 
     @Override

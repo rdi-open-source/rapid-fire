@@ -6,44 +6,27 @@
  * http://www.eclipse.org/legal/cpl-v10.html
  *******************************************************************************/
 
-package biz.rapidfire.core.model.maintenance.job.shared;
+package biz.rapidfire.core.model.maintenance.activity.shared;
 
 import java.util.HashMap;
 import java.util.Map;
 
-public enum JobAction {
-    SELECT ("*SELECT"), //$NON-NLS-1$
-    CREATE ("*CREATE"), //$NON-NLS-1$
-    COPY ("*COPY"), //$NON-NLS-1$
-    CHANGE ("*CHANGE"), //$NON-NLS-1$
-    DELETE ("*DELETE"), //$NON-NLS-1$
-    DISPLAY ("*DISPLAY"), //$NON-NLS-1$
-    CHKACT ("*CHKACT"), //$NON-NLS-1$
-    MNTLIB ("*MNTLIB"), //$NON-NLS-1$
-    MNTLIBL ("*MNTLIBL"), //$NON-NLS-1$
-    MNTFILE ("*MNTFILE"), //$NON-NLS-1$
-    MNTSTBN ("*MNTSTBN"), //$NON-NLS-1$
-    MNTSCDE ("*MNTSCDE"), //$NON-NLS-1$
-    TSTJOB ("*TSTJOB"), //$NON-NLS-1$
-    STRJOB ("*STRJOB"), //$NON-NLS-1$
-    ENDJOB ("*ENDJOB"), //$NON-NLS-1$
-    RESETJOB ("*RESETJOB"), //$NON-NLS-1$
-    RESETJOBA ("*RESETJOBA"), //$NON-NLS-1$
-    DSPSTS ("*DSPSTS"), //$NON-NLS-1$
-    DSPERR ("*DSPERR"); //$NON-NLS-1$
+public enum ActivityAction {
+    CHANGE ("*CHANGE"),
+    DISPLAY ("*DISPLAY");
 
     private String label;
 
-    private static Map<String, JobAction> actions;
+    private static Map<String, ActivityAction> actions;
 
     static {
-        actions = new HashMap<String, JobAction>();
-        for (JobAction status : JobAction.values()) {
+        actions = new HashMap<String, ActivityAction>();
+        for (ActivityAction status : ActivityAction.values()) {
             actions.put(status.label, status);
         }
     }
 
-    private JobAction(String label) {
+    private ActivityAction(String label) {
         this.label = label;
     }
 
@@ -55,7 +38,7 @@ public enum JobAction {
         return actions.keySet().toArray(new String[actions.size()]);
     }
 
-    public static JobAction find(String label) {
+    public static ActivityAction find(String label) {
         // TODO: remove debug code
         if (label.length() != label.trim().length()) {
             throw new IllegalArgumentException("Expect to see a trimmed value here."); //$NON-NLS-1$

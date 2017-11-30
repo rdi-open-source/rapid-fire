@@ -60,11 +60,11 @@ public class ActivityMaintenanceDialog extends AbstractMaintenanceDialog {
     private boolean enableFields;
 
     public static ActivityMaintenanceDialog getChangeDialog(Shell shell, ActivityManager manager) {
-        return new ActivityMaintenanceDialog(shell, MaintenanceMode.MODE_CHANGE, manager);
+        return new ActivityMaintenanceDialog(shell, MaintenanceMode.CHANGE, manager);
     }
 
     public static ActivityMaintenanceDialog getDisplayDialog(Shell shell, ActivityManager manager) {
-        return new ActivityMaintenanceDialog(shell, MaintenanceMode.MODE_DISPLAY, manager);
+        return new ActivityMaintenanceDialog(shell, MaintenanceMode.DISPLAY, manager);
     }
 
     public void setValue(ActivityValues[] values) {
@@ -78,9 +78,9 @@ public class ActivityMaintenanceDialog extends AbstractMaintenanceDialog {
 
         this.manager = manager;
 
-        if (MaintenanceMode.MODE_CREATE.equals(mode) || MaintenanceMode.MODE_COPY.equals(mode)) {
+        if (MaintenanceMode.CREATE.equals(mode) || MaintenanceMode.COPY.equals(mode)) {
             enableFields = true;
-        } else if (MaintenanceMode.MODE_CHANGE.equals(mode)) {
+        } else if (MaintenanceMode.CHANGE.equals(mode)) {
             enableFields = true;
         } else {
             enableFields = false;
@@ -115,15 +115,19 @@ public class ActivityMaintenanceDialog extends AbstractMaintenanceDialog {
         itemsViewer = new TableViewer(itemsTable);
         itemsViewer.setContentProvider(new ActivitiesContentProvider());
         itemsViewer.setLabelProvider(new ActivitiesLabelProvider());
-        itemsViewer.addDoubleClickListener(new ActivitiesDoubleClickActionHandler());
         itemsViewer.setInput(this.values);
 
         itemsTable.setMenu(new Menu(itemsTable));
-        itemsTable.getMenu().addMenuListener(new ActivitiesPopupMenu(itemsViewer));
 
-        Text textUsageInfo = WidgetFactory.createMultilineLabel(parent);
-        textUsageInfo.setText(Messages.Label_Maintain_ativity_status_usage_info);
-        textUsageInfo.setLayoutData(new GridData(SWT.FILL, SWT.BEGINNING, true, false, 2, 1));
+        if (getMode() == MaintenanceMode.CHANGE) {
+
+            Text textUsageInfo = WidgetFactory.createMultilineLabel(parent);
+            textUsageInfo.setText(Messages.Label_Maintain_ativity_status_usage_info);
+            textUsageInfo.setLayoutData(new GridData(SWT.FILL, SWT.BEGINNING, true, false, 2, 1));
+
+            itemsViewer.addDoubleClickListener(new ActivitiesDoubleClickActionHandler());
+            itemsTable.getMenu().addMenuListener(new ActivitiesPopupMenu(itemsViewer));
+        }
     }
 
     @Override

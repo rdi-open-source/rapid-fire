@@ -19,7 +19,7 @@ import biz.rapidfire.core.model.maintenance.conversion.shared.ConversionAction;
 public class DisplayConversionHandler extends AbstractConversionMaintenanceHandler implements IHandler {
 
     public DisplayConversionHandler() {
-        super(MaintenanceMode.MODE_DISPLAY, ConversionAction.DISPLAY);
+        super(MaintenanceMode.DISPLAY, ConversionAction.DISPLAY);
     }
 
     @Override

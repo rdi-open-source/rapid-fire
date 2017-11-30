@@ -65,7 +65,7 @@ public abstract class AbstractResourceHandler extends AbstractSelectionHandler {
 
     @Override
     protected boolean isDeleteMode() {
-        return MaintenanceMode.MODE_DELETE.equals(mode);
+        return MaintenanceMode.DELETE.equals(mode);
     }
 
     protected abstract Object executeWithResource(IRapidFireResource resource) throws ExecutionException;

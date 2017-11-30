@@ -20,7 +20,7 @@ import biz.rapidfire.core.model.maintenance.command.shared.CommandAction;
 public class NewCommandHandler extends AbstractCommandMaintenanceHandler implements IHandler {
 
     public NewCommandHandler() {
-        super(MaintenanceMode.MODE_CREATE, CommandAction.CREATE);
+        super(MaintenanceMode.CREATE, CommandAction.CREATE);
     }
 
     @Override

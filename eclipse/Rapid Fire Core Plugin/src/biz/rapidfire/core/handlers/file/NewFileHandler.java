@@ -20,7 +20,7 @@ import biz.rapidfire.core.model.maintenance.file.shared.FileAction;
 public class NewFileHandler extends AbstractFileMaintenanceHandler implements IHandler {
 
     public NewFileHandler() {
-        super(MaintenanceMode.MODE_CREATE, FileAction.CREATE);
+        super(MaintenanceMode.CREATE, FileAction.CREATE);
     }
 
     @Override

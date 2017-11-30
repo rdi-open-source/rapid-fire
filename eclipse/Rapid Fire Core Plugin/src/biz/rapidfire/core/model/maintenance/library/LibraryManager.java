@@ -73,9 +73,9 @@ public class LibraryManager extends AbstractManager<LibraryKey, LibraryValues, L
                 dao.getLibraryName(), key.getLibrary(), getErrorMessage(errorCode));
         }
 
-        Result status = new Result(null, message, success);
+        Result result = new Result(null, message, success);
 
-        return status;
+        return result;
     }
 
     /**

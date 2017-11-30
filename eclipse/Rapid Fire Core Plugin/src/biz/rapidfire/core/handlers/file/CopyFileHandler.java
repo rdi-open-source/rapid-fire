@@ -20,7 +20,7 @@ import biz.rapidfire.core.model.maintenance.file.shared.FileAction;
 public class CopyFileHandler extends AbstractFileMaintenanceHandler implements IHandler {
 
     public CopyFileHandler() {
-        super(MaintenanceMode.MODE_COPY, FileAction.COPY);
+        super(MaintenanceMode.COPY, FileAction.COPY);
     }
 
     @Override

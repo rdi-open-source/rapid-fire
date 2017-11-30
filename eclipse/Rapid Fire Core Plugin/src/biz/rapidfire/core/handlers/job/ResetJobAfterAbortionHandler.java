@@ -8,25 +8,29 @@
 
 package biz.rapidfire.core.handlers.job;
 
-import org.eclipse.core.commands.ExecutionException;
-import org.eclipse.core.commands.IHandler;
+import biz.rapidfire.core.dialogs.action.ConfirmActionDialog;
+import biz.rapidfire.core.model.IRapidFireJobResource;
+import biz.rapidfire.core.model.maintenance.job.shared.DeleteShadowLibraries;
+import biz.rapidfire.core.model.maintenance.job.shared.JobAction;
 
-import biz.rapidfire.core.handlers.AbstractResourceHandler;
-import biz.rapidfire.core.model.IRapidFireResource;
-import biz.rapidfire.core.model.maintenance.MaintenanceMode;
-
-public class ResetJobAfterAbortionHandler extends AbstractResourceHandler implements IHandler {
+public class ResetJobAfterAbortionHandler extends AbstractJobActionHandler {
 
     public ResetJobAfterAbortionHandler() {
-        super(MaintenanceMode.MODE_CHANGE);
+        super(JobAction.RESETJOBA);
     }
 
     @Override
-    protected Object executeWithResource(IRapidFireResource job) throws ExecutionException {
+    protected void performAction(IRapidFireJobResource job) throws Exception {
 
-        System.out.println("Reseting Rapid Fire job after abortion ... " + job);
+        ConfirmActionDialog dialog = ConfirmActionDialog.open(getShell(), getJobAction(), job.getName());
 
-        return null;
+        if (dialog.isConfirmed()) {
+            if (dialog.isDeleteShadowLibrary()) {
+                getManager().resetJobAfterAbortion(job.getKey(), DeleteShadowLibraries.YES);
+            } else {
+                getManager().resetJobAfterAbortion(job.getKey(), DeleteShadowLibraries.NO);
+            }
+            refreshUI(job);
+        }
     }
-
 }

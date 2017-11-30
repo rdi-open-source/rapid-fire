@@ -11,12 +11,35 @@ package biz.rapidfire.core.model.maintenance;
 import java.util.HashMap;
 import java.util.Map;
 
+import biz.rapidfire.core.model.maintenance.activity.shared.ActivityAction;
+import biz.rapidfire.core.model.maintenance.area.shared.AreaAction;
+import biz.rapidfire.core.model.maintenance.command.shared.CommandAction;
+import biz.rapidfire.core.model.maintenance.conversion.shared.ConversionAction;
+import biz.rapidfire.core.model.maintenance.file.shared.FileAction;
+import biz.rapidfire.core.model.maintenance.job.shared.JobAction;
+import biz.rapidfire.core.model.maintenance.library.shared.LibraryAction;
+import biz.rapidfire.core.model.maintenance.librarylist.shared.LibraryListAction;
+
+/**
+ * Specifies the maintenance modes as used in the GUI. The stored procedure
+ * action modes are defined separately for each entity.
+ * 
+ * @see ActivityAction
+ * @see AreaAction
+ * @see CommandAction
+ * @see ConversionAction
+ * @see FileAction
+ * @see JobAction
+ * @see LibraryAction
+ * @see LibraryListAction
+ * @see NotificcationAction
+ */
 public enum MaintenanceMode {
-    MODE_CREATE ("*CREATE"), //$NON-NLS-1$
-    MODE_COPY ("*COPY"), //$NON-NLS-1$
-    MODE_CHANGE ("*CHANGE"), //$NON-NLS-1$
-    MODE_DELETE ("*DELETE"), //$NON-NLS-1$
-    MODE_DISPLAY ("*DISPLAY"); //$NON-NLS-1$
+    CREATE ("*CREATE"), //$NON-NLS-1$
+    COPY ("*COPY"), //$NON-NLS-1$
+    CHANGE ("*CHANGE"), //$NON-NLS-1$
+    DELETE ("*DELETE"), //$NON-NLS-1$
+    DISPLAY ("*DISPLAY"); //$NON-NLS-1$
 
     private String label;
 

@@ -71,13 +71,13 @@ public class Result {
 
         StringBuilder buffer = new StringBuilder();
 
-        buffer.append("Success:"); //$NON-NLS-1$
+        buffer.append("Success="); //$NON-NLS-1$
         buffer.append(success.label());
-        buffer.append(" ("); //$NON-NLS-1$
-        buffer.append(fieldName);
-        buffer.append(", "); //$NON-NLS-1$
+        buffer.append(" (message="); //$NON-NLS-1$
         buffer.append(message);
-        buffer.append(", "); //$NON-NLS-1$
+        buffer.append(", fieldName="); //$NON-NLS-1$
+        buffer.append(fieldName);
+        buffer.append(", rcdNbr="); //$NON-NLS-1$
         buffer.append(recordNbr);
         buffer.append(")"); //$NON-NLS-1$
 

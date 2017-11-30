@@ -20,7 +20,7 @@ import biz.rapidfire.core.model.maintenance.file.shared.FileAction;
 public class DeleteFileHandler extends AbstractFileMaintenanceHandler implements IHandler {
 
     public DeleteFileHandler() {
-        super(MaintenanceMode.MODE_DELETE, FileAction.DELETE);
+        super(MaintenanceMode.DELETE, FileAction.DELETE);
     }
 
     @Override

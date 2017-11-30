@@ -20,7 +20,7 @@ import biz.rapidfire.core.model.maintenance.library.shared.LibraryAction;
 public class NewLibraryHandler extends AbstractLibraryMaintenanceHandler implements IHandler {
 
     public NewLibraryHandler() {
-        super(MaintenanceMode.MODE_CREATE, LibraryAction.CREATE);
+        super(MaintenanceMode.CREATE, LibraryAction.CREATE);
     }
 
     @Override

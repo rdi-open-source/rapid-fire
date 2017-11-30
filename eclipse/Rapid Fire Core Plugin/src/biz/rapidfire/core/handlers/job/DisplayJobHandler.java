@@ -19,7 +19,7 @@ import biz.rapidfire.core.model.maintenance.job.shared.JobAction;
 public class DisplayJobHandler extends AbstractJobMaintenanceHandler implements IHandler {
 
     public DisplayJobHandler() {
-        super(MaintenanceMode.MODE_DISPLAY, JobAction.DISPLAY);
+        super(MaintenanceMode.DISPLAY, JobAction.DISPLAY);
     }
 
     @Override

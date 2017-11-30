@@ -20,7 +20,7 @@ import biz.rapidfire.core.model.maintenance.conversion.shared.ConversionAction;
 public class NewConversionHandler extends AbstractConversionMaintenanceHandler implements IHandler {
 
     public NewConversionHandler() {
-        super(MaintenanceMode.MODE_CREATE, ConversionAction.CREATE);
+        super(MaintenanceMode.CREATE, ConversionAction.CREATE);
     }
 
     @Override

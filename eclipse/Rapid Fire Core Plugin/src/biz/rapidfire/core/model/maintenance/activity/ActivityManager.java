@@ -18,6 +18,7 @@ import biz.rapidfire.core.model.IRapidFireActivityResource;
 import biz.rapidfire.core.model.IRapidFireJobResource;
 import biz.rapidfire.core.model.dao.IJDBCConnection;
 import biz.rapidfire.core.model.maintenance.MaintenanceMode;
+import biz.rapidfire.core.model.maintenance.Result;
 import biz.rapidfire.core.model.maintenance.job.shared.JobKey;
 
 public class ActivityManager {
@@ -31,9 +32,13 @@ public class ActivityManager {
         this.dao = dao;
     }
 
-    public void initialize(MaintenanceMode mode, JobKey key) throws Exception {
+    public Result initialize(MaintenanceMode mode, JobKey key) throws Exception {
 
         jobKey = key;
+
+        Result result = Result.createSuccessResult();
+
+        return result;
     }
 
     public ActivityValues[] getValues(IRapidFireJobResource job, Shell shell) throws Exception {

@@ -20,7 +20,7 @@ import biz.rapidfire.core.model.maintenance.job.shared.JobAction;
 public class DeleteJobHandler extends AbstractJobMaintenanceHandler implements IHandler {
 
     public DeleteJobHandler() {
-        super(MaintenanceMode.MODE_DELETE, JobAction.DELETE);
+        super(MaintenanceMode.DELETE, JobAction.DELETE);
     }
 
     @Override

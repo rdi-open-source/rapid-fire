@@ -20,7 +20,7 @@ import biz.rapidfire.core.model.maintenance.area.shared.AreaAction;
 public class NewAreaHandler extends AbstractAreaMaintenanceHandler implements IHandler {
 
     public NewAreaHandler() {
-        super(MaintenanceMode.MODE_CREATE, AreaAction.CREATE);
+        super(MaintenanceMode.CREATE, AreaAction.CREATE);
     }
 
     @Override

@@ -19,7 +19,7 @@ import biz.rapidfire.core.model.maintenance.file.shared.FileAction;
 public class DisplayFileHandler extends AbstractFileMaintenanceHandler implements IHandler {
 
     public DisplayFileHandler() {
-        super(MaintenanceMode.MODE_DISPLAY, FileAction.DISPLAY);
+        super(MaintenanceMode.DISPLAY, FileAction.DISPLAY);
     }
 
     @Override

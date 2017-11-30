@@ -12,7 +12,6 @@ import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.jface.dialogs.MessageDialog;
 
 import biz.rapidfire.core.Messages;
-import biz.rapidfire.core.RapidFireCorePlugin;
 import biz.rapidfire.core.handlers.AbstractResourceMaintenanceHandler;
 import biz.rapidfire.core.model.IRapidFireJobResource;
 import biz.rapidfire.core.model.IRapidFireLibraryListResource;
@@ -51,7 +50,6 @@ public abstract class AbstractLibraryListMaintenanceHandler extends
         try {
 
             IRapidFireLibraryListResource libraryList = (IRapidFireLibraryListResource)resource;
-            manager = getOrCreateManager(libraryList.getParentJob());
 
             if (canExecuteAction(libraryList, libraryListAction)) {
                 Result result = initialize(libraryList);
@@ -88,14 +86,19 @@ public abstract class AbstractLibraryListMaintenanceHandler extends
     }
 
     @Override
-    protected boolean canExecuteAction(IRapidFireLibraryListResource libraryList, LibraryListAction libraryListAction) {
+    protected boolean canExecuteAction(IRapidFireResource resource, LibraryListAction libraryListAction) {
+
+        if (!(resource instanceof IRapidFireLibraryListResource)) {
+            return false;
+        }
 
         String message = null;
 
         try {
 
             // TODO: check action!
-            Result result = manager.checkAction(libraryList.getKey(), libraryListAction);
+            IRapidFireLibraryListResource libraryList = (IRapidFireLibraryListResource)resource;
+            Result result = getOrCreateManager(libraryList.getParentJob()).checkAction(libraryList.getKey(), libraryListAction);
             if (result.isSuccessfull()) {
                 return true;
             } else {
@@ -105,8 +108,7 @@ public abstract class AbstractLibraryListMaintenanceHandler extends
             }
 
         } catch (Exception e) {
-            message = "*** Could not check job action. Failed creating the job manager ***";
-            RapidFireCorePlugin.logError(message, e);
+            logError("*** Could not check job action. Failed creating the job manager ***", e); //$NON-NLS-1$
         }
 
         if (message != null) {
@@ -120,12 +122,9 @@ public abstract class AbstractLibraryListMaintenanceHandler extends
 
         manager.openFiles();
 
-        Result result = manager.initialize(getMode(), new LibraryListKey(new JobKey(file.getJob()), file.getName()));
-        if (result.isError()) {
-            return result;
-        }
+        Result result = manager.initialize(getMaintenanceMode(), new LibraryListKey(new JobKey(file.getJob()), file.getName()));
 
-        return null;
+        return result;
     }
 
     protected abstract void performAction(IRapidFireLibraryListResource file) throws Exception;

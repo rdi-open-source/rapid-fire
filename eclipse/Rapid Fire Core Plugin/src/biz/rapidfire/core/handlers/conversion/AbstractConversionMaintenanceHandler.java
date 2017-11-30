@@ -52,7 +52,6 @@ public abstract class AbstractConversionMaintenanceHandler extends AbstractResou
         try {
 
             IRapidFireConversionResource conversion = (IRapidFireConversionResource)resource;
-            manager = getOrCreateManager(conversion.getParentJob());
 
             if (canExecuteAction(conversion, conversionAction)) {
                 Result result = initialize(conversion);
@@ -89,13 +88,18 @@ public abstract class AbstractConversionMaintenanceHandler extends AbstractResou
     }
 
     @Override
-    protected boolean canExecuteAction(IRapidFireConversionResource conversion, ConversionAction conversionAction) {
+    protected boolean canExecuteAction(IRapidFireResource resource, ConversionAction conversionAction) {
+
+        if (!(resource instanceof IRapidFireConversionResource)) {
+            return false;
+        }
 
         String message = null;
 
         try {
 
-            Result result = manager.checkAction(conversion.getKey(), conversionAction);
+            IRapidFireConversionResource conversion = (IRapidFireConversionResource)resource;
+            Result result = getOrCreateManager(conversion.getParentJob()).checkAction(conversion.getKey(), conversionAction);
             if (result.isSuccessfull()) {
                 return true;
             } else {
@@ -105,8 +109,7 @@ public abstract class AbstractConversionMaintenanceHandler extends AbstractResou
             }
 
         } catch (Exception e) {
-            message = "*** Could not check job action. Failed creating the job manager ***";
-            RapidFireCorePlugin.logError(message, e);
+            logError("*** Could not check job action. Failed creating the job manager ***", e); //$NON-NLS-1$
         }
 
         if (message != null) {
@@ -121,13 +124,10 @@ public abstract class AbstractConversionMaintenanceHandler extends AbstractResou
         manager.openFiles();
 
         JobKey jobKey = new JobKey(conversion.getJob());
-        Result result = manager.initialize(getMode(),
+        Result result = manager.initialize(getMaintenanceMode(),
             new ConversionKey(new FileKey(jobKey, conversion.getPosition()), conversion.getFieldToConvert()));
-        if (result.isError()) {
-            return result;
-        }
 
-        return null;
+        return result;
     }
 
     protected abstract void performAction(IRapidFireConversionResource conversion) throws Exception;

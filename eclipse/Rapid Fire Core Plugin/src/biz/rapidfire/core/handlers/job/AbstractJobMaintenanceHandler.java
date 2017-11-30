@@ -12,7 +12,6 @@ import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.jface.dialogs.MessageDialog;
 
 import biz.rapidfire.core.Messages;
-import biz.rapidfire.core.RapidFireCorePlugin;
 import biz.rapidfire.core.handlers.AbstractResourceMaintenanceHandler;
 import biz.rapidfire.core.model.IRapidFireJobResource;
 import biz.rapidfire.core.model.IRapidFireResource;
@@ -38,17 +37,16 @@ public abstract class AbstractJobMaintenanceHandler extends AbstractResourceMain
         return manager;
     }
 
+    public JobAction getJobAction() {
+        return jobAction;
+    }
+
     @Override
     protected Object executeWithResource(IRapidFireResource resource) throws ExecutionException {
-
-        if (!(resource instanceof IRapidFireJobResource)) {
-            return null;
-        }
 
         try {
 
             IRapidFireJobResource job = (IRapidFireJobResource)resource;
-            manager = getOrCreateManager(job);
 
             if (canExecuteAction(job, jobAction)) {
                 Result result = initialize(job);
@@ -85,13 +83,18 @@ public abstract class AbstractJobMaintenanceHandler extends AbstractResourceMain
     }
 
     @Override
-    protected boolean canExecuteAction(IRapidFireJobResource job, JobAction jobAction) {
+    protected boolean canExecuteAction(IRapidFireResource resource, JobAction jobAction) {
+
+        if (!(resource instanceof IRapidFireJobResource)) {
+            return false;
+        }
 
         String message = null;
 
         try {
 
-            Result result = manager.checkAction(new JobKey(job.getName()), jobAction);
+            IRapidFireJobResource job = (IRapidFireJobResource)resource;
+            Result result = getOrCreateManager(job).checkAction(new JobKey(job.getName()), jobAction);
 
             if (result.isSuccessfull()) {
                 return true;
@@ -101,8 +104,7 @@ public abstract class AbstractJobMaintenanceHandler extends AbstractResourceMain
             }
 
         } catch (Exception e) {
-            message = "*** Could not check job action. Failed creating the job manager ***"; //$NON-NLS-1$
-            RapidFireCorePlugin.logError(message, e);
+            logError("*** Could not check job action. Failed creating the job manager ***", e); //$NON-NLS-1$
         }
 
         if (message != null) {
@@ -112,21 +114,18 @@ public abstract class AbstractJobMaintenanceHandler extends AbstractResourceMain
         return false;
     }
 
-    private Result initialize(IRapidFireJobResource job) throws Exception {
+    protected Result initialize(IRapidFireJobResource job) throws Exception {
 
         manager.openFiles();
 
-        Result result = manager.initialize(getMode(), new JobKey(job.getName()));
-        if (result.isError()) {
-            return result;
-        }
+        Result result = manager.initialize(getMaintenanceMode(), new JobKey(job.getName()));
 
-        return null;
+        return result;
     }
 
     protected abstract void performAction(IRapidFireJobResource job) throws Exception;
 
-    private void terminate() throws Exception {
+    protected void terminate() throws Exception {
 
         if (manager != null) {
             manager.closeFiles();

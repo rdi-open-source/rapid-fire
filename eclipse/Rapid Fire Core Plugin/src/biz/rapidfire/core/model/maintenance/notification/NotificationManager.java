@@ -73,9 +73,9 @@ public class NotificationManager extends AbstractManager<NotificationKey, Notifi
                 dao.getLibraryName(), key.getPosition(), getErrorMessage(errorCode));
         }
 
-        Result status = new Result(success, message);
+        Result result = new Result(success, message);
 
-        return status;
+        return result;
     }
 
     /**

@@ -20,7 +20,7 @@ import biz.rapidfire.core.model.maintenance.library.shared.LibraryAction;
 public class DeleteLibraryHandler extends AbstractLibraryMaintenanceHandler implements IHandler {
 
     public DeleteLibraryHandler() {
-        super(MaintenanceMode.MODE_DELETE, LibraryAction.DELETE);
+        super(MaintenanceMode.DELETE, LibraryAction.DELETE);
     }
 
     @Override

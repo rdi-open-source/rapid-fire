@@ -20,7 +20,7 @@ import biz.rapidfire.core.model.maintenance.area.shared.AreaAction;
 public class CopyAreaHandler extends AbstractAreaMaintenanceHandler implements IHandler {
 
     public CopyAreaHandler() {
-        super(MaintenanceMode.MODE_COPY, AreaAction.COPY);
+        super(MaintenanceMode.COPY, AreaAction.COPY);
     }
 
     @Override

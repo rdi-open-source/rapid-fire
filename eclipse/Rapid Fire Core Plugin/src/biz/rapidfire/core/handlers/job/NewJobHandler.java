@@ -20,7 +20,7 @@ import biz.rapidfire.core.model.maintenance.job.shared.JobAction;
 public class NewJobHandler extends AbstractJobMaintenanceHandler implements IHandler {
 
     public NewJobHandler() {
-        super(MaintenanceMode.MODE_CREATE, JobAction.CREATE);
+        super(MaintenanceMode.CREATE, JobAction.CREATE);
     }
 
     @Override

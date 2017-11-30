@@ -19,7 +19,7 @@ import biz.rapidfire.core.model.maintenance.area.shared.AreaAction;
 public class DisplayAreaHandler extends AbstractAreaMaintenanceHandler implements IHandler {
 
     public DisplayAreaHandler() {
-        super(MaintenanceMode.MODE_DISPLAY, AreaAction.DISPLAY);
+        super(MaintenanceMode.DISPLAY, AreaAction.DISPLAY);
     }
 
     @Override

@@ -20,7 +20,7 @@ import biz.rapidfire.core.model.maintenance.notification.shared.NotificationActi
 public class NewNotificationHandler extends AbstractNotificationMaintenanceHandler implements IHandler {
 
     public NewNotificationHandler() {
-        super(MaintenanceMode.MODE_CREATE, NotificationAction.CREATE);
+        super(MaintenanceMode.CREATE, NotificationAction.CREATE);
     }
 
     @Override

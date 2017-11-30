@@ -20,7 +20,7 @@ import biz.rapidfire.core.model.maintenance.notification.shared.NotificationActi
 public class DeleteNotificationHandler extends AbstractNotificationMaintenanceHandler implements IHandler {
 
     public DeleteNotificationHandler() {
-        super(MaintenanceMode.MODE_DELETE, NotificationAction.DELETE);
+        super(MaintenanceMode.DELETE, NotificationAction.DELETE);
     }
 
     @Override

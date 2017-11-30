@@ -20,7 +20,7 @@ import biz.rapidfire.core.model.maintenance.command.shared.CommandAction;
 public class CopyCommandHandler extends AbstractCommandMaintenanceHandler implements IHandler {
 
     public CopyCommandHandler() {
-        super(MaintenanceMode.MODE_COPY, CommandAction.COPY);
+        super(MaintenanceMode.COPY, CommandAction.COPY);
     }
 
     @Override

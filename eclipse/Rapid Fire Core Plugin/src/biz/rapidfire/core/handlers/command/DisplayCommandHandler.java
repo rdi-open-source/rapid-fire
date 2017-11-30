@@ -19,7 +19,7 @@ import biz.rapidfire.core.model.maintenance.command.shared.CommandAction;
 public class DisplayCommandHandler extends AbstractCommandMaintenanceHandler implements IHandler {
 
     public DisplayCommandHandler() {
-        super(MaintenanceMode.MODE_DISPLAY, CommandAction.DISPLAY);
+        super(MaintenanceMode.DISPLAY, CommandAction.DISPLAY);
     }
 
     @Override

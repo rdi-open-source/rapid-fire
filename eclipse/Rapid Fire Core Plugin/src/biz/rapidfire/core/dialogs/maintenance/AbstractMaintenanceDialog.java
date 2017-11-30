@@ -40,7 +40,7 @@ public abstract class AbstractMaintenanceDialog extends XDialog {
     }
 
     protected boolean isDisplayMode() {
-        return MaintenanceMode.MODE_DISPLAY.equals(getMode());
+        return MaintenanceMode.DISPLAY.equals(getMode());
     }
 
     protected MaintenanceMode getMode() {

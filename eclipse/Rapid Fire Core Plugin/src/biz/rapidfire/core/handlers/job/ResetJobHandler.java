@@ -8,25 +8,29 @@
 
 package biz.rapidfire.core.handlers.job;
 
-import org.eclipse.core.commands.ExecutionException;
-import org.eclipse.core.commands.IHandler;
+import biz.rapidfire.core.dialogs.action.ConfirmActionDialog;
+import biz.rapidfire.core.model.IRapidFireJobResource;
+import biz.rapidfire.core.model.maintenance.job.shared.DeleteShadowLibraries;
+import biz.rapidfire.core.model.maintenance.job.shared.JobAction;
 
-import biz.rapidfire.core.handlers.AbstractResourceHandler;
-import biz.rapidfire.core.model.IRapidFireResource;
-import biz.rapidfire.core.model.maintenance.MaintenanceMode;
-
-public class ResetJobHandler extends AbstractResourceHandler implements IHandler {
+public class ResetJobHandler extends AbstractJobActionHandler {
 
     public ResetJobHandler() {
-        super(MaintenanceMode.MODE_CHANGE);
+        super(JobAction.RESETJOB);
     }
 
     @Override
-    protected Object executeWithResource(IRapidFireResource job) throws ExecutionException {
+    protected void performAction(IRapidFireJobResource job) throws Exception {
 
-        System.out.println("Resetting Rapid Fire job ... " + job);
+        ConfirmActionDialog dialog = ConfirmActionDialog.open(getShell(), getJobAction(), job.getName());
 
-        return null;
+        if (dialog.isConfirmed()) {
+            if (dialog.isDeleteShadowLibrary()) {
+                getManager().resetJob(job.getKey(), DeleteShadowLibraries.YES);
+            } else {
+                getManager().resetJob(job.getKey(), DeleteShadowLibraries.NO);
+            }
+            refreshUI(job);
+        }
     }
-
 }

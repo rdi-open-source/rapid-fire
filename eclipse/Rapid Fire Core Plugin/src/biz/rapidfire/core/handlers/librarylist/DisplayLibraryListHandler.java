@@ -19,7 +19,7 @@ import biz.rapidfire.core.model.maintenance.librarylist.shared.LibraryListAction
 public class DisplayLibraryListHandler extends AbstractLibraryListMaintenanceHandler implements IHandler {
 
     public DisplayLibraryListHandler() {
-        super(MaintenanceMode.MODE_DISPLAY, LibraryListAction.DISPLAY);
+        super(MaintenanceMode.DISPLAY, LibraryListAction.DISPLAY);
     }
 
     @Override

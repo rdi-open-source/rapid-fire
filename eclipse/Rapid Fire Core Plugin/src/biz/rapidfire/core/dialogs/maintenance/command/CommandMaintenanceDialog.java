@@ -51,23 +51,23 @@ public class CommandMaintenanceDialog extends AbstractMaintenanceDialog {
     private boolean enableFields;
 
     public static CommandMaintenanceDialog getCreateDialog(Shell shell, CommandManager manager) {
-        return new CommandMaintenanceDialog(shell, MaintenanceMode.MODE_CREATE, manager);
+        return new CommandMaintenanceDialog(shell, MaintenanceMode.CREATE, manager);
     }
 
     public static CommandMaintenanceDialog getCopyDialog(Shell shell, CommandManager manager) {
-        return new CommandMaintenanceDialog(shell, MaintenanceMode.MODE_COPY, manager);
+        return new CommandMaintenanceDialog(shell, MaintenanceMode.COPY, manager);
     }
 
     public static CommandMaintenanceDialog getChangeDialog(Shell shell, CommandManager manager) {
-        return new CommandMaintenanceDialog(shell, MaintenanceMode.MODE_CHANGE, manager);
+        return new CommandMaintenanceDialog(shell, MaintenanceMode.CHANGE, manager);
     }
 
     public static CommandMaintenanceDialog getDeleteDialog(Shell shell, CommandManager manager) {
-        return new CommandMaintenanceDialog(shell, MaintenanceMode.MODE_DELETE, manager);
+        return new CommandMaintenanceDialog(shell, MaintenanceMode.DELETE, manager);
     }
 
     public static CommandMaintenanceDialog getDisplayDialog(Shell shell, CommandManager manager) {
-        return new CommandMaintenanceDialog(shell, MaintenanceMode.MODE_DISPLAY, manager);
+        return new CommandMaintenanceDialog(shell, MaintenanceMode.DISPLAY, manager);
     }
 
     public void setValue(CommandValues values) {
@@ -79,11 +79,11 @@ public class CommandMaintenanceDialog extends AbstractMaintenanceDialog {
 
         this.manager = manager;
 
-        if (MaintenanceMode.MODE_CREATE.equals(mode) || MaintenanceMode.MODE_COPY.equals(mode)) {
+        if (MaintenanceMode.CREATE.equals(mode) || MaintenanceMode.COPY.equals(mode)) {
             enableParentKeyFields = false;
             enableKeyFields = true;
             enableFields = true;
-        } else if (MaintenanceMode.MODE_CHANGE.equals(mode)) {
+        } else if (MaintenanceMode.CHANGE.equals(mode)) {
             enableParentKeyFields = false;
             enableKeyFields = false;
             enableFields = true;

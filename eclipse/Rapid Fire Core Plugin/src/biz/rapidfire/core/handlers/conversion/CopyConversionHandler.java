@@ -20,7 +20,7 @@ import biz.rapidfire.core.model.maintenance.conversion.shared.ConversionAction;
 public class CopyConversionHandler extends AbstractConversionMaintenanceHandler implements IHandler {
 
     public CopyConversionHandler() {
-        super(MaintenanceMode.MODE_COPY, ConversionAction.COPY);
+        super(MaintenanceMode.COPY, ConversionAction.COPY);
     }
 
     @Override

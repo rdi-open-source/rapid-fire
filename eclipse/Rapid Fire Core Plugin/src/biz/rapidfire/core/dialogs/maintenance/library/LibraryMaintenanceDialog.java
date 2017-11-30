@@ -41,23 +41,23 @@ public class LibraryMaintenanceDialog extends AbstractMaintenanceDialog {
     private boolean enableFields;
 
     public static LibraryMaintenanceDialog getCreateDialog(Shell shell, LibraryManager manager) {
-        return new LibraryMaintenanceDialog(shell, MaintenanceMode.MODE_CREATE, manager);
+        return new LibraryMaintenanceDialog(shell, MaintenanceMode.CREATE, manager);
     }
 
     public static LibraryMaintenanceDialog getCopyDialog(Shell shell, LibraryManager manager) {
-        return new LibraryMaintenanceDialog(shell, MaintenanceMode.MODE_COPY, manager);
+        return new LibraryMaintenanceDialog(shell, MaintenanceMode.COPY, manager);
     }
 
     public static LibraryMaintenanceDialog getChangeDialog(Shell shell, LibraryManager manager) {
-        return new LibraryMaintenanceDialog(shell, MaintenanceMode.MODE_CHANGE, manager);
+        return new LibraryMaintenanceDialog(shell, MaintenanceMode.CHANGE, manager);
     }
 
     public static LibraryMaintenanceDialog getDeleteDialog(Shell shell, LibraryManager manager) {
-        return new LibraryMaintenanceDialog(shell, MaintenanceMode.MODE_DELETE, manager);
+        return new LibraryMaintenanceDialog(shell, MaintenanceMode.DELETE, manager);
     }
 
     public static LibraryMaintenanceDialog getDisplayDialog(Shell shell, LibraryManager manager) {
-        return new LibraryMaintenanceDialog(shell, MaintenanceMode.MODE_DISPLAY, manager);
+        return new LibraryMaintenanceDialog(shell, MaintenanceMode.DISPLAY, manager);
     }
 
     public void setValue(LibraryValues values) {
@@ -69,11 +69,11 @@ public class LibraryMaintenanceDialog extends AbstractMaintenanceDialog {
 
         this.manager = manager;
 
-        if (MaintenanceMode.MODE_CREATE.equals(mode) || MaintenanceMode.MODE_COPY.equals(mode)) {
+        if (MaintenanceMode.CREATE.equals(mode) || MaintenanceMode.COPY.equals(mode)) {
             enableParentKeyFields = false;
             enableKeyFields = true;
             enableFields = true;
-        } else if (MaintenanceMode.MODE_CHANGE.equals(mode)) {
+        } else if (MaintenanceMode.CHANGE.equals(mode)) {
             enableParentKeyFields = false;
             enableKeyFields = false;
             enableFields = true;

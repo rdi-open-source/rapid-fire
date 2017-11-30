@@ -15,12 +15,12 @@ import biz.rapidfire.core.dialogs.maintenance.activity.ActivityMaintenanceDialog
 import biz.rapidfire.core.model.IRapidFireJobResource;
 import biz.rapidfire.core.model.maintenance.MaintenanceMode;
 import biz.rapidfire.core.model.maintenance.activity.ActivityValues;
-import biz.rapidfire.core.model.maintenance.job.shared.JobAction;
+import biz.rapidfire.core.model.maintenance.activity.shared.ActivityAction;
 
 public class ChangeActivitiesHandler extends AbstractActivityMaintenanceHandler implements IHandler {
 
     public ChangeActivitiesHandler() {
-        super(MaintenanceMode.MODE_CHANGE, JobAction.MNTSCDE);
+        super(MaintenanceMode.CHANGE, ActivityAction.CHANGE);
     }
 
     @Override
@@ -28,11 +28,24 @@ public class ChangeActivitiesHandler extends AbstractActivityMaintenanceHandler 
 
         ActivityValues[] values = getManager().getValues(job, getShell());
 
-        ActivityMaintenanceDialog dialog = ActivityMaintenanceDialog.getChangeDialog(getShell(), getManager());
-        dialog.setValue(values);
+        ActivityMaintenanceDialog dialog;
+        if (getMaintenanceMode() == MaintenanceMode.CHANGE) {
+            dialog = ActivityMaintenanceDialog.getChangeDialog(getShell(), getManager());
+            dialog.setValue(values);
+            openDialog(dialog, job, true); // Book changes.
+        } else {
+            dialog = ActivityMaintenanceDialog.getDisplayDialog(getShell(), getManager());
+            dialog.setValue(values);
+            openDialog(dialog, job, false); // Nothing to update here.
+        }
+    }
+
+    private void openDialog(ActivityMaintenanceDialog dialog, IRapidFireJobResource job, boolean isBookingEnabled) throws Exception {
 
         if (dialog.open() == Dialog.OK) {
-            getManager().book();
+            if (isBookingEnabled) {
+                getManager().book();
+            }
             refreshUI(job);
         }
     }

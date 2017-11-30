@@ -72,9 +72,9 @@ public class LibraryListManager extends AbstractManager<LibraryListKey, LibraryL
                 key.getJobName(), dao.getLibraryName(), key.getLibraryList(), getErrorMessage(errorCode));
         }
 
-        Result status = new Result(null, message, success);
+        Result result = new Result(null, message, success);
 
-        return status;
+        return result;
     }
 
     /**

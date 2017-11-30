@@ -20,7 +20,7 @@ import biz.rapidfire.core.model.maintenance.notification.shared.NotificationActi
 public class CopyNotificationHandler extends AbstractNotificationMaintenanceHandler implements IHandler {
 
     public CopyNotificationHandler() {
-        super(MaintenanceMode.MODE_COPY, NotificationAction.COPY);
+        super(MaintenanceMode.COPY, NotificationAction.COPY);
     }
 
     @Override

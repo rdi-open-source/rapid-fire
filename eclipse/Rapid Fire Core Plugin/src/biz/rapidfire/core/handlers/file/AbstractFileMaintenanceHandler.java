@@ -51,7 +51,6 @@ public abstract class AbstractFileMaintenanceHandler extends AbstractResourceMai
         try {
 
             IRapidFireFileResource file = (IRapidFireFileResource)resource;
-            manager = getOrCreateManager(file.getParentJob());
 
             if (canExecuteAction(file, fileAction)) {
                 Result result = initialize(file);
@@ -88,14 +87,19 @@ public abstract class AbstractFileMaintenanceHandler extends AbstractResourceMai
     }
 
     @Override
-    protected boolean canExecuteAction(IRapidFireFileResource file, FileAction fileAction) {
+    protected boolean canExecuteAction(IRapidFireResource resource, FileAction fileAction) {
+
+        if (!(resource instanceof IRapidFireFileResource)) {
+            return false;
+        }
 
         String message = null;
 
         try {
 
             // TODO: check action!
-            Result result = manager.checkAction(file.getKey(), fileAction);
+            IRapidFireFileResource file = (IRapidFireFileResource)resource;
+            Result result = getOrCreateManager(file.getParentJob()).checkAction(file.getKey(), fileAction);
             if (result.isSuccessfull()) {
                 return true;
             } else {
@@ -105,8 +109,7 @@ public abstract class AbstractFileMaintenanceHandler extends AbstractResourceMai
             }
 
         } catch (Exception e) {
-            message = "*** Could not check job action. Failed creating the job manager ***";
-            RapidFireCorePlugin.logError(message, e);
+            logError("*** Could not check job action. Failed creating the job manager ***", e); //$NON-NLS-1$
         }
 
         if (message != null) {
@@ -120,12 +123,9 @@ public abstract class AbstractFileMaintenanceHandler extends AbstractResourceMai
 
         manager.openFiles();
 
-        Result result = manager.initialize(getMode(), new FileKey(new JobKey(file.getJob()), file.getPosition()));
-        if (result.isError()) {
-            return result;
-        }
+        Result result = manager.initialize(getMaintenanceMode(), new FileKey(new JobKey(file.getJob()), file.getPosition()));
 
-        return null;
+        return result;
     }
 
     protected abstract void performAction(IRapidFireFileResource file) throws Exception;

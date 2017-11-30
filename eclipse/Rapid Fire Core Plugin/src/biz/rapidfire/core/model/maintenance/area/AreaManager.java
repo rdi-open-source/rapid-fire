@@ -76,9 +76,9 @@ public class AreaManager extends AbstractManager<AreaKey, AreaValues, AreaAction
                 key.getJobName(), dao.getLibraryName(), key.getPosition(), key.getArea(), getErrorMessage(errorCode));
         }
 
-        Result status = new Result(success, message);
+        Result result = new Result(success, message);
 
-        return status;
+        return result;
     }
 
     /**

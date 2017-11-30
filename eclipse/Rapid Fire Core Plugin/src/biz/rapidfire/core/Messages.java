@@ -34,6 +34,11 @@ public class Messages extends NLS {
     public static String Dialog_Title_Transfer_Rapid_Fire_library;
     public static String DialogTitle_Delete_Object;
     public static String Dialog_Title_Sign_On;
+    public static String Dialog_Title_Test_Job_A;
+    public static String Dialog_Title_Start_Job_A;
+    public static String Dialog_Title_End_Job_A;
+    public static String Dialog_Title_Reset_Job_A;
+    public static String Dialog_Title_Reset_Job_A_after_abortion;
 
     // Dialog action titles
     public static String DialogMode_CREATE;
@@ -145,8 +150,14 @@ public class Messages extends NLS {
     public static String Tooltip_Connection_name;
 
     // Questions
-    public static String Do_you_want_to_delete_library_A;
-    public static String Do_you_want_to_delete_object_A_B_type_C;
+    public static String Question_Do_you_want_to_delete_library_A;
+    public static String Question_Do_you_want_to_delete_object_A_B_type_C;
+    public static String Question_Do_you_want_to_test_job_A;
+    public static String Question_Do_you_want_to_start_job_A;
+    public static String Question_Do_you_want_to_end_job_A;
+    public static String Question_Do_you_want_to_reset_job_A;
+    public static String Question_Do_you_want_to_reset_job_A_after_abortion;
+    public static String Question_Delete_shadow_library;
 
     // Status messages
     public static String About_to_transfer_library_A_to_host_B_using_port_C;

@@ -19,7 +19,7 @@ import biz.rapidfire.core.model.maintenance.notification.shared.NotificationActi
 public class DisplayNotificationHandler extends AbstractNotificationMaintenanceHandler implements IHandler {
 
     public DisplayNotificationHandler() {
-        super(MaintenanceMode.MODE_DISPLAY, NotificationAction.DISPLAY);
+        super(MaintenanceMode.DISPLAY, NotificationAction.DISPLAY);
     }
 
     @Override

@@ -20,7 +20,7 @@ import biz.rapidfire.core.model.maintenance.command.shared.CommandAction;
 public class DeleteCommandHandler extends AbstractCommandMaintenanceHandler implements IHandler {
 
     public DeleteCommandHandler() {
-        super(MaintenanceMode.MODE_DELETE, CommandAction.DELETE);
+        super(MaintenanceMode.DELETE, CommandAction.DELETE);
     }
 
     @Override

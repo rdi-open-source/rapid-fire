@@ -12,7 +12,6 @@ import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.jface.dialogs.MessageDialog;
 
 import biz.rapidfire.core.Messages;
-import biz.rapidfire.core.RapidFireCorePlugin;
 import biz.rapidfire.core.handlers.AbstractResourceMaintenanceHandler;
 import biz.rapidfire.core.model.IRapidFireJobResource;
 import biz.rapidfire.core.model.IRapidFireLibraryResource;
@@ -50,7 +49,6 @@ public abstract class AbstractLibraryMaintenanceHandler extends AbstractResource
         try {
 
             IRapidFireLibraryResource library = (IRapidFireLibraryResource)resource;
-            manager = getOrCreateManager(library.getParentJob());
 
             if (canExecuteAction(library, libraryAction)) {
                 Result result = initialize(library);
@@ -87,14 +85,19 @@ public abstract class AbstractLibraryMaintenanceHandler extends AbstractResource
     }
 
     @Override
-    protected boolean canExecuteAction(IRapidFireLibraryResource library, LibraryAction libraryAction) {
+    protected boolean canExecuteAction(IRapidFireResource resource, LibraryAction libraryAction) {
+
+        if (!(resource instanceof IRapidFireLibraryResource)) {
+            return false;
+        }
 
         String message = null;
 
         try {
 
             // TODO: check action!
-            Result result = manager.checkAction(library.getKey(), libraryAction);
+            IRapidFireLibraryResource library = (IRapidFireLibraryResource)resource;
+            Result result = getOrCreateManager(library.getParentJob()).checkAction(library.getKey(), libraryAction);
             if (result.isSuccessfull()) {
                 return true;
             } else {
@@ -104,8 +107,7 @@ public abstract class AbstractLibraryMaintenanceHandler extends AbstractResource
             }
 
         } catch (Exception e) {
-            message = "*** Could not check job action. Failed creating the job manager ***";
-            RapidFireCorePlugin.logError(message, e);
+            logError("*** Could not check job action. Failed creating the job manager ***", e); //$NON-NLS-1$
         }
 
         if (message != null) {
@@ -119,7 +121,7 @@ public abstract class AbstractLibraryMaintenanceHandler extends AbstractResource
 
         manager.openFiles();
 
-        Result result = manager.initialize(getMode(), new LibraryKey(new JobKey(file.getJob()), file.getName()));
+        Result result = manager.initialize(getMaintenanceMode(), new LibraryKey(new JobKey(file.getJob()), file.getName()));
         if (result.isError()) {
             return result;
         }
