@@ -113,6 +113,7 @@ public abstract class AbstractResourceMaintenanceHandler<M, A> extends AbstractS
 
         if (message != null) {
             MessageDialogAsync.displayError(getShell(), message);
+            message = null;
         }
     }
 
