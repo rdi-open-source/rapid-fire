@@ -38,6 +38,7 @@
 		<format property="today.year" pattern="yyyy" locale="de,DE" />
 	</tstamp>
 
+	<property name="plugin.name" value="Rapid Fire" />
 	<property name="workspace.home" location="./../.." />
 	<property name="build.dir" location="./.." />
 	<property name="build.upload.dir" location="${build.dir}/upload" />
@@ -86,8 +87,65 @@
 		</else>
 	</if>
 
+	<!-- Set build target dependant parameters -->
+	<property name="target.ide.product.name.short.rdi" value="RDi 8.0+" />
+	<property name="target.ide.product.name.short.wdsci" value="WDSCi 7.0" />
+	<property name="target.ide.product.name.long.rdi" value="IBM Rational Developer for i" />
+	<property name="target.ide.product.name.long.wdsci" value="Websphere Development Studio Client for iSeries" />
+	<property name="target.ide.rdi" value="rdi8.0" />
+	<property name="target.ide.wdsci" value="wdsci7.0" />
+	
+	<if>
+		<equals arg1="${build.target}" arg2="RDi" />
+		<then>
+			<property name="target.ide.ide.product.name.long" value="${target.ide.product.name.long.rdi}" />
+			<property name="target.ide.ide.product.name.short" value="${target.ide.product.name.short.rdi}" />
+			<property name="target.ide.sf.dir" value="${target.ide.rdi}" />
+			<property name="target.ide.exclude.web.files" value="**/wdsci*.*" />
+			<property name="target.ide.exclude.download.files" value="*wdsci*" />
+		</then>
+		<else>
+			<property name="target.ide.ide.product.name.long" value="${target.ide.product.name.long.wdsci}" />
+			<property name="target.ide.ide.product.name.short" value="${target.ide.product.name.short.wdsci}" />
+			<property name="target.ide.sf.dir" value="${target.ide.wdsci}" />
+			<property name="target.ide.exclude.web.files" value="**/rdi*.*" />
+			<property name="target.ide.exclude.download.files" value="*rdi*"/>
+		</else>
+	</if>
+
+	<property name="target.ide.zip.file.name" value="${build.public.project.name} for ${target.ide.ide.product.name.short} (v${build.version} Update Site).zip" />
+
+	<if>
+		<equals arg1="${is.beta.version}" arg2="true" />
+		<then>
+			<property name="target.ide.root.update.site.url" value="${sf.root.url}/${beta.dir}/eclipse/${target.ide.sf.dir}/" />
+			<property name="target.ide.root.help.site.url" value="${sf.root.url}/${beta.dir}/${sf.dir.updatesite.help.dir}/" />
+			<property name="site.xml.property.url" value="${sf.root.master.dl.url}/${beta.dir}/eclipse/${target.ide.sf.dir}" />
+		</then>
+		<else>
+			<property name="target.ide.root.update.site.url" value="${sf.root.url}/eclipse/${target.ide.sf.dir}/" />
+			<property name="target.ide.root.help.site.url" value="${sf.root.url}/${sf.dir.updatesite.help.dir}/" />
+			<property name="site.xml.property.url" value="${sf.root.master.dl.url}/eclipse/${target.ide.sf.dir}" />
+		</else>
+	</if>
+
+	<property name="site.xml.property.url.regex" value="(&lt;site)([ ]*url=&quot;\S*&quot;[ ]*)?(&gt;)" />
+	<property name="site.xml.property.url.replace" value="\1 url=&quot;${site.xml.property.url}&quot;\3" />
+
+	<!-- Set HTML update site properties -->
+	<property name="build.template.dir" location="${build.dir}/build/templates" />
+	<property name="build.template.dir.web" location="${build.template.dir}/template_updatesite_web" />
+	<property name="build.upload.dir" location="${build.dir}/upload" />
 	<property name="build.upload.dir.files" location="${build.upload.dir}/sf-files/${beta.dir}" />
 	<property name="build.upload.dir.files.eclipse" location="${build.upload.dir}/sf-files/${beta.dir}/eclipse" />
+	<property name="build.upload.dir.web" location="${build.upload.dir}/sf-web/${beta.dir}" />
+	<property name="build.upload.dir.web.eclipse" location="${build.upload.dir}/sf-web/${beta.dir}/eclipse" />
+	<property name="build.upload.dir.help" location="${build.upload.dir}/sf-help/${beta.dir}/help" />
+	<property name="build.upload.dir.home" location="${build.upload.dir}/sf-home/" />
+	<property name="zip.base.directory" location="${workspace.home}/${build.updatesite}" />
+	<property name="project.doc" location="${workspace.home}/${build.project.core}/${build.folder.doc}/${build.project.doc}" />
+	<property name="project.pdf" location="${workspace.home}/${build.project.core}/${build.folder.doc}/${build.project.pdf}" />
+	<property name="updatesite.tag.file" location="${workspace.home}\${build.updatesite}\${build.updatesite} v${build.version}.tag" />
 
 	<!-- Set regular expressions and replacement values -->
 	<property name="validate.version.regex" value="^([1-9]+\.[0-9]+(?:\.[0-9]+)?(?:\.(?:b[0-9]{3}|r))?)$" />
@@ -106,8 +164,6 @@
 
 	<property name="site.2.version.regex" value="(&lt;feature.*version=&quot;)([0-9]+\.[0-9]+(?:\.[0-9]+)?(?:\.(?:b[0-9]{1,3}|r))?)(&quot;)" />
 	<property name="site.2.version.replace" value="\1${build.version}\3" />
-
-	<property name="local.zipfile" value="${build.zip.file.name}_v${build.version}.zip" />
 
 	<!-- Set update site values -->
 	<property name="updatesite.tag.file" location="${workspace.home}\${build.updatesite}\${build.updatesite} v${build.version}.tag" />
@@ -172,11 +228,11 @@
 	     ============================================================= -->
 	<target name="createZipFile" depends="prepareZipFile">
 
-		<echo>Erzeuge zip Datei: ${version.file}</echo>
+		<echo>Erzeuge zip Datei: ${target.ide.zip.file.name}</echo>
 
 		<mkdir dir="${build.upload.dir.files}" />
 
-		<zip destfile="${build.upload.dir.files}/${version.file}">
+		<zip destfile="${build.upload.dir.files}/${target.ide.zip.file.name}">
 			<fileset dir="${temp.dir.local_updatesite}" />
 		</zip>
 
@@ -187,7 +243,7 @@
 	     ============================================================= -->
 	<target name="createUpdateSite" depends="prepareUpdateSite">
 
-		<echo>Erzeuge Update Site Datei: ${version.file}</echo>
+		<echo>Erzeuge Update Site: ${build.version}</echo>
 
 		<mkdir dir="${build.upload.dir.files.eclipse}" />
 
@@ -215,10 +271,82 @@
 
 	</target>
 
+	<!--
+    * =====================================================================
+    *   Create the web pages of the update site.
+    *   This target creates the html page and the .htaccess file that
+    *   go to the project's update site.
+    *   This target is specific to RDi/WDSCi and controlled by build.target.
+    *
+    *   Set the build properties as shown below, if you want to update 
+    *   index.html and .htaccess only:
+    * 
+    *     build.files.enabled=false
+    *     build.web.enabled=true
+    *     build.help.enabled=false
+    *
+    *   You can also update the update site like this:
+    *     cleanUploadDir
+    *     createSourceForgeWebPages
+    *     cleanSourceForgeWebPages
+    *     uploadSourceForgeWebPages
+    * ===================================================================== -->
+	<target name="createSourceForgeWebPages" description="debug_create_html_update_site">
+
+		<echo>Creating Eclipse web folders ...</echo>
+
+		<echo>Preparing directory structure ...</echo>
+		<mkdir dir="${build.upload.dir.web}" />
+
+		<echo>Copying templates directory ...</echo>
+		<copy todir="${build.upload.dir.web}">
+			<fileset dir="${build.template.dir.web}">
+				<exclude name="${target.ide.exclude.web.files}" />
+			</fileset>
+		</copy>
+
+		<echo>Renaming ${target.ide.sf.dir} ...</echo>
+		<move todir="${build.upload.dir.web.eclipse}\${target.ide.sf.dir}">
+			<fileset dir="${build.upload.dir.web.eclipse}\build_target" />
+		</move>
+
+		<echo>Renaming index.html ...</echo>
+		<move file="${build.upload.dir.web.eclipse}/${target.ide.sf.dir}\${build.target}_index.html" tofile="${build.upload.dir.web.eclipse}/${target.ide.sf.dir}\index.html" />
+
+		<echo>Renaming .htaccess ...</echo>
+		<move file="${build.upload.dir.web.eclipse}/${target.ide.sf.dir}\_htaccess" tofile="${build.upload.dir.web.eclipse}/${target.ide.sf.dir}\.htaccess" />
+
+		<echo>Replacing '@' variables ...</echo>
+
+		<replace file="${build.upload.dir.web.eclipse}/${target.ide.sf.dir}\.htaccess" token="@BUILD_TARGET@" value="${target.ide.sf.dir}" />
+		<replace file="${build.upload.dir.web.eclipse}/${target.ide.sf.dir}\.htaccess" token="@BETA_VERSION@" value="${beta.dir}" />
+		<replace file="${build.upload.dir.web.eclipse}/${target.ide.sf.dir}\.htaccess" token="@VERSION_NUMBER@" value="${build.version}" />
+		<replace file="${build.upload.dir.web.eclipse}/${target.ide.sf.dir}\.htaccess" token="@TODAY@" value="${today.timestamp}" />
+		<replace file="${build.upload.dir.web.eclipse}/${target.ide.sf.dir}\.htaccess" token="@SF_FTP_PROJECT@" value="${sf.ftp.project}" />
+		<replace file="${build.upload.dir.web.eclipse}/${target.ide.sf.dir}\.htaccess" token="@SF_MASTER_DL@" value="${sf.root.master.dl.url}" />
+		<replace file="${build.upload.dir.web.eclipse}/${target.ide.sf.dir}\.htaccess" token="@SF_DOWNLOADS@" value="${sf.root.downloads.url}" />
+		<replace file="${build.upload.dir.web.eclipse}/${target.ide.sf.dir}\.htaccess" token="/./" value="/" />
+
+		<replace file="${build.upload.dir.web.eclipse}/${target.ide.sf.dir}\index.html" token="@VERSION_INFO@" value="${version.info}" />
+		<replace file="${build.upload.dir.web.eclipse}/${target.ide.sf.dir}\index.html" token="@IDE_PRODUCT_NAME_LONG@" value="${target.ide.ide.product.name.long}" />
+		<replace file="${build.upload.dir.web.eclipse}/${target.ide.sf.dir}\index.html" token="@IDE_PRODUCT_NAME_SHORT@" value="${target.ide.ide.product.name.short}" />
+		<replace file="${build.upload.dir.web.eclipse}/${target.ide.sf.dir}\index.html" token="@UPDATE_SITE_URL@" value="${target.ide.root.update.site.url}" />
+		<replace file="${build.upload.dir.web.eclipse}/${target.ide.sf.dir}\index.html" token="@HELP_SITE_URL@" value="${target.ide.root.help.site.url}" />
+		<replace file="${build.upload.dir.web.eclipse}/${target.ide.sf.dir}\index.html" token="@TODAY@" value="${today.timestamp}" />
+		<replace file="${build.upload.dir.web.eclipse}/${target.ide.sf.dir}\index.html" token="@YEAR@" value="${today.year}" />
+		<replace file="${build.upload.dir.web.eclipse}/${target.ide.sf.dir}\index.html" token="@VERSION_NUMBER@" value="${build.version}" />
+		<replace file="${build.upload.dir.web.eclipse}/${target.ide.sf.dir}\index.html" token="@PROJECT_HOME@" value="${sf.home.url}" />
+		<replace file="${build.upload.dir.web.eclipse}/${target.ide.sf.dir}\index.html" token="@PROJECT_HELP@" value="${sf.help.url}" />
+		<replace file="${build.upload.dir.web.eclipse}/${target.ide.sf.dir}\index.html" token="@PLUGIN_NAME@" value="${plugin.name}" />
+
+		<eclipse.refreshLocal resource="${build.project.name}" depth="infinite" />
+
+	</target>
+
 	<!-- =============================================================
 	      Bereitet das Erstellen der ZIP Datei vor.
 	     ============================================================= -->
-	<target name="prepareZipFile" depends="retrieveVersionInfo">
+	<target name="prepareZipFile">
 
 		<mkdir dir="${temp.dir.local_updatesite}" />
 		<mkdir dir="${temp.dir.local_updatesite}/features" />
@@ -251,7 +379,7 @@
 	<!-- =============================================================
 	      Bereitet das Erstellen der Update-Site Datei vor.
 	     ============================================================= -->
-	<target name="prepareUpdateSite" depends="retrieveVersionInfo">
+	<target name="prepareUpdateSite">
 
 	</target>
 
@@ -268,16 +396,6 @@
 
 		<eclipse.refreshLocal resource="${build.updatesite}" depth="infinite" />
 
-	</target>
-
-	<!-- =============================================================
-	      Kopiert die Versions-Informationen.
-	     ============================================================= -->
-	<target name="retrieveVersionInfo" depends="">
-
-		<property name="version.file" value="${local.zipfile}" />
-
-		<echo>Ermittelter Dateiname ist: ${version.file}</echo>
 	</target>
 
 	<!-- =============================================================
