@@ -30,6 +30,9 @@
 	<!-- Load ftp user name and password -->
 	<property file="ftp.properties" />
 
+	<!-- Load SourceForge ftp user name and password -->
+	<property file="ftp-credentials.properties" />
+
 	<!-- Set date and time -->
 	<tstamp>
 		<format property="today.timestamp" pattern="dd.MM.yyyy - kk:mm:ss" locale="de,DE" />
@@ -343,6 +346,97 @@
 
 	</target>
 
+	<!--
+    * =====================================================================
+    *   Uploads the entire project files to SourceForge.
+    *   This target must be run, after the SourceForge files have been built.
+    *   This target is specific to RDi/WDSCi and controlled by build.target.
+    * ===================================================================== -->
+	<target name="uploadSourceForgeFiles" depends="checkBuildTarget,ftpCredentialsSourceForge" description="Uploads the entire project to SourceForge">
+
+		<echo>Uploading files to SourceForge ...</echo>
+		<echo>User: ${sf.ftp.user}</echo>
+
+		<antcall target="cleanSourceForgeDownloadFiles" />
+
+		<antcall target="cleanSourceForgeWebPages" />
+
+		<antcall target="uploadSourceForgeDownloadFiles" />
+
+		<antcall target="uploadSourceForgeWebPages" />
+
+	</target>
+
+	<!--
+    * =====================================================================
+    *   Cleans the project's download area on SourceForge.
+    * ===================================================================== -->
+	<target name="cleanSourceForgeDownloadFiles" depends="ftpCredentialsSourceForge" unless="ignore.build.files">
+
+		<echo>Deleting SourceForge: files (download area) ...</echo>
+
+		<SF user="${sf.ftp.user},${sf.ftp.project}" password="${sf.ftp.password}" trust="true" dryrun="${build.dryrun}" 
+			host="${sf.ftp.server.files}" remoteDir="${sf.dir.updatesite.files.root}/${beta.dir}/">
+			<Rmdir dir="." subDirs="false" >
+				<IgnoreFile pattern="${target.ide.exclude.download.files}.zip" ignoreCase="true" />
+			</Rmdir>
+			<Rmdir dir="./eclipse/${target.ide.sf.dir}" subDirs="true" />
+		</SF>
+
+	</target>
+
+	<!--
+    * =====================================================================
+    *   Cleans the project's update site web folder on SourceForge.
+    * ===================================================================== -->
+	<target name="cleanSourceForgeWebPages" depends="ftpCredentialsSourceForge" unless="ignore.build.web">
+
+		<echo>Deleting: web pages (update site) ...</echo>
+
+		<SF user="${sf.ftp.user},${sf.ftp.project}" password="${sf.ftp.password}" trust="true" dryrun="${build.dryrun}" 
+			host="${sf.ftp.server.web}" remoteDir="${sf.dir.updatesite.web.root}/${beta.dir}/eclipse/">
+			<copydir dir="${build.upload.dir.maintenance}" toDir="./${target.ide.sf.dir}" subDirs="true" />
+			<Rmdir dir="./${target.ide.sf.dir}" subDirs="true" >
+				<IgnoreFile pattern="*/index.html" ignoreCase="true" />
+				<IgnoreFile pattern="*/maintenance-assets/*" ignoreCase="true" />
+			</Rmdir>
+		</SF>
+
+	</target>
+
+	<!--
+    * =====================================================================
+    *   Uploads the project's files to the SourceForge download area.
+    * ===================================================================== -->
+	<target name="uploadSourceForgeDownloadFiles" depends="ftpCredentialsSourceForge" unless="ignore.build.files">
+
+		<echo>Uploading SourceForge: files (download area) ...</echo>
+
+		<SF user="${sf.ftp.user},${sf.ftp.project}" password="${sf.ftp.password}" trust="true" dryrun="${build.dryrun}" 
+			host="${sf.ftp.server.files}" remoteDir="${sf.dir.updatesite.files.root}/${beta.dir}/">
+			<copydir dir="${build.upload.dir.files}" toDir="." subDirs="false" />
+			<copydir dir="${build.upload.dir.files.eclipse}\${target.ide.sf.dir}" toDir="./eclipse/${target.ide.sf.dir}" subDirs="true" />
+		</SF>
+
+	</target>
+
+	<!--
+    * =====================================================================
+    *   Uploads the project's web pages of the Eclipse update site 
+    *   to the SourceForge web folder.
+    * ===================================================================== -->
+	<target name="uploadSourceForgeWebPages" depends="ftpCredentialsSourceForge" unless="ignore.build.web">
+
+		<echo>Uploading: web pages (update site) ...</echo>
+
+		<SF user="${sf.ftp.user},${sf.ftp.project}" password="${sf.ftp.password}" trust="true" dryrun="${build.dryrun}" 
+			host="${sf.ftp.server.web}" remoteDir="${sf.dir.updatesite.web.root}/${beta.dir}/eclipse/">
+			<copydir dir="${build.upload.dir.web.eclipse}/${target.ide.sf.dir}" toDir="./${target.ide.sf.dir}" subDirs="true" />
+			<Rmdir dir="./${target.ide.sf.dir}/maintenance-assets" subDirs="true" />
+		</SF>
+
+	</target>
+
 	<!-- =============================================================
 	      Bereitet das Erstellen der ZIP Datei vor.
 	     ============================================================= -->
@@ -574,6 +668,17 @@
 	<target name="ftpCredentialsIBMi" unless="IBMi.ftp.password">
 
 		<input message="Please enter FTP password:" addproperty="IBMi.ftp.password" defaultvalue="" />
+
+	</target>
+
+	<!--
+    * =====================================================================
+    *   Asks for FTP credentials: username and password.
+    *   Properties 'sf.ftp.user' is loaded from 'ftp.properties'.
+    * ===================================================================== -->
+	<target name="ftpCredentialsSourceForge" unless="sf.ftp.password">
+
+		<input message="Please enter the SourceForge FTP password:" addproperty="sf.ftp.password" defaultvalue="" />
 
 	</target>
 
