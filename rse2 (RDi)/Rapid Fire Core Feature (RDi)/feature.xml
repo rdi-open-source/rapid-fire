@@ -6,8 +6,8 @@
       provider-name="Rapid Fire Project Team">
 
    <description url="https://sourceforge.net/projects/rapid-fire/">
-      The &quot;Rapid Fire Core Feature (RDi)&quot; is the heart of the Rapid Fire
-Plug-ins. Installing this feature is required.
+      The &quot;Rapid Fire Core Feature (RDi)&quot; is the core component of the Rapid Fire
+Plug-in. Installing this feature is required.
    </description>
 
    <copyright url="https://sourceforge.net/projects/rapid-fire/">
