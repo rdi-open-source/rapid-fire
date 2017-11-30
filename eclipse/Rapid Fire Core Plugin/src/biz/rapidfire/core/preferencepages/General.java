@@ -42,9 +42,9 @@ public class General extends PreferencePage implements IWorkbenchPreferencePage 
         final GridLayout gridLayout = new GridLayout();
         container.setLayout(gridLayout);
 
-        final Label labelTaskForceImage = new Label(container, SWT.NONE);
-        labelTaskForceImage.setLayoutData(new GridData(SWT.CENTER, SWT.CENTER, true, false));
-        labelTaskForceImage.setImage(RapidFireCorePlugin.getDefault().getImageRegistry().get(RapidFireCorePlugin.IMAGE_RAPIDFIRE));
+        final Label labelRapidFireImage = new Label(container, SWT.NONE);
+        labelRapidFireImage.setLayoutData(new GridData(SWT.CENTER, SWT.CENTER, true, false));
+        labelRapidFireImage.setImage(RapidFireCorePlugin.getDefault().getImageRegistry().get(RapidFireCorePlugin.IMAGE_RAPIDFIRE));
 
         final Label labelSeparator1 = new Label(container, SWT.SEPARATOR | SWT.HORIZONTAL);
         final GridData gd_labelSeparator1 = new GridData(SWT.FILL, SWT.CENTER, true, false);
