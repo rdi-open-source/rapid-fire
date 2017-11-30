@@ -13,7 +13,7 @@ import java.util.Map;
 
 public enum DeleteShadowLibraries {
     YES ("X"), //$NON-NLS-1$
-    NO ("* "); //$NON-NLS-1$
+    NO (""); //$NON-NLS-1$
 
     private String label;
 
