@@ -11,7 +11,6 @@ package biz.rapidfire.core.dialogs.action;
 import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.dialogs.MessageDialogWithToggle;
-import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Shell;
 
 import biz.rapidfire.core.Messages;
@@ -37,9 +36,8 @@ public class ConfirmActionDialog {
         case RESETJOB:
         case RESETJOBA:
 
-            MessageDialogWithToggle messageDialog = MessageDialogWithToggle.open(MessageDialogWithToggle.CONFIRM, shell,
-                getDialogTitle(jobAction, jobName), getQuestion(jobAction, jobName), Messages.Question_Delete_shadow_library, false, null, null,
-                SWT.NONE);
+            MessageDialogWithToggle messageDialog = MessageDialogWithToggle.openOkCancelConfirm(shell, getDialogTitle(jobAction, jobName),
+                getQuestion(jobAction, jobName), Messages.Question_Delete_shadow_library, false, null, null);
 
             return new ConfirmActionDialog(messageDialog.getReturnCode(), messageDialog.getToggleState());
 
