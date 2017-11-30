@@ -216,7 +216,7 @@
 	<!-- =============================================================
 	      Kopiert alle erforderlichen Assets-Dateien.
 	     ============================================================= -->
-	<target name="createSourceForgeFiles" depends="createZipFile, createUpdateSite" description="Step 3">
+	<target name="createSourceForgeFiles" depends="createZipFile, createUpdateSite, createSourceForgeWebPages" description="Step 3">
 
 		<antcall target="cleanTempAndPDE" />
 		<antcall target="refreshProjects" />
@@ -291,7 +291,7 @@
     *     cleanSourceForgeWebPages
     *     uploadSourceForgeWebPages
     * ===================================================================== -->
-	<target name="createSourceForgeWebPages" description="debug_create_html_update_site">
+	<target name="createSourceForgeWebPages">
 
 		<echo>Creating Eclipse web folders ...</echo>
 
