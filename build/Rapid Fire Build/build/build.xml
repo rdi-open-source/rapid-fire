@@ -180,6 +180,19 @@
 
 	<!-- Set update site values -->
 	<property name="updatesite.tag.file" location="${workspace.home}\${build.updatesite}\${build.updatesite} v${build.version}.tag" />
+	
+	<!-- Check what shall be build -->
+	<if>
+		<equals arg1="${build.help.enabled}" arg2="true" />
+		<then>
+			<!-- build help pages -->
+			<echo>Building ${build.public.project.name} help web pages ...</echo>
+		</then>
+		<else>
+			<property name="ignore.build.help" value="true" />
+			<echo>IGNORED: ${build.public.project.name} Help</echo>
+		</else>
+	</if>
 
 	<!--
     * =====================================================================
