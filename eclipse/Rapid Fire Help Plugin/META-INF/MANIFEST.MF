@@ -1,0 +1,7 @@
+Manifest-Version: 1.0
+Bundle-ManifestVersion: 2
+Bundle-Name: Rapid Fire Help Plugin
+Bundle-SymbolicName: biz.rapidfire.help;singleton:=true
+Bundle-Version: 1.0.0.b001
+Bundle-Vendor: iSphere Project Team
+Require-Bundle: org.eclipse.help
