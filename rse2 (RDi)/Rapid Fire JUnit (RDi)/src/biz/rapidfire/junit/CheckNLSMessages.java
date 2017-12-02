@@ -17,8 +17,6 @@ import java.io.IOException;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
-import java.net.URL;
-import java.net.URLClassLoader;
 import java.util.Locale;
 import java.util.Properties;
 import java.util.Set;
@@ -148,9 +146,10 @@ public class CheckNLSMessages {
      */
     private Object getInstance(Class<?> aClass) throws Exception {
 
-        URL[] urls = ((URLClassLoader)(Thread.currentThread().getContextClassLoader())).getURLs();
-        URLClassLoader loader = new URLClassLoader(urls, null);
-        Class<?> clazz = loader.loadClass(aClass.getName());
+        ClassLoader classLoader = Thread.currentThread().getContextClassLoader();
+        classLoader.loadClass(aClass.getName());
+
+        Class<?> clazz = classLoader.loadClass(aClass.getName());
 
         Constructor<?> constructor = clazz.getDeclaredConstructor(new Class[0]);
         constructor.setAccessible(true);
