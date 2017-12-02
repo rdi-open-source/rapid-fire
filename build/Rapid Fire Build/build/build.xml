@@ -264,7 +264,7 @@
 			</classpath>
 			<batchtest>
 				<fileset dir="${workspace.home}/${build.junit.project}/bin" id="id">
-    				<include name="**/*.class"/>
+    				<include name="**/*NLS*.class"/>
 				</fileset>
 			</batchtest>
 		</junit>
@@ -276,7 +276,7 @@
 	<!-- =============================================================
 	      Kopiert alle erforderlichen Assets-Dateien.
 	     ============================================================= -->
-	<target name="createSourceForgeFiles" depends="createZipFile, createUpdateSite, createSourceForgeWebPages, createSourceForgeHelp, createSourceForgeHome, createSourceForgeMaintenance" description="Step 3">
+	<target name="createSourceForgeFiles" depends="createZipFile, createUpdateSite, createSourceForgeWebPage, createSourceForgeWebHelpPage, createSourceForgeHomePage, createSourceForgeMaintenance" description="Step 3">
 
 		<antcall target="cleanTempAndPDE" />
 		<antcall target="refreshProjects" />
@@ -347,11 +347,11 @@
     *
     *   You can also update the update site like this:
     *     cleanUploadDir
-    *     createSourceForgeWebPages
-    *     cleanSourceForgeWebPages
-    *     uploadSourceForgeWebPages
+    *     createSourceForgeWebPage
+    *     cleanSourceForgeWebPage
+    *     uploadSourceForgeWebPage
     * ===================================================================== -->
-	<target name="createSourceForgeWebPages">
+	<target name="createSourceForgeWebPage">
 
 		<echo>Creating Eclipse web folders ...</echo>
 
@@ -422,11 +422,11 @@
     *
     *   You can also update the help pages like this:
     *     cleanUploadDir
-    *     createSourceForgeHelpPages
-    *     cleanSourceForgeHelpPages
-    *     uploadSourceForgeHelpPages
+    *     createSourceForgeWebHelpPage
+    *     cleanSourceForgeWebHelpPage
+    *     uploadSourceForgeWebHelpPage
     * ===================================================================== -->
-	<target name="createSourceForgeHelp" description="debug_create_html_help">
+	<target name="createSourceForgeWebHelpPage" description="debug_create_html_help">
 
 		<echo>Creating ${build.public.project.name} help ...</echo>
 		
@@ -450,7 +450,7 @@
     * =====================================================================
     *   Creates the project's home page.
     * ===================================================================== -->
-	<target name="createSourceForgeHome" unless="ignore.build.home">
+	<target name="createSourceForgeHomePage" unless="ignore.build.home">
 
 		<echo>Creating ${build.public.project.name} home page ...</echo>
 
@@ -495,19 +495,19 @@
 
 		<antcall target="cleanSourceForgeDownloadFiles" />
 
-		<antcall target="cleanSourceForgeWebPages" />
+		<antcall target="cleanSourceForgeWebPage" />
 
-		<antcall target="cleanSourceForgeHelp" />
+		<antcall target="cleanSourceForgeWebHelpPage" />
 
-		<antcall target="cleanSourceForgeHome" />
+		<antcall target="cleanSourceForgeHomePage" />
 
 		<antcall target="uploadSourceForgeDownloadFiles" />
 
-		<antcall target="uploadSourceForgeWebPages" />
+		<antcall target="uploadSourceForgeWebPage" />
 
-		<antcall target="uploadSourceForgeWebHelp" />
+		<antcall target="uploadSourceForgeWebHelpPage" />
 
-		<antcall target="uploadSourceForgeHome" />
+		<antcall target="uploadSourceForgeHomePage" />
 
 	</target>
 
@@ -551,7 +551,7 @@
     * =====================================================================
     *   Cleans the project's update site web folder on SourceForge.
     * ===================================================================== -->
-	<target name="cleanSourceForgeWebPages" depends="ftpCredentialsSourceForge" unless="ignore.build.web">
+	<target name="cleanSourceForgeWebPage" depends="ftpCredentialsSourceForge" unless="ignore.build.web">
 
 		<echo>Deleting: web pages (update site) ...</echo>
 
@@ -570,7 +570,7 @@
     * =====================================================================
     *   Cleans the project's help pages web folder on SourceForge.
     * ===================================================================== -->
-	<target name="cleanSourceForgeHelp" depends="ftpCredentialsSourceForge" unless="ignore.build.help">
+	<target name="cleanSourceForgeWebHelpPage" depends="ftpCredentialsSourceForge" unless="ignore.build.help">
 
 		<echo>Deleting SourceForge: web pages (help) ...</echo>
 
@@ -589,7 +589,7 @@
     * =====================================================================
     *   Cleans the project's home page web folder on SourceForge.
     * ===================================================================== -->
-	<target name="cleanSourceForgeHome" depends="ftpCredentialsSourceForge" unless="ignore.build.home">
+	<target name="cleanSourceForgeHomePage" depends="ftpCredentialsSourceForge" unless="ignore.build.home">
 
 		<echo>Deleting SourceForge: web pages (help) ...</echo>
 
@@ -620,7 +620,7 @@
     *   Uploads the project's web pages of the Eclipse update site 
     *   to the SourceForge web folder.
     * ===================================================================== -->
-	<target name="uploadSourceForgeWebPages" depends="ftpCredentialsSourceForge" unless="ignore.build.web">
+	<target name="uploadSourceForgeWebPage" depends="ftpCredentialsSourceForge" unless="ignore.build.web">
 
 		<echo>Uploading: web pages (update site) ...</echo>
 
@@ -636,7 +636,7 @@
     * =====================================================================
     *   Uploads the project's help pages to the SourceForge web folder.
     * ===================================================================== -->
-	<target name="uploadSourceForgeHelp" depends="ftpCredentialsSourceForge" unless="ignore.build.help">
+	<target name="uploadSourceForgeWebHelpPage" depends="ftpCredentialsSourceForge" unless="ignore.build.help">
 
 		<echo>Uploading SourceForge: web pages (help) ...</echo>
 
@@ -654,7 +654,7 @@
     * =====================================================================
     *   Uploads the project's home page to the SourceForge web folder.
     * ===================================================================== -->
-	<target name="uploadSourceForgeHome" depends="ftpCredentialsSourceForge" unless="ignore.build.home">
+	<target name="uploadSourceForgeHomePage" depends="ftpCredentialsSourceForge" unless="ignore.build.home">
 
 		<echo>Uploading SourceForge: web pages (home) ...</echo>
 
