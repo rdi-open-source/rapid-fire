@@ -30,6 +30,9 @@
 		</classpath>
 	</taskdef>
 
+	<property name="plugin.name" value="Rapid Fire" />
+	<property name="workspace.home" location="./../.." />
+
 	<!-- Load project names and new version number -->
 	<property file="build.properties" />
 
@@ -46,9 +49,6 @@
 		<format property="today.date.iso" pattern="yyyy-MM-dd" locale="de,DE" />
 		<format property="today.year" pattern="yyyy" locale="de,DE" />
 	</tstamp>
-
-	<property name="plugin.name" value="Rapid Fire" />
-	<property name="workspace.home" location="./../.." />
 
 	<!-- Set local FTP properties -->
 	<property name="local.download.directory" location="${basedir}/temp-downloads" />
@@ -224,7 +224,7 @@
 	      Erstellt eine neue Update-Site.
 	      Alle alten Dateien werden überschrieben, bzw. gelöscht.
 	     ============================================================= -->
-	<target name="build" depends="checkBuildTarget, clean, updateVersionNumber, createTagFile" description="Step 1">
+	<target name="build" depends="checkBuildTarget, junit, clean, updateVersionNumber, createTagFile" description="Step 1">
 
 		<echo>+------------------------------------------------------+</echo>
 		<echo>|  Finished RPGUnit build ${build.version}             |</echo>
@@ -236,6 +236,36 @@
 		<echo>|                      -uploadSourceForgeFiles-        |</echo>
 		<echo>+------------------------------------------------------+</echo>
 		<echo>*** Finished ***</echo>
+
+	</target>
+
+	<!-- =============================================================
+	      Führt JUnit Test aus.
+	     ============================================================= -->
+	<target name="junit" >
+
+		<echo>Running JUnit tests of project ${build.junit.project} ...</echo>
+		
+		<junit haltonerror="true" haltonfailure="true" printsummary="true">
+			<classpath>
+				<!-- JUnit4 -->
+				<path location="${build.dir}/build/lib/junit.jar" />
+				<path location="${build.dir}/build/lib/org.hamcrest.core_1.1.0.v20090501071000.jar" />
+				<!-- OSGI for finding org.eclipse.osgi.util.NLS -->
+				<path location="${build.dir}/build/lib/org.eclipse.osgi_3.6.3.R36x_v20110629.jar" />
+				<!-- Projects with Messages classes -->
+				<dirset dir="${workspace.home}" >
+					<include name="${build.junit.classpath}"/>
+				</dirset>
+			</classpath>
+			<batchtest>
+				<fileset dir="${workspace.home}/${build.junit.project}/bin" id="id">
+    				<include name="**/*.class"/>
+				</fileset>
+			</batchtest>
+		</junit>
+		
+		<echo>... finished JUnit tests.</echo>
 
 	</target>
 
