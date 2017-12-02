@@ -276,7 +276,7 @@
 	<!-- =============================================================
 	      Kopiert alle erforderlichen Assets-Dateien.
 	     ============================================================= -->
-	<target name="createSourceForgeFiles" depends="createZipFile, createUpdateSite, createSourceForgeWebPage, createSourceForgeWebHelpPage, createSourceForgeHomePage, createSourceForgeMaintenance" description="Step 3">
+	<target name="createSourceForgeFiles" depends="createZipFile, createUpdateSite, createSourceForgeWebUpdateSite, createSourceForgeWebHelpPage, createSourceForgeHomePage, createSourceForgeMaintenance" description="Step 3">
 
 		<antcall target="cleanTempAndPDE" />
 		<antcall target="refreshProjects" />
@@ -347,11 +347,11 @@
     *
     *   You can also update the update site like this:
     *     cleanUploadDir
-    *     createSourceForgeWebPage
-    *     cleanSourceForgeWebPage
-    *     uploadSourceForgeWebPage
+    *     createSourceForgeWebUpdateSite
+    *     cleanSourceForgeWebUpdateSite
+    *     uploadSourceForgeWebUpdateSite
     * ===================================================================== -->
-	<target name="createSourceForgeWebPage">
+	<target name="createSourceForgeWebUpdateSite">
 
 		<echo>Creating Eclipse web folders ...</echo>
 
@@ -495,7 +495,7 @@
 
 		<antcall target="cleanSourceForgeDownloadFiles" />
 
-		<antcall target="cleanSourceForgeWebPage" />
+		<antcall target="cleanSourceForgeWebUpdateSite" />
 
 		<antcall target="cleanSourceForgeWebHelpPage" />
 
@@ -503,7 +503,7 @@
 
 		<antcall target="uploadSourceForgeDownloadFiles" />
 
-		<antcall target="uploadSourceForgeWebPage" />
+		<antcall target="uploadSourceForgeWebUpdateSite" />
 
 		<antcall target="uploadSourceForgeWebHelpPage" />
 
@@ -551,7 +551,7 @@
     * =====================================================================
     *   Cleans the project's update site web folder on SourceForge.
     * ===================================================================== -->
-	<target name="cleanSourceForgeWebPage" depends="ftpCredentialsSourceForge" unless="ignore.build.web">
+	<target name="cleanSourceForgeWebUpdateSite" depends="ftpCredentialsSourceForge" unless="ignore.build.web">
 
 		<echo>Deleting: web pages (update site) ...</echo>
 
@@ -620,7 +620,7 @@
     *   Uploads the project's web pages of the Eclipse update site 
     *   to the SourceForge web folder.
     * ===================================================================== -->
-	<target name="uploadSourceForgeWebPage" depends="ftpCredentialsSourceForge" unless="ignore.build.web">
+	<target name="uploadSourceForgeWebUpdateSite" depends="ftpCredentialsSourceForge" unless="ignore.build.web">
 
 		<echo>Uploading: web pages (update site) ...</echo>
 
