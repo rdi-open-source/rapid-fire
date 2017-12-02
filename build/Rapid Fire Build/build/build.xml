@@ -159,6 +159,10 @@
 	<property name="project.doc" location="${workspace.home}/${build.project.core}/${build.folder.doc}/${build.project.doc}" />
 	<property name="project.pdf" location="${workspace.home}/${build.project.core}/${build.folder.doc}/${build.project.pdf}" />
 	<property name="updatesite.tag.file" location="${workspace.home}\${build.updatesite}\${build.updatesite} v${build.version}.tag" />
+	
+	<!-- Set the name of the default home page file -->
+	<property name="home.page" value="index.php" />
+	<property name="support.page" value="support.php" />
 
 	<!-- Set regular expressions and replacement values -->
 	<property name="validate.version.regex" value="^([1-9]+\.[0-9]+(?:\.[0-9]+)?(?:\.(?:b[0-9]{3}|r))?)$" />
@@ -272,7 +276,7 @@
 	<!-- =============================================================
 	      Kopiert alle erforderlichen Assets-Dateien.
 	     ============================================================= -->
-	<target name="createSourceForgeFiles" depends="createZipFile, createUpdateSite, createSourceForgeWebPages, createSourceForgeHelp, createSourceForgeMaintenance" description="Step 3">
+	<target name="createSourceForgeFiles" depends="createZipFile, createUpdateSite, createSourceForgeWebPages, createSourceForgeHelp, createSourceForgeHome, createSourceForgeMaintenance" description="Step 3">
 
 		<antcall target="cleanTempAndPDE" />
 		<antcall target="refreshProjects" />
@@ -442,6 +446,41 @@
 
 	</target>
 
+	<!--
+    * =====================================================================
+    *   Creates the project's home page.
+    * ===================================================================== -->
+	<target name="createSourceForgeHome" unless="ignore.build.home">
+
+		<echo>Creating ${build.public.project.name} home page ...</echo>
+
+		<copy todir="${build.upload.dir.home}">
+			<fileset dir="${workspace.home}/${build.homepage.project}/html" />
+		</copy>
+		
+		<!--
+		<replace name="notifier.url.encoded" token=" " value="${sf.notifier.url}" />
+		-->
+		
+		<replace file="${build.upload.dir.home}/${home.page}" token="@TODAY@" value="${today.timestamp}" />
+		<replace file="${build.upload.dir.home}/${home.page}" token="@YEAR@" value="${today.year}" />
+		<replace file="${build.upload.dir.home}/${home.page}" token="@VERSION_MANIFEST@" value="${sf.notifier.url}" />
+		<replace file="${build.upload.dir.home}/${home.page}" token="@PROJECT_HOME@" value="${sf.home.url}" />
+		<replace file="${build.upload.dir.home}/${home.page}" token="@PROJECT_HELP@" value="${sf.help.url}" />
+		<replace file="${build.upload.dir.home}/${home.page}" token="@TARGET_IDE_RDI@" value="${target.ide.rdi}" />
+		<replace file="${build.upload.dir.home}/${home.page}" token="@TARGET_IDE_WDSCI@" value="${target.ide.wdsci}" />
+		<replace file="${build.upload.dir.home}/${home.page}" token="@TARGET_IDE_PRODUCT_NAME_LONG_RDI@" value="${target.ide.product.name.long.rdi}" />
+		<replace file="${build.upload.dir.home}/${home.page}" token="@TARGET_IDE_PRODUCT_NAME_LONG_WDSCI@" value="${target.ide.product.name.long.wdsci}" />
+		<replace file="${build.upload.dir.home}/${home.page}" token="@TARGET_IDE_PRODUCT_NAME_SHORT_RDI@" value="${target.ide.product.name.short.rdi}" />
+		<replace file="${build.upload.dir.home}/${home.page}" token="@TARGET_IDE_PRODUCT_NAME_SHORT_WDSCI@" value="${target.ide.product.name.short.wdsci}" />
+		<replace file="${build.upload.dir.home}/${home.page}" token="@VERSION_MANIFEST@" value="${sf.notifier.url}" />
+		<replace file="${build.upload.dir.home}/${home.page}" token="@BETA_VERSION@" value="${sf.ftp.beta.dir.name}" />
+		
+		<replace file="${build.upload.dir.home}/${support.page}" token="@TODAY@" value="${today.timestamp}" />
+
+		<eclipse.refreshLocal resource="${build.project.name}" depth="infinite" />
+
+	</target>
 
 	<!--
     * =====================================================================
@@ -460,11 +499,15 @@
 
 		<antcall target="cleanSourceForgeHelp" />
 
+		<antcall target="cleanSourceForgeHome" />
+
 		<antcall target="uploadSourceForgeDownloadFiles" />
 
 		<antcall target="uploadSourceForgeWebPages" />
 
 		<antcall target="uploadSourceForgeWebHelp" />
+
+		<antcall target="uploadSourceForgeHome" />
 
 	</target>
 
@@ -544,6 +587,20 @@
 
 	<!--
     * =====================================================================
+    *   Cleans the project's home page web folder on SourceForge.
+    * ===================================================================== -->
+	<target name="cleanSourceForgeHome" depends="ftpCredentialsSourceForge" unless="ignore.build.home">
+
+		<echo>Deleting SourceForge: web pages (help) ...</echo>
+
+		<SF user="${sf.ftp.user},${sf.ftp.project}" password="${sf.ftp.password}" trust="true" dryrun="${build.dryrun}" 
+			host="${sf.ftp.server.home}" remoteDir="${sf.dir.updatesite.home.root}">
+		</SF>
+
+	</target>
+
+	<!--
+    * =====================================================================
     *   Uploads the project's files to the SourceForge download area.
     * ===================================================================== -->
 	<target name="uploadSourceForgeDownloadFiles" depends="ftpCredentialsSourceForge" unless="ignore.build.files">
@@ -589,6 +646,22 @@
 			<Rmdir dir="./${sf.dir.updatesite.help.dir}/maintenance-assets" subDirs="true" />
 
 
+		</SF>
+
+	</target>
+
+	<!--
+    * =====================================================================
+    *   Uploads the project's home page to the SourceForge web folder.
+    * ===================================================================== -->
+	<target name="uploadSourceForgeHome" depends="ftpCredentialsSourceForge" unless="ignore.build.home">
+
+		<echo>Uploading SourceForge: web pages (home) ...</echo>
+
+		<SF user="${sf.ftp.user},${sf.ftp.project}" password="${sf.ftp.password}" trust="true" dryrun="${build.dryrun}" 
+			host="${sf.ftp.server.home}" remoteDir="${sf.dir.updatesite.home.root}">
+			<copydir dir="${build.upload.dir.home}" toDir="./${sf.dir.updatesite.home.dir}" subDirs="true" />
+			<Rmdir dir="./${sf.dir.updatesite.home.dir}/maintenance-assets" subDirs="true" />
 		</SF>
 
 	</target>
