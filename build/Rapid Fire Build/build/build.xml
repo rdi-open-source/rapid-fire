@@ -426,7 +426,7 @@
     *     cleanSourceForgeWebHelpPage
     *     uploadSourceForgeWebHelpPage
     * ===================================================================== -->
-	<target name="createSourceForgeWebHelpPage" description="debug_create_html_help">
+	<target name="createSourceForgeWebHelpPage" >
 
 		<echo>Creating ${build.public.project.name} help ...</echo>
 		
@@ -724,7 +724,7 @@
 	<!-- =============================================================
 	      Löscht alle bestehenden Dateien.
 	     ============================================================= -->
-	<target name="clean" depends="cleanTempAndPDE" description="Cleans all build directories">
+	<target name="clean" >
 
 		<mkdir dir="${build.upload.dir}" />
 		<mkdir dir="${local.download.directory}" />
@@ -742,7 +742,7 @@
 	<!-- =============================================================
 	      Löscht alle bestehenden Dateien.
 	     ============================================================= -->
-	<target name="cleanTempAndPDE" depends="" description="Cleans only temp and PDE folders">
+	<target name="cleanTempAndPDE" >
 
 		<mkdir dir="${temp.dir}" />
 
