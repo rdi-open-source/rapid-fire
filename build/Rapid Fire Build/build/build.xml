@@ -276,7 +276,7 @@
 	<!-- =============================================================
 	      Kopiert alle erforderlichen Assets-Dateien.
 	     ============================================================= -->
-	<target name="createSourceForgeFiles" depends="createZipFile, createUpdateSite, createSourceForgeWebUpdateSite, createSourceForgeWebHelpPage, createSourceForgeHomePage, createSourceForgeMaintenance" description="Step 3">
+	<target name="createSourceForgeFiles" depends="createZipFile, createUpdateSite, createSourceForgeWebUpdateSite, createSourceForgeWebHelpPage, createSourceForgeWebHomePage, createSourceForgeWebMaintenance" description="Step 3">
 
 		<antcall target="cleanTempAndPDE" />
 		<antcall target="refreshProjects" />
@@ -450,7 +450,7 @@
     * =====================================================================
     *   Creates the project's home page.
     * ===================================================================== -->
-	<target name="createSourceForgeHomePage" unless="ignore.build.home">
+	<target name="createSourceForgeWebHomePage" unless="ignore.build.home">
 
 		<echo>Creating ${build.public.project.name} home page ...</echo>
 
@@ -499,7 +499,7 @@
 
 		<antcall target="cleanSourceForgeWebHelpPage" />
 
-		<antcall target="cleanSourceForgeHomePage" />
+		<antcall target="cleanSourceForgeWebHomePage" />
 
 		<antcall target="uploadSourceForgeDownloadFiles" />
 
@@ -507,7 +507,7 @@
 
 		<antcall target="uploadSourceForgeWebHelpPage" />
 
-		<antcall target="uploadSourceForgeHomePage" />
+		<antcall target="uploadSourceForgeWebHomePage" />
 
 	</target>
 
@@ -515,7 +515,7 @@
     * =====================================================================
     *   Creates the project's maintenance page.
     * ===================================================================== -->
-	<target name="createSourceForgeMaintenance" unless="ignore.build.maintenance">
+	<target name="createSourceForgeWebMaintenance" unless="ignore.build.maintenance">
 
 		<echo>Creating ${build.public.project.name} maintenance web page ...</echo>
 
@@ -557,7 +557,7 @@
 
 		<SF user="${sf.ftp.user},${sf.ftp.project}" password="${sf.ftp.password}" trust="true" dryrun="${build.dryrun}" 
 			host="${sf.ftp.server.web}" remoteDir="${sf.dir.updatesite.web.root}/${beta.dir}/eclipse/">
-			<copydir dir="${build.upload.dir.maintenance}" toDir="./${target.ide.sf.dir}" subDirs="true" />
+			<Copydir dir="${build.upload.dir.maintenance}" toDir="./${target.ide.sf.dir}" subDirs="true" />
 			<Rmdir dir="./${target.ide.sf.dir}" subDirs="true" >
 				<IgnoreFile pattern="*/index.html" ignoreCase="true" />
 				<IgnoreFile pattern="*/maintenance-assets/*" ignoreCase="true" />
@@ -576,7 +576,7 @@
 
 		<SF user="${sf.ftp.user},${sf.ftp.project}" password="${sf.ftp.password}" trust="true" dryrun="${build.dryrun}" 
 			host="${sf.ftp.server.help}" remoteDir="${sf.dir.updatesite.help.root}/${beta.dir}/">
-			<copydir dir="${build.upload.dir.maintenance}" toDir="./${sf.dir.updatesite.help.dir}" subDirs="true" />
+			<Copydir dir="${build.upload.dir.maintenance}" toDir="./${sf.dir.updatesite.help.dir}" subDirs="true" />
 			<Rmdir dir="./${sf.dir.updatesite.help.dir}" subDirs="true" >
 				<IgnoreFile pattern="*/index.html" ignoreCase="true" />
 				<IgnoreFile pattern="*/maintenance-assets/*" ignoreCase="true" />
@@ -589,12 +589,18 @@
     * =====================================================================
     *   Cleans the project's home page web folder on SourceForge.
     * ===================================================================== -->
-	<target name="cleanSourceForgeHomePage" depends="ftpCredentialsSourceForge" unless="ignore.build.home">
+	<target name="cleanSourceForgeWebHomePage" depends="ftpCredentialsSourceForge" unless="ignore.build.home">
 
 		<echo>Deleting SourceForge: web pages (help) ...</echo>
 
 		<SF user="${sf.ftp.user},${sf.ftp.project}" password="${sf.ftp.password}" trust="true" dryrun="${build.dryrun}" 
 			host="${sf.ftp.server.home}" remoteDir="${sf.dir.updatesite.home.root}">
+			<Copydir dir="${build.upload.dir.maintenance}" toDir="." subDirs="true" />
+			<Rmdir dir="./" subDirs="false" >
+				<IgnoreFile pattern="*/index.html" ignoreCase="true" />
+				<IgnoreFile pattern="*/maintenance-assets/*" ignoreCase="true" />
+			</Rmdir>
+			<Rmdir dir="./assets" subDirs="true" />
 		</SF>
 
 	</target>
@@ -609,8 +615,8 @@
 
 		<SF user="${sf.ftp.user},${sf.ftp.project}" password="${sf.ftp.password}" trust="true" dryrun="${build.dryrun}" 
 			host="${sf.ftp.server.files}" remoteDir="${sf.dir.updatesite.files.root}/${beta.dir}/">
-			<copydir dir="${build.upload.dir.files}" toDir="." subDirs="false" />
-			<copydir dir="${build.upload.dir.files.eclipse}\${target.ide.sf.dir}" toDir="./eclipse/${target.ide.sf.dir}" subDirs="true" />
+			<Copydir dir="${build.upload.dir.files}" toDir="." subDirs="false" />
+			<Copydir dir="${build.upload.dir.files.eclipse}\${target.ide.sf.dir}" toDir="./eclipse/${target.ide.sf.dir}" subDirs="true" />
 		</SF>
 
 	</target>
@@ -626,7 +632,7 @@
 
 		<SF user="${sf.ftp.user},${sf.ftp.project}" password="${sf.ftp.password}" trust="true" dryrun="${build.dryrun}" 
 			host="${sf.ftp.server.web}" remoteDir="${sf.dir.updatesite.web.root}/${beta.dir}/eclipse/">
-			<copydir dir="${build.upload.dir.web.eclipse}/${target.ide.sf.dir}" toDir="./${target.ide.sf.dir}" subDirs="true" />
+			<Copydir dir="${build.upload.dir.web.eclipse}/${target.ide.sf.dir}" toDir="./${target.ide.sf.dir}" subDirs="true" />
 			<Rmdir dir="./${target.ide.sf.dir}/maintenance-assets" subDirs="true" />
 		</SF>
 
@@ -642,7 +648,7 @@
 
 		<SF user="${sf.ftp.user},${sf.ftp.project}" password="${sf.ftp.password}" trust="true" dryrun="${build.dryrun}" 
 			host="${sf.ftp.server.help}" remoteDir="${sf.dir.updatesite.help.root}/${beta.dir}/">
-			<copydir dir="${build.upload.dir.help}" toDir="./${sf.dir.updatesite.help.dir}" subDirs="true" />
+			<Copydir dir="${build.upload.dir.help}" toDir="./${sf.dir.updatesite.help.dir}" subDirs="true" />
 			<Rmdir dir="./${sf.dir.updatesite.help.dir}/maintenance-assets" subDirs="true" />
 
 
@@ -654,13 +660,13 @@
     * =====================================================================
     *   Uploads the project's home page to the SourceForge web folder.
     * ===================================================================== -->
-	<target name="uploadSourceForgeHomePage" depends="ftpCredentialsSourceForge" unless="ignore.build.home">
+	<target name="uploadSourceForgeWebHomePage" depends="ftpCredentialsSourceForge" unless="ignore.build.home">
 
 		<echo>Uploading SourceForge: web pages (home) ...</echo>
 
 		<SF user="${sf.ftp.user},${sf.ftp.project}" password="${sf.ftp.password}" trust="true" dryrun="${build.dryrun}" 
 			host="${sf.ftp.server.home}" remoteDir="${sf.dir.updatesite.home.root}">
-			<copydir dir="${build.upload.dir.home}" toDir="./${sf.dir.updatesite.home.dir}" subDirs="true" />
+			<Copydir dir="${build.upload.dir.home}" toDir="./${sf.dir.updatesite.home.dir}" subDirs="true" />
 			<Rmdir dir="./${sf.dir.updatesite.home.dir}/maintenance-assets" subDirs="true" />
 		</SF>
 
