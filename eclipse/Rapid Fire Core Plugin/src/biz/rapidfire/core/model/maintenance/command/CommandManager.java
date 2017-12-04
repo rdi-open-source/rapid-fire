@@ -8,7 +8,6 @@
 
 package biz.rapidfire.core.model.maintenance.command;
 
-import java.math.BigDecimal;
 import java.sql.CallableStatement;
 import java.sql.Types;
 
@@ -59,7 +58,7 @@ public class CommandManager extends AbstractManager<CommandKey, CommandValues, C
         statement.setString(ICommandInitialize.JOB, key.getJobName());
         statement.setInt(ICommandInitialize.POSITION, key.getPosition());
         statement.setString(ICommandInitialize.TYPE, key.getCommandType());
-        statement.setBigDecimal(ICommandInitialize.SEQUENCE, new BigDecimal(key.getSequence()));
+        statement.setInt(ICommandInitialize.SEQUENCE, key.getSequence());
         statement.setString(ICommandInitialize.SUCCESS, Success.NO.label());
         statement.setString(ICommandInitialize.ERROR_CODE, EMPTY_STRING);
 
@@ -138,7 +137,7 @@ public class CommandManager extends AbstractManager<CommandKey, CommandValues, C
             .insertLibraryQualifier("{CALL " + IJDBCConnection.LIBRARY + "\"MNTCMD_setValues\"(?, ?, ?)}")); //$NON-NLS-1$ //$NON-NLS-2$
 
         statement.setString(ICommandSetValues.TYPE, values.getKey().getCommandType());
-        statement.setBigDecimal(ICommandSetValues.SEQUENCE, new BigDecimal(values.getKey().getSequence()));
+        statement.setInt(ICommandSetValues.SEQUENCE, values.getKey().getSequence());
         statement.setString(ICommandSetValues.COMMAND, values.getCommand());
 
         statement.execute();
