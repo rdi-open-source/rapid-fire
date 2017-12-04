@@ -3,6 +3,7 @@
 
 <toc label="Rapid Fire">
    <topic label="Introduction" href="html/introduction/introduction.html" />
+   <topic label="Prerequisites" href="html/prerequisites/prerequisites.html" />
    <topic label="Deploying Data File Changes Today" href="html/deploying_files_today/deploying_files_today.html" />
    <topic label="Deploying Data File Changes With Rapid Fire" href="html/deploying_files_with_rapidfire/deploying_files_with_rapidfire.html" />
    <topic label="ER Model and Overview" href="html/er_model/er_model.html" />
