@@ -197,6 +197,26 @@ public class JobManager extends AbstractManager<JobKey, JobValues, JobAction> {
         return new Result(null, message, success);
     }
 
+    public JobAction[] getValidActions(JobKey key) throws Exception {
+
+        CallableStatement statement = dao.prepareCall(dao
+            .insertLibraryQualifier("{CALL " + IJDBCConnection.LIBRARY + "\"MNTJOB_getValidActions\"(?, ?, ?)}")); //$NON-NLS-1$ //$NON-NLS-2$
+
+        statement.setString(IJobGetValidActions.JOB, key.getJobName());
+        statement.setInt(IJobGetValidActions.NUMBER_ACTIONS, 0);
+        statement.setString(IJobGetValidActions.ACTIONS, EMPTY_STRING);
+
+        statement.registerOutParameter(IJobGetValidActions.NUMBER_ACTIONS, Types.DECIMAL);
+        statement.registerOutParameter(IJobGetValidActions.ACTIONS, Types.CHAR);
+
+        statement.execute();
+
+        int numberActions = statement.getInt(IJobGetValidActions.NUMBER_ACTIONS);
+        String actions = statement.getString(IJobGetValidActions.ACTIONS);
+
+        return new JobAction[0];
+    }
+
     public Result testJob(JobKey key) throws Exception {
 
         CallableStatement statement = dao.prepareCall(dao.insertLibraryQualifier("{CALL " + IJDBCConnection.LIBRARY + "\"JOB_start\"(?, ?)}")); //$NON-NLS-1$ //$NON-NLS-2$
