@@ -119,6 +119,14 @@ public class RapidFireFileResource extends AbstractResource implements IRapidFir
         delegate.setConversionProgramLibrary(conversionProgramLibrary);
     }
 
+    public boolean isLogicalFile() {
+        return delegate.isLogicalFile();
+    }
+
+    public boolean isPhysicalFile() {
+        return !delegate.isLogicalFile();
+    }
+
     public int compareTo(IRapidFireFileResource resource) {
         return delegate.compareTo(resource);
     }

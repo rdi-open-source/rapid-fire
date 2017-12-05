@@ -126,9 +126,9 @@ public class RapidFireSubSystem extends SubSystem implements IISeriesSubSystem, 
             }
 
             Vector<IRapidFireResource> filteredJobs = new Vector<IRapidFireResource>();
-
             for (IRapidFireJobResource job : allJobs) {
                 if (filter.matches(job)) {
+                    job.setFilter(filter);
                     filteredJobs.addElement(job);
                 }
             }
