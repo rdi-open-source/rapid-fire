@@ -16,6 +16,7 @@ import biz.rapidfire.core.model.Phase;
 import biz.rapidfire.core.model.Status;
 import biz.rapidfire.core.model.maintenance.job.shared.JobKey;
 import biz.rapidfire.core.subsystem.IRapidFireSubSystem;
+import biz.rapidfire.core.subsystem.RapidFireFilter;
 import biz.rapidfire.core.subsystem.resources.RapidFireJobResourceDelegate;
 
 import com.ibm.etools.systems.subsystems.SubSystem;
@@ -157,6 +158,14 @@ public class RapidFireJobResource extends AbstractResource implements IRapidFire
 
     public void setBatchJob(JobName job) {
         delegate.setBatchJob(job);
+    }
+
+    public RapidFireFilter getFilter() {
+        return delegate.getFilter();
+    }
+
+    public void setFilter(RapidFireFilter filter) {
+        delegate.setFilter(filter);
     }
 
     public int compareTo(IRapidFireJobResource resource) {

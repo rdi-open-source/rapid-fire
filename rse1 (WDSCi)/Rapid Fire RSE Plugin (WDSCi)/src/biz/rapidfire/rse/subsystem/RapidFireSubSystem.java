@@ -124,6 +124,7 @@ public class RapidFireSubSystem extends DefaultSubSystemImpl implements IISeries
 
             for (IRapidFireJobResource job : allJobs) {
                 if (filter.matches(job)) {
+                    job.setFilter(filter);
                     filteredJobs.addElement(job);
                 }
             }
@@ -297,7 +298,7 @@ public class RapidFireSubSystem extends DefaultSubSystemImpl implements IISeries
         if (!successFullyLoaded()) {
             return new IFileCopyStatus[0];
         }
-        
+
         String libraryName = job.getDataLibrary();
 
         FileCopyStatusDAO dao = new FileCopyStatusDAO(getHostName(), libraryName);
