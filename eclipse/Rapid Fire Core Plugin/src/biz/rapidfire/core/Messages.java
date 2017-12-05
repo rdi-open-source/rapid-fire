@@ -110,6 +110,7 @@ public class Messages extends NLS {
     public static String Label_Rapid_Fire_library_colon;
     public static String Label_Version_colon;
     public static String Label_Show_logical_files;
+    public static String Label_Label_Decorations_RSE_host_objects_Description;
 
     public static String Tooltip_Library;
     public static String Tooltip_Job;

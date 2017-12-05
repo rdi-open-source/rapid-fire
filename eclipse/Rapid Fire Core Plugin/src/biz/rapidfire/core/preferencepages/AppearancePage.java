@@ -10,6 +10,7 @@ package biz.rapidfire.core.preferencepages;
 
 import org.eclipse.jface.preference.PreferencePage;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridData;
@@ -17,8 +18,10 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Link;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
+import org.eclipse.ui.dialogs.PreferencesUtil;
 
 import biz.rapidfire.core.Messages;
 import biz.rapidfire.core.RapidFireCorePlugin;
@@ -46,11 +49,34 @@ public class AppearancePage extends PreferencePage implements IWorkbenchPreferen
         final GridLayout gridLayout = new GridLayout(2, false);
         container.setLayout(gridLayout);
 
+        createSectionLabelDecorations(container);
         createSectionGlobal(container);
 
         setScreenToValues();
 
         return container;
+    }
+
+    private void createSectionLabelDecorations(Composite parent) {
+
+        // Group group = new Group(parent, SWT.NONE);
+        // group.setLayout(new GridLayout(3, false));
+        // group.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+        // group.setText(Messages.Label_Decorations_RSE_host_objects);
+
+        String headline = Messages.bind(Messages.Label_Label_Decorations_RSE_host_objects_Description, new String[] {
+            "<a href=\"org.eclipse.ui.preferencePages.Decorators\">", "</a>" });
+
+        Link lnkJavaTaskTags = new Link(parent, SWT.MULTI | SWT.WRAP);
+        lnkJavaTaskTags.setLayoutData(new GridData(SWT.LEFT, SWT.CENTER, false, false, 2, 1));
+        lnkJavaTaskTags.setText(headline);
+        lnkJavaTaskTags.pack();
+        lnkJavaTaskTags.addSelectionListener(new SelectionAdapter() {
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                PreferencesUtil.createPreferenceDialogOn(getShell(), e.text, null, null);
+            }
+        });
     }
 
     private void createSectionGlobal(Composite parent) {
