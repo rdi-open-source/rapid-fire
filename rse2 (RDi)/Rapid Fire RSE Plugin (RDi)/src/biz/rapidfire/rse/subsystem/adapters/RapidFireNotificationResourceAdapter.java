@@ -36,8 +36,15 @@ public class RapidFireNotificationResourceAdapter extends AbstractResourceAdapte
     }
 
     @Override
-    public ImageDescriptor getImageDescriptor(Object object) {
-        return RapidFireRSEPlugin.getDefault().getImageRegistry().getDescriptor(RapidFireRSEPlugin.IMAGE_NOTIFICATION);
+    public ImageDescriptor getImageDescriptor(Object element) {
+
+        RapidFireNotificationResource resource = (RapidFireNotificationResource)element;
+
+        if (resource.getNotificationType() == NotificationType.MSGQ) {
+            return RapidFireRSEPlugin.getDefault().getImageRegistry().getDescriptor(RapidFireRSEPlugin.IMAGE_MESSAGE_QUEUE);
+        } else {
+            return RapidFireRSEPlugin.getDefault().getImageRegistry().getDescriptor(RapidFireRSEPlugin.IMAGE_USER);
+        }
     }
 
     @Override
@@ -55,8 +62,6 @@ public class RapidFireNotificationResourceAdapter extends AbstractResourceAdapte
         RapidFireNotificationResource resource = (RapidFireNotificationResource)element;
 
         StringBuilder text = new StringBuilder();
-        text.append(resource.getPosition());
-        text.append(": "); //$NON-NLS-1$
 
         if (NotificationType.USR.equals(resource.getNotificationType())) {
             text.append(resource.getUser());
@@ -65,10 +70,6 @@ public class RapidFireNotificationResourceAdapter extends AbstractResourceAdapte
             text.append("/"); //$NON-NLS-1$
             text.append(resource.getMessageQueueName());
         }
-
-        text.append(" ("); //$NON-NLS-1$
-        text.append(resource.getNotificationType().label());
-        text.append(")"); //$NON-NLS-1$
 
         return text.toString();
     }

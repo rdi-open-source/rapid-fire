@@ -62,6 +62,11 @@ public class RapidFireCorePlugin extends AbstractExtendedUIPlugin {
     public static final String COLOR_DIALOG_MODE_DELETE = "COLOR_DIALOG_MODE_DELETE"; //$NON-NLS-1$
     public static final String COLOR_DIALOG_MODE_DISPLAY = "COLOR_DIALOG_MODE_DISPLAY"; //$NON-NLS-1$
 
+    public static final String OVERLAY_ERROR = "error_ovr.gif"; //$NON-NLS-1$
+    public static final String OVERLAY_YELLOW_CIRCLE = "yellow_circle_ovr.gif"; //$NON-NLS-1$
+    public static final String OVERLAY_GREEN_CIRCLE = "green_circle_ovr.gif"; //$NON-NLS-1$
+    public static final String OVERLAY_ORANGE_CIRCLE = "orange_circle_ovr.gif"; //$NON-NLS-1$
+
     /**
      * The constructor
      */
@@ -144,6 +149,11 @@ public class RapidFireCorePlugin extends AbstractExtendedUIPlugin {
         reg.put(IMAGE_ENABLED, getImageDescriptor(IMAGE_ENABLED));
         reg.put(IMAGE_DISABLED, getImageDescriptor(IMAGE_DISABLED));
         reg.put(IMAGE_TRANSFER_LIBRARY, getImageDescriptor(IMAGE_TRANSFER_LIBRARY));
+
+        reg.put(OVERLAY_ERROR, getImageDescriptor(OVERLAY_ERROR));
+        reg.put(OVERLAY_YELLOW_CIRCLE, getImageDescriptor(OVERLAY_YELLOW_CIRCLE));
+        reg.put(OVERLAY_GREEN_CIRCLE, getImageDescriptor(OVERLAY_GREEN_CIRCLE));
+        reg.put(OVERLAY_ORANGE_CIRCLE, getImageDescriptor(OVERLAY_ORANGE_CIRCLE));
     }
 
     @Override

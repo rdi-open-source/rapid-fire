@@ -40,6 +40,7 @@ Export-Package: biz.rapidfire.core,
  biz.rapidfire.core.model.queries,
  biz.rapidfire.core.properties,
  biz.rapidfire.core.subsystem,
+ biz.rapidfire.core.subsystem.decorators.shared,
  biz.rapidfire.core.subsystem.resources,
  biz.rapidfire.core.swt.widgets,
  biz.rapidfire.core.validators

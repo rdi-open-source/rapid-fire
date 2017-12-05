@@ -53,12 +53,16 @@ public class RapidFireRSEPlugin extends AbstractUIPlugin {
     public static final String IMAGE_RAPID_FIRE_FILTER = "rapidfire_filter.gif"; //$NON-NLS-1$
     public static final String IMAGE_RAPID_FIRE_JOB = "rapidfire_job.gif"; //$NON-NLS-1$
     public static final String IMAGE_FILE = "file.gif"; //$NON-NLS-1$
+    public static final String IMAGE_LOGICAL_FILE = "logical_file.gif"; //$NON-NLS-1$
     public static final String IMAGE_LIBRARY = "library.gif"; //$NON-NLS-1$
     public static final String IMAGE_LIBRARY_LIST = "library_list.gif"; //$NON-NLS-1$
     public static final String IMAGE_NOTIFICATION = "notification.gif"; //$NON-NLS-1$
     public static final String IMAGE_AREA = "area.gif"; //$NON-NLS-1$
     public static final String IMAGE_CONVERSION = "conversion.gif"; //$NON-NLS-1$
     public static final String IMAGE_COMMAND = "command.gif"; //$NON-NLS-1$
+    public static final String IMAGE_MESSAGE_QUEUE = "message_queue.gif"; //$NON-NLS-1$
+    public static final String IMAGE_USER = "user.gif"; //$NON-NLS-1$
+
     public static final String IMAGE_NEW_JOB = "new_job.gif"; //$NON-NLS-1$
     public static final String IMAGE_NEW_FILE = "new_file.gif"; //$NON-NLS-1$
     public static final String IMAGE_NEW_LIBRARY = "new_library.gif"; //$NON-NLS-1$
@@ -146,12 +150,16 @@ public class RapidFireRSEPlugin extends AbstractUIPlugin {
         reg.put(IMAGE_RAPID_FIRE_FILTER, getImageDescriptor(IMAGE_RAPID_FIRE_FILTER));
         reg.put(IMAGE_RAPID_FIRE_JOB, getImageDescriptor(IMAGE_RAPID_FIRE_JOB));
         reg.put(IMAGE_FILE, getImageDescriptor(IMAGE_FILE));
+        reg.put(IMAGE_LOGICAL_FILE, getImageDescriptor(IMAGE_LOGICAL_FILE));
         reg.put(IMAGE_LIBRARY_LIST, getImageDescriptor(IMAGE_LIBRARY_LIST));
         reg.put(IMAGE_LIBRARY, getImageDescriptor(IMAGE_LIBRARY));
         reg.put(IMAGE_NOTIFICATION, getImageDescriptor(IMAGE_NOTIFICATION));
         reg.put(IMAGE_AREA, getImageDescriptor(IMAGE_AREA));
         reg.put(IMAGE_CONVERSION, getImageDescriptor(IMAGE_CONVERSION));
         reg.put(IMAGE_COMMAND, getImageDescriptor(IMAGE_COMMAND));
+        reg.put(IMAGE_MESSAGE_QUEUE, getImageDescriptor(IMAGE_MESSAGE_QUEUE));
+        reg.put(IMAGE_USER, getImageDescriptor(IMAGE_USER));
+
         reg.put(IMAGE_NEW_JOB, getImageDescriptor(IMAGE_NEW_JOB));
         reg.put(IMAGE_NEW_FILE, getImageDescriptor(IMAGE_NEW_FILE));
         reg.put(IMAGE_NEW_LIBRARY_LIST, getImageDescriptor(IMAGE_NEW_LIBRARY_LIST));

@@ -50,7 +50,7 @@ public class RapidFireLibraryResourceAdapter extends AbstractResourceAdapter imp
 
         RapidFireLibraryResource resource = (RapidFireLibraryResource)element;
 
-        return resource.getName() + " -> " + resource.getShadowLibrary();
+        return resource.getName();
     }
 
     /**

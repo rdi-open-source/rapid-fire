@@ -66,7 +66,7 @@ public class RapidFireJobResourceAdapter extends AbstractResourceAdapter impleme
 
         RapidFireJobResource resource = (RapidFireJobResource)element;
 
-        return resource.getName() + " - " + resource.getStatus(); //$NON-NLS-1$ 
+        return resource.getName();
     }
 
     /**

@@ -54,13 +54,7 @@ public class RapidFireAreaResourceAdapter extends AbstractResourceAdapter implem
 
         RapidFireAreaResource resource = (RapidFireAreaResource)element;
 
-        StringBuilder text = new StringBuilder();
-
-        text.append(resource.getName());
-        text.append(": "); //$NON-NLS-1$
-        text.append(resource.getLibrary());
-
-        return text.toString();
+        return resource.getName();
     }
 
     /**

@@ -82,7 +82,7 @@ public class RapidFireAreaResource extends AbstractResource implements IRapidFir
     }
 
     public void setLibrary(String library) {
-        delegate.setLibrary(library);
+        delegate.setLibrary(library.trim());
     }
 
     public String getLibraryList() {
@@ -90,7 +90,7 @@ public class RapidFireAreaResource extends AbstractResource implements IRapidFir
     }
 
     public void setLibraryList(String libraryList) {
-        delegate.setLibraryList(libraryList);
+        delegate.setLibraryList(libraryList.trim());
     }
 
     public String getLibraryCcsid() {
@@ -98,7 +98,7 @@ public class RapidFireAreaResource extends AbstractResource implements IRapidFir
     }
 
     public void setLibraryCcsid(String libraryCcsid) {
-        delegate.setLibraryCcsid(libraryCcsid);
+        delegate.setLibraryCcsid(libraryCcsid.trim());
     }
 
     public String getCommandExtension() {
@@ -106,7 +106,7 @@ public class RapidFireAreaResource extends AbstractResource implements IRapidFir
     }
 
     public void setCommandExtension(String commandExtension) {
-        delegate.setCommandExtension(commandExtension);
+        delegate.setCommandExtension(commandExtension.trim());
     }
 
     public int compareTo(IRapidFireAreaResource resource) {

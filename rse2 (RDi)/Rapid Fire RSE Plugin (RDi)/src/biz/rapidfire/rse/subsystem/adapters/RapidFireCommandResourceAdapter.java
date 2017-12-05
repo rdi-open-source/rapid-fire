@@ -54,13 +54,21 @@ public class RapidFireCommandResourceAdapter extends AbstractResourceAdapter imp
 
         StringBuilder text = new StringBuilder();
 
-        text.append(resource.getSequence());
-        text.append(": ("); //$NON-NLS-1$
         text.append(resource.getCommandType());
-        text.append(") "); //$NON-NLS-1$
-        text.append(resource.getCommand());
+        text.append(": "); //$NON-NLS-1$
+        text.append(getCommand(resource.getCommand()));
 
         return text.toString();
+    }
+
+    private String getCommand(String command) {
+
+        int x = command.indexOf(" "); //$NON-NLS-1$
+        if (x >= 0) {
+            return command.substring(0, x);
+        }
+
+        return command;
     }
 
     /**

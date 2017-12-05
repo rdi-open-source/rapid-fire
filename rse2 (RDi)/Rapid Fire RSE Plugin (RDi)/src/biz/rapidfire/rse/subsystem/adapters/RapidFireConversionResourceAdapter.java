@@ -53,16 +53,7 @@ public class RapidFireConversionResourceAdapter extends AbstractResourceAdapter 
 
         RapidFireConversionResource resource = (RapidFireConversionResource)element;
 
-        StringBuilder text = new StringBuilder();
-
-        text.append(resource.getFieldToConvert());
-        text.append(" -> "); //$NON-NLS-1$
-        text.append(resource.getNewFieldName());
-        text.append(" ("); //$NON-NLS-1$
-        text.append(resource.getConversions()[0]);
-        text.append(" )"); //$NON-NLS-1$
-
-        return text.toString();
+        return resource.getFieldToConvert();
     }
 
     /**
