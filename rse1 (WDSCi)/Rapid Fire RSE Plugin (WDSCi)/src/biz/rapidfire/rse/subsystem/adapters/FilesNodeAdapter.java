@@ -9,6 +9,7 @@
 package biz.rapidfire.rse.subsystem.adapters;
 
 import java.util.Arrays;
+import java.util.Vector;
 
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.viewers.IStructuredSelection;
@@ -18,6 +19,8 @@ import biz.rapidfire.core.RapidFireCorePlugin;
 import biz.rapidfire.core.dialogs.MessageDialogAsync;
 import biz.rapidfire.core.model.IRapidFireFileResource;
 import biz.rapidfire.core.model.IRapidFireJobResource;
+import biz.rapidfire.core.model.IRapidFireResource;
+import biz.rapidfire.core.subsystem.RapidFireFilter;
 import biz.rapidfire.rse.Messages;
 import biz.rapidfire.rse.RapidFireRSEPlugin;
 import biz.rapidfire.rse.subsystem.actions.file.NewFilesNodePopupMenuAction;
@@ -61,6 +64,16 @@ public class FilesNodeAdapter extends AbstractNodeAdapter {
             IRapidFireJobResource jobResource = filesNode.getJob();
 
             IRapidFireFileResource[] files = jobResource.getParentSubSystem().getFiles(jobResource, getShell());
+
+            RapidFireFilter filter = jobResource.getFilter();
+            Vector<IRapidFireResource> filteredFiles = new Vector<IRapidFireResource>();
+            for (IRapidFireFileResource file : files) {
+                if (filter.isShowLogicalFiles() || file.isPhysicalFile()) {
+                    filteredFiles.addElement(file);
+                }
+            }
+
+            files = filteredFiles.toArray(new IRapidFireFileResource[filteredFiles.size()]);
 
             Arrays.sort(files);
 
