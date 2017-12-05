@@ -72,7 +72,7 @@ public abstract class AbstractAreasDAO {
     private IRapidFireAreaResource produceFile(ResultSet resultSet, IRapidFireFileResource file) throws SQLException {
 
         // String job = resultSet.getString(JOB).trim();
-        String area = resultSet.getString(AREA);
+        String area = resultSet.getString(AREA).trim();
 
         IRapidFireAreaResource areaResource = createAreaInstance(file, area);
 
