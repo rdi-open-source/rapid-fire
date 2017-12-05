@@ -98,6 +98,10 @@ public class RapidFireFileResourceDelegate implements Comparable<IRapidFireFileR
         this.conversionProgramLibrary = conversionProgramLibrary;
     }
 
+    public boolean isLogicalFile() {
+        return getFileType().equals(FileType.LOGICAL);
+    }
+
     public int compareTo(IRapidFireFileResource resource) {
 
         if (resource == null) {

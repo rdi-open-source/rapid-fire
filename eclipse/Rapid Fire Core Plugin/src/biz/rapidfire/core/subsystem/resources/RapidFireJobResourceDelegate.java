@@ -12,6 +12,7 @@ import biz.rapidfire.core.model.IRapidFireJobResource;
 import biz.rapidfire.core.model.JobName;
 import biz.rapidfire.core.model.Phase;
 import biz.rapidfire.core.model.Status;
+import biz.rapidfire.core.subsystem.RapidFireFilter;
 
 public class RapidFireJobResourceDelegate implements Comparable<IRapidFireJobResource> {
 
@@ -28,6 +29,7 @@ public class RapidFireJobResourceDelegate implements Comparable<IRapidFireJobRes
     private JobName batchJob;
     private boolean isStopApplyChanges;
     private String cmoneFormNumber;
+    private RapidFireFilter filter;
 
     public RapidFireJobResourceDelegate(String dataLibrary, String job) {
 
@@ -137,6 +139,14 @@ public class RapidFireJobResourceDelegate implements Comparable<IRapidFireJobRes
 
     public JobName getBatchJob() {
         return batchJob;
+    }
+
+    public RapidFireFilter getFilter() {
+        return this.filter;
+    }
+
+    public void setFilter(RapidFireFilter filter) {
+        this.filter = filter;
     }
 
     public int compareTo(IRapidFireJobResource resource) {

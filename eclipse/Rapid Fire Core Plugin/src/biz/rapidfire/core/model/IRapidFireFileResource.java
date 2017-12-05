@@ -50,4 +50,8 @@ public interface IRapidFireFileResource extends IRapidFireChildResource {
     public String getConversionProgramLibrary();
 
     public void setConversionProgramLibrary(String conversionProgramLibrary);
+
+    public boolean isLogicalFile();
+
+    public boolean isPhysicalFile();
 }

@@ -9,6 +9,7 @@
 package biz.rapidfire.core.model;
 
 import biz.rapidfire.core.model.maintenance.job.shared.JobKey;
+import biz.rapidfire.core.subsystem.RapidFireFilter;
 
 public interface IRapidFireJobResource extends IRapidFireResource {
 
@@ -65,6 +66,10 @@ public interface IRapidFireJobResource extends IRapidFireResource {
     public void setCmoneFormNumber(String cmoneFormNumber);
 
     public void setBatchJob(JobName job);
+
+    public void setFilter(RapidFireFilter filter);
+
+    public RapidFireFilter getFilter();
 
     public JobName getBatchJob();
 }

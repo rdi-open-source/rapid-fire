@@ -109,6 +109,7 @@ public class Messages extends NLS {
     public static String Label_Password_colon;
     public static String Label_Rapid_Fire_library_colon;
     public static String Label_Version_colon;
+    public static String Label_Show_logical_files;
 
     public static String Tooltip_Library;
     public static String Tooltip_Job;

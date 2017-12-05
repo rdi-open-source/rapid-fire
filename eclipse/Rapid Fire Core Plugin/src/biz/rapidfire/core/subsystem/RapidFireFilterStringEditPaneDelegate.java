@@ -15,6 +15,7 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
@@ -32,6 +33,7 @@ public class RapidFireFilterStringEditPaneDelegate {
     private Text dataLibraryText;
     private Text jobText;
     private Combo statusCombo;
+    private Button showLogicalFilesCheckbox;
 
     public RapidFireFilterStringEditPaneDelegate() {
     }
@@ -43,8 +45,18 @@ public class RapidFireFilterStringEditPaneDelegate {
         dataLibraryText = createUpperCaseText(parent, Messages.Label_Library_colon, 10, null);
         jobText = createUpperCaseText(parent, Messages.Label_Job_colon, 10, Messages.Label_Full_generic_string);
         statusCombo = createReadOnlyCombo(parent, Messages.Label_Status_colon, Status.values());
+        showLogicalFilesCheckbox = createCheckBox(parent, Messages.Label_Show_logical_files);
 
         return parent;
+    }
+
+    private Button createCheckBox(Composite parent, String label) {
+
+        Button checkbox = WidgetFactory.createCheckbox(parent);
+        checkbox.setLayoutData(createGridData(2));
+        checkbox.setText(label);
+
+        return checkbox;
     }
 
     private Combo createReadOnlyCombo(Composite parent, String label, Status[] values) {
@@ -86,7 +98,11 @@ public class RapidFireFilterStringEditPaneDelegate {
     }
 
     private GridData createGridData() {
-        return new GridData(SWT.FILL, SWT.BEGINNING, true, false);
+        return createGridData(1);
+    }
+
+    private GridData createGridData(int horizontalSpan) {
+        return new GridData(SWT.FILL, SWT.BEGINNING, true, false, horizontalSpan, 1);
     }
 
     public void addModifyListener(ModifyListener keyListener) {
@@ -107,6 +123,7 @@ public class RapidFireFilterStringEditPaneDelegate {
             dataLibraryText.setText(filter.getDataLibrary());
             jobText.setText(filter.getJob());
             statusCombo.setText(filter.getStatus());
+            showLogicalFilesCheckbox.setSelection(filter.isShowLogicalFiles());
         } else {
             resetFields();
         }
@@ -117,6 +134,7 @@ public class RapidFireFilterStringEditPaneDelegate {
         dataLibraryText.setText(RapidFireFilter.RAPIDFIRE_LIBRARY);
         jobText.setText(RapidFireFilter.ASTERISK);
         statusCombo.select(0);
+        showLogicalFilesCheckbox.setSelection(true);
     }
 
     public String validateInput() {
@@ -159,6 +177,7 @@ public class RapidFireFilterStringEditPaneDelegate {
         filter.setDataLibrary(dataLibraryText.getText().toUpperCase());
         filter.setJob(jobText.getText().toUpperCase());
         filter.setStatus(statusCombo.getText());
+        filter.setShowLogicalFiles(showLogicalFilesCheckbox.getSelection());
 
         return filter.getFilterString();
     }

@@ -17,9 +17,13 @@ public class RapidFireFilter {
     public static final String ASTERISK = "*"; //$NON-NLS-1$
     public static final String RAPIDFIRE_LIBRARY = "RAPIDFIRE"; //$NON-NLS-1$
 
+    private static final String BOOLEAN_TRUE = "1"; //$NON-NLS-1$
+    private static final String BOOLEAN_FALSE = "0"; //$NON-NLS-1$
+
     private String dataLibrary;
     private String job;
     private String status;
+    private boolean isShowLogicalFiles;
 
     public RapidFireFilter() {
         super();
@@ -27,6 +31,7 @@ public class RapidFireFilter {
         setDataLibrary(RAPIDFIRE_LIBRARY);
         setJob(ASTERISK);
         setStatus(ASTERISK);
+        setShowLogicalFiles(true);
     }
 
     public RapidFireFilter(String filterString) {
@@ -59,6 +64,23 @@ public class RapidFireFilter {
         this.status = status;
     }
 
+    public boolean isShowLogicalFiles() {
+        return isShowLogicalFiles;
+    }
+
+    public void setShowLogicalFiles(boolean enabled) {
+        this.isShowLogicalFiles = enabled;
+    }
+
+    private void setShowLogicalFiles(String enabled) {
+
+        if (BOOLEAN_FALSE.equals(enabled)) {
+            this.isShowLogicalFiles = false;
+        } else {
+            this.isShowLogicalFiles = true;
+        }
+    }
+
     public String getFilterString() {
 
         StringBuffer filterString = new StringBuffer();
@@ -66,8 +88,19 @@ public class RapidFireFilter {
         appendFilterItem(filterString, dataLibrary);
         appendFilterItem(filterString, job);
         appendFilterItem(filterString, status);
+        appendFilterItem(filterString, isShowLogicalFiles);
 
         return filterString.toString();
+    }
+
+    private void appendFilterItem(StringBuffer filterString, boolean filterItem) {
+
+        if (filterItem) {
+            filterString.append(BOOLEAN_TRUE);
+        } else {
+            filterString.append(BOOLEAN_FALSE);
+        }
+        filterString.append(SLASH);
     }
 
     private void appendFilterItem(StringBuffer filterString, String filterItem) {
@@ -107,6 +140,11 @@ public class RapidFireFilter {
         end = filterString.indexOf(SLASH, start);
         filterItem = retrieveFilterItem(filterString, start, end);
         setStatus(filterItem);
+        start = end + 1;
+
+        end = filterString.indexOf(SLASH, start);
+        filterItem = retrieveFilterItem(filterString, start, end);
+        setShowLogicalFiles(filterItem);
         start = end + 1;
     }
 
