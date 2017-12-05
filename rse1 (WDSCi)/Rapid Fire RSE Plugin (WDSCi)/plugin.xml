@@ -21,6 +21,29 @@
       </configuration>
       
    </extension>
+
+      	<!--
+      	  ==========================================
+      	    Rapid Fire Object Decorator
+      	  ==========================================
+      	-->
+
+   <extension point="org.eclipse.ui.decorators">
+      <decorator
+        adaptable="false"
+        class="biz.rapidfire.core.subsystem.decorators.shared.ResourceDecorator"
+        id="biz.rapidfire.core.subsystem.decorators.shared.ResourceDecorator"
+        label="%ResourceDecorator_label"
+        lightweight="true"
+        state="true">
+         <description>%ResourceDecorator_description</description>
+         <enablement>
+            <objectClass
+              name="biz.rapidfire.core.model.IRapidFireResource">
+            </objectClass>
+         </enablement>
+      </decorator>
+   </extension>
    
       	<!--
       	  ==========================================

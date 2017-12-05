@@ -56,7 +56,7 @@ public class RapidFireLibraryListResourceAdapter extends AbstractResourceAdapter
 
         RapidFireLibraryListResource resource = (RapidFireLibraryListResource)element;
 
-        return resource.getName() + " (" + resource.getDescription() + ")"; //$NON-NLS-1$ //$NON-NLS-2$
+        return resource.getName();
     }
 
     /**

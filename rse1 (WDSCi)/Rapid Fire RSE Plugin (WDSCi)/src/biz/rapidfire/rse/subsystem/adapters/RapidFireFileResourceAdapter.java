@@ -15,6 +15,7 @@ import org.eclipse.ui.views.properties.IPropertyDescriptor;
 import org.eclipse.ui.views.properties.PropertyDescriptor;
 
 import biz.rapidfire.core.model.IRapidFireFileResource;
+import biz.rapidfire.core.model.maintenance.file.shared.FileType;
 import biz.rapidfire.rse.Messages;
 import biz.rapidfire.rse.RapidFireRSEPlugin;
 import biz.rapidfire.rse.subsystem.resources.AreasNode;
@@ -47,8 +48,15 @@ public class RapidFireFileResourceAdapter extends AbstractResourceAdapter implem
     }
 
     @Override
-    public ImageDescriptor getImageDescriptor(Object object) {
-        return RapidFireRSEPlugin.getDefault().getImageRegistry().getDescriptor(RapidFireRSEPlugin.IMAGE_FILE);
+    public ImageDescriptor getImageDescriptor(Object element) {
+
+        RapidFireFileResource resource = (RapidFireFileResource)element;
+
+        if (resource.getFileType() == FileType.LOGICAL) {
+            return RapidFireRSEPlugin.getDefault().getImageRegistry().getDescriptor(RapidFireRSEPlugin.IMAGE_LOGICAL_FILE);
+        } else {
+            return RapidFireRSEPlugin.getDefault().getImageRegistry().getDescriptor(RapidFireRSEPlugin.IMAGE_FILE);
+        }
     }
 
     @Override
