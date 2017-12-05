@@ -16,7 +16,9 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Layout;
 import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Spinner;
 import org.eclipse.swt.widgets.Text;
@@ -56,6 +58,27 @@ public final class WidgetFactory {
             instance = new WidgetFactory();
         }
         return instance;
+    }
+
+    /**
+     * Produces a line filler.
+     * 
+     * @param parent - composite control which will be the parent of the new
+     *        instance (cannot be null)
+     */
+    public static Control createLineFiller(Composite parent) {
+        return WidgetFactory.getInstance().produceLineFiller(parent, SWT.DEFAULT);
+    }
+
+    /**
+     * Produces a line filler.
+     * 
+     * @param parent - composite control which will be the parent of the new
+     *        instance (cannot be null)
+     * @param height - height hint or SWT.DEFAULT
+     */
+    public static Control createLineFiller(Composite parent, int height) {
+        return WidgetFactory.getInstance().produceLineFiller(parent, height);
     }
 
     /**
@@ -816,6 +839,25 @@ public final class WidgetFactory {
 
     private LibraryListEditor produceLibraryListEditor(Composite parent, int style) {
         return new LibraryListEditor(parent, style);
+    }
+
+    private Control produceLineFiller(Composite parent, int height) {
+
+        Label filler = new Label(parent, SWT.NONE);
+        filler.setSize(height, 1);
+
+        Layout layout = parent.getLayout();
+        if (layout instanceof GridLayout) {
+            GridLayout gridLayout = (GridLayout)layout;
+            GridData gd = new GridData();
+            gd.horizontalSpan = gridLayout.numColumns;
+            if (height != SWT.DEFAULT) {
+                gd.heightHint = height;
+            }
+            filler.setLayoutData(gd);
+        }
+
+        return filler;
     }
 
     /**

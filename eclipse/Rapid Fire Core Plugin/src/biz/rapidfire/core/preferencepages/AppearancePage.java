@@ -59,11 +59,6 @@ public class AppearancePage extends PreferencePage implements IWorkbenchPreferen
 
     private void createSectionLabelDecorations(Composite parent) {
 
-        // Group group = new Group(parent, SWT.NONE);
-        // group.setLayout(new GridLayout(3, false));
-        // group.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
-        // group.setText(Messages.Label_Decorations_RSE_host_objects);
-
         String headline = Messages.bind(Messages.Label_Label_Decorations_RSE_host_objects_Description, new String[] {
             "<a href=\"org.eclipse.ui.preferencePages.Decorators\">", "</a>" });
 
@@ -77,6 +72,8 @@ public class AppearancePage extends PreferencePage implements IWorkbenchPreferen
                 PreferencesUtil.createPreferenceDialogOn(getShell(), e.text, null, null);
             }
         });
+        
+        WidgetFactory.createLineFiller(parent, SWT.DEFAULT);
     }
 
     private void createSectionGlobal(Composite parent) {
