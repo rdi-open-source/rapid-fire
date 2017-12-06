@@ -11,7 +11,9 @@ package biz.rapidfire.core.model.maintenance.conversion.shared;
 import java.util.HashMap;
 import java.util.Map;
 
-public enum ConversionAction {
+import biz.rapidfire.core.model.maintenance.IResourceAction;
+
+public enum ConversionAction implements IResourceAction {
     CREATE ("*CREATE"),
     COPY ("*COPY"),
     CHANGE ("*CHANGE"),

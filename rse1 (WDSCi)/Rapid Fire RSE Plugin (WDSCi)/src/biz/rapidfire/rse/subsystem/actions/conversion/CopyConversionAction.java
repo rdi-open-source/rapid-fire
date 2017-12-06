@@ -8,20 +8,12 @@
 
 package biz.rapidfire.rse.subsystem.actions.conversion;
 
-import org.eclipse.core.commands.ExecutionEvent;
-import org.eclipse.core.commands.ExecutionException;
-
 import biz.rapidfire.core.handlers.conversion.CopyConversionHandler;
 import biz.rapidfire.rse.subsystem.actions.AbstractResourceAction;
 
 public class CopyConversionAction extends AbstractResourceAction {
 
-    private CopyConversionHandler handler = new CopyConversionHandler();
-
-    @Override
-    public void execute(ExecutionEvent event) throws ExecutionException {
-
-        handler.execute(event);
+    public CopyConversionAction() {
+        super(new CopyConversionHandler());
     }
-
 }

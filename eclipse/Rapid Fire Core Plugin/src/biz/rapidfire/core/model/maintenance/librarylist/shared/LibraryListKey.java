@@ -10,9 +10,10 @@ package biz.rapidfire.core.model.maintenance.librarylist.shared;
 
 import biz.rapidfire.core.RapidFireCorePlugin;
 import biz.rapidfire.core.helpers.ExceptionHelper;
+import biz.rapidfire.core.model.maintenance.IResourceKey;
 import biz.rapidfire.core.model.maintenance.job.shared.JobKey;
 
-public class LibraryListKey implements Cloneable {
+public class LibraryListKey implements IResourceKey {
 
     private JobKey jobKey;
     private String libraryList;

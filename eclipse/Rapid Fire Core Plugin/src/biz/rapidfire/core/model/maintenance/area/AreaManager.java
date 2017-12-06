@@ -12,6 +12,7 @@ import java.sql.CallableStatement;
 import java.sql.Types;
 
 import biz.rapidfire.core.Messages;
+import biz.rapidfire.core.model.IRapidFireAreaResource;
 import biz.rapidfire.core.model.dao.IJDBCConnection;
 import biz.rapidfire.core.model.maintenance.AbstractManager;
 import biz.rapidfire.core.model.maintenance.MaintenanceMode;
@@ -22,7 +23,7 @@ import biz.rapidfire.core.model.maintenance.area.shared.AreaKey;
 import biz.rapidfire.core.model.maintenance.file.shared.FileKey;
 import biz.rapidfire.core.model.maintenance.job.shared.JobKey;
 
-public class AreaManager extends AbstractManager<AreaKey, AreaValues, AreaAction> {
+public class AreaManager extends AbstractManager<IRapidFireAreaResource, AreaKey, AreaValues, AreaAction> {
 
     private static final String ERROR_001 = "001"; //$NON-NLS-1$
     private static final String ERROR_002 = "002"; //$NON-NLS-1$

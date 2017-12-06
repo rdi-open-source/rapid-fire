@@ -8,20 +8,12 @@
 
 package biz.rapidfire.rse.subsystem.actions.notification;
 
-import org.eclipse.core.commands.ExecutionEvent;
-import org.eclipse.core.commands.ExecutionException;
-
 import biz.rapidfire.core.handlers.notification.DisplayNotificationHandler;
 import biz.rapidfire.rse.subsystem.actions.AbstractResourceAction;
 
 public class DisplayNotificationAction extends AbstractResourceAction {
 
-    private DisplayNotificationHandler handler = new DisplayNotificationHandler();
-
-    @Override
-    public void execute(ExecutionEvent event) throws ExecutionException {
-
-        handler.execute(event);
+    public DisplayNotificationAction() {
+        super(new DisplayNotificationHandler());
     }
-
 }

@@ -8,20 +8,12 @@
 
 package biz.rapidfire.rse.subsystem.actions.conversion;
 
-import org.eclipse.core.commands.ExecutionEvent;
-import org.eclipse.core.commands.ExecutionException;
-
 import biz.rapidfire.core.handlers.conversion.DeleteConversionHandler;
 import biz.rapidfire.rse.subsystem.actions.AbstractResourceAction;
 
 public class DeleteConversionAction extends AbstractResourceAction {
 
-    private DeleteConversionHandler handler = new DeleteConversionHandler();
-
-    @Override
-    public void execute(ExecutionEvent event) throws ExecutionException {
-
-        handler.execute(event);
+    public DeleteConversionAction() {
+        super(new DeleteConversionHandler());
     }
-
 }

@@ -10,8 +10,10 @@ package biz.rapidfire.core.model.maintenance.job;
 
 import java.sql.CallableStatement;
 import java.sql.Types;
+import java.util.Set;
 
 import biz.rapidfire.core.Messages;
+import biz.rapidfire.core.model.IRapidFireJobResource;
 import biz.rapidfire.core.model.dao.IJDBCConnection;
 import biz.rapidfire.core.model.maintenance.AbstractManager;
 import biz.rapidfire.core.model.maintenance.MaintenanceMode;
@@ -22,7 +24,7 @@ import biz.rapidfire.core.model.maintenance.job.shared.JobAction;
 import biz.rapidfire.core.model.maintenance.job.shared.JobKey;
 import biz.rapidfire.core.model.maintenance.job.shared.JobTestMode;
 
-public class JobManager extends AbstractManager<JobKey, JobValues, JobAction> {
+public class JobManager extends AbstractManager<IRapidFireJobResource, JobKey, JobValues, JobAction> {
 
     private static final String ERROR_001 = "001"; //$NON-NLS-1$
     private static final String ERROR_002 = "002"; //$NON-NLS-1$
@@ -197,12 +199,12 @@ public class JobManager extends AbstractManager<JobKey, JobValues, JobAction> {
         return new Result(null, message, success);
     }
 
-    public JobAction[] getValidActions(JobKey key) throws Exception {
+    public JobAction[] getValidActions(IRapidFireJobResource job) throws Exception {
 
         CallableStatement statement = dao.prepareCall(dao
             .insertLibraryQualifier("{CALL " + IJDBCConnection.LIBRARY + "\"MNTJOB_getValidActions\"(?, ?, ?)}")); //$NON-NLS-1$ //$NON-NLS-2$
 
-        statement.setString(IJobGetValidActions.JOB, key.getJobName());
+        statement.setString(IJobGetValidActions.JOB, job.getName());
         statement.setInt(IJobGetValidActions.NUMBER_ACTIONS, 0);
         statement.setString(IJobGetValidActions.ACTIONS, EMPTY_STRING);
 
@@ -211,10 +213,15 @@ public class JobManager extends AbstractManager<JobKey, JobValues, JobAction> {
 
         statement.execute();
 
-        int numberActions = statement.getInt(IJobGetValidActions.NUMBER_ACTIONS);
-        String actions = statement.getString(IJobGetValidActions.ACTIONS);
+        int numberActions = statement.getBigDecimal(IJobGetValidActions.NUMBER_ACTIONS).intValue();
+        String[] actions = statement.getString(IJobGetValidActions.ACTIONS).split("[ ]+", numberActions);
 
-        return new JobAction[0];
+        JobAction[] jobActions = new JobAction[actions.length];
+        for (int i = 0; i < jobActions.length; i++) {
+            jobActions[i] = JobAction.find(actions[i].trim());
+        }
+
+        return jobActions;
     }
 
     public Result testJob(JobKey key) throws Exception {
@@ -276,4 +283,17 @@ public class JobManager extends AbstractManager<JobKey, JobValues, JobAction> {
         return Result.createSuccessResult();
     }
 
+    public boolean isValidAction(IRapidFireJobResource job, JobAction action) throws Exception {
+
+        KeyJobActionCache jobActionsKey = new KeyJobActionCache(job.getStatus(), job.isDoCreateEnvironment());
+
+        Set<JobAction> actionsSet = JobActionCache.getInstance().getActions(jobActionsKey);
+        if (actionsSet == null) {
+            JobAction[] jobActions = getValidActions(job);
+            JobActionCache.getInstance().putActions(jobActionsKey, jobActions);
+            actionsSet = JobActionCache.getInstance().getActions(jobActionsKey);
+        }
+
+        return actionsSet.contains(action);
+    }
 }

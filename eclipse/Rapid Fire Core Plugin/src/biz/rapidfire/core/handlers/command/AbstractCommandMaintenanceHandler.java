@@ -17,7 +17,6 @@ import biz.rapidfire.core.handlers.AbstractResourceMaintenanceHandler;
 import biz.rapidfire.core.helpers.ExceptionHelper;
 import biz.rapidfire.core.model.IRapidFireCommandResource;
 import biz.rapidfire.core.model.IRapidFireJobResource;
-import biz.rapidfire.core.model.IRapidFireResource;
 import biz.rapidfire.core.model.dao.JDBCConnectionManager;
 import biz.rapidfire.core.model.maintenance.MaintenanceMode;
 import biz.rapidfire.core.model.maintenance.Result;
@@ -43,15 +42,9 @@ public abstract class AbstractCommandMaintenanceHandler extends AbstractResource
     }
 
     @Override
-    protected Object executeWithResource(IRapidFireResource resource) throws ExecutionException {
-
-        if (!(resource instanceof IRapidFireCommandResource)) {
-            return null;
-        }
+    protected Object executeWithResource(IRapidFireCommandResource command) throws ExecutionException {
 
         try {
-
-            IRapidFireCommandResource command = (IRapidFireCommandResource)resource;
 
             if (canExecuteAction(command, commandAction)) {
                 Result result = initialize(command);
@@ -75,7 +68,7 @@ public abstract class AbstractCommandMaintenanceHandler extends AbstractResource
         return null;
     }
 
-    private CommandManager getOrCreateManager(IRapidFireJobResource job) throws Exception {
+    protected CommandManager getOrCreateManager(IRapidFireJobResource job) throws Exception {
 
         if (manager == null) {
             String connectionName = job.getParentSubSystem().getConnectionName();
@@ -88,18 +81,28 @@ public abstract class AbstractCommandMaintenanceHandler extends AbstractResource
     }
 
     @Override
-    protected boolean canExecuteAction(IRapidFireResource resource, CommandAction commanddAction) {
+    protected boolean isValidAction(IRapidFireCommandResource command) throws Exception {
+        return true;
+    }
 
-        if (!(resource instanceof IRapidFireCommandResource)) {
-            return false;
+    @Override
+    protected boolean isInstanceOf(Object object) {
+
+        if (object instanceof IRapidFireCommandResource) {
+            return true;
         }
+
+        return false;
+    }
+
+    @Override
+    protected boolean canExecuteAction(IRapidFireCommandResource command, CommandAction commanddAction) {
 
         String message = null;
 
         try {
 
             // TODO: check action!
-            IRapidFireCommandResource command = (IRapidFireCommandResource)resource;
             Result result = getOrCreateManager(command.getParentJob()).checkAction(command.getKey(), commandAction);
             if (result.isSuccessfull()) {
                 return true;
@@ -125,8 +128,8 @@ public abstract class AbstractCommandMaintenanceHandler extends AbstractResource
         manager.openFiles();
 
         JobKey jobKey = new JobKey(command.getJob());
-        Result result = manager.initialize(getMaintenanceMode(),
-            new CommandKey(new FileKey(jobKey, command.getPosition()), command.getCommandType(), command.getSequence()));
+        Result result = manager.initialize(getMaintenanceMode(), new CommandKey(new FileKey(jobKey, command.getPosition()), command.getCommandType(),
+            command.getSequence()));
 
         return result;
     }

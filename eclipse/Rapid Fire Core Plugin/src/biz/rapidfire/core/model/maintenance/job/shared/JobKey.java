@@ -10,8 +10,9 @@ package biz.rapidfire.core.model.maintenance.job.shared;
 
 import biz.rapidfire.core.RapidFireCorePlugin;
 import biz.rapidfire.core.helpers.ExceptionHelper;
+import biz.rapidfire.core.model.maintenance.IResourceKey;
 
-public class JobKey implements Cloneable {
+public class JobKey implements IResourceKey {
 
     private String jobName;
 

@@ -17,7 +17,6 @@ import biz.rapidfire.core.handlers.AbstractResourceMaintenanceHandler;
 import biz.rapidfire.core.helpers.ExceptionHelper;
 import biz.rapidfire.core.model.IRapidFireAreaResource;
 import biz.rapidfire.core.model.IRapidFireJobResource;
-import biz.rapidfire.core.model.IRapidFireResource;
 import biz.rapidfire.core.model.dao.JDBCConnectionManager;
 import biz.rapidfire.core.model.maintenance.MaintenanceMode;
 import biz.rapidfire.core.model.maintenance.Result;
@@ -43,15 +42,9 @@ public abstract class AbstractAreaMaintenanceHandler extends AbstractResourceMai
     }
 
     @Override
-    protected Object executeWithResource(IRapidFireResource resource) throws ExecutionException {
-
-        if (!(resource instanceof IRapidFireAreaResource)) {
-            return null;
-        }
+    protected Object executeWithResource(IRapidFireAreaResource area) throws ExecutionException {
 
         try {
-
-            IRapidFireAreaResource area = (IRapidFireAreaResource)resource;
 
             if (canExecuteAction(area, areaAction)) {
                 Result result = initialize(area);
@@ -75,7 +68,7 @@ public abstract class AbstractAreaMaintenanceHandler extends AbstractResourceMai
         return null;
     }
 
-    private AreaManager getOrCreateManager(IRapidFireJobResource job) throws Exception {
+    protected AreaManager getOrCreateManager(IRapidFireJobResource job) throws Exception {
 
         if (manager == null) {
             String connectionName = job.getParentSubSystem().getConnectionName();
@@ -88,18 +81,28 @@ public abstract class AbstractAreaMaintenanceHandler extends AbstractResourceMai
     }
 
     @Override
-    protected boolean canExecuteAction(IRapidFireResource resource, AreaAction areaAction) {
+    protected boolean isValidAction(IRapidFireAreaResource job) throws Exception {
+        return true;
+    }
 
-        if (!(resource instanceof IRapidFireAreaResource)) {
-            return false;
+    @Override
+    protected boolean isInstanceOf(Object object) {
+
+        if (object instanceof IRapidFireAreaResource) {
+            return true;
         }
+
+        return false;
+    }
+
+    @Override
+    protected boolean canExecuteAction(IRapidFireAreaResource area, AreaAction areaAction) {
 
         String message = null;
 
         try {
 
             // TODO: check action!
-            IRapidFireAreaResource area = (IRapidFireAreaResource)resource;
             Result result = getOrCreateManager(area.getParentJob()).checkAction(area.getKey(), areaAction);
             if (result.isSuccessfull()) {
                 return true;

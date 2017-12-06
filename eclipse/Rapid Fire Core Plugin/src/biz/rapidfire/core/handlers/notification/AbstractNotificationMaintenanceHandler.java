@@ -17,7 +17,6 @@ import biz.rapidfire.core.handlers.AbstractResourceMaintenanceHandler;
 import biz.rapidfire.core.helpers.ExceptionHelper;
 import biz.rapidfire.core.model.IRapidFireJobResource;
 import biz.rapidfire.core.model.IRapidFireNotificationResource;
-import biz.rapidfire.core.model.IRapidFireResource;
 import biz.rapidfire.core.model.dao.JDBCConnectionManager;
 import biz.rapidfire.core.model.maintenance.MaintenanceMode;
 import biz.rapidfire.core.model.maintenance.Result;
@@ -43,15 +42,9 @@ public abstract class AbstractNotificationMaintenanceHandler extends
     }
 
     @Override
-    protected Object executeWithResource(IRapidFireResource resource) throws ExecutionException {
-
-        if (!(resource instanceof IRapidFireNotificationResource)) {
-            return null;
-        }
+    protected Object executeWithResource(IRapidFireNotificationResource notification) throws ExecutionException {
 
         try {
-
-            IRapidFireNotificationResource notification = (IRapidFireNotificationResource)resource;
 
             if (canExecuteAction(notification, notificationAction)) {
                 Result result = initialize(notification);
@@ -75,7 +68,7 @@ public abstract class AbstractNotificationMaintenanceHandler extends
         return null;
     }
 
-    private NotificationManager getOrCreateManager(IRapidFireJobResource job) throws Exception {
+    protected NotificationManager getOrCreateManager(IRapidFireJobResource job) throws Exception {
 
         if (manager == null) {
             String connectionName = job.getParentSubSystem().getConnectionName();
@@ -88,18 +81,28 @@ public abstract class AbstractNotificationMaintenanceHandler extends
     }
 
     @Override
-    protected boolean canExecuteAction(IRapidFireResource resource, NotificationAction notificationAction) {
+    protected boolean isValidAction(IRapidFireNotificationResource notification) throws Exception {
+        return true;
+    }
 
-        if (!(resource instanceof IRapidFireNotificationResource)) {
-            return false;
+    @Override
+    protected boolean isInstanceOf(Object object) {
+
+        if (object instanceof IRapidFireNotificationResource) {
+            return true;
         }
+
+        return false;
+    }
+
+    @Override
+    protected boolean canExecuteAction(IRapidFireNotificationResource notification, NotificationAction notificationAction) {
 
         String message = null;
 
         try {
 
             // TODO: check action!
-            IRapidFireNotificationResource notification = (IRapidFireNotificationResource)resource;
             Result result = getOrCreateManager(notification.getParentJob()).checkAction(notification.getKey(), notificationAction);
             if (result.isSuccessfull()) {
                 return true;

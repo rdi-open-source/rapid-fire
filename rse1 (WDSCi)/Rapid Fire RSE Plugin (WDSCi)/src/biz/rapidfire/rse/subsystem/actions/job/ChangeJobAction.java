@@ -8,20 +8,12 @@
 
 package biz.rapidfire.rse.subsystem.actions.job;
 
-import org.eclipse.core.commands.ExecutionEvent;
-import org.eclipse.core.commands.ExecutionException;
-
 import biz.rapidfire.core.handlers.job.ChangeJobHandler;
 import biz.rapidfire.rse.subsystem.actions.AbstractResourceAction;
 
 public class ChangeJobAction extends AbstractResourceAction {
 
-    private ChangeJobHandler handler = new ChangeJobHandler();
-
-    @Override
-    public void execute(ExecutionEvent event) throws ExecutionException {
-
-        handler.execute(event);
+    public ChangeJobAction() {
+        super(new ChangeJobHandler());
     }
-
 }

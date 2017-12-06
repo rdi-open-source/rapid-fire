@@ -11,7 +11,9 @@ package biz.rapidfire.core.model.maintenance.activity.shared;
 import java.util.HashMap;
 import java.util.Map;
 
-public enum ActivityAction {
+import biz.rapidfire.core.model.maintenance.IResourceAction;
+
+public enum ActivityAction implements IResourceAction {
     CHANGE ("*CHANGE"),
     DISPLAY ("*DISPLAY");
 

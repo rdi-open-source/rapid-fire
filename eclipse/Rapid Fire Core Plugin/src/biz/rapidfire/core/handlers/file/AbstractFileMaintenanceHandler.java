@@ -17,7 +17,6 @@ import biz.rapidfire.core.handlers.AbstractResourceMaintenanceHandler;
 import biz.rapidfire.core.helpers.ExceptionHelper;
 import biz.rapidfire.core.model.IRapidFireFileResource;
 import biz.rapidfire.core.model.IRapidFireJobResource;
-import biz.rapidfire.core.model.IRapidFireResource;
 import biz.rapidfire.core.model.dao.JDBCConnectionManager;
 import biz.rapidfire.core.model.maintenance.MaintenanceMode;
 import biz.rapidfire.core.model.maintenance.Result;
@@ -42,15 +41,9 @@ public abstract class AbstractFileMaintenanceHandler extends AbstractResourceMai
     }
 
     @Override
-    protected Object executeWithResource(IRapidFireResource resource) throws ExecutionException {
-
-        if (!(resource instanceof IRapidFireFileResource)) {
-            return null;
-        }
+    protected Object executeWithResource(IRapidFireFileResource file) throws ExecutionException {
 
         try {
-
-            IRapidFireFileResource file = (IRapidFireFileResource)resource;
 
             if (canExecuteAction(file, fileAction)) {
                 Result result = initialize(file);
@@ -74,7 +67,7 @@ public abstract class AbstractFileMaintenanceHandler extends AbstractResourceMai
         return null;
     }
 
-    private FileManager getOrCreateManager(IRapidFireJobResource file) throws Exception {
+    protected FileManager getOrCreateManager(IRapidFireJobResource file) throws Exception {
 
         if (manager == null) {
             String connectionName = file.getParentSubSystem().getConnectionName();
@@ -87,18 +80,28 @@ public abstract class AbstractFileMaintenanceHandler extends AbstractResourceMai
     }
 
     @Override
-    protected boolean canExecuteAction(IRapidFireResource resource, FileAction fileAction) {
+    protected boolean isValidAction(IRapidFireFileResource file) throws Exception {
+        return true;
+    }
 
-        if (!(resource instanceof IRapidFireFileResource)) {
-            return false;
+    @Override
+    protected boolean isInstanceOf(Object object) {
+
+        if (object instanceof IRapidFireFileResource) {
+            return true;
         }
+
+        return false;
+    }
+
+    @Override
+    protected boolean canExecuteAction(IRapidFireFileResource file, FileAction fileAction) {
 
         String message = null;
 
         try {
 
             // TODO: check action!
-            IRapidFireFileResource file = (IRapidFireFileResource)resource;
             Result result = getOrCreateManager(file.getParentJob()).checkAction(file.getKey(), fileAction);
             if (result.isSuccessfull()) {
                 return true;

@@ -11,7 +11,9 @@ package biz.rapidfire.core.model.maintenance.notification.shared;
 import java.util.HashMap;
 import java.util.Map;
 
-public enum NotificationAction {
+import biz.rapidfire.core.model.maintenance.IResourceAction;
+
+public enum NotificationAction implements IResourceAction {
     CREATE ("*CREATE"),
     COPY ("*COPY"),
     CHANGE ("*CHANGE"),

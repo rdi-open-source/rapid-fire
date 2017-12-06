@@ -8,20 +8,12 @@
 
 package biz.rapidfire.rse.subsystem.actions.notification;
 
-import org.eclipse.core.commands.ExecutionEvent;
-import org.eclipse.core.commands.ExecutionException;
-
 import biz.rapidfire.core.handlers.notification.ChangeNotificationHandler;
 import biz.rapidfire.rse.subsystem.actions.AbstractResourceAction;
 
 public class ChangeNotificationAction extends AbstractResourceAction {
 
-    private ChangeNotificationHandler handler = new ChangeNotificationHandler();
-
-    @Override
-    public void execute(ExecutionEvent event) throws ExecutionException {
-
-        handler.execute(event);
+    public ChangeNotificationAction() {
+        super(new ChangeNotificationHandler());
     }
-
 }

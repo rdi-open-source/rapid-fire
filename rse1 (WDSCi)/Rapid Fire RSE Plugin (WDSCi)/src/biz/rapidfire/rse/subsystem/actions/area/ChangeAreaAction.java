@@ -8,20 +8,12 @@
 
 package biz.rapidfire.rse.subsystem.actions.area;
 
-import org.eclipse.core.commands.ExecutionEvent;
-import org.eclipse.core.commands.ExecutionException;
-
 import biz.rapidfire.core.handlers.area.ChangeAreaHandler;
 import biz.rapidfire.rse.subsystem.actions.AbstractResourceAction;
 
 public class ChangeAreaAction extends AbstractResourceAction {
 
-    private ChangeAreaHandler handler = new ChangeAreaHandler();
-
-    @Override
-    public void execute(ExecutionEvent event) throws ExecutionException {
-
-        handler.execute(event);
+    public ChangeAreaAction() {
+        super(new ChangeAreaHandler());
     }
-
 }

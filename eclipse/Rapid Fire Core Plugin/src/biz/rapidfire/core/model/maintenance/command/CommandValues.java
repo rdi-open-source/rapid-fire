@@ -10,10 +10,11 @@ package biz.rapidfire.core.model.maintenance.command;
 
 import biz.rapidfire.core.RapidFireCorePlugin;
 import biz.rapidfire.core.helpers.ExceptionHelper;
+import biz.rapidfire.core.model.maintenance.IResourceValues;
 import biz.rapidfire.core.model.maintenance.command.shared.CommandKey;
 import biz.rapidfire.core.model.maintenance.conversion.shared.NewFieldName;
 
-public class CommandValues implements Cloneable {
+public class CommandValues implements IResourceValues {
 
     private CommandKey key;
     private String command;

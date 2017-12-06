@@ -11,7 +11,9 @@ package biz.rapidfire.core.model.maintenance.job.shared;
 import java.util.HashMap;
 import java.util.Map;
 
-public enum JobAction {
+import biz.rapidfire.core.model.maintenance.IResourceAction;
+
+public enum JobAction implements IResourceAction {
     SELECT ("*SELECT"), //$NON-NLS-1$
     CREATE ("*CREATE"), //$NON-NLS-1$
     COPY ("*COPY"), //$NON-NLS-1$

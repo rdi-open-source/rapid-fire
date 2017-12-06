@@ -13,17 +13,27 @@ import java.util.Map;
 
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
+import org.eclipse.jface.action.IAction;
 import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.ui.ISources;
 
 import biz.rapidfire.core.Messages;
 import biz.rapidfire.core.RapidFireCorePlugin;
+import biz.rapidfire.core.handlers.job.DisplayJobHandler;
+import biz.rapidfire.core.handlers.shared.IMaintenanceHandler;
 import biz.rapidfire.core.helpers.ExceptionHelper;
 
 import com.ibm.etools.iseries.core.ui.actions.isv.ISeriesAbstractQSYSPopupMenuExtensionAction;
 
 public abstract class AbstractResourceAction extends ISeriesAbstractQSYSPopupMenuExtensionAction {
+
+    private IMaintenanceHandler handler = new DisplayJobHandler();
+
+    public AbstractResourceAction(IMaintenanceHandler handler) {
+        this.handler = handler;
+    }
 
     @Override
     public void run() {
@@ -36,7 +46,7 @@ public abstract class AbstractResourceAction extends ISeriesAbstractQSYSPopupMen
             properties.put(ISources.ACTIVE_CURRENT_SELECTION_NAME, new StructuredSelection(selection));
             ExecutionEvent event = new ExecutionEvent(null, properties, null, null);
 
-            execute(event);
+            handler.executeWDSCi(event);
 
         } catch (ExecutionException e) {
             RapidFireCorePlugin.logError("*** Could not execute the requested action ***", e); //$NON-NLS-1$
@@ -44,6 +54,9 @@ public abstract class AbstractResourceAction extends ISeriesAbstractQSYSPopupMen
         }
     }
 
-    public abstract void execute(ExecutionEvent event) throws ExecutionException;
-
+    @Override
+    public void selectionChanged(IAction action, ISelection selection) {
+        super.selectionChanged(action, selection);
+        handler.setEnabledWDSCi(selection);
+    }
 }

@@ -8,20 +8,12 @@
 
 package biz.rapidfire.rse.subsystem.actions.librarylist;
 
-import org.eclipse.core.commands.ExecutionEvent;
-import org.eclipse.core.commands.ExecutionException;
-
 import biz.rapidfire.core.handlers.librarylist.CopyLibraryListHandler;
 import biz.rapidfire.rse.subsystem.actions.AbstractResourceAction;
 
 public class CopyLibraryListAction extends AbstractResourceAction {
 
-    private CopyLibraryListHandler handler = new CopyLibraryListHandler();
-
-    @Override
-    public void execute(ExecutionEvent event) throws ExecutionException {
-
-        handler.execute(event);
+    public CopyLibraryListAction() {
+        super(new CopyLibraryListHandler());
     }
-
 }

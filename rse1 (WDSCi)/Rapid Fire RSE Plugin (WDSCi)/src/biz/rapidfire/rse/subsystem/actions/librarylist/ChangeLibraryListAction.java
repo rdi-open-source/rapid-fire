@@ -8,20 +8,12 @@
 
 package biz.rapidfire.rse.subsystem.actions.librarylist;
 
-import org.eclipse.core.commands.ExecutionEvent;
-import org.eclipse.core.commands.ExecutionException;
-
 import biz.rapidfire.core.handlers.librarylist.ChangeLibraryListHandler;
 import biz.rapidfire.rse.subsystem.actions.AbstractResourceAction;
 
 public class ChangeLibraryListAction extends AbstractResourceAction {
 
-    private ChangeLibraryListHandler handler = new ChangeLibraryListHandler();
-
-    @Override
-    public void execute(ExecutionEvent event) throws ExecutionException {
-
-        handler.execute(event);
+    public ChangeLibraryListAction() {
+        super(new ChangeLibraryListHandler());
     }
-
 }

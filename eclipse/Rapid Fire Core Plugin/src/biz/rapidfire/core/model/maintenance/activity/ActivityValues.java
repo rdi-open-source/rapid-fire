@@ -12,8 +12,9 @@ import java.sql.Time;
 
 import biz.rapidfire.core.RapidFireCorePlugin;
 import biz.rapidfire.core.helpers.ExceptionHelper;
+import biz.rapidfire.core.model.maintenance.IResourceValues;
 
-public class ActivityValues implements Cloneable {
+public class ActivityValues implements IResourceValues {
 
     private ActivityKey key;
     private Time endTime;

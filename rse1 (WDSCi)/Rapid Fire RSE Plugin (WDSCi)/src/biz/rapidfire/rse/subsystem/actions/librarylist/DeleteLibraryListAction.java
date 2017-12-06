@@ -8,20 +8,12 @@
 
 package biz.rapidfire.rse.subsystem.actions.librarylist;
 
-import org.eclipse.core.commands.ExecutionEvent;
-import org.eclipse.core.commands.ExecutionException;
-
 import biz.rapidfire.core.handlers.librarylist.DeleteLibraryListHandler;
 import biz.rapidfire.rse.subsystem.actions.AbstractResourceAction;
 
 public class DeleteLibraryListAction extends AbstractResourceAction {
 
-    private DeleteLibraryListHandler handler = new DeleteLibraryListHandler();
-
-    @Override
-    public void execute(ExecutionEvent event) throws ExecutionException {
-
-        handler.execute(event);
+    public DeleteLibraryListAction() {
+        super(new DeleteLibraryListHandler());
     }
-
 }

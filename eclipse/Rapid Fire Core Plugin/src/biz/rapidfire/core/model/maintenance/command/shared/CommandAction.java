@@ -11,7 +11,9 @@ package biz.rapidfire.core.model.maintenance.command.shared;
 import java.util.HashMap;
 import java.util.Map;
 
-public enum CommandAction {
+import biz.rapidfire.core.model.maintenance.IResourceAction;
+
+public enum CommandAction implements IResourceAction {
     CREATE ("*CREATE"),
     COPY ("*COPY"),
     CHANGE ("*CHANGE"),

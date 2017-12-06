@@ -12,6 +12,7 @@ import java.sql.CallableStatement;
 import java.sql.Types;
 
 import biz.rapidfire.core.Messages;
+import biz.rapidfire.core.model.IRapidFireLibraryListResource;
 import biz.rapidfire.core.model.dao.IJDBCConnection;
 import biz.rapidfire.core.model.maintenance.AbstractManager;
 import biz.rapidfire.core.model.maintenance.MaintenanceMode;
@@ -21,7 +22,7 @@ import biz.rapidfire.core.model.maintenance.job.shared.JobKey;
 import biz.rapidfire.core.model.maintenance.librarylist.shared.LibraryListAction;
 import biz.rapidfire.core.model.maintenance.librarylist.shared.LibraryListKey;
 
-public class LibraryListManager extends AbstractManager<LibraryListKey, LibraryListValues, LibraryListAction> {
+public class LibraryListManager extends AbstractManager<IRapidFireLibraryListResource, LibraryListKey, LibraryListValues, LibraryListAction> {
 
     private static final String ERROR_001 = "001"; //$NON-NLS-1$
     private static final String ERROR_002 = "002"; //$NON-NLS-1$

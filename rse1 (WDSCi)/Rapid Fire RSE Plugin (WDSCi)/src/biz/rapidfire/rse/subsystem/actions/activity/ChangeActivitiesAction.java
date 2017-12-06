@@ -8,20 +8,12 @@
 
 package biz.rapidfire.rse.subsystem.actions.activity;
 
-import org.eclipse.core.commands.ExecutionEvent;
-import org.eclipse.core.commands.ExecutionException;
-
 import biz.rapidfire.core.handlers.activity.ChangeActivitiesHandler;
 import biz.rapidfire.rse.subsystem.actions.AbstractResourceAction;
 
 public class ChangeActivitiesAction extends AbstractResourceAction {
 
-    private ChangeActivitiesHandler handler = new ChangeActivitiesHandler();
-
-    @Override
-    public void execute(ExecutionEvent event) throws ExecutionException {
-
-        handler.execute(event);
+    public ChangeActivitiesAction() {
+        super(new ChangeActivitiesHandler());
     }
-
 }

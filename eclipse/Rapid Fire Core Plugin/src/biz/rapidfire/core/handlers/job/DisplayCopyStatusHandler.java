@@ -8,25 +8,39 @@
 
 package biz.rapidfire.core.handlers.job;
 
+import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.commands.IHandler;
 import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.ui.PartInitException;
 import org.eclipse.ui.PlatformUI;
 
 import biz.rapidfire.core.Messages;
 import biz.rapidfire.core.RapidFireCorePlugin;
 import biz.rapidfire.core.handlers.AbstractResourceHandler;
+import biz.rapidfire.core.handlers.shared.IMaintenanceHandler;
 import biz.rapidfire.core.helpers.ExceptionHelper;
 import biz.rapidfire.core.model.IRapidFireJobResource;
 import biz.rapidfire.core.model.IRapidFireResource;
 import biz.rapidfire.core.model.maintenance.MaintenanceMode;
 import biz.rapidfire.core.view.FileCopyStatusView;
 
-public class DisplayCopyStatusHandler extends AbstractResourceHandler implements IHandler {
+public class DisplayCopyStatusHandler extends AbstractResourceHandler implements IHandler, IMaintenanceHandler {
 
     public DisplayCopyStatusHandler() {
         super(MaintenanceMode.DISPLAY);
+    }
+
+    public Object execute(ExecutionEvent event) throws ExecutionException {
+
+        ISelection selection = getCurrentSelection(event);
+
+        return executeWithSelection(selection);
+    }
+
+    public void executeWDSCi(ExecutionEvent event) throws ExecutionException {
+        execute(event);
     }
 
     @Override
@@ -49,5 +63,8 @@ public class DisplayCopyStatusHandler extends AbstractResourceHandler implements
         }
 
         return null;
+    }
+
+    public void setEnabledWDSCi(ISelection selection) {
     }
 }

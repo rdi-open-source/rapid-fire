@@ -15,7 +15,6 @@ import biz.rapidfire.core.Messages;
 import biz.rapidfire.core.handlers.AbstractResourceMaintenanceHandler;
 import biz.rapidfire.core.model.IRapidFireJobResource;
 import biz.rapidfire.core.model.IRapidFireLibraryListResource;
-import biz.rapidfire.core.model.IRapidFireResource;
 import biz.rapidfire.core.model.dao.JDBCConnectionManager;
 import biz.rapidfire.core.model.maintenance.MaintenanceMode;
 import biz.rapidfire.core.model.maintenance.Result;
@@ -41,15 +40,9 @@ public abstract class AbstractLibraryListMaintenanceHandler extends
     }
 
     @Override
-    protected Object executeWithResource(IRapidFireResource resource) throws ExecutionException {
-
-        if (!(resource instanceof IRapidFireLibraryListResource)) {
-            return null;
-        }
+    protected Object executeWithResource(IRapidFireLibraryListResource libraryList) throws ExecutionException {
 
         try {
-
-            IRapidFireLibraryListResource libraryList = (IRapidFireLibraryListResource)resource;
 
             if (canExecuteAction(libraryList, libraryListAction)) {
                 Result result = initialize(libraryList);
@@ -73,7 +66,7 @@ public abstract class AbstractLibraryListMaintenanceHandler extends
         return null;
     }
 
-    private LibraryListManager getOrCreateManager(IRapidFireJobResource job) throws Exception {
+    protected LibraryListManager getOrCreateManager(IRapidFireJobResource job) throws Exception {
 
         if (manager == null) {
             String connectionName = job.getParentSubSystem().getConnectionName();
@@ -86,18 +79,28 @@ public abstract class AbstractLibraryListMaintenanceHandler extends
     }
 
     @Override
-    protected boolean canExecuteAction(IRapidFireResource resource, LibraryListAction libraryListAction) {
+    protected boolean isValidAction(IRapidFireLibraryListResource libraryList) throws Exception {
+        return true;
+    }
 
-        if (!(resource instanceof IRapidFireLibraryListResource)) {
-            return false;
+    @Override
+    protected boolean isInstanceOf(Object object) {
+
+        if (object instanceof IRapidFireLibraryListResource) {
+            return true;
         }
+
+        return false;
+    }
+
+    @Override
+    protected boolean canExecuteAction(IRapidFireLibraryListResource libraryList, LibraryListAction libraryListAction) {
 
         String message = null;
 
         try {
 
             // TODO: check action!
-            IRapidFireLibraryListResource libraryList = (IRapidFireLibraryListResource)resource;
             Result result = getOrCreateManager(libraryList.getParentJob()).checkAction(libraryList.getKey(), libraryListAction);
             if (result.isSuccessfull()) {
                 return true;

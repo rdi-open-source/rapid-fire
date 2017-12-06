@@ -14,7 +14,6 @@ import org.eclipse.jface.dialogs.MessageDialog;
 import biz.rapidfire.core.Messages;
 import biz.rapidfire.core.handlers.AbstractResourceMaintenanceHandler;
 import biz.rapidfire.core.model.IRapidFireJobResource;
-import biz.rapidfire.core.model.IRapidFireResource;
 import biz.rapidfire.core.model.dao.JDBCConnectionManager;
 import biz.rapidfire.core.model.maintenance.MaintenanceMode;
 import biz.rapidfire.core.model.maintenance.Result;
@@ -42,7 +41,7 @@ public abstract class AbstractJobMaintenanceHandler extends AbstractResourceMain
     }
 
     @Override
-    protected Object executeWithResource(IRapidFireResource resource) throws ExecutionException {
+    protected Object executeWithResource(IRapidFireJobResource resource) throws ExecutionException {
 
         try {
 
@@ -70,7 +69,7 @@ public abstract class AbstractJobMaintenanceHandler extends AbstractResourceMain
         return null;
     }
 
-    private JobManager getOrCreateManager(IRapidFireJobResource job) throws Exception {
+    protected JobManager getOrCreateManager(IRapidFireJobResource job) throws Exception {
 
         if (manager == null) {
             String connectionName = job.getParentSubSystem().getConnectionName();
@@ -83,18 +82,28 @@ public abstract class AbstractJobMaintenanceHandler extends AbstractResourceMain
     }
 
     @Override
-    protected boolean canExecuteAction(IRapidFireResource resource, JobAction jobAction) {
+    protected boolean isValidAction(IRapidFireJobResource job) throws Exception {
+        return getOrCreateManager(job).isValidAction(job, jobAction);
+    }
 
-        if (!(resource instanceof IRapidFireJobResource)) {
-            return false;
+    @Override
+    protected boolean isInstanceOf(Object object) {
+
+        if (object instanceof IRapidFireJobResource) {
+            return true;
         }
+
+        return false;
+    }
+
+    @Override
+    protected boolean canExecuteAction(IRapidFireJobResource job, JobAction action) {
 
         String message = null;
 
         try {
 
-            IRapidFireJobResource job = (IRapidFireJobResource)resource;
-            Result result = getOrCreateManager(job).checkAction(new JobKey(job.getName()), jobAction);
+            Result result = getOrCreateManager(job).checkAction(new JobKey(job.getName()), action);
 
             if (result.isSuccessfull()) {
                 return true;

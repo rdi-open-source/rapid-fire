@@ -6,14 +6,18 @@
  * http://www.eclipse.org/legal/cpl-v10.html
  *******************************************************************************/
 
-package biz.rapidfire.rse.subsystem.actions.command;
+package biz.rapidfire.rsebase.helpers;
 
-import biz.rapidfire.core.handlers.command.ChangeCommandHandler;
-import biz.rapidfire.rse.subsystem.actions.AbstractResourceAction;
+public class ExpressionsHelper {
 
-public class ChangeCommandAction extends AbstractResourceAction {
+    private static final String SELECTION = "selection";
 
-    public ChangeCommandAction() {
-        super(new ChangeCommandHandler());
+    public static Object getSelection(Object evaluationContext) {
+        return getVariable(evaluationContext, SELECTION);
     }
+
+    private static Object getVariable(Object evaluationContext, String key) {
+        throw new RuntimeException("Method 'getVariable()' must not be called for WDSCi.");
+    }
+
 }

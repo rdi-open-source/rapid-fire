@@ -11,7 +11,9 @@ package biz.rapidfire.core.model.maintenance;
 import java.sql.CallableStatement;
 import java.sql.SQLException;
 
-public abstract class AbstractManager<K, V, A> {
+import biz.rapidfire.core.model.IRapidFireResource;
+
+public abstract class AbstractManager<R extends IRapidFireResource, K extends IResourceKey, V extends IResourceValues, A extends IResourceAction> {
 
     public abstract void openFiles() throws Exception;
 
@@ -28,7 +30,11 @@ public abstract class AbstractManager<K, V, A> {
 
     public abstract void closeFiles() throws Exception;
 
-    public abstract Result checkAction(K key, A jobAction) throws Exception;
+    public abstract Result checkAction(K key, A resourceAction) throws Exception;
+
+    public boolean isValidAction(R resource, A resourceAction) throws Exception {
+        return true;
+    }
 
     protected String getStringTrim(CallableStatement statement, int parameterIndex) throws SQLException {
         return statement.getString(parameterIndex).trim();

@@ -8,20 +8,12 @@
 
 package biz.rapidfire.rse.subsystem.actions.file;
 
-import org.eclipse.core.commands.ExecutionEvent;
-import org.eclipse.core.commands.ExecutionException;
-
 import biz.rapidfire.core.handlers.file.ChangeFileHandler;
 import biz.rapidfire.rse.subsystem.actions.AbstractResourceAction;
 
 public class ChangeFileAction extends AbstractResourceAction {
 
-    private ChangeFileHandler handler = new ChangeFileHandler();
-
-    @Override
-    public void execute(ExecutionEvent event) throws ExecutionException {
-
-        handler.execute(event);
+    public ChangeFileAction() {
+        super(new ChangeFileHandler());
     }
-
 }

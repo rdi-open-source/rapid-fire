@@ -12,6 +12,7 @@ import java.sql.CallableStatement;
 import java.sql.Types;
 
 import biz.rapidfire.core.Messages;
+import biz.rapidfire.core.model.IRapidFireNotificationResource;
 import biz.rapidfire.core.model.dao.IJDBCConnection;
 import biz.rapidfire.core.model.maintenance.AbstractManager;
 import biz.rapidfire.core.model.maintenance.MaintenanceMode;
@@ -21,7 +22,7 @@ import biz.rapidfire.core.model.maintenance.job.shared.JobKey;
 import biz.rapidfire.core.model.maintenance.notification.shared.NotificationAction;
 import biz.rapidfire.core.model.maintenance.notification.shared.NotificationKey;
 
-public class NotificationManager extends AbstractManager<NotificationKey, NotificationValues, NotificationAction> {
+public class NotificationManager extends AbstractManager<IRapidFireNotificationResource, NotificationKey, NotificationValues, NotificationAction> {
 
     private static final String ERROR_001 = "001"; //$NON-NLS-1$
     private static final String ERROR_002 = "002"; //$NON-NLS-1$

@@ -42,15 +42,9 @@ public abstract class AbstractActivityMaintenanceHandler extends AbstractResourc
     }
 
     @Override
-    protected Object executeWithResource(IRapidFireResource resource) throws ExecutionException {
-
-        if (!(resource instanceof IRapidFireJobResource)) {
-            return null;
-        }
+    protected Object executeWithResource(IRapidFireJobResource job) throws ExecutionException {
 
         try {
-
-            IRapidFireJobResource job = (IRapidFireJobResource)resource;
 
             currentActivityAction = initialActivityAction;
             if (canExecuteAction(job, currentActivityAction)) {
@@ -75,7 +69,7 @@ public abstract class AbstractActivityMaintenanceHandler extends AbstractResourc
         return null;
     }
 
-    private ActivityManager getOrCreateManager(IRapidFireJobResource job) throws Exception {
+    protected ActivityManager getOrCreateManager(IRapidFireJobResource job) throws Exception {
 
         if (manager == null) {
             String connectionName = job.getParentSubSystem().getConnectionName();
@@ -88,16 +82,26 @@ public abstract class AbstractActivityMaintenanceHandler extends AbstractResourc
     }
 
     @Override
-    protected boolean canExecuteAction(IRapidFireResource resource, ActivityAction activityAction) {
+    protected boolean isValidAction(IRapidFireJobResource job) throws Exception {
+        return true;
+    }
 
-        if (!(resource instanceof IRapidFireJobResource)) {
-            return false;
+    @Override
+    protected boolean isInstanceOf(Object object) {
+
+        if (object instanceof IRapidFireJobResource) {
+            return true;
         }
+
+        return false;
+    }
+
+    @Override
+    protected boolean canExecuteAction(IRapidFireJobResource job, ActivityAction activityAction) {
 
         try {
 
             // Create activity manager for maintaining activities
-            IRapidFireJobResource job = (IRapidFireJobResource)resource;
             getOrCreateManager(job);
 
             // Create job manager for checking, whether or not the job is

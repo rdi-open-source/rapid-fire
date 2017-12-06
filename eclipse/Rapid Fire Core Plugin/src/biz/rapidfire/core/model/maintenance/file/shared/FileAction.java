@@ -11,7 +11,9 @@ package biz.rapidfire.core.model.maintenance.file.shared;
 import java.util.HashMap;
 import java.util.Map;
 
-public enum FileAction {
+import biz.rapidfire.core.model.maintenance.IResourceAction;
+
+public enum FileAction implements IResourceAction {
     CREATE ("*CREATE"),
     COPY ("*COPY"),
     CHANGE ("*CHANGE"),

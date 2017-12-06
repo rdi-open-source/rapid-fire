@@ -8,20 +8,12 @@
 
 package biz.rapidfire.rse.subsystem.actions.area;
 
-import org.eclipse.core.commands.ExecutionEvent;
-import org.eclipse.core.commands.ExecutionException;
-
 import biz.rapidfire.core.handlers.area.CopyAreaHandler;
 import biz.rapidfire.rse.subsystem.actions.AbstractResourceAction;
 
 public class CopyAreaAction extends AbstractResourceAction {
 
-    private CopyAreaHandler handler = new CopyAreaHandler();
-
-    @Override
-    public void execute(ExecutionEvent event) throws ExecutionException {
-
-        handler.execute(event);
+    public CopyAreaAction() {
+        super(new CopyAreaHandler());
     }
-
 }

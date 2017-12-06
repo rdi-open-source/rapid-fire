@@ -17,7 +17,6 @@ import biz.rapidfire.core.handlers.AbstractResourceMaintenanceHandler;
 import biz.rapidfire.core.helpers.ExceptionHelper;
 import biz.rapidfire.core.model.IRapidFireConversionResource;
 import biz.rapidfire.core.model.IRapidFireJobResource;
-import biz.rapidfire.core.model.IRapidFireResource;
 import biz.rapidfire.core.model.dao.JDBCConnectionManager;
 import biz.rapidfire.core.model.maintenance.MaintenanceMode;
 import biz.rapidfire.core.model.maintenance.Result;
@@ -43,15 +42,9 @@ public abstract class AbstractConversionMaintenanceHandler extends AbstractResou
     }
 
     @Override
-    protected Object executeWithResource(IRapidFireResource resource) throws ExecutionException {
-
-        if (!(resource instanceof IRapidFireConversionResource)) {
-            return null;
-        }
+    protected Object executeWithResource(IRapidFireConversionResource conversion) throws ExecutionException {
 
         try {
-
-            IRapidFireConversionResource conversion = (IRapidFireConversionResource)resource;
 
             if (canExecuteAction(conversion, conversionAction)) {
                 Result result = initialize(conversion);
@@ -75,7 +68,7 @@ public abstract class AbstractConversionMaintenanceHandler extends AbstractResou
         return null;
     }
 
-    private ConversionManager getOrCreateManager(IRapidFireJobResource job) throws Exception {
+    protected ConversionManager getOrCreateManager(IRapidFireJobResource job) throws Exception {
 
         if (manager == null) {
             String connectionName = job.getParentSubSystem().getConnectionName();
@@ -88,17 +81,27 @@ public abstract class AbstractConversionMaintenanceHandler extends AbstractResou
     }
 
     @Override
-    protected boolean canExecuteAction(IRapidFireResource resource, ConversionAction conversionAction) {
+    protected boolean isValidAction(IRapidFireConversionResource conversion) throws Exception {
+        return true;
+    }
 
-        if (!(resource instanceof IRapidFireConversionResource)) {
-            return false;
+    @Override
+    protected boolean isInstanceOf(Object object) {
+
+        if (object instanceof IRapidFireConversionResource) {
+            return true;
         }
+
+        return false;
+    }
+
+    @Override
+    protected boolean canExecuteAction(IRapidFireConversionResource conversion, ConversionAction conversionAction) {
 
         String message = null;
 
         try {
 
-            IRapidFireConversionResource conversion = (IRapidFireConversionResource)resource;
             Result result = getOrCreateManager(conversion.getParentJob()).checkAction(conversion.getKey(), conversionAction);
             if (result.isSuccessfull()) {
                 return true;

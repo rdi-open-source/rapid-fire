@@ -14,6 +14,7 @@ import java.util.LinkedList;
 import java.util.List;
 
 import biz.rapidfire.core.Messages;
+import biz.rapidfire.core.model.IRapidFireConversionResource;
 import biz.rapidfire.core.model.dao.IJDBCConnection;
 import biz.rapidfire.core.model.maintenance.AbstractManager;
 import biz.rapidfire.core.model.maintenance.MaintenanceMode;
@@ -24,7 +25,7 @@ import biz.rapidfire.core.model.maintenance.conversion.shared.ConversionKey;
 import biz.rapidfire.core.model.maintenance.file.shared.FileKey;
 import biz.rapidfire.core.model.maintenance.job.shared.JobKey;
 
-public class ConversionManager extends AbstractManager<ConversionKey, ConversionValues, ConversionAction> {
+public class ConversionManager extends AbstractManager<IRapidFireConversionResource, ConversionKey, ConversionValues, ConversionAction> {
 
     private static final String ERROR_001 = "001"; //$NON-NLS-1$
     private static final String ERROR_002 = "002"; //$NON-NLS-1$

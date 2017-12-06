@@ -8,20 +8,12 @@
 
 package biz.rapidfire.rse.subsystem.actions.job;
 
-import org.eclipse.core.commands.ExecutionEvent;
-import org.eclipse.core.commands.ExecutionException;
-
 import biz.rapidfire.core.handlers.job.ResetJobHandler;
 import biz.rapidfire.rse.subsystem.actions.AbstractResourceAction;
 
 public class ResetJobAction extends AbstractResourceAction {
 
-    private ResetJobHandler handler = new ResetJobHandler();
-
-    @Override
-    public void execute(ExecutionEvent event) throws ExecutionException {
-
-        handler.execute(event);
+    public ResetJobAction() {
+        super(new ResetJobHandler());
     }
-
 }

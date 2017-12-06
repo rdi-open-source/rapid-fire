@@ -12,6 +12,7 @@ import java.sql.CallableStatement;
 import java.sql.Types;
 
 import biz.rapidfire.core.Messages;
+import biz.rapidfire.core.model.IRapidFireCommandResource;
 import biz.rapidfire.core.model.dao.IJDBCConnection;
 import biz.rapidfire.core.model.maintenance.AbstractManager;
 import biz.rapidfire.core.model.maintenance.MaintenanceMode;
@@ -23,7 +24,7 @@ import biz.rapidfire.core.model.maintenance.command.shared.CommandType;
 import biz.rapidfire.core.model.maintenance.file.shared.FileKey;
 import biz.rapidfire.core.model.maintenance.job.shared.JobKey;
 
-public class CommandManager extends AbstractManager<CommandKey, CommandValues, CommandAction> {
+public class CommandManager extends AbstractManager<IRapidFireCommandResource, CommandKey, CommandValues, CommandAction> {
 
     private static final String ERROR_001 = "001"; //$NON-NLS-1$
     private static final String ERROR_002 = "002"; //$NON-NLS-1$

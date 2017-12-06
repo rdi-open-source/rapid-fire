@@ -8,20 +8,12 @@
 
 package biz.rapidfire.rse.subsystem.actions.job;
 
-import org.eclipse.core.commands.ExecutionEvent;
-import org.eclipse.core.commands.ExecutionException;
-
 import biz.rapidfire.core.handlers.job.DisplayCopyStatusHandler;
 import biz.rapidfire.rse.subsystem.actions.AbstractResourceAction;
 
 public class DisplayCopyStatusAction extends AbstractResourceAction {
 
-    private DisplayCopyStatusHandler handler = new DisplayCopyStatusHandler();
-
-    @Override
-    public void execute(ExecutionEvent event) throws ExecutionException {
-
-        handler.execute(event);
+    public DisplayCopyStatusAction() {
+        super(new DisplayCopyStatusHandler());
     }
-
 }

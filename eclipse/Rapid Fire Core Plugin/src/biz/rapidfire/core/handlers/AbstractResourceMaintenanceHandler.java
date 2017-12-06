@@ -14,20 +14,27 @@ import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.jface.viewers.StructuredSelection;
+import org.eclipse.jface.viewers.TreeSelection;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.PlatformUI;
 
 import biz.rapidfire.core.RapidFireCorePlugin;
 import biz.rapidfire.core.dialogs.MessageDialogAsync;
+import biz.rapidfire.core.handlers.shared.IMaintenanceHandler;
 import biz.rapidfire.core.model.IRapidFireResource;
+import biz.rapidfire.core.model.maintenance.IResourceAction;
 import biz.rapidfire.core.model.maintenance.MaintenanceMode;
 import biz.rapidfire.rsebase.handlers.AbstractSelectionHandler;
+import biz.rapidfire.rsebase.helpers.ExpressionsHelper;
 
-public abstract class AbstractResourceMaintenanceHandler<M, A> extends AbstractSelectionHandler {
+public abstract class AbstractResourceMaintenanceHandler<R extends IRapidFireResource, A extends IResourceAction> extends AbstractSelectionHandler
+    implements IMaintenanceHandler {
 
     private String message;
     private MaintenanceMode initialMode;
     private MaintenanceMode currentMode;
+    private boolean isEnabled;
 
     public AbstractResourceMaintenanceHandler(MaintenanceMode mode) {
         this.initialMode = mode;
@@ -42,17 +49,61 @@ public abstract class AbstractResourceMaintenanceHandler<M, A> extends AbstractS
         this.currentMode = mode;
     }
 
-    /*
-     * (non-Javadoc)
-     * @see
-     * org.eclipse.core.commands.AbstractHandler#execute(org.eclipse.core.commands
-     * .ExecutionEvent)
-     */
+    public void selectionChanged(Object selection) {
+
+        Iterator<?> iterator = null;
+        if (selection instanceof StructuredSelection) {
+            StructuredSelection structuredSelection = (StructuredSelection)selection;
+            iterator = structuredSelection.iterator();
+
+        } else if (selection instanceof TreeSelection) {
+            TreeSelection treeSelection = (TreeSelection)selection;
+            iterator = treeSelection.iterator();
+        }
+
+        if (iterator != null) {
+
+            while (iterator.hasNext()) {
+                Object object = iterator.next();
+                if (isInstanceOf(object)) {
+                    try {
+                        isEnabled = isValidAction((R)object);
+                    } catch (Exception e) {
+                        isEnabled = false;
+                    }
+                } else {
+                    break;
+                }
+
+                if (!isEnabled) {
+                    break;
+                }
+            }
+        }
+    }
+
+    public void setEnabled(Object evaluationContext) {
+        Object selection = ExpressionsHelper.getSelection(evaluationContext);
+        selectionChanged(selection);
+    }
+
+    public void setEnabledWDSCi(ISelection selection) {
+        selectionChanged(selection);
+    }
+
+    public boolean isEnabled() {
+        return isEnabled;
+    }
+
     public Object execute(ExecutionEvent event) throws ExecutionException {
 
         ISelection selection = getCurrentSelection(event);
 
         return executeWithSelection(selection);
+    }
+
+    public void executeWDSCi(ExecutionEvent event) throws ExecutionException {
+        execute(event);
     }
 
     public Object executeWithSelection(ISelection selection) throws ExecutionException {
@@ -63,7 +114,7 @@ public abstract class AbstractResourceMaintenanceHandler<M, A> extends AbstractS
             while (iterator.hasNext()) {
                 currentMode = initialMode;
                 setErrorMessage(null);
-                executeWithResource(iterator.next());
+                executeWithResource((R)iterator.next());
                 if (isError()) {
                     displayError();
                 }
@@ -82,9 +133,13 @@ public abstract class AbstractResourceMaintenanceHandler<M, A> extends AbstractS
         return MaintenanceMode.DELETE.equals(initialMode);
     }
 
-    protected abstract Object executeWithResource(IRapidFireResource resource) throws ExecutionException;
+    protected abstract boolean isInstanceOf(Object object);
 
-    protected abstract boolean canExecuteAction(IRapidFireResource rapidFireResource, A resourceAction);
+    protected abstract boolean isValidAction(R resource) throws Exception;
+
+    protected abstract Object executeWithResource(R resource) throws ExecutionException;
+
+    protected abstract boolean canExecuteAction(R resource, A action);
 
     protected boolean isCommitControl() {
 

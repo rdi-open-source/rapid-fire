@@ -10,9 +10,10 @@ package biz.rapidfire.core.model.maintenance.command.shared;
 
 import biz.rapidfire.core.RapidFireCorePlugin;
 import biz.rapidfire.core.helpers.ExceptionHelper;
+import biz.rapidfire.core.model.maintenance.IResourceKey;
 import biz.rapidfire.core.model.maintenance.file.shared.FileKey;
 
-public class CommandKey implements Cloneable {
+public class CommandKey implements IResourceKey {
 
     private FileKey fileKey;
     private CommandType commandType;

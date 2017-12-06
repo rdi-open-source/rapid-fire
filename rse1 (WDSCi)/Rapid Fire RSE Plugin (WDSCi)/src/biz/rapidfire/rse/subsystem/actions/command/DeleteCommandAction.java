@@ -8,20 +8,12 @@
 
 package biz.rapidfire.rse.subsystem.actions.command;
 
-import org.eclipse.core.commands.ExecutionEvent;
-import org.eclipse.core.commands.ExecutionException;
-
 import biz.rapidfire.core.handlers.command.DeleteCommandHandler;
 import biz.rapidfire.rse.subsystem.actions.AbstractResourceAction;
 
 public class DeleteCommandAction extends AbstractResourceAction {
 
-    private DeleteCommandHandler handler = new DeleteCommandHandler();
-
-    @Override
-    public void execute(ExecutionEvent event) throws ExecutionException {
-
-        handler.execute(event);
+    public DeleteCommandAction() {
+        super(new DeleteCommandHandler());
     }
-
 }
