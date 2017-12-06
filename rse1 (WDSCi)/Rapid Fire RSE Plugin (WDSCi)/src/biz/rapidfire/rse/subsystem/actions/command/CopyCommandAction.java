@@ -11,17 +11,13 @@ package biz.rapidfire.rse.subsystem.actions.command;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 
+import biz.rapidfire.core.handlers.command.ChangeCommandHandler;
 import biz.rapidfire.core.handlers.command.CopyCommandHandler;
 import biz.rapidfire.rse.subsystem.actions.AbstractResourceAction;
 
 public class CopyCommandAction extends AbstractResourceAction {
 
-    private CopyCommandHandler handler = new CopyCommandHandler();
-
-    @Override
-    public void execute(ExecutionEvent event) throws ExecutionException {
-
-        handler.execute(event);
+    public CopyCommandAction() {
+        super(new CopyCommandHandler());
     }
-
 }

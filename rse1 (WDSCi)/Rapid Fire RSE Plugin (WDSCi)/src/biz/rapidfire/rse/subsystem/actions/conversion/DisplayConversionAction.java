@@ -8,20 +8,12 @@
 
 package biz.rapidfire.rse.subsystem.actions.conversion;
 
-import org.eclipse.core.commands.ExecutionEvent;
-import org.eclipse.core.commands.ExecutionException;
-
 import biz.rapidfire.core.handlers.conversion.DisplayConversionHandler;
 import biz.rapidfire.rse.subsystem.actions.AbstractResourceAction;
 
 public class DisplayConversionAction extends AbstractResourceAction {
 
-    private DisplayConversionHandler handler = new DisplayConversionHandler();
-
-    @Override
-    public void execute(ExecutionEvent event) throws ExecutionException {
-
-        handler.execute(event);
+    public DisplayConversionAction() {
+        super(new DisplayConversionHandler());
     }
-
 }

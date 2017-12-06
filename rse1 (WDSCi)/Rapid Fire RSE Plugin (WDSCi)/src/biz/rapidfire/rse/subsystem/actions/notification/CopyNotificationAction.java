@@ -8,20 +8,12 @@
 
 package biz.rapidfire.rse.subsystem.actions.notification;
 
-import org.eclipse.core.commands.ExecutionEvent;
-import org.eclipse.core.commands.ExecutionException;
-
 import biz.rapidfire.core.handlers.notification.CopyNotificationHandler;
 import biz.rapidfire.rse.subsystem.actions.AbstractResourceAction;
 
 public class CopyNotificationAction extends AbstractResourceAction {
 
-    private CopyNotificationHandler handler = new CopyNotificationHandler();
-
-    @Override
-    public void execute(ExecutionEvent event) throws ExecutionException {
-
-        handler.execute(event);
+    public CopyNotificationAction() {
+        super(new CopyNotificationHandler());
     }
-
 }

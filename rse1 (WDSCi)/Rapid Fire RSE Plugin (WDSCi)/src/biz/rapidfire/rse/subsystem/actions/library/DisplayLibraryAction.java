@@ -8,20 +8,12 @@
 
 package biz.rapidfire.rse.subsystem.actions.library;
 
-import org.eclipse.core.commands.ExecutionEvent;
-import org.eclipse.core.commands.ExecutionException;
-
 import biz.rapidfire.core.handlers.library.DisplayLibraryHandler;
 import biz.rapidfire.rse.subsystem.actions.AbstractResourceAction;
 
 public class DisplayLibraryAction extends AbstractResourceAction {
 
-    private DisplayLibraryHandler handler = new DisplayLibraryHandler();
-
-    @Override
-    public void execute(ExecutionEvent event) throws ExecutionException {
-
-        handler.execute(event);
+    public DisplayLibraryAction() {
+        super(new DisplayLibraryHandler());
     }
-
 }

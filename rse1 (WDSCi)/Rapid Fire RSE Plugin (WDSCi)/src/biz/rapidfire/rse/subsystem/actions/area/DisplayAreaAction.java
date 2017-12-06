@@ -8,20 +8,12 @@
 
 package biz.rapidfire.rse.subsystem.actions.area;
 
-import org.eclipse.core.commands.ExecutionEvent;
-import org.eclipse.core.commands.ExecutionException;
-
 import biz.rapidfire.core.handlers.area.DisplayAreaHandler;
 import biz.rapidfire.rse.subsystem.actions.AbstractResourceAction;
 
 public class DisplayAreaAction extends AbstractResourceAction {
 
-    private DisplayAreaHandler handler = new DisplayAreaHandler();
-
-    @Override
-    public void execute(ExecutionEvent event) throws ExecutionException {
-
-        handler.execute(event);
+    public DisplayAreaAction() {
+        super(new DisplayAreaHandler());
     }
-
 }

@@ -8,20 +8,12 @@
 
 package biz.rapidfire.rse.subsystem.actions.command;
 
-import org.eclipse.core.commands.ExecutionEvent;
-import org.eclipse.core.commands.ExecutionException;
-
 import biz.rapidfire.core.handlers.command.NewCommandHandler;
 import biz.rapidfire.rse.subsystem.actions.AbstractResourceAction;
 
 public class NewCommandAction extends AbstractResourceAction {
 
-    private NewCommandHandler handler = new NewCommandHandler();
-
-    @Override
-    public void execute(ExecutionEvent event) throws ExecutionException {
-
-        handler.execute(event);
+    public NewCommandAction() {
+        super(new NewCommandHandler());
     }
-
 }

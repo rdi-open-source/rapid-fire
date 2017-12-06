@@ -8,20 +8,12 @@
 
 package biz.rapidfire.rse.subsystem.actions.job;
 
-import org.eclipse.core.commands.ExecutionEvent;
-import org.eclipse.core.commands.ExecutionException;
-
 import biz.rapidfire.core.handlers.job.DeleteJobHandler;
 import biz.rapidfire.rse.subsystem.actions.AbstractResourceAction;
 
 public class DeleteJobAction extends AbstractResourceAction {
 
-    private DeleteJobHandler handler = new DeleteJobHandler();
-
-    @Override
-    public void execute(ExecutionEvent event) throws ExecutionException {
-
-        handler.execute(event);
+    public DeleteJobAction() {
+        super(new DeleteJobHandler());
     }
-
 }

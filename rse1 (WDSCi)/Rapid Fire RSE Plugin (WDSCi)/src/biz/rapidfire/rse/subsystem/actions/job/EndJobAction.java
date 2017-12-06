@@ -8,20 +8,12 @@
 
 package biz.rapidfire.rse.subsystem.actions.job;
 
-import org.eclipse.core.commands.ExecutionEvent;
-import org.eclipse.core.commands.ExecutionException;
-
 import biz.rapidfire.core.handlers.job.EndJobHandler;
 import biz.rapidfire.rse.subsystem.actions.AbstractResourceAction;
 
 public class EndJobAction extends AbstractResourceAction {
 
-    private EndJobHandler handler = new EndJobHandler();
-
-    @Override
-    public void execute(ExecutionEvent event) throws ExecutionException {
-
-        handler.execute(event);
+    public EndJobAction() {
+        super(new EndJobHandler());
     }
-
 }

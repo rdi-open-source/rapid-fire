@@ -8,20 +8,12 @@
 
 package biz.rapidfire.rse.subsystem.actions.file;
 
-import org.eclipse.core.commands.ExecutionEvent;
-import org.eclipse.core.commands.ExecutionException;
-
 import biz.rapidfire.core.handlers.file.DeleteFileHandler;
 import biz.rapidfire.rse.subsystem.actions.AbstractResourceAction;
 
 public class DeleteFileAction extends AbstractResourceAction {
 
-    private DeleteFileHandler handler = new DeleteFileHandler();
-
-    @Override
-    public void execute(ExecutionEvent event) throws ExecutionException {
-
-        handler.execute(event);
+    public DeleteFileAction() {
+        super(new DeleteFileHandler());
     }
-
 }

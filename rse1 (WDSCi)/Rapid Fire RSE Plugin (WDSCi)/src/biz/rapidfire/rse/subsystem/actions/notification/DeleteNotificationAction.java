@@ -8,20 +8,12 @@
 
 package biz.rapidfire.rse.subsystem.actions.notification;
 
-import org.eclipse.core.commands.ExecutionEvent;
-import org.eclipse.core.commands.ExecutionException;
-
 import biz.rapidfire.core.handlers.notification.DeleteNotificationHandler;
 import biz.rapidfire.rse.subsystem.actions.AbstractResourceAction;
 
 public class DeleteNotificationAction extends AbstractResourceAction {
 
-    private DeleteNotificationHandler handler = new DeleteNotificationHandler();
-
-    @Override
-    public void execute(ExecutionEvent event) throws ExecutionException {
-
-        handler.execute(event);
+    public DeleteNotificationAction() {
+        super(new DeleteNotificationHandler());
     }
-
 }

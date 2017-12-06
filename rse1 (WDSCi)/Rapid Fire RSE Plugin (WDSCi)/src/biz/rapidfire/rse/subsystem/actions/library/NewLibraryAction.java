@@ -8,20 +8,12 @@
 
 package biz.rapidfire.rse.subsystem.actions.library;
 
-import org.eclipse.core.commands.ExecutionEvent;
-import org.eclipse.core.commands.ExecutionException;
-
 import biz.rapidfire.core.handlers.library.NewLibraryHandler;
 import biz.rapidfire.rse.subsystem.actions.AbstractResourceAction;
 
 public class NewLibraryAction extends AbstractResourceAction {
 
-    private NewLibraryHandler handler = new NewLibraryHandler();
-
-    @Override
-    public void execute(ExecutionEvent event) throws ExecutionException {
-
-        handler.execute(event);
+    public NewLibraryAction() {
+        super(new NewLibraryHandler());
     }
-
 }

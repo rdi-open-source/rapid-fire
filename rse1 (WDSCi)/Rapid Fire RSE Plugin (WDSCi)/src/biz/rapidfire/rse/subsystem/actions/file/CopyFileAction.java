@@ -11,17 +11,13 @@ package biz.rapidfire.rse.subsystem.actions.file;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 
+import biz.rapidfire.core.handlers.file.ChangeFileHandler;
 import biz.rapidfire.core.handlers.file.CopyFileHandler;
 import biz.rapidfire.rse.subsystem.actions.AbstractResourceAction;
 
 public class CopyFileAction extends AbstractResourceAction {
 
-    private CopyFileHandler handler = new CopyFileHandler();
-
-    @Override
-    public void execute(ExecutionEvent event) throws ExecutionException {
-
-        handler.execute(event);
+    public CopyFileAction() {
+        super(new CopyFileHandler());
     }
-
 }
