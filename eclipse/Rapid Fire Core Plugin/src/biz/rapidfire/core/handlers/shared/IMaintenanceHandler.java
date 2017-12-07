@@ -10,11 +10,18 @@ package biz.rapidfire.core.handlers.shared;
 
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
+import org.eclipse.core.commands.IHandler;
 import org.eclipse.jface.viewers.ISelection;
 
-public interface IMaintenanceHandler {
+public interface IMaintenanceHandler extends IHandler {
+
+    public boolean isEnabled();
+
+    public void setEnabled(Object paramObject);
 
     public void setEnabledWDSCi(ISelection selection);
 
     public void executeWDSCi(ExecutionEvent event) throws ExecutionException;
+
+    public Object executeWithSelection(ISelection selection) throws ExecutionException;
 }

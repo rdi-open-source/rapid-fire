@@ -55,8 +55,22 @@ public abstract class AbstractResourceAction extends ISeriesAbstractQSYSPopupMen
     }
 
     @Override
+    public void setEnabled(boolean enabled) {
+        System.out.println(getClass().getSimpleName() + ".setEnabled(" + enabled + ")");
+        super.setEnabled(enabled);
+    }
+    
+    @Override
     public void selectionChanged(IAction action, ISelection selection) {
         super.selectionChanged(action, selection);
+        System.out.println(getClass().getSimpleName() + ".selectionChanged()");
         handler.setEnabledWDSCi(selection);
+//        super.setEnabled(handler.isEnabled());
+    }
+    
+    @Override
+    public boolean getEnabled(Object[] arg0) {
+        System.out.println(getClass().getSimpleName() + ".getEnabled() = " + handler.isEnabled());
+        return handler.isEnabled();
     }
 }

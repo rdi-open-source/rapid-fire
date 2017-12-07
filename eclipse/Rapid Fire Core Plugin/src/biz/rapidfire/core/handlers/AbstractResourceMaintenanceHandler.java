@@ -49,7 +49,9 @@ public abstract class AbstractResourceMaintenanceHandler<R extends IRapidFireRes
         this.currentMode = mode;
     }
 
-    public void selectionChanged(Object selection) {
+    private void selectionChanged(Object selection) {
+
+        isEnabled = false;
 
         Iterator<?> iterator = null;
         if (selection instanceof StructuredSelection) {
@@ -124,7 +126,7 @@ public abstract class AbstractResourceMaintenanceHandler<R extends IRapidFireRes
         return null;
     }
 
-    public Shell getShell() {
+    protected Shell getShell() {
         return PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell();
     }
 

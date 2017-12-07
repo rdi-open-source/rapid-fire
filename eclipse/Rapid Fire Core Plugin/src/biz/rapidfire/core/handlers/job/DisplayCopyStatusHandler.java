@@ -65,6 +65,9 @@ public class DisplayCopyStatusHandler extends AbstractResourceHandler implements
         return null;
     }
 
+    public void setEnabled(Object paramObject) {
+    }
+
     public void setEnabledWDSCi(ISelection selection) {
     }
 }
