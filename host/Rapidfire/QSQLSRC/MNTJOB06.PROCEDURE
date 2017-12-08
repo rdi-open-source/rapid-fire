@@ -1,5 +1,13 @@
 -- *------------------------------------------------------------------------*
 -- *                                                                        *
+-- * Copyright (c) 2014 Task Force IT-Consulting GmbH, Waltrop (Germany)    *
+-- * This software and the accompanying materials are made available        *
+-- * under the terms of the GNU General Public License version 2.0 (GPLv2)  *
+-- * which accompanies this distribution and is available at                *
+-- * http://www.gnu.org/licenses/gpl-2.0.html                               *
+-- *                                                                        *
+-- *------------------------------------------------------------------------*
+-- *                                                                        *
 -- * Check                                                                  *
 -- *                                                                        *
 -- *------------+--------+--------------------------------------------------*
@@ -7,24 +15,14 @@
 -- *------------+--------+--------------------------------------------------*
 -- * 27.10.2017 I   FH   I Dateierstellung                                  *
 -- *------------+--------+--------------------------------------------------*
--- * >>PRE-COMPILER<<                                                       *
--- *   >>CRTCMD<< RUNSQLSTM SRCFILE(&SL/&SF) SRCMBR(&SM) +                  *
--- *                        COMMIT(*NONE) NAMING(*SYS) DFTRDBCOL(&LI) +     *
--- *                        OPTION(*LIST) PROCESS(*RUN) USRPRF(*USER);      *
--- *   >>CURLIB<< &CL;                                                      *
--- *   >>LIBL<<   &LL;                                                      *
--- *   >>EXECUTE<<                                                          *
--- * >>END-PRE-COMPILER<<                                                   *
--- *------------------------------------------------------------------------*
 
 CREATE PROCEDURE "MNTJOB_check"
 (
+  INOUT SUCCESS  CHAR(1),
   INOUT FLD      CHAR(10),
-  INOUT MSG      CHAR(256),
-  INOUT SUCCESS  CHAR(1)
+  INOUT MSG      CHAR(256)
 )
-EXTERNAL NAME
-'&CMONE_SCHEMA_FOR_SERVICE_PROGRAM/MNTJOB(MNTJOB_check)'
+EXTERNAL NAME MNTJOB("MNTJOB_check")
 SPECIFIC MNTJOB06
 LANGUAGE RPGLE
 PARAMETER STYLE GENERAL

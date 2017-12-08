@@ -17,17 +17,6 @@
 //*------------+--------+-------------------------------------------------------------------*
 //* 26.10.2017 I   FH   I Creation                                                          *
 //*------------+--------+-------------------------------------------------------------------*
-//* >>PRE-COMPILER<<                                                                        *
-//*    >>CRTCMD<< CRTRPGMOD    MODULE(&LI/&OB) SRCFILE(&SL/&SF) SRCMBR(&SM);                *
-//*    >>IMPORTANT<<                                                                        *
-//*      >>PARM<< DBGVIEW(&U1);                                                             *
-//*      >>PARM<< TGTRLS(&TR);                                                              *
-//*      >>PARM<< OPTION(*EVENTF);                                                          *
-//*      >>PARM<< TRUNCNBR(*NO);                                                            *
-//*    >>END-IMPORTANT<<                                                                    *
-//*    >>EXECUTE<<                                                                          *
-//*  >>END-PRE-COMPILER<<                                                                   *
-//*-----------------------------------------------------------------------------------------*
 
 CTL-OPT NOMAIN;
 CTL-OPT DATFMT(*ISO) TIMFMT(*ISO) DECEDIT('0,');
@@ -156,7 +145,7 @@ DCL-PROC CPLSTSE_completeStatusEntry EXPORT;
     If %Found;
       Chain ( p_JOB : p_POS : p_ARA ) AREARF;
       If %Found;
-        p_FILE = XDFILE;
+        p_FILE = X3FILE;
         p_LIB = XDLIB;
         p_RPL = *Zero;
         p_RSL = *Zero;

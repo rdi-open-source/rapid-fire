@@ -20,7 +20,8 @@
 -- *   >>EXECUTE<<                                                          *
 -- * >>END-PRE-COMPILER<<                                                   *
 -- *------------------------------------------------------------------------*
-CREATE OR REPLACE TABLE ACTIVITY_SCHEDULE
+
+CREATE TABLE ACTIVITY_SCHEDULE
 FOR SYSTEM NAME ACTSCHD
 (
  JOB FOR COLUMN XFJOB CHAR(10) NOT NULL WITH DEFAULT,

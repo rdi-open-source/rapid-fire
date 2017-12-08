@@ -1,0 +1,35 @@
+-- *------------------------------------------------------------------------*
+-- *                                                                        *
+-- * Copyright (c) 2014 Task Force IT-Consulting GmbH, Waltrop (Germany)    *
+-- * This software and the accompanying materials are made available        *
+-- * under the terms of the GNU General Public License version 2.0 (GPLv2)  *
+-- * which accompanies this distribution and is available at                *
+-- * http://www.gnu.org/licenses/gpl-2.0.html                               *
+-- *                                                                        *
+-- *------------------------------------------------------------------------*
+-- *                                                                        *
+-- * Get Values                                                             *
+-- *                                                                        *
+-- *------------+--------+--------------------------------------------------*
+-- *   Datum    I Progr. I Beschreibung                                     *
+-- *------------+--------+--------------------------------------------------*
+-- * 22.11.2017 I   FH   I Dateierstellung                                  *
+-- *------------+--------+--------------------------------------------------*
+
+CREATE PROCEDURE "MNTCNV_getValues"
+(
+  INOUT FTC  CHAR(10),
+  INOUT RFT  CHAR(10),
+  INOUT STM1 CHAR(60),
+  INOUT STM2 CHAR(60),
+  INOUT STM3 CHAR(60),
+  INOUT STM4 CHAR(60),
+  INOUT STM5 CHAR(60),
+  INOUT STM6 CHAR(60)
+)
+EXTERNAL NAME MNTCNV("MNTCNV_getValues")
+SPECIFIC MNTCNV04
+LANGUAGE RPGLE
+PARAMETER STYLE GENERAL
+MODIFIES SQL DATA
+NOT DETERMINISTIC;

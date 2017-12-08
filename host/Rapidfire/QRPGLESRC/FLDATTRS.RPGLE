@@ -73,7 +73,7 @@ CTL-OPT DatFmt(*ISO) TimFmt(*ISO) DecEdit('0,');
 CTL-OPT Copyright('(C) Copyright Task Force IT-Consulting GmbH');
 CTL-OPT ExtBinInt(*YES);
 
-// ------------------------------------------------------------------------------------------
+//*-----------------------------------------------------------------------------------------*
 
 // Exports
 
@@ -103,20 +103,20 @@ END-DS;
 
 DCL-C cDOUBLE_QUOTE '"';
 
-// ==========================================================================================
-//  Produces the file field description of a given file and record format.
-// ------------------------------------------------------------------------------------------
-//  Parameters:
-//   i_file        - The name of the file about which the information is to be extracted.
-//   i_lib         - Name of the library that contains the file.
-//   i_rcdFormat   - The name of the record format in the specified file that is to be
-//                   used to generate the file description.
-//                   Special value: FLDATTRS_RCDFMT_FIRST
-//   io_errCode    - API error code.
-
-//  Returns:
-//   Handle of the file field descriptions.
-// ==========================================================================================
+//*-----------------------------------------------------------------------------------------*
+//* Produces the file field description of a given file and record format.                  *
+//*-----------------------------------------------------------------------------------------*
+//* Parameters:                                                                             *
+//*  i_file        - The name of the file about which the information is to be extracted.   *
+//*  i_lib         - Name of the library that contains the file.                            *
+//*  i_rcdFormat   - The name of the record format in the specified file that is to be      *
+//*                  used to generate the file description.                                 *
+//*                  Special value: FLDATTRS_RCDFMT_FIRST                                   *
+//*  io_errCode    - API error code.                                                        *
+//*                                                                                         *
+//* Returns:                                                                                *
+//*  Handle of the file field descriptions.                                                 *
+//*-----------------------------------------------------------------------------------------*
 
 DCL-PROC FieldAttributes_new EXPORT;
 
@@ -210,15 +210,15 @@ DCL-PROC FieldAttributes_new EXPORT;
 
 END-PROC;
 
-// ==========================================================================================
-//  Deletes the fiele field description of a given handle.
-// ------------------------------------------------------------------------------------------
-//  Parameters:
-//   io_handle     - Handle create by FieldAttributes_new().
-
-//  Returns:
-//   void
-// ==========================================================================================
+//*-----------------------------------------------------------------------------------------*
+//* Deletes the fiele field description of a given handle.                                  *
+//*-----------------------------------------------------------------------------------------*
+//* Parameters:                                                                             *
+//*  io_handle     - Handle create by FieldAttributes_new().                                *
+//*                                                                                         *
+//* Returns:                                                                                *
+//*  void                                                                                   *
+//*-----------------------------------------------------------------------------------------*
 
 DCL-PROC FieldAttributes_delete EXPORT;
 
@@ -248,15 +248,15 @@ DCL-PROC FieldAttributes_delete EXPORT;
 
 END-PROC;
 
-// ==========================================================================================
-//  Resets the field pointer to the first field.
-// ------------------------------------------------------------------------------------------
-//  Parameters:
-//   i_handle      - Handle create by FieldAttributes_new().
-
-//  Returns:
-//   void
-// ==========================================================================================
+//*-----------------------------------------------------------------------------------------*
+//* Resets the field pointer to the first field.                                            *
+//*-----------------------------------------------------------------------------------------*
+//* Parameters:                                                                             *
+//*  i_handle      - Handle create by FieldAttributes_new().                                *
+//*                                                                                         *
+//* Returns:                                                                                *
+//*  void                                                                                   *
+//*-----------------------------------------------------------------------------------------*
 
 DCL-PROC FieldAttributes_rewind EXPORT;
 
@@ -275,26 +275,26 @@ DCL-PROC FieldAttributes_rewind EXPORT;
 
 END-PROC;
 
-// ==========================================================================================
-//  Retrieves the attributes of the field identified by a given field name.
-// ------------------------------------------------------------------------------------------
-//  Parameters:
-//   i_handle      - Handle create by FieldAttributes_new().
-//   i_fldName     - Name of the field.
-//                   Special values: FLDATTRS_FLD_FIRST
-//                                   FLDATTRS_FLD_LAST
-//                                   FLDATTRS_FLD_NEXT
-//                                   FLDATTRS_FLD_PREV
-//   i_o_date      - Returned field attributes.
-//   i_format      - Optional. Format of the returned field attributes.
-//                   Default: FLDA0100
-//                   Values:  FLDA0100
-//                            FLDA0200
-//                            FLDA0300
-
-//  Returns:
-//   -1 on success, else position of the field in the record format.
-// ==========================================================================================
+//*-----------------------------------------------------------------------------------------*
+//* Retrieves the attributes of the field identified by a given field name.                 *
+//*-----------------------------------------------------------------------------------------*
+//* Parameters:                                                                             *
+//*  i_handle      - Handle create by FieldAttributes_new().                                *
+//*  i_fldName     - Name of the field.                                                     *
+//*                  Special values: FLDATTRS_FLD_FIRST                                     *
+//*                                  FLDATTRS_FLD_LAST                                      *
+//*                                  FLDATTRS_FLD_NEXT                                      *
+//*                                  FLDATTRS_FLD_PREV                                      *
+//*  i_o_date      - Returned field attributes.                                             *
+//*  i_format      - Optional. Format of the returned field attributes.                     *
+//*                  Default: FLDA0100                                                      *
+//*                  Values:  FLDA0100                                                      *
+//*                           FLDA0200                                                      *
+//*                           FLDA0300                                                      *
+//*                                                                                         *
+//* Returns:                                                                                *
+//*  -1 on success, else position of the field in the record format.                        *
+//*-----------------------------------------------------------------------------------------*
 
 DCL-PROC FieldAttributes_retrieve EXPORT;
 
@@ -662,15 +662,15 @@ DCL-PROC FieldAttributes_retrieve EXPORT;
 
 END-PROC;
 
-// ==========================================================================================
-//  Returns the number of fields that have been retrieved.
-// ------------------------------------------------------------------------------------------
-//  Parameters:
-//   i_handle      - Handle create by FieldAttributes_new().
-
-//  Returns:
-//   NUmber of fields retrieved.
-// ==========================================================================================
+//*-----------------------------------------------------------------------------------------*
+//* Returns the number of fields that have been retrieved.                                  *
+//*-----------------------------------------------------------------------------------------*
+//* Parameters:                                                                             *
+//*  i_handle      - Handle create by FieldAttributes_new().                                *
+//*                                                                                         *
+//* Returns:                                                                                *
+//*  NUmber of fields retrieved.                                                            *
+//*-----------------------------------------------------------------------------------------*
 
 DCL-PROC FieldAttributes_length EXPORT;
 
@@ -696,15 +696,15 @@ DCL-PROC FieldAttributes_length EXPORT;
 
 END-PROC;
 
-// ==========================================================================================
-//  Returns the format level identifier used for level check.
-// ------------------------------------------------------------------------------------------
-//  Parameters:
-//   i_handle      - Handle create by FieldAttributes_new().
-
-//  Returns:
-//   Format level identifier.
-// ==========================================================================================
+//*-----------------------------------------------------------------------------------------*
+//* Returns the format level identifier used for level check.                               *
+//*-----------------------------------------------------------------------------------------*
+//* Parameters:                                                                             *
+//*  i_handle      - Handle create by FieldAttributes_new().                                *
+//*                                                                                         *
+//* Returns:                                                                                *
+//*  Format level identifier.                                                               *
+//*-----------------------------------------------------------------------------------------*
 
 DCL-PROC FieldAttributes_getFormatLevelId EXPORT;
 
@@ -730,15 +730,15 @@ DCL-PROC FieldAttributes_getFormatLevelId EXPORT;
 
 END-PROC;
 
-// ==========================================================================================
-//  Checks whether a given handle is null.
-// ------------------------------------------------------------------------------------------
-//  Parameters:
-//   i_handle      - Handle create by FieldAttributes_new().
-
-//  Returns:
-//   TRUE for a null handle, else FALSE.
-// ==========================================================================================
+//*-----------------------------------------------------------------------------------------*
+//* Checks whether a given handle is null.                                                  *
+//*-----------------------------------------------------------------------------------------*
+//* Parameters:                                                                             *
+//*  i_handle      - Handle create by FieldAttributes_new().                                *
+//*                                                                                         *
+//* Returns:                                                                                *
+//*  TRUE for a null handle, else FALSE.                                                    *
+//*-----------------------------------------------------------------------------------------*
 
 DCL-PROC FieldAttributes_isNull EXPORT;
 
@@ -757,9 +757,9 @@ DCL-PROC FieldAttributes_isNull EXPORT;
 
 END-PROC;
 
-// ==================================================================
-//  Convert internal data type to external representation
-// ==================================================================
+//*-----------------------------------------------------------------------------------------*
+//* Convert internal data type to external representation                                   *
+//*-----------------------------------------------------------------------------------------*
 
 DCL-PROC intToExtDataType;
 
@@ -820,9 +820,9 @@ DCL-PROC intToExtDataType;
 
 END-PROC;
 
-// ==================================================================
-//  Convert internal usage to to external representation
-// ==================================================================
+//*-----------------------------------------------------------------------------------------*
+//* Convert internal usage to to external representation                                    *
+//*-----------------------------------------------------------------------------------------*
 
 DCL-PROC intToExtUsage;
 
@@ -850,9 +850,9 @@ DCL-PROC intToExtUsage;
 
 END-PROC;
 
-// ==================================================================
-//  Convert internal date/time format to external representation
-// ==================================================================
+//*-----------------------------------------------------------------------------------------*
+//* Convert internal date/time format to external representation                            *
+//*-----------------------------------------------------------------------------------------*
 
 DCL-PROC intToExtDatTimFmt;
 
@@ -944,9 +944,9 @@ DCL-PROC intToExtDatTimFmt;
 
 END-PROC;
 
-// ==================================================================
-//  Convert internal date/time separator to external representation
-// ==================================================================
+//*-----------------------------------------------------------------------------------------*
+//* Convert internal date/time separator to external representation                         *
+//*-----------------------------------------------------------------------------------------*
 
 DCL-PROC intToExtDatTimsep;
 

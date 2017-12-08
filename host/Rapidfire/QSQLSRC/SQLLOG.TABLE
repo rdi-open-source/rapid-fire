@@ -21,7 +21,7 @@
 -- * >>END-PRE-COMPILER<<                                                   *
 -- *------------------------------------------------------------------------*
 
-Create OR REPLACE Table SQLLOG
+Create Table SQLLOG
 (
   SqId     Integer Generated Always As Identity (Start With 1, Increment by 1),
   SqUser    Char(10)       Not Null With Default,

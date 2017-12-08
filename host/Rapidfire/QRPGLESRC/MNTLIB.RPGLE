@@ -26,6 +26,13 @@ CTL-OPT EXTBININT(*YES);
 
 //*-----------------------------------------------------------------------------------------*
 
+DCL-F JOBS
+      DISK(*EXT)
+      USAGE(*INPUT)
+      KEYED
+      RENAME(JOBS : JOBRF)
+      USROPN;
+
 DCL-F LIBRARIES
       DISK(*EXT)
       USAGE(*INPUT : *OUTPUT : *UPDATE : *DELETE)
@@ -34,9 +41,16 @@ DCL-F LIBRARIES
       COMMIT
       USROPN;
 
+DCL-F LIBRARII01
+      DISK(*EXT)
+      USAGE(*INPUT)
+      KEYED
+      RENAME(LIBRARIES : LIBRF01)
+      USROPN;
+
 //*-----------------------------------------------------------------------------------------*
 
-/INCLUDE QCPYSRC,MNTJOB
+/INCLUDE QCPYSRC,MNTLIB
 
 /INCLUDE QCPYSRC,HDLRCDLCK
 
@@ -55,153 +69,179 @@ DCL-C MODE_DISPLAY '*DISPLAY';
 
 DCL-S g_MODE CHAR(10); // Mode
 DCL-S g_JOB  CHAR(10); // Job
-DCL-S g_DSCR CHAR(35); // Description
-DCL-S g_CRTE CHAR(10); // Create environment
-DCL-S g_JQ   CHAR(10); // Job queue
-DCL-S g_JQL  CHAR(10); // Job queue (Library)
+DCL-S g_LIB  CHAR(10); // Library
+DCL-S g_SLIB CHAR(10); // Shadow library
 
 //*=========================================================================================*
 //* Open Files                                                                              *
 //*=========================================================================================*
 
-DCL-PROC MNTJOB_openFiles EXPORT;
+DCL-PROC MNTLIB_openFiles EXPORT;
 
-  DCL-PI MNTJOB_openFiles;
+  DCL-PI MNTLIB_openFiles;
   END-PI;
 
   open JOBS;
+  open LIBRARIES;
+  open LIBRARII01;
 
-END-PROC MNTJOB_openFiles;
+END-PROC MNTLIB_openFiles;
 
 //*=========================================================================================*
 //* Close Files                                                                             *
 //*=========================================================================================*
 
-DCL-PROC MNTJOB_closeFiles EXPORT;
+DCL-PROC MNTLIB_closeFiles EXPORT;
 
-  DCL-PI MNTJOB_closeFiles;
+  DCL-PI MNTLIB_closeFiles;
   END-PI;
 
   close JOBS;
+  close LIBRARIES;
+  close LIBRARII01;
 
-END-PROC MNTJOB_closeFiles;
+END-PROC MNTLIB_closeFiles;
 
 //*=========================================================================================*
 //* Initialize                                                                              *
 //*=========================================================================================*
+//*                                                                                         *
+//* Error codes and their meanings                                                          *
+//* ==============================                                                          *
+//*                                                                                         *
+//* '001' = Record in file JOBS not found                                                   *
+//* '002' = Record in file LIBRARIES not found                                              *
+//* '003' = Wrong mode                                                                      *
+//*                                                                                         *
+//*=========================================================================================*
 
-DCL-PROC MNTJOB_initialize EXPORT;
+DCL-PROC MNTLIB_initialize EXPORT;
 
-  DCL-PI MNTJOB_initialize IND; // <-- Success
-    p_MODE CHAR(10) CONST; // --> Mode
-    p_JOB  CHAR(10) CONST; // --> Job
+  DCL-PI MNTLIB_initialize IND; // <-- Success
+    p_MODE    CHAR(10) CONST;   // --> Mode
+    p_JOB     CHAR(10) CONST;   // --> Job
+    p_LIB     CHAR(10) CONST;   // --> Library
+    p_SUCCESS CHAR(1);          // <-- Success
+    p_MSG     CHAR(256);        // <-- Message
   END-PI;
 
   g_MODE = p_MODE;
   g_JOB = p_JOB;
+  g_LIB = p_LIB;
 
-  select;
+  chain (g_JOB) JOBRF;
+  if (not %found);
 
-  when (g_MODE = MODE_CREATE);
+    p_SUCCESS = 'N';
+    p_MSG = '001';
+    return *off;
 
-    return *on;
+  else;
 
-  when (g_MODE = MODE_CHANGE or
-        g_MODE = MODE_DELETE);
+    select;
 
-    dou (not %error);
-      chain(e) (g_JOB) JOBRF;
-      if (%error);
-        HdlRcdLck(PSDS);
-      endif;
-    enddo;
-    if (%found);
-      if (X1STS = '*RDY');
-        return *on;
-      else;
-        unlock JOBS;
-      endif;
-    endif;
+    when (g_MODE = MODE_CREATE);
 
-  when (g_MODE = MODE_DISPLAY or
-        g_MODE = MODE_COPY);
-
-    chain(n) (g_JOB) JOBRF;
-    if (%found);
+      p_SUCCESS = 'Y';
+      p_MSG = *blanks;
       return *on;
-    endif;
 
-  endsl;
+    when (g_MODE = MODE_CHANGE or
+          g_MODE = MODE_DELETE);
 
-  return *off;
+      dou (not %error);
+        chain(e) (g_JOB : g_LIB) LIBRF;
+        if (%error);
+          HdlRcdLck(PSDS);
+        endif;
+      enddo;
+      if (not %found);
+        p_SUCCESS = 'N';
+        p_MSG = '002';
+        return *off;
+      else;
+        p_SUCCESS = 'Y';
+        p_MSG = *blanks;
+        return *on;
+      endif;
 
-END-PROC MNTJOB_initialize;
+    when (g_MODE = MODE_DISPLAY or
+          g_MODE = MODE_COPY);
+
+      chain(n) (g_JOB : g_LIB) LIBRF;
+      if (not %found);
+        p_SUCCESS = 'N';
+        p_MSG = '002';
+        return *off;
+      else;
+        p_SUCCESS = 'Y';
+        p_MSG = *blanks;
+        return *on;
+      endif;
+
+    other;
+
+      p_SUCCESS = 'N';
+      p_MSG = '003';
+      return *off;
+
+    endsl;
+
+  endif;
+
+END-PROC MNTLIB_initialize;
 
 //*=========================================================================================*
 //* Get Values                                                                              *
 //*=========================================================================================*
 
-DCL-PROC MNTJOB_getValues EXPORT;
+DCL-PROC MNTLIB_getValues EXPORT;
 
-  DCL-PI MNTJOB_getValues;
-    p_JOB  CHAR(10); // <-- Job
-    p_DSCR CHAR(35); // <-- Description
-    p_CRTE CHAR(10); // <-- Create environment
-    p_JQ   CHAR(10); // <-- Job queue
-    p_JQL  CHAR(10); // <-- Job queue (Library)
+  DCL-PI MNTLIB_getValues;
+    p_LIB  CHAR(10); // <-- Library
+    p_SLIB CHAR(10); // <-- Shadow library
   END-PI;
 
   if (g_MODE = MODE_CREATE);
 
-    p_JOB = *blanks;
-    p_DSCR = *blanks;
-    p_CRTE = *blanks;
-    p_JQ = *blanks;
-    p_JQL = *blanks;
+    p_LIB  = *blanks;
+    p_SLIB = *blanks;
 
   else;
 
-    p_JOB = X1JOB;
-    p_DSCR = X1DSCR;
-    p_CRTE = X1CRTE;
-    p_JQ = X1JQ;
-    p_JQL = X1JQL;
+    p_LIB  = X2LIB;
+    p_SLIB = X2SLIB;
 
   endif;
 
-END-PROC MNTJOB_getValues;
+END-PROC MNTLIB_getValues;
 
 //*=========================================================================================*
 //* Set Values                                                                              *
 //*=========================================================================================*
 
-DCL-PROC MNTJOB_setValues EXPORT;
+DCL-PROC MNTLIB_setValues EXPORT;
 
-  DCL-PI MNTJOB_setValues;
-    p_JOB  CHAR(10) CONST; // <-- Job
-    p_DSCR CHAR(35) CONST; // <-- Description
-    p_CRTE CHAR(10) CONST; // <-- Create environment
-    p_JQ   CHAR(10) CONST; // <-- Job queue
-    p_JQL  CHAR(10) CONST; // <-- Job queue (Library)
+  DCL-PI MNTLIB_setValues;
+    p_LIB  CHAR(10) CONST; // --> Library
+    p_SLIB CHAR(10) CONST; // --> Shadow library
   END-PI;
 
-  g_JOB = p_JOB;
-  g_DSCR = p_DSCR;
-  g_CRTE = p_CRTE;
-  g_JQ = p_JQ;
-  g_JQL = p_JQL;
+  g_LIB  = p_LIB;
+  g_SLIB = p_SLIB;
 
-END-PROC MNTJOB_setValues;
+END-PROC MNTLIB_setValues;
 
 //*=========================================================================================*
 //* Check                                                                                   *
 //*=========================================================================================*
 
-DCL-PROC MNTJOB_check EXPORT;
+DCL-PROC MNTLIB_check EXPORT;
 
-  DCL-PI MNTJOB_check IND; // <-- Success
-    p_FLD CHAR(10);  // <-- Feld
-    p_MSG CHAR(256); // <-- Nachricht
+  DCL-PI MNTLIB_check IND; // <-- Success
+    p_SUCCESS CHAR(1);     // <-- Success
+    p_FLD     CHAR(10);    // <-- Field
+    p_MSG     CHAR(256);   // <-- Message
   END-PI;
 
   DCL-S l_MSGID  CHAR(7);   // Message-Id.
@@ -221,20 +261,20 @@ DCL-PROC MNTJOB_check EXPORT;
     if (g_MODE = MODE_CREATE or
         g_MODE = MODE_COPY);
 
-      // The value in field 'Job' is not valid
-      If ChkVal('*NAME' : 10 : %Addr(g_JOB)) = '*INVALID';
-        p_FLD = 'JOB';
+      // The value in field 'Library' is not valid
+      if ChkVal('*NAME' : 10 : %Addr(g_LIB)) = '*INVALID';
+        p_FLD = 'LIB';
         l_MSGID = 'ERR0002';
         Leave;
-      EndIf;
+      endif;
 
-      // The job does already exist
-      SetLL ( g_JOB ) JOBRF;
-      If %Equal;
-        p_FLD = 'JOB';
+      // The library does already exist
+      SetLL ( g_JOB : g_LIB) LIBRF;
+      if %Equal;
+        p_FLD = 'LIB';
         l_MSGID = 'ERR0001';
         Leave;
-      EndIf;
+      endif;
 
     endif;
 
@@ -243,37 +283,30 @@ DCL-PROC MNTJOB_check EXPORT;
         g_MODE = MODE_COPY or
         g_MODE = MODE_CHANGE);
 
-      // The value in field 'Description' is not valid
-      If g_DSCR = *Blanks;
-        p_FLD = 'DSCR';
+      // The value in field 'Shadow library' is not valid
+      if ChkVal('*NAME' : 10 : %Addr(g_SLIB)) = '*INVALID';
+        p_FLD = 'SLIB';
         l_MSGID = 'ERR0003';
         Leave;
-      EndIf;
+      endif;
 
-      // The value in field 'Create environment' is not valid
-      If g_CRTE <> '*YES' And
-         g_CRTE <> '*NO';
-        p_FLD = 'CRTE';
-        l_MSGID = 'ERR0004';
-        Leave;
-      EndIf;
+      // The shadow library does already exist
+      if Not (g_MODE = MODE_CHANGE and
+              g_SLIB = X2SLIB);
+        SetLL (g_JOB : g_SLIB) LIBRF01;
+        if %Equal;
+          p_FLD = 'SLIB';
+          l_MSGID = 'ERR0004';
+          Leave;
+        endif;
+      endif;
 
-      // The value in field 'Job queue' is not valid
-      If ChkVal('*NAME' : 10 : %Addr(g_JQ)) = '*INVALID';
-        p_FLD = 'JQ';
-        l_MSGID = 'ERR0045';
+      // Shadow library must not be equal to library
+      if g_SLIB = g_LIB;
+        p_FLD = 'SLIB';
+        l_MSGID = 'ERR0005';
         Leave;
-      EndIf;
-
-      // The value in field 'Job queue - Library' is not valid
-      If g_JQL <> '*LIBL' And
-         g_JQL <> '*CURLIB' And
-         ChkVal('*NAME' : 10 : %Addr(g_JQL)) =
-        '*INVALID';
-        p_FLD = 'JQL';
-        l_MSGID = 'ERR0048';
-        Leave;
-      EndIf;
+      endif;
 
     endif;
 
@@ -285,31 +318,32 @@ DCL-PROC MNTJOB_check EXPORT;
 
   // Return
   if (l_MSGID = *blanks);
-
+    p_SUCCESS = 'Y';
     return *on;
 
   else;
 
     p_MSG = rtvMsgText(
       l_MSGID :  // --> Message-Id.
-      'MNTJOB' : // --> Message file
+      'MNTLIB' : // --> Message file
       '*LIBL' :  // --> Library
       l_MSGDTA   // --> Message data
     );
 
+    p_SUCCESS = 'N';
     return *off;
 
   endif;
 
-END-PROC MNTJOB_check;
+END-PROC MNTLIB_check;
 
 //*=========================================================================================*
 //* Book                                                                                    *
 //*=========================================================================================*
 
-DCL-PROC MNTJOB_book EXPORT;
+DCL-PROC MNTLIB_book EXPORT;
 
-  DCL-PI MNTJOB_book IND; // <-- Success
+  DCL-PI MNTLIB_book;
   END-PI;
 
   select;
@@ -331,28 +365,18 @@ DCL-PROC MNTJOB_book EXPORT;
 
   endsl;
 
-  return *on;
-
   //*------------------------------------------------------------------------------------------*
   //* Mode Create                                                                              *
   //*------------------------------------------------------------------------------------------*
 
   begsr modeCreate;
 
-    clear JOBRF;
+    clear LIBRF;
+    X2JOB  = g_JOB;
 
     exsr fillRecord;
 
-    X1STS = '*RDY';
-    X1PHS = '*NONE';
-    X1ERR = 'N';
-    X1ETXT = *Blanks;
-    X1BJOB = *Blanks;
-    X1BUSR = *Blanks;
-    X1BNBR = *Blanks;
-    X1SAC = 'N';
-    X1CFRM = *Blanks;
-    write JOBRF;
+    write LIBRF;
 
     commit;
 
@@ -366,16 +390,7 @@ DCL-PROC MNTJOB_book EXPORT;
 
     exsr fillRecord;
 
-    X1STS = '*RDY';
-    X1PHS = '*NONE';
-    X1ERR = 'N';
-    X1ETXT = *Blanks;
-    X1BJOB = *Blanks;
-    X1BUSR = *Blanks;
-    X1BNBR = *Blanks;
-    X1SAC = 'N';
-    X1CFRM = *Blanks;
-    write JOBRF;
+    write LIBRF;
 
     commit;
 
@@ -389,7 +404,7 @@ DCL-PROC MNTJOB_book EXPORT;
 
     exsr fillRecord;
 
-    update JOBRF;
+    update LIBRF;
 
     commit;
 
@@ -401,7 +416,7 @@ DCL-PROC MNTJOB_book EXPORT;
 
   begsr modeDelete;
 
-    delete JOBRF;
+    delete LIBRF;
 
     commit;
 
@@ -421,12 +436,9 @@ DCL-PROC MNTJOB_book EXPORT;
 
   begsr fillRecord;
 
-    X1JOB = g_JOB;
-    X1DSCR = g_DSCR;
-    X1CRTE = g_CRTE;
-    X1JQ = g_JQ;
-    X1JQL = g_JQL;
+    X2LIB  = g_LIB;
+    X2SLIB = g_SLIB;
 
   endsr;
 
-END-PROC MNTJOB_book;
+END-PROC MNTLIB_book;

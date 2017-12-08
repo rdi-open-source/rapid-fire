@@ -9,18 +9,6 @@
 //* http://www.gnu.org/licenses/gpl-2.0.html                                                *
 //*                                                                                         *
 //*-----------------------------------------------------------------------------------------*
-//* >>PRE-COMPILER<<                                                                        *
-//*   >>CRTCMD<< CRTBNDRPG PGM(&LI/&OB) SRCFILE(&SL/&SF) SRCMBR(&SM);                       *
-//*   >>IMPORTANT<<                                                                         *
-//*     >>PARM<< DFTACTGRP(*NO);                                                            *
-//*     >>PARM<< DBGVIEW(&U1);                                                              *
-//*     >>PARM<< ACTGRP(&U2);                                                               *
-//*     >>PARM<< TGTRLS(&TR);                                                               *
-//*     >>PARM<< OPTION(*EVENTF);                                                           *
-//*   >>END-IMPORTANT<<                                                                     *
-//*   >>EXECUTE<<                                                                           *
-//* >>END-PRE-COMPILER<<                                                                    *
-//*-----------------------------------------------------------------------------------------*
 
 DCL-PR WR0002PG
        ExtPgm('WR0002PG');

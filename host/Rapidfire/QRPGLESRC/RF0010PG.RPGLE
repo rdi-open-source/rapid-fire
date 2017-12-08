@@ -10,7 +10,7 @@
 //*                                                                                         *
 //*-----------------------------------------------------------------------------------------*
 //*                                                                                         *
-//* Maintain Conversion                                                                     *
+//* Maintain Conversions                                                                    *
 //*                                                                                         *
 //*-----------------------------------------------------------------------------------------*
 //*                                                                                         *
@@ -76,18 +76,6 @@
 //*------------+--------+-------------------------------------------------------------------*
 //* 13.06.2016 I   TR   I Enabled program for '*DISPLAY' mode.                              *
 //*------------+--------+-------------------------------------------------------------------*
-//* >>PRE-COMPILER<<                                                                        *
-//*   >>CRTCMD<< CRTBNDRPG PGM(&LI/&OB) SRCFILE(&SL/&SF) SRCMBR(&SM);                       *
-//*   >>IMPORTANT<<                                                                         *
-//*     >>PARM<< DFTACTGRP(*NO);                                                            *
-//*     >>PARM<< DBGVIEW(&U1);                                                              *
-//*     >>PARM<< ACTGRP(&U2);                                                               *
-//*     >>PARM<< TGTRLS(&TR);                                                               *
-//*     >>PARM<< OPTION(*EVENTF);                                                           *
-//*   >>END-IMPORTANT<<                                                                     *
-//*   >>EXECUTE<<                                                                           *
-//* >>END-PRE-COMPILER<<                                                                    *
-//*-----------------------------------------------------------------------------------------*
 
 // Control
 
@@ -100,10 +88,6 @@ CTL-OPT ExtBinInt(*YES);
 
 DCL-F RF0010DF Workstn(*EXT) USAGE(*INPUT:*OUTPUT)
       InfDS(FIDS_RF0010DF);
-DCL-F JOBS Disk(*EXT) USAGE(*INPUT) KEYED Rename(JOBS : JOBRF);
-DCL-F FILES Disk(*EXT) USAGE(*INPUT) KEYED Rename(FILES : FILERF);
-DCL-F CNVS Disk(*EXT) USAGE(*UPDATE:*DELETE:*OUTPUT)
-      KEYED Rename(CNVS : CNVRF) Commit;
 
 //*-----------------------------------------------------------------------------------------*
 
@@ -135,26 +119,17 @@ END-PI;
 
 /Copy QCPYSRC,SNDERRMSG
 
-// Prozedurenprototyp für Prozedur 'HdlRcdLck'
-
-/Copy QCPYSRC,HDLRCDLCK
-
 // Prozedurenprototyp für Prozedur 'QUHDSPH'
 
 /Copy QCPYSRC,QUHDSPH
-
-// Prozedurenprototyp für Prozedur 'ChkVal'
-
-/Copy QCPYSRC,CHKVAL
 
 // Datenstruktur für Format 'ERRC0100' für Fehlercode
 
 /Copy QCPYSRC,ERRC0100
 
-// Programmstatusdatenstruktur
+// Prozedurenprototyp für Prozedur 'MNTCNV'
 
-DCL-DS PSDS LEN(429) PSDS;
-END-DS;
+/Copy QCPYSRC,MNTCNV
 
 // Dateiinformationsdatenstruktur für RF0010DF
 
@@ -177,67 +152,69 @@ DCL-S ITLoop IND Inz(*On);                                               // Schl
 DCL-S ITFktKey CHAR(10);                                                 // Funktionstaste
 DCL-S ITSts CHAR(10);                                                    // Nachrichten-Id. b
 DCL-S ITMsgId CHAR(7);                                                   // Nachrichten-Id.
+DCL-S ITMsgDta CHAR(256);                                                // Nachrichtendaten
+DCL-S ITMsgF   CHAR(10);                                                 // Nachrichtendatei
 DCL-S ITDsp INT(10) Dim(2);                                              // Anzeige Hilfetext
 DCL-S ITNbr INT(10);                                                     // Anzahl Hilfetextm
 DCL-S ITLftC INT(10) Dim(2);                                             // Linke Ecke
 DCL-S ITRghC INT(10) Dim(2);                                             // Rechte Ecke
 DCL-S ITCsrL INT(10) Dim(2);                                             // Cursorposition
 DCL-S ITHlp CHAR(1);                                                     // Kontextbezogene H
-DCL-S DO_X PACKED(7);
+DCL-S ITXFld CHAR(10);                                                   // Feld
+DCL-S ITXMsg CHAR(256);                                                  // Nachricht
+DCL-S ITSUCC CHAR(1);                                                    // Erfolg
 
 //*-----------------------------------------------------------------------------------------*
 
 // Bezugszahl für 'Schlüsselwort SFLEND in Nachrichtensubdatei aktivieren' auf 'Ja' setzen
 *IN50 = *On;
-// Datensatz lesen
-Chain ( PIJOB ) JOBRF;
-// Fehler : Der Datensatz konnte nicht gefunden werden
-If Not %Found;
-  PIRtCd = '*ERROR';
-Else;
-  // Datensatz lesen
-  Chain ( PIJOB : PIPOS ) FILERF;
-  // Fehler : Der Datensatz konnte nicht gefunden werden
-  If Not %Found;
-    PIRtCd = '*ERROR';
-  Else;
-    // Job initialisieren
-    DFJOB = PIJOB;
-    // Position initialisieren
-    DFPOS = PIPOS;
-    Select;
-      // Modus : 'Erstellen'
-    When PIMode = '*CREATE';
-      ExSr SR005;
-      If PIRtCd = '*ENTER';
-        PIFTC = DFFTC;
-      EndIf;
-      // Modus : 'Ändern'
-    When PIMode = '*CHANGE';
-      ExSr SR010;
-      // Modus : 'Kopieren'
-    When PIMode = '*COPY';
-      ExSr SR015;
-      If PIRtCd = '*ENTER';
-        PIFTC = DFFTC;
-      EndIf;
-      // Modus : 'Löschen'
-    When PIMode = '*DELETE';
-      ExSr SR020;
-      // Modus : 'Anzeigen'
-    When PIMode = '*DISPLAY';
-      ExSr SR025;
-    EndSl;
-    // Datensatz entsperren
-    Unlock CNVS;
-  EndIf;
+// Dateien öffnen
+MNTCNV_openFiles();
+// Initialisieren
+If MNTCNV_initialize(
+  PIMode : // --> Mode
+  PIJOB  : // --> Job
+  PIPOS  : // --> Position
+  PIFTC  : // --> Field to convert
+  ITSUCC : // <-- Success
+  ITXMsg   // <-- Message
+);
+  // Job initialisieren
+  DFJOB = PIJOB;
+  // Position initialisieren
+  DFPOS = PIPOS;
+  Select;
+    // Modus : 'Erstellen'
+  When PIMode = '*CREATE';
+    ExSr SR005;
+    If PIRtCd = '*ENTER';
+      PIFTC = DFFTC;
+    EndIf;
+    // Modus : 'Ändern'
+  When PIMode = '*CHANGE';
+    ExSr SR010;
+    // Modus : 'Kopieren'
+  When PIMode = '*COPY';
+    ExSr SR015;
+    If PIRtCd = '*ENTER';
+      PIFTC = DFFTC;
+    EndIf;
+    // Modus : 'Löschen'
+  When PIMode = '*DELETE';
+    ExSr SR020;
+    // Modus : 'Anzeigen'
+  When PIMode = '*DISPLAY';
+    ExSr SR025;
+  EndSl;
 EndIf;
+// Dateien schließen
+MNTCNV_closeFiles();
 // Programm nicht hauptspeicherresident verlassen
 *INLR = *On;
 
-//-----------------------------------------------------------------------
-// Erstellen
-//-----------------------------------------------------------------------
+//*-----------------------------------------------------------------------------------------*
+//* Erstellen                                                                               *
+//*-----------------------------------------------------------------------------------------*
 
 BegSr SR005;
   // Überschrift für Modus 'Erstellen' anzeigen
@@ -246,27 +223,19 @@ BegSr SR005;
   *IN(3) = *OFF;
   *IN(4) = *OFF;
   *IN(5) = *OFF;
-  // Bildschirm mit Standartwerten füllen
+  // Bildschirm mit Werten füllen
   ExSr SR030;
   // Bildschirm verarbeiten
   ExSr SR045;
   If PIRtCd = '*ENTER';
-    // Datensatz initialisieren
-    Clear CNVRF;
-    XBJOB = PIJOB;
-    XBPOS = PIPOS;
-    // Datenbank mit Werten aus dem Bildschirm füllen
-    ExSr SR040;
-    // Datensatz schreiben
-    Write CNVRF;
-    // Modifikationen festschreiben
-    Commit;
+    // Verbuchen
+    MNTCNV_book();
   EndIf;
 EndSr;
 
-//-------------------------------------------------------------------------------------------
-// Ändern
-//-------------------------------------------------------------------------------------------
+//*-----------------------------------------------------------------------------------------*
+//* Ändern                                                                                  *
+//*-----------------------------------------------------------------------------------------*
 
 BegSr SR010;
   // Überschrift für Modus 'Ändern' anzeigen
@@ -275,35 +244,19 @@ BegSr SR010;
   *IN(3) = *OFF;
   *IN(4) = *OFF;
   *IN(5) = *OFF;
-  // Datensatz lesen
-  DoU Not %Error;
-    Chain(E) ( PIJOB : PIPOS : PIFTC ) CNVRF;
-    If %Error;
-      HdlRcdLck(PSDS);
-    EndIf;
-  EndDo;
-  // Fehler : Der Datensatz konnte nicht gefunden werden
-  If Not %Found;
-    PIRtCd = '*ERROR';
-  Else;
-    // Bildschirm mit Werten aus der Datenbank füllen
-    ExSr SR035;
-    // Bildschirm verarbeiten
-    ExSr SR045;
-    If PIRtCd = '*ENTER';
-      // Datenbank mit Werten aus dem Bildschirm füllen
-      ExSr SR040;
-      // Datensatz aktualisieren
-      Update CNVRF;
-      // Modifikationen festschreiben
-      Commit;
-    EndIf;
+  // Bildschirm mit Werten füllen
+  ExSr SR030;
+  // Bildschirm verarbeiten
+  ExSr SR045;
+  If PIRtCd = '*ENTER';
+    // Verbuchen
+    MNTCNV_book();
   EndIf;
 EndSr;
 
-//-------------------------------------------------------------------------------------------
-// Kopieren
-//-------------------------------------------------------------------------------------------
+//*-----------------------------------------------------------------------------------------*
+//* Kopieren                                                                                *
+//*-----------------------------------------------------------------------------------------*
 
 BegSr SR015;
   // Überschrift für Modus 'Kopieren' anzeigen
@@ -312,30 +265,19 @@ BegSr SR015;
   *IN(3) = *ON;
   *IN(4) = *OFF;
   *IN(5) = *OFF;
-  // Datensatz lesen
-  Chain(N) ( PIJOB : PIPOS : PIFTC ) CNVRF;
-  // Fehler : Der Datensatz konnte nicht gefunden werden
-  If Not %Found;
-    PIRtCd = '*ERROR';
-  Else;
-    // Bildschirm mit Werten aus der Datenbank füllen
-    ExSr SR035;
-    // Bildschirm verarbeiten
-    ExSr SR045;
-    If PIRtCd = '*ENTER';
-      // Datenbank mit Werten aus dem Bildschirm füllen
-      ExSr SR040;
-      // Datensatz schreiben
-      Write CNVRF;
-      // Modifikationen festschreiben
-      Commit;
-    EndIf;
+  // Bildschirm mit Werten füllen
+  ExSr SR030;
+  // Bildschirm verarbeiten
+  ExSr SR045;
+  If PIRtCd = '*ENTER';
+    // Verbuchen
+    MNTCNV_book();
   EndIf;
 EndSr;
 
-//-------------------------------------------------------------------------------------------
-// Löschen
-//-------------------------------------------------------------------------------------------
+//*-----------------------------------------------------------------------------------------*
+//* Löschen                                                                                 *
+//*-----------------------------------------------------------------------------------------*
 
 BegSr SR020;
   // Überschrift für Modus 'Löschen' anzeigen
@@ -344,43 +286,29 @@ BegSr SR020;
   *IN(3) = *OFF;
   *IN(4) = *ON;
   *IN(5) = *OFF;
-  // Datensatz lesen
-  DoU Not %Error;
-    Chain(E) ( PIJOB : PIPOS : PIFTC ) CNVRF;
-    If %Error;
-      HdlRcdLck(PSDS);
-    EndIf;
-  EndDo;
-  // Fehler : Der Datensatz konnte nicht gefunden werden
-  If Not %Found;
-    PIRtCd = '*ERROR';
-  Else;
-    // Bildschirm mit Werten aus der Datenbank füllen
-    ExSr SR035;
-    // Bildschirm verarbeiten
-    ExSr SR045;
-    If PIRtCd = '*ENTER';
-      // Bestätigung für Löschung einholen
-      ExFmt DSPF020W;
-      // Funktionstaste abrufen
-      ITFktKey = RtvFktKey(AIDCde);
-      // Datensatz löschen
-      If ITFktKey = '*ENTER';
-        // Datensatz löschen
-        Delete CNVRF;
-        // Modifikationen festschreiben
-        Commit;
-      Else;
-        // Löschung abgebrochen
-        PIRtCd = '*F12';
-      EndIf;
+  // Bildschirm mit Werten füllen
+  ExSr SR030;
+  // Bildschirm verarbeiten
+  ExSr SR045;
+  If PIRtCd = '*ENTER';
+    // Bestätigung für Löschung einholen
+    ExFmt DSPF020W;
+    // Funktionstaste abrufen
+    ITFktKey = RtvFktKey(AIDCde);
+    // Datensatz löschen
+    If ITFktKey = '*ENTER';
+      // Verbuchen
+      MNTCNV_book();
+    Else;
+      // Löschung abgebrochen
+      PIRtCd = '*F12';
     EndIf;
   EndIf;
 EndSr;
 
-//-------------------------------------------------------------------------------------------
-// Anzeigen
-//-------------------------------------------------------------------------------------------
+//*-----------------------------------------------------------------------------------------*
+//* Anzeigen                                                                                *
+//*-----------------------------------------------------------------------------------------*
 
 BegSr SR025;
   // Überschrift für Modus 'Anzeigen' anzeigen
@@ -389,73 +317,44 @@ BegSr SR025;
   *IN(3) = *OFF;
   *IN(4) = *OFF;
   *IN(5) = *ON;
-  // Datensatz lesen
-  Chain(N) ( PIJOB : PIPOS : PIFTC ) CNVRF;
-  // Fehler : Der Datensatz konnte nicht gefunden werden
-  If Not %Found;
-    PIRtCd = '*ERROR';
-  Else;
-    // Bildschirm mit Werten aus der Datenbank füllen
-    ExSr SR035;
-    // Bildschirm verarbeiten
-    ExSr SR045;
+  // Bildschirm mit Werten füllen
+  ExSr SR030;
+  // Bildschirm verarbeiten
+  ExSr SR045;
+  If PIRtCd = '*ENTER';
+    // Verbuchen
+    MNTCNV_book();
   EndIf;
 EndSr;
 
-//-------------------------------------------------------------------------------------------
-// Bildschirm mit Standartwerten füllen
-//-------------------------------------------------------------------------------------------
+//*-----------------------------------------------------------------------------------------*
+//* Bildschirm mit Werten füllen                                                            *
+//*-----------------------------------------------------------------------------------------*
 
 BegSr SR030;
-  DFFTC = *Blanks;
-  DFRFT = *Blanks;
-  DFSTM1 = *Blanks;
-  DFSTM2 = *Blanks;
-  DFSTM3 = *Blanks;
-  DFSTM4 = *Blanks;
-  DFSTM5 = *Blanks;
-  DFSTM6 = *Blanks;
+  MNTCNV_getValues(
+    DFFTC  : // <-- Field to convert
+    DFRFT  : // <-- Rename field in old file to
+    DFSTM1 : // <-- Statement
+    DFSTM2 : // <-- Statement
+    DFSTM3 : // <-- Statement
+    DFSTM4 : // <-- Statement
+    DFSTM5 : // <-- Statement
+    DFSTM6   // <-- Statement
+  );
 EndSr;
 
-//-------------------------------------------------------------------------------------------
-// Bildschirm mit Werten aus der Datenbank füllen
-//-------------------------------------------------------------------------------------------
-
-BegSr SR035;
-  DFFTC = XBFTC;
-  DFRFT = XBRFT;
-  DFSTM1 = XBSTM1;
-  DFSTM2 = XBSTM2;
-  DFSTM3 = XBSTM3;
-  DFSTM4 = XBSTM4;
-  DFSTM5 = XBSTM5;
-  DFSTM6 = XBSTM6;
-EndSr;
-
-//-------------------------------------------------------------------------------------------
-// Datenbank mit Werten aus dem Bildschirm füllen
-//-------------------------------------------------------------------------------------------
-
-BegSr SR040;
-  XBFTC = DFFTC;
-  XBRFT = DFRFT;
-  XBSTM1 = DFSTM1;
-  XBSTM2 = DFSTM2;
-  XBSTM3 = DFSTM3;
-  XBSTM4 = DFSTM4;
-  XBSTM5 = DFSTM5;
-  XBSTM6 = DFSTM6;
-EndSr;
-
-//-------------------------------------------------------------------------------------------
-// Bildschirm verarbeiten
-//-------------------------------------------------------------------------------------------
+//*-----------------------------------------------------------------------------------------*
+//* Bildschirm verarbeiten                                                                  *
+//*-----------------------------------------------------------------------------------------*
 
 BegSr SR045;
   // Fehlernachricht entfernen
   ITSts = RmvErrMsg('*SAME');
   // Fehlernachrichten-Id. initialisieren
   ITMsgId = *Blanks;
+  ITMsgDta = *Blanks;
+  ITMsgF = *Blanks;
   // Fehlerbezugszahlen initialisieren
   *IN(80) = *OFF;
   *IN(81) = *OFF;
@@ -499,6 +398,8 @@ BegSr SR045;
     ITSts = RmvErrMsg('*SAME');
     // Fehlernachrichten-Id. initialisieren
     ITMsgId = *Blanks;
+    ITMsgDta = *Blanks;
+    ITMsgF = *Blanks;
     // Fehlerbezugszahlen initialisieren
     *IN(80) = *OFF;
     *IN(81) = *OFF;
@@ -550,13 +451,13 @@ BegSr SR045;
       // Rückkehrcode setzen
       PIRtCd = '*ENTER';
       Leave;
-    endIf;
+    EndIf;
   EndDo;
 EndSr;
 
-//-------------------------------------------------------------------------------------------
-// Bildschirmfelder auf Fehler überprüfen
-//-------------------------------------------------------------------------------------------
+//*-----------------------------------------------------------------------------------------*
+//* Bildschirmfelder auf Fehler überprüfen                                                  *
+//*-----------------------------------------------------------------------------------------*
 
 BegSr SR050;
   // Namensfelder linksbündig ausrichten
@@ -566,72 +467,55 @@ BegSr SR050;
     DFFTC = %TRIML(DFFTC);
     DFRFT = %TRIML(DFRFT);
   EndIf;
-  FOR DO_X = 1 TO 1;
-    // *** Fehlerprüfung nur für Modus 'Erstellen' und 'Kopieren' ***
-    If PIMode = '*CREATE' Or
-      PIMode = '*COPY';
-      // The value in field 'Field to convert' is not valid
-      If ChkVal('*NAME' : 10 : %Addr(DFFTC)) =
-        '*INVALID';
-        ITMsgId = 'ERR0002';
-        *IN(87) = *OFF;
-        *IN(88) = *OFF;
-        *IN(89) = *ON;
-        Leave;
-      EndIf;
-      // The field to convert does already exist
-      SetLL ( PIJOB : PIPOS : DFFTC ) CNVRF;
-      If %Equal;
-        ITMsgId = 'ERR0001';
-        *IN(87) = *OFF;
-        *IN(88) = *OFF;
-        *IN(89) = *ON;
-        Leave;
-      EndIf;
-    EndIf;
-    // *** Fehlerprüfung nur für Modus 'Erstellen', 'Kopieren' und 'Ändern' ***
-    If PIMode = '*CREATE' Or
-      PIMode = '*COPY' Or
-      PIMode = '*CHANGE';
-      // The value in field 'Rename field in old file to' is not valid
-      If DFRFT <> '*NONE' And
-        ChkVal('*NAME' : 10 : %Addr(DFRFT)) =
-        '*INVALID';
-        ITMsgId = 'ERR0003';
-        *IN(87) = *ON;
-        *IN(88) = *OFF;
-        *IN(89) = *ON;
-        Leave;
-      EndIf;
-      // Both fields have to be different
-      If DFRFT <> '*NONE' And
-        (DFFTC = DFRFT);
-        ITMsgId = 'ERR0005';
-        *IN(87) = *OFF;
-        *IN(88) = *OFF;
-        *IN(89) = *OFF;
-        Leave;
-      EndIf;
-      // The value in field 'Statement' is not valid
-      If DFSTM1 = *Blanks And
-        DFSTM2 = *Blanks And
-        DFSTM3 = *Blanks And
-        DFSTM4 = *Blanks And
-        DFSTM5 = *Blanks And
-        DFSTM6 = *Blanks;
-        ITMsgId = 'ERR0006';
-        *IN(87) = *OFF;
-        *IN(88) = *ON;
-        *IN(89) = *ON;
-        Leave;
-      EndIf;
-    EndIf;
-  ENDFOR;
+  // *** Fehlerprüfung nur für Modus 'Erstellen', 'Kopieren' und 'Ändern' ***
+  If PIMode = '*CREATE' Or
+    PIMode = '*COPY' Or
+    PIMode = '*CHANGE';
+    MNTCNV_setValues(
+      DFFTC  : // <-- Field to convert
+      DFRFT  : // <-- Rename field in old file to
+      DFSTM1 : // <-- Statement
+      DFSTM2 : // <-- Statement
+      DFSTM3 : // <-- Statement
+      DFSTM4 : // <-- Statement
+      DFSTM5 : // <-- Statement
+      DFSTM6   // <-- Statement
+    );
+  EndIf;
+  // Prüfen
+  If Not MNTCNV_check(
+    ITSUCC : // <-- Erfolg
+    ITXFld : // <-- Feld
+    ITXMsg   // <-- Nachricht
+  );
+    // Fehler setzen
+    ITMsgId = 'CPF9897';
+    ITMsgDta = ITXMsg;
+    ITMsgF = 'QCPFMSG';
+    Select;
+    When (ITXFld = 'FTC');
+      *IN(87) = *OFF;
+      *IN(88) = *OFF;
+      *IN(89) = *ON;
+    When (ITXFld = 'RFT');
+      *IN(87) = *ON;
+      *IN(88) = *OFF;
+      *IN(89) = *ON;
+    When (ITXFld = 'FTCRFT');
+      *IN(87) = *OFF;
+      *IN(88) = *OFF;
+      *IN(89) = *OFF;
+    When (ITXFld = 'STM');
+      *IN(87) = *OFF;
+      *IN(88) = *ON;
+      *IN(89) = *ON;
+    EndSl;
+  EndIf;
 EndSr;
 
-//-------------------------------------------------------------------------------------------
-// Fehlernachricht in die Programmnachrichtenwarteschlange schreiben
-//-------------------------------------------------------------------------------------------
+//*-----------------------------------------------------------------------------------------*
+//* Fehlernachricht in die Programmnachrichtenwarteschlange schreiben                       *
+//*-----------------------------------------------------------------------------------------*
 
 BegSr SR055;
   // Bezugszahl für 'Es liegt ein Fehler vor' auf 'Ja' setzen
@@ -640,15 +524,15 @@ BegSr SR055;
   ITSts = SndErrMsg(
    '*SAME' :                                                             // --> Aufrufstapele
    ITMsgId :                                                             // --> Nachrichten-I
-   'RF0010MF' :                                                          // --> Nachrichtenda
+   ITMsgF  :                                                             // --> Nachrichtenda
    '*LIBL' :                                                             // --> Bibliothek Na
-   *Blanks                                                               // --> Nachrichtenda
+   ITMsgDta                                                              // --> Nachrichtenda
   );
 EndSr;
 
-//-------------------------------------------------------------------------------------------
-// Hilfe
-//-------------------------------------------------------------------------------------------
+//*-----------------------------------------------------------------------------------------*
+//* Hilfe                                                                                   *
+//*-----------------------------------------------------------------------------------------*
 
 BegSr SR060;
   // Kontextbezogene Hilfe initialisiern
@@ -785,15 +669,17 @@ BegSr SR060;
   *IN(99) = *OFF;
 EndSr;
 
-//-------------------------------------------------------------------------------------------
-// Bedienerführung
-//-------------------------------------------------------------------------------------------
+//*-----------------------------------------------------------------------------------------*
+//* Bedienerführung                                                                         *
+//*-----------------------------------------------------------------------------------------*
 
 BegSr SR065;
   Select;
     // No prompt for the requested field available
   Other;
     ITMsgId = 'ERR0007';
+    ITMsgDta = *Blanks;
+    ITMsgF = 'RF0010MF';
   EndSl;
   // Cursor auf der letzten Position positionieren
   *IN(90) = *ON;

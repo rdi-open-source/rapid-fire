@@ -77,18 +77,6 @@
 //*------------+--------+-------------------------------------------------------------------*
 //* 13.06.2016 I   TR   I Enabled program for '*DISPLAY' mode.                              *
 //*------------+--------+-------------------------------------------------------------------*
-//* >>PRE-COMPILER<<                                                                        *
-//*   >>CRTCMD<< CRTBNDRPG PGM(&LI/&OB) SRCFILE(&SL/&SF) SRCMBR(&SM);                       *
-//*   >>IMPORTANT<<                                                                         *
-//*     >>PARM<< DFTACTGRP(*NO);                                                            *
-//*     >>PARM<< DBGVIEW(&U1);                                                              *
-//*     >>PARM<< ACTGRP(&U2);                                                               *
-//*     >>PARM<< TGTRLS(&TR);                                                               *
-//*     >>PARM<< OPTION(*EVENTF);                                                           *
-//*   >>END-IMPORTANT<<                                                                     *
-//*   >>EXECUTE<<                                                                           *
-//* >>END-PRE-COMPILER<<                                                                    *
-//*-----------------------------------------------------------------------------------------*
 
 // Control
 
@@ -101,13 +89,6 @@ CTL-OPT ExtBinInt(*YES);
 
 DCL-F RF0017DF Workstn(*EXT) USAGE(*INPUT:*OUTPUT)
       InfDS(FIDS_RF0017DF);
-DCL-F JOBS Disk(*EXT) USAGE(*INPUT) KEYED Rename(JOBS : JOBRF);
-DCL-F FILES Disk(*EXT) USAGE(*INPUT) KEYED Rename(FILES : FILERF);
-DCL-F LIBRARIES Disk(*EXT) USAGE(*INPUT)
-      KEYED Rename(LIBRARIES : LIBRF);
-DCL-F LIBLS Disk(*EXT) USAGE(*INPUT) KEYED Rename(LIBLS : LIBLSTRF);
-DCL-F AREAS Disk(*EXT) USAGE(*UPDATE:*DELETE:*OUTPUT)
-      KEYED Rename(AREAS : AREARF) Commit;
 
 //*-----------------------------------------------------------------------------------------*
 
@@ -147,26 +128,17 @@ END-PI;
 
 /Copy QCPYSRC,SNDERRMSG
 
-// Prozedurenprototyp für Prozedur 'HdlRcdLck'
-
-/Copy QCPYSRC,HDLRCDLCK
-
 // Prozedurenprototyp für Prozedur 'QUHDSPH'
 
 /Copy QCPYSRC,QUHDSPH
-
-// Prozedurenprototyp für Prozedur 'ChkVal'
-
-/Copy QCPYSRC,CHKVAL
 
 // Datenstruktur für Format 'ERRC0100' für Fehlercode
 
 /Copy QCPYSRC,ERRC0100
 
-// Programmstatusdatenstruktur
+// Prozedurenprototyp für Prozedur 'MNTAREA'
 
-DCL-DS PSDS LEN(429) PSDS;
-END-DS;
+/Copy QCPYSRC,MNTAREA
 
 // Dateiinformationsdatenstruktur für RF0017DF
 
@@ -190,6 +162,8 @@ DCL-S ITFktKey CHAR(10);                                                 // Funk
 DCL-S ITSts CHAR(10);                                                    // Nachrichten-Id. b
 DCL-S ITFld CHAR(10);                                                    // Feld
 DCL-S ITMsgId CHAR(7);                                                   // Nachrichten-Id.
+DCL-S ITMsgDta CHAR(256);                                                // Nachrichtendaten
+DCL-S ITMsgF   CHAR(10);                                                 // Nachrichtendatei
 DCL-S ITDsp INT(10) Dim(2);                                              // Anzeige Hilfetext
 DCL-S ITNbr INT(10);                                                     // Anzahl Hilfetextm
 DCL-S ITLftC INT(10) Dim(2);                                             // Linke Ecke
@@ -199,61 +173,61 @@ DCL-S ITHlp CHAR(1);                                                     // Kont
 DCL-S ITLIB CHAR(10);                                                    // Bibliothek
 DCL-S ITLIBL CHAR(10);                                                   // Bibliotheksliste
 DCL-S ITCCSID ZONED(10);                                                 // CCSID
-DCL-S DO_X PACKED(7);
+DCL-S ITXFld CHAR(10);                                                   // Feld
+DCL-S ITXMsg CHAR(256);                                                  // Nachricht
+DCL-S ITSUCC CHAR(1);                                                    // Erfolg
 
 //*-----------------------------------------------------------------------------------------*
 
 // Bezugszahl für 'Schlüsselwort SFLEND in Nachrichtensubdatei aktivieren' auf 'Ja' setzen
 *IN50 = *On;
-// Datensatz lesen
-Chain ( PIJOB ) JOBRF;
-// Fehler : Der Datensatz konnte nicht gefunden werden
-If Not %Found;
-  PIRtCd = '*ERROR';
-Else;
-  // Datensatz lesen
-  Chain ( PIJOB : PIPOS ) FILERF;
-  // Fehler : Der Datensatz konnte nicht gefunden werden
-  If Not %Found;
-    PIRtCd = '*ERROR';
-  Else;
-    // Job initialisieren
-    DFJOB = PIJOB;
-    // Position initialisieren
-    DFPOS = PIPOS;
-    Select;
-      // Modus : 'Erstellen'
-    When PIMode = '*CREATE';
-      ExSr SR005;
-      If PIRtCd = '*ENTER';
-        PIARA = DFARA;
-      EndIf;
-      // Modus : 'Ändern'
-    When PIMode = '*CHANGE';
-      ExSr SR010;
-      // Modus : 'Kopieren'
-    When PIMode = '*COPY';
-      ExSr SR015;
-      If PIRtCd = '*ENTER';
-        PIARA = DFARA;
-      EndIf;
-      // Modus : 'Löschen'
-    When PIMode = '*DELETE';
-      ExSr SR020;
-      // Modus : 'Anzeigen'
-    When PIMode = '*DISPLAY';
-      ExSr SR025;
-    EndSl;
-    // Datensatz entsperren
-    Unlock AREAS;
-  EndIf;
+// Dateien öffnen
+MNTAREA_openFiles();
+// Initialisieren
+If MNTAREA_initialize(
+  PIMode : // --> Mode
+  PIJOB  : // --> Job
+  PIPOS  : // --> Position
+  PIARA  : // --> Area
+  ITSUCC : // <-- Success
+  ITXMsg   // <-- Message
+);
+  // Job initialisieren
+  DFJOB = PIJOB;
+  // Position initialisieren
+  DFPOS = PIPOS;
+  Select;
+    // Modus : 'Erstellen'
+  When PIMode = '*CREATE';
+    ExSr SR005;
+    If PIRtCd = '*ENTER';
+      PIARA = DFARA;
+    EndIf;
+    // Modus : 'Ändern'
+  When PIMode = '*CHANGE';
+    ExSr SR010;
+    // Modus : 'Kopieren'
+  When PIMode = '*COPY';
+    ExSr SR015;
+    If PIRtCd = '*ENTER';
+      PIARA = DFARA;
+    EndIf;
+    // Modus : 'Löschen'
+  When PIMode = '*DELETE';
+    ExSr SR020;
+    // Modus : 'Anzeigen'
+  When PIMode = '*DISPLAY';
+    ExSr SR025;
+  EndSl;
 EndIf;
+// Dateien schließen
+MNTAREA_closeFiles();
 // Programm nicht hauptspeicherresident verlassen
 *INLR = *On;
 
-//-----------------------------------------------------------------------
-// Erstellen
-//-----------------------------------------------------------------------
+//*-----------------------------------------------------------------------------------------*
+//* Erstellen                                                                               *
+//*-----------------------------------------------------------------------------------------*
 
 BegSr SR005;
   // Überschrift für Modus 'Erstellen' anzeigen
@@ -262,38 +236,19 @@ BegSr SR005;
   *IN(3) = *OFF;
   *IN(4) = *OFF;
   *IN(5) = *OFF;
-  // Bildschirm mit Standartwerten füllen
+  // Bildschirm mit Werten füllen
   ExSr SR030;
   // Bildschirm verarbeiten
   ExSr SR050;
   If PIRtCd = '*ENTER';
-    // Datensatz initialisieren
-    Clear AREARF;
-    XDJOB = PIJOB;
-    XDPOS = PIPOS;
-    // Datenbank mit Werten aus dem Bildschirm füllen
-    ExSr SR045;
-    // Datensatz schreiben
-    XDFILE = *Blanks;
-    XDRCDW = *Blanks;
-    XDCHGW = *Blanks;
-    XDJLNG = *Blank;
-    XDJRNL = *Blanks;
-    XDJRN = *Blanks;
-    XDRTO = *Zero;
-    XDRCO = *Zero;
-    XDTCS = *Zero;
-    XDCTA = *Zero;
-    XDCAP = *Zero;
-    Write AREARF;
-    // Modifikationen festschreiben
-    Commit;
+    // Verbuchen
+    MNTAREA_book();
   EndIf;
 EndSr;
 
-//-------------------------------------------------------------------------------------------
-// Ändern
-//-------------------------------------------------------------------------------------------
+//*-----------------------------------------------------------------------------------------*
+//* Ändern                                                                                  *
+//*-----------------------------------------------------------------------------------------*
 
 BegSr SR010;
   // Überschrift für Modus 'Ändern' anzeigen
@@ -302,35 +257,19 @@ BegSr SR010;
   *IN(3) = *OFF;
   *IN(4) = *OFF;
   *IN(5) = *OFF;
-  // Datensatz lesen
-  DoU Not %Error;
-    Chain(E) ( PIJOB : PIPOS : PIARA ) AREARF;
-    If %Error;
-      HdlRcdLck(PSDS);
-    EndIf;
-  EndDo;
-  // Fehler : Der Datensatz konnte nicht gefunden werden
-  If Not %Found;
-    PIRtCd = '*ERROR';
-  Else;
-    // Bildschirm mit Werten aus der Datenbank füllen
-    ExSr SR035;
-    // Bildschirm verarbeiten
-    ExSr SR050;
-    If PIRtCd = '*ENTER';
-      // Datenbank mit Werten aus dem Bildschirm füllen
-      ExSr SR045;
-      // Datensatz aktualisieren
-      Update AREARF;
-      // Modifikationen festschreiben
-      Commit;
-    EndIf;
+  // Bildschirm mit Werten füllen
+  ExSr SR030;
+  // Bildschirm verarbeiten
+  ExSr SR050;
+  If PIRtCd = '*ENTER';
+    // Verbuchen
+    MNTAREA_book();
   EndIf;
 EndSr;
 
-//-------------------------------------------------------------------------------------------
-// Kopieren
-//-------------------------------------------------------------------------------------------
+//*-----------------------------------------------------------------------------------------*
+//* Kopieren                                                                                *
+//*-----------------------------------------------------------------------------------------*
 
 BegSr SR015;
   // Überschrift für Modus 'Kopieren' anzeigen
@@ -339,41 +278,19 @@ BegSr SR015;
   *IN(3) = *ON;
   *IN(4) = *OFF;
   *IN(5) = *OFF;
-  // Datensatz lesen
-  Chain(N) ( PIJOB : PIPOS : PIARA ) AREARF;
-  // Fehler : Der Datensatz konnte nicht gefunden werden
-  If Not %Found;
-    PIRtCd = '*ERROR';
-  Else;
-    // Bildschirm mit Werten aus der Datenbank füllen
-    ExSr SR035;
-    // Bildschirm verarbeiten
-    ExSr SR050;
-    If PIRtCd = '*ENTER';
-      // Datenbank mit Werten aus dem Bildschirm füllen
-      ExSr SR045;
-      // Datensatz schreiben
-      XDFILE = *Blanks;
-      XDRCDW = *Blanks;
-      XDCHGW = *Blanks;
-      XDJLNG = *Blank;
-      XDJRNL = *Blanks;
-      XDJRN = *Blanks;
-      XDRTO = *Zero;
-      XDRCO = *Zero;
-      XDTCS = *Zero;
-      XDCTA = *Zero;
-      XDCAP = *Zero;
-      Write AREARF;
-      // Modifikationen festschreiben
-      Commit;
-    EndIf;
+  // Bildschirm mit Werten füllen
+  ExSr SR030;
+  // Bildschirm verarbeiten
+  ExSr SR050;
+  If PIRtCd = '*ENTER';
+    // Verbuchen
+    MNTAREA_book();
   EndIf;
 EndSr;
 
-//-------------------------------------------------------------------------------------------
-// Löschen
-//-------------------------------------------------------------------------------------------
+//*-----------------------------------------------------------------------------------------*
+//* Löschen                                                                                 *
+//*-----------------------------------------------------------------------------------------*
 
 BegSr SR020;
   // Überschrift für Modus 'Löschen' anzeigen
@@ -382,43 +299,29 @@ BegSr SR020;
   *IN(3) = *OFF;
   *IN(4) = *ON;
   *IN(5) = *OFF;
-  // Datensatz lesen
-  DoU Not %Error;
-    Chain(E) ( PIJOB : PIPOS : PIARA ) AREARF;
-    If %Error;
-      HdlRcdLck(PSDS);
-    EndIf;
-  EndDo;
-  // Fehler : Der Datensatz konnte nicht gefunden werden
-  If Not %Found;
-    PIRtCd = '*ERROR';
-  Else;
-    // Bildschirm mit Werten aus der Datenbank füllen
-    ExSr SR035;
-    // Bildschirm verarbeiten
-    ExSr SR050;
-    If PIRtCd = '*ENTER';
-      // Bestätigung für Löschung einholen
-      ExFmt DSPF020W;
-      // Funktionstaste abrufen
-      ITFktKey = RtvFktKey(AIDCde);
-      // Datensatz löschen
-      If ITFktKey = '*ENTER';
-        // Datensatz löschen
-        Delete AREARF;
-        // Modifikationen festschreiben
-        Commit;
-      Else;
-        // Löschung abgebrochen
-        PIRtCd = '*F12';
-      EndIf;
+  // Bildschirm mit Werten füllen
+  ExSr SR030;
+  // Bildschirm verarbeiten
+  ExSr SR050;
+  If PIRtCd = '*ENTER';
+    // Bestätigung für Löschung einholen
+    ExFmt DSPF020W;
+    // Funktionstaste abrufen
+    ITFktKey = RtvFktKey(AIDCde);
+    // Datensatz löschen
+    If ITFktKey = '*ENTER';
+      // Verbuchen
+      MNTAREA_book();
+    Else;
+      // Löschung abgebrochen
+      PIRtCd = '*F12';
     EndIf;
   EndIf;
 EndSr;
 
-//-------------------------------------------------------------------------------------------
-// Anzeigen
-//-------------------------------------------------------------------------------------------
+//*-----------------------------------------------------------------------------------------*
+//* Anzeigen                                                                                *
+//*-----------------------------------------------------------------------------------------*
 
 BegSr SR025;
   // Überschrift für Modus 'Anzeigen' anzeigen
@@ -427,67 +330,41 @@ BegSr SR025;
   *IN(3) = *OFF;
   *IN(4) = *OFF;
   *IN(5) = *ON;
-  // Datensatz lesen
-  Chain(N) ( PIJOB : PIPOS : PIARA ) AREARF;
-  // Fehler : Der Datensatz konnte nicht gefunden werden
-  If Not %Found;
-    PIRtCd = '*ERROR';
-  Else;
-    // Bildschirm mit Werten aus der Datenbank füllen
-    ExSr SR035;
-    // Bildschirm verarbeiten
-    ExSr SR050;
+  // Bildschirm mit Werten füllen
+  ExSr SR030;
+  // Bildschirm verarbeiten
+  ExSr SR050;
+  If PIRtCd = '*ENTER';
+    // Verbuchen
+    MNTAREA_book();
   EndIf;
 EndSr;
 
-//-------------------------------------------------------------------------------------------
-// Bildschirm mit Standartwerten füllen
-//-------------------------------------------------------------------------------------------
+//*-----------------------------------------------------------------------------------------*
+//* Bildschirm mit Werten füllen                                                            *
+//*-----------------------------------------------------------------------------------------*
 
 BegSr SR030;
-  // Einzelwerte mit Standartwerten füllen
-  DFARA = *Blanks;
-  DFLIB = *Blanks;
-  DFLIBL = *Blanks;
-  DFCCSID = *Blanks;
-  DFCEXT = *Blanks;
+  MNTAREA_getValues(
+    DFARA    : // <-- Area
+    DFLIB    : // <-- Library
+    DFLIBL   : // <-- Library list
+    DFCCSID  : // <-- Coded character set ID
+    DFCEXT     // <-- Command extension
+  );
 EndSr;
 
-//-------------------------------------------------------------------------------------------
-// Bildschirm mit Werten aus der Datenbank füllen
-//-------------------------------------------------------------------------------------------
-
-BegSr SR035;
-  // Einzelwerte mit Werten aus der Datenbank füllen
-  DFARA = XDARA;
-  DFLIB = XDLIB;
-  DFLIBL = XDLIBL;
-  DFCCSID = XDCCSID;
-  DFCEXT = XDCEXT;
-EndSr;
-
-//-------------------------------------------------------------------------------------------
-// Datenbank mit Werten aus dem Bildschirm füllen
-//-------------------------------------------------------------------------------------------
-
-BegSr SR045;
-  // Datenbank mit Einzelwerten füllen
-  XDARA = DFARA;
-  XDLIB = DFLIB;
-  XDLIBL = DFLIBL;
-  XDCCSID = DFCCSID;
-  XDCEXT = DFCEXT;
-EndSr;
-
-//-------------------------------------------------------------------------------------------
-// Bildschirm verarbeiten
-//-------------------------------------------------------------------------------------------
+//*-----------------------------------------------------------------------------------------*
+//* Bildschirm verarbeiten                                                                  *
+//*-----------------------------------------------------------------------------------------*
 
 BegSr SR050;
   // Fehlernachricht entfernen
   ITSts = RmvErrMsg('*SAME');
   // Fehlernachrichten-Id. initialisieren
   ITMsgId = *Blanks;
+  ITMsgDta = *Blanks;
+  ITMsgF = *Blanks;
   // Fehlerbezugszahlen initialisieren
   *IN(80) = *OFF;
   *IN(81) = *OFF;
@@ -531,6 +408,8 @@ BegSr SR050;
     ITSts = RmvErrMsg('*SAME');
     // Fehlernachrichten-Id. initialisieren
     ITMsgId = *Blanks;
+    ITMsgDta = *Blanks;
+    ITMsgF = *Blanks;
     // Fehlerbezugszahlen initialisieren
     *IN(80) = *OFF;
     *IN(81) = *OFF;
@@ -586,9 +465,9 @@ BegSr SR050;
   EndDo;
 EndSr;
 
-//-------------------------------------------------------------------------------------------
-// Bildschirmfelder auf Fehler überprüfen
-//-------------------------------------------------------------------------------------------
+//*-----------------------------------------------------------------------------------------*
+//* Bildschirmfelder auf Fehler überprüfen                                                  *
+//*-----------------------------------------------------------------------------------------*
 
 BegSr SR055;
   // Namensfelder linksbündig ausrichten
@@ -601,104 +480,52 @@ BegSr SR055;
     DFCCSID = %TRIML(DFCCSID);
     DFCEXT = %TRIML(DFCEXT);
   EndIf;
-  FOR DO_X = 1 TO 1;
-    // *** Fehlerprüfung nur für Modus 'Erstellen' und 'Kopieren' ***
-    If PIMode = '*CREATE' Or
-      PIMode = '*COPY';
-      // The value in field 'Area' is not valid
-      If DFARA <> '*NONE' And
-        ChkVal('*NAME' : 10 : %Addr(DFARA)) =
-        '*INVALID';
-        ITMsgId = 'ERR0002';
-        *IN(81) = *OFF;
-        *IN(82) = *OFF;
-        *IN(83) = *ON;
-        Leave;
-      EndIf;
-      // The area does already exist
-      SetLL ( PIJOB : PIPOS : DFARA ) AREARF;
-      If %Equal;
-        ITMsgId = 'ERR0001';
-        *IN(81) = *ON;
-        *IN(82) = *OFF;
-        *IN(83) = *ON;
-        Leave;
-      EndIf;
-    EndIf;
-    // *** Fehlerprüfung nur für Modus 'Erstellen', 'Kopieren' und 'Ändern' ***
-    If PIMode = '*CREATE' Or
-      PIMode = '*COPY' Or
-      PIMode = '*CHANGE';
-      // The value in field 'Library' is not valid
-      If ChkVal('*NAME' : 10 : %Addr(DFLIB)) =
-        '*INVALID';
-        ITMsgId = 'ERR0019';
-        *IN(81) = *OFF;
-        *IN(82) = *ON;
-        *IN(83) = *OFF;
-        Leave;
-      EndIf;
-      // The library has not defined
-      SetLL ( PIJOB : DFLIB ) LIBRF;
-      If Not %Equal;
-        ITMsgId = 'ERR0006';
-        *IN(81) = *OFF;
-        *IN(82) = *ON;
-        *IN(83) = *OFF;
-        Leave;
-      EndIf;
-      If X1CRTE = '*NO';
-        // The library list has to be *NONE, if create environment is *NO
-        If DFLIBL <> '*NONE';
-          ITMsgId = 'ERR0007';
-          *IN(81) = *OFF;
-          *IN(82) = *ON;
-          *IN(83) = *ON;
-          Leave;
-        EndIf;
-      Else;
-        // The value in field 'Library list' is not valid
-        If ChkVal('*NAME' : 10 : %Addr(DFLIBL)) =
-          '*INVALID';
-          ITMsgId = 'ERR0003';
-          *IN(81) = *OFF;
-          *IN(82) = *ON;
-          *IN(83) = *ON;
-          Leave;
-        EndIf;
-        // The library list has not defined
-        SetLL ( PIJOB : DFLIBL ) LIBLSTRF;
-        If Not %Equal;
-          ITMsgId = 'ERR0005';
-          *IN(81) = *OFF;
-          *IN(82) = *ON;
-          *IN(83) = *ON;
-          Leave;
-        EndIf;
-      EndIf;
-      // The value in field 'CCSID' is not valid
-      If DFCCSID <> '*JOB';
-        ITCCSID = *Zero;
-        If ChkVal('*NUM' : 10 : %Addr(DFCCSID)) =
-          '*VALID';
-          ITCCSID = %Dec(DFCCSID : 10 : 0);
-        EndIf;
-        If Not (ITCCSID >= 1 And
-          ITCCSID <= 65535);
-          ITMsgId = 'ERR0008';
-          *IN(81) = *ON;
-          *IN(82) = *OFF;
-          *IN(83) = *OFF;
-          Leave;
-        EndIf;
-      EndIf;
-    EndIf;
-  ENDFOR;
+  // *** Fehlerprüfung nur für Modus 'Erstellen', 'Kopieren' und 'Ändern' ***
+  If PIMode = '*CREATE' Or
+    PIMode = '*COPY' Or
+    PIMode = '*CHANGE';
+    MNTAREA_setValues(
+      DFARA    : // <-- Area
+      DFLIB    : // <-- Library
+      DFLIBL   : // <-- Library list
+      DFCCSID  : // <-- Coded character set ID
+      DFCEXT     // <-- Command extension
+    );
+  EndIf;
+  // Prüfen
+  If Not MNTAREA_check(
+    ITSUCC : // <-- Erfolg
+    ITXFld : // <-- Feld
+    ITXMsg   // <-- Nachricht
+  );
+    // Fehler setzen
+    ITMsgId = 'CPF9897';
+    ITMsgDta = ITXMsg;
+    ITMsgF = 'QCPFMSG';
+    Select;
+    When (ITXFld = 'ARA');
+      *IN(81) = *OFF;
+      *IN(82) = *OFF;
+      *IN(83) = *ON;
+    When (ITXFld = 'LIB');
+      *IN(81) = *OFF;
+      *IN(82) = *ON;
+      *IN(83) = *OFF;
+    When (ITXFld = 'LIBL');
+      *IN(81) = *OFF;
+      *IN(82) = *ON;
+      *IN(83) = *ON;
+    When (ITXFld = 'CCSID');
+      *IN(81) = *ON;
+      *IN(82) = *OFF;
+      *IN(83) = *OFF;
+    Endsl;
+  EndIf;
 EndSr;
 
-//-------------------------------------------------------------------------------------------
-// Fehlernachricht in die Programmnachrichtenwarteschlange schreiben
-//-------------------------------------------------------------------------------------------
+//*-----------------------------------------------------------------------------------------*
+//* Fehlernachricht in die Programmnachrichtenwarteschlange schreiben                       *
+//*-----------------------------------------------------------------------------------------*
 
 BegSr SR060;
   // Bezugszahl für 'Es liegt ein Fehler vor' auf 'Ja' setzen
@@ -707,15 +534,15 @@ BegSr SR060;
   ITSts = SndErrMsg(
    '*SAME' :                                                             // --> Aufrufstapele
    ITMsgId :                                                             // --> Nachrichten-I
-   'RF0017MF' :                                                          // --> Nachrichtenda
+   ITMsgF  :                                                             // --> Nachrichtenda
    '*LIBL' :                                                             // --> Bibliothek Na
-   *Blanks                                                               // --> Nachrichtenda
+   ITMsgDta                                                              // --> Nachrichtenda
   );
 EndSr;
 
-//-------------------------------------------------------------------------------------------
-// Hilfe
-//-------------------------------------------------------------------------------------------
+//*-----------------------------------------------------------------------------------------*
+//* Hilfe                                                                                   *
+//*-----------------------------------------------------------------------------------------*
 
 BegSr SR065;
   // Kontextbezogene Hilfe initialisiern
@@ -867,9 +694,9 @@ BegSr SR065;
   *IN(99) = *OFF;
 EndSr;
 
-//-------------------------------------------------------------------------------------------
-// Bedienerführung
-//-------------------------------------------------------------------------------------------
+//*-----------------------------------------------------------------------------------------*
+//* Bedienerführung                                                                         *
+//*-----------------------------------------------------------------------------------------*
 
 BegSr SR070;
   Select;
@@ -898,6 +725,8 @@ BegSr SR070;
     // Es ist keine Bedienerführung für das angeforderte Feld vorhanden
   Other;
     ITMsgId = 'ERR0004';
+    ITMsgDta = *Blanks;
+    ITMsgF = 'RF0017MF';
   EndSl;
   // Cursor auf der letzten Position positionieren
   *IN(90) = *ON;

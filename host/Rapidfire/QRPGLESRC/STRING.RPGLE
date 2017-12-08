@@ -12,7 +12,7 @@
 //*                                                                                         *
 //*  String Operations                                                                      *
 //*                                                                                         *
-//*------------+--------+-------------------------------------------------------------------*
+//*-----------------------------------------------------------------------------------------*
 //*   Datum    I Progr. I Beschreibung                                                      *
 //*------------+--------+-------------------------------------------------------------------*
 //* 04.02.2016 I   TR   I Serviceprogramm erstellt.                                         *
@@ -36,7 +36,7 @@ CTL-OPT DatFmt(*ISO) TimFmt(*ISO) DecEdit('0,');
 CTL-OPT Copyright('(C) Copyright Task Force IT-Consulting GmbH');
 CTL-OPT ExtBinInt(*YES);
 
-// ------------------------------------------------------------------------------------------
+//*-----------------------------------------------------------------------------------------*
 
 // Exports
 
@@ -53,17 +53,17 @@ CTL-OPT ExtBinInt(*YES);
 
 DCL-C SINGLE_QUOTE '''';
 
-// ==========================================================================================
-//  Removes the quotes from a quoted string.
-// ------------------------------------------------------------------------------------------
-//  Parameters:
-//   i_string      - The string the quotes are removed from.
-//   i_quote       - Optional. Character value the string is quoted with.
-//                   Default: single quote
-
-//  Returns:
-//   The string without quotes.
-// ==========================================================================================
+//*-----------------------------------------------------------------------------------------*
+//* Removes the quotes from a quoted string.                                                *
+//*-----------------------------------------------------------------------------------------*
+//* Parameters:                                                                             *
+//*  i_string      - The string the quotes are removed from.                                *
+//*  i_quote       - Optional. Character value the string is quoted with.                   *
+//*                  Default: single quote                                                  *
+//*                                                                                         *
+//* Returns:                                                                                *
+//*  The string without quotes.                                                             *
+//*-----------------------------------------------------------------------------------------*
 
 DCL-PROC unquote EXPORT;
 
@@ -104,16 +104,16 @@ DCL-PROC unquote EXPORT;
 
 END-PROC;
 
-// ==========================================================================================
-//  Tests whether a given string starts with a specified prefix.
-// ------------------------------------------------------------------------------------------
-//  Parameters:
-//   i_string      - The string, that is tested for a given prefix.
-//   i_prefix      - Prefix.
-
-//  Returns:
-//   TRUE when i_string starts with i_prefix, else FALSE.
-// ==========================================================================================
+//*-----------------------------------------------------------------------------------------*
+//* Tests whether a given string starts with a specified prefix.                            *
+//*-----------------------------------------------------------------------------------------*
+//* Parameters:                                                                             *
+//*  i_string      - The string, that is tested for a given prefix.                         *
+//*  i_prefix      - Prefix.                                                                *
+//*                                                                                         *
+//* Returns:                                                                                *
+//*  TRUE when i_string starts with i_prefix, else FALSE.                                   *
+//*-----------------------------------------------------------------------------------------*
 
   DCL-PROC startsWith EXPORT;
 
@@ -136,16 +136,16 @@ END-PROC;
 
 END-PROC;
 
-// ==========================================================================================
-//  Tests whether a given string ends with a specified suffix.
-// ------------------------------------------------------------------------------------------
-//  Parameters:
-//   i_string      - The string, that is tested for a given suffix.
-//   i_suffix      - Suffix.
-
-//  Returns:
-//   TRUE when i_string ends with i_suffix, else FALSE.
-// ==========================================================================================
+//*-----------------------------------------------------------------------------------------*
+//* Tests whether a given string ends with a specified suffix.                              *
+//*-----------------------------------------------------------------------------------------*
+//* Parameters:                                                                             *
+//*  i_string      - The string, that is tested for a given suffix.                         *
+//*  i_suffix      - Suffix.                                                                *
+//*                                                                                         *
+//* Returns:                                                                                *
+//*  TRUE when i_string ends with i_suffix, else FALSE.                                     *
+//*-----------------------------------------------------------------------------------------*
 
 DCL-PROC endsWith EXPORT;
 
@@ -168,15 +168,15 @@ DCL-PROC endsWith EXPORT;
 
 END-PROC;
 
-// ==========================================================================================
-//  Converts a given string to lower case.
-// ------------------------------------------------------------------------------------------
-//  Parameters:
-//   i_string      - The string, that is converted to lower case.
-
-//  Returns:
-//   Lower case representation of i_string.
-// ==========================================================================================
+//*-----------------------------------------------------------------------------------------*
+//* Converts a given string to lower case.                                                  *
+//*-----------------------------------------------------------------------------------------*
+//* Parameters:                                                                             *
+//*  i_string      - The string, that is converted to lower case.                           *
+//*                                                                                         *
+//* Returns:                                                                                *
+//*  Lower case representation of i_string.                                                 *
+//*-----------------------------------------------------------------------------------------*
 
 DCL-PROC lcase EXPORT;
 
@@ -211,15 +211,15 @@ DCL-PROC lcase EXPORT;
 
 END-PROC;
 
-// ==========================================================================================
-//  Converts a given string to upper case.
-// ------------------------------------------------------------------------------------------
-//  Parameters:
-//   i_string      - The string, that is converted to upper case.
-
-//  Returns:
-//   Upper case representation of i_string.
-// ==========================================================================================
+//*-----------------------------------------------------------------------------------------*
+//* Converts a given string to upper case.                                                  *
+//*-----------------------------------------------------------------------------------------*
+//* Parameters:                                                                             *
+//*  i_string      - The string, that is converted to upper case.                           *
+//*                                                                                         *
+//* Returns:                                                                                *
+//*  Upper case representation of i_string.                                                 *
+//*-----------------------------------------------------------------------------------------*
 
 DCL-PROC ucase EXPORT;
 
@@ -254,9 +254,9 @@ DCL-PROC ucase EXPORT;
 
 END-PROC;
 
-//=====================================================================*
-//  Produces a string of spaces with a given length.
-//=====================================================================*
+//*-----------------------------------------------------------------------------------------*
+//*  Produces a string of spaces with a given length                                        *
+//*-----------------------------------------------------------------------------------------*
 
 DCL-PROC space EXPORT;
 
@@ -292,31 +292,31 @@ DCL-PROC space EXPORT;
 
 END-PROC;
 
-// ==========================================================================================
-//  Performs word wrapping on a given string.
-//  Returns the next line of i_string with each call to f_wordWrap().
-// ==========================================================================================
-//  Parameters:
-//   i_string      - The string to be word wrapped.
-//   i_width       - Line length.
-//   io_startPos   - The position to start from.
-//                   (Should not be changed between calls.)
-//   i_option      - Options to set.
-//                   Default:        WORDWRAP_PARAGRAPH_NONE +
-//                                   WORDWRAP_PARAGRAPH_TRIMR
-//                   WORDWRAP_PARAGRAPH_NONE   Do not respect
-//                                             end-of-paragraph markers.
-//                   WORDWRAP_PARAGRAPH_MSGD   Respect end-of-paragraph
-//                                             markers of message descriptions:
-//                                             &N, &B and &P.
-//                   WORDWRAP_PARAGRAPH_TEXT   Respect standard text
-//                                             end-of-paragraph markers: \n
-//                   WORDWRAP_PARAGRAPH_TRIMR  Remove trailing blanks from
-//                                             result string.
-
-//  Returns:
-//   text          - The next line of i_string.
-// ==========================================================================================
+//*-----------------------------------------------------------------------------------------*
+//* Performs word wrapping on a given string.                                               *
+//* Returns the next line of i_string with each call to f_wordWrap().                       *
+//*-----------------------------------------------------------------------------------------*
+//* Parameters:                                                                             *
+//*  i_string      - The string to be word wrapped.                                         *
+//*  i_width       - Line length.                                                           *
+//*  io_startPos   - The position to start from.                                            *
+//*                  (Should not be changed between calls.)                                 *
+//*  i_option      - Options to set.                                                        *
+//*                  Default:        WORDWRAP_PARAGRAPH_NONE +                              *
+//*                                  WORDWRAP_PARAGRAPH_TRIMR                               *
+//*                  WORDWRAP_PARAGRAPH_NONE   Do not respect                               *
+//*                                            end-of-paragraph markers.                    *
+//*                  WORDWRAP_PARAGRAPH_MSGD   Respect end-of-paragraph                     *
+//*                                            markers of message descriptions:             *
+//*                                            &N, &B and &P.                               *
+//*                  WORDWRAP_PARAGRAPH_TEXT   Respect standard text                        *
+//*                                            end-of-paragraph markers: \n                 *
+//*                  WORDWRAP_PARAGRAPH_TRIMR  Remove trailing blanks from                  *
+//*                                            result string.                               *
+//*                                                                                         *
+//* Returns:                                                                                *
+//*  text          - The next line of i_string.                                             *
+//*-----------------------------------------------------------------------------------------*
 
 DCL-PROC wordWrap EXPORT;
 
@@ -349,7 +349,6 @@ DCL-PROC wordWrap EXPORT;
   DCL-S ESC CHAR(1);
   DCL-S startPos like(io_startPos);
   DCL-S string like(i_string);
-  // ------------------------------------------------------------------------------------------
 
   // Process optional parameter values ...
   // ... options
@@ -477,10 +476,10 @@ DCL-PROC wordWrap EXPORT;
 
 END-PROC;
 
-// ==========================================================================================
-//  Performs word wrapping on a given string without respect to
-//  end-of-paragraph markers.
-// ==========================================================================================
+//*-----------------------------------------------------------------------------------------*
+//* Performs word wrapping on a given string without respect to                             *
+//* end-of-paragraph markers.                                                               *
+//*-----------------------------------------------------------------------------------------*
 
 DCL-PROC wordWrapInternal;
 
@@ -503,7 +502,6 @@ DCL-PROC wordWrapInternal;
 
   //  Valid separater characters
   DCL-C DELIMITER const(' -/\.:');
-  // ------------------------------------------------------------------------------------------
 
   // Initialise helper fields
   text = '';

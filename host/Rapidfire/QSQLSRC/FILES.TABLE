@@ -21,7 +21,7 @@
 -- * >>END-PRE-COMPILER<<                                                   *
 -- *------------------------------------------------------------------------*
 
-CREATE OR REPLACE TABLE FILES
+CREATE TABLE FILES
 (
  JOB FOR COLUMN X3JOB CHAR(10) NOT NULL WITH DEFAULT,
  POSITION FOR COLUMN X3POS DECIMAL(6, 0) NOT NULL WITH DEFAULT,

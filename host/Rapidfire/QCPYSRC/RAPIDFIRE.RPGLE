@@ -30,3 +30,15 @@ DCL-PR RAPIDFIRE_set_Error;
   *N CHAR(10) Const;                                                     // --> Job
   *N IND Const;                                                          // --> Error
 END-PR;
+
+DCL-PR RAPIDFIRE_start IND // <-- Success
+       EXTPROC('RAPIDFIRE_start');
+  *N CHAR(1);   // <-- Success
+  *N CHAR(256); // <-- Message
+END-PR;
+
+DCL-PR RAPIDFIRE_stop IND // <-- Success
+       EXTPROC('RAPIDFIRE_stop');
+  *N CHAR(1);   // <-- Success
+  *N CHAR(256); // <-- Message
+END-PR;

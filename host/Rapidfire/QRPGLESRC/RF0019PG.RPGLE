@@ -17,18 +17,6 @@
 //*------------+--------+-------------------------------------------------------------------*
 //* 20.04.2016 I   FH   I Programm erstellt                                                 *
 //*------------+--------+-------------------------------------------------------------------*
-//* >>PRE-COMPILER<<                                                                        *
-//*   >>CRTCMD<< CRTBNDRPG PGM(&LI/&OB) SRCFILE(&SL/&SF) SRCMBR(&SM);                       *
-//*   >>IMPORTANT<<                                                                         *
-//*     >>PARM<< DFTACTGRP(*NO);                                                            *
-//*     >>PARM<< DBGVIEW(&U1);                                                              *
-//*     >>PARM<< ACTGRP(&U2);                                                               *
-//*     >>PARM<< TGTRLS(&TR);                                                               *
-//*     >>PARM<< OPTION(*EVENTF);                                                           *
-//*   >>END-IMPORTANT<<                                                                     *
-//*   >>EXECUTE<<                                                                           *
-//* >>END-PRE-COMPILER<<                                                                    *
-//*-----------------------------------------------------------------------------------------*
 
 // Control
 
@@ -188,9 +176,9 @@ EndIf;
 // Programm nicht hauptspeicherresident verlassen
 *INLR = *On;
 
-//-----------------------------------------------------------------------
-// Fehlernachricht in die Programmnachrichtenwarteschlange schreiben
-//-----------------------------------------------------------------------
+//*-----------------------------------------------------------------------------------------*
+//* Fehlernachricht in die Programmnachrichtenwarteschlange schreiben                       *
+//*-----------------------------------------------------------------------------------------*
 
 BegSr SR005;
   // Bezugszahl für 'Es liegt ein Fehler vor' auf 'Ja' setzen

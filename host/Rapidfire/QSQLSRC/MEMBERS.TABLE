@@ -21,7 +21,7 @@
 -- * >>END-PRE-COMPILER<<                                                   *
 -- *------------------------------------------------------------------------*
 
-CREATE OR REPLACE TABLE MEMBERS
+CREATE TABLE MEMBERS
 (
  JOB FOR COLUMN X7JOB CHAR(10) NOT NULL WITH DEFAULT,
  POSITION FOR COLUMN X7POS DECIMAL(6, 0) NOT NULL WITH DEFAULT,

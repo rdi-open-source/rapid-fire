@@ -188,6 +188,10 @@ END-PI;
 
 /Copy QCPYSRC,ERRC0100
 
+// Prozedurenprototyp für Prozedur 'MNTJOB'
+
+/Copy QCPYSRC,MNTJOB
+
 // Dateiinformationsdatenstruktur für RF0001DF
 
 DCL-DS FIDS_RF0001DF;
@@ -291,6 +295,8 @@ DCL-S ITPag010 ZONED(4) Inz(RcdPerPage);                                 // (Sub
 DCL-S ITRRN010 ZONED(4);                                                 // (Subdatei) Aktuel
 DCL-S ITCnt010 ZONED(4);                                                 // (Subdatei) Letzte
 DCL-S ITMsgId CHAR(7);                                                   // Nachrichten-Id.
+DCL-S ITMsgDta CHAR(256);                                                // Nachrichtendaten
+DCL-S ITMsgF   CHAR(10);                                                 // Nachrichtendatei
 DCL-S ITAct CHAR(10);                                                    // Aktion
 DCL-S ITMode CHAR(10);                                                   // Modus
 DCL-S ITMore CHAR(10);                                                   // Weitere Sätze zur
@@ -328,6 +334,8 @@ DCL-S ITPOSX PACKED(6);                                                  // Posi
 DCL-S ITPOSY PACKED(3);                                                  // Position
 DCL-S ANZVER Like(DFVER);                                                // Version
 DCL-S ITBLK ZONED(2);                                                    // Anzahl Leerzeiche
+DCL-S ITXMsg CHAR(256);                                                  // Nachricht
+DCL-S ITSUCC CHAR(1);                                                    // Erfolg
 
 //*-----------------------------------------------------------------------------------------*
 
@@ -427,6 +435,8 @@ BegSr SR010;
   ITSts = RmvErrMsg('*SAME');
   // Fehlernachrichten-Id. initialisieren
   ITMsgId = *Blanks;
+  ITMsgDta = *Blanks;
+  ITMsgF = *Blanks;
   // Fehlerbezugszahlen initialisieren
   *IN(80) = *OFF;
   *IN(81) = *OFF;
@@ -501,6 +511,8 @@ BegSr SR010;
     ITSts = RmvErrMsg('*SAME');
     // Fehlernachrichten-Id. initialisieren
     ITMsgId = *Blanks;
+    ITMsgDta = *Blanks;
+    ITMsgF = *Blanks;
     // Fehlerbezugszahlen initialisieren
     *IN(80) = *OFF;
     *IN(81) = *OFF;
@@ -871,6 +883,8 @@ BegSr SR025;
     // No prompt for the requested field available
   Other;
     ITMsgId = 'ERR0004';
+    ITMsgDta = *Blanks;
+    ITMsgF = 'RF0001MF';
   EndSl;
   // Cursor auf der letzten Position positionieren
   *IN(90) = *ON;
@@ -891,8 +905,8 @@ EndSr;
 
 BegSr SR030;
   // Funktionstaste : 'F6=Erstellen'
-  ITMode = '*CREATE';
-  SlcKey = *Loval;
+  ITMode = MNTJOB_CREATE;
+  SlcJOB = *Blanks;
   ExSr SR130;
   // Eine neue Position wurde erstellt
   If PIRtCd = '*ENTER';
@@ -1010,6 +1024,8 @@ BegSr SR055;
   // The bottom of the list has already been reached
   If ITMore = '*NO';
     ITMsgId = 'ERR0003';
+    ITMsgDta = *Blanks;
+    ITMsgF = 'RF0001MF';
   EndIf;
 EndSr;
 
@@ -1024,6 +1040,8 @@ BegSr SR060;
   // The top of the list has already been reached
   If ITMore = '*NO';
     ITMsgId = 'ERR0002';
+    ITMsgDta = *Blanks;
+    ITMsgF = 'RF0001MF';
   EndIf;
 EndSr;
 
@@ -1440,88 +1458,97 @@ BegSr SR095;
     *IN(87) = *OFF;
     *IN(88) = *OFF;
     *IN(89) = *OFF;
+
+    // Aktion ermitteln
+    Select;
+    When DFOPT = *Blanks;
+      ITACT = MNTJOB_NONE;
+    When DFOPT = '1';
+      ITACT = MNTJOB_SELECT;
+    When DFOPT = '2';
+      ITACT = MNTJOB_CHANGE;
+    When DFOPT = '3';
+      ITACT = MNTJOB_COPY;
+    When DFOPT = '4';
+      ITACT = MNTJOB_DELETE;
+    When DFOPT = '5';
+      ITACT = MNTJOB_DISPLAY;
+    When DFOPT = '10';
+      ITACT = MNTJOB_MNTLIB;
+    When DFOPT = '11';
+      ITACT = MNTJOB_MNTLIBL;
+    When DFOPT = '12';
+      ITACT = MNTJOB_MNTFILE;
+    When DFOPT = '13';
+      ITACT = MNTJOB_MNTSTBN;
+    When DFOPT = '20';
+      ITACT = MNTJOB_TSTJOB;
+    When DFOPT = '21';
+      ITACT = MNTJOB_STRJOB;
+    When DFOPT = '22';
+      ITACT = MNTJOB_ENDJOB;
+    When DFOPT = '23';
+      ITACT = MNTJOB_RESETJOB;
+    When DFOPT = '24';
+      ITACT = MNTJOB_RESETJOBA;
+    When DFOPT = '30';
+      ITACT = MNTJOB_DSPSTS;
+    When DFOPT = '31';
+      ITACT = MNTJOB_DSPERR;
+    When DFOPT = '99';
+      ITACT = MNTJOB_MNTSCDE;
+    Other;
+      ITACT = MNTJOB_ERROR;
+    EndSl;
+
     // The option is not valid
     If ITMsgId = *Blanks And
       ((PIMode = '*EDIT' And
-      DFOPT <> *Blanks And
-      DFOPT <> '2' And
-      DFOPT <> '3' And
-      DFOPT <> '4' And
-      DFOPT <> '5' And
-      DFOPT <> '10' And
-      DFOPT <> '11' And
-      DFOPT <> '12' And
-      DFOPT <> '13' And
-      DFOPT <> '20' And
-      DFOPT <> '21' And
-      DFOPT <> '22' And
-      DFOPT <> '23' And
-      DFOPT <> '24' And
-      DFOPT <> '30' And
-      DFOPT <> '31' And
-      DFOPT <> '99') Or
+      ITACT <> MNTJOB_NONE And
+      ITACT <> MNTJOB_CHANGE And
+      ITACT <> MNTJOB_COPY And
+      ITACT <> MNTJOB_DELETE And
+      ITACT <> MNTJOB_DISPLAY And
+      ITACT <> MNTJOB_MNTLIB And
+      ITACT <> MNTJOB_MNTLIBL And
+      ITACT <> MNTJOB_MNTFILE And
+      ITACT <> MNTJOB_MNTSTBN And
+      ITACT <> MNTJOB_TSTJOB And
+      ITACT <> MNTJOB_STRJOB And
+      ITACT <> MNTJOB_ENDJOB And
+      ITACT <> MNTJOB_RESETJOB And
+      ITACT <> MNTJOB_RESETJOBA And
+      ITACT <> MNTJOB_DSPSTS And
+      ITACT <> MNTJOB_DSPERR And
+      ITACT <> MNTJOB_MNTSCDE) Or
       (PIMode = '*SELECT' And
-      DFOPT <> *Blanks And
-      DFOPT <> '1'));
+      ITACT <> MNTJOB_NONE And
+      ITACT <> MNTJOB_SELECT));
       ITMsgId = 'ERR0001';
+      ITMsgDta = *Blanks;
+      ITMsgF = 'RF0001MF';
       *IN(81) = *OFF;
       *IN(82) = *OFF;
       *IN(83) = *ON;
     EndIf;
-    // The option is only valid for jobs with status *RDY
+
+    // Check action
     If ITMsgId = *Blanks And
-      (DFOPT = '2' Or
-      DFOPT = '4' Or
-      //** Rz                       DFOPT = '10' Or
-      //** Rz                       DFOPT = '11' Or
-      //** Rz                       DFOPT = '12' Or
-      //** Rz                       DFOPT = '13' Or
-      DFOPT = '20' Or
-      DFOPT = '21') And
-      DFSTS <> '*RDY';
-      ITMsgId = 'ERR0005';
+       Not MNTJOB_checkAction(
+         ITACT :  // --> Action
+         DFJOB :  // --> Job
+         ITSUCC : // <-- Success
+         ITXMsg   // <-- Message
+       );
+      // Fehler setzen
+      ITMsgId = 'CPF9897';
+      ITMsgDta = ITXMsg;
+      ITMsgF = 'QCPFMSG';
       *IN(81) = *OFF;
       *IN(82) = *OFF;
       *IN(83) = *ON;
     EndIf;
-    // The option is only valid for jobs with status *RUN-PND, *RUN or *END-PND
-    If ITMsgId = *Blanks And
-      DFOPT = '24' And
-      DFSTS <> '*RUN-PND' And
-      DFSTS <> '*RUN' And
-      DFSTS <> '*END-PND';
-      ITMsgId = 'ERR0006';
-      *IN(81) = *OFF;
-      *IN(82) = *OFF;
-      *IN(83) = *ON;
-    EndIf;
-    // The option is only valid for jobs with status *RUN
-    If ITMsgId = *Blanks And
-      DFOPT = '22' And
-      DFSTS <> '*RUN';
-      ITMsgId = 'ERR0009';
-      *IN(81) = *OFF;
-      *IN(82) = *OFF;
-      *IN(83) = *ON;
-    EndIf;
-    // The option is only valid for jobs with status *END
-    If ITMsgId = *Blanks And
-      DFOPT = '23' And
-      DFSTS <> '*END';
-      ITMsgId = 'ERR0007';
-      *IN(81) = *OFF;
-      *IN(82) = *OFF;
-      *IN(83) = *ON;
-    EndIf;
-    // The option is only valid for jobs with "Create environment" *YES
-    If ITMsgId = *Blanks And
-      DFOPT = '11' And
-      DFCRTE <> '*YES';
-      ITMsgId = 'ERR0008';
-      *IN(81) = *OFF;
-      *IN(82) = *OFF;
-      *IN(83) = *ON;
-    EndIf;
+
     // Bezugszahl für 'Subdateisatz ist ein geänderter Satz' auf 'Ja' setzen
     *IN63 = *On;
     // Bezugszahlen für Satz setzen
@@ -1547,9 +1574,9 @@ BegSr SR100;
   ITSts = SndErrMsg(
    '*SAME' :                                                             // --> Aufrufstapele
    ITMsgId :                                                             // --> Nachrichten-I
-   'RF0001MF' :                                                          // --> Nachrichtenda
+   ITMsgF :                                                              // --> Nachrichtenda
    '*LIBL' :                                                             // --> Bibliothek Na
-   *Blanks                                                               // --> Nachrichtenda
+   ITMsgDta                                                              // --> Nachrichtenda
   );
 EndSr;
 
@@ -1697,21 +1724,6 @@ EndSr;
 //*-----------------------------------------------------------------------------------------*
 
 BegSr SR120;
-  //                  Do
-  // Fehler : Irgendein Fehler
-  //                  If        Fehler
-  //                  Eval      ITAct = '*POSITION'
-  //                  Eval      ITAra = '*ERROR'
-  //                  Eval      ErrKey = OptKey(ITOEvl)
-  //                  ExSr      SR075
-  //                  If        ITFnd = 'J'
-  //                  Eval      ITMsgId = 'ERRXXXX'
-  //                  Else
-  //                  Eval      OptAct(ITOEvl) = 'N'
-  //                  EndIf
-  //                  Leave
-  //                  EndIf
-  //                  EndDo
 EndSr;
 
 //*-----------------------------------------------------------------------------------------*
@@ -1729,22 +1741,22 @@ BegSr SR125;
     PIRtCd = '*SELECT';
     // Auswahl : '2=Ändern'
   When OptOpt(ITOEvl) = '2';
-    ITMode = '*CHANGE';
+    ITMode = MNTJOB_CHANGE;
     SlcKey = OptKey(ITOEvl);
     ExSr SR130;
     // Auswahl : '3=Kopieren'
   When OptOpt(ITOEvl) = '3';
-    ITMode = '*COPY';
+    ITMode = MNTJOB_COPY;
     SlcKey = OptKey(ITOEvl);
     ExSr SR130;
     // Auswahl : '4=Löschen'
   When OptOpt(ITOEvl) = '4';
-    ITMode = '*DELETE';
+    ITMode = MNTJOB_DELETE;
     SlcKey = OptKey(ITOEvl);
     ExSr SR130;
     // Auswahl : '5=Anzeigen'
   When OptOpt(ITOEvl) = '5';
-    ITMode = '*DISPLAY';
+    ITMode = MNTJOB_DISPLAY;
     SlcKey = OptKey(ITOEvl);
     ExSr SR130;
     // Auswahl : '10=Bibliotheken'

@@ -1,0 +1,30 @@
+-- *------------------------------------------------------------------------*
+-- *                                                                        *
+-- * Copyright (c) 2014 Task Force IT-Consulting GmbH, Waltrop (Germany)    *
+-- * This software and the accompanying materials are made available        *
+-- * under the terms of the GNU General Public License version 2.0 (GPLv2)  *
+-- * which accompanies this distribution and is available at                *
+-- * http://www.gnu.org/licenses/gpl-2.0.html                               *
+-- *                                                                        *
+-- *------------------------------------------------------------------------*
+-- *                                                                        *
+-- * Check                                                                  *
+-- *                                                                        *
+-- *------------+--------+--------------------------------------------------*
+-- *   Datum    I Progr. I Beschreibung                                     *
+-- *------------+--------+--------------------------------------------------*
+-- * 17.11.2017 I   FH   I Dateierstellung                                  *
+-- *------------+--------+--------------------------------------------------*
+
+CREATE PROCEDURE "MNTLIB_check"
+(
+  INOUT SUCCESS  CHAR(1),
+  INOUT FLD      CHAR(10),
+  INOUT MSG      CHAR(256)
+)
+EXTERNAL NAME MNTLIB("MNTLIB_check")
+SPECIFIC MNTLIB06
+LANGUAGE RPGLE
+PARAMETER STYLE GENERAL
+MODIFIES SQL DATA
+NOT DETERMINISTIC;

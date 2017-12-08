@@ -29,25 +29,29 @@
      /* Programmstart */
              PGM        PARM(&CCSID)
 
-     /* Variable deklarieren */
+     /* Declare compile options */
+             DCLPRCOPT  DFTACTGRP(*NO) ACTGRP(RAPIDFIRE) +
+                          BNDDIR(RAPIDFIRE)
+
+     /* Declare variables */
              DCL        VAR(&CCSID) TYPE(*DEC) LEN(5 0)
              DCL        VAR(&JOBCCSID) TYPE(*DEC) LEN(5 0)
              DCL        VAR(&EXIST) TYPE(*CHAR) LEN(10)
 
              IF         COND(&CCSID *NE -1) THEN(DO)
-     /* CCSID sichern */
+     /* Save CCSID */
              CHKOBJ     OBJ(QTEMP/JOBCCSID) OBJTYPE(*DTAARA)
              MONMSG     MSGID(CPF9801) EXEC(DO)
              RTVJOBA    CCSID(&JOBCCSID)
              CRTDTAARA  DTAARA(QTEMP/JOBCCSID) TYPE(*DEC) LEN(5 0) +
                           VALUE(&JOBCCSID)
              ENDDO
-     /* CCSID setzen */
+     /* Set CCSID */
              CHGJOB     CCSID(&CCSID)
              MONMSG     MSGID(CPF0000)
              ENDDO
 
-     /* CCSID zurücksetzen */
+     /* Reset CCSID */
              IF         COND(&CCSID *EQ -1) THEN(DO)
              CHGVAR     VAR(&EXIST) VALUE('*YES')
              CHKOBJ     OBJ(QTEMP/JOBCCSID) OBJTYPE(*DTAARA)
@@ -60,5 +64,5 @@
              ENDDO
              ENDDO
 
-     /* Programmende */
+     /* End */
  STEP999:    ENDPGM

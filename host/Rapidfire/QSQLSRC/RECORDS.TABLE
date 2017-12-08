@@ -21,7 +21,7 @@
 -- * >>END-PRE-COMPILER<<                                                   *
 -- *------------------------------------------------------------------------*
 
-CREATE OR REPLACE TABLE RECORDS
+CREATE TABLE RECORDS
 (
  MEMBER FOR COLUMN X9MBR CHAR(10) NOT NULL WITH DEFAULT,
  SOURCE_RECORD_NUMBER FOR COLUMN X9SRN DECIMAL(10, 0) NOT NULL WITH DEFAULT,

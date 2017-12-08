@@ -29,16 +29,18 @@
      A                                      S)
      A                                      EDTCDE(Z)
      A  01
-     AO 02                                  DSPATR(UL)
-     A N01N02                               DSPATR(PR)
+     AO 02
+     AO 03                                  DSPATR(UL)
+     A N01N02N03                            DSPATR(PR)
      A  81N82 83                            DSPATR(RI)
      A  81N82 83                            DSPATR(PC)
      A  31                                  DSPATR(MDT)
      A            DFLIB     R        B 10  8REFFLD(LIBLETYS/X5LIB *LIBL/LIBLETY-
      A                                      S)
      A  01
-     AO 02                                  DSPATR(UL)
-     A N01N02                               DSPATR(PR)
+     AO 02
+     AO 03                                  DSPATR(UL)
+     A N01N02N03                            DSPATR(PR)
      A N81 82N83
      AO 81N82N83                            DSPATR(RI)
      A N81 82N83
@@ -49,7 +51,8 @@
      A                                      CA12
      A                                      CF01
      A  01
-     AO 02                                  CF04
+     AO 02
+     AO 03                                  CF04
      A                                      RTNCSRLOC(*RECNAME &DFRCD010 &DFFLD-
      A                                      010 &DFPOS010)
      A                                      RTNCSRLOC(*MOUSE &DFROW010 &DFCOL01-
@@ -78,8 +81,11 @@
      A                                      DSPATR(HI)
      A  02                              1 11MSGCON(060 CON0002 *LIBL/RF0004MF)
      A                                      DSPATR(HI)
-     A  04                              1 11MSGCON(060 CON0002 *LIBL/RF0004MF)
+     A  03                              1 11MSGCON(060 CON0003 *LIBL/RF0004MF)
      A                                      DSPATR(HI)
+     A  04                              1 11MSGCON(060 CON0004 *LIBL/RF0004MF)
+     A                                      DSPATR(HI)
+     A                                      DSPATR(BL)
      A  05                              1 11MSGCON(060 CON0005 *LIBL/RF0004MF)
      A                                      DSPATR(HI)
      A                                  1 72'RF0004PG'
@@ -88,15 +94,17 @@
      A            DFJOB     R        O  3 23REFFLD(LIBLS/X4JOB *LIBL/LIBLS)
      A                                  5  2MSGCON(020 CON0011 *LIBL/RF0004MF)
      A            DFLIBL    R        B  5 23REFFLD(LIBLS/X4LIBL *LIBL/LIBLS)
-     A  01                                  DSPATR(UL)
-     A N01                                  DSPATR(PR)
+     A  01
+     AO 03                                  DSPATR(UL)
+     A N01N03                               DSPATR(PR)
      A N81N82 83                            DSPATR(RI)
      A N81N82 83                            DSPATR(PC)
      A                                  7  2MSGCON(020 CON0008 *LIBL/RF0004MF)
      A            DFDSCR    R        B  7 23REFFLD(LIBLS/X4DSCR *LIBL/LIBLS)
      A  01
-     AO 02                                  DSPATR(UL)
-     A N01N02                               DSPATR(PR)
+     AO 02
+     AO 03                                  DSPATR(UL)
+     A N01N02N03                            DSPATR(PR)
      A                                      CHECK(LC)
      A  81 82N83                            DSPATR(RI)
      A  81 82N83                            DSPATR(PC)
@@ -105,10 +113,11 @@
      A          R DSPF010F
      A*%%TS  SD  20011031  133913  HILDEBRAND  REL-V4R2M0  5769-PW1
      A                                      OVERLAY
-     A N01N02                          23  2MSGCON(078 CON0006 *LIBL/RF0004MF)
+     A N01N02N03                       23  2MSGCON(078 CON0006 *LIBL/RF0004MF)
      A                                      COLOR(BLU)
      A  01
-     AO 02                             23  2MSGCON(078 CON0010 *LIBL/RF0004MF)
+     AO 02
+     AO 03                             23  2MSGCON(078 CON0010 *LIBL/RF0004MF)
      A                                      COLOR(BLU)
      A          R DSPF020W
      A*%%TS  SD  20011031  173527  HILDEBRAND  REL-V4R2M0  5769-PW1

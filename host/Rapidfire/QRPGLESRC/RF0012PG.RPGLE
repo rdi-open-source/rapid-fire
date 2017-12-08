@@ -77,18 +77,6 @@
 //*------------+--------+-------------------------------------------------------------------*
 //* 13.06.2016 I   TR   I Enabled program for '*DISPLAY' mode.                              *
 //*------------+--------+-------------------------------------------------------------------*
-//* >>PRE-COMPILER<<                                                                        *
-//*   >>CRTCMD<< CRTBNDRPG PGM(&LI/&OB) SRCFILE(&SL/&SF) SRCMBR(&SM);                       *
-//*   >>IMPORTANT<<                                                                         *
-//*     >>PARM<< DFTACTGRP(*NO);                                                            *
-//*     >>PARM<< DBGVIEW(&U1);                                                              *
-//*     >>PARM<< ACTGRP(&U2);                                                               *
-//*     >>PARM<< TGTRLS(&TR);                                                               *
-//*     >>PARM<< OPTION(*EVENTF);                                                           *
-//*   >>END-IMPORTANT<<                                                                     *
-//*   >>EXECUTE<<                                                                           *
-//* >>END-PRE-COMPILER<<                                                                    *
-//*-----------------------------------------------------------------------------------------*
 
 // Control
 
@@ -101,10 +89,6 @@ CTL-OPT ExtBinInt(*YES);
 
 DCL-F RF0012DF Workstn(*EXT) USAGE(*INPUT:*OUTPUT)
       InfDS(FIDS_RF0012DF);
-DCL-F JOBS Disk(*EXT) USAGE(*INPUT) KEYED Rename(JOBS : JOBRF);
-DCL-F FILES Disk(*EXT) USAGE(*INPUT) KEYED Rename(FILES : FILERF);
-DCL-F COMMANDS Disk(*EXT) USAGE(*UPDATE:*DELETE:*OUTPUT)
-      KEYED Rename(COMMANDS : CMDRF) Commit;
 
 //*-----------------------------------------------------------------------------------------*
 
@@ -137,17 +121,9 @@ END-PI;
 
 /Copy QCPYSRC,SNDERRMSG
 
-// Prozedurenprototyp für Prozedur 'HdlRcdLck'
-
-/Copy QCPYSRC,HDLRCDLCK
-
 // Prozedurenprototyp für Prozedur 'QUHDSPH'
 
 /Copy QCPYSRC,QUHDSPH
-
-// Prozedurenprototyp für Prozedur 'ChkVal'
-
-/Copy QCPYSRC,CHKVAL
 
 // Prozedurenprototyp für Prozedur 'QCAPCMD'
 
@@ -161,10 +137,9 @@ END-PI;
 
 /Copy QCPYSRC,ERRC0100
 
-// Programmstatusdatenstruktur
+// Prozedurenprototyp für Prozedur 'MNTCMD'
 
-DCL-DS PSDS LEN(429) PSDS;
-END-DS;
+/Copy QCPYSRC,MNTCMD
 
 // Dateiinformationsdatenstruktur für RF0012DF
 
@@ -188,6 +163,8 @@ DCL-S ITFktKey CHAR(10);                                                 // Funk
 DCL-S ITSts CHAR(10);                                                    // Nachrichten-Id. b
 DCL-S ITFld CHAR(10);                                                    // Feld
 DCL-S ITMsgId CHAR(7);                                                   // Nachrichten-Id.
+DCL-S ITMsgDta CHAR(256);                                                // Nachrichtendaten
+DCL-S ITMsgF   CHAR(10);                                                 // Nachrichtendatei
 DCL-S ITDsp INT(10) Dim(2);                                              // Anzeige Hilfetext
 DCL-S ITNbr INT(10);                                                     // Anzahl Hilfetextm
 DCL-S ITLftC INT(10) Dim(2);                                             // Linke Ecke
@@ -197,63 +174,64 @@ DCL-S ITHlp CHAR(1);                                                     // Kont
 DCL-S ITCmdIn CHAR(2048);                                                // Eingehender Befeh
 DCL-S ITCmdOut CHAR(2048);                                               // Ausgehender Befeh
 DCL-S ITLenOut INT(10);                                                  // Ausgehende Länge
-DCL-S DO_X PACKED(7);
+DCL-S ITXFld CHAR(10);                                                   // Feld
+DCL-S ITXMsg CHAR(256);                                                  // Nachricht
+DCL-S ITSUCC CHAR(1);                                                    // Erfolg
 
 //*-----------------------------------------------------------------------------------------*
 
 // Bezugszahl für 'Schlüsselwort SFLEND in Nachrichtensubdatei aktivieren' auf 'Ja' setzen
 *IN50 = *On;
-// Datensatz lesen
-Chain ( PIJOB ) JOBRF;
-// Fehler : Der Datensatz konnte nicht gefunden werden
-If Not %Found;
-  PIRtCd = '*ERROR';
-Else;
-  // Datensatz lesen
-  Chain ( PIJOB : PIPOS ) FILERF;
-  // Fehler : Der Datensatz konnte nicht gefunden werden
-  If Not %Found;
-    PIRtCd = '*ERROR';
-  Else;
-    // Job initialisieren
-    DFJOB = PIJOB;
-    // Position initialisieren
-    DFPOS = PIPOS;
-    Select;
-      // Modus : 'Erstellen'
-    When PIMode = '*CREATE';
-      ExSr SR005;
-      If PIRtCd = '*ENTER';
-        PITYPE = DFTYPE;
-        PISEQ = DFSEQ;
-      EndIf;
-      // Modus : 'Ändern'
-    When PIMode = '*CHANGE';
-      ExSr SR010;
-      // Modus : 'Kopieren'
-    When PIMode = '*COPY';
-      ExSr SR015;
-      If PIRtCd = '*ENTER';
-        PITYPE = DFTYPE;
-        PISEQ = DFSEQ;
-      EndIf;
-      // Modus : 'Löschen'
-    When PIMode = '*DELETE';
-      ExSr SR020;
-      // Modus : 'Anzeigen'
-    When PIMode = '*DISPLAY';
-      ExSr SR025;
-    EndSl;
-    // Datensatz entsperren
-    Unlock COMMANDS;
-  EndIf;
+// Dateien öffnen
+MNTCMD_openFiles();
+// Initialisieren
+If MNTCMD_initialize(
+  PIMode : // --> Mode
+  PIJOB  : // --> Job
+  PIPOS  : // --> Position
+  PITYPE : // --> Type
+  PISEQ  : // --> Sequence
+  ITSUCC : // <-- Success
+  ITXMsg   // <-- Message
+);
+  // Job initialisieren
+  DFJOB = PIJOB;
+  // Position initialisieren
+  DFPOS = PIPOS;
+  Select;
+    // Modus : 'Erstellen'
+  When PIMode = '*CREATE';
+    ExSr SR005;
+    If PIRtCd = '*ENTER';
+      PITYPE = DFTYPE;
+      PISEQ = DFSEQ;
+    EndIf;
+    // Modus : 'Ändern'
+  When PIMode = '*CHANGE';
+    ExSr SR010;
+    // Modus : 'Kopieren'
+  When PIMode = '*COPY';
+    ExSr SR015;
+    If PIRtCd = '*ENTER';
+      PITYPE = DFTYPE;
+      PISEQ = DFSEQ;
+    EndIf;
+    // Modus : 'Löschen'
+  When PIMode = '*DELETE';
+    ExSr SR020;
+    // Modus : 'Anzeigen'
+  When PIMode = '*DISPLAY';
+    ExSr SR025;
+  EndSl;
 EndIf;
+// Dateien schließen
+MNTCMD_closeFiles();
 // Programm nicht hauptspeicherresident verlassen
 *INLR = *On;
 
-//-----------------------------------------------------------------------
-// Erstellen
-//-----------------------------------------------------------------------
+//*-----------------------------------------------------------------------------------------*
+//* Erstellen                                                                               *
+//*-----------------------------------------------------------------------------------------*
 
 BegSr SR005;
   // Überschrift für Modus 'Erstellen' anzeigen
@@ -262,27 +240,19 @@ BegSr SR005;
   *IN(3) = *OFF;
   *IN(4) = *OFF;
   *IN(5) = *OFF;
-  // Bildschirm mit Standartwerten füllen
+  // Bildschirm mit Werten füllen
   ExSr SR030;
   // Bildschirm verarbeiten
   ExSr SR050;
   If PIRtCd = '*ENTER';
-    // Datensatz initialisieren
-    Clear CMDRF;
-    X6JOB = PIJOB;
-    X6POS = PIPOS;
-    // Datenbank mit Werten aus dem Bildschirm füllen
-    ExSr SR045;
-    // Datensatz schreiben
-    Write CMDRF;
-    // Modifikationen festschreiben
-    Commit;
+    // Verbuchen
+    MNTCMD_book();
   EndIf;
 EndSr;
 
-//-------------------------------------------------------------------------------------------
-// Ändern
-//-------------------------------------------------------------------------------------------
+//*-----------------------------------------------------------------------------------------*
+//* Ändern                                                                                  *
+//*-----------------------------------------------------------------------------------------*
 
 BegSr SR010;
   // Überschrift für Modus 'Ändern' anzeigen
@@ -291,35 +261,19 @@ BegSr SR010;
   *IN(3) = *OFF;
   *IN(4) = *OFF;
   *IN(5) = *OFF;
-  // Datensatz lesen
-  DoU Not %Error;
-    Chain(E) ( PIJOB : PIPOS : PITYPE : PISEQ ) CMDRF;
-    If %Error;
-      HdlRcdLck(PSDS);
-    EndIf;
-  EndDo;
-  // Fehler : Der Datensatz konnte nicht gefunden werden
-  If Not %Found;
-    PIRtCd = '*ERROR';
-  Else;
-    // Bildschirm mit Werten aus der Datenbank füllen
-    ExSr SR035;
-    // Bildschirm verarbeiten
-    ExSr SR050;
-    If PIRtCd = '*ENTER';
-      // Datenbank mit Werten aus dem Bildschirm füllen
-      ExSr SR045;
-      // Datensatz aktualisieren
-      Update CMDRF;
-      // Modifikationen festschreiben
-      Commit;
-    EndIf;
+  // Bildschirm mit Werten füllen
+  ExSr SR030;
+  // Bildschirm verarbeiten
+  ExSr SR050;
+  If PIRtCd = '*ENTER';
+    // Verbuchen
+    MNTCMD_book();
   EndIf;
 EndSr;
 
-//-------------------------------------------------------------------------------------------
-// Kopieren
-//-------------------------------------------------------------------------------------------
+//*-----------------------------------------------------------------------------------------*
+//* Kopieren                                                                                *
+//*-----------------------------------------------------------------------------------------*
 
 BegSr SR015;
   // Überschrift für Modus 'Kopieren' anzeigen
@@ -328,30 +282,19 @@ BegSr SR015;
   *IN(3) = *ON;
   *IN(4) = *OFF;
   *IN(5) = *OFF;
-  // Datensatz lesen
-  Chain(N) ( PIJOB : PIPOS : PITYPE : PISEQ ) CMDRF;
-  // Fehler : Der Datensatz konnte nicht gefunden werden
-  If Not %Found;
-    PIRtCd = '*ERROR';
-  Else;
-    // Bildschirm mit Werten aus der Datenbank füllen
-    ExSr SR035;
-    // Bildschirm verarbeiten
-    ExSr SR050;
-    If PIRtCd = '*ENTER';
-      // Datenbank mit Werten aus dem Bildschirm füllen
-      ExSr SR045;
-      // Datensatz schreiben
-      Write CMDRF;
-      // Modifikationen festschreiben
-      Commit;
-    EndIf;
+  // Bildschirm mit Werten füllen
+  ExSr SR030;
+  // Bildschirm verarbeiten
+  ExSr SR050;
+  If PIRtCd = '*ENTER';
+    // Verbuchen
+    MNTCMD_book();
   EndIf;
 EndSr;
 
-//-------------------------------------------------------------------------------------------
-// Löschen
-//-------------------------------------------------------------------------------------------
+//*-----------------------------------------------------------------------------------------*
+//* Löschen                                                                                 *
+//*-----------------------------------------------------------------------------------------*
 
 BegSr SR020;
   // Überschrift für Modus 'Löschen' anzeigen
@@ -360,43 +303,29 @@ BegSr SR020;
   *IN(3) = *OFF;
   *IN(4) = *ON;
   *IN(5) = *OFF;
-  // Datensatz lesen
-  DoU Not %Error;
-    Chain(E) ( PIJOB : PIPOS : PITYPE : PISEQ ) CMDRF;
-    If %Error;
-      HdlRcdLck(PSDS);
-    EndIf;
-  EndDo;
-  // Fehler : Der Datensatz konnte nicht gefunden werden
-  If Not %Found;
-    PIRtCd = '*ERROR';
-  Else;
-    // Bildschirm mit Werten aus der Datenbank füllen
-    ExSr SR035;
-    // Bildschirm verarbeiten
-    ExSr SR050;
-    If PIRtCd = '*ENTER';
-      // Bestätigung für Löschung einholen
-      ExFmt DSPF020W;
-      // Funktionstaste abrufen
-      ITFktKey = RtvFktKey(AIDCde);
-      // Datensatz löschen
-      If ITFktKey = '*ENTER';
-        // Datensatz löschen
-        Delete CMDRF;
-        // Modifikationen festschreiben
-        Commit;
-      Else;
-        // Löschung abgebrochen
-        PIRtCd = '*F12';
-      EndIf;
+  // Bildschirm mit Werten füllen
+  ExSr SR030;
+  // Bildschirm verarbeiten
+  ExSr SR050;
+  If PIRtCd = '*ENTER';
+    // Bestätigung für Löschung einholen
+    ExFmt DSPF020W;
+    // Funktionstaste abrufen
+    ITFktKey = RtvFktKey(AIDCde);
+    // Datensatz löschen
+    If ITFktKey = '*ENTER';
+      // Verbuchen
+      MNTCMD_book();
+    Else;
+      // Löschung abgebrochen
+      PIRtCd = '*F12';
     EndIf;
   EndIf;
 EndSr;
 
-//-------------------------------------------------------------------------------------------
-// Anzeigen
-//-------------------------------------------------------------------------------------------
+//*-----------------------------------------------------------------------------------------*
+//* Anzeigen                                                                                *
+//*-----------------------------------------------------------------------------------------*
 
 BegSr SR025;
   // Überschrift für Modus 'Anzeigen' anzeigen
@@ -405,61 +334,39 @@ BegSr SR025;
   *IN(3) = *OFF;
   *IN(4) = *OFF;
   *IN(5) = *ON;
-  // Datensatz lesen
-  Chain(N) ( PIJOB : PIPOS : PITYPE : PISEQ ) CMDRF;
-  // Fehler : Der Datensatz konnte nicht gefunden werden
-  If Not %Found;
-    PIRtCd = '*ERROR';
-  Else;
-    // Bildschirm mit Werten aus der Datenbank füllen
-    ExSr SR035;
-    // Bildschirm verarbeiten
-    ExSr SR050;
+  // Bildschirm mit Werten füllen
+  ExSr SR030;
+  // Bildschirm verarbeiten
+  ExSr SR050;
+  If PIRtCd = '*ENTER';
+    // Verbuchen
+    MNTCMD_book();
   EndIf;
 EndSr;
 
-//-------------------------------------------------------------------------------------------
-// Bildschirm mit Standartwerten füllen
-//-------------------------------------------------------------------------------------------
+//*-----------------------------------------------------------------------------------------*
+//* Bildschirm mit Standartwerten füllen                                                    *
+//*-----------------------------------------------------------------------------------------*
 
 BegSr SR030;
-  // Einzelwerte mit Standartwerten füllen
-  DFTYPE = *Blanks;
-  DFSEQ = *Zero;
-  DFCMD = *Blanks;
+  MNTCMD_getValues(
+    DFTYPE  : // <-- Type
+    DFSEQ   : // <-- Sequence
+    DFCMD     // <-- Command
+  );
 EndSr;
 
-//-------------------------------------------------------------------------------------------
-// Bildschirm mit Werten aus der Datenbank füllen
-//-------------------------------------------------------------------------------------------
-
-BegSr SR035;
-  // Einzelwerte mit Werten aus der Datenbank füllen
-  DFTYPE = X6TYPE;
-  DFSEQ = X6SEQ;
-  DFCMD = X6CMD;
-EndSr;
-
-//-------------------------------------------------------------------------------------------
-// Datenbank mit Werten aus dem Bildschirm füllen
-//-------------------------------------------------------------------------------------------
-
-BegSr SR045;
-  // Datenbank mit Einzelwerten füllen
-  X6TYPE = DFTYPE;
-  X6SEQ = DFSEQ;
-  X6CMD = DFCMD;
-EndSr;
-
-//-------------------------------------------------------------------------------------------
-// Bildschirm verarbeiten
-//-------------------------------------------------------------------------------------------
+//*-----------------------------------------------------------------------------------------*
+//* Bildschirm verarbeiten                                                                  *
+//*-----------------------------------------------------------------------------------------*
 
 BegSr SR050;
   // Fehlernachricht entfernen
   ITSts = RmvErrMsg('*SAME');
   // Fehlernachrichten-Id. initialisieren
   ITMsgId = *Blanks;
+  ITMsgDta = *Blanks;
+  ITMsgF = *Blanks;
   // Fehlerbezugszahlen initialisieren
   *IN(80) = *OFF;
   *IN(81) = *OFF;
@@ -503,6 +410,8 @@ BegSr SR050;
     ITSts = RmvErrMsg('*SAME');
     // Fehlernachrichten-Id. initialisieren
     ITMsgId = *Blanks;
+    ITMsgDta = *Blanks;
+    ITMsgF = *Blanks;
     // Fehlerbezugszahlen initialisieren
     *IN(80) = *OFF;
     *IN(81) = *OFF;
@@ -558,9 +467,9 @@ BegSr SR050;
   EndDo;
 EndSr;
 
-//-------------------------------------------------------------------------------------------
-// Bildschirmfelder auf Fehler überprüfen
-//-------------------------------------------------------------------------------------------
+//*-----------------------------------------------------------------------------------------*
+//* Bildschirmfelder auf Fehler überprüfen                                                  *
+//*-----------------------------------------------------------------------------------------*
 
 BegSr SR055;
   // Namensfelder linksbündig ausrichten
@@ -570,66 +479,50 @@ BegSr SR055;
     DFTYPE = %TRIML(DFTYPE);
     DFCMD = %TRIML(DFCMD);
   EndIf;
-  FOR DO_X = 1 TO 1;
-    // *** Fehlerprüfung nur für Modus 'Erstellen' und 'Kopieren' ***
-    If PIMode = '*CREATE' Or
-      PIMode = '*COPY';
-      // The value in field 'Type' is not valid
-      If DFTYPE <> '*PRERUN' And
-        DFTYPE <> '*COMPILE' And
-        DFTYPE <> '*POSTRUN';
-        ITMsgId = 'ERR0002';
-        *IN(81) = *OFF;
-        *IN(82) = *OFF;
-        *IN(83) = *ON;
-        Leave;
-      EndIf;
-      // The value in field 'Sequence' is not valid
-      If DFSEQ = *Zero;
-        ITMsgId = 'ERR0009';
-        *IN(81) = *ON;
-        *IN(82) = *ON;
-        *IN(83) = *ON;
-        Leave;
-      EndIf;
-      // If 'Type' is *COMPILE, then 'Sequence' has to be 5
-      If DFTYPE = '*COMPILE' And
-        DFSEQ <> 5;
-        ITMsgId = 'ERR0006';
-        *IN(81) = *ON;
-        *IN(82) = *ON;
-        *IN(83) = *ON;
-        Leave;
-      EndIf;
-      // Type/Sequence does already exist
-      SetLL ( PIJOB : PIPOS : DFTYPE : DFSEQ ) CMDRF;
-      If %Equal;
-        ITMsgId = 'ERR0001';
-        *IN(81) = *ON;
-        *IN(82) = *OFF;
-        *IN(83) = *ON;
-        Leave;
-      EndIf;
-    EndIf;
-    // *** Fehlerprüfung nur für Modus 'Erstellen', 'Kopieren' und 'Ändern' ***
-    If PIMode = '*CREATE' Or
-      PIMode = '*COPY' Or
-      PIMode = '*CHANGE';
-      // The value in field 'Command' is not valid
-      If DFCMD = *Blanks;
-        ITMsgId = 'ERR0019';
-        *IN(81) = *OFF;
-        *IN(82) = *ON;
-        *IN(83) = *OFF;
-        Leave;
-      EndIf;
-    EndIf;
-  ENDFOR;
+  // *** Fehlerprüfung nur für Modus 'Erstellen' und 'Kopieren' ***
+  If PIMode = '*CREATE' Or
+    PIMode = '*COPY' Or
+    PIMode = '*CHANGE';
+    MNTCMD_setValues(
+      DFTYPE  : // --> Type
+      DFSEQ   : // --> Sequence
+      DFCMD     // --> Command
+    );
+  EndIf;
+  // Prüfen
+  If Not MNTCMD_check(
+    ITSUCC : // <-- Erfolg
+    ITXFld : // <-- Feld
+    ITXMsg   // <-- Nachricht
+  );
+    // Fehler setzen
+    ITMsgId = 'CPF9897';
+    ITMsgDta = ITXMsg;
+    ITMsgF = 'QCPFMSG';
+    Select;
+    When (ITXFld = 'TYPE');
+      *IN(81) = *OFF;
+      *IN(82) = *OFF;
+      *IN(83) = *ON;
+    When (ITXFld = 'SEQ');
+      *IN(81) = *ON;
+      *IN(82) = *ON;
+      *IN(83) = *ON;
+    When (ITXFld = 'TYPESEQ');
+      *IN(81) = *ON;
+      *IN(82) = *OFF;
+      *IN(83) = *ON;
+    When (ITXFld = 'CMD');
+      *IN(81) = *OFF;
+      *IN(82) = *ON;
+      *IN(83) = *OFF;
+    EndSl;
+  EndIf;
 EndSr;
 
-//-------------------------------------------------------------------------------------------
-// Fehlernachricht in die Programmnachrichtenwarteschlange schreiben
-//-------------------------------------------------------------------------------------------
+//*-----------------------------------------------------------------------------------------*
+//* Fehlernachricht in die Programmnachrichtenwarteschlange schreiben                       *
+//*-----------------------------------------------------------------------------------------*
 
 BegSr SR060;
   // Bezugszahl für 'Es liegt ein Fehler vor' auf 'Ja' setzen
@@ -638,15 +531,15 @@ BegSr SR060;
   ITSts = SndErrMsg(
    '*SAME' :                                                             // --> Aufrufstapele
    ITMsgId :                                                             // --> Nachrichten-I
-   'RF0012MF' :                                                          // --> Nachrichtenda
+   ITMsgF  :                                                             // --> Nachrichtenda
    '*LIBL' :                                                             // --> Bibliothek Na
-   *Blanks                                                               // --> Nachrichtenda
+   ITMsgDta                                                              // --> Nachrichtenda
   );
 EndSr;
 
-//-------------------------------------------------------------------------------------------
-// Hilfe
-//-------------------------------------------------------------------------------------------
+//*-----------------------------------------------------------------------------------------*
+//* Hilfe                                                                                   *
+//*-----------------------------------------------------------------------------------------*
 
 BegSr SR065;
   // Kontextbezogene Hilfe initialisiern
@@ -778,9 +671,9 @@ BegSr SR065;
   *IN(99) = *OFF;
 EndSr;
 
-//-------------------------------------------------------------------------------------------
-// Bedienerführung
-//-------------------------------------------------------------------------------------------
+//*-----------------------------------------------------------------------------------------*
+//* Bedienerführung                                                                         *
+//*-----------------------------------------------------------------------------------------*
 
 BegSr SR070;
   Select;
@@ -828,6 +721,8 @@ BegSr SR070;
     // Es ist keine Bedienerführung für das angeforderte Feld vorhanden
   Other;
     ITMsgId = 'ERR0004';
+    ITMsgDta = *Blanks;
+    ITMsgF = 'RF0012MF';
   EndSl;
   // Cursor auf der letzten Position positionieren
   *IN(90) = *ON;

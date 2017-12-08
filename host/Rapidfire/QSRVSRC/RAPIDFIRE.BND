@@ -34,6 +34,8 @@
                 EXPORT     SYMBOL('RAPIDFIRE_LOG_ERROR')
                 EXPORT     SYMBOL('RAPIDFIRE_IS_ERROR')
                 EXPORT     SYMBOL('RAPIDFIRE_SET_ERROR')
+                EXPORT     SYMBOL('RAPIDFIRE_start')
+                EXPORT     SYMBOL('RAPIDFIRE_stop')
 
              ENDPGMEXP
 

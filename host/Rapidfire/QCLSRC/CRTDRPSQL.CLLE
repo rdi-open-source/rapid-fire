@@ -1,0 +1,210 @@
+     /*-------------------------------------------------------------------------------------------*/
+     /*                                                                                           */
+     /* Copyright (c) 2014 Task Force IT-Consulting GmbH, Waltrop (Germany)                       */
+     /* This software and the accompanying materials are made available                           */
+     /* under the terms of the GNU General Public License version 2.0 (GPLv2)                     */
+     /* which accompanies this distribution and is available at                                   */
+     /* http://www.gnu.org/licenses/gpl-2.0.html                                                  */
+     /*                                                                                           */
+     /*-------------------------------------------------------------------------------------------*/
+     /*                                                                                           */
+     /* Create/Drop UD-Functions and Stored Procedures                                            */
+     /*                                                                                           */
+     /*------------+--------+---------------------------------------------------------------------*/
+     /*   Date     I Progr. I Description                                                         */
+     /*------------+--------+---------------------------------------------------------------------*/
+     /* 17.11.2017 I   FH   I Program created                                                     */
+     /*------------+--------+---------------------------------------------------------------------*/
+
+     /* Start */
+             PGM        PARM(&CMD &LIB)
+
+     /* Declare Compile Options */
+             DCLPRCOPT  DFTACTGRP(*NO) ACTGRP(RAPIDFIRE) +
+                          BNDDIR(RAPIDFIRE)
+
+     /* Declare Variables */
+             DCL        VAR(&CMD) TYPE(*CHAR) LEN(10)
+             DCL        VAR(&LIB) TYPE(*CHAR) LEN(10)
+             DCL        VAR(&TYPE) TYPE(*CHAR) LEN(10)
+             DCL        VAR(&NAME) TYPE(*CHAR) LEN(10)
+             DCL        VAR(&SQL) TYPE(*CHAR) LEN(128)
+
+     /* Create/Drop UD-Functions and Stored Procedures */
+             IF         COND(&CMD *EQ '*CREATE' *OR &CMD *EQ +
+                          '*DROP') THEN(DO)
+
+     /* Process UD-Functions */
+             CHGVAR     VAR(&TYPE) VALUE('FUNCTION')
+
+             CHGVAR     VAR(&NAME) VALUE('LODSTSE')
+             CALLSUBR   SUBR(EXECUTE)
+
+     /* Process Stored Procedures */
+             CHGVAR     VAR(&TYPE) VALUE('PROCEDURE')
+
+             CHGVAR     VAR(&NAME) VALUE('RAPIDFIRE1')
+             CALLSUBR   SUBR(EXECUTE)
+             CHGVAR     VAR(&NAME) VALUE('RAPIDFIRE2')
+             CALLSUBR   SUBR(EXECUTE)
+
+             CHGVAR     VAR(&NAME) VALUE('MNTJOB01')
+             CALLSUBR   SUBR(EXECUTE)
+             CHGVAR     VAR(&NAME) VALUE('MNTJOB02')
+             CALLSUBR   SUBR(EXECUTE)
+             CHGVAR     VAR(&NAME) VALUE('MNTJOB03')
+             CALLSUBR   SUBR(EXECUTE)
+             CHGVAR     VAR(&NAME) VALUE('MNTJOB04')
+             CALLSUBR   SUBR(EXECUTE)
+             CHGVAR     VAR(&NAME) VALUE('MNTJOB05')
+             CALLSUBR   SUBR(EXECUTE)
+             CHGVAR     VAR(&NAME) VALUE('MNTJOB06')
+             CALLSUBR   SUBR(EXECUTE)
+             CHGVAR     VAR(&NAME) VALUE('MNTJOB07')
+             CALLSUBR   SUBR(EXECUTE)
+             CHGVAR     VAR(&NAME) VALUE('MNTJOB08')
+             CALLSUBR   SUBR(EXECUTE)
+             CHGVAR     VAR(&NAME) VALUE('MNTJOB09')
+             CALLSUBR   SUBR(EXECUTE)
+
+             CHGVAR     VAR(&NAME) VALUE('MNTLIB01')
+             CALLSUBR   SUBR(EXECUTE)
+             CHGVAR     VAR(&NAME) VALUE('MNTLIB02')
+             CALLSUBR   SUBR(EXECUTE)
+             CHGVAR     VAR(&NAME) VALUE('MNTLIB03')
+             CALLSUBR   SUBR(EXECUTE)
+             CHGVAR     VAR(&NAME) VALUE('MNTLIB04')
+             CALLSUBR   SUBR(EXECUTE)
+             CHGVAR     VAR(&NAME) VALUE('MNTLIB05')
+             CALLSUBR   SUBR(EXECUTE)
+             CHGVAR     VAR(&NAME) VALUE('MNTLIB06')
+             CALLSUBR   SUBR(EXECUTE)
+             CHGVAR     VAR(&NAME) VALUE('MNTLIB07')
+             CALLSUBR   SUBR(EXECUTE)
+
+             CHGVAR     VAR(&NAME) VALUE('MNTLIBL01')
+             CALLSUBR   SUBR(EXECUTE)
+             CHGVAR     VAR(&NAME) VALUE('MNTLIBL02')
+             CALLSUBR   SUBR(EXECUTE)
+             CHGVAR     VAR(&NAME) VALUE('MNTLIBL03')
+             CALLSUBR   SUBR(EXECUTE)
+             CHGVAR     VAR(&NAME) VALUE('MNTLIBL04')
+             CALLSUBR   SUBR(EXECUTE)
+             CHGVAR     VAR(&NAME) VALUE('MNTLIBL05')
+             CALLSUBR   SUBR(EXECUTE)
+             CHGVAR     VAR(&NAME) VALUE('MNTLIBL06')
+             CALLSUBR   SUBR(EXECUTE)
+             CHGVAR     VAR(&NAME) VALUE('MNTLIBL07')
+             CALLSUBR   SUBR(EXECUTE)
+             CHGVAR     VAR(&NAME) VALUE('MNTLIBL08')
+             CALLSUBR   SUBR(EXECUTE)
+
+             CHGVAR     VAR(&NAME) VALUE('MNTFILE01')
+             CALLSUBR   SUBR(EXECUTE)
+             CHGVAR     VAR(&NAME) VALUE('MNTFILE02')
+             CALLSUBR   SUBR(EXECUTE)
+             CHGVAR     VAR(&NAME) VALUE('MNTFILE03')
+             CALLSUBR   SUBR(EXECUTE)
+             CHGVAR     VAR(&NAME) VALUE('MNTFILE04')
+             CALLSUBR   SUBR(EXECUTE)
+             CHGVAR     VAR(&NAME) VALUE('MNTFILE05')
+             CALLSUBR   SUBR(EXECUTE)
+             CHGVAR     VAR(&NAME) VALUE('MNTFILE06')
+             CALLSUBR   SUBR(EXECUTE)
+             CHGVAR     VAR(&NAME) VALUE('MNTFILE07')
+             CALLSUBR   SUBR(EXECUTE)
+
+             CHGVAR     VAR(&NAME) VALUE('MNTAREA01')
+             CALLSUBR   SUBR(EXECUTE)
+             CHGVAR     VAR(&NAME) VALUE('MNTAREA02')
+             CALLSUBR   SUBR(EXECUTE)
+             CHGVAR     VAR(&NAME) VALUE('MNTAREA03')
+             CALLSUBR   SUBR(EXECUTE)
+             CHGVAR     VAR(&NAME) VALUE('MNTAREA04')
+             CALLSUBR   SUBR(EXECUTE)
+             CHGVAR     VAR(&NAME) VALUE('MNTAREA05')
+             CALLSUBR   SUBR(EXECUTE)
+             CHGVAR     VAR(&NAME) VALUE('MNTAREA06')
+             CALLSUBR   SUBR(EXECUTE)
+             CHGVAR     VAR(&NAME) VALUE('MNTAREA07')
+             CALLSUBR   SUBR(EXECUTE)
+
+             CHGVAR     VAR(&NAME) VALUE('MNTCNV01')
+             CALLSUBR   SUBR(EXECUTE)
+             CHGVAR     VAR(&NAME) VALUE('MNTCNV02')
+             CALLSUBR   SUBR(EXECUTE)
+             CHGVAR     VAR(&NAME) VALUE('MNTCNV03')
+             CALLSUBR   SUBR(EXECUTE)
+             CHGVAR     VAR(&NAME) VALUE('MNTCNV04')
+             CALLSUBR   SUBR(EXECUTE)
+             CHGVAR     VAR(&NAME) VALUE('MNTCNV05')
+             CALLSUBR   SUBR(EXECUTE)
+             CHGVAR     VAR(&NAME) VALUE('MNTCNV06')
+             CALLSUBR   SUBR(EXECUTE)
+             CHGVAR     VAR(&NAME) VALUE('MNTCNV07')
+             CALLSUBR   SUBR(EXECUTE)
+
+             CHGVAR     VAR(&NAME) VALUE('MNTCMD01')
+             CALLSUBR   SUBR(EXECUTE)
+             CHGVAR     VAR(&NAME) VALUE('MNTCMD02')
+             CALLSUBR   SUBR(EXECUTE)
+             CHGVAR     VAR(&NAME) VALUE('MNTCMD03')
+             CALLSUBR   SUBR(EXECUTE)
+             CHGVAR     VAR(&NAME) VALUE('MNTCMD04')
+             CALLSUBR   SUBR(EXECUTE)
+             CHGVAR     VAR(&NAME) VALUE('MNTCMD05')
+             CALLSUBR   SUBR(EXECUTE)
+             CHGVAR     VAR(&NAME) VALUE('MNTCMD06')
+             CALLSUBR   SUBR(EXECUTE)
+             CHGVAR     VAR(&NAME) VALUE('MNTCMD07')
+             CALLSUBR   SUBR(EXECUTE)
+
+             CHGVAR     VAR(&NAME) VALUE('MNTSTBN01')
+             CALLSUBR   SUBR(EXECUTE)
+             CHGVAR     VAR(&NAME) VALUE('MNTSTBN02')
+             CALLSUBR   SUBR(EXECUTE)
+             CHGVAR     VAR(&NAME) VALUE('MNTSTBN03')
+             CALLSUBR   SUBR(EXECUTE)
+             CHGVAR     VAR(&NAME) VALUE('MNTSTBN04')
+             CALLSUBR   SUBR(EXECUTE)
+             CHGVAR     VAR(&NAME) VALUE('MNTSTBN05')
+             CALLSUBR   SUBR(EXECUTE)
+             CHGVAR     VAR(&NAME) VALUE('MNTSTBN06')
+             CALLSUBR   SUBR(EXECUTE)
+             CHGVAR     VAR(&NAME) VALUE('MNTSTBN07')
+             CALLSUBR   SUBR(EXECUTE)
+
+             CHGVAR     VAR(&NAME) VALUE('MNTAS01')
+             CALLSUBR   SUBR(EXECUTE)
+
+             CHGVAR     VAR(&NAME) VALUE('JOB01')
+             CALLSUBR   SUBR(EXECUTE)
+             CHGVAR     VAR(&NAME) VALUE('JOB02')
+             CALLSUBR   SUBR(EXECUTE)
+             CHGVAR     VAR(&NAME) VALUE('JOB03')
+             CALLSUBR   SUBR(EXECUTE)
+
+             ENDDO
+
+     /* Execute Command */
+             SUBR       SUBR(EXECUTE)
+
+             SELECT
+             WHEN       COND(&CMD *EQ '*CREATE') THEN(DO)
+             RUNSQLSTM  SRCFILE(&LIB/QSQLSRC) SRCMBR(&NAME) +
+                          COMMIT(*NONE) NAMING(*SYS) DFTRDBCOL(&LIB)
+             MONMSG     MSGID(CPF0000)
+             ENDDO
+             WHEN       COND(&CMD *EQ '*DROP') THEN(DO)
+             CHGVAR     VAR(&SQL) VALUE('DROP SPECIFIC' *BCAT &TYPE +
+                          *BCAT &NAME)
+             RUNSQL     SQL(&SQL) COMMIT(*NONE) NAMING(*SYS) +
+                          DFTRDBCOL(&LIB)
+             MONMSG     MSGID(CPF0000)
+             ENDDO
+             ENDSELECT
+
+             ENDSUBR
+
+     /* End */
+ STEP999:    ENDPGM

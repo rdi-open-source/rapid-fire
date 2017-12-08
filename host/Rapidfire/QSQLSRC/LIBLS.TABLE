@@ -21,7 +21,7 @@
 -- * >>END-PRE-COMPILER<<                                                   *
 -- *------------------------------------------------------------------------*
 
-CREATE OR REPLACE TABLE LIBRARY_LISTS
+CREATE TABLE LIBRARY_LISTS
 FOR SYSTEM NAME LIBLS
 (
  JOB FOR COLUMN X4JOB CHAR(10) NOT NULL WITH DEFAULT,

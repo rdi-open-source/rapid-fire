@@ -21,7 +21,7 @@
 -- * >>END-PRE-COMPILER<<                                                   *
 -- *------------------------------------------------------------------------*
 
-CREATE OR REPLACE TABLE RFJOBS
+CREATE TABLE RFJOBS
 (
  JOB FOR COLUMN XAJOB CHAR(10) NOT NULL WITH DEFAULT,
  BATCH_JOB FOR COLUMN XABJOB CHAR(10) NOT NULL WITH DEFAULT,

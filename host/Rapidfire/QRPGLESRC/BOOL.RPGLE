@@ -36,22 +36,22 @@ CTL-OPT DatFmt(*ISO) TimFmt(*ISO) DecEdit('0,');
 CTL-OPT Copyright('(C) Copyright Task Force IT-Consulting GmbH');
 CTL-OPT ExtBinInt(*YES);
 
-// ------------------------------------------------------------------------------------------
+//*-----------------------------------------------------------------------------------------*
 
 // Exports
 
 /include QCPYSRC,BOOL                       Boolean Operations
 
-// ==========================================================================================
-//  Tests whether one or more bits are set in a given value.
-// ------------------------------------------------------------------------------------------
-//  Parameters:
-//   i_testBit     - The bits that are tested.
-//   i_value       - The numeric value that is tested for the bits.
-
-//  Returns:
-//   TRUE when all bits of i_value are set in i_testBit, else FALSE.
-// ==========================================================================================
+//*-----------------------------------------------------------------------------------------*
+//* Tests whether one or more bits are set in a given value.                                *
+//*-----------------------------------------------------------------------------------------*
+//* Parameters:                                                                             *
+//*  i_testBit     - The bits that are tested.                                              *
+//*  i_value       - The numeric value that is tested for the bits.                         *
+//*                                                                                         *
+//* Returns:                                                                                *
+//*  TRUE when all bits of i_value are set in i_testBit, else FALSE.                        *
+//*-----------------------------------------------------------------------------------------*
 
 DCL-PROC isBitOn EXPORT;
 

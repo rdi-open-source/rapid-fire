@@ -18,6 +18,7 @@
 //*                                                                                         *
 //* 01      --> Modus : 'Erstellen'                                                         *
 //* 02      --> Modus : 'Ändern'                                                            *
+//* 03      --> Modus : 'Kopieren'                                                          *
 //* 04      --> Modus : 'Löschen'                                                           *
 //* 05      --> Modus : 'Anzeigen'                                                          *
 //* 30      --> Position im Subdateisatz geändert (Abfragen)                                *
@@ -62,6 +63,7 @@
 //*                                                                                         *
 //* PIMode     / *CREATE  --> Modus : 'Erstellen'                                           *
 //*              *CHANGE  --> Modus : 'Ändern'                                              *
+//*              *COPY    --> Modus : 'Kopieren'                                            *
 //*              *DELETE  --> Modus : 'Löschen'                                             *
 //*              *DISPLAY --> Modus : 'Anzeigen'                                            *
 //*                                                                                         *
@@ -76,18 +78,6 @@
 //*------------+--------+-------------------------------------------------------------------*
 //* 14.06.2016 I   TR   I Enabled program for '*DISPLAY' mode.                              *
 //*------------+--------+-------------------------------------------------------------------*
-//* >>PRE-COMPILER<<                                                                        *
-//*   >>CRTCMD<< CRTBNDRPG PGM(&LI/&OB) SRCFILE(&SL/&SF) SRCMBR(&SM);                       *
-//*   >>IMPORTANT<<                                                                         *
-//*     >>PARM<< DFTACTGRP(*NO);                                                            *
-//*     >>PARM<< DBGVIEW(&U1);                                                              *
-//*     >>PARM<< ACTGRP(&U2);                                                               *
-//*     >>PARM<< TGTRLS(&TR);                                                               *
-//*     >>PARM<< OPTION(*EVENTF);                                                           *
-//*   >>END-IMPORTANT<<                                                                     *
-//*   >>EXECUTE<<                                                                           *
-//* >>END-PRE-COMPILER<<                                                                    *
-//*-----------------------------------------------------------------------------------------*
 
 // Control
 
@@ -100,11 +90,6 @@ CTL-OPT ExtBinInt(*YES);
 
 DCL-F RF0004DF Workstn(*EXT) USAGE(*INPUT:*OUTPUT)
       SFile(DSPF010S : ITRRN010) InfDS(FIDS_RF0004DF);
-DCL-F JOBS Disk(*EXT) USAGE(*INPUT) KEYED Rename(JOBS : JOBRF);
-DCL-F LIBLS Disk(*EXT) USAGE(*UPDATE:*DELETE:*OUTPUT)
-      KEYED Rename(LIBLS : LIBLSTRF) Commit;
-DCL-F LIBLETYS Disk(*EXT) USAGE(*UPDATE:*DELETE:*OUTPUT)
-      KEYED Rename(LIBLETYS : LIBLERF) Commit;
 
 //*-----------------------------------------------------------------------------------------*
 
@@ -135,14 +120,6 @@ END-PI;
 
 /Copy QCPYSRC,SNDERRMSG
 
-// Prozedurenprototyp für Prozedur 'HdlRcdLck'
-
-/Copy QCPYSRC,HDLRCDLCK
-
-// Prozedurenprototyp für Prozedur 'ChkVal'
-
-/Copy QCPYSRC,CHKVAL
-
 // Prozedurenprototyp für Prozedur 'QUHDSPH'
 
 /Copy QCPYSRC,QUHDSPH
@@ -151,23 +128,14 @@ END-PI;
 
 /Copy QCPYSRC,ERRC0100
 
-// Programmstatusdatenstruktur
+// Prozedurenprototyp für Prozedur 'MNTLIBL'
 
-DCL-DS PSDS LEN(429) PSDS;
-END-DS;
+/Copy QCPYSRC,MNTLIBL
 
 // Dateiinformationsdatenstruktur für RF0004DF
 
 DCL-DS FIDS_RF0004DF;
   AIDCde CHAR(1) POS(369);
-END-DS;
-
-// Datenstruktur für Speicherung der Bibliotheksliste
-
-DCL-DS *N;
-  ITLL CHAR(14) Dim(250);
-  ITLLSEQ ZONED(4) Overlay(ITLL);                                        // Sequenz
-  ITLLLIB CHAR(10) Overlay(ITLL : *Next);                                // Bibliothek
 END-DS;
 
 // Hilfe-Id.
@@ -186,32 +154,38 @@ DCL-S ITFktKey CHAR(10);                                                 // Funk
 DCL-S ITSts CHAR(10);                                                    // Nachrichten-Id. b
 DCL-S ITFld CHAR(10);                                                    // Feld
 DCL-S ITMsgId CHAR(7);                                                   // Nachrichten-Id.
+DCL-S ITMsgDta CHAR(256);                                                // Nachrichtendaten
+DCL-S ITMsgF CHAR(10);                                                   // Nachrichtendatei
 DCL-S ITDsp INT(10) Dim(2);                                              // Anzeige Hilfetext
 DCL-S ITNbr INT(10);                                                     // Anzahl Hilfetextm
 DCL-S ITLftC INT(10) Dim(2);                                             // Linke Ecke
 DCL-S ITRghC INT(10) Dim(2);                                             // Rechte Ecke
 DCL-S ITCsrL INT(10) Dim(2);                                             // Cursorposition
 DCL-S ITHlp CHAR(1);                                                     // Kontextbezogene H
+DCL-S ITXFld CHAR(10);                                                   // Feld
+DCL-S ITXRcd PACKED(4 : 0);                                              // Satz
+DCL-S ITXMsg CHAR(256);                                                  // Nachricht
+DCL-S ITSUCC CHAR(1);                                                    // Erfolg
 DCL-S ITRRN010 ZONED(4);                                                 // (Subdatei) Aktuel
 DCL-S ITCnt010 ZONED(4);                                                 // (Subdatei) Letzte
-DCL-S ITEOF CHAR(1);                                                     // Dateiende
-DCL-S ITEOFS CHAR(1);                                                    // Dateiende Subdate
-DCL-S ITEOFP CHAR(1);                                                    // Dateiende Paramet
-DCL-S ITSeq Like(X5SEQ);                                                 // Sequenz
-DCL-S ITPos ZONED(5);                                                    // Zähler
 DCL-S ITChg CHAR(1);                                                     // Subdateisatz geän
-DCL-S DO_X PACKED(7);
+DCL-S ITLLSEQ ZONED(4 : 0) Dim(250); // Sequenz
+DCL-S ITLLLIB CHAR(10) Dim(250);      // Bibliothek
 
 //*-----------------------------------------------------------------------------------------*
 
 // Bezugszahl für 'Schlüsselwort SFLEND in Nachrichtensubdatei aktivieren' auf 'Ja' setzen
 *IN50 = *On;
-// Datensatz lesen
-Chain ( PIJOB ) JOBRF;
-// Fehler : Der Datensatz konnte nicht gefunden werden
-If Not %Found;
-  PIRtCd = '*ERROR';
-Else;
+// Dateien öffnen
+MNTLIBL_openFiles();
+// Initialisieren
+If MNTLIBL_initialize(
+  PIMode : // --> Mode
+  PIJOB  : // --> Job
+  PILIBL : // --> Library list
+  ITSUCC : // <-- Success
+  ITXMsg   // <-- Message
+);
   // Job initialisieren
   DFJOB = PIJOB;
   Select;
@@ -224,6 +198,12 @@ Else;
     // Modus : 'Ändern'
   When PIMode = '*CHANGE';
     ExSr SR010;
+    // Modus : 'Kopieren'
+  When PIMode = '*COPY';
+    ExSr SR013;
+    If PIRtCd = '*ENTER';
+      PILIBL = DFLIBL;
+    EndIf;
     // Modus : 'Löschen'
   When PIMode = '*DELETE';
     ExSr SR015;
@@ -231,15 +211,15 @@ Else;
   When PIMode = '*DISPLAY';
     ExSr SR020;
   EndSl;
-  // Datensatz entsperren
-  Unlock LIBLS;
 EndIf;
+// Dateien schließen
+MNTLIBL_closeFiles();
 // Programm nicht hauptspeicherresident verlassen
 *INLR = *On;
 
-//-----------------------------------------------------------------------
-// Erstellen
-//-----------------------------------------------------------------------
+//*-----------------------------------------------------------------------------------------*
+//* Erstellen                                                                               *
+//*-----------------------------------------------------------------------------------------*
 
 BegSr SR005;
   // Überschrift für Modus 'Erstellen' anzeigen
@@ -248,28 +228,19 @@ BegSr SR005;
   *IN(3) = *OFF;
   *IN(4) = *OFF;
   *IN(5) = *OFF;
-  // Bildschirm mit Standartwerten füllen
+  // Bildschirm mit Werten füllen
   ExSr SR025;
   // Bildschirm verarbeiten
   ExSr SR060;
   If PIRtCd = '*ENTER';
-    // Datensatz initialisieren
-    Clear LIBLSTRF;
-    X4JOB = PIJOB;
-    // Datenbank mit Werten aus dem Bildschirm füllen
-    ExSr SR050;
-    // Datensatz schreiben
-    Write LIBLSTRF;
-    // Datenbank mit Bibliotheken füllen
-    ExSr SR055;
-    // Modifikationen festschreiben
-    Commit;
+    // Verbuchen
+    MNTLIBL_book();
   EndIf;
 EndSr;
 
-//-------------------------------------------------------------------------------------------
-// Ändern
-//-------------------------------------------------------------------------------------------
+//*-----------------------------------------------------------------------------------------*
+//* Ändern                                                                                  *
+//*-----------------------------------------------------------------------------------------*
 
 BegSr SR010;
   // Überschrift für Modus 'Ändern' anzeigen
@@ -278,37 +249,40 @@ BegSr SR010;
   *IN(3) = *OFF;
   *IN(4) = *OFF;
   *IN(5) = *OFF;
-  // Datensatz lesen
-  DoU Not %Error;
-    Chain(E) ( PIJOB : PILIBL ) LIBLSTRF;
-    If %Error;
-      HdlRcdLck(PSDS);
-    EndIf;
-  EndDo;
-  // Fehler : Der Datensatz konnte nicht gefunden werden
-  If Not %Found;
-    PIRtCd = '*ERROR';
-  Else;
-    // Bildschirm mit Werten aus der Datenbank füllen
-    ExSr SR035;
-    // Bildschirm verarbeiten
-    ExSr SR060;
-    If PIRtCd = '*ENTER';
-      // Datenbank mit Werten aus dem Bildschirm füllen
-      ExSr SR050;
-      // Datensatz aktualisieren
-      Update LIBLSTRF;
-      // Datenbank mit Bibliotheken füllen
-      ExSr SR055;
-      // Modifikationen festschreiben
-      Commit;
-    EndIf;
+  // Bildschirm mit Werten füllen
+  ExSr SR025;
+  // Bildschirm verarbeiten
+  ExSr SR060;
+  If PIRtCd = '*ENTER';
+    // Verbuchen
+    MNTLIBL_book();
   EndIf;
 EndSr;
 
-//-------------------------------------------------------------------------------------------
-// Löschen
-//-------------------------------------------------------------------------------------------
+//*-----------------------------------------------------------------------------------------*
+//* Kopieren                                                                                *
+//*-----------------------------------------------------------------------------------------*
+
+BegSr SR013;
+  // Überschrift für Modus 'Kopieren' anzeigen
+  *IN(1) = *OFF;
+  *IN(2) = *OFF;
+  *IN(3) = *ON;
+  *IN(4) = *OFF;
+  *IN(5) = *OFF;
+  // Bildschirm mit Werten füllen
+  ExSr SR025;
+  // Bildschirm verarbeiten
+  ExSr SR060;
+  If PIRtCd = '*ENTER';
+    // Verbuchen
+    MNTLIBL_book();
+  EndIf;
+EndSr;
+
+//*-----------------------------------------------------------------------------------------*
+//* Löschen                                                                                 *
+//*-----------------------------------------------------------------------------------------*
 
 BegSr SR015;
   // Überschrift für Modus 'Löschen' anzeigen
@@ -317,43 +291,29 @@ BegSr SR015;
   *IN(3) = *OFF;
   *IN(4) = *ON;
   *IN(5) = *OFF;
-  // Datensatz lesen
-  DoU Not %Error;
-    Chain(E) ( PIJOB : PILIBL ) LIBLSTRF;
-    If %Error;
-      HdlRcdLck(PSDS);
-    EndIf;
-  EndDo;
-  // Fehler : Der Datensatz konnte nicht gefunden werden
-  If Not %Found;
-    PIRtCd = '*ERROR';
-  Else;
-    // Bildschirm mit Werten aus der Datenbank füllen
-    ExSr SR035;
-    // Bildschirm verarbeiten
-    ExSr SR060;
-    If PIRtCd = '*ENTER';
-      // Bestätigung für Löschung einholen
-      ExFmt DSPF020W;
-      // Funktionstaste abrufen
-      ITFktKey = RtvFktKey(AIDCde);                                      // --> AID-Code
-      // Datensatz löschen
-      If ITFktKey = '*ENTER';
-        // Datensatz löschen
-        Delete LIBLSTRF;
-        // Modifikationen festschreiben
-        Commit;
-      Else;
-        // Löschung abgebrochen
-        PIRtCd = '*F12';
-      EndIf;
+  // Bildschirm mit Werten füllen
+  ExSr SR025;
+  // Bildschirm verarbeiten
+  ExSr SR060;
+  If PIRtCd = '*ENTER';
+    // Bestätigung für Löschung einholen
+    ExFmt DSPF020W;
+    // Funktionstaste abrufen
+    ITFktKey = RtvFktKey(AIDCde);                                      // --> AID-Code
+    // Datensatz löschen
+    If ITFktKey = '*ENTER';
+      // Verbuchen
+      MNTLIBL_book();
+    Else;
+      // Löschung abgebrochen
+      PIRtCd = '*F12';
     EndIf;
   EndIf;
 EndSr;
 
-//-------------------------------------------------------------------------------------------
-// Anzeigen
-//-------------------------------------------------------------------------------------------
+//*-----------------------------------------------------------------------------------------*
+//* Anzeigen                                                                                *
+//*-----------------------------------------------------------------------------------------*
 
 BegSr SR020;
   // Überschrift für Modus 'Anzeigen' anzeigen
@@ -362,34 +322,34 @@ BegSr SR020;
   *IN(3) = *OFF;
   *IN(4) = *OFF;
   *IN(5) = *ON;
-  // Datensatz lesen
-  Chain(N) ( PIJOB : PILIBL ) LIBLSTRF;
-  // Fehler : Der Datensatz konnte nicht gefunden werden
-  If Not %Found;
-    PIRtCd = '*ERROR';
-  Else;
-    // Bildschirm mit Werten aus der Datenbank füllen
-    ExSr SR035;
-    // Bildschirm verarbeiten
-    ExSr SR060;
+  // Bildschirm mit Werten füllen
+  ExSr SR025;
+  // Bildschirm verarbeiten
+  ExSr SR060;
+  If PIRtCd = '*ENTER';
+    // Verbuchen
+    MNTLIBL_book();
   EndIf;
 EndSr;
 
-//-------------------------------------------------------------------------------------------
-// Bildschirm mit Standartwerten füllen
-//-------------------------------------------------------------------------------------------
+//*-----------------------------------------------------------------------------------------*
+//* Bildschirm mit Werten füllen                                                            *
+//*-----------------------------------------------------------------------------------------*
 
 BegSr SR025;
-  // Einzelwerte mit Standartwerten füllen
-  DFLIBL = *Blanks;
-  DFDSCR = *Blanks;
-  // Bibliotheken mit Standartwerten füllen
+  MNTLIBL_getValues(
+    DFLIBL :  // <-- Library list
+    DFDSCR :  // <-- Description
+    ITLLSEQ : // <-- Sequence
+    ITLLLIB   // <-- Library
+  );
+  // Subdatei mit Werten füllen
   ExSr SR030;
 EndSr;
 
-//-------------------------------------------------------------------------------------------
-// Bibliotheken mit Standartwerten füllen
-//-------------------------------------------------------------------------------------------
+//*-----------------------------------------------------------------------------------------*
+//* Subdatei mit Werten füllen                                                              *
+//*-----------------------------------------------------------------------------------------*
 
 BegSr SR030;
   // Inhalt der Subdatei löschen
@@ -408,8 +368,8 @@ BegSr SR030;
   *IN(89) = *OFF;
   FOR ITCnt010 = 1 TO 250;
     // Positionssatz mit Standardwerten füllen
-    DFSEQ = ITCnt010 * 10;
-    DFLIB = *Blanks;
+    DFSEQ = ITLLSEQ(ITCnt010);
+    DFLIB = ITLLLIB(ITCnt010);
     // Aktuellen Satz auf letzten Satz setzen
     ITRRN010 = ITCnt010;
     // Subdateisatz schreiben
@@ -417,120 +377,9 @@ BegSr SR030;
   ENDFOR;
 EndSr;
 
-//-------------------------------------------------------------------------------------------
-// Bildschirm mit Werten aus der Datenbank füllen
-//-------------------------------------------------------------------------------------------
-
-BegSr SR035;
-  // Einzelwerte mit Werten aus der Datenbank füllen
-  DFLIBL = X4LIBL;
-  DFDSCR = X4DSCR;
-  // Bibliotheken mit Werten aus der Datenbank füllen
-  ExSr SR045;
-EndSr;
-
-//-------------------------------------------------------------------------------------------
-// Bibliotheken mit Werten aus der Datenbank füllen
-//-------------------------------------------------------------------------------------------
-
-BegSr SR045;
-  // Inhalt der Subdatei löschen
-  *IN60 = *On;
-  Write DSPF010C;
-  *IN60 = *Off;
-  // Fehlerbezugszahlen initialisieren
-  *IN(81) = *OFF;
-  *IN(82) = *OFF;
-  *IN(83) = *OFF;
-  *IN(84) = *OFF;
-  *IN(85) = *OFF;
-  *IN(86) = *OFF;
-  *IN(87) = *OFF;
-  *IN(88) = *OFF;
-  *IN(89) = *OFF;
-  // Kz. Dateiende initialisieren
-  ITEOF = 'N';
-  // Positionsdatei positionieren
-  SetLL ( PIJOB : PILIBL ) LIBLERF;
-  FOR ITCnt010 = 1 TO 250;
-    // Positionsdatei lesen
-    If ITEOF = 'N';
-      ReadE(N) ( PIJOB : PILIBL ) LIBLERF;
-      // Für die restlichen Sätze Standardwerte verwenden
-      If %EOF;
-        // Kz. Dateiende setzen
-        ITEOF = 'J';
-        // Satz mit Standardwerten füllen
-        DFLIB = *Blanks;
-        // Satz mit Werten aus der Positionsdatei füllen
-      Else;
-        DFLIB = X5LIB;
-      EndIf;
-    EndIf;
-    // Reihenfolge initialisieren
-    DFSEQ = ITCnt010 * 10;
-    // Aktuellen Satz auf letzten Satz setzen
-    ITRRN010 = ITCnt010;
-    // Bezugszahl für 'Position im Subdateisatz geändert (Setzen)' auf 'Nein' setzen
-    *IN31 = *Off;
-    // Subdateisatz schreiben
-    Write DSPF010S;
-  ENDFOR;
-EndSr;
-
-//-------------------------------------------------------------------------------------------
-// Datenbank mit Werten aus dem Bildschirm füllen
-//-------------------------------------------------------------------------------------------
-
-BegSr SR050;
-  // Datenbank mit Einzelwerten füllen
-  X4LIBL = DFLIBL;
-  X4DSCR = DFDSCR;
-EndSr;
-
-//-------------------------------------------------------------------------------------------
-// Datenbank mit Bibliotheken füllen
-//-------------------------------------------------------------------------------------------
-
-BegSr SR055;
-  // Bibliothekslisteneinträge löschen
-  If PIMode <> '*CREATE';
-    SetLL ( PIJOB : PILIBL ) LIBLERF;
-    DoU %EOF;
-      DoU Not %Error;
-        ReadE(E) ( PIJOB : PILIBL ) LIBLERF;
-        If %Error;
-          HdlRcdLck(PSDS);
-        EndIf;
-      EndDo;
-      If Not %EOF;
-        Delete LIBLERF;
-      EndIf;
-    EndDo;
-  EndIf;
-  // Sequenz initialisieren
-  ITSeq = *Zero;
-  For ITCnt010 = 1 To 250 By 1;
-    // Subdatei lesen
-    Chain ITCnt010 DSPF010S;
-    If %Found And
-      DFLIB <> *Blanks;
-      // Sequenz erhöhen
-      ITSeq = ITSeq + 10;
-      // Bibliothekslisteneintrage schreiben
-      Clear *All LIBLERF;
-      X5JOB = PIJOB;
-      X5LIBL = DFLIBL;
-      X5SEQ = ITSeq;
-      X5LIB = DFLIB;
-      Write LIBLERF;
-    EndIf;
-  EndFor;
-EndSr;
-
-//-------------------------------------------------------------------------------------------
-// Bildschirm verarbeiten
-//-------------------------------------------------------------------------------------------
+//*-----------------------------------------------------------------------------------------*
+//* Bildschirm verarbeiten                                                                  *
+//*-----------------------------------------------------------------------------------------*
 
 BegSr SR060;
   // Anzuzeigenden Subdateisatz initialisieren
@@ -539,6 +388,8 @@ BegSr SR060;
   ITSts = RmvErrMsg('*SAME');
   // Fehlernachrichten-Id. initialisieren
   ITMsgId = *Blanks;
+  ITMsgDta = *Blanks;
+  ITMsgF = *Blanks;
   // Fehlerbezugszahlen initialisieren
   *IN(80) = *OFF;
   *IN(81) = *OFF;
@@ -590,6 +441,8 @@ BegSr SR060;
     ITSts = RmvErrMsg('*SAME');
     // Fehlernachrichten-Id. initialisieren
     ITMsgId = *Blanks;
+    ITMsgDta = *Blanks;
+    ITMsgF = *Blanks;
     // Fehlerbezugszahlen initialisieren
     *IN(80) = *OFF;
     *IN(81) = *OFF;
@@ -650,14 +503,18 @@ BegSr SR060;
   EndDo;
 EndSr;
 
-//-------------------------------------------------------------------------------------------
-// Bildschirmfelder auf Fehler überprüfen
-//-------------------------------------------------------------------------------------------
+//*-----------------------------------------------------------------------------------------*
+//* Bildschirmfelder auf Fehler überprüfen                                                  *
+//*-----------------------------------------------------------------------------------------*
 
 BegSr SR065;
   // 'Subdateisatz geändert' initialisieren
   ITChg = 'N';
+  // Tabellen initialisieren
+  ITLLSEQ(*) = *Zero;
+  ITLLLIB(*) = *Blanks;
   If PIMode = '*CREATE' Or
+    PIMode = '*COPY' Or
     PIMode = '*CHANGE';
     // Namensfelder linksbündig ausrichten (Normalfelder)
     DFLIBL = %TRIML(DFLIBL);
@@ -669,6 +526,9 @@ BegSr SR065;
       If Not %Found;
         Leave;
       EndIf;
+      // Tabellen initialisieren
+      ITLLSEQ(ITCnt010) = DFSEQ;
+      ITLLLIB(ITCnt010) = DFLIB;
       // Position im Subdateisatz wurde geändert
       If *IN30 = *On;
         ITChg = 'J';
@@ -681,43 +541,40 @@ BegSr SR065;
       Update DSPF010S;
     ENDFOR;
   EndIf;
-  FOR DO_X = 1 TO 1;
-    // *** Fehlerprüfung nur für Modus 'Erstellen' ***
-    If PIMode = '*CREATE';
-      // The value in field 'Library list' is not valid
-      If ChkVal('*NAME' : 10 : %Addr(DFLIBL)) =
-        '*INVALID';
-        ITMsgId = 'ERR0003';
-        *IN(81) = *OFF;
-        *IN(82) = *OFF;
-        *IN(83) = *ON;
-        Leave;
-      EndIf;
-      // The library list does already exist
-      SetLL ( PIJOB : DFLIBL ) LIBLSTRF;
-      If %Equal;
-        ITMsgId = 'ERR0009';
-        *IN(81) = *OFF;
-        *IN(82) = *OFF;
-        *IN(83) = *ON;
-        Leave;
-      EndIf;
-    EndIf;
-    // *** Fehlerprüfung nur für Modus 'Erstellen' und 'Ändern' ***
-    If PIMode = '*CREATE' Or
-      PIMode = '*CHANGE';
-      // The value in field 'Description' is not valid
-      If DFDSCR = *Blanks;
-        ITMsgId = 'ERR0010';
-        *IN(81) = *ON;
-        *IN(82) = *ON;
-        *IN(83) = *OFF;
-        Leave;
-      EndIf;
-      // Tabellen initialisieren
-      ITLLSEQ(*) = *Hival;
-      ITLLLIB(*) = *Blanks;
-      ITPos = *Zero;
+  // *** Fehlerprüfung nur für Modus 'Erstellen', 'Kopieren' und 'Ändern' ***
+  If PIMode = '*CREATE' Or
+    PIMode = '*COPY' Or
+    PIMode = '*CHANGE';
+    MNTLIBL_setValues(
+      DFLIBL :  // --> Library list
+      DFDSCR :  // --> Description
+      ITLLSEQ : // --> Sequence
+      ITLLLIB   // --> Library
+    );
+  EndIf;
+  // Prüfen
+  If Not MNTLIBL_check(
+    ITSUCC : // <-- Erfolg
+    ITXFld : // <-- Feld
+    ITXRcd : // <-- Satz
+    ITXMsg   // <-- Nachricht
+  );
+    // Fehler setzen
+    ITMsgId = 'CPF9897';
+    ITMsgDta = ITXMsg;
+    ITMsgF = 'QCPFMSG';
+    select;
+    when (ITXFld = 'LIBL');
+      *IN(81) = *OFF;
+      *IN(82) = *OFF;
+      *IN(83) = *ON;
+    when (ITXFld = 'DSCR');
+      *IN(81) = *ON;
+      *IN(82) = *ON;
+      *IN(83) = *OFF;
+    when (ITXFld = 'SEQ' or
+          ITXFld = 'LIB' or
+          ITXFld = 'DUP');
       // Fehler in der Subdatei verarbeiten
       FOR ITCnt010 = 1 TO 250;
         // Subdateisatz lesen
@@ -736,93 +593,51 @@ BegSr SR065;
         *IN(87) = *OFF;
         *IN(88) = *OFF;
         *IN(89) = *OFF;
-        // Die Position enthält Werte
-        If DFLIB <> *Blanks;
-          // The sequenz may not be 9999
-          If ITMsgId = *Blanks And
-            DFSEQ >= 9999;
+        // Die Position ist fehlerhaft
+        If ITCnt010 = ITXRcd;
+          Select;
+          When (ITXFld = 'SEQ');
             DFSET010 = ITRRN010;
-            ITMsgId = 'ERR0001';
             *IN(81) = *ON;
             *IN(82) = *OFF;
             *IN(83) = *ON;
-          EndIf;
-          // The value in field 'Library' is not valid
-          If ITMsgId = *Blanks And
-            ChkVal('*NAME' : 10 : %Addr(DFLIB)) =
-            '*INVALID';
+          When (ITXFld = 'LIB');
             DFSET010 = ITRRN010;
-            ITMsgId = 'ERR0002';
             *IN(81) = *OFF;
             *IN(82) = *ON;
             *IN(83) = *OFF;
-          EndIf;
-          // The Library has already been defined on an other position
-          If ITMsgId = *Blanks;
-            If %Lookup(DFLIB : ITLLLIB) <> *Zero;
-              DFSET010 = ITRRN010;
-              ITMsgId = 'ERR0007';
-              *IN(81) = *ON;
-              *IN(82) = *OFF;
-              *IN(83) = *OFF;
-            EndIf;
-          EndIf;
-          // Position in Tabelle stellen
-          ITPos = ITPos + 1;
-          ITLLSEQ(ITPos) = DFSEQ;
-          ITLLLIB(ITPos) = DFLIB;
+          When (ITXFld = 'DUP');
+            DFSET010 = ITRRN010;
+            *IN(81) = *ON;
+            *IN(82) = *OFF;
+            *IN(83) = *OFF;
+          EndSl;
         EndIf;
         // Bezugszahl für 'Position im Subdateisatz geändert (Setzen)' auf 'Nein' setzen
         *IN31 = *Off;
         // Subdateisatz aktualisieren
         Update DSPF010S;
       ENDFOR;
-      // Fehler in der Subfile gefunden
-      If ITMsgId <> *Blanks;
-        Leave;
-      EndIf;
-    EndIf;
-  ENDFOR;
+    endsl;
+  endif;
 EndSr;
 
-//-------------------------------------------------------------------------------------------
-// Subdatei neu aufbauen
-//-------------------------------------------------------------------------------------------
+//*-----------------------------------------------------------------------------------------*
+//* Subdatei neu aufbauen                                                                   *
+//*-----------------------------------------------------------------------------------------*
 
 BegSr SR070;
-  // Tabelle nach der Sequenz sortieren
-  SortA ITLLSEQ;
-  // Inhalt der Subdatei löschen
-  *IN60 = *On;
-  Write DSPF010C;
-  *IN60 = *Off;
-  // Fehlerbezugszahlen initialisieren
-  *IN(81) = *OFF;
-  *IN(82) = *OFF;
-  *IN(83) = *OFF;
-  *IN(84) = *OFF;
-  *IN(85) = *OFF;
-  *IN(86) = *OFF;
-  *IN(87) = *OFF;
-  *IN(88) = *OFF;
-  *IN(89) = *OFF;
-  FOR ITCnt010 = 1 TO 250;
-    // Satz mit Tabellenwerten füllen
-    DFLIB = ITLLLIB(ITCnt010);
-    // Reihenfolge initialisieren
-    DFSEQ = ITCnt010 * 10;
-    // Aktuellen Satz auf letzten Satz setzen
-    ITRRN010 = ITCnt010;
-    // Bezugszahl für 'Position im Subdateisatz geändert (Setzen)' auf 'Nein' setzen
-    *IN31 = *Off;
-    // Subdateisatz schreiben
-    Write DSPF010S;
-  ENDFOR;
+  MNTLIBL_getLibraryList(
+    ITLLSEQ : // <-- Sequence
+    ITLLLIB   // <-- Library
+  );
+  // Subdatei mit Werten füllen
+  ExSr SR030;
 EndSr;
 
-//-------------------------------------------------------------------------------------------
-// Fehlernachricht in die Programmnachrichtenwarteschlange schreiben
-//-------------------------------------------------------------------------------------------
+//*-----------------------------------------------------------------------------------------*
+//* Fehlernachricht in die Programmnachrichtenwarteschlange schreiben                       *
+//*-----------------------------------------------------------------------------------------*
 
 BegSr SR075;
   // Bezugszahl für 'Es liegt ein Fehler vor' auf 'Ja' setzen
@@ -831,15 +646,15 @@ BegSr SR075;
   ITSts = SndErrMsg(
    '*SAME' :                                                             // --> Aufrufstapele
    ITMsgId :                                                             // --> Nachrichten-I
-   'RF0004MF' :                                                          // --> Nachrichtenda
+   ITMsgF  :                                                             // --> Nachrichtenda
    '*LIBL' :                                                             // --> Bibliothek Na
-   *Blanks                                                               // --> Nachrichtenda
+   ITMsgDta                                                              // --> Nachrichtenda
   );
 EndSr;
 
-//-------------------------------------------------------------------------------------------
-// Hilfe
-//-------------------------------------------------------------------------------------------
+//*-----------------------------------------------------------------------------------------*
+//* Hilfe                                                                                   *
+//*-----------------------------------------------------------------------------------------*
 
 BegSr SR080;
   // Kontextbezogene Hilfe initialisiern
@@ -917,6 +732,7 @@ BegSr SR080;
     ITHILP(ITNbr) = '*LIBL';
     Select;
     When PIMode = '*CREATE' Or
+      PIMode = '*COPY' Or
       PIMode = '*CHANGE';
       ITHIMO(ITNbr) = 'FKT/EDT';
     When PIMode = '*DISPLAY' Or
@@ -970,15 +786,17 @@ BegSr SR080;
   *IN(99) = *OFF;
 EndSr;
 
-//-------------------------------------------------------------------------------------------
-// Bedienerführung
-//-------------------------------------------------------------------------------------------
+//*-----------------------------------------------------------------------------------------*
+//* Bedienerführung                                                                         *
+//*-----------------------------------------------------------------------------------------*
 
 BegSr SR085;
   Select;
     // No prompt for the requested field available
   Other;
     ITMsgId = 'ERR0008';
+    ITMsgDta = *Blanks;
+    ITMsgF = 'RF0004MF';
   EndSl;
   // Cursor auf der letzten Position positionieren
   *IN(90) = *ON;

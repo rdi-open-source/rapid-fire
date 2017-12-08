@@ -29,6 +29,10 @@
      /* Start */
              PGM        PARM(&LIB)
 
+     /* Declare compile options */
+             DCLPRCOPT  DFTACTGRP(*NO) ACTGRP(RAPIDFIRE) +
+                          BNDDIR(RAPIDFIRE)
+
      /* Declare variables */
              DCL        VAR(&LIB) TYPE(*CHAR) LEN(10)
              DCL        VAR(&JRNSTS) TYPE(*CHAR) LEN(1)

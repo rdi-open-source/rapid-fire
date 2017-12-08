@@ -29,18 +29,22 @@
      /* Programmstart */
              PGM        PARM(&MSGF &LIBMSGF &MSGID &MSGDTA &MSG)
 
-     /* Variablen deklarieren */
+     /* Declare compile options */
+             DCLPRCOPT  DFTACTGRP(*NO) ACTGRP(RAPIDFIRE) +
+                          BNDDIR(RAPIDFIRE)
+
+     /* Declare variables */
              DCL        VAR(&MSGF) TYPE(*CHAR) LEN(10)
              DCL        VAR(&LIBMSGF) TYPE(*CHAR) LEN(10)
              DCL        VAR(&MSGID) TYPE(*CHAR) LEN(7)
              DCL        VAR(&MSGDTA) TYPE(*CHAR) LEN(256)
              DCL        VAR(&MSG) TYPE(*CHAR) LEN(256)
 
-     /* Nachricht abrufen */
+     /* Retrieve message */
              RTVMSG     MSGID(&MSGID) MSGF(&LIBMSGF/&MSGF) +
                           MSGDTA(&MSGDTA) MSG(&MSG)
              MONMSG     MSGID(CPF0000) EXEC(CHGVAR VAR(&MSG) +
                           VALUE(&MSGID))
 
-     /* Programmende */
+     /* End */
  STEP999:    ENDPGM

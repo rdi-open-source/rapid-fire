@@ -21,7 +21,7 @@
 -- * >>END-PRE-COMPILER<<                                                   *
 -- *------------------------------------------------------------------------*
 
-CREATE OR REPLACE TABLE SUBJECTS_TO_BE_NOTIFIED
+CREATE TABLE SUBJECTS_TO_BE_NOTIFIED
 FOR SYSTEM NAME SUBTOBENOT
 (
  JOB FOR COLUMN XCJOB CHAR(10) NOT NULL WITH DEFAULT,

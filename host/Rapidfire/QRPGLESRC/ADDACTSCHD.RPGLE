@@ -17,18 +17,6 @@
 //*------------+--------+-------------------------------------------------------------------*
 //* 20.04.2016 I   FH   I Programm erstellt                                                 *
 //*------------+--------+-------------------------------------------------------------------*
-//* >>PRE-COMPILER<<                                                                        *
-//*   >>CRTCMD<< CRTBNDRPG PGM(&LI/&OB) SRCFILE(&SL/&SF) SRCMBR(&SM);                       *
-//*   >>IMPORTANT<<                                                                         *
-//*     >>PARM<< DFTACTGRP(*NO);                                                            *
-//*     >>PARM<< DBGVIEW(&U1);                                                              *
-//*     >>PARM<< ACTGRP(&U2);                                                               *
-//*     >>PARM<< TGTRLS(&TR);                                                               *
-//*     >>PARM<< OPTION(*EVENTF);                                                           *
-//*   >>END-IMPORTANT<<                                                                     *
-//*   >>EXECUTE<<                                                                           *
-//* >>END-PRE-COMPILER<<                                                                    *
-//*-----------------------------------------------------------------------------------------*
 
 // Control
 
@@ -40,7 +28,7 @@ CTL-OPT ExtBinInt(*YES);
 //*-----------------------------------------------------------------------------------------*
 
 DCL-F ACTSCHD Disk(*EXT) USAGE(*OUTPUT) Rename(ACTSCHD : ACTSCHDRF)
-      Commit(g_CLKL) UsrOpn;
+      Commit(g_CLKL) Infsr(*PSSR) UsrOpn;
 
 //*-----------------------------------------------------------------------------------------*
 
@@ -116,10 +104,13 @@ DCL-S g_CNT ZONED(5);                                                    // Zähl
 
 // Parameter übertragen
 g_Prm = pep_Prm;
+
 // *BEFORE-Image ermitteln
 BEF_JOBS_Ptr = %Addr(pep_Prm) + g_BEOF;
+
 // *AFTER-Image ermitteln
 AFT_JOBS_Ptr = %Addr(pep_Prm) + g_AFOF;
+
 // Ein Satz wurde eingefügt
 If g_EVNT = '1';
   Open ACTSCHD;
@@ -138,5 +129,13 @@ If g_EVNT = '1';
   EndFor;
   Close ACTSCHD;
 EndIf;
+
 // Programm nicht hauptspeicherresident verlassen
 *INLR = *On;
+
+//*-----------------------------------------------------------------------------------------*
+//* Error handler                                                                           *
+//*-----------------------------------------------------------------------------------------*
+
+BegSr *PSSR;
+EndSr '*CANCL';

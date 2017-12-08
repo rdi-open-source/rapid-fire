@@ -108,6 +108,111 @@
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
+     /*   Cmd-ADDMSGD für Message-ID :   ERR0005                    */
+     /* Invalid parameter values. Error = &1.                       */
+     /*-------------------------------------------------------------*/
+
+             ADDMSGD +
+                MSGID(ERR0005) +
+                MSGF(&LIB/&OBJ) +
+                MSG(+
+'Invalid parameter values. Error = &1.'                               +
+                ) +
+                SEV(00) +
+                FMT( +
+                    (*CHAR 0256) +
+                ) +
+                ALROPT(*NO) +
+                CCSID( 65535) +
+                /*  -EOF-  */
+
+     /*-------------------------------------------------------------*/
+     /*   Cmd-ADDMSGD für Message-ID :   ERR0006                    */
+     /* The action is only valid for jobs with status *RDY.         */
+     /*-------------------------------------------------------------*/
+
+             ADDMSGD +
+                MSGID(ERR0006) +
+                MSGF(&LIB/&OBJ) +
+                MSG(+
+'The action is only valid for jobs with status *RDY.'                 +
+                ) +
+                SEV(00) +
+     /*   Keine Ersatzvariablen definiert!                          */ +
+                ALROPT(*NO) +
+                CCSID( 65535) +
+                /*  -EOF-  */
+
+     /*-------------------------------------------------------------*/
+     /*   Cmd-ADDMSGD für Message-ID :   ERR0007                    */
+     /* The action is only valid for jobs with status *RUN-PND, *RU */
+     /*-------------------------------------------------------------*/
+
+             ADDMSGD +
+                MSGID(ERR0007) +
+                MSGF(&LIB/&OBJ) +
+                MSG(+
+'The action is only valid for jobs with status *RUN-PND, *RUN or *END--
+PND.'                                                                 +
+                ) +
+                SEV(00) +
+     /*   Keine Ersatzvariablen definiert!                          */ +
+                ALROPT(*NO) +
+                CCSID( 65535) +
+                /*  -EOF-  */
+
+     /*-------------------------------------------------------------*/
+     /*   Cmd-ADDMSGD für Message-ID :   ERR0008                    */
+     /* The action is only valid for jobs with status *RUN.         */
+     /*-------------------------------------------------------------*/
+
+             ADDMSGD +
+                MSGID(ERR0008) +
+                MSGF(&LIB/&OBJ) +
+                MSG(+
+'The action is only valid for jobs with status *RUN.'                 +
+                ) +
+                SEV(00) +
+     /*   Keine Ersatzvariablen definiert!                          */ +
+                ALROPT(*NO) +
+                CCSID( 65535) +
+                /*  -EOF-  */
+
+     /*-------------------------------------------------------------*/
+     /*   Cmd-ADDMSGD für Message-ID :   ERR0009                    */
+     /* The action is only valid for jobs with status *END.         */
+     /*-------------------------------------------------------------*/
+
+             ADDMSGD +
+                MSGID(ERR0009) +
+                MSGF(&LIB/&OBJ) +
+                MSG(+
+'The action is only valid for jobs with status *END.'                 +
+                ) +
+                SEV(00) +
+     /*   Keine Ersatzvariablen definiert!                          */ +
+                ALROPT(*NO) +
+                CCSID( 65535) +
+                /*  -EOF-  */
+
+     /*-------------------------------------------------------------*/
+     /*   Cmd-ADDMSGD für Message-ID :   ERR0010                    */
+     /* The action is only valid for jobs with "Create environment" */
+     /*-------------------------------------------------------------*/
+
+             ADDMSGD +
+                MSGID(ERR0010) +
+                MSGF(&LIB/&OBJ) +
+                MSG(+
+'The action is only valid for jobs with "Create environment" *YES.'   +
+                ) +
+                SEV(00) +
+     /*   Keine Ersatzvariablen definiert!                          */ +
+                ALROPT(*NO) +
+                CCSID( 65535) +
+                /*  -EOF-  */
+
+     /*-------------------------------------------------------------*/
      /*   Cmd-ADDMSGD für Message-ID :   ERR0045                    */
      /* The value in field 'Job queue' is not valid.                */
      /*-------------------------------------------------------------*/

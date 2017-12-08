@@ -21,7 +21,7 @@
 -- * >>END-PRE-COMPILER<<                                                   *
 -- *------------------------------------------------------------------------*
 
-CREATE OR REPLACE TABLE JOBS
+CREATE TABLE JOBS
 (
  JOB FOR COLUMN X1JOB CHAR(10) NOT NULL WITH DEFAULT,
  DESCRIPTION FOR COLUMN X1DSCR CHAR(35) NOT NULL WITH DEFAULT,

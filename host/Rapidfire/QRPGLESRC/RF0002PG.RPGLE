@@ -182,29 +182,30 @@ MNTJOB_openFiles();
 If MNTJOB_initialize(
   PIMode : // --> Mode
   PIJOB  : // --> Job
-  ITSUCC   // <-- Erfolg
+  ITSUCC : // <-- Success
+  ITXMsg   // <-- Message
 );
   Select;
     // Modus : 'Erstellen'
-  When PIMode = '*CREATE';
+  When PIMode = MNTJOB_CREATE;
     ExSr SR005;
     If PIRtCd = '*ENTER';
       PIJOB = DFJOB;
     EndIf;
     // Modus : 'Ändern'
-  When PIMode = '*CHANGE';
+  When PIMode = MNTJOB_CHANGE;
     ExSr SR010;
     // Modus : 'Kopieren'
-  When PIMode = '*COPY';
+  When PIMode = MNTJOB_COPY;
     ExSr SR015;
     If PIRtCd = '*ENTER';
       PIJOB = DFJOB;
     EndIf;
     // Modus : 'Löschen'
-  When PIMode = '*DELETE';
+  When PIMode = MNTJOB_DELETE;
     ExSr SR020;
     // Modus : 'Anzeigen'
-  When PIMode = '*DISPLAY';
+  When PIMode = MNTJOB_DISPLAY;
     ExSr SR025;
   EndSl;
 EndIf;
@@ -213,9 +214,9 @@ MNTJOB_closeFiles();
 // Programm nicht hauptspeicherresident verlassen
 *INLR = *On;
 
-//-----------------------------------------------------------------------
-// Erstellen
-//-----------------------------------------------------------------------
+//*-----------------------------------------------------------------------------------------*
+//* Erstellen                                                                               *
+//*-----------------------------------------------------------------------------------------*
 
 BegSr SR005;
   // Überschrift für Modus 'Erstellen' anzeigen
@@ -234,9 +235,9 @@ BegSr SR005;
   EndIf;
 EndSr;
 
-//-------------------------------------------------------------------------------------------
-// Ändern
-//-------------------------------------------------------------------------------------------
+//*-----------------------------------------------------------------------------------------*
+//* Ändern                                                                                  *
+//*-----------------------------------------------------------------------------------------*
 
 BegSr SR010;
   // Überschrift für Modus 'Ändern' anzeigen
@@ -255,9 +256,9 @@ BegSr SR010;
   EndIf;
 EndSr;
 
-//-------------------------------------------------------------------------------------------
-// Kopieren
-//-------------------------------------------------------------------------------------------
+//*-----------------------------------------------------------------------------------------*
+//* Kopieren                                                                                *
+//*-----------------------------------------------------------------------------------------*
 
 BegSr SR015;
   // Überschrift für Modus 'Kopieren' anzeigen
@@ -276,9 +277,9 @@ BegSr SR015;
   EndIf;
 EndSr;
 
-//-------------------------------------------------------------------------------------------
-// Löschen
-//-------------------------------------------------------------------------------------------
+//*-----------------------------------------------------------------------------------------*
+//* Löschen                                                                                 *
+//*-----------------------------------------------------------------------------------------*
 
 BegSr SR020;
   // Überschrift für Modus 'Löschen' anzeigen
@@ -307,9 +308,9 @@ BegSr SR020;
   EndIf;
 EndSr;
 
-//-------------------------------------------------------------------------------------------
-// Anzeigen
-//-------------------------------------------------------------------------------------------
+//*-----------------------------------------------------------------------------------------*
+//* Anzeigen                                                                                *
+//*-----------------------------------------------------------------------------------------*
 
 BegSr SR025;
   // Überschrift für Modus 'Anzeigen' anzeigen
@@ -328,9 +329,9 @@ BegSr SR025;
   EndIf;
 EndSr;
 
-//-------------------------------------------------------------------------------------------
-// Bildschirm mit Werten füllen
-//-------------------------------------------------------------------------------------------
+//*-----------------------------------------------------------------------------------------*
+//* Bildschirm mit Werten füllen                                                            *
+//*-----------------------------------------------------------------------------------------*
 
 BegSr SR030;
   MNTJOB_getValues(
@@ -342,9 +343,9 @@ BegSr SR030;
   );
 EndSr;
 
-//-------------------------------------------------------------------------------------------
-// Bildschirm verarbeiten
-//-------------------------------------------------------------------------------------------
+//*-----------------------------------------------------------------------------------------*
+//* Bildschirm verarbeiten                                                                  *
+//*-----------------------------------------------------------------------------------------*
 
 BegSr SR045;
   // Fehlernachricht entfernen
@@ -453,23 +454,23 @@ BegSr SR045;
   EndDo;
 EndSr;
 
-//-------------------------------------------------------------------------------------------
-// Bildschirmfelder auf Fehler überprüfen
-//-------------------------------------------------------------------------------------------
+//*-----------------------------------------------------------------------------------------*
+//* Bildschirmfelder auf Fehler überprüfen                                                  *
+//*-----------------------------------------------------------------------------------------*
 
 BegSr SR050;
   // Namensfelder linksbündig ausrichten
-  If PIMode = '*CREATE' Or
-    PIMode = '*COPY' Or
-    PIMode = '*CHANGE';
+  If PIMode = MNTJOB_CREATE Or
+    PIMode = MNTJOB_COPY Or
+    PIMode = MNTJOB_CHANGE;
     DFJOB = %TRIML(DFJOB);
     DFJQ = %TRIML(DFJQ);
     DFJQL = %TRIML(DFJQL);
   EndIf;
   // *** Fehlerprüfung nur für Modus 'Erstellen', 'Kopieren' und 'Ändern' ***
-  If PIMode = '*CREATE' Or
-    PIMode = '*COPY' Or
-    PIMode = '*CHANGE';
+  If PIMode = MNTJOB_CREATE Or
+    PIMode = MNTJOB_COPY Or
+    PIMode = MNTJOB_CHANGE;
     MNTJOB_setValues(
       DFJOB  : // --> Job
       DFDSCR : // --> Description
@@ -480,21 +481,19 @@ BegSr SR050;
   EndIf;
   // Prüfen
   If Not MNTJOB_check(
+    ITSUCC : // <-- Erfolg
     ITXFld : // <-- Feld
-    ITXMsg : // <-- Nachricht
-    ITSUCC   // <-- Erfolg
+    ITXMsg   // <-- Nachricht
   );
     // Fehler setzen
     ITMsgId = 'CPF9897';
     ITMsgDta = ITXMsg;
     ITMsgF = 'QCPFMSG';
     select;
-    // 'Job'
     when (ITXFld = 'JOB');
       *IN(87) = *OFF;
       *IN(88) = *OFF;
       *IN(89) = *ON;
-    // 'Description'
     when (ITXFld = 'DSCR');
       *IN(87) = *ON;
       *IN(88) = *OFF;
@@ -515,9 +514,9 @@ BegSr SR050;
   endif;
 EndSr;
 
-//-------------------------------------------------------------------------------------------
-// Fehlernachricht in die Programmnachrichtenwarteschlange schreiben
-//-------------------------------------------------------------------------------------------
+//*-----------------------------------------------------------------------------------------*
+//* Fehlernachricht in die Programmnachrichtenwarteschlange schreiben                       *
+//*-----------------------------------------------------------------------------------------*
 
 BegSr SR055;
   // Bezugszahl für 'Es liegt ein Fehler vor' auf 'Ja' setzen
@@ -532,9 +531,9 @@ BegSr SR055;
   );
 EndSr;
 
-//-------------------------------------------------------------------------------------------
-// Hilfe
-//-------------------------------------------------------------------------------------------
+//*-----------------------------------------------------------------------------------------*
+//* Hilfe                                                                                   *
+//*-----------------------------------------------------------------------------------------*
 
 BegSr SR060;
   // Kontextbezogene Hilfe initialisiern
@@ -611,12 +610,12 @@ BegSr SR060;
     ITHIPG(ITNbr) = 'RF0002GP';
     ITHILP(ITNbr) = '*LIBL';
     Select;
-    When PIMode = '*CREATE' Or
-      PIMode = '*COPY' Or
-      PIMode = '*CHANGE';
+    When PIMode = MNTJOB_CREATE Or
+      PIMode = MNTJOB_COPY Or
+      PIMode = MNTJOB_CHANGE;
       ITHIMO(ITNbr) = 'FKT/EDT';
-    When PIMode = '*DISPLAY' Or
-      PIMode = '*DELETE';
+    When PIMode = MNTJOB_DISPLAY Or
+      PIMode = MNTJOB_DELETE;
       ITHIMO(ITNbr) = 'FKT/DSP';
     EndSl;
     If DFROW010 >= 23 And
@@ -666,9 +665,9 @@ BegSr SR060;
   *IN(99) = *OFF;
 EndSr;
 
-//-------------------------------------------------------------------------------------------
-// Bedienerführung
-//-------------------------------------------------------------------------------------------
+//*-----------------------------------------------------------------------------------------*
+//* Bedienerführung                                                                         *
+//*-----------------------------------------------------------------------------------------*
 
 BegSr SR065;
   Select;

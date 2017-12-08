@@ -17,17 +17,6 @@
 //*------------+--------+-------------------------------------------------------------------*
 //* 26.10.2017 I   FH   I Creation                                                          *
 //*------------+--------+-------------------------------------------------------------------*
-//* >>PRE-COMPILER<<                                                                        *
-//*    >>CRTCMD<< CRTRPGMOD    MODULE(&LI/&OB) SRCFILE(&SL/&SF) SRCMBR(&SM);                *
-//*    >>IMPORTANT<<                                                                        *
-//*      >>PARM<< DBGVIEW(&U1);                                                             *
-//*      >>PARM<< TGTRLS(&TR);                                                              *
-//*      >>PARM<< OPTION(*EVENTF);                                                          *
-//*      >>PARM<< TRUNCNBR(*NO);                                                            *
-//*    >>END-IMPORTANT<<                                                                    *
-//*    >>EXECUTE<<                                                                          *
-//*  >>END-PRE-COMPILER<<                                                                   *
-//*-----------------------------------------------------------------------------------------*
 
 CTL-OPT NOMAIN;
 CTL-OPT DATFMT(*ISO) TIMFMT(*ISO) DECEDIT('0,');
@@ -63,22 +52,17 @@ DCL-F LIBLS
 
 /INCLUDE QCPYSRC,CHKVAL
 
-DCL-DS PSDS LEN(429) QUALIFIED PSDS;
+DCL-DS PSDS LEN(429) QUALifIED PSDS;
 END-DS;
 
-DCL-C MODE_CREATE '*CREATE';
-DCL-C MODE_COPY '*COPY';
-DCL-C MODE_CHANGE '*CHANGE';
-DCL-C MODE_DELETE '*DELETE';
-DCL-C MODE_DISPLAY '*DISPLAY';
-
-DCL-S g_MODE CHAR(10); // Mode
-DCL-S g_JOB  CHAR(10); // Job
-DCL-S g_DSCR CHAR(35); // Description
-DCL-S g_CRTE CHAR(10); // Create environment
-DCL-S g_JQ   CHAR(10); // Job queue
-DCL-S g_JQL  CHAR(10); // Job queue (Library)
+DCL-S g_MODE CHAR(10);              // Mode
+DCL-S g_JOB  CHAR(10);              // Job
+DCL-S g_DSCR CHAR(35);              // Description
+DCL-S g_CRTE CHAR(10);              // Create environment
+DCL-S g_JQ   CHAR(10);              // Job queue
+DCL-S g_JQL  CHAR(10);              // Job queue (Library)
 DCL-S g_LIBL CHAR(10) INZ('*NONE'); // Library list
+DCL-S g_OPN  IND INZ(*OFF);         // Open indicator
 
 //*=========================================================================================*
 //* Open Files                                                                              *
@@ -91,6 +75,8 @@ DCL-PROC MNTJOB_openFiles EXPORT;
 
   open JOBS;
   open LIBLS;
+
+  g_OPN = *on;
 
 END-PROC MNTJOB_openFiles;
 
@@ -106,18 +92,30 @@ DCL-PROC MNTJOB_closeFiles EXPORT;
   close JOBS;
   close LIBLS;
 
+  g_OPN = *off;
+
 END-PROC MNTJOB_closeFiles;
 
 //*=========================================================================================*
 //* Initialize                                                                              *
 //*=========================================================================================*
+//*                                                                                         *
+//* Error codes and their meanings                                                          *
+//* ==============================                                                          *
+//*                                                                                         *
+//* '001' = Record in file JOBS not found                                                   *
+//* '002' = Record in file JOBS has not status *RDY                                         *
+//* '003' = Wrong mode                                                                      *
+//*                                                                                         *
+//*=========================================================================================*
 
 DCL-PROC MNTJOB_initialize EXPORT;
 
   DCL-PI MNTJOB_initialize IND; // <-- Success
-    p_MODE CHAR(10) CONST; // --> Mode
-    p_JOB  CHAR(10) CONST; // --> Job
-    p_SUCCESS CHAR(1);     // <-- Success
+    p_MODE    CHAR(10) CONST;   // --> Mode
+    p_JOB     CHAR(10) CONST;   // --> Job
+    p_SUCCESS CHAR(1);          // <-- Success
+    p_MSG     CHAR(256);        // <-- Message
   END-PI;
 
   g_MODE = p_MODE;
@@ -125,13 +123,14 @@ DCL-PROC MNTJOB_initialize EXPORT;
 
   select;
 
-  when (g_MODE = MODE_CREATE);
+  when (g_MODE = MNTJOB_CREATE);
 
     p_SUCCESS = 'Y';
+    p_MSG = *blanks;
     return *on;
 
-  when (g_MODE = MODE_CHANGE or
-        g_MODE = MODE_DELETE);
+  when (g_MODE = MNTJOB_CHANGE or
+        g_MODE = MNTJOB_DELETE);
 
     dou (not %error);
       chain(e) (g_JOB) JOBRF;
@@ -139,28 +138,45 @@ DCL-PROC MNTJOB_initialize EXPORT;
         HdlRcdLck(PSDS);
       endif;
     enddo;
-    if (%found);
-      if (X1STS = '*RDY');
-        p_SUCCESS = 'Y';
-        return *on;
-      else;
+    if (not %found);
+      p_SUCCESS = 'N';
+      p_MSG = '001';
+      return *off;
+    else;
+      if (X1STS <> '*RDY');
         unlock JOBS;
+        p_SUCCESS = 'N';
+        p_MSG = '002';
+        return *off;
+      else;
+        p_SUCCESS = 'Y';
+        p_MSG = *blanks;
+        return *on;
       endif;
     endif;
 
-  when (g_MODE = MODE_DISPLAY or
-        g_MODE = MODE_COPY);
+  when (g_MODE = MNTJOB_DISPLAY or
+        g_MODE = MNTJOB_COPY or
+        g_MODE = MNTJOB_CHKACT);
 
     chain(n) (g_JOB) JOBRF;
-    if (%found);
+    if (not %found);
+      p_SUCCESS = 'N';
+      p_MSG = '001';
+      return *off;
+    else;
       p_SUCCESS = 'Y';
+      p_MSG = *blanks;
       return *on;
     endif;
 
-  endsl;
+  other;
 
-  p_SUCCESS = 'N';
-  return *off;
+    p_SUCCESS = 'N';
+    p_MSG = '003';
+    return *off;
+
+  endsl;
 
 END-PROC MNTJOB_initialize;
 
@@ -178,7 +194,7 @@ DCL-PROC MNTJOB_getValues EXPORT;
     p_JQL  CHAR(10); // <-- Job queue (Library)
   END-PI;
 
-  if (g_MODE = MODE_CREATE);
+  if (g_MODE = MNTJOB_CREATE);
 
     p_JOB = *blanks;
     p_DSCR = *blanks;
@@ -227,9 +243,9 @@ END-PROC MNTJOB_setValues;
 DCL-PROC MNTJOB_check EXPORT;
 
   DCL-PI MNTJOB_check IND; // <-- Success
-    p_FLD CHAR(10);    // <-- Feld
-    p_MSG CHAR(256);   // <-- Nachricht
-    p_SUCCESS CHAR(1); // <-- Success
+    p_SUCCESS CHAR(1);     // <-- Success
+    p_FLD     CHAR(10);    // <-- Field
+    p_MSG     CHAR(256);   // <-- Message
   END-PI;
 
   DCL-S l_MSGID  CHAR(7);   // Message-Id.
@@ -246,67 +262,67 @@ DCL-PROC MNTJOB_check EXPORT;
   dou (1 = 1);
 
     //*** Check only for mode CREATE and COPY ***
-    if (g_MODE = MODE_CREATE or
-        g_MODE = MODE_COPY);
+    if (g_MODE = MNTJOB_CREATE or
+        g_MODE = MNTJOB_COPY);
 
       // The value in field 'Job' is not valid
-      If ChkVal('*NAME' : 10 : %Addr(g_JOB)) = '*INVALID';
+      if ChkVal('*NAME' : 10 : %Addr(g_JOB)) = '*INVALID';
         p_FLD = 'JOB';
         l_MSGID = 'ERR0002';
-        Leave;
-      EndIf;
+        leave;
+      endif;
 
       // The job does already exist
       SetLL ( g_JOB ) JOBRF;
-      If %Equal;
+      if %Equal;
         p_FLD = 'JOB';
         l_MSGID = 'ERR0001';
-        Leave;
-      EndIf;
+        leave;
+      endif;
 
     endif;
 
     //*** Check only for mode CREATE, COPY and CHANGE ***
-    if (g_MODE = MODE_CREATE or
-        g_MODE = MODE_COPY or
-        g_MODE = MODE_CHANGE);
+    if (g_MODE = MNTJOB_CREATE or
+        g_MODE = MNTJOB_COPY or
+        g_MODE = MNTJOB_CHANGE);
 
       // The value in field 'Description' is not valid
-      If g_DSCR = *Blanks;
+      if g_DSCR = *Blanks;
         p_FLD = 'DSCR';
         l_MSGID = 'ERR0003';
-        Leave;
-      EndIf;
+        leave;
+      endif;
 
       // The value in field 'Create environment' is not valid
-      If g_CRTE <> '*YES' And
+      if g_CRTE <> '*YES' And
          g_CRTE <> '*NO';
         p_FLD = 'CRTE';
         l_MSGID = 'ERR0004';
-        Leave;
-      EndIf;
+        leave;
+      endif;
 
       // The value in field 'Job queue' is not valid
-      If ChkVal('*NAME' : 10 : %Addr(g_JQ)) = '*INVALID';
+      if ChkVal('*NAME' : 10 : %Addr(g_JQ)) = '*INVALID';
         p_FLD = 'JQ';
         l_MSGID = 'ERR0045';
-        Leave;
-      EndIf;
+        leave;
+      endif;
 
       // The value in field 'Job queue - Library' is not valid
-      If g_JQL <> '*LIBL' And
+      if g_JQL <> '*LIBL' And
          g_JQL <> '*CURLIB' And
          ChkVal('*NAME' : 10 : %Addr(g_JQL)) =
         '*INVALID';
         p_FLD = 'JQL';
         l_MSGID = 'ERR0048';
-        Leave;
-      EndIf;
+        leave;
+      endif;
 
     endif;
 
     //*** Check only for mode DELETE ***
-    if (g_MODE = MODE_DELETE);
+    if (g_MODE = MNTJOB_DELETE);
     endif;
 
   enddo;
@@ -344,19 +360,19 @@ DCL-PROC MNTJOB_book EXPORT;
 
   select;
 
-  when (g_MODE = MODE_CREATE);
+  when (g_MODE = MNTJOB_CREATE);
     exsr modeCreate;
 
-  when (g_MODE = MODE_COPY);
+  when (g_MODE = MNTJOB_COPY);
     exsr modeCopy;
 
-  when (g_MODE = MODE_CHANGE);
+  when (g_MODE = MNTJOB_CHANGE);
     exsr modeChange;
 
-  when (g_MODE = MODE_DELETE);
+  when (g_MODE = MNTJOB_DELETE);
     exsr modeDelete;
 
-  when (g_MODE = MODE_DISPLAY);
+  when (g_MODE = MNTJOB_DISPLAY);
     exsr modeDisplay;
 
   endsl;
@@ -469,27 +485,227 @@ DCL-PROC MNTJOB_book EXPORT;
 
   begsr librarList;
 
-    If g_CRTE = '*NO';
+    if g_CRTE = '*NO';
       SetLL ( g_JOB : g_LIBL ) LIBLSTRF;
-      If Not %Equal;
+      if Not %Equal;
         Clear *All LIBLSTRF;
         X4JOB = g_JOB;
         X4LIBL = g_LIBL;
         X4DSCR = g_LIBL;
         Write LIBLSTRF;
-      EndIf;
-    Else;
-      DoU Not %Error;
+      endif;
+    else;
+      dou Not %Error;
         Chain(E) ( g_JOB : g_LIBL ) LIBLSTRF;
-        If %Error;
+        if %Error;
           HdlRcdLck(PSDS);
-        EndIf;
+        endif;
       EndDo;
-      If %Found;
+      if %Found;
         Delete LIBLSTRF;
-      EndIf;
-    EndIf;
+      endif;
+    endif;
 
   endsr;
 
 END-PROC MNTJOB_book;
+
+//*=========================================================================================*
+//* Check Action                                                                            *
+//*=========================================================================================*
+
+DCL-PROC MNTJOB_checkAction EXPORT;
+
+  DCL-PI MNTJOB_checkAction IND; // <-- Success
+    p_ACT     CHAR(10) CONST;    // --> Action
+    p_JOB     CHAR(10) CONST;    // --> Job
+    p_SUCCESS CHAR(1);           // <-- Success
+    p_MSG     CHAR(256);         // <-- Message
+  END-PI;
+
+  DCL-S l_MSGID   CHAR(7);   // Message-Id.
+  DCL-S l_MSGDTA  CHAR(256); // Message data
+  DCL-S l_SUCCESS CHAR(1);   // Success
+  DCL-S l_MSG     CHAR(256); // Message
+  DCL-S l_OPN     IND;       // Open indicator
+
+  // Initialize returning fields
+  p_MSG = *blanks;
+
+  // Initialize message fields
+  l_MSGID = *blanks;
+  l_MSGDTA = *blanks;
+
+  dou (1 = 1);
+
+    // Invalid parameter values. Error = &1.
+    l_OPN = g_OPN;
+    if (not l_OPN);
+      MNTJOB_openFiles();
+    endif;
+    MNTJOB_initialize(
+      MNTJOB_CHKACT : // --> Mode
+      p_JOB :         // --> Job
+      l_SUCCESS :     // <-- Success
+      l_MSG           // <-- Message
+    );
+    if (not l_OPN);
+      MNTJOB_closeFiles();
+    endif;
+    if (l_SUCCESS = 'N');
+      l_MSGID = 'ERR0005';
+      l_MSGDTA = l_MSG;
+      leave;
+    endif;
+
+    // The action is only valid for jobs with status *RDY
+    if ((p_ACT = MNTJOB_CHANGE or
+         p_ACT = MNTJOB_DELETE or
+         p_ACT = MNTJOB_TSTJOB or
+         p_ACT = MNTJOB_STRJOB) and
+        X1STS <> '*RDY');
+      l_MSGID = 'ERR0006';
+      leave;
+    endif;
+
+    // The action is only valid for jobs with status *RUN-PND, *RUN or *END-PND
+    if (p_ACT = MNTJOB_RESETJOBA and
+        X1STS <> '*RUN-PND' and
+        X1STS <> '*RUN' and
+        X1STS <> '*END-PND');
+      l_MSGID = 'ERR0007';
+      leave;
+    endif;
+
+    // The action is only valid for jobs with status *RUN
+    if (p_ACT = MNTJOB_ENDJOB and
+        X1STS <> '*RUN');
+      l_MSGID = 'ERR0008';
+      leave;
+    endif;
+
+    // The action is only valid for jobs with status *END
+    if (p_ACT = MNTJOB_RESETJOB and
+        X1STS <> '*END');
+      l_MSGID = 'ERR0009';
+      leave;
+    endif;
+
+    // The action is only valid for jobs with "Create environment" *YES
+    if (p_ACT = MNTJOB_MNTLIBL and
+        X1CRTE <> '*YES');
+      l_MSGID = 'ERR0010';
+      leave;
+    endif;
+
+  enddo;
+
+  // Return
+  if (l_MSGID = *blanks);
+
+    p_SUCCESS = 'Y';
+    return *on;
+
+  else;
+
+    p_MSG = rtvMsgText(
+      l_MSGID :  // --> Message-Id.
+      'MNTJOB' : // --> Message file
+      '*LIBL' :  // --> Library
+      l_MSGDTA   // --> Message data
+    );
+
+    p_SUCCESS = 'N';
+    return *off;
+
+  endif;
+
+END-PROC MNTJOB_checkAction;
+
+//*=========================================================================================*
+//* Get Valid Actions                                                                       *
+//*=========================================================================================*
+
+DCL-PROC MNTJOB_getValidActions EXPORT;
+
+  DCL-PI MNTJOB_getValidActions;
+    p_JOB     CHAR(10) CONST;   // --> Job
+    p_NBRACT  PACKED(2 : 0);    // <-- Number of actions
+    p_ACT     CHAR(10) DIM(25); // <-- Actions
+  END-PI;
+
+  DCL-S l_ACT     CHAR(10);  // --> Action
+  DCL-S l_SUCCESS CHAR(1);   // <-- Success
+  DCL-S l_MSG     CHAR(256); // <-- Message
+
+  p_NBRACT = *zero;
+  p_ACT(*) = *blanks;
+
+  l_ACT = MNTJOB_CREATE;
+    exsr checkAction;
+
+  l_ACT = MNTJOB_COPY;
+    exsr checkAction;
+
+  l_ACT = MNTJOB_CHANGE;
+    exsr checkAction;
+
+  l_ACT = MNTJOB_DELETE;
+    exsr checkAction;
+
+  l_ACT = MNTJOB_DISPLAY;
+    exsr checkAction;
+
+  l_ACT = MNTJOB_MNTLIB;
+    exsr checkAction;
+
+  l_ACT = MNTJOB_MNTLIBL;
+    exsr checkAction;
+
+  l_ACT = MNTJOB_MNTFILE;
+    exsr checkAction;
+
+  l_ACT = MNTJOB_MNTSTBN;
+    exsr checkAction;
+
+  l_ACT = MNTJOB_MNTSCDE;
+    exsr checkAction;
+
+  l_ACT = MNTJOB_TSTJOB;
+    exsr checkAction;
+
+  l_ACT = MNTJOB_STRJOB;
+    exsr checkAction;
+
+  l_ACT = MNTJOB_ENDJOB;
+    exsr checkAction;
+
+  l_ACT = MNTJOB_RESETJOB;
+    exsr checkAction;
+
+  l_ACT = MNTJOB_RESETJOBA;
+    exsr checkAction;
+
+  l_ACT = MNTJOB_DSPSTS;
+    exsr checkAction;
+
+  l_ACT = MNTJOB_DSPERR;
+    exsr checkAction;
+
+  return;
+
+  begsr checkAction;
+
+    if (MNTJOB_checkAction(
+          l_ACT :     // --> Action
+          p_JOB :     // --> Job
+          l_SUCCESS : // <-- Success
+          l_MSG       // <-- Message
+        ));
+      p_NBRACT += 1;
+      p_ACT(p_NBRACT) = l_ACT;
+    endif;
+
+  endsr;
+
+END-PROC MNTJOB_getValidActions;

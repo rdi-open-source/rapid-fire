@@ -21,7 +21,7 @@
 -- * >>END-PRE-COMPILER<<                                                   *
 -- *------------------------------------------------------------------------*
 
-CREATE OR REPLACE TABLE CONVERSIONS
+CREATE TABLE CONVERSIONS
 FOR SYSTEM NAME CNVS
 (
  JOB FOR COLUMN XBJOB CHAR(10) NOT NULL WITH DEFAULT,

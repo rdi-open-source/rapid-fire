@@ -271,15 +271,15 @@ his in'                                                               +
 
      /*-------------------------------------------------------------*/
      /*   Cmd-ADDMSGD für Message-ID :   CON0014                    */
-     /* If you are using Rapid Fire for SQL tables with identity co */
+     /* If you are using Rapid Fire for SQL tables with GENERATED A */
      /*-------------------------------------------------------------*/
 
              ADDMSGD +
                 MSGID(CON0014) +
                 MSGF(&LIB/&OBJ) +
                 MSG(+
-'If you are using Rapid Fire for SQL tables with identity columns the -
-value'                                                                +
+'If you are using Rapid Fire for SQL tables with GENERATED ALWAYS AS c-
+olumns'                                                               +
                 ) +
                 SEV(00) +
      /*   Keine Ersatzvariablen definiert!                          */ +
@@ -289,15 +289,15 @@ value'                                                                +
 
      /*-------------------------------------------------------------*/
      /*   Cmd-ADDMSGD für Message-ID :   CON0015                    */
-     /* of the identity column for each row in the table will be re */
+     /* the values of the GENERATED ALWAYS AS columns for each row  */
      /*-------------------------------------------------------------*/
 
              ADDMSGD +
                 MSGID(CON0015) +
                 MSGF(&LIB/&OBJ) +
                 MSG(+
-'of the identity column for each row in the table will be regenerated.-
- Don`t'                                                               +
+'the values of the GENERATED ALWAYS AS columns for each row in the tab-
+le will'                                                              +
                 ) +
                 SEV(00) +
      /*   Keine Ersatzvariablen definiert!                          */ +
@@ -307,15 +307,15 @@ value'                                                                +
 
      /*-------------------------------------------------------------*/
      /*   Cmd-ADDMSGD für Message-ID :   CON0016                    */
-     /* use Rapid Fire for SQL tables with identity columns if this */
+     /* be regenerated. Don`t use Rapid Fire for SQL tables with GE */
      /*-------------------------------------------------------------*/
 
              ADDMSGD +
                 MSGID(CON0016) +
                 MSGF(&LIB/&OBJ) +
                 MSG(+
-'use Rapid Fire for SQL tables with identity columns if this causes pr-
-oblems'                                                               +
+'be regenerated. Don`t use Rapid Fire for SQL tables with GENERATED AL-
+WAYS AS'                                                              +
                 ) +
                 SEV(00) +
      /*   Keine Ersatzvariablen definiert!                          */ +
@@ -325,14 +325,14 @@ oblems'                                                               +
 
      /*-------------------------------------------------------------*/
      /*   Cmd-ADDMSGD für Message-ID :   CON0017                    */
-     /* in your application.                                        */
+     /* columns if this causes problems in your application.        */
      /*-------------------------------------------------------------*/
 
              ADDMSGD +
                 MSGID(CON0017) +
                 MSGF(&LIB/&OBJ) +
                 MSG(+
-'in your application.'                                                +
+'columns if this causes problems in your application.'                +
                 ) +
                 SEV(00) +
      /*   Keine Ersatzvariablen definiert!                          */ +

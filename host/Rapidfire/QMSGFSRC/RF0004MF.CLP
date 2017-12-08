@@ -74,6 +74,23 @@
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
+     /*   Cmd-ADDMSGD für Message-ID :   CON0003                    */
+     /*                    Copy Library List                        */
+     /*-------------------------------------------------------------*/
+
+             ADDMSGD +
+                MSGID(CON0003) +
+                MSGF(&LIB/&OBJ) +
+                MSG(+
+'                   Copy Library List'                                +
+                ) +
+                SEV(00) +
+     /*   Keine Ersatzvariablen definiert!                          */ +
+                ALROPT(*NO) +
+                CCSID( 65535) +
+                /*  -EOF-  */
+
+     /*-------------------------------------------------------------*/
      /*   Cmd-ADDMSGD für Message-ID :   CON0004                    */
      /*                   Delete Library List                       */
      /*-------------------------------------------------------------*/

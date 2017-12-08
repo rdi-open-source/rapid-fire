@@ -36,7 +36,7 @@ CTL-OPT DatFmt(*ISO) TimFmt(*ISO) DecEdit('0,');
 CTL-OPT Copyright('(C) Copyright Task Force IT-Consulting GmbH');
 CTL-OPT ExtBinInt(*YES);
 
-// ------------------------------------------------------------------------------------------
+//*-----------------------------------------------------------------------------------------*
 
 // Type Template
 
@@ -54,20 +54,20 @@ CTL-OPT ExtBinInt(*YES);
 
 /include QCPYSRC,CHKOBJ                     Check Object
 
-// ==========================================================================================
-//  Tests whether or not a given object exists.
-// ------------------------------------------------------------------------------------------
-//  Parameters:
-//   i_object      - Object that is checked for existance.
-//   i_library     - Omittable. Library that contains the object.
-//                   Default: *LIBL
-//   i_type        - Type of the object.
-//   i_member      - Optional. Member, if the object is a file.
-//                   Default: *FIRST
-
-//  Returns:
-//   TRUE when the object exists, else FALSE.
-// ==========================================================================================
+//*-----------------------------------------------------------------------------------------*
+//* Tests whether or not a given object exists.                                             *
+//*-----------------------------------------------------------------------------------------*
+//* Parameters:                                                                             *
+//*  i_object      - Object that is checked for existance.                                  *
+//*  i_library     - Omittable. Library that contains the object.                           *
+//*                  Default: *LIBL                                                         *
+//*  i_type        - Type of the object.                                                    *
+//*  i_member      - Optional. Member, if the object is a file.                             *
+//*                  Default: *FIRST                                                        *
+//*                                                                                         *
+//* Returns:                                                                                *
+//*  TRUE when the object exists, else FALSE.                                               *
+//*-----------------------------------------------------------------------------------------*
 
 DCL-PROC Object_exist EXPORT;
 
@@ -124,15 +124,15 @@ DCL-PROC Object_exist EXPORT;
 
 END-PROC;
 
-// ==========================================================================================
-//  Convenience method to test whether or not a given library exists.
-// ------------------------------------------------------------------------------------------
-//  Parameters:
-//   i_library     - Name of the library that is checked for existance.
-
-//  Returns:
-//   TRUE when the library exists, else FALSE.
-// ==========================================================================================
+//*-----------------------------------------------------------------------------------------*
+//* Convenience method to test whether or not a given library exists.                       *
+//*-----------------------------------------------------------------------------------------*
+//* Parameters:                                                                             *
+//*  i_library     - Name of the library that is checked for existance.                     *
+//*                                                                                         *
+//* Returns:                                                                                *
+//*  TRUE when the library exists, else FALSE.                                              *
+//*-----------------------------------------------------------------------------------------*
 
 DCL-PROC Library_exist EXPORT;
 
@@ -144,17 +144,17 @@ DCL-PROC Library_exist EXPORT;
 
 END-PROC;
 
-// ==========================================================================================
-//  Convenience method to test whether or not a given file exists.
-// ------------------------------------------------------------------------------------------
-//  Parameters:
-//   i_file        - Name of the file that is checked for existance.
-//   i_library     - Optional. Library that contains the object.
-//                   Default: *LIBL
-
-//  Returns:
-//   TRUE when the file exists, else FALSE.
-// ==========================================================================================
+//*-----------------------------------------------------------------------------------------*
+//* Convenience method to test whether or not a given file exists.                          *
+//*-----------------------------------------------------------------------------------------*
+//* Parameters:                                                                             *
+//*  i_file        - Name of the file that is checked for existance.                        *
+//*  i_library     - Optional. Library that contains the object.                            *
+//*                  Default: *LIBL                                                         *
+//*                                                                                         *
+//* Returns:                                                                                *
+//*  TRUE when the file exists, else FALSE.                                                 *
+//*-----------------------------------------------------------------------------------------*
 
 DCL-PROC File_exist EXPORT;
 
@@ -175,18 +175,18 @@ DCL-PROC File_exist EXPORT;
 
 END-PROC;
 
-// ==========================================================================================
-//  Convenience method to test whether or not a given member exists.
-// ------------------------------------------------------------------------------------------
-//  Parameters:
-//   i_file        - Name of the file that contains the member.
-//   i_library     - Omittable. Library that contains the file.
-//                   Default: *LIBL
-//   i_member      - Name of the member that is checked for existance.
-
-//  Returns:
-//   TRUE when the member exists, else FALSE.
-// ==========================================================================================
+//*-----------------------------------------------------------------------------------------*
+//* Convenience method to test whether or not a given member exists.                        *
+//*-----------------------------------------------------------------------------------------*
+//* Parameters:                                                                             *
+//*  i_file        - Name of the file that contains the member.                             *
+//*  i_library     - Omittable. Library that contains the file.                             *
+//*                  Default: *LIBL                                                         *
+//*  i_member      - Name of the member that is checked for existance.                      *
+//*                                                                                         *
+//* Returns:                                                                                *
+//*  TRUE when the member exists, else FALSE.                                               *
+//*-----------------------------------------------------------------------------------------*
 
 DCL-PROC Member_exist EXPORT;
 
@@ -208,17 +208,17 @@ DCL-PROC Member_exist EXPORT;
 
 END-PROC;
 
-// ==========================================================================================
-//  Tests whether or not a given file is a source physical file.
-// ------------------------------------------------------------------------------------------
-//  Parameters:
-//   i_file        - Name of the file that contains the member.
-//   i_library     - Optional. Library that contains the file.
-//                   Default: *LIBL
-
-//  Returns:
-//   TRUE when the file is a source physical file, else FALSE.
-// ==========================================================================================
+//*-----------------------------------------------------------------------------------------*
+//* Tests whether or not a given file is a source physical file.                            *
+//*-----------------------------------------------------------------------------------------*
+//* Parameters:                                                                             *
+//*  i_file        - Name of the file that contains the member.                             *
+//*  i_library     - Optional. Library that contains the file.                              *
+//*                  Default: *LIBL                                                         *
+//*                                                                                         *
+//* Returns:                                                                                *
+//*  TRUE when the file is a source physical file, else FALSE.                              *
+//*-----------------------------------------------------------------------------------------*
 
 DCL-PROC File_isSourceFile EXPORT;
 
