@@ -8,15 +8,15 @@
 
 package biz.rapidfire.core.model.maintenance;
 
-import biz.rapidfire.core.model.maintenance.activity.ActivityKey;
-import biz.rapidfire.core.model.maintenance.area.shared.AreaKey;
-import biz.rapidfire.core.model.maintenance.command.shared.CommandKey;
-import biz.rapidfire.core.model.maintenance.conversion.shared.ConversionKey;
-import biz.rapidfire.core.model.maintenance.file.shared.FileKey;
-import biz.rapidfire.core.model.maintenance.job.shared.JobKey;
-import biz.rapidfire.core.model.maintenance.library.shared.LibraryKey;
-import biz.rapidfire.core.model.maintenance.librarylist.shared.LibraryListKey;
-import biz.rapidfire.core.model.maintenance.notification.shared.NotificationKey;
+import biz.rapidfire.core.maintenance.activity.ActivityKey;
+import biz.rapidfire.core.maintenance.area.shared.AreaKey;
+import biz.rapidfire.core.maintenance.command.shared.CommandKey;
+import biz.rapidfire.core.maintenance.conversion.shared.ConversionKey;
+import biz.rapidfire.core.maintenance.file.shared.FileKey;
+import biz.rapidfire.core.maintenance.job.shared.JobKey;
+import biz.rapidfire.core.maintenance.library.shared.LibraryKey;
+import biz.rapidfire.core.maintenance.librarylist.shared.LibraryListKey;
+import biz.rapidfire.core.maintenance.notification.shared.NotificationKey;
 
 /**
  * Tagging interface for resource keys.

@@ -26,12 +26,12 @@ import biz.rapidfire.core.helpers.ExceptionHelper;
 import biz.rapidfire.core.helpers.IntHelper;
 import biz.rapidfire.core.jface.dialogs.Size;
 import biz.rapidfire.core.jface.dialogs.XDialog;
+import biz.rapidfire.core.maintenance.command.CommandManager;
+import biz.rapidfire.core.maintenance.command.CommandValues;
+import biz.rapidfire.core.maintenance.command.ICommandCheck;
+import biz.rapidfire.core.maintenance.command.shared.CommandType;
 import biz.rapidfire.core.model.maintenance.MaintenanceMode;
 import biz.rapidfire.core.model.maintenance.Result;
-import biz.rapidfire.core.model.maintenance.command.CommandManager;
-import biz.rapidfire.core.model.maintenance.command.CommandValues;
-import biz.rapidfire.core.model.maintenance.command.ICommandCheck;
-import biz.rapidfire.core.model.maintenance.command.shared.CommandType;
 import biz.rapidfire.core.swt.widgets.WidgetFactory;
 
 public class CommandMaintenanceDialog extends AbstractMaintenanceDialog {

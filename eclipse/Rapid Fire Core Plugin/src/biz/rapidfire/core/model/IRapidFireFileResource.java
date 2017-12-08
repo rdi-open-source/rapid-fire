@@ -8,8 +8,8 @@
 
 package biz.rapidfire.core.model;
 
-import biz.rapidfire.core.model.maintenance.file.shared.FileKey;
-import biz.rapidfire.core.model.maintenance.file.shared.FileType;
+import biz.rapidfire.core.maintenance.file.shared.FileKey;
+import biz.rapidfire.core.maintenance.file.shared.FileType;
 
 public interface IRapidFireFileResource extends IRapidFireChildResource {
 

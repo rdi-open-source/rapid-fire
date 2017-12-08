@@ -8,8 +8,8 @@
 
 package biz.rapidfire.core.subsystem.resources;
 
+import biz.rapidfire.core.maintenance.command.shared.CommandType;
 import biz.rapidfire.core.model.IRapidFireCommandResource;
-import biz.rapidfire.core.model.maintenance.command.shared.CommandType;
 
 public class RapidFireCommandResourceDelegate implements Comparable<IRapidFireCommandResource> {
 

@@ -8,7 +8,7 @@
 
 package biz.rapidfire.core.model;
 
-import biz.rapidfire.core.model.maintenance.librarylist.shared.LibraryListKey;
+import biz.rapidfire.core.maintenance.librarylist.shared.LibraryListKey;
 
 public interface IRapidFireLibraryListResource extends IRapidFireChildResource {
 

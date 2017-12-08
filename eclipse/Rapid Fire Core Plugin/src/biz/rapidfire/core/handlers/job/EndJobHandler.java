@@ -9,8 +9,8 @@
 package biz.rapidfire.core.handlers.job;
 
 import biz.rapidfire.core.dialogs.action.ConfirmActionDialog;
+import biz.rapidfire.core.maintenance.job.shared.JobAction;
 import biz.rapidfire.core.model.IRapidFireJobResource;
-import biz.rapidfire.core.model.maintenance.job.shared.JobAction;
 
 public class EndJobHandler extends AbstractJobActionHandler {
 

@@ -11,10 +11,10 @@ package biz.rapidfire.core.handlers.librarylist;
 import org.eclipse.core.commands.IHandler;
 
 import biz.rapidfire.core.dialogs.maintenance.librarylist.LibraryListMaintenanceDialog;
+import biz.rapidfire.core.maintenance.librarylist.LibraryListValues;
+import biz.rapidfire.core.maintenance.librarylist.shared.LibraryListAction;
 import biz.rapidfire.core.model.IRapidFireLibraryListResource;
 import biz.rapidfire.core.model.maintenance.MaintenanceMode;
-import biz.rapidfire.core.model.maintenance.librarylist.LibraryListValues;
-import biz.rapidfire.core.model.maintenance.librarylist.shared.LibraryListAction;
 
 public class DisplayLibraryListHandler extends AbstractLibraryListMaintenanceHandler implements IHandler {
 

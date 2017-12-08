@@ -25,11 +25,11 @@ import biz.rapidfire.core.dialogs.maintenance.AbstractMaintenanceDialog;
 import biz.rapidfire.core.helpers.ExceptionHelper;
 import biz.rapidfire.core.jface.dialogs.Size;
 import biz.rapidfire.core.jface.dialogs.XDialog;
+import biz.rapidfire.core.maintenance.conversion.ConversionManager;
+import biz.rapidfire.core.maintenance.conversion.ConversionValues;
+import biz.rapidfire.core.maintenance.conversion.IConversionCheck;
 import biz.rapidfire.core.model.maintenance.MaintenanceMode;
 import biz.rapidfire.core.model.maintenance.Result;
-import biz.rapidfire.core.model.maintenance.conversion.ConversionManager;
-import biz.rapidfire.core.model.maintenance.conversion.ConversionValues;
-import biz.rapidfire.core.model.maintenance.conversion.IConversionCheck;
 import biz.rapidfire.core.swt.widgets.WidgetFactory;
 
 public class ConversionMaintenanceDialog extends AbstractMaintenanceDialog {

@@ -17,9 +17,9 @@ import java.util.List;
 
 import org.eclipse.swt.widgets.Shell;
 
+import biz.rapidfire.core.maintenance.activity.shared.Active;
 import biz.rapidfire.core.model.IRapidFireActivityResource;
 import biz.rapidfire.core.model.IRapidFireJobResource;
-import biz.rapidfire.core.model.maintenance.activity.shared.Active;
 
 public abstract class AbstractActivitiesDAO {
 

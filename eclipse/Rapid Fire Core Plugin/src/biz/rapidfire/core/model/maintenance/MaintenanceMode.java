@@ -11,14 +11,14 @@ package biz.rapidfire.core.model.maintenance;
 import java.util.HashMap;
 import java.util.Map;
 
-import biz.rapidfire.core.model.maintenance.activity.shared.ActivityAction;
-import biz.rapidfire.core.model.maintenance.area.shared.AreaAction;
-import biz.rapidfire.core.model.maintenance.command.shared.CommandAction;
-import biz.rapidfire.core.model.maintenance.conversion.shared.ConversionAction;
-import biz.rapidfire.core.model.maintenance.file.shared.FileAction;
-import biz.rapidfire.core.model.maintenance.job.shared.JobAction;
-import biz.rapidfire.core.model.maintenance.library.shared.LibraryAction;
-import biz.rapidfire.core.model.maintenance.librarylist.shared.LibraryListAction;
+import biz.rapidfire.core.maintenance.activity.shared.ActivityAction;
+import biz.rapidfire.core.maintenance.area.shared.AreaAction;
+import biz.rapidfire.core.maintenance.command.shared.CommandAction;
+import biz.rapidfire.core.maintenance.conversion.shared.ConversionAction;
+import biz.rapidfire.core.maintenance.file.shared.FileAction;
+import biz.rapidfire.core.maintenance.job.shared.JobAction;
+import biz.rapidfire.core.maintenance.library.shared.LibraryAction;
+import biz.rapidfire.core.maintenance.librarylist.shared.LibraryListAction;
 
 /**
  * Specifies the maintenance modes as used in the GUI. The stored procedure

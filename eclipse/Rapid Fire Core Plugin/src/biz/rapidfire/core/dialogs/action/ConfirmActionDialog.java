@@ -14,7 +14,7 @@ import org.eclipse.jface.dialogs.MessageDialogWithToggle;
 import org.eclipse.swt.widgets.Shell;
 
 import biz.rapidfire.core.Messages;
-import biz.rapidfire.core.model.maintenance.job.shared.JobAction;
+import biz.rapidfire.core.maintenance.job.shared.JobAction;
 
 public class ConfirmActionDialog {
 

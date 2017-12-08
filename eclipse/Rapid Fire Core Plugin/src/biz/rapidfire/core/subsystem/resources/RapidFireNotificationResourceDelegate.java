@@ -8,8 +8,8 @@
 
 package biz.rapidfire.core.subsystem.resources;
 
+import biz.rapidfire.core.maintenance.notification.shared.NotificationType;
 import biz.rapidfire.core.model.IRapidFireNotificationResource;
-import biz.rapidfire.core.model.maintenance.notification.shared.NotificationType;
 
 public class RapidFireNotificationResourceDelegate implements Comparable<IRapidFireNotificationResource> {
 

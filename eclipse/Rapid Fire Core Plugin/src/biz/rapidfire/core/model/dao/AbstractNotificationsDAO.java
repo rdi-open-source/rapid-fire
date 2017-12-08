@@ -16,9 +16,9 @@ import java.util.List;
 
 import org.eclipse.swt.widgets.Shell;
 
+import biz.rapidfire.core.maintenance.notification.shared.NotificationType;
 import biz.rapidfire.core.model.IRapidFireJobResource;
 import biz.rapidfire.core.model.IRapidFireNotificationResource;
-import biz.rapidfire.core.model.maintenance.notification.shared.NotificationType;
 
 public abstract class AbstractNotificationsDAO {
 

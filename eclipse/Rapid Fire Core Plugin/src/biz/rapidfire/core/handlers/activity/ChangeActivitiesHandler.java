@@ -12,10 +12,10 @@ import org.eclipse.core.commands.IHandler;
 import org.eclipse.jface.dialogs.Dialog;
 
 import biz.rapidfire.core.dialogs.maintenance.activity.ActivityMaintenanceDialog;
+import biz.rapidfire.core.maintenance.activity.ActivityValues;
+import biz.rapidfire.core.maintenance.activity.shared.ActivityAction;
 import biz.rapidfire.core.model.IRapidFireJobResource;
 import biz.rapidfire.core.model.maintenance.MaintenanceMode;
-import biz.rapidfire.core.model.maintenance.activity.ActivityValues;
-import biz.rapidfire.core.model.maintenance.activity.shared.ActivityAction;
 
 public class ChangeActivitiesHandler extends AbstractActivityMaintenanceHandler implements IHandler {
 

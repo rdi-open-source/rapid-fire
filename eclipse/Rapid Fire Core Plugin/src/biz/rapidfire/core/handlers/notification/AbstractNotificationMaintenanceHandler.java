@@ -15,15 +15,15 @@ import biz.rapidfire.core.Messages;
 import biz.rapidfire.core.RapidFireCorePlugin;
 import biz.rapidfire.core.handlers.AbstractResourceMaintenanceHandler;
 import biz.rapidfire.core.helpers.ExceptionHelper;
+import biz.rapidfire.core.maintenance.job.shared.JobKey;
+import biz.rapidfire.core.maintenance.notification.NotificationManager;
+import biz.rapidfire.core.maintenance.notification.shared.NotificationAction;
+import biz.rapidfire.core.maintenance.notification.shared.NotificationKey;
 import biz.rapidfire.core.model.IRapidFireJobResource;
 import biz.rapidfire.core.model.IRapidFireNotificationResource;
 import biz.rapidfire.core.model.dao.JDBCConnectionManager;
 import biz.rapidfire.core.model.maintenance.MaintenanceMode;
 import biz.rapidfire.core.model.maintenance.Result;
-import biz.rapidfire.core.model.maintenance.job.shared.JobKey;
-import biz.rapidfire.core.model.maintenance.notification.NotificationManager;
-import biz.rapidfire.core.model.maintenance.notification.shared.NotificationAction;
-import biz.rapidfire.core.model.maintenance.notification.shared.NotificationKey;
 
 public abstract class AbstractNotificationMaintenanceHandler extends
     AbstractResourceMaintenanceHandler<IRapidFireNotificationResource, NotificationAction> {

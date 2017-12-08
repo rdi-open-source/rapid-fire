@@ -25,11 +25,11 @@ import biz.rapidfire.core.dialogs.maintenance.AbstractMaintenanceDialog;
 import biz.rapidfire.core.helpers.ExceptionHelper;
 import biz.rapidfire.core.jface.dialogs.Size;
 import biz.rapidfire.core.jface.dialogs.XDialog;
+import biz.rapidfire.core.maintenance.area.AreaManager;
+import biz.rapidfire.core.maintenance.area.AreaValues;
+import biz.rapidfire.core.maintenance.area.IAreaCheck;
 import biz.rapidfire.core.model.maintenance.MaintenanceMode;
 import biz.rapidfire.core.model.maintenance.Result;
-import biz.rapidfire.core.model.maintenance.area.AreaManager;
-import biz.rapidfire.core.model.maintenance.area.AreaValues;
-import biz.rapidfire.core.model.maintenance.area.IAreaCheck;
 import biz.rapidfire.core.swt.widgets.WidgetFactory;
 
 public class AreaMaintenanceDialog extends AbstractMaintenanceDialog {

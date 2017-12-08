@@ -11,10 +11,10 @@ package biz.rapidfire.core.handlers.file;
 import org.eclipse.core.commands.IHandler;
 
 import biz.rapidfire.core.dialogs.maintenance.file.FileMaintenanceDialog;
+import biz.rapidfire.core.maintenance.file.FileValues;
+import biz.rapidfire.core.maintenance.file.shared.FileAction;
 import biz.rapidfire.core.model.IRapidFireFileResource;
 import biz.rapidfire.core.model.maintenance.MaintenanceMode;
-import biz.rapidfire.core.model.maintenance.file.FileValues;
-import biz.rapidfire.core.model.maintenance.file.shared.FileAction;
 
 public class DisplayFileHandler extends AbstractFileMaintenanceHandler implements IHandler {
 

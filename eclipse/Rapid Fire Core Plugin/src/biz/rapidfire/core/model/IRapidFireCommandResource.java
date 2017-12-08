@@ -8,8 +8,8 @@
 
 package biz.rapidfire.core.model;
 
-import biz.rapidfire.core.model.maintenance.command.shared.CommandKey;
-import biz.rapidfire.core.model.maintenance.command.shared.CommandType;
+import biz.rapidfire.core.maintenance.command.shared.CommandKey;
+import biz.rapidfire.core.maintenance.command.shared.CommandType;
 
 public interface IRapidFireCommandResource extends IRapidFireChildResource {
 

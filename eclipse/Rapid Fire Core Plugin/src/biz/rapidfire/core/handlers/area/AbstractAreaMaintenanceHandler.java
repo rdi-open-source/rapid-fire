@@ -15,16 +15,16 @@ import biz.rapidfire.core.Messages;
 import biz.rapidfire.core.RapidFireCorePlugin;
 import biz.rapidfire.core.handlers.AbstractResourceMaintenanceHandler;
 import biz.rapidfire.core.helpers.ExceptionHelper;
+import biz.rapidfire.core.maintenance.area.AreaManager;
+import biz.rapidfire.core.maintenance.area.shared.AreaAction;
+import biz.rapidfire.core.maintenance.area.shared.AreaKey;
+import biz.rapidfire.core.maintenance.file.shared.FileKey;
+import biz.rapidfire.core.maintenance.job.shared.JobKey;
 import biz.rapidfire.core.model.IRapidFireAreaResource;
 import biz.rapidfire.core.model.IRapidFireJobResource;
 import biz.rapidfire.core.model.dao.JDBCConnectionManager;
 import biz.rapidfire.core.model.maintenance.MaintenanceMode;
 import biz.rapidfire.core.model.maintenance.Result;
-import biz.rapidfire.core.model.maintenance.area.AreaManager;
-import biz.rapidfire.core.model.maintenance.area.shared.AreaAction;
-import biz.rapidfire.core.model.maintenance.area.shared.AreaKey;
-import biz.rapidfire.core.model.maintenance.file.shared.FileKey;
-import biz.rapidfire.core.model.maintenance.job.shared.JobKey;
 
 public abstract class AbstractAreaMaintenanceHandler extends AbstractResourceMaintenanceHandler<IRapidFireAreaResource, AreaAction> {
 

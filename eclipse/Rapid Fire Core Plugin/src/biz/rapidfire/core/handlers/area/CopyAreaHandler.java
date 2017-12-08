@@ -12,10 +12,10 @@ import org.eclipse.core.commands.IHandler;
 import org.eclipse.jface.dialogs.Dialog;
 
 import biz.rapidfire.core.dialogs.maintenance.area.AreaMaintenanceDialog;
+import biz.rapidfire.core.maintenance.area.AreaValues;
+import biz.rapidfire.core.maintenance.area.shared.AreaAction;
 import biz.rapidfire.core.model.IRapidFireAreaResource;
 import biz.rapidfire.core.model.maintenance.MaintenanceMode;
-import biz.rapidfire.core.model.maintenance.area.AreaValues;
-import biz.rapidfire.core.model.maintenance.area.shared.AreaAction;
 
 public class CopyAreaHandler extends AbstractAreaMaintenanceHandler implements IHandler {
 

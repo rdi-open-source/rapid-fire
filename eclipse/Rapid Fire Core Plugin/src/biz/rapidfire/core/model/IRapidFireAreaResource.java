@@ -8,7 +8,7 @@
 
 package biz.rapidfire.core.model;
 
-import biz.rapidfire.core.model.maintenance.area.shared.AreaKey;
+import biz.rapidfire.core.maintenance.area.shared.AreaKey;
 
 public interface IRapidFireAreaResource extends IRapidFireChildResource {
 

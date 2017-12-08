@@ -8,7 +8,7 @@
 
 package biz.rapidfire.core.model;
 
-import biz.rapidfire.core.model.maintenance.conversion.shared.ConversionKey;
+import biz.rapidfire.core.maintenance.conversion.shared.ConversionKey;
 
 public interface IRapidFireConversionResource extends IRapidFireChildResource {
 

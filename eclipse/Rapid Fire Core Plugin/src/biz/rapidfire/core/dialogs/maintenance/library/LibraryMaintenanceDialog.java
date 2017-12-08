@@ -19,11 +19,11 @@ import org.eclipse.swt.widgets.Text;
 import biz.rapidfire.core.Messages;
 import biz.rapidfire.core.dialogs.maintenance.AbstractMaintenanceDialog;
 import biz.rapidfire.core.helpers.ExceptionHelper;
+import biz.rapidfire.core.maintenance.library.ILibraryCheck;
+import biz.rapidfire.core.maintenance.library.LibraryManager;
+import biz.rapidfire.core.maintenance.library.LibraryValues;
 import biz.rapidfire.core.model.maintenance.MaintenanceMode;
 import biz.rapidfire.core.model.maintenance.Result;
-import biz.rapidfire.core.model.maintenance.library.ILibraryCheck;
-import biz.rapidfire.core.model.maintenance.library.LibraryManager;
-import biz.rapidfire.core.model.maintenance.library.LibraryValues;
 import biz.rapidfire.core.swt.widgets.WidgetFactory;
 
 public class LibraryMaintenanceDialog extends AbstractMaintenanceDialog {

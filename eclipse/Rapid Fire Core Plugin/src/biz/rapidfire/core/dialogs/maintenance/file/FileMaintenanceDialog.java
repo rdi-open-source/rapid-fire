@@ -26,11 +26,11 @@ import biz.rapidfire.core.helpers.ExceptionHelper;
 import biz.rapidfire.core.helpers.IntHelper;
 import biz.rapidfire.core.jface.dialogs.Size;
 import biz.rapidfire.core.jface.dialogs.XDialog;
+import biz.rapidfire.core.maintenance.file.FileManager;
+import biz.rapidfire.core.maintenance.file.FileValues;
+import biz.rapidfire.core.maintenance.file.IFileCheck;
 import biz.rapidfire.core.model.maintenance.MaintenanceMode;
 import biz.rapidfire.core.model.maintenance.Result;
-import biz.rapidfire.core.model.maintenance.file.FileManager;
-import biz.rapidfire.core.model.maintenance.file.FileValues;
-import biz.rapidfire.core.model.maintenance.file.IFileCheck;
 import biz.rapidfire.core.swt.widgets.WidgetFactory;
 
 public class FileMaintenanceDialog extends AbstractMaintenanceDialog {

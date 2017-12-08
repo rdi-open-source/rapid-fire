@@ -20,11 +20,11 @@ import org.eclipse.swt.widgets.Text;
 import biz.rapidfire.core.Messages;
 import biz.rapidfire.core.dialogs.maintenance.AbstractMaintenanceDialog;
 import biz.rapidfire.core.helpers.ExceptionHelper;
+import biz.rapidfire.core.maintenance.job.IJobCheck;
+import biz.rapidfire.core.maintenance.job.JobManager;
+import biz.rapidfire.core.maintenance.job.JobValues;
 import biz.rapidfire.core.model.maintenance.MaintenanceMode;
 import biz.rapidfire.core.model.maintenance.Result;
-import biz.rapidfire.core.model.maintenance.job.IJobCheck;
-import biz.rapidfire.core.model.maintenance.job.JobManager;
-import biz.rapidfire.core.model.maintenance.job.JobValues;
 import biz.rapidfire.core.swt.widgets.WidgetFactory;
 
 public class JobMaintenanceDialog extends AbstractMaintenanceDialog {

@@ -8,15 +8,15 @@
 
 package biz.rapidfire.core.model.maintenance;
 
-import biz.rapidfire.core.model.maintenance.activity.ActivityValues;
-import biz.rapidfire.core.model.maintenance.area.AreaValues;
-import biz.rapidfire.core.model.maintenance.command.CommandValues;
-import biz.rapidfire.core.model.maintenance.conversion.ConversionValues;
-import biz.rapidfire.core.model.maintenance.file.FileValues;
-import biz.rapidfire.core.model.maintenance.job.JobValues;
-import biz.rapidfire.core.model.maintenance.library.LibraryValues;
-import biz.rapidfire.core.model.maintenance.librarylist.LibraryListValues;
-import biz.rapidfire.core.model.maintenance.notification.NotificationValues;
+import biz.rapidfire.core.maintenance.activity.ActivityValues;
+import biz.rapidfire.core.maintenance.area.AreaValues;
+import biz.rapidfire.core.maintenance.command.CommandValues;
+import biz.rapidfire.core.maintenance.conversion.ConversionValues;
+import biz.rapidfire.core.maintenance.file.FileValues;
+import biz.rapidfire.core.maintenance.job.JobValues;
+import biz.rapidfire.core.maintenance.library.LibraryValues;
+import biz.rapidfire.core.maintenance.librarylist.LibraryListValues;
+import biz.rapidfire.core.maintenance.notification.NotificationValues;
 
 /**
  * Tagging interface for resource values.
