@@ -108,6 +108,13 @@
       </command>
          
       <command
+         id="biz.rapidfire.core.command.Job.displayError"
+         categoryId="biz.rapidfire.category.Commands"
+         name="%command_Display_Job_Error"
+         description="%command_Display_Job_Error_Description">
+      </command>
+         
+      <command
          id="biz.rapidfire.core.command.Job.test"
          categoryId="biz.rapidfire.category.Commands"
          name="%command_Test_Job"
@@ -524,6 +531,19 @@
          <enabledWhen>
             <with variable="selection">
                <count value="1" />
+               <iterate operator="and">
+                  <adapt type="biz.rapidfire.rse.subsystem.resources.RapidFireJobResource" />
+               </iterate>
+            </with>
+         </enabledWhen>
+      </handler>
+      
+      <handler
+         commandId="biz.rapidfire.core.command.Job.displayError"
+         class="biz.rapidfire.core.handlers.job.DisplayErrorHandler">
+         <enabledWhen>
+            <with variable="selection">
+               <count value="+" />
                <iterate operator="and">
                   <adapt type="biz.rapidfire.rse.subsystem.resources.RapidFireJobResource" />
                </iterate>
@@ -1224,6 +1244,19 @@
          <command
             commandId="biz.rapidfire.core.command.Job.displaycopystatus" 
             icon="icons/job_status.gif"
+            >
+	        <visibleWhen>
+	           <with variable="selection">
+	              <iterate operator="and">
+	                 <adapt type="biz.rapidfire.rse.subsystem.resources.RapidFireJobResource" />
+	              </iterate>
+	           </with>
+	        </visibleWhen>
+         </command>
+         
+         <command
+            commandId="biz.rapidfire.core.command.Job.displayError" 
+            icon="icons/display_error.gif"
             >
 	        <visibleWhen>
 	           <with variable="selection">

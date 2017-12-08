@@ -39,6 +39,7 @@ public class Messages extends NLS {
     public static String Dialog_Title_End_Job_A;
     public static String Dialog_Title_Reset_Job_A;
     public static String Dialog_Title_Reset_Job_A_after_abortion;
+    public static String DialogTitle_Job_Error_Message;
 
     // Dialog action titles
     public static String DialogMode_CREATE;
@@ -172,6 +173,7 @@ public class Messages extends NLS {
     public static String Deleting_object_A_B_of_type_C;
     public static String Restoring_library_A;
     public static String Library_A_successfull_transfered;
+    public static String No_errors;
 
     // Action labels
     public static String ActionLabel_Auto_refresh_menu_item;
