@@ -14,8 +14,8 @@ import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.views.properties.IPropertyDescriptor;
 import org.eclipse.ui.views.properties.PropertyDescriptor;
 
+import biz.rapidfire.core.maintenance.file.shared.FileType;
 import biz.rapidfire.core.model.IRapidFireFileResource;
-import biz.rapidfire.core.model.maintenance.file.shared.FileType;
 import biz.rapidfire.rse.Messages;
 import biz.rapidfire.rse.RapidFireRSEPlugin;
 import biz.rapidfire.rse.subsystem.resources.AreasNode;

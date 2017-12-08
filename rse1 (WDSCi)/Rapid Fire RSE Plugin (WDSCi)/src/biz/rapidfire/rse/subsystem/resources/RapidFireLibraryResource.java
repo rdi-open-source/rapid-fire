@@ -9,9 +9,9 @@
 package biz.rapidfire.rse.subsystem.resources;
 
 import biz.rapidfire.core.exceptions.IllegalParameterException;
+import biz.rapidfire.core.maintenance.library.shared.LibraryKey;
 import biz.rapidfire.core.model.IRapidFireJobResource;
 import biz.rapidfire.core.model.IRapidFireLibraryResource;
-import biz.rapidfire.core.model.maintenance.library.shared.LibraryKey;
 import biz.rapidfire.core.subsystem.IRapidFireSubSystem;
 import biz.rapidfire.core.subsystem.resources.RapidFireLibraryResourceDelegate;
 
