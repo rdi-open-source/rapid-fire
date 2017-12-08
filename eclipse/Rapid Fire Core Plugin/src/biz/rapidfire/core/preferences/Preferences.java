@@ -9,7 +9,12 @@
 package biz.rapidfire.core.preferences;
 
 import java.text.SimpleDateFormat;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Set;
 
+import org.apache.commons.lang.time.FastDateFormat;
 import org.eclipse.jface.preference.IPreferenceStore;
 import org.eclipse.jface.util.IPropertyChangeListener;
 
@@ -36,6 +41,16 @@ public final class Preferences {
      */
     private IPreferenceStore preferenceStore;
 
+    /**
+     * List of date formats.
+     */
+    private Map<String, String> dateFormats;
+
+    /**
+     * List of time formats.
+     */
+    private Map<String, String> timeFormats;
+
     /*
      * Preferences keys:
      */
@@ -47,6 +62,11 @@ public final class Preferences {
     private static final String HOST_NAME = DOMAIN + "HOST_NAME"; //$NON-NLS-1$
     private static final String FTP_PORT_NUMBER = DOMAIN + "FTP_PORT_NUMBER"; //$NON-NLS-1$
     private static final String RAPID_FIRE_LIBRARY = DOMAIN + "LIBRARY"; //$NON-NLS-1$
+    private static final String APPEARANCE_DATE_FORMAT = "DATE_FORMAT"; //$NON-NLS-1$
+    private static final String APPEARANCE_TIME_FORMAT = "TIME_FORMAT"; //$NON-NLS-1$
+
+    private static final String DATE_FORMAT_LOCALE = "*LOCALE"; //$NON-NLS-1$
+    private static final String TIME_FORMAT_LOCALE = "*LOCALE"; //$NON-NLS-1$
 
     /**
      * Private constructor to ensure the Singleton pattern.
@@ -98,6 +118,14 @@ public final class Preferences {
         return preferenceStore.getBoolean(PROGRESS_BAR_SIZE);
     }
 
+    public String getDateFormatLabel() {
+        return preferenceStore.getString(APPEARANCE_DATE_FORMAT);
+    }
+
+    public String getTimeFormatLabel() {
+        return preferenceStore.getString(APPEARANCE_TIME_FORMAT);
+    }
+
     /*
      * Preferences: SETTER
      */
@@ -118,6 +146,14 @@ public final class Preferences {
         preferenceStore.setValue(PROGRESS_BAR_SIZE, isLarge);
     }
 
+    public void setDateFormatLabel(String dateFormatLabel) {
+        preferenceStore.setValue(APPEARANCE_DATE_FORMAT, dateFormatLabel);
+    }
+
+    public void setTimeFormatLabel(String dateFormatLabel) {
+        preferenceStore.setValue(APPEARANCE_TIME_FORMAT, dateFormatLabel);
+    }
+
     /*
      * Preferences: Default Initializer
      */
@@ -128,6 +164,8 @@ public final class Preferences {
         preferenceStore.setDefault(FTP_PORT_NUMBER, getDefaultFtpPortNumber());
         preferenceStore.setDefault(RAPID_FIRE_LIBRARY, getDefaultRapidFireLibrary());
         preferenceStore.setDefault(PROGRESS_BAR_SIZE, getDefaultIsLargeProgressBar());
+        preferenceStore.setDefault(APPEARANCE_DATE_FORMAT, getDefaultDateFormatLabel());
+        preferenceStore.setDefault(APPEARANCE_TIME_FORMAT, getDefaultTimeFormatLabel());
     }
 
     /*
@@ -166,6 +204,14 @@ public final class Preferences {
         return false;
     }
 
+    public String getDefaultDateFormatLabel() {
+        return DATE_FORMAT_LOCALE;
+    }
+
+    public String getDefaultTimeFormatLabel() {
+        return TIME_FORMAT_LOCALE;
+    }
+
     public void registerPreferencesListener(IPropertyChangeListener listener) {
         preferenceStore.addPropertyChangeListener(listener);
     }
@@ -174,18 +220,81 @@ public final class Preferences {
         preferenceStore.removePropertyChangeListener(listener);
     }
 
+    public String[] getDateFormatLabels() {
+
+        Set<String> formats = getDateFormatsMap().keySet();
+
+        String[] dateFormats = formats.toArray(new String[formats.size()]);
+        Arrays.sort(dateFormats);
+
+        return dateFormats;
+    }
+
     public SimpleDateFormat getDateFormatter() {
-        String pattern = "dd.MM.yyyy";
-        // String pattern = getDateFormatsMap().get(getDateFormatLabel());
-        // if (pattern == null) {
-        // pattern = getDateFormatsMap().get(getDefaultDateFormatLabel());
-        // }
-        //
-        // if (pattern == null) {
-        // return new
-        // SimpleDateFormat(FastDateFormat.getDateInstance(FastDateFormat.SHORT).getPattern());
-        // }
+
+        String pattern = getDateFormatsMap().get(getDateFormatLabel());
+        if (pattern == null) {
+            pattern = getDateFormatsMap().get(getDefaultDateFormatLabel());
+        }
+
+        if (pattern == null) {
+            return new SimpleDateFormat(FastDateFormat.getDateInstance(FastDateFormat.SHORT).getPattern());
+        }
 
         return new SimpleDateFormat(pattern);
+    }
+
+    public SimpleDateFormat getTimeFormatter() {
+
+        String pattern = getTimeFormatsMap().get(getTimeFormatLabel());
+        if (pattern == null) {
+            pattern = getTimeFormatsMap().get(getDefaultTimeFormatLabel());
+        }
+
+        if (pattern == null) {
+            return new SimpleDateFormat(FastDateFormat.getTimeInstance(FastDateFormat.SHORT).getPattern());
+        }
+
+        return new SimpleDateFormat(pattern);
+    }
+
+    public String[] getTimeFormatLabels() {
+
+        Set<String> formats = getTimeFormatsMap().keySet();
+
+        String[] timeFormats = formats.toArray(new String[formats.size()]);
+        Arrays.sort(timeFormats);
+
+        return timeFormats;
+    }
+
+    private Map<String, String> getDateFormatsMap() {
+
+        if (dateFormats != null) {
+            return dateFormats;
+        }
+
+        dateFormats = new HashMap<String, String>();
+
+        dateFormats.put(getDefaultDateFormatLabel(), null);
+        dateFormats.put("de (dd.mm.yyyy)", "dd.MM.yyyy");
+        dateFormats.put("us (mm/dd/yyyy)", "MM/dd/yyyy");
+
+        return dateFormats;
+    }
+
+    private Map<String, String> getTimeFormatsMap() {
+
+        if (timeFormats != null) {
+            return timeFormats;
+        }
+
+        timeFormats = new HashMap<String, String>();
+
+        timeFormats.put(getDefaultDateFormatLabel(), null);
+        timeFormats.put("de (hh:mm:ss)", "HH:mm:ss"); //$NON-NLS-1$
+        timeFormats.put("us (hh:mm:ss AM/PM)", "KK:mm:ss a"); //$NON-NLS-1$
+
+        return timeFormats;
     }
 }

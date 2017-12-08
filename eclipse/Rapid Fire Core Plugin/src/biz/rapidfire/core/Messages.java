@@ -112,6 +112,10 @@ public class Messages extends NLS {
     public static String Label_Version_colon;
     public static String Label_Show_logical_files;
     public static String Label_Label_Decorations_RSE_host_objects_Description;
+    public static String Label_DateAndTimeFormats;
+    public static String Label_Date_colon;
+    public static String Label_Time_colon;
+    public static String Label_Job_status_view;
 
     public static String Tooltip_Library;
     public static String Tooltip_Job;
@@ -151,6 +155,8 @@ public class Messages extends NLS {
     public static String Tooltip_Rapid_Fire_library;
     public static String Tooltip_Version;
     public static String Tooltip_Connection_name;
+    public static String Tooltip_Specifies_the_format_for_displaying_date_values;
+    public static String Tooltip_Specifies_the_format_for_displaying_time_values;
 
     // Questions
     public static String Question_Do_you_want_to_delete_library_A;

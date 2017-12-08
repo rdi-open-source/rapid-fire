@@ -16,8 +16,11 @@ import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Group;
+import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Link;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
@@ -31,6 +34,8 @@ import biz.rapidfire.core.swt.widgets.WidgetFactory;
 public class AppearancePage extends PreferencePage implements IWorkbenchPreferencePage {
 
     private Button btnLargeProgressBar;
+    private Combo textDateFormat;
+    private Combo textTimeFormat;
 
     public AppearancePage() {
         super();
@@ -50,7 +55,12 @@ public class AppearancePage extends PreferencePage implements IWorkbenchPreferen
         container.setLayout(gridLayout);
 
         createSectionLabelDecorations(container);
+        WidgetFactory.createLineFiller(container, SWT.DEFAULT);
+
         createSectionGlobal(container);
+        WidgetFactory.createLineFiller(container, SWT.DEFAULT);
+
+        createSectionDateAndTime(container);
 
         setScreenToValues();
 
@@ -72,13 +82,16 @@ public class AppearancePage extends PreferencePage implements IWorkbenchPreferen
                 PreferencesUtil.createPreferenceDialogOn(getShell(), e.text, null, null);
             }
         });
-        
-        WidgetFactory.createLineFiller(parent, SWT.DEFAULT);
     }
 
     private void createSectionGlobal(Composite parent) {
 
-        btnLargeProgressBar = WidgetFactory.createCheckbox(parent);
+        Group groupDateAndTimeFormats = new Group(parent, SWT.NONE);
+        groupDateAndTimeFormats.setLayout(new GridLayout(2, false));
+        groupDateAndTimeFormats.setLayoutData(new GridData(SWT.FILL, SWT.BEGINNING, true, false, 2, 1));
+        groupDateAndTimeFormats.setText(Messages.Label_Job_status_view);
+
+        btnLargeProgressBar = WidgetFactory.createCheckbox(groupDateAndTimeFormats);
         btnLargeProgressBar.setText(Messages.Label_Enable_large_progress_bar);
         btnLargeProgressBar.setToolTipText(Messages.Tooltip_Enable_large_progress_bar);
         btnLargeProgressBar.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
@@ -94,6 +107,40 @@ public class AppearancePage extends PreferencePage implements IWorkbenchPreferen
                 widgetSelected(event);
             }
         });
+    }
+
+    private void createSectionDateAndTime(Composite parent) {
+
+        // Composite main = new Composite(parent, SWT.NONE);
+        // main.setLayout(new GridLayout(2, false));
+        // main.setLayoutData(new GridData(SWT.FILL, SWT.BEGINNING, true,
+        // false));
+
+        // Date and Time Formats
+        Group groupDateAndTimeFormats = new Group(parent, SWT.NONE);
+        groupDateAndTimeFormats.setLayout(new GridLayout(3, false));
+        groupDateAndTimeFormats.setLayoutData(new GridData(SWT.FILL, SWT.BEGINNING, true, false, 2, 1));
+        groupDateAndTimeFormats.setText(Messages.Label_DateAndTimeFormats);
+
+        Label labelDateFormat = new Label(groupDateAndTimeFormats, SWT.NONE);
+        labelDateFormat.setLayoutData(createLabelLayoutData());
+        labelDateFormat.setToolTipText(Messages.Tooltip_Specifies_the_format_for_displaying_date_values);
+        labelDateFormat.setText(Messages.Label_Date_colon);
+
+        textDateFormat = WidgetFactory.createReadOnlyCombo(groupDateAndTimeFormats);
+        textDateFormat.setToolTipText(Messages.Tooltip_Specifies_the_format_for_displaying_date_values);
+        textDateFormat.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));
+        textDateFormat.setItems(Preferences.getInstance().getDateFormatLabels());
+
+        Label labelTimeFormat = new Label(groupDateAndTimeFormats, SWT.NONE);
+        labelTimeFormat.setLayoutData(createLabelLayoutData());
+        labelTimeFormat.setToolTipText(Messages.Tooltip_Specifies_the_format_for_displaying_time_values);
+        labelTimeFormat.setText(Messages.Label_Time_colon);
+
+        textTimeFormat = WidgetFactory.createReadOnlyCombo(groupDateAndTimeFormats);
+        textTimeFormat.setToolTipText(Messages.Tooltip_Specifies_the_format_for_displaying_time_values);
+        textTimeFormat.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));
+        textTimeFormat.setItems(Preferences.getInstance().getTimeFormatLabels());
     }
 
     @Override
@@ -120,6 +167,8 @@ public class AppearancePage extends PreferencePage implements IWorkbenchPreferen
         Preferences preferences = getPreferences();
 
         preferences.setLargeProgressBar(btnLargeProgressBar.getSelection());
+        preferences.setDateFormatLabel(textDateFormat.getText());
+        preferences.setTimeFormatLabel(textTimeFormat.getText());
     }
 
     protected void setScreenToValues() {
@@ -127,6 +176,8 @@ public class AppearancePage extends PreferencePage implements IWorkbenchPreferen
         Preferences preferences = getPreferences();
 
         btnLargeProgressBar.setSelection(preferences.isLargeProgressBar());
+        textDateFormat.setText(preferences.getDateFormatLabel());
+        textTimeFormat.setText(preferences.getTimeFormatLabel());
 
         checkAllValues();
         setControlsEnablement();
@@ -137,6 +188,8 @@ public class AppearancePage extends PreferencePage implements IWorkbenchPreferen
         Preferences preferences = getPreferences();
 
         btnLargeProgressBar.setSelection(preferences.getDefaultIsLargeProgressBar());
+        textDateFormat.setText(preferences.getDefaultDateFormatLabel());
+        textTimeFormat.setText(preferences.getDefaultTimeFormatLabel());
 
         checkAllValues();
         setControlsEnablement();
