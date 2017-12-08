@@ -14,7 +14,6 @@ import org.eclipse.jface.dialogs.MessageDialog;
 import biz.rapidfire.core.Messages;
 import biz.rapidfire.core.handlers.AbstractResourceMaintenanceHandler;
 import biz.rapidfire.core.model.IRapidFireJobResource;
-import biz.rapidfire.core.model.IRapidFireResource;
 import biz.rapidfire.core.model.dao.JDBCConnectionManager;
 import biz.rapidfire.core.model.maintenance.MaintenanceMode;
 import biz.rapidfire.core.model.maintenance.Result;
@@ -110,14 +109,7 @@ public abstract class AbstractActivityMaintenanceHandler extends AbstractResourc
             String connectionName = job.getParentSubSystem().getConnectionName();
             String dataLibrary = job.getDataLibrary();
             JobManager jobManager = new JobManager(JDBCConnectionManager.getInstance().getConnection(connectionName, dataLibrary, false));
-            Result result = jobManager.checkAction(job.getKey(), JobAction.CHANGE);
-            if (result.isError()) {
-                // Fall back to display mode
-                if (getMaintenanceMode() != MaintenanceMode.DISPLAY) {
-                    changeMaintenanceMode(job, MaintenanceMode.DISPLAY, ActivityAction.DISPLAY);
-                    result = jobManager.checkAction(job.getKey(), JobAction.DISPLAY);
-                }
-            }
+            Result result = jobManager.checkAction(job.getKey(), JobAction.MNTSCDE);
 
             if (result.isError()) {
                 setErrorMessage(Messages.bindParameters(Messages.The_requested_operation_is_invalid_for_job_status_A, job.getStatus().label));
@@ -149,15 +141,17 @@ public abstract class AbstractActivityMaintenanceHandler extends AbstractResourc
         }
     }
 
-    private Result changeMaintenanceMode(IRapidFireResource resource, MaintenanceMode mode, ActivityAction activityAction) throws Exception {
-
-        terminate();
-
-        super.changeMaintenanceMode(mode);
-        this.currentActivityAction = activityAction;
-
-        return initialize((IRapidFireJobResource)resource);
-    }
+    // TODO: remove when no longer needed
+    // private Result changeMaintenanceMode(IRapidFireResource resource,
+    // MaintenanceMode mode, ActivityAction activityAction) throws Exception {
+    //
+    // terminate();
+    //
+    // super.changeMaintenanceMode(mode);
+    // this.currentActivityAction = activityAction;
+    //
+    // return initialize((IRapidFireJobResource)resource);
+    // }
 
     private void logError(Throwable e) {
         logError("*** Could not handle Rapid Fire activity resource request ***", e); //$NON-NLS-1$
