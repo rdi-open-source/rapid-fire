@@ -8,8 +8,8 @@
 
 package biz.rapidfire.core.maintenance.job;
 
+import biz.rapidfire.core.maintenance.AbstractResourceActionsCache;
 import biz.rapidfire.core.maintenance.job.shared.JobAction;
-import biz.rapidfire.core.model.maintenance.AbstractResourceActionsCache;
 
 public final class JobActionCache extends AbstractResourceActionsCache<KeyJobActionCache, JobAction> {
 

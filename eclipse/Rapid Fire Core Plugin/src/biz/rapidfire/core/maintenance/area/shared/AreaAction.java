@@ -11,7 +11,7 @@ package biz.rapidfire.core.maintenance.area.shared;
 import java.util.HashMap;
 import java.util.Map;
 
-import biz.rapidfire.core.model.maintenance.IResourceAction;
+import biz.rapidfire.core.maintenance.IResourceAction;
 
 public enum AreaAction implements IResourceAction {
     CREATE ("*CREATE"),

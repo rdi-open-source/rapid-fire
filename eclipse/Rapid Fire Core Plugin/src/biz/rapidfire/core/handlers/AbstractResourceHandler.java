@@ -17,8 +17,8 @@ import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.PlatformUI;
 
+import biz.rapidfire.core.maintenance.MaintenanceMode;
 import biz.rapidfire.core.model.IRapidFireResource;
-import biz.rapidfire.core.model.maintenance.MaintenanceMode;
 import biz.rapidfire.rsebase.handlers.AbstractSelectionHandler;
 
 public abstract class AbstractResourceHandler extends AbstractSelectionHandler {

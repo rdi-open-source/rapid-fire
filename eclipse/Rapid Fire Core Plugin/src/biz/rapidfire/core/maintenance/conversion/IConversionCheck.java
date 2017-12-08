@@ -8,7 +8,7 @@
 
 package biz.rapidfire.core.maintenance.conversion;
 
-import biz.rapidfire.core.model.maintenance.ICheck;
+import biz.rapidfire.core.maintenance.ICheck;
 
 public interface IConversionCheck extends ICheck {
 

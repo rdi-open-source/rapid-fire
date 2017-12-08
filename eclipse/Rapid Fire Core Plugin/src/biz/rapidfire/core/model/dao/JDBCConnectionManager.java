@@ -27,7 +27,7 @@ import biz.rapidfire.core.dialogs.MessageDialogAsync;
 import biz.rapidfire.core.exceptions.RapidFireStartConnectionException;
 import biz.rapidfire.core.exceptions.RapidFireStopConnectionException;
 import biz.rapidfire.core.helpers.ExceptionHelper;
-import biz.rapidfire.core.model.maintenance.Success;
+import biz.rapidfire.core.maintenance.Success;
 import biz.rapidfire.rsebase.model.dao.AbstractDAOManager;
 
 import com.ibm.as400.access.AS400;

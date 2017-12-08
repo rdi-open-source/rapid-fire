@@ -30,13 +30,13 @@ import biz.rapidfire.core.helpers.IntHelper;
 import biz.rapidfire.core.helpers.StringHelper;
 import biz.rapidfire.core.jface.dialogs.Size;
 import biz.rapidfire.core.jface.dialogs.XDialog;
+import biz.rapidfire.core.maintenance.MaintenanceMode;
+import biz.rapidfire.core.maintenance.Result;
 import biz.rapidfire.core.maintenance.notification.INotificationCheck;
 import biz.rapidfire.core.maintenance.notification.NotificationManager;
 import biz.rapidfire.core.maintenance.notification.NotificationValues;
 import biz.rapidfire.core.maintenance.notification.shared.MessageQueueLibrary;
 import biz.rapidfire.core.maintenance.notification.shared.NotificationType;
-import biz.rapidfire.core.model.maintenance.MaintenanceMode;
-import biz.rapidfire.core.model.maintenance.Result;
 import biz.rapidfire.core.swt.widgets.WidgetFactory;
 
 public class NotificationMaintenanceDialog extends AbstractMaintenanceDialog {

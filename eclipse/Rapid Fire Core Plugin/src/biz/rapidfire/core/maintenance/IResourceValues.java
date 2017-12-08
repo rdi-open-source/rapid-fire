@@ -6,7 +6,7 @@
  * http://www.eclipse.org/legal/cpl-v10.html
  *******************************************************************************/
 
-package biz.rapidfire.core.model.maintenance;
+package biz.rapidfire.core.maintenance;
 
 import biz.rapidfire.core.maintenance.activity.ActivityValues;
 import biz.rapidfire.core.maintenance.area.AreaValues;

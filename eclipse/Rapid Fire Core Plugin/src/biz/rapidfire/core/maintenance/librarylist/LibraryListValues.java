@@ -16,8 +16,8 @@ import biz.rapidfire.core.RapidFireCorePlugin;
 import biz.rapidfire.core.helpers.ExceptionHelper;
 import biz.rapidfire.core.helpers.IntHelper;
 import biz.rapidfire.core.helpers.StringHelper;
+import biz.rapidfire.core.maintenance.IResourceValues;
 import biz.rapidfire.core.maintenance.librarylist.shared.LibraryListKey;
-import biz.rapidfire.core.model.maintenance.IResourceValues;
 
 public class LibraryListValues implements IResourceValues {
 

@@ -10,11 +10,11 @@ package biz.rapidfire.core.maintenance.area;
 
 import biz.rapidfire.core.RapidFireCorePlugin;
 import biz.rapidfire.core.helpers.ExceptionHelper;
+import biz.rapidfire.core.maintenance.IResourceValues;
 import biz.rapidfire.core.maintenance.area.shared.Area;
 import biz.rapidfire.core.maintenance.area.shared.AreaKey;
 import biz.rapidfire.core.maintenance.area.shared.Ccsid;
 import biz.rapidfire.core.maintenance.area.shared.LibraryList;
-import biz.rapidfire.core.model.maintenance.IResourceValues;
 
 public class AreaValues implements IResourceValues {
 

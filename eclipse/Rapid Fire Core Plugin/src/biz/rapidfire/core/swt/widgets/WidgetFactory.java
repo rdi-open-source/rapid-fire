@@ -26,7 +26,7 @@ import org.eclipse.swt.widgets.Text;
 import biz.rapidfire.core.Messages;
 import biz.rapidfire.core.RapidFireCorePlugin;
 import biz.rapidfire.core.exceptions.IllegalParameterException;
-import biz.rapidfire.core.model.maintenance.MaintenanceMode;
+import biz.rapidfire.core.maintenance.MaintenanceMode;
 import biz.rapidfire.core.swt.widgets.listeditors.librarylist.LibraryListEditor;
 import biz.rapidfire.core.swt.widgets.listeditors.stringlist.StringListEditor;
 

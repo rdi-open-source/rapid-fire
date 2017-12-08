@@ -12,10 +12,10 @@ import org.eclipse.core.commands.IHandler;
 import org.eclipse.jface.dialogs.Dialog;
 
 import biz.rapidfire.core.dialogs.maintenance.notification.NotificationMaintenanceDialog;
+import biz.rapidfire.core.maintenance.MaintenanceMode;
 import biz.rapidfire.core.maintenance.notification.NotificationValues;
 import biz.rapidfire.core.maintenance.notification.shared.NotificationAction;
 import biz.rapidfire.core.model.IRapidFireNotificationResource;
-import biz.rapidfire.core.model.maintenance.MaintenanceMode;
 
 public class CopyNotificationHandler extends AbstractNotificationMaintenanceHandler implements IHandler {
 

@@ -14,16 +14,16 @@ import java.util.LinkedList;
 import java.util.List;
 
 import biz.rapidfire.core.Messages;
+import biz.rapidfire.core.maintenance.AbstractManager;
+import biz.rapidfire.core.maintenance.MaintenanceMode;
+import biz.rapidfire.core.maintenance.Result;
+import biz.rapidfire.core.maintenance.Success;
 import biz.rapidfire.core.maintenance.conversion.shared.ConversionAction;
 import biz.rapidfire.core.maintenance.conversion.shared.ConversionKey;
 import biz.rapidfire.core.maintenance.file.shared.FileKey;
 import biz.rapidfire.core.maintenance.job.shared.JobKey;
 import biz.rapidfire.core.model.IRapidFireConversionResource;
 import biz.rapidfire.core.model.dao.IJDBCConnection;
-import biz.rapidfire.core.model.maintenance.AbstractManager;
-import biz.rapidfire.core.model.maintenance.MaintenanceMode;
-import biz.rapidfire.core.model.maintenance.Result;
-import biz.rapidfire.core.model.maintenance.Success;
 
 public class ConversionManager extends AbstractManager<IRapidFireConversionResource, ConversionKey, ConversionValues, ConversionAction> {
 

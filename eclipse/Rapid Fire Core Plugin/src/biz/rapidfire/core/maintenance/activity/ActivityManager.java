@@ -14,12 +14,12 @@ import java.util.List;
 
 import org.eclipse.swt.widgets.Shell;
 
+import biz.rapidfire.core.maintenance.MaintenanceMode;
+import biz.rapidfire.core.maintenance.Result;
 import biz.rapidfire.core.maintenance.job.shared.JobKey;
 import biz.rapidfire.core.model.IRapidFireActivityResource;
 import biz.rapidfire.core.model.IRapidFireJobResource;
 import biz.rapidfire.core.model.dao.IJDBCConnection;
-import biz.rapidfire.core.model.maintenance.MaintenanceMode;
-import biz.rapidfire.core.model.maintenance.Result;
 
 public class ActivityManager {
 

@@ -10,9 +10,9 @@ package biz.rapidfire.core.maintenance.command;
 
 import biz.rapidfire.core.RapidFireCorePlugin;
 import biz.rapidfire.core.helpers.ExceptionHelper;
+import biz.rapidfire.core.maintenance.IResourceValues;
 import biz.rapidfire.core.maintenance.command.shared.CommandKey;
 import biz.rapidfire.core.maintenance.conversion.shared.NewFieldName;
-import biz.rapidfire.core.model.maintenance.IResourceValues;
 
 public class CommandValues implements IResourceValues {
 

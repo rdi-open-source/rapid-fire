@@ -12,10 +12,10 @@ import org.eclipse.core.commands.IHandler;
 import org.eclipse.jface.dialogs.Dialog;
 
 import biz.rapidfire.core.dialogs.maintenance.command.CommandMaintenanceDialog;
+import biz.rapidfire.core.maintenance.MaintenanceMode;
 import biz.rapidfire.core.maintenance.command.CommandValues;
 import biz.rapidfire.core.maintenance.command.shared.CommandAction;
 import biz.rapidfire.core.model.IRapidFireCommandResource;
-import biz.rapidfire.core.model.maintenance.MaintenanceMode;
 
 public class CopyCommandHandler extends AbstractCommandMaintenanceHandler implements IHandler {
 

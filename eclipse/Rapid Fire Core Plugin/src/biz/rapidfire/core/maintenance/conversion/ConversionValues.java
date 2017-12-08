@@ -10,9 +10,9 @@ package biz.rapidfire.core.maintenance.conversion;
 
 import biz.rapidfire.core.RapidFireCorePlugin;
 import biz.rapidfire.core.helpers.ExceptionHelper;
+import biz.rapidfire.core.maintenance.IResourceValues;
 import biz.rapidfire.core.maintenance.conversion.shared.ConversionKey;
 import biz.rapidfire.core.maintenance.conversion.shared.NewFieldName;
-import biz.rapidfire.core.model.maintenance.IResourceValues;
 
 public class ConversionValues implements IResourceValues {
 

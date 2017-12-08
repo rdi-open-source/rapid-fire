@@ -10,8 +10,8 @@ package biz.rapidfire.core.maintenance.area.shared;
 
 import biz.rapidfire.core.RapidFireCorePlugin;
 import biz.rapidfire.core.helpers.ExceptionHelper;
+import biz.rapidfire.core.maintenance.IResourceKey;
 import biz.rapidfire.core.maintenance.file.shared.FileKey;
-import biz.rapidfire.core.model.maintenance.IResourceKey;
 
 public class AreaKey implements IResourceKey {
 

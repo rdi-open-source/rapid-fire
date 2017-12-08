@@ -11,10 +11,10 @@ package biz.rapidfire.core.handlers.command;
 import org.eclipse.core.commands.IHandler;
 
 import biz.rapidfire.core.dialogs.maintenance.command.CommandMaintenanceDialog;
+import biz.rapidfire.core.maintenance.MaintenanceMode;
 import biz.rapidfire.core.maintenance.command.CommandValues;
 import biz.rapidfire.core.maintenance.command.shared.CommandAction;
 import biz.rapidfire.core.model.IRapidFireCommandResource;
-import biz.rapidfire.core.model.maintenance.MaintenanceMode;
 
 public class DisplayCommandHandler extends AbstractCommandMaintenanceHandler implements IHandler {
 

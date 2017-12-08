@@ -8,8 +8,8 @@
 
 package biz.rapidfire.core.maintenance.job;
 
+import biz.rapidfire.core.maintenance.IKeyResourceActionCache;
 import biz.rapidfire.core.model.Status;
-import biz.rapidfire.core.model.maintenance.IKeyResourceActionCache;
 
 public class KeyJobActionCache implements IKeyResourceActionCache {
 

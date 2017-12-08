@@ -11,10 +11,10 @@ package biz.rapidfire.core.handlers.area;
 import org.eclipse.core.commands.IHandler;
 
 import biz.rapidfire.core.dialogs.maintenance.area.AreaMaintenanceDialog;
+import biz.rapidfire.core.maintenance.MaintenanceMode;
 import biz.rapidfire.core.maintenance.area.AreaValues;
 import biz.rapidfire.core.maintenance.area.shared.AreaAction;
 import biz.rapidfire.core.model.IRapidFireAreaResource;
-import biz.rapidfire.core.model.maintenance.MaintenanceMode;
 
 public class DisplayAreaHandler extends AbstractAreaMaintenanceHandler implements IHandler {
 

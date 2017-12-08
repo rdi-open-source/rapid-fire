@@ -11,10 +11,10 @@ package biz.rapidfire.core.handlers.notification;
 import org.eclipse.core.commands.IHandler;
 
 import biz.rapidfire.core.dialogs.maintenance.notification.NotificationMaintenanceDialog;
+import biz.rapidfire.core.maintenance.MaintenanceMode;
 import biz.rapidfire.core.maintenance.notification.NotificationValues;
 import biz.rapidfire.core.maintenance.notification.shared.NotificationAction;
 import biz.rapidfire.core.model.IRapidFireNotificationResource;
-import biz.rapidfire.core.model.maintenance.MaintenanceMode;
 
 public class DisplayNotificationHandler extends AbstractNotificationMaintenanceHandler implements IHandler {
 

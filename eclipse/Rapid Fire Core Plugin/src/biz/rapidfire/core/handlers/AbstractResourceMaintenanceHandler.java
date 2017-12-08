@@ -22,9 +22,9 @@ import org.eclipse.ui.PlatformUI;
 import biz.rapidfire.core.RapidFireCorePlugin;
 import biz.rapidfire.core.dialogs.MessageDialogAsync;
 import biz.rapidfire.core.handlers.shared.IMaintenanceHandler;
+import biz.rapidfire.core.maintenance.IResourceAction;
+import biz.rapidfire.core.maintenance.MaintenanceMode;
 import biz.rapidfire.core.model.IRapidFireResource;
-import biz.rapidfire.core.model.maintenance.IResourceAction;
-import biz.rapidfire.core.model.maintenance.MaintenanceMode;
 import biz.rapidfire.rsebase.handlers.AbstractSelectionHandler;
 import biz.rapidfire.rsebase.helpers.ExpressionsHelper;
 

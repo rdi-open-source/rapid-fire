@@ -10,11 +10,11 @@ package biz.rapidfire.core.maintenance.notification;
 
 import biz.rapidfire.core.RapidFireCorePlugin;
 import biz.rapidfire.core.helpers.ExceptionHelper;
+import biz.rapidfire.core.maintenance.IResourceValues;
 import biz.rapidfire.core.maintenance.notification.shared.MessageQueueLibrary;
 import biz.rapidfire.core.maintenance.notification.shared.NotificationKey;
 import biz.rapidfire.core.maintenance.notification.shared.NotificationType;
 import biz.rapidfire.core.maintenance.notification.shared.User;
-import biz.rapidfire.core.model.maintenance.IResourceValues;
 
 public class NotificationValues implements IResourceValues {
 

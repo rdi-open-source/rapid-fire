@@ -6,7 +6,7 @@
  * http://www.eclipse.org/legal/cpl-v10.html
  *******************************************************************************/
 
-package biz.rapidfire.core.model.maintenance;
+package biz.rapidfire.core.maintenance;
 
 public interface ICheck {
 

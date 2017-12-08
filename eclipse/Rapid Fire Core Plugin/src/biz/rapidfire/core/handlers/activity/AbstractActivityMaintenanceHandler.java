@@ -13,6 +13,8 @@ import org.eclipse.jface.dialogs.MessageDialog;
 
 import biz.rapidfire.core.Messages;
 import biz.rapidfire.core.handlers.AbstractResourceMaintenanceHandler;
+import biz.rapidfire.core.maintenance.MaintenanceMode;
+import biz.rapidfire.core.maintenance.Result;
 import biz.rapidfire.core.maintenance.activity.ActivityManager;
 import biz.rapidfire.core.maintenance.activity.shared.ActivityAction;
 import biz.rapidfire.core.maintenance.job.JobManager;
@@ -20,8 +22,6 @@ import biz.rapidfire.core.maintenance.job.shared.JobAction;
 import biz.rapidfire.core.maintenance.job.shared.JobKey;
 import biz.rapidfire.core.model.IRapidFireJobResource;
 import biz.rapidfire.core.model.dao.JDBCConnectionManager;
-import biz.rapidfire.core.model.maintenance.MaintenanceMode;
-import biz.rapidfire.core.model.maintenance.Result;
 
 public abstract class AbstractActivityMaintenanceHandler extends AbstractResourceMaintenanceHandler<IRapidFireJobResource, ActivityAction> {
 

@@ -10,11 +10,11 @@ package biz.rapidfire.core.maintenance.file;
 
 import biz.rapidfire.core.RapidFireCorePlugin;
 import biz.rapidfire.core.helpers.ExceptionHelper;
+import biz.rapidfire.core.maintenance.IResourceValues;
 import biz.rapidfire.core.maintenance.file.shared.ConversionProgram;
 import biz.rapidfire.core.maintenance.file.shared.CopyProgram;
 import biz.rapidfire.core.maintenance.file.shared.FileKey;
 import biz.rapidfire.core.maintenance.file.shared.FileType;
-import biz.rapidfire.core.model.maintenance.IResourceValues;
 
 public class FileValues implements IResourceValues {
 

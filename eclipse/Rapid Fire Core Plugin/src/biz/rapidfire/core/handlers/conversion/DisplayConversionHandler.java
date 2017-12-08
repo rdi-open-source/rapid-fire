@@ -11,10 +11,10 @@ package biz.rapidfire.core.handlers.conversion;
 import org.eclipse.core.commands.IHandler;
 
 import biz.rapidfire.core.dialogs.maintenance.conversion.ConversionMaintenanceDialog;
+import biz.rapidfire.core.maintenance.MaintenanceMode;
 import biz.rapidfire.core.maintenance.conversion.ConversionValues;
 import biz.rapidfire.core.maintenance.conversion.shared.ConversionAction;
 import biz.rapidfire.core.model.IRapidFireConversionResource;
-import biz.rapidfire.core.model.maintenance.MaintenanceMode;
 
 public class DisplayConversionHandler extends AbstractConversionMaintenanceHandler implements IHandler {
 

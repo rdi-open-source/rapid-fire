@@ -12,10 +12,10 @@ import org.eclipse.core.commands.IHandler;
 import org.eclipse.jface.dialogs.Dialog;
 
 import biz.rapidfire.core.dialogs.maintenance.file.FileMaintenanceDialog;
+import biz.rapidfire.core.maintenance.MaintenanceMode;
 import biz.rapidfire.core.maintenance.file.FileValues;
 import biz.rapidfire.core.maintenance.file.shared.FileAction;
 import biz.rapidfire.core.model.IRapidFireFileResource;
-import biz.rapidfire.core.model.maintenance.MaintenanceMode;
 
 public class CopyFileHandler extends AbstractFileMaintenanceHandler implements IHandler {
 

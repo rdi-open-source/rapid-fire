@@ -12,16 +12,16 @@ import java.sql.CallableStatement;
 import java.sql.Types;
 
 import biz.rapidfire.core.Messages;
+import biz.rapidfire.core.maintenance.AbstractManager;
+import biz.rapidfire.core.maintenance.MaintenanceMode;
+import biz.rapidfire.core.maintenance.Result;
+import biz.rapidfire.core.maintenance.Success;
 import biz.rapidfire.core.maintenance.job.IJobInitialize;
 import biz.rapidfire.core.maintenance.job.shared.JobKey;
 import biz.rapidfire.core.maintenance.library.shared.LibraryAction;
 import biz.rapidfire.core.maintenance.library.shared.LibraryKey;
 import biz.rapidfire.core.model.IRapidFireLibraryResource;
 import biz.rapidfire.core.model.dao.IJDBCConnection;
-import biz.rapidfire.core.model.maintenance.AbstractManager;
-import biz.rapidfire.core.model.maintenance.MaintenanceMode;
-import biz.rapidfire.core.model.maintenance.Result;
-import biz.rapidfire.core.model.maintenance.Success;
 
 public class LibraryManager extends AbstractManager<IRapidFireLibraryResource, LibraryKey, LibraryValues, LibraryAction> {
 

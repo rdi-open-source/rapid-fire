@@ -11,10 +11,10 @@ package biz.rapidfire.core.handlers.job;
 import org.eclipse.core.commands.IHandler;
 
 import biz.rapidfire.core.dialogs.maintenance.job.JobMaintenanceDialog;
+import biz.rapidfire.core.maintenance.MaintenanceMode;
 import biz.rapidfire.core.maintenance.job.JobValues;
 import biz.rapidfire.core.maintenance.job.shared.JobAction;
 import biz.rapidfire.core.model.IRapidFireJobResource;
-import biz.rapidfire.core.model.maintenance.MaintenanceMode;
 
 public class DisplayJobHandler extends AbstractJobMaintenanceHandler implements IHandler {
 

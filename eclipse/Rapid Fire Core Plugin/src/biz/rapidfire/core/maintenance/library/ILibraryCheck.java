@@ -8,7 +8,7 @@
 
 package biz.rapidfire.core.maintenance.library;
 
-import biz.rapidfire.core.model.maintenance.ICheck;
+import biz.rapidfire.core.maintenance.ICheck;
 
 public interface ILibraryCheck extends ICheck {
 

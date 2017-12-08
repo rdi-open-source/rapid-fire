@@ -12,6 +12,10 @@ import java.sql.CallableStatement;
 import java.sql.Types;
 
 import biz.rapidfire.core.Messages;
+import biz.rapidfire.core.maintenance.AbstractManager;
+import biz.rapidfire.core.maintenance.MaintenanceMode;
+import biz.rapidfire.core.maintenance.Result;
+import biz.rapidfire.core.maintenance.Success;
 import biz.rapidfire.core.maintenance.command.shared.CommandAction;
 import biz.rapidfire.core.maintenance.command.shared.CommandKey;
 import biz.rapidfire.core.maintenance.command.shared.CommandType;
@@ -19,10 +23,6 @@ import biz.rapidfire.core.maintenance.file.shared.FileKey;
 import biz.rapidfire.core.maintenance.job.shared.JobKey;
 import biz.rapidfire.core.model.IRapidFireCommandResource;
 import biz.rapidfire.core.model.dao.IJDBCConnection;
-import biz.rapidfire.core.model.maintenance.AbstractManager;
-import biz.rapidfire.core.model.maintenance.MaintenanceMode;
-import biz.rapidfire.core.model.maintenance.Result;
-import biz.rapidfire.core.model.maintenance.Success;
 
 public class CommandManager extends AbstractManager<IRapidFireCommandResource, CommandKey, CommandValues, CommandAction> {
 
