@@ -9,11 +9,11 @@
 package biz.rapidfire.rse.subsystem.resources;
 
 import biz.rapidfire.core.exceptions.IllegalParameterException;
+import biz.rapidfire.core.maintenance.command.shared.CommandKey;
+import biz.rapidfire.core.maintenance.command.shared.CommandType;
 import biz.rapidfire.core.model.IRapidFireCommandResource;
 import biz.rapidfire.core.model.IRapidFireFileResource;
 import biz.rapidfire.core.model.IRapidFireJobResource;
-import biz.rapidfire.core.model.maintenance.command.shared.CommandKey;
-import biz.rapidfire.core.model.maintenance.command.shared.CommandType;
 import biz.rapidfire.core.subsystem.IRapidFireSubSystem;
 import biz.rapidfire.core.subsystem.resources.RapidFireCommandResourceDelegate;
 
