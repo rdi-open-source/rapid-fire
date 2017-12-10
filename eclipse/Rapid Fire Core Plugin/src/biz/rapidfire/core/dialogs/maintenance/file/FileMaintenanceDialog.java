@@ -15,7 +15,6 @@ import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
@@ -99,20 +98,14 @@ public class FileMaintenanceDialog extends AbstractMaintenanceDialog {
     @Override
     protected void createEditorAreaContent(Composite parent) {
 
-        Label labelJobName = new Label(parent, SWT.NONE);
-        labelJobName.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false));
-        labelJobName.setText(Messages.Label_Job_colon);
-        labelJobName.setToolTipText(Messages.Tooltip_Job);
+        createLabel(parent, Messages.Label_Job_colon, Messages.Tooltip_Job);
 
         textJobName = WidgetFactory.createNameText(parent);
         textJobName.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
         textJobName.setToolTipText(Messages.Tooltip_Job);
         textJobName.setEnabled(enableParentKeyFields);
 
-        Label labelPosition = new Label(parent, SWT.NONE);
-        labelPosition.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false));
-        labelPosition.setText(Messages.Label_Position_colon);
-        labelPosition.setToolTipText(Messages.Tooltip_Position);
+        createLabel(parent, Messages.Label_Position_colon, Messages.Tooltip_Position);
 
         textPosition = WidgetFactory.createIntegerText(parent);
         textPosition.setTextLimit(6);
@@ -120,20 +113,14 @@ public class FileMaintenanceDialog extends AbstractMaintenanceDialog {
         textPosition.setToolTipText(Messages.Tooltip_Position);
         textPosition.setEnabled(enableKeyFields);
 
-        Label labelFileName = new Label(parent, SWT.NONE);
-        labelFileName.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false));
-        labelFileName.setText(Messages.Label_File_colon);
-        labelFileName.setToolTipText(Messages.Tooltip_File);
+        createLabel(parent, Messages.Label_File_colon, Messages.Tooltip_File);
 
         textFileName = WidgetFactory.createNameText(parent);
         textFileName.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
         textFileName.setToolTipText(Messages.Tooltip_File);
         textFileName.setEnabled(enableFields);
 
-        Label labelType = new Label(parent, SWT.NONE);
-        labelType.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false));
-        labelType.setText(Messages.Label_Create_environment_colon);
-        labelType.setToolTipText(Messages.Tooltip_Create_environment);
+        createLabel(parent, Messages.Label_FileType_colon, Messages.Tooltip_FileType);
 
         comboType = WidgetFactory.createReadOnlyCombo(parent);
         comboType.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
@@ -141,10 +128,7 @@ public class FileMaintenanceDialog extends AbstractMaintenanceDialog {
         comboType.setEnabled(enableFields);
         comboType.setItems(FileValues.getTypeLabels());
 
-        Label labelCopyProgramName = new Label(parent, SWT.NONE);
-        labelCopyProgramName.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false));
-        labelCopyProgramName.setText(Messages.Label_Copy_program_name_colon);
-        labelCopyProgramName.setToolTipText(Messages.Tooltip_Copy_program_name);
+        createLabel(parent, Messages.Label_Copy_program_name_colon, Messages.Tooltip_Copy_program_name);
 
         comboCopyProgramName = WidgetFactory.createNameCombo(parent);
         comboCopyProgramName.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
@@ -152,20 +136,14 @@ public class FileMaintenanceDialog extends AbstractMaintenanceDialog {
         comboCopyProgramName.setEnabled(enableFields);
         comboCopyProgramName.setItems(FileValues.getCopyProgramSpecialValues());
 
-        Label labelCopyProgramLibraryName = new Label(parent, SWT.NONE);
-        labelCopyProgramLibraryName.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false));
-        labelCopyProgramLibraryName.setText(Messages.Label_Copy_program_library_name_colon);
-        labelCopyProgramLibraryName.setToolTipText(Messages.Tooltip_Copy_program_library_name);
+        createLabel(parent, Messages.Label_Copy_program_library_name_colon, Messages.Tooltip_Copy_program_library_name);
 
         textCopyProgramLibraryName = WidgetFactory.createNameText(parent);
         textCopyProgramLibraryName.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
         textCopyProgramLibraryName.setToolTipText(Messages.Tooltip_Copy_program_library_name);
         textCopyProgramLibraryName.setEnabled(enableFields);
 
-        Label labelConversionProgramName = new Label(parent, SWT.NONE);
-        labelConversionProgramName.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false));
-        labelConversionProgramName.setText(Messages.Label_Conversion_program_name_colon);
-        labelConversionProgramName.setToolTipText(Messages.Tooltip_Conversion_program_name);
+        createLabel(parent, Messages.Label_Conversion_program_name_colon, Messages.Tooltip_Conversion_program_name);
 
         comboConversionProgramName = WidgetFactory.createNameCombo(parent);
         comboConversionProgramName.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
@@ -173,10 +151,7 @@ public class FileMaintenanceDialog extends AbstractMaintenanceDialog {
         comboConversionProgramName.setEnabled(enableFields);
         comboConversionProgramName.setItems(FileValues.getConversionProgramSpecialValues());
 
-        Label labelConversionProgramLibraryName = new Label(parent, SWT.NONE);
-        labelConversionProgramLibraryName.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false));
-        labelConversionProgramLibraryName.setText(Messages.Label_Conversion_program_library_name_colon);
-        labelConversionProgramLibraryName.setToolTipText(Messages.Tooltip_Conversion_program_library_name);
+        createLabel(parent, Messages.Label_Conversion_program_library_name_colon, Messages.Tooltip_Conversion_program_library_name);
 
         textConversionProgramLibraryName = WidgetFactory.createNameText(parent);
         textConversionProgramLibraryName.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));

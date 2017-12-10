@@ -15,7 +15,6 @@ import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
@@ -100,20 +99,14 @@ public class ConversionMaintenanceDialog extends AbstractMaintenanceDialog {
     @Override
     protected void createEditorAreaContent(Composite parent) {
 
-        Label labelJobName = new Label(parent, SWT.NONE);
-        labelJobName.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false));
-        labelJobName.setText(Messages.Label_Job_colon);
-        labelJobName.setToolTipText(Messages.Tooltip_Job);
+        createLabel(parent, Messages.Label_Job_colon, Messages.Tooltip_Job);
 
         textJobName = WidgetFactory.createNameText(parent);
         textJobName.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
         textJobName.setToolTipText(Messages.Tooltip_Job);
         textJobName.setEnabled(enableParentKeyFields);
 
-        Label labelPosition = new Label(parent, SWT.NONE);
-        labelPosition.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false));
-        labelPosition.setText(Messages.Label_Position_colon);
-        labelPosition.setToolTipText(Messages.Tooltip_Position);
+        createLabel(parent, Messages.Label_Position_colon, Messages.Tooltip_Position);
 
         textPosition = WidgetFactory.createIntegerText(parent);
         textPosition.setTextLimit(6);
@@ -121,20 +114,14 @@ public class ConversionMaintenanceDialog extends AbstractMaintenanceDialog {
         textPosition.setToolTipText(Messages.Tooltip_Position);
         textPosition.setEnabled(enableParentKeyFields);
 
-        Label labelFieldToConvert = new Label(parent, SWT.NONE);
-        labelFieldToConvert.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false));
-        labelFieldToConvert.setText(Messages.Label_Field_to_convert_colon);
-        labelFieldToConvert.setToolTipText(Messages.Tooltip_Field_to_convert);
+        createLabel(parent, Messages.Label_Field_to_convert_colon, Messages.Tooltip_Field_to_convert);
 
         textFieldToConvert = WidgetFactory.createNameText(parent);
         textFieldToConvert.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
         textFieldToConvert.setToolTipText(Messages.Tooltip_Field_to_convert);
         textFieldToConvert.setEnabled(enableKeyFields);
 
-        Label labelNewFieldName = new Label(parent, SWT.NONE);
-        labelNewFieldName.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false));
-        labelNewFieldName.setText(Messages.Label_Rename_field_in_old_file_to_colon);
-        labelNewFieldName.setToolTipText(Messages.Tooltip_Rename_field_in_old_file_to);
+        createLabel(parent, Messages.Label_Rename_field_in_old_file_to_colon, Messages.Tooltip_Rename_field_in_old_file_to);
 
         comboNewFieldName = WidgetFactory.createNameCombo(parent);
         comboNewFieldName.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
@@ -142,10 +129,7 @@ public class ConversionMaintenanceDialog extends AbstractMaintenanceDialog {
         comboNewFieldName.setEnabled(enableFields);
         comboNewFieldName.setItems(ConversionValues.getNewFieldNameSpecialValues());
 
-        Label labelConversions = new Label(parent, SWT.NONE);
-        labelConversions.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 1, 1));
-        labelConversions.setText(Messages.Label_Conversions_colon);
-        labelConversions.setToolTipText(Messages.Tooltip_Conversions);
+        createLabel(parent, Messages.Label_Conversions_colon, Messages.Tooltip_Conversions);
 
         textStatement1 = createConversionStatement(parent);
         new Composite(parent, SWT.NONE).setLayoutData(new GridData(SWT.RIGHT, SWT.BEGINNING, false, false, 1, 5));

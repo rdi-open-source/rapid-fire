@@ -12,7 +12,6 @@ import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
@@ -87,30 +86,21 @@ public class LibraryMaintenanceDialog extends AbstractMaintenanceDialog {
     @Override
     protected void createEditorAreaContent(Composite parent) {
 
-        Label labelJobName = new Label(parent, SWT.NONE);
-        labelJobName.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false));
-        labelJobName.setText(Messages.Label_Job_colon);
-        labelJobName.setToolTipText(Messages.Tooltip_Job);
+        createLabel(parent, Messages.Label_Job_colon, Messages.Tooltip_Job);
 
         textJobName = WidgetFactory.createNameText(parent);
         textJobName.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
         textJobName.setToolTipText(Messages.Tooltip_Job);
         textJobName.setEnabled(enableParentKeyFields);
 
-        Label labelLibrary = new Label(parent, SWT.NONE);
-        labelLibrary.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false));
-        labelLibrary.setText(Messages.Label_Library_colon);
-        labelLibrary.setToolTipText(Messages.Tooltip_Library);
+        createLabel(parent, Messages.Label_Library_colon, Messages.Tooltip_Library);
 
         textLibrary = WidgetFactory.createNameText(parent);
         textLibrary.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
         textLibrary.setToolTipText(Messages.Tooltip_Library);
         textLibrary.setEnabled(enableKeyFields);
 
-        Label labelShadwLibrary = new Label(parent, SWT.NONE);
-        labelShadwLibrary.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false));
-        labelShadwLibrary.setText(Messages.Label_Shadow_library_colon);
-        labelShadwLibrary.setToolTipText(Messages.Tooltip_Shadow_library);
+        createLabel(parent, Messages.Label_Shadow_library_colon, Messages.Tooltip_Shadow_library);
 
         textShadowLibrary = WidgetFactory.createNameText(parent);
         textShadowLibrary.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));

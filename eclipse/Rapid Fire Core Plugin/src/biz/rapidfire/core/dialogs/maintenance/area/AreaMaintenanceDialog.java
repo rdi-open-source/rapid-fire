@@ -15,7 +15,6 @@ import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
@@ -97,20 +96,14 @@ public class AreaMaintenanceDialog extends AbstractMaintenanceDialog {
     @Override
     protected void createEditorAreaContent(Composite parent) {
 
-        Label labelJobName = new Label(parent, SWT.NONE);
-        labelJobName.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false));
-        labelJobName.setText(Messages.Label_Job_colon);
-        labelJobName.setToolTipText(Messages.Tooltip_Job);
+        createLabel(parent, Messages.Label_Job_colon, Messages.Tooltip_Job);
 
         textJobName = WidgetFactory.createNameText(parent);
         textJobName.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
         textJobName.setToolTipText(Messages.Tooltip_Job);
         textJobName.setEnabled(enableParentKeyFields);
 
-        Label labelPosition = new Label(parent, SWT.NONE);
-        labelPosition.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false));
-        labelPosition.setText(Messages.Label_Position_colon);
-        labelPosition.setToolTipText(Messages.Tooltip_Position);
+        createLabel(parent, Messages.Label_Position_colon, Messages.Tooltip_Position);
 
         textPosition = WidgetFactory.createIntegerText(parent);
         textPosition.setTextLimit(6);
@@ -118,10 +111,7 @@ public class AreaMaintenanceDialog extends AbstractMaintenanceDialog {
         textPosition.setToolTipText(Messages.Tooltip_Position);
         textPosition.setEnabled(enableParentKeyFields);
 
-        Label labelArea = new Label(parent, SWT.NONE);
-        labelArea.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false));
-        labelArea.setText(Messages.Label_Area_colon);
-        labelArea.setToolTipText(Messages.Tooltip_Area);
+        createLabel(parent, Messages.Label_Area_colon, Messages.Tooltip_Area);
 
         comboArea = WidgetFactory.createNameCombo(parent);
         comboArea.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
@@ -129,20 +119,14 @@ public class AreaMaintenanceDialog extends AbstractMaintenanceDialog {
         comboArea.setEnabled(enableKeyFields);
         comboArea.setItems(AreaValues.getAreaLabels());
 
-        Label labelLibrary = new Label(parent, SWT.NONE);
-        labelLibrary.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false));
-        labelLibrary.setText(Messages.Label_Area_library_colon);
-        labelLibrary.setToolTipText(Messages.Tooltip_Area_library);
+        createLabel(parent, Messages.Label_Area_library_colon, Messages.Tooltip_Area_library);
 
         textLibrary = WidgetFactory.createNameText(parent);
         textLibrary.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
         textLibrary.setToolTipText(Messages.Tooltip_Area_library);
         textLibrary.setEnabled(enableFields);
 
-        Label labelLibraryList = new Label(parent, SWT.NONE);
-        labelLibraryList.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false));
-        labelLibraryList.setText(Messages.Label_Area_library_list_colon);
-        labelLibraryList.setToolTipText(Messages.Tooltip_Area_library_list);
+        createLabel(parent, Messages.Label_Area_library_list_colon, Messages.Tooltip_Area_library_list);
 
         comboLibraryList = WidgetFactory.createNameCombo(parent);
         comboLibraryList.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
@@ -150,10 +134,7 @@ public class AreaMaintenanceDialog extends AbstractMaintenanceDialog {
         comboLibraryList.setEnabled(enableFields);
         comboLibraryList.setItems(AreaValues.getLibraryListSpecialValues());
 
-        Label labelLibraryCcsid = new Label(parent, SWT.NONE);
-        labelLibraryCcsid.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false));
-        labelLibraryCcsid.setText(Messages.Label_Area_library_ccsid);
-        labelLibraryCcsid.setToolTipText(Messages.Tooltip_Area_library_ccsid);
+        createLabel(parent, Messages.Label_Area_library_ccsid, Messages.Tooltip_Area_library_ccsid);
 
         comboLibraryCcsid = WidgetFactory.createNameCombo(parent);
         comboLibraryCcsid.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
@@ -161,10 +142,7 @@ public class AreaMaintenanceDialog extends AbstractMaintenanceDialog {
         comboLibraryCcsid.setEnabled(enableFields);
         comboLibraryCcsid.setItems(AreaValues.getCcsidSpecialValues());
 
-        Label labelCommandExtension = new Label(parent, SWT.NONE);
-        labelCommandExtension.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false));
-        labelCommandExtension.setText(Messages.Label_Command_extension_colon);
-        labelCommandExtension.setToolTipText(Messages.Tooltip_Command_extension);
+        createLabel(parent, Messages.Label_Command_extension_colon, Messages.Tooltip_Command_extension);
 
         textCommandExtension = WidgetFactory.createNameText(parent);
         textCommandExtension.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
