@@ -225,6 +225,30 @@ if (SqlCheckState(sqlState));
 
       // *** CHECK ACTION ***
 
+      g_ACT = MNTJOB_CREATE;
+      EXEC SQL
+        CALL "MNTJOB_checkAction"(
+          :g_ACT,
+          ' ',
+          :g_SUCCESS,
+          :g_MSG
+        );
+      setIgnoreWarnings();
+      if (SqlCheckState(sqlState));
+
+        if (g_SUCCESS = 'N');
+
+          // ... Display error on screen.
+          // ... g_MSG contains the message
+
+        else;
+
+          g_DMY = *on;
+
+        endif;
+
+      endif;
+
       g_ACT = MNTJOB_CHANGE;
       EXEC SQL
         CALL "MNTJOB_checkAction"(

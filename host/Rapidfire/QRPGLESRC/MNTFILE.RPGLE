@@ -61,12 +61,6 @@ DCL-F FILESI01
 DCL-DS PSDS LEN(429) QUALIFIED PSDS;
 END-DS;
 
-DCL-C MODE_CREATE '*CREATE';
-DCL-C MODE_COPY '*COPY';
-DCL-C MODE_CHANGE '*CHANGE';
-DCL-C MODE_DELETE '*DELETE';
-DCL-C MODE_DISPLAY '*DISPLAY';
-
 DCL-S g_MODE CHAR(10);      // Mode
 DCL-S g_JOB  CHAR(10);      // Job
 DCL-S g_POS  PACKED(6 : 0); // <-- Position
@@ -76,6 +70,7 @@ DCL-S g_CPL  CHAR(10);      // <-- Copy program (Library)
 DCL-S g_CP   CHAR(10);      // <-- Copy program
 DCL-S g_VPL  CHAR(10);      // <-- Conversion program (Library)
 DCL-S g_VP   CHAR(10);      // <-- Conversion program
+DCL-S g_OPN  IND INZ(*OFF); // Open indicator
 
 //*=========================================================================================*
 //* Open Files                                                                              *
@@ -89,6 +84,8 @@ DCL-PROC MNTFILE_openFiles EXPORT;
   open JOBS;
   open FILES;
   open FILESI01;
+
+  g_OPN = *on;
 
 END-PROC MNTFILE_openFiles;
 
@@ -104,6 +101,8 @@ DCL-PROC MNTFILE_closeFiles EXPORT;
   close JOBS;
   close FILES;
   close FILESI01;
+
+  g_OPN = *off;
 
 END-PROC MNTFILE_closeFiles;
 
@@ -145,14 +144,14 @@ DCL-PROC MNTFILE_initialize EXPORT;
 
     select;
 
-    when (g_MODE = MODE_CREATE);
+    when (g_MODE = MNTFILE_CREATE);
 
       p_SUCCESS = 'Y';
       p_MSG = *blanks;
       return *on;
 
-    when (g_MODE = MODE_CHANGE or
-          g_MODE = MODE_DELETE);
+    when (g_MODE = MNTFILE_CHANGE or
+          g_MODE = MNTFILE_DELETE);
 
       dou (not %error);
         chain(e) (g_JOB : g_POS) FILERF;
@@ -170,14 +169,33 @@ DCL-PROC MNTFILE_initialize EXPORT;
         return *on;
       endif;
 
-    when (g_MODE = MODE_DISPLAY or
-          g_MODE = MODE_COPY);
+    when (g_MODE = MNTFILE_DISPLAY or
+          g_MODE = MNTFILE_COPY);
 
       chain(n) (g_JOB : g_POS) FILERF;
       if (not %found);
         p_SUCCESS = 'N';
         p_MSG = '002';
         return *off;
+      else;
+        p_SUCCESS = 'Y';
+        p_MSG = *blanks;
+        return *on;
+      endif;
+
+    when (g_MODE = MNTFILE_CHKACT);
+
+      if (g_POS <> *zero);
+        chain(n) (g_JOB : g_POS) FILERF;
+        if (not %found);
+          p_SUCCESS = 'N';
+          p_MSG = '002';
+          return *off;
+        else;
+          p_SUCCESS = 'Y';
+          p_MSG = *blanks;
+          return *on;
+        endif;
       else;
         p_SUCCESS = 'Y';
         p_MSG = *blanks;
@@ -212,7 +230,7 @@ DCL-PROC MNTFILE_getValues EXPORT;
     p_VP   CHAR(10);      // <-- Conversion program
   END-PI;
 
-  if (g_MODE = MODE_CREATE);
+  if (g_MODE = MNTFILE_CREATE);
 
     p_POS  = *zero;
     p_FILE = *blanks;
@@ -288,8 +306,8 @@ DCL-PROC MNTFILE_check EXPORT;
   dou (1 = 1);
 
     //*** Check only for mode CREATE and COPY ***
-    if (g_MODE = MODE_CREATE or
-        g_MODE = MODE_COPY);
+    if (g_MODE = MNTFILE_CREATE or
+        g_MODE = MNTFILE_COPY);
 
       // The value in field 'Position' is not valid
       if g_POS = *zero;
@@ -309,9 +327,9 @@ DCL-PROC MNTFILE_check EXPORT;
     endif;
 
     //*** Check only for mode CREATE, COPY and CHANGE ***
-    if (g_MODE = MODE_CREATE or
-        g_MODE = MODE_COPY or
-        g_MODE = MODE_CHANGE);
+    if (g_MODE = MNTFILE_CREATE or
+        g_MODE = MNTFILE_COPY or
+        g_MODE = MNTFILE_CHANGE);
 
       // The value in field 'File' is not valid
       if ChkVal('*NAME' : 10 : %Addr(g_FILE)) = '*INVALID';
@@ -321,7 +339,7 @@ DCL-PROC MNTFILE_check EXPORT;
       endif;
 
       // The file does already exist
-      if Not (g_MODE = MODE_CHANGE and
+      if Not (g_MODE = MNTFILE_CHANGE and
               g_FILE = X3FILE);
         SetLL ( g_JOB : g_FILE) FILERF01;
         if %Equal;
@@ -431,7 +449,7 @@ DCL-PROC MNTFILE_check EXPORT;
     endif;
 
     //*** Check only for mode DELETE ***
-    if (g_MODE = MODE_DELETE);
+    if (g_MODE = MNTFILE_DELETE);
 
     endif;
 
@@ -469,19 +487,19 @@ DCL-PROC MNTFILE_book EXPORT;
 
   select;
 
-  when (g_MODE = MODE_CREATE);
+  when (g_MODE = MNTFILE_CREATE);
     exsr modeCreate;
 
-  when (g_MODE = MODE_COPY);
+  when (g_MODE = MNTFILE_COPY);
     exsr modeCopy;
 
-  when (g_MODE = MODE_CHANGE);
+  when (g_MODE = MNTFILE_CHANGE);
     exsr modeChange;
 
-  when (g_MODE = MODE_DELETE);
+  when (g_MODE = MNTFILE_DELETE);
     exsr modeDelete;
 
-  when (g_MODE = MODE_DISPLAY);
+  when (g_MODE = MNTFILE_DISPLAY);
     exsr modeDisplay;
 
   endsl;
@@ -568,3 +586,172 @@ DCL-PROC MNTFILE_book EXPORT;
   endsr;
 
 END-PROC MNTFILE_book;
+
+//*=========================================================================================*
+//* Check Action                                                                            *
+//*=========================================================================================*
+
+DCL-PROC MNTFILE_checkAction EXPORT;
+
+  DCL-PI MNTFILE_checkAction IND;  // <-- Success
+    p_ACT     CHAR(10) CONST;      // --> Action
+    p_JOB     CHAR(10) CONST;      // --> Job
+    p_POS     PACKED(6 : 0) CONST; // --> Position
+    p_SUCCESS CHAR(1);             // <-- Success
+    p_MSG     CHAR(256);           // <-- Message
+  END-PI;
+
+  DCL-S l_MSGID   CHAR(7);   // Message-Id.
+  DCL-S l_MSGDTA  CHAR(256); // Message data
+  DCL-S l_SUCCESS CHAR(1);   // Success
+  DCL-S l_MSG     CHAR(256); // Message
+  DCL-S l_OPN     IND;       // Open indicator
+
+  // Initialize returning fields
+  p_MSG = *blanks;
+
+  // Initialize message fields
+  l_MSGID = *blanks;
+  l_MSGDTA = *blanks;
+
+  dou (1 = 1);
+
+    // Invalid parameter values. Error = Position has to be zero.
+    if (p_ACT = MNTFILE_CREATE and
+        p_POS <> *zero);
+      l_MSGID = 'ERR0021';
+      leave;
+    endif;
+
+    // Invalid parameter values. Error = &1.
+    l_OPN = g_OPN;
+    if (not l_OPN);
+      MNTFILE_openFiles();
+    endif;
+    MNTFILE_initialize(
+      MNTFILE_CHKACT : // --> Mode
+      p_JOB :          // --> Job
+      p_POS :          // --> Position
+      l_SUCCESS :      // <-- Success
+      l_MSG            // <-- Message
+    );
+    if (not l_OPN);
+      MNTFILE_closeFiles();
+    endif;
+    if (l_SUCCESS = 'N');
+      l_MSGID = 'ERR0003';
+      l_MSGDTA = l_MSG;
+      leave;
+    endif;
+
+    // The action is only valid for jobs with status *RDY
+    if ((p_ACT = MNTFILE_CREATE or
+         p_ACT = MNTFILE_COPY or
+         p_ACT = MNTFILE_CHANGE or
+         p_ACT = MNTFILE_DELETE) and
+        X1STS <> '*RDY');
+      l_MSGID = 'ERR0004';
+      leave;
+    endif;
+
+    // The option is only valid for physical files
+    If ((p_ACT = MNTFILE_MNTCNV Or
+         p_ACT = MNTFILE_GNRCPYPGM) And
+       X3TYPE <> '*PHYSICAL');
+      l_MSGID = 'ERR0007';
+      leave;
+    EndIf;
+
+    // The option is only valid for jobs with "Create environment" *YES
+    If (p_ACT = MNTFILE_MNTCMD And
+       X1CRTE <> '*YES');
+      l_MSGID = 'ERR0020';
+      leave;
+    EndIf;
+
+  enddo;
+
+  // Return
+  if (l_MSGID = *blanks);
+
+    p_SUCCESS = 'Y';
+    return *on;
+
+  else;
+
+    p_MSG = rtvMsgText(
+      l_MSGID :   // --> Message-Id.
+      'MNTFILE' : // --> Message file
+      '*LIBL' :   // --> Library
+      l_MSGDTA    // --> Message data
+    );
+
+    p_SUCCESS = 'N';
+    return *off;
+
+  endif;
+
+END-PROC MNTFILE_checkAction;
+
+//*=========================================================================================*
+//* Get Valid Actions                                                                       *
+//*=========================================================================================*
+
+DCL-PROC MNTFILE_getValidActions EXPORT;
+
+  DCL-PI MNTFILE_getValidActions;
+    p_JOB     CHAR(10) CONST;      // --> Job
+    p_POS     PACKED(6 : 0) CONST; // --> Position
+    p_NBRACT  PACKED(2 : 0);       // <-- Number of actions
+    p_ACT     CHAR(10) DIM(25);    // <-- Actions
+  END-PI;
+
+  DCL-S l_ACT     CHAR(10);      // --> Action
+  DCL-S l_SUCCESS CHAR(1);       // <-- Success
+  DCL-S l_MSG     CHAR(256);     // <-- Message
+
+  p_NBRACT = *zero;
+  p_ACT(*) = *blanks;
+
+  l_ACT = MNTFILE_COPY;
+    exsr checkAction;
+
+  l_ACT = MNTFILE_CHANGE;
+    exsr checkAction;
+
+  l_ACT = MNTFILE_DELETE;
+    exsr checkAction;
+
+  l_ACT = MNTFILE_DISPLAY;
+    exsr checkAction;
+
+  l_ACT = MNTFILE_MNTARA;
+    exsr checkAction;
+
+  l_ACT = MNTFILE_MNTCNV;
+    exsr checkAction;
+
+  l_ACT = MNTFILE_MNTCMD;
+    exsr checkAction;
+
+  l_ACT = MNTFILE_GNRCPYPGM;
+    exsr checkAction;
+
+  return;
+
+  begsr checkAction;
+
+    if (MNTFILE_checkAction(
+          l_ACT :     // --> Action
+          p_JOB :     // --> Job
+          p_POS :     // --> Position
+          l_SUCCESS : // <-- Success
+          l_MSG       // <-- Message
+        ));
+      p_NBRACT += 1;
+      p_ACT(p_NBRACT) = l_ACT;
+    endif;
+
+  endsr;
+
+END-PROC MNTFILE_getValidActions;

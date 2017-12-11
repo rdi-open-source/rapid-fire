@@ -19,7 +19,6 @@
      /*      >>PARM<<  TEXT('Maintain File');                                                     */
      /*      >>PARM<<  BNDDIR(&LI/RAPIDFIRE);                                                     */
      /*      >>PARM<<  ACTGRP(RAPIDFIRE);                                                         */
-     /*      >>PARM<<  TGTRLS(&TR);                                                               */
      /*      >>PARM<<  DETAIL(*BASIC);                                                            */
      /*    >>END-IMPORTANT<<                                                                      */
      /*    >>EXECUTE<<                                                                            */
@@ -45,6 +44,10 @@
                 EXPORT     SYMBOL('MNTFILE_check')
 
                 EXPORT     SYMBOL('MNTFILE_book')
+
+                EXPORT     SYMBOL('MNTFILE_checkAction')
+
+                EXPORT     SYMBOL('MNTFILE_getValidActions')
 
              ENDPGMEXP
 

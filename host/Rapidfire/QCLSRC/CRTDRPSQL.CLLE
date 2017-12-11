@@ -113,6 +113,10 @@
              CALLSUBR   SUBR(EXECUTE)
              CHGVAR     VAR(&NAME) VALUE('MNTFILE07')
              CALLSUBR   SUBR(EXECUTE)
+             CHGVAR     VAR(&NAME) VALUE('MNTFILE08')
+             CALLSUBR   SUBR(EXECUTE)
+             CHGVAR     VAR(&NAME) VALUE('MNTFILE09')
+             CALLSUBR   SUBR(EXECUTE)
 
              CHGVAR     VAR(&NAME) VALUE('MNTAREA01')
              CALLSUBR   SUBR(EXECUTE)

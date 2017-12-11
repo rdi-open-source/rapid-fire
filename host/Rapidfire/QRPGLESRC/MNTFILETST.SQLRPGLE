@@ -40,6 +40,8 @@ DCL-S g_CPL     CHAR(10);      // Copy program (Library)
 DCL-S g_CP      CHAR(10);      // Copy program
 DCL-S g_VPL     CHAR(10);      // Conversion program (Library)
 DCL-S g_VP      CHAR(10);      // Conversion program
+DCL-S g_NBRACTS PACKED(2 : 0); // <-- Number of actions
+DCL-S g_ACTS    CHAR(250);     // <-- Actions
 
 //*-----------------------------------------------------------------------------------------*
 
@@ -232,6 +234,74 @@ if (SqlCheckState(sqlState));
           endif;
 
         endif;
+
+      endif;
+
+      // *** CHECK ACTION ***
+
+      g_ACT = MNTFILE_CREATE;
+      EXEC SQL
+        CALL "MNTFILE_checkAction"(
+          :g_ACT,
+          'MYJOB',
+          0,
+          :g_SUCCESS,
+          :g_MSG
+        );
+      setIgnoreWarnings();
+      if (SqlCheckState(sqlState));
+
+        if (g_SUCCESS = 'N');
+
+          // ... Display error on screen.
+          // ... g_MSG contains the message
+
+        else;
+
+          g_DMY = *on;
+
+        endif;
+
+      endif;
+
+      g_ACT = MNTFILE_CHANGE;
+      EXEC SQL
+        CALL "MNTFILE_checkAction"(
+          :g_ACT,
+          'MYJOB',
+          1,
+          :g_SUCCESS,
+          :g_MSG
+        );
+      setIgnoreWarnings();
+      if (SqlCheckState(sqlState));
+
+        if (g_SUCCESS = 'N');
+
+          // ... Display error on screen.
+          // ... g_MSG contains the message
+
+        else;
+
+          g_DMY = *on;
+
+        endif;
+
+      endif;
+
+      // *** GET VALID ACTIONS ***
+
+      EXEC SQL
+        CALL "MNTFILE_getValidActions"(
+          'MYJOB',
+          1,
+          :g_NBRACTS,
+          :g_ACTS
+        );
+      setIgnoreWarnings();
+      if (SqlCheckState(sqlState));
+
+        g_DMY = *on;
 
       endif;
 

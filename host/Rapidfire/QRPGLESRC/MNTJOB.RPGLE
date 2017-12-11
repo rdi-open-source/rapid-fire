@@ -156,14 +156,32 @@ DCL-PROC MNTJOB_initialize EXPORT;
     endif;
 
   when (g_MODE = MNTJOB_DISPLAY or
-        g_MODE = MNTJOB_COPY or
-        g_MODE = MNTJOB_CHKACT);
+        g_MODE = MNTJOB_COPY);
 
     chain(n) (g_JOB) JOBRF;
     if (not %found);
       p_SUCCESS = 'N';
       p_MSG = '001';
       return *off;
+    else;
+      p_SUCCESS = 'Y';
+      p_MSG = *blanks;
+      return *on;
+    endif;
+
+  when (g_MODE = MNTJOB_CHKACT);
+
+    if (g_JOB <> *blanks);
+      chain(n) (g_JOB) JOBRF;
+      if (not %found);
+        p_SUCCESS = 'N';
+        p_MSG = '001';
+        return *off;
+      else;
+        p_SUCCESS = 'Y';
+        p_MSG = *blanks;
+        return *on;
+      endif;
     else;
       p_SUCCESS = 'Y';
       p_MSG = *blanks;
@@ -538,6 +556,13 @@ DCL-PROC MNTJOB_checkAction EXPORT;
 
   dou (1 = 1);
 
+    // Invalid parameter values. Error = Job has to be blanks.
+    if (p_ACT = MNTJOB_CREATE and
+        p_JOB <> *blanks);
+      l_MSGID = 'ERR0011';
+      leave;
+    endif;
+
     // Invalid parameter values. Error = &1.
     l_OPN = g_OPN;
     if (not l_OPN);
@@ -640,9 +665,6 @@ DCL-PROC MNTJOB_getValidActions EXPORT;
 
   p_NBRACT = *zero;
   p_ACT(*) = *blanks;
-
-  l_ACT = MNTJOB_CREATE;
-    exsr checkAction;
 
   l_ACT = MNTJOB_COPY;
     exsr checkAction;
