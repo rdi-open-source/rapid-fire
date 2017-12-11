@@ -1,0 +1,63 @@
+package biz.rapidfire.core.maintenance.wizard;
+
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.layout.GridData;
+import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Text;
+
+import biz.rapidfire.core.Messages;
+import biz.rapidfire.core.helpers.StringHelper;
+import biz.rapidfire.core.swt.widgets.WidgetFactory;
+import biz.rapidfire.rsebase.swt.widgets.SystemHostCombo;
+
+public class DataLibraryPage extends AbstractWizardPage {
+
+    public static final String NAME = "DATA_LIBRARY_PAGE"; //$NON-NLS-1$
+
+    private SystemHostCombo comboConnection;
+    private Text textDataLibrary;
+
+    public DataLibraryPage() {
+        super(NAME);
+
+        setTitle(Messages.Wizard_Page_Data_Library);
+        setDescription(Messages.Wizard_Page_Data_Library_description);
+    }
+
+    public void createContent(Composite parent) {
+
+        comboConnection = WidgetFactory.createSystemHostCombo(parent, SWT.BORDER);
+        comboConnection.addSelectionListener(this);
+        comboConnection.setLayoutData(new GridData(SWT.FILL, SWT.DEFAULT, true, false, 2, 1));
+        comboConnection.setToolTipText(Messages.Tooltip_Connection_name);
+        comboConnection.getCombo().setToolTipText(Messages.Tooltip_Connection_name);
+
+        WidgetFactory.createLabel(parent, Messages.Label_Rapid_Fire_library_colon, Messages.Tooltip_Rapid_Fire_library);
+
+        textDataLibrary = WidgetFactory.createNameText(parent);
+        textDataLibrary.addModifyListener(this);
+        textDataLibrary.setLayoutData(new GridData(SWT.FILL, SWT.BEGINNING, true, false));
+        textDataLibrary.setToolTipText(Messages.Tooltip_Job);
+    }
+
+    protected void updatePageComplete() {
+
+        String message = null;
+
+        if (StringHelper.isNullOrEmpty(comboConnection.getConnectionName())) {
+            // comboConnection.getCombo().setFocus();
+            message = Messages.Connection_is_missing;
+        } else if (StringHelper.isNullOrEmpty(textDataLibrary.getText())) {
+            // textDataLibrary.setFocus();
+            message = Messages.The_Rapid_Fire_product_library_name_is_missing;
+        }
+
+        if (message == null) {
+            setPageComplete(true);
+        } else {
+            setPageComplete(false);
+        }
+
+        setErrorMessage(message);
+    }
+}

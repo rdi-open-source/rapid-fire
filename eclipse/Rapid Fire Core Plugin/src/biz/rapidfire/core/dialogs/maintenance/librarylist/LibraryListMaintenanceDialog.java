@@ -14,11 +14,8 @@ import java.util.List;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Shell;
-import org.eclipse.swt.widgets.Text;
 
 import biz.rapidfire.core.Messages;
 import biz.rapidfire.core.dialogs.maintenance.AbstractMaintenanceDialog;
@@ -29,24 +26,14 @@ import biz.rapidfire.core.maintenance.librarylist.ILibraryListCheck;
 import biz.rapidfire.core.maintenance.librarylist.LibraryListEntry;
 import biz.rapidfire.core.maintenance.librarylist.LibraryListManager;
 import biz.rapidfire.core.maintenance.librarylist.LibraryListValues;
-import biz.rapidfire.core.swt.widgets.WidgetFactory;
-import biz.rapidfire.core.swt.widgets.listeditors.librarylist.LibraryListEditor;
 import biz.rapidfire.core.swt.widgets.listeditors.librarylist.LibraryListItem;
 
 public class LibraryListMaintenanceDialog extends AbstractMaintenanceDialog {
 
     private LibraryListManager manager;
-
     private LibraryListValues values;
 
-    private Text textJobName;
-    private Text textLibraryList;
-    private Text textDescription;
-    private LibraryListEditor editorLibraryList;
-
-    private boolean enableParentKeyFields;
-    private boolean enableKeyFields;
-    private boolean enableFields;
+    private LibraryListMaintenanceControl libraryListMaintenanceControl;
 
     public static LibraryListMaintenanceDialog getCreateDialog(Shell shell, LibraryListManager manager) {
         return new LibraryListMaintenanceDialog(shell, MaintenanceMode.CREATE, manager);
@@ -76,57 +63,14 @@ public class LibraryListMaintenanceDialog extends AbstractMaintenanceDialog {
         super(shell, mode);
 
         this.manager = manager;
-
-        if (MaintenanceMode.CREATE.equals(mode) || MaintenanceMode.COPY.equals(mode)) {
-            enableParentKeyFields = false;
-            enableKeyFields = true;
-            enableFields = true;
-        } else if (MaintenanceMode.CHANGE.equals(mode)) {
-            enableParentKeyFields = false;
-            enableKeyFields = false;
-            enableFields = true;
-        } else {
-            enableParentKeyFields = false;
-            enableKeyFields = false;
-            enableFields = false;
-        }
     }
 
     @Override
     protected void createEditorAreaContent(Composite parent) {
 
-        createLabel(parent, Messages.Label_Job_colon, Messages.Tooltip_Job);
-
-        textJobName = WidgetFactory.createNameText(parent);
-        textJobName.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
-        textJobName.setToolTipText(Messages.Tooltip_Job);
-        textJobName.setEnabled(enableParentKeyFields);
-
-        createLabel(parent, Messages.Label_Library_list_colon, Messages.Tooltip_Library_list);
-
-        textLibraryList = WidgetFactory.createNameText(parent);
-        textLibraryList.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
-        textLibraryList.setToolTipText(Messages.Tooltip_Library_list);
-        textLibraryList.setEnabled(enableKeyFields);
-
-        createLabel(parent, Messages.Label_Shadow_library_colon, Messages.Tooltip_Shadow_library);
-
-        textDescription = WidgetFactory.createText(parent);
-        textDescription.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
-        textDescription.setToolTipText(Messages.Tooltip_Description);
-        textDescription.setEnabled(enableFields);
-
-        Group groupLibraryList = new Group(parent, SWT.NONE);
-        groupLibraryList.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true, 2, 1));
-        groupLibraryList.setLayout(new GridLayout(1, false));
-        groupLibraryList.setText(Messages.Label_Library_list_colon);
-        groupLibraryList.setToolTipText(Messages.Tooltip_Library_list);
-
-        editorLibraryList = WidgetFactory.createLibraryListEditor(groupLibraryList);
-        editorLibraryList.setLayoutData(new GridData(SWT.FILL, SWT.FILL, true, true));
-        editorLibraryList.setToolTipText(Messages.Tooltip_Library_list);
-        editorLibraryList.setEnableLowerCase(true);
-        editorLibraryList.setEnabled(enableFields);
+        libraryListMaintenanceControl = new LibraryListMaintenanceControl(parent, SWT.NONE);
+        libraryListMaintenanceControl.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+        libraryListMaintenanceControl.setMode(getMode());
     }
 
     @Override
@@ -137,10 +81,10 @@ public class LibraryListMaintenanceDialog extends AbstractMaintenanceDialog {
     @Override
     protected void setScreenValues() {
 
-        textJobName.setText(values.getKey().getJobName());
+        libraryListMaintenanceControl.setJobName(values.getKey().getJobName());
 
-        textLibraryList.setText(values.getKey().getLibraryList());
-        textDescription.setText(values.getDescription());
+        libraryListMaintenanceControl.setLibraryListName(values.getKey().getLibraryList());
+        libraryListMaintenanceControl.setDescription(values.getDescription());
         LibraryListEntry[] libraries = values.getLibraryList();
 
         List<LibraryListItem> libraryListItems = new LinkedList<LibraryListItem>();
@@ -149,16 +93,16 @@ public class LibraryListMaintenanceDialog extends AbstractMaintenanceDialog {
             libraryListItems.add(libraryItem);
         }
 
-        editorLibraryList.setItems(libraryListItems.toArray(new LibraryListItem[libraryListItems.size()]));
+        libraryListMaintenanceControl.setLibraries(libraryListItems.toArray(new LibraryListItem[libraryListItems.size()]));
     }
 
     @Override
     protected void okPressed() {
 
         LibraryListValues newValues = values.clone();
-        newValues.getKey().setLibraryList(textLibraryList.getText());
-        newValues.setDescription(textDescription.getText());
-        newValues.setLibraryList(getLibraryList(editorLibraryList.getItems()));
+        newValues.getKey().setLibraryList(libraryListMaintenanceControl.getLibraryListName());
+        newValues.setDescription(libraryListMaintenanceControl.getDescription());
+        newValues.setLibraryList(getLibraryList(libraryListMaintenanceControl.getLibraries()));
 
         if (!isDisplayMode()) {
             try {
@@ -196,28 +140,28 @@ public class LibraryListMaintenanceDialog extends AbstractMaintenanceDialog {
         String message = null;
 
         if (ILibraryListCheck.FIELD_JOB.equals(fieldName)) {
-            textJobName.setFocus();
-            message = Messages.bind(Messages.Job_name_A_is_not_valid, textJobName.getText());
+            libraryListMaintenanceControl.setFocusJobName();
+            message = Messages.bind(Messages.Job_name_A_is_not_valid, libraryListMaintenanceControl.getJobName());
         } else if (ILibraryListCheck.FIELD_LIBRARY_LIST.equals(fieldName)) {
-            textLibraryList.setFocus();
-            message = Messages.bind(Messages.Library_list_name_A_is_not_valid, textLibraryList.getText());
+            libraryListMaintenanceControl.setFocusLibraryListName();
+            message = Messages.bind(Messages.Library_list_name_A_is_not_valid, libraryListMaintenanceControl.getLibraryListName());
         } else if (ILibraryListCheck.FIELD_DESCRIPTION.equals(fieldName)) {
-            textDescription.setFocus();
-            message = Messages.bind(Messages.Library_list_description_A_is_not_valid, textDescription.getText());
+            libraryListMaintenanceControl.setFocusDescription();
+            message = Messages.bind(Messages.Library_list_description_A_is_not_valid, libraryListMaintenanceControl.getDescription());
         } else if (ILibraryListCheck.FIELD_SEQUENCE.equals(fieldName)) {
-            LibraryListItem item = editorLibraryList.getItem(recordNumber - 1);
+            LibraryListItem item = libraryListMaintenanceControl.getLibrary(recordNumber - 1);
             int sequenceNumber;
             if (item == null) {
                 sequenceNumber = -1;
-                editorLibraryList.setFocus();
+                libraryListMaintenanceControl.setFocusLibraryListEditor();
             } else {
                 sequenceNumber = item.getSequenceNumber();
-                editorLibraryList.setFocus(recordNumber - 1);
+                libraryListMaintenanceControl.setFocusLibraryListEditor(recordNumber - 1);
             }
             message = Messages.bind(Messages.Invalid_sequence_number_A, sequenceNumber);
         } else if (ILibraryListCheck.FIELD_DUPLICATE.equals(fieldName)) {
-            textDescription.setFocus();
-            setErrorMessage(Messages.bind(Messages.Description_A_is_not_valid, textDescription.getText()));
+            libraryListMaintenanceControl.setFocusDescription();
+            setErrorMessage(Messages.bind(Messages.Description_A_is_not_valid, libraryListMaintenanceControl.getDescription()));
         }
 
         setErrorMessage(message, result);

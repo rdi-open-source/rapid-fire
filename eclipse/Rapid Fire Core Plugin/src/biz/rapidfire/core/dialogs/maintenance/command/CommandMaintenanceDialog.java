@@ -96,14 +96,14 @@ public class CommandMaintenanceDialog extends AbstractMaintenanceDialog {
     @Override
     protected void createEditorAreaContent(Composite parent) {
 
-        createLabel(parent, Messages.Label_Job_colon, Messages.Tooltip_Job);
+        WidgetFactory.createLabel(parent, Messages.Label_Job_colon, Messages.Tooltip_Job);
 
         textJobName = WidgetFactory.createNameText(parent);
         textJobName.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
         textJobName.setToolTipText(Messages.Tooltip_Job);
         textJobName.setEnabled(enableParentKeyFields);
 
-        createLabel(parent, Messages.Label_Position_colon, Messages.Tooltip_Position);
+        WidgetFactory.createLabel(parent, Messages.Label_Position_colon, Messages.Tooltip_Position);
 
         textPosition = WidgetFactory.createIntegerText(parent);
         textPosition.setTextLimit(6);
@@ -111,7 +111,7 @@ public class CommandMaintenanceDialog extends AbstractMaintenanceDialog {
         textPosition.setToolTipText(Messages.Tooltip_Position);
         textPosition.setEnabled(enableParentKeyFields);
 
-        createLabel(parent, Messages.Label_Command_type_colon, Messages.Tooltip_Command_type);
+        WidgetFactory.createLabel(parent, Messages.Label_Command_type_colon, Messages.Tooltip_Command_type);
 
         comboCommandType = WidgetFactory.createReadOnlyCombo(parent);
         comboCommandType.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
@@ -119,14 +119,14 @@ public class CommandMaintenanceDialog extends AbstractMaintenanceDialog {
         comboCommandType.setEnabled(enableKeyFields);
         comboCommandType.setItems(CommandType.labels());
 
-        createLabel(parent, Messages.Label_Command_sequence_colon, Messages.Tooltip_Command_sequence);
+        WidgetFactory.createLabel(parent, Messages.Label_Command_sequence_colon, Messages.Tooltip_Command_sequence);
 
         textSequence = WidgetFactory.createIntegerText(parent);
         textSequence.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
         textSequence.setToolTipText(Messages.Tooltip_Command_sequence);
         textSequence.setEnabled(enableKeyFields);
 
-        createLabel(parent, Messages.Label_Command_command_colon, Messages.Tooltip_Command_command);
+        WidgetFactory.createLabel(parent, Messages.Label_Command_command_colon, Messages.Tooltip_Command_command);
 
         textCommand = WidgetFactory.createText(parent);
         textCommand.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));

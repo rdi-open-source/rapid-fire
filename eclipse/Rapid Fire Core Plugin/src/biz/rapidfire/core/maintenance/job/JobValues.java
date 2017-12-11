@@ -15,11 +15,24 @@ import biz.rapidfire.core.maintenance.job.shared.JobKey;
 
 public class JobValues implements IResourceValues {
 
+    private static final String EMPTY = ""; //$NON-NLS-1$
+
     private JobKey key;
     private String description;
     private String createEnvironment;
     private String jobQueueName;
     private String jobQueueLibraryName;
+
+    public static JobValues createInitialized() {
+
+        JobValues jobValues = new JobValues();
+        jobValues.setKey(new JobKey(EMPTY));
+        jobValues.setDescription(EMPTY);
+        jobValues.setJobQueueName(EMPTY);
+        jobValues.setJobQueueLibraryName(EMPTY);
+
+        return jobValues;
+    }
 
     public JobKey getKey() {
         ensureKey();

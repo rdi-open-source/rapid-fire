@@ -29,6 +29,7 @@ import biz.rapidfire.core.exceptions.IllegalParameterException;
 import biz.rapidfire.core.maintenance.MaintenanceMode;
 import biz.rapidfire.core.swt.widgets.listeditors.librarylist.LibraryListEditor;
 import biz.rapidfire.core.swt.widgets.listeditors.stringlist.StringListEditor;
+import biz.rapidfire.rsebase.swt.widgets.SystemHostCombo;
 
 /**
  * Factory for creating SWT widgets.
@@ -58,6 +59,31 @@ public final class WidgetFactory {
             instance = new WidgetFactory();
         }
         return instance;
+    }
+
+    /**
+     * Produces a label for a grid layout.
+     * 
+     * @param parent - a composite control which will be the parent of the new
+     *        instance (cannot be null)
+     * @param text - text of the label
+     * @param tooltip - tooltip of the label
+     * @return label
+     */
+    public static Label createLabel(Composite parent, String text, String tooltip) {
+        return WidgetFactory.getInstance().produceLabel(parent, text, tooltip);
+    }
+
+    /**
+     * Produces a SystemHostCombo.
+     * 
+     * @param parent a composite control which will be the parent of the new
+     *        instance (cannot be null)
+     * @param style the style of control to construct
+     * @return system host combo for selection a connection
+     */
+    public static SystemHostCombo createSystemHostCombo(Composite parent, int style) {
+        return WidgetFactory.getInstance().produceSystemHostCombo(parent, style);
     }
 
     /**
@@ -858,6 +884,23 @@ public final class WidgetFactory {
         }
 
         return filler;
+    }
+
+    private SystemHostCombo produceSystemHostCombo(Composite parent, int style) {
+
+        SystemHostCombo systemHostCombo = new SystemHostCombo(parent, style);
+
+        return systemHostCombo;
+    }
+
+    private Label produceLabel(Composite parent, String text, String tooltip) {
+
+        Label label = new Label(parent, SWT.NONE);
+        label.setLayoutData(new GridData(SWT.BEGINNING, SWT.CENTER, false, false));
+        label.setText(text);
+        label.setToolTipText(tooltip);
+
+        return label;
     }
 
     /**

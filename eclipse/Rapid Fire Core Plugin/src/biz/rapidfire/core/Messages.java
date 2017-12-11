@@ -41,6 +41,16 @@ public class Messages extends NLS {
     public static String Dialog_Title_Reset_Job_A_after_abortion;
     public static String DialogTitle_Job_Error_Message;
 
+    public static String Wizard_Title_New_Job_wizard;
+    public static String Wizard_Page_Data_Library;
+    public static String Wizard_Page_Data_Library_description;
+    public static String Wizard_Page_Job;
+    public static String Wizard_Page_Job_description;
+    public static String Wizard_Page_Libraries;
+    public static String Wizard_Page_Libraries_description;
+    public static String Wizard_Page_Library_List;
+    public static String Wizard_Page_Library_List_description;
+
     // Dialog action titles
     public static String DialogMode_CREATE;
     public static String DialogMode_COPY;
@@ -272,6 +282,9 @@ public class Messages extends NLS {
     public static String Rapid_Fire_version_information_not_found_in_library_A;
     public static String Could_not_rereieve_Rapid_Fire_version_information_due_to_backend_error_A;
     public static String Connection_A_not_found;
+    public static String Connection_is_missing;
+    public static String The_Rapid_Fire_product_library_name_is_missing;
+    public static String Library_list_entries_are_missing;
 
     // API error messages
     public static String EntityManager_Unknown_error_code_A;

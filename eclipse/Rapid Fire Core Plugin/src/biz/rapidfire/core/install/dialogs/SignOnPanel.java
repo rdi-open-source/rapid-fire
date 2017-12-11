@@ -17,7 +17,6 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
 import biz.rapidfire.core.Messages;
@@ -51,9 +50,7 @@ public class SignOnPanel {
         gridLayoutCompositeGeneral.numColumns = 2;
         compositeGeneral.setLayout(gridLayoutCompositeGeneral);
 
-        final Label labelHost = new Label(compositeGeneral, SWT.NONE);
-        labelHost.setText(Messages.Label_Host_name_colon);
-        labelHost.setToolTipText(Messages.Tooltip_Host_name);
+        WidgetFactory.createLabel(compositeGeneral, Messages.Label_Host_name_colon, Messages.Tooltip_Host_name);
 
         textHost = WidgetFactory.createText(compositeGeneral);
         textHost.setToolTipText(Messages.Tooltip_Host_name);
@@ -63,18 +60,14 @@ public class SignOnPanel {
             textHost.setEditable(false);
         }
 
-        final Label labelUser = new Label(compositeGeneral, SWT.NONE);
-        labelUser.setText(Messages.Label_Signon_User_colon);
-        labelUser.setToolTipText(Messages.Tooltip_Signon_User);
+        WidgetFactory.createLabel(compositeGeneral, Messages.Label_Signon_User_colon, Messages.Tooltip_Signon_User);
 
         textUser = WidgetFactory.createText(compositeGeneral);
         textUser.setToolTipText(Messages.Tooltip_Signon_User);
         textUser.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
         textUser.setText("");
 
-        final Label labelPassword = new Label(compositeGeneral, SWT.NONE);
-        labelPassword.setText(Messages.Label_Password_colon);
-        labelPassword.setToolTipText(Messages.Tooltip_Password);
+        WidgetFactory.createLabel(compositeGeneral, Messages.Label_Password_colon, Messages.Tooltip_Password);
 
         textPassword = WidgetFactory.createPassword(compositeGeneral);
         textPassword.setToolTipText(Messages.Tooltip_Password);

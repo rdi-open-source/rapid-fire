@@ -20,7 +20,6 @@ import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Group;
-import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Link;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
@@ -111,31 +110,22 @@ public class AppearancePage extends PreferencePage implements IWorkbenchPreferen
 
     private void createSectionDateAndTime(Composite parent) {
 
-        // Composite main = new Composite(parent, SWT.NONE);
-        // main.setLayout(new GridLayout(2, false));
-        // main.setLayoutData(new GridData(SWT.FILL, SWT.BEGINNING, true,
-        // false));
-
         // Date and Time Formats
         Group groupDateAndTimeFormats = new Group(parent, SWT.NONE);
         groupDateAndTimeFormats.setLayout(new GridLayout(3, false));
         groupDateAndTimeFormats.setLayoutData(new GridData(SWT.FILL, SWT.BEGINNING, true, false, 2, 1));
         groupDateAndTimeFormats.setText(Messages.Label_DateAndTimeFormats);
 
-        Label labelDateFormat = new Label(groupDateAndTimeFormats, SWT.NONE);
-        labelDateFormat.setLayoutData(createLabelLayoutData());
-        labelDateFormat.setToolTipText(Messages.Tooltip_Specifies_the_format_for_displaying_date_values);
-        labelDateFormat.setText(Messages.Label_Date_colon);
+        WidgetFactory.createLabel(groupDateAndTimeFormats, Messages.Label_Date_colon,
+            Messages.Tooltip_Specifies_the_format_for_displaying_date_values);
 
         textDateFormat = WidgetFactory.createReadOnlyCombo(groupDateAndTimeFormats);
         textDateFormat.setToolTipText(Messages.Tooltip_Specifies_the_format_for_displaying_date_values);
         textDateFormat.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));
         textDateFormat.setItems(Preferences.getInstance().getDateFormatLabels());
 
-        Label labelTimeFormat = new Label(groupDateAndTimeFormats, SWT.NONE);
-        labelTimeFormat.setLayoutData(createLabelLayoutData());
-        labelTimeFormat.setToolTipText(Messages.Tooltip_Specifies_the_format_for_displaying_time_values);
-        labelTimeFormat.setText(Messages.Label_Time_colon);
+        WidgetFactory.createLabel(groupDateAndTimeFormats, Messages.Label_Time_colon,
+            Messages.Tooltip_Specifies_the_format_for_displaying_time_values);
 
         textTimeFormat = WidgetFactory.createReadOnlyCombo(groupDateAndTimeFormats);
         textTimeFormat.setToolTipText(Messages.Tooltip_Specifies_the_format_for_displaying_time_values);

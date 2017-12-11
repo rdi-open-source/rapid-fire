@@ -11,12 +11,24 @@ package biz.rapidfire.core.maintenance.library;
 import biz.rapidfire.core.RapidFireCorePlugin;
 import biz.rapidfire.core.helpers.ExceptionHelper;
 import biz.rapidfire.core.maintenance.IResourceValues;
+import biz.rapidfire.core.maintenance.job.shared.JobKey;
 import biz.rapidfire.core.maintenance.library.shared.LibraryKey;
 
 public class LibraryValues implements IResourceValues {
 
+    private static final String EMPTY = ""; //$NON-NLS-1$
+
     private LibraryKey key;
     private String shadowLibrary;
+
+    public static LibraryValues createInitialized() {
+
+        LibraryValues libraryValues = new LibraryValues();
+        libraryValues.setKey(new LibraryKey(new JobKey(EMPTY), EMPTY));
+        libraryValues.setShadowLibrary(EMPTY);
+
+        return libraryValues;
+    }
 
     public LibraryKey getKey() {
         ensureKey();

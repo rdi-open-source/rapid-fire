@@ -106,14 +106,14 @@ public class NotificationMaintenanceDialog extends AbstractMaintenanceDialog {
     @Override
     protected void createEditorAreaContent(Composite parent) {
 
-        createLabel(parent, Messages.Label_Job_colon, Messages.Tooltip_Job);
+        WidgetFactory.createLabel(parent, Messages.Label_Job_colon, Messages.Tooltip_Job);
 
         textJobName = WidgetFactory.createNameText(parent);
         textJobName.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
         textJobName.setToolTipText(Messages.Tooltip_Job);
         textJobName.setEnabled(enableParentKeyFields);
 
-        createLabel(parent, Messages.Label_Position_colon, Messages.Tooltip_Position);
+        WidgetFactory.createLabel(parent, Messages.Label_Position_colon, Messages.Tooltip_Position);
 
         textPosition = WidgetFactory.createIntegerText(parent);
         textPosition.setTextLimit(6);
@@ -121,7 +121,7 @@ public class NotificationMaintenanceDialog extends AbstractMaintenanceDialog {
         textPosition.setToolTipText(Messages.Tooltip_Position);
         textPosition.setEnabled(enableKeyFields);
 
-        createLabel(parent, Messages.Label_NotificationType_colon, Messages.Tooltip_NotificationType);
+        WidgetFactory.createLabel(parent, Messages.Label_NotificationType_colon, Messages.Tooltip_NotificationType);
 
         comboType = WidgetFactory.createReadOnlyCombo(parent);
         setDefaultValue(comboType, NotificationType.USR.label());
@@ -131,21 +131,21 @@ public class NotificationMaintenanceDialog extends AbstractMaintenanceDialog {
         comboType.setItems(NotificationValues.getTypeLabels());
         comboType.addSelectionListener(new NotificationChangedListener());
 
-        createLabel(parent, Messages.Label_User_colon, Messages.Tooltip_User);
+        WidgetFactory.createLabel(parent, Messages.Label_User_colon, Messages.Tooltip_User);
 
         textUser = WidgetFactory.createNameText(parent);
         textUser.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
         textUser.setToolTipText(Messages.Tooltip_User);
         textUser.setEnabled(enableFields);
 
-        createLabel(parent, Messages.Label_Message_queue_name_colon, Messages.Tooltip_Message_queue_name);
+        WidgetFactory.createLabel(parent, Messages.Label_Message_queue_name_colon, Messages.Tooltip_Message_queue_name);
 
         textMessageQueueName = WidgetFactory.createNameText(parent);
         textMessageQueueName.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
         textMessageQueueName.setToolTipText(Messages.Tooltip_Message_queue_name);
         textMessageQueueName.setEnabled(enableFields);
 
-        createLabel(parent, Messages.Label_Message_queue_library_name_colon, Messages.Tooltip_Message_queue_library_name);
+        WidgetFactory.createLabel(parent, Messages.Label_Message_queue_library_name_colon, Messages.Tooltip_Message_queue_library_name);
 
         comboMessageQueueLibraryName = WidgetFactory.createNameCombo(parent);
         setDefaultValue(comboMessageQueueLibraryName, MessageQueueLibrary.LIBL.label());

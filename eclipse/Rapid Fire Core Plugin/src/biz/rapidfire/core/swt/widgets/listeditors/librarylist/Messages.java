@@ -21,6 +21,8 @@ public class Messages extends NLS {
     public static String Item;
     public static String Move_up;
     public static String Move_down;
+    public static String Library_colon;
+    public static String Library_Tooltip;
 
     private Messages() {
     }

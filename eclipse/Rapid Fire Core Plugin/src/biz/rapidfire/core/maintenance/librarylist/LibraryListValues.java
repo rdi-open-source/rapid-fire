@@ -17,9 +17,12 @@ import biz.rapidfire.core.helpers.ExceptionHelper;
 import biz.rapidfire.core.helpers.IntHelper;
 import biz.rapidfire.core.helpers.StringHelper;
 import biz.rapidfire.core.maintenance.IResourceValues;
+import biz.rapidfire.core.maintenance.job.shared.JobKey;
 import biz.rapidfire.core.maintenance.librarylist.shared.LibraryListKey;
 
 public class LibraryListValues implements IResourceValues {
+
+    private static final String EMPTY = ""; //$NON-NLS-1$
 
     static final int LENGTH_SEQUENCE_NUMBERS = 1000;
     static final int LENGTH_LIBRARIES = 2500;
@@ -30,6 +33,15 @@ public class LibraryListValues implements IResourceValues {
 
     private String libraryListString;
     private String sequenceNumbersString;
+
+    public static LibraryListValues createInitialized() {
+
+        LibraryListValues libraryListValues = new LibraryListValues();
+        libraryListValues.setKey(new LibraryListKey(new JobKey(EMPTY), EMPTY));
+        libraryListValues.setDescription(EMPTY);
+
+        return libraryListValues;
+    }
 
     public LibraryListValues() {
 

@@ -270,10 +270,12 @@ public class LibraryListEditor extends Composite implements SelectionListener {
         mainPanel.setLayoutData(new GridData(GridData.FILL_BOTH));
 
         Label labelLibrary = new Label(mainPanel, SWT.NONE);
-        labelLibrary.setText("Library:");
+        labelLibrary.setText(Messages.Library_colon);
+        labelLibrary.setToolTipText(Messages.Library_Tooltip);
 
         textItem = WidgetFactory.createText(mainPanel);
         textItem.setLayoutData(new GridData(GridData.HORIZONTAL_ALIGN_FILL));
+        textItem.setToolTipText(Messages.Library_Tooltip);
         textItem.addModifyListener(new ModifyListener() {
 
             public void modifyText(ModifyEvent e) {
@@ -473,6 +475,20 @@ public class LibraryListEditor extends Composite implements SelectionListener {
         }
 
         setButtonEnablement();
+    }
+
+    public void addSelectionListener(SelectionListener listener) {
+
+        addButton.addSelectionListener(listener);
+        removeButton.addSelectionListener(listener);
+        removeAllButton.addSelectionListener(listener);
+    }
+
+    public void removeSelectionListener(SelectionListener listener) {
+
+        addButton.removeSelectionListener(listener);
+        removeButton.removeSelectionListener(listener);
+        removeAllButton.removeSelectionListener(listener);
     }
 
     private int getNextSequenceNumber() {

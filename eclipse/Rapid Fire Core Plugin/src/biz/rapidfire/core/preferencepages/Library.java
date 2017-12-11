@@ -72,11 +72,9 @@ public class Library extends PreferencePage implements IWorkbenchPreferencePage 
     public Control createContents(Composite parent) {
 
         Composite container = new Composite(parent, SWT.NONE);
-        final GridLayout gridLayout = new GridLayout();
-        gridLayout.numColumns = 3;
-        container.setLayout(gridLayout);
+        container.setLayout(new GridLayout(3, false));
 
-        comboConnection = new SystemHostCombo(container, SWT.BORDER);
+        comboConnection = WidgetFactory.createSystemHostCombo(container, SWT.BORDER);
         comboConnection.setLayoutData(new GridData(SWT.FILL, SWT.DEFAULT, true, false, 3, 1));
         comboConnection.setToolTipText(Messages.Tooltip_Connection_name);
         comboConnection.getCombo().setToolTipText(Messages.Tooltip_Connection_name);
@@ -91,22 +89,16 @@ public class Library extends PreferencePage implements IWorkbenchPreferencePage 
             }
         });
 
-        Label labelFtpPortNumber = new Label(container, SWT.NONE);
-        labelFtpPortNumber.setLayoutData(createLabelLayoutData());
-        labelFtpPortNumber.setText(Messages.Label_FTP_port_number_colon);
-        labelFtpPortNumber.setToolTipText(Messages.Label_FTP_port_number_colon);
+        WidgetFactory.createLabel(container, Messages.Label_FTP_port_number_colon, Messages.Tooltip_FTP_port_number);
 
         textFtpPortNumber = WidgetFactory.createIntegerText(container);
-        textFtpPortNumber.setToolTipText(Messages.Label_FTP_port_number_colon);
+        textFtpPortNumber.setToolTipText(Messages.Tooltip_FTP_port_number);
         textFtpPortNumber.setTextLimit(5);
         textFtpPortNumber.setLayoutData(createTextLayoutData());
 
-        Label labelProductLibrary = new Label(container, SWT.NONE);
-        labelProductLibrary.setLayoutData(createLabelLayoutData());
-        labelProductLibrary.setText(Messages.Label_Rapid_Fire_library_colon);
-        labelProductLibrary.setToolTipText(Messages.Tooltip_Rapid_Fire_library);
+        WidgetFactory.createLabel(container, Messages.Label_Rapid_Fire_library_colon, Messages.Tooltip_Rapid_Fire_library);
 
-        textProductLibrary = WidgetFactory.createUpperCaseText(container);
+        textProductLibrary = WidgetFactory.createNameText(container);
         textProductLibrary.setToolTipText(Messages.Tooltip_Rapid_Fire_library);
         textProductLibrary.addKeyListener(new KeyAdapter() {
             @Override
@@ -132,10 +124,7 @@ public class Library extends PreferencePage implements IWorkbenchPreferencePage 
 
         validatorLibrary = Validator.getLibraryNameInstance();
 
-        Label labelProductLibraryVersion = new Label(container, SWT.NONE);
-        labelProductLibraryVersion.setLayoutData(createLabelLayoutData());
-        labelProductLibraryVersion.setText(Messages.Label_Version_colon);
-        labelProductLibraryVersion.setToolTipText(Messages.Tooltip_Version);
+        WidgetFactory.createLabel(container, Messages.Label_Version_colon, Messages.Tooltip_Version);
 
         textProductLibraryVersion = new Label(container, SWT.NONE);
         textProductLibraryVersion.setToolTipText(Messages.Tooltip_Version);

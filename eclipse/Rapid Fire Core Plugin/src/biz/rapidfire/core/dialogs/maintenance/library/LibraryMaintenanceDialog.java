@@ -13,7 +13,6 @@ import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
-import org.eclipse.swt.widgets.Text;
 
 import biz.rapidfire.core.Messages;
 import biz.rapidfire.core.dialogs.maintenance.AbstractMaintenanceDialog;
@@ -23,21 +22,13 @@ import biz.rapidfire.core.maintenance.Result;
 import biz.rapidfire.core.maintenance.library.ILibraryCheck;
 import biz.rapidfire.core.maintenance.library.LibraryManager;
 import biz.rapidfire.core.maintenance.library.LibraryValues;
-import biz.rapidfire.core.swt.widgets.WidgetFactory;
 
 public class LibraryMaintenanceDialog extends AbstractMaintenanceDialog {
 
     private LibraryManager manager;
 
     private LibraryValues values;
-
-    private Text textJobName;
-    private Text textLibrary;
-    private Text textShadowLibrary;
-
-    private boolean enableParentKeyFields;
-    private boolean enableKeyFields;
-    private boolean enableFields;
+    private LibraryMaintenanceControl libraryMaintenanceControl;
 
     public static LibraryMaintenanceDialog getCreateDialog(Shell shell, LibraryManager manager) {
         return new LibraryMaintenanceDialog(shell, MaintenanceMode.CREATE, manager);
@@ -67,45 +58,14 @@ public class LibraryMaintenanceDialog extends AbstractMaintenanceDialog {
         super(shell, mode);
 
         this.manager = manager;
-
-        if (MaintenanceMode.CREATE.equals(mode) || MaintenanceMode.COPY.equals(mode)) {
-            enableParentKeyFields = false;
-            enableKeyFields = true;
-            enableFields = true;
-        } else if (MaintenanceMode.CHANGE.equals(mode)) {
-            enableParentKeyFields = false;
-            enableKeyFields = false;
-            enableFields = true;
-        } else {
-            enableParentKeyFields = false;
-            enableKeyFields = false;
-            enableFields = false;
-        }
     }
 
     @Override
     protected void createEditorAreaContent(Composite parent) {
 
-        createLabel(parent, Messages.Label_Job_colon, Messages.Tooltip_Job);
-
-        textJobName = WidgetFactory.createNameText(parent);
-        textJobName.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
-        textJobName.setToolTipText(Messages.Tooltip_Job);
-        textJobName.setEnabled(enableParentKeyFields);
-
-        createLabel(parent, Messages.Label_Library_colon, Messages.Tooltip_Library);
-
-        textLibrary = WidgetFactory.createNameText(parent);
-        textLibrary.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
-        textLibrary.setToolTipText(Messages.Tooltip_Library);
-        textLibrary.setEnabled(enableKeyFields);
-
-        createLabel(parent, Messages.Label_Shadow_library_colon, Messages.Tooltip_Shadow_library);
-
-        textShadowLibrary = WidgetFactory.createNameText(parent);
-        textShadowLibrary.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
-        textShadowLibrary.setToolTipText(Messages.Tooltip_Shadow_library);
-        textShadowLibrary.setEnabled(enableFields);
+        LibraryMaintenanceControl libraryMaintenanceControl = new LibraryMaintenanceControl(parent, SWT.NONE);
+        libraryMaintenanceControl.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+        libraryMaintenanceControl.setMode(getMode());
     }
 
     @Override
@@ -116,18 +76,17 @@ public class LibraryMaintenanceDialog extends AbstractMaintenanceDialog {
     @Override
     protected void setScreenValues() {
 
-        textJobName.setText(values.getKey().getJobName());
-
-        textLibrary.setText(values.getKey().getLibrary());
-        textShadowLibrary.setText(values.getShadowLibrary());
+        libraryMaintenanceControl.setJobName(values.getKey().getJobName());
+        libraryMaintenanceControl.setLibraryName(values.getKey().getLibrary());
+        libraryMaintenanceControl.setShadowLibraryName(values.getShadowLibrary());
     }
 
     @Override
     protected void okPressed() {
 
         LibraryValues newValues = values.clone();
-        newValues.getKey().setLibrary(textLibrary.getText());
-        newValues.setShadowLibrary(textShadowLibrary.getText());
+        newValues.getKey().setLibrary(libraryMaintenanceControl.getLibraryName());
+        newValues.setShadowLibrary(libraryMaintenanceControl.getShadowLibraryName());
 
         if (!isDisplayMode()) {
             try {
@@ -154,14 +113,14 @@ public class LibraryMaintenanceDialog extends AbstractMaintenanceDialog {
         String message = null;
 
         if (ILibraryCheck.FIELD_JOB.equals(fieldName)) {
-            textJobName.setFocus();
-            message = Messages.bind(Messages.Job_name_A_is_not_valid, textJobName.getText());
+            libraryMaintenanceControl.setFocusJobName();
+            message = Messages.bind(Messages.Job_name_A_is_not_valid, libraryMaintenanceControl.getJobName());
         } else if (ILibraryCheck.FIELD_LIBRARY.equals(fieldName)) {
-            textLibrary.setFocus();
-            message = Messages.bind(Messages.Name_of_library_A_is_not_valid, textLibrary.getText());
+            libraryMaintenanceControl.setFocusLibraryName();
+            message = Messages.bind(Messages.Name_of_library_A_is_not_valid, libraryMaintenanceControl.getLibraryName());
         } else if (ILibraryCheck.FIELD_SHADOW_LIBRARY.equals(fieldName)) {
-            textShadowLibrary.setFocus();
-            message = Messages.bind(Messages.Name_of_shadow_library_A_is_not_valid, textShadowLibrary.getText());
+            libraryMaintenanceControl.setFocusShadowLibraryName();
+            message = Messages.bind(Messages.Name_of_shadow_library_A_is_not_valid, libraryMaintenanceControl.getShadowLibraryName());
         }
 
         setErrorMessage(message, result);
