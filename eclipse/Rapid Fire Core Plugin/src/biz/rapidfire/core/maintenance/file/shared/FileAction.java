@@ -18,7 +18,11 @@ public enum FileAction implements IResourceAction {
     COPY ("*COPY"),
     CHANGE ("*CHANGE"),
     DELETE ("*DELETE"),
-    DISPLAY ("*DISPLAY");
+    DISPLAY ("*DISPLAY"),
+    MNTARA ("*MNTARA"),
+    MNTCNV ("*MNTCNV"),
+    MNTCMD ("*MNTCMD"),
+    GNRCPYPGM ("*GNRCPYPGM");
 
     private String label;
 

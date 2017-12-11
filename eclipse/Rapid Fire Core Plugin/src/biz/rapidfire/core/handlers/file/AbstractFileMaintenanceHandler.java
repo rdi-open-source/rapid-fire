@@ -81,7 +81,7 @@ public abstract class AbstractFileMaintenanceHandler extends AbstractResourceMai
 
     @Override
     protected boolean isValidAction(IRapidFireFileResource file) throws Exception {
-        return true;
+        return getOrCreateManager(file.getParentJob()).isValidAction(file, fileAction);
     }
 
     @Override

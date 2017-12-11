@@ -30,8 +30,6 @@ public class JobManager extends AbstractManager<IRapidFireJobResource, JobKey, J
     private static final String ERROR_002 = "002"; //$NON-NLS-1$
     private static final String ERROR_003 = "003"; //$NON-NLS-1$
 
-    private static int SQL_ACTION_LENGTH = 10;
-
     private static final String EMPTY_STRING = ""; //$NON-NLS-1$
     private IJDBCConnection dao;
 
@@ -297,20 +295,5 @@ public class JobManager extends AbstractManager<IRapidFireJobResource, JobKey, J
         }
 
         return actionsSet.contains(action);
-    }
-
-    private String[] splitActions(String actionsString, int numberActions) {
-
-        String[] actions = new String[numberActions];
-
-        int i = 0;
-        int offset = 0;
-        while (i < numberActions && offset < actionsString.length()) {
-            actions[i] = actionsString.substring(offset, offset + SQL_ACTION_LENGTH);
-            offset += SQL_ACTION_LENGTH;
-            i++;
-        }
-
-        return actions;
     }
 }

@@ -10,6 +10,7 @@ package biz.rapidfire.core.maintenance.file;
 
 import java.sql.CallableStatement;
 import java.sql.Types;
+import java.util.Set;
 
 import biz.rapidfire.core.Messages;
 import biz.rapidfire.core.maintenance.AbstractManager;
@@ -18,6 +19,7 @@ import biz.rapidfire.core.maintenance.Result;
 import biz.rapidfire.core.maintenance.Success;
 import biz.rapidfire.core.maintenance.file.shared.FileAction;
 import biz.rapidfire.core.maintenance.file.shared.FileKey;
+import biz.rapidfire.core.maintenance.job.IJobCheckAction;
 import biz.rapidfire.core.maintenance.job.shared.JobKey;
 import biz.rapidfire.core.model.IRapidFireFileResource;
 import biz.rapidfire.core.model.dao.IJDBCConnection;
@@ -189,8 +191,64 @@ public class FileManager extends AbstractManager<IRapidFireFileResource, FileKey
 
     @Override
     public Result checkAction(FileKey key, FileAction fileAction) throws Exception {
-        // TODO: check action!
-        Result result = new Result(Success.YES.label(), null);
-        return result;
+
+        CallableStatement statement = dao.prepareCall(dao
+            .insertLibraryQualifier("{CALL " + IJDBCConnection.LIBRARY + "\"MNTJOB_checkAction\"(?, ?, ?, ?)}")); //$NON-NLS-1$ //$NON-NLS-2$
+
+        statement.setString(IJobCheckAction.ACTION, fileAction.label());
+        statement.setString(IJobCheckAction.JOB, key.getJobName());
+        statement.setString(IJobCheckAction.SUCCESS, Success.NO.label());
+        statement.setString(IJobCheckAction.MESSAGE, EMPTY_STRING);
+
+        statement.registerOutParameter(IJobCheckAction.SUCCESS, Types.CHAR);
+        statement.registerOutParameter(IJobCheckAction.MESSAGE, Types.CHAR);
+
+        statement.execute();
+
+        String success = statement.getString(IJobCheckAction.SUCCESS);
+        String message = statement.getString(IJobCheckAction.MESSAGE);
+
+        return new Result(null, message, success);
+    }
+
+    public FileAction[] getValidActions(IRapidFireFileResource file) throws Exception {
+
+        CallableStatement statement = dao.prepareCall(dao
+            .insertLibraryQualifier("{CALL " + IJDBCConnection.LIBRARY + "\"MNTFILE_getValidActions\"(?, ?, ?, ?)}")); //$NON-NLS-1$ //$NON-NLS-2$
+
+        statement.setString(IFileGetValidActions.JOB, file.getParentJob().getName());
+        statement.setInt(IFileGetValidActions.POSITION, file.getPosition());
+        statement.setInt(IFileGetValidActions.NUMBER_ACTIONS, 0);
+        statement.setString(IFileGetValidActions.ACTIONS, EMPTY_STRING);
+
+        statement.registerOutParameter(IFileGetValidActions.NUMBER_ACTIONS, Types.DECIMAL);
+        statement.registerOutParameter(IFileGetValidActions.ACTIONS, Types.CHAR);
+
+        statement.execute();
+
+        int numberActions = statement.getBigDecimal(IFileGetValidActions.NUMBER_ACTIONS).intValue();
+        String[] actions = splitActions(statement.getString(IFileGetValidActions.ACTIONS), numberActions);
+
+        FileAction[] fileActions = new FileAction[actions.length];
+        for (int i = 0; i < fileActions.length; i++) {
+            fileActions[i] = FileAction.find(actions[i].trim());
+        }
+
+        return fileActions;
+    }
+
+    public boolean isValidAction(IRapidFireFileResource file, FileAction action) throws Exception {
+
+        KeyFileActionCache fileActionsKey = new KeyFileActionCache(file.getParentJob().getStatus(), file.getParentJob().isDoCreateEnvironment(),
+            file.getFileType());
+
+        Set<FileAction> actionsSet = FileActionCache.getInstance().getActions(fileActionsKey);
+        if (actionsSet == null) {
+            FileAction[] fileActions = getValidActions(file);
+            FileActionCache.getInstance().putActions(fileActionsKey, fileActions);
+            actionsSet = FileActionCache.getInstance().getActions(fileActionsKey);
+        }
+
+        return actionsSet.contains(action);
     }
 }

@@ -15,6 +15,8 @@ import biz.rapidfire.core.model.IRapidFireResource;
 
 public abstract class AbstractManager<R extends IRapidFireResource, K extends IResourceKey, V extends IResourceValues, A extends IResourceAction> {
 
+    private static int SQL_ACTION_LENGTH = 10;
+
     public abstract void openFiles() throws Exception;
 
     // Return succes: Y or N
@@ -46,5 +48,20 @@ public abstract class AbstractManager<R extends IRapidFireResource, K extends IR
 
     protected Float getFloat(CallableStatement statement, int parameterIndex) throws SQLException {
         return statement.getFloat(parameterIndex);
+    }
+
+    protected String[] splitActions(String actionsString, int numberActions) {
+
+        String[] actions = new String[numberActions];
+
+        int i = 0;
+        int offset = 0;
+        while (i < numberActions && offset < actionsString.length()) {
+            actions[i] = actionsString.substring(offset, offset + SQL_ACTION_LENGTH);
+            offset += SQL_ACTION_LENGTH;
+            i++;
+        }
+
+        return actions;
     }
 }
