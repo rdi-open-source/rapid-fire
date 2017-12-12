@@ -28,13 +28,15 @@ CTL-OPT ExtBinInt(*YES);
 /Include QCPYSRC,MNTLIB
 /Include QCPYSRC,SQLSTS
 
-DCL-S g_SUCCESS CHAR(1);   // Success
-DCL-S g_FLD     CHAR(10);  // Field
-DCL-S g_MSG     CHAR(256); // Message
-DCL-S g_DMY     IND;       // Dummy
-DCL-S g_ACT     CHAR(10);  // Action
-DCL-S g_LIB     CHAR(10);  // Library
-DCL-S g_SLIB    CHAR(10);  // Shadow library
+DCL-S g_SUCCESS CHAR(1);       // Success
+DCL-S g_FLD     CHAR(10);      // Field
+DCL-S g_MSG     CHAR(256);     // Message
+DCL-S g_DMY     IND;           // Dummy
+DCL-S g_ACT     CHAR(10);      // Action
+DCL-S g_LIB     CHAR(10);      // Library
+DCL-S g_SLIB    CHAR(10);      // Shadow library
+DCL-S g_NBRACTS PACKED(2 : 0); // Number of actions
+DCL-S g_ACTS    CHAR(250);     // Actions
 
 //*-----------------------------------------------------------------------------------------*
 
@@ -202,6 +204,74 @@ if (SqlCheckState(sqlState));
           endif;
 
         endif;
+
+      endif;
+
+      // *** CHECK ACTION ***
+
+      g_ACT = MNTLIB_CREATE;
+      EXEC SQL
+        CALL "MNTLIB_checkAction"(
+          :g_ACT,
+          'MYJOB',
+          ' ',
+          :g_SUCCESS,
+          :g_MSG
+        );
+      setIgnoreWarnings();
+      if (SqlCheckState(sqlState));
+
+        if (g_SUCCESS = 'N');
+
+          // ... Display error on screen.
+          // ... g_MSG contains the message
+
+        else;
+
+          g_DMY = *on;
+
+        endif;
+
+      endif;
+
+      g_ACT = MNTLIB_CHANGE;
+      EXEC SQL
+        CALL "MNTLIB_checkAction"(
+          :g_ACT,
+          'MYJOB',
+          'MYLIB',
+          :g_SUCCESS,
+          :g_MSG
+        );
+      setIgnoreWarnings();
+      if (SqlCheckState(sqlState));
+
+        if (g_SUCCESS = 'N');
+
+          // ... Display error on screen.
+          // ... g_MSG contains the message
+
+        else;
+
+          g_DMY = *on;
+
+        endif;
+
+      endif;
+
+      // *** GET VALID ACTIONS ***
+
+      EXEC SQL
+        CALL "MNTLIB_getValidActions"(
+          'MYJOB',
+          'MYLIB',
+          :g_NBRACTS,
+          :g_ACTS
+        );
+      setIgnoreWarnings();
+      if (SqlCheckState(sqlState));
+
+        g_DMY = *on;
 
       endif;
 

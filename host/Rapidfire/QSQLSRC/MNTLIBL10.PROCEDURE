@@ -8,24 +8,21 @@
 -- *                                                                        *
 -- *------------------------------------------------------------------------*
 -- *                                                                        *
--- * Check Action                                                           *
+-- * Get Library List                                                       *
 -- *                                                                        *
 -- *------------+--------+--------------------------------------------------*
 -- *   Datum    I Progr. I Beschreibung                                     *
 -- *------------+--------+--------------------------------------------------*
--- * 12.12.2017 I   FH   I Dateierstellung                                  *
+-- * 20.11.2017 I   FH   I Dateierstellung                                  *
 -- *------------+--------+--------------------------------------------------*
 
-CREATE PROCEDURE "MNTLIBL_checkAction"
+CREATE PROCEDURE "MNTLIBL_getLibraryList"
 (
-  IN    ACT      CHAR(10),
-  IN    JOB      CHAR(10),
-  IN    LIBL     CHAR(10),
-  INOUT SUCCESS  CHAR(1),
-  INOUT MSG      CHAR(256)
+  INOUT SEQ  CHAR(1000),
+  INOUT LIB  CHAR(2500)
 )
-EXTERNAL NAME MNTLIBL("MNTLIBL_checkAction")
-SPECIFIC MNTLIBL08
+EXTERNAL NAME MNTLIBL("MNTLIBL_getLibraryList")
+SPECIFIC MNTLIBL10
 LANGUAGE RPGLE
 PARAMETER STYLE GENERAL
 MODIFIES SQL DATA

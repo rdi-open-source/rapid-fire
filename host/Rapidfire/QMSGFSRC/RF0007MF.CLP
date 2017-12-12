@@ -4,7 +4,7 @@
      /*   >>CRTCMD<<  CALL       PGM(QTEMP/&OB) PARM(&LI &OB);                */
      /*   >>CMD<<     CRTCLPGM   PGM(QTEMP/&OB) +                             */
      /*                          SRCFILE(&SL/&SF) SRCMBR(&SM) +               */
-     /*               TEXT('Maintain Jobs');                                  */
+     /*               TEXT('Maintain Files');                                 */
      /*   >>EXECUTE<<                                                         */
      /*   >>CMD<<     DLTPGM PGM(QTEMP/&OB);                                  */
      /* >>END-PRE-COMPILER<<                                                  */
@@ -37,7 +37,7 @@
              ENDDO
 
              CRTMSGF MSGF(&LIB/&OBJ) +
-               TEXT('Maintain Jobs')
+               TEXT('Maintain Files')
 
      /*-------------------------------------------------------------*/
      /*   Cmd-ADDMSGD für Message-ID :   CON0001                    */
@@ -442,40 +442,6 @@
                 MSGF(&LIB/&OBJ) +
                 MSG(+
 'No prompt for the requested field available.'                        +
-                ) +
-                SEV(00) +
-     /*   Keine Ersatzvariablen definiert!                          */ +
-                ALROPT(*NO) +
-                CCSID( 65535) +
-                /*  -EOF-  */
-
-     /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   ERR0005                    */
-     /* The option is only valid for physical files.                */
-     /*-------------------------------------------------------------*/
-
-             ADDMSGD +
-                MSGID(ERR0005) +
-                MSGF(&LIB/&OBJ) +
-                MSG(+
-'The option is only valid for physical files.'                        +
-                ) +
-                SEV(00) +
-     /*   Keine Ersatzvariablen definiert!                          */ +
-                ALROPT(*NO) +
-                CCSID( 65535) +
-                /*  -EOF-  */
-
-     /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   ERR0006                    */
-     /* The option is only valid for jobs with "Create environment" */
-     /*-------------------------------------------------------------*/
-
-             ADDMSGD +
-                MSGID(ERR0006) +
-                MSGF(&LIB/&OBJ) +
-                MSG(+
-'The option is only valid for jobs with "Create environment" *YES.'   +
                 ) +
                 SEV(00) +
      /*   Keine Ersatzvariablen definiert!                          */ +

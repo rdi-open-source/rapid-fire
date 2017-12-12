@@ -851,6 +851,21 @@ EndSr;
 //*-----------------------------------------------------------------------------------------*
 
 BegSr SR030;
+
+  // Check action
+  If Not MNTFILE_checkAction(
+       MNTFILE_CREATE : // --> Action
+       PIJOB :          // --> Job
+       *Zero :          // --> Position
+       ITSUCC :         // <-- Success
+       ITXMsg           // <-- Message
+     );
+    ITMsgId = 'CPF9897';
+    ITMsgDta = ITXMsg;
+    ITMsgF = 'QCPFMSG';
+    LeaveSr;
+  EndIf;
+
   // Funktionstaste : 'F6=Erstellen'
   ITMode = MNTFILE_CREATE;
   SlcPOS = *Zero;
@@ -1402,6 +1417,8 @@ BegSr SR095;
       ITACT <> MNTFILE_MNTCMD And
       ITACT <> MNTFILE_GNRCPYPGM));
       ITMsgId = 'ERR0001';
+      ITMsgDta = *Blanks;
+      ITMsgF = 'RF0007MF';
       *IN(81) = *OFF;
       *IN(82) = *OFF;
       *IN(83) = *ON;

@@ -124,6 +124,78 @@
                 CCSID( 65535) +
                 /*  -EOF-  */
 
+     /*-------------------------------------------------------------*/
+     /*   Cmd-ADDMSGD für Message-ID :   ERR0006                    */
+     /* Invalid parameter values. Error = Library has to be blanks. */
+     /*-------------------------------------------------------------*/
+
+             ADDMSGD +
+                MSGID(ERR0006) +
+                MSGF(&LIB/&OBJ) +
+                MSG(+
+'Invalid parameter values. Error = Library has to be blanks.'         +
+                ) +
+                SEV(00) +
+     /*   Keine Ersatzvariablen definiert!                          */ +
+                ALROPT(*NO) +
+                CCSID( 65535) +
+                /*  -EOF-  */
+
+     /*-------------------------------------------------------------*/
+     /*   Cmd-ADDMSGD für Message-ID :   ERR0007                    */
+     /* Invalid parameter values. Error = &1.                       */
+     /*-------------------------------------------------------------*/
+
+             ADDMSGD +
+                MSGID(ERR0007) +
+                MSGF(&LIB/&OBJ) +
+                MSG(+
+'Invalid parameter values. Error = &1.'                               +
+                ) +
+                SEV(00) +
+                FMT( +
+                    (*CHAR 0256) +
+                ) +
+                ALROPT(*NO) +
+                CCSID( 65535) +
+                /*  -EOF-  */
+
+     /*-------------------------------------------------------------*/
+     /*   Cmd-ADDMSGD für Message-ID :   ERR0008                    */
+     /* The action is only valid for jobs with status *RDY.         */
+     /*-------------------------------------------------------------*/
+
+             ADDMSGD +
+                MSGID(ERR0008) +
+                MSGF(&LIB/&OBJ) +
+                MSG(+
+'The action is only valid for jobs with status *RDY.'                 +
+                ) +
+                SEV(00) +
+     /*   Keine Ersatzvariablen definiert!                          */ +
+                ALROPT(*NO) +
+                CCSID( 65535) +
+                /*  -EOF-  */
+
+     /*-------------------------------------------------------------*/
+     /*   Cmd-ADDMSGD für Message-ID :   ERR0009                    */
+     /* &1                                                          */
+     /*-------------------------------------------------------------*/
+
+             ADDMSGD +
+                MSGID(ERR0009) +
+                MSGF(&LIB/&OBJ) +
+                MSG(+
+'&1'                                                                  +
+                ) +
+                SEV(00) +
+                FMT( +
+                    (*CHAR 0256) +
+                ) +
+                ALROPT(*NO) +
+                CCSID( 65535) +
+                /*  -EOF-  */
+
              RCLRSC LVL(*)
 
              ENDPGM

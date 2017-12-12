@@ -38,6 +38,8 @@ DCL-S g_TYPE    CHAR(10);      // Type
 DCL-S g_USR     CHAR(10);      // User
 DCL-S g_MSGQL   CHAR(10);      // Message queue (Library)
 DCL-S g_MSGQ    CHAR(10);      // Message queue
+DCL-S g_NBRACTS PACKED(2 : 0); // Number of actions
+DCL-S g_ACTS    CHAR(250);     // Actions
 
 //*-----------------------------------------------------------------------------------------*
 
@@ -220,6 +222,74 @@ if (SqlCheckState(sqlState));
           endif;
 
         endif;
+
+      endif;
+
+      // *** CHECK ACTION ***
+
+      g_ACT = MNTSTBN_CREATE;
+      EXEC SQL
+        CALL "MNTSTBN_checkAction"(
+          :g_ACT,
+          'MYJOB',
+          0,
+          :g_SUCCESS,
+          :g_MSG
+        );
+      setIgnoreWarnings();
+      if (SqlCheckState(sqlState));
+
+        if (g_SUCCESS = 'N');
+
+          // ... Display error on screen.
+          // ... g_MSG contains the message
+
+        else;
+
+          g_DMY = *on;
+
+        endif;
+
+      endif;
+
+      g_ACT = MNTSTBN_CHANGE;
+      EXEC SQL
+        CALL "MNTSTBN_checkAction"(
+          :g_ACT,
+          'MYJOB',
+          1,
+          :g_SUCCESS,
+          :g_MSG
+        );
+      setIgnoreWarnings();
+      if (SqlCheckState(sqlState));
+
+        if (g_SUCCESS = 'N');
+
+          // ... Display error on screen.
+          // ... g_MSG contains the message
+
+        else;
+
+          g_DMY = *on;
+
+        endif;
+
+      endif;
+
+      // *** GET VALID ACTIONS ***
+
+      EXEC SQL
+        CALL "MNTSTBN_getValidActions"(
+          'MYJOB',
+          1,
+          :g_NBRACTS,
+          :g_ACTS
+        );
+      setIgnoreWarnings();
+      if (SqlCheckState(sqlState));
+
+        g_DMY = *on;
 
       endif;
 

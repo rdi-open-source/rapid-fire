@@ -213,6 +213,23 @@ PND.'                                                                 +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
+     /*   Cmd-ADDMSGD für Message-ID :   ERR0011                    */
+     /* Invalid parameter values. Error = Job has to be blanks.     */
+     /*-------------------------------------------------------------*/
+
+             ADDMSGD +
+                MSGID(ERR0011) +
+                MSGF(&LIB/&OBJ) +
+                MSG(+
+'Invalid parameter values. Error = Job has to be blanks.'             +
+                ) +
+                SEV(00) +
+     /*   Keine Ersatzvariablen definiert!                          */ +
+                ALROPT(*NO) +
+                CCSID( 65535) +
+                /*  -EOF-  */
+
+     /*-------------------------------------------------------------*/
      /*   Cmd-ADDMSGD für Message-ID :   ERR0045                    */
      /* The value in field 'Job queue' is not valid.                */
      /*-------------------------------------------------------------*/

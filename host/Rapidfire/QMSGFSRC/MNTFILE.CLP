@@ -74,6 +74,42 @@
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
+     /*   Cmd-ADDMSGD für Message-ID :   ERR0003                    */
+     /* Invalid parameter values. Error = &1.                       */
+     /*-------------------------------------------------------------*/
+
+             ADDMSGD +
+                MSGID(ERR0003) +
+                MSGF(&LIB/&OBJ) +
+                MSG(+
+'Invalid parameter values. Error = &1.'                               +
+                ) +
+                SEV(00) +
+                FMT( +
+                    (*CHAR 0256) +
+                ) +
+                ALROPT(*NO) +
+                CCSID( 65535) +
+                /*  -EOF-  */
+
+     /*-------------------------------------------------------------*/
+     /*   Cmd-ADDMSGD für Message-ID :   ERR0004                    */
+     /* The action is only valid for jobs with status *RDY.         */
+     /*-------------------------------------------------------------*/
+
+             ADDMSGD +
+                MSGID(ERR0004) +
+                MSGF(&LIB/&OBJ) +
+                MSG(+
+'The action is only valid for jobs with status *RDY.'                 +
+                ) +
+                SEV(00) +
+     /*   Keine Ersatzvariablen definiert!                          */ +
+                ALROPT(*NO) +
+                CCSID( 65535) +
+                /*  -EOF-  */
+
+     /*-------------------------------------------------------------*/
      /*   Cmd-ADDMSGD für Message-ID :   ERR0005                    */
      /* The value in field 'File' is not valid.                     */
      /*-------------------------------------------------------------*/
@@ -100,6 +136,23 @@
                 MSGF(&LIB/&OBJ) +
                 MSG(+
 'The value in field ''Type'' is not valid.'                           +
+                ) +
+                SEV(00) +
+     /*   Keine Ersatzvariablen definiert!                          */ +
+                ALROPT(*NO) +
+                CCSID( 65535) +
+                /*  -EOF-  */
+
+     /*-------------------------------------------------------------*/
+     /*   Cmd-ADDMSGD für Message-ID :   ERR0007                    */
+     /* The action is only valid for files with "Type" *PHYSICAL.   */
+     /*-------------------------------------------------------------*/
+
+             ADDMSGD +
+                MSGID(ERR0007) +
+                MSGF(&LIB/&OBJ) +
+                MSG(+
+'The action is only valid for files with "Type" *PHYSICAL.'           +
                 ) +
                 SEV(00) +
      /*   Keine Ersatzvariablen definiert!                          */ +
@@ -307,6 +360,59 @@
                 ) +
                 SEV(00) +
      /*   Keine Ersatzvariablen definiert!                          */ +
+                ALROPT(*NO) +
+                CCSID( 65535) +
+                /*  -EOF-  */
+
+     /*-------------------------------------------------------------*/
+     /*   Cmd-ADDMSGD für Message-ID :   ERR0020                    */
+     /* The action is only valid for jobs with "Create environment" */
+     /*-------------------------------------------------------------*/
+
+             ADDMSGD +
+                MSGID(ERR0020) +
+                MSGF(&LIB/&OBJ) +
+                MSG(+
+'The action is only valid for jobs with "Create environment" *YES.'   +
+                ) +
+                SEV(00) +
+     /*   Keine Ersatzvariablen definiert!                          */ +
+                ALROPT(*NO) +
+                CCSID( 65535) +
+                /*  -EOF-  */
+
+     /*-------------------------------------------------------------*/
+     /*   Cmd-ADDMSGD für Message-ID :   ERR0021                    */
+     /* Invalid parameter values. Error = Position has to be zero.  */
+     /*-------------------------------------------------------------*/
+
+             ADDMSGD +
+                MSGID(ERR0021) +
+                MSGF(&LIB/&OBJ) +
+                MSG(+
+'Invalid parameter values. Error = Position has to be zero.'          +
+                ) +
+                SEV(00) +
+     /*   Keine Ersatzvariablen definiert!                          */ +
+                ALROPT(*NO) +
+                CCSID( 65535) +
+                /*  -EOF-  */
+
+     /*-------------------------------------------------------------*/
+     /*   Cmd-ADDMSGD für Message-ID :   ERR0022                    */
+     /* &1                                                          */
+     /*-------------------------------------------------------------*/
+
+             ADDMSGD +
+                MSGID(ERR0022) +
+                MSGF(&LIB/&OBJ) +
+                MSG(+
+'&1'                                                                  +
+                ) +
+                SEV(00) +
+                FMT( +
+                    (*CHAR 0256) +
+                ) +
                 ALROPT(*NO) +
                 CCSID( 65535) +
                 /*  -EOF-  */

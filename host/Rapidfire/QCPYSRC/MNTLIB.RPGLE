@@ -49,3 +49,30 @@ END-PR;
 DCL-PR MNTLIB_book
        EXTPROC('MNTLIB_book');
 END-PR;
+
+DCL-PR MNTLIB_checkAction IND // <-- Success
+       EXTPROC('MNTLIB_checkAction');
+  *N CHAR(10) CONST;           // --> Action
+  *N CHAR(10) CONST;           // --> Job
+  *N CHAR(10) CONST;           // --> Library
+  *N CHAR(1);                  // <-- Success
+  *N CHAR(256);                // <-- Message
+END-PR;
+
+DCL-PR MNTLIB_getValidActions
+       EXTPROC('MNTLIB_getValidActions');
+  *N CHAR(10) CONST;   // --> Job
+  *N CHAR(10) CONST;   // --> Library
+  *N PACKED(2 : 0);    // <-- Number of actions
+  *N CHAR(10) DIM(25); // <-- Actions
+END-PR;
+
+DCL-C MNTLIB_ERROR   '*ERROR';
+DCL-C MNTLIB_NONE    '*NONE';
+DCL-C MNTLIB_SELECT  '*SELECT';
+DCL-C MNTLIB_CREATE  '*CREATE';
+DCL-C MNTLIB_COPY    '*COPY';
+DCL-C MNTLIB_CHANGE  '*CHANGE';
+DCL-C MNTLIB_DELETE  '*DELETE';
+DCL-C MNTLIB_DISPLAY '*DISPLAY';
+DCL-C MNTLIB_CHKACT  '*CHKACT';

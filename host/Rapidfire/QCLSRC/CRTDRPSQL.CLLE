@@ -81,6 +81,10 @@
              CALLSUBR   SUBR(EXECUTE)
              CHGVAR     VAR(&NAME) VALUE('MNTLIB07')
              CALLSUBR   SUBR(EXECUTE)
+             CHGVAR     VAR(&NAME) VALUE('MNTLIB08')
+             CALLSUBR   SUBR(EXECUTE)
+             CHGVAR     VAR(&NAME) VALUE('MNTLIB09')
+             CALLSUBR   SUBR(EXECUTE)
 
              CHGVAR     VAR(&NAME) VALUE('MNTLIBL01')
              CALLSUBR   SUBR(EXECUTE)
@@ -97,6 +101,10 @@
              CHGVAR     VAR(&NAME) VALUE('MNTLIBL07')
              CALLSUBR   SUBR(EXECUTE)
              CHGVAR     VAR(&NAME) VALUE('MNTLIBL08')
+             CALLSUBR   SUBR(EXECUTE)
+             CHGVAR     VAR(&NAME) VALUE('MNTLIBL09')
+             CALLSUBR   SUBR(EXECUTE)
+             CHGVAR     VAR(&NAME) VALUE('MNTLIBL10')
              CALLSUBR   SUBR(EXECUTE)
 
              CHGVAR     VAR(&NAME) VALUE('MNTFILE01')
@@ -176,6 +184,10 @@
              CHGVAR     VAR(&NAME) VALUE('MNTSTBN06')
              CALLSUBR   SUBR(EXECUTE)
              CHGVAR     VAR(&NAME) VALUE('MNTSTBN07')
+             CALLSUBR   SUBR(EXECUTE)
+             CHGVAR     VAR(&NAME) VALUE('MNTSTBN08')
+             CALLSUBR   SUBR(EXECUTE)
+             CHGVAR     VAR(&NAME) VALUE('MNTSTBN09')
              CALLSUBR   SUBR(EXECUTE)
 
              CHGVAR     VAR(&NAME) VALUE('MNTAS01')

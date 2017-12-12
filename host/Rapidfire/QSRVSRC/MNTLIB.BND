@@ -45,5 +45,9 @@
 
                 EXPORT     SYMBOL('MNTLIB_book')
 
+                EXPORT     SYMBOL('MNTLIB_checkAction')
+
+                EXPORT     SYMBOL('MNTLIB_getValidActions')
+
              ENDPGMEXP
 

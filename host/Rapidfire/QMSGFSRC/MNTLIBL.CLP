@@ -91,6 +91,61 @@
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
+     /*   Cmd-ADDMSGD für Message-ID :   ERR0004                    */
+     /* Invalid parameter values. Error = Library list has to be bl */
+     /*-------------------------------------------------------------*/
+
+             ADDMSGD +
+                MSGID(ERR0004) +
+                MSGF(&LIB/&OBJ) +
+                MSG(+
+'Invalid parameter values. Error = Library list has to be blanks.'    +
+                ) +
+                SEV(00) +
+     /*   Keine Ersatzvariablen definiert!                          */ +
+                ALROPT(*NO) +
+                CCSID( 65535) +
+                /*  -EOF-  */
+
+     /*-------------------------------------------------------------*/
+     /*   Cmd-ADDMSGD für Message-ID :   ERR0005                    */
+     /* Invalid parameter values. Error = &1.                       */
+     /*-------------------------------------------------------------*/
+
+             ADDMSGD +
+                MSGID(ERR0005) +
+                MSGF(&LIB/&OBJ) +
+                MSG(+
+'Invalid parameter values. Error = &1.'                               +
+                ) +
+                SEV(00) +
+                FMT( +
+                    (*CHAR 0256) +
+                ) +
+                ALROPT(*NO) +
+                CCSID( 65535) +
+                /*  -EOF-  */
+
+     /*-------------------------------------------------------------*/
+     /*   Cmd-ADDMSGD für Message-ID :   ERR0006                    */
+     /* &1                                                          */
+     /*-------------------------------------------------------------*/
+
+             ADDMSGD +
+                MSGID(ERR0006) +
+                MSGF(&LIB/&OBJ) +
+                MSG(+
+'&1'                                                                  +
+                ) +
+                SEV(00) +
+                FMT( +
+                    (*CHAR 0256) +
+                ) +
+                ALROPT(*NO) +
+                CCSID( 65535) +
+                /*  -EOF-  */
+
+     /*-------------------------------------------------------------*/
      /*   Cmd-ADDMSGD für Message-ID :   ERR0007                    */
      /* The Library has already been defined on an other position.  */
      /*-------------------------------------------------------------*/
@@ -100,6 +155,23 @@
                 MSGF(&LIB/&OBJ) +
                 MSG(+
 'The Library has already been defined on an other position.'          +
+                ) +
+                SEV(00) +
+     /*   Keine Ersatzvariablen definiert!                          */ +
+                ALROPT(*NO) +
+                CCSID( 65535) +
+                /*  -EOF-  */
+
+     /*-------------------------------------------------------------*/
+     /*   Cmd-ADDMSGD für Message-ID :   ERR0008                    */
+     /* The action is only valid for jobs with status *RDY.         */
+     /*-------------------------------------------------------------*/
+
+             ADDMSGD +
+                MSGID(ERR0008) +
+                MSGF(&LIB/&OBJ) +
+                MSG(+
+'The action is only valid for jobs with status *RDY.'                 +
                 ) +
                 SEV(00) +
      /*   Keine Ersatzvariablen definiert!                          */ +

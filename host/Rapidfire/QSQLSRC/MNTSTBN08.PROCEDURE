@@ -16,16 +16,16 @@
 -- * 12.12.2017 I   FH   I Dateierstellung                                  *
 -- *------------+--------+--------------------------------------------------*
 
-CREATE PROCEDURE "MNTLIBL_checkAction"
+CREATE PROCEDURE "MNTSTBN_checkAction"
 (
   IN    ACT      CHAR(10),
   IN    JOB      CHAR(10),
-  IN    LIBL     CHAR(10),
+  IN    POS      DECIMAL(3, 0),
   INOUT SUCCESS  CHAR(1),
   INOUT MSG      CHAR(256)
 )
-EXTERNAL NAME MNTLIBL("MNTLIBL_checkAction")
-SPECIFIC MNTLIBL08
+EXTERNAL NAME MNTSTBN("MNTSTBN_checkAction")
+SPECIFIC MNTSTBN08
 LANGUAGE RPGLE
 PARAMETER STYLE GENERAL
 MODIFIES SQL DATA

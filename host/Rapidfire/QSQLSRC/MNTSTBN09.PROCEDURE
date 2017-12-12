@@ -8,7 +8,7 @@
 -- *                                                                        *
 -- *------------------------------------------------------------------------*
 -- *                                                                        *
--- * Check Action                                                           *
+-- * Get Valid Actions                                                      *
 -- *                                                                        *
 -- *------------+--------+--------------------------------------------------*
 -- *   Datum    I Progr. I Beschreibung                                     *
@@ -16,16 +16,15 @@
 -- * 12.12.2017 I   FH   I Dateierstellung                                  *
 -- *------------+--------+--------------------------------------------------*
 
-CREATE PROCEDURE "MNTLIBL_checkAction"
+CREATE PROCEDURE "MNTSTBN_getValidActions"
 (
-  IN    ACT      CHAR(10),
-  IN    JOB      CHAR(10),
-  IN    LIBL     CHAR(10),
-  INOUT SUCCESS  CHAR(1),
-  INOUT MSG      CHAR(256)
+  IN    JOB    CHAR(10),
+  IN    POS    DECIMAL(3, 0),
+  INOUT NBRACT DECIMAL(2, 0),
+  INOUT ACT    CHAR(250)
 )
-EXTERNAL NAME MNTLIBL("MNTLIBL_checkAction")
-SPECIFIC MNTLIBL08
+EXTERNAL NAME MNTSTBN("MNTSTBN_getValidActions")
+SPECIFIC MNTSTBN09
 LANGUAGE RPGLE
 PARAMETER STYLE GENERAL
 MODIFIES SQL DATA

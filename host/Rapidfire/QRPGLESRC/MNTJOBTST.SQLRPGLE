@@ -38,8 +38,8 @@ DCL-S g_DSCR    CHAR(35);      // Description
 DCL-S g_CRTE    CHAR(10);      // Create environment
 DCL-S g_JQ      CHAR(10);      // Job queue
 DCL-S g_JQL     CHAR(10);      // Job queue (Library)
-DCL-S g_NBRACTS PACKED(2 : 0); // <-- Number of actions
-DCL-S g_ACTS    CHAR(250);     // <-- Actions
+DCL-S g_NBRACTS PACKED(2 : 0); // Number of actions
+DCL-S g_ACTS    CHAR(250);     // Actions
 
 //*-----------------------------------------------------------------------------------------*
 

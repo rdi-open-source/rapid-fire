@@ -190,25 +190,25 @@ If MNTLIBL_initialize(
   DFJOB = PIJOB;
   Select;
     // Modus : 'Erstellen'
-  When PIMode = '*CREATE';
+  When PIMode = MNTLIBL_CREATE;
     ExSr SR005;
     If PIRtCd = '*ENTER';
       PILIBL = DFLIBL;
     EndIf;
     // Modus : 'Ändern'
-  When PIMode = '*CHANGE';
+  When PIMode = MNTLIBL_CHANGE;
     ExSr SR010;
     // Modus : 'Kopieren'
-  When PIMode = '*COPY';
+  When PIMode = MNTLIBL_COPY;
     ExSr SR013;
     If PIRtCd = '*ENTER';
       PILIBL = DFLIBL;
     EndIf;
     // Modus : 'Löschen'
-  When PIMode = '*DELETE';
+  When PIMode = MNTLIBL_DELETE;
     ExSr SR015;
     // Modus : 'Anzeigen'
-  When PIMode = '*DISPLAY';
+  When PIMode = MNTLIBL_DISPLAY;
     ExSr SR020;
   EndSl;
 EndIf;
@@ -513,9 +513,9 @@ BegSr SR065;
   // Tabellen initialisieren
   ITLLSEQ(*) = *Zero;
   ITLLLIB(*) = *Blanks;
-  If PIMode = '*CREATE' Or
-    PIMode = '*COPY' Or
-    PIMode = '*CHANGE';
+  If PIMode = MNTLIBL_CREATE Or
+    PIMode = MNTLIBL_COPY Or
+    PIMode = MNTLIBL_CHANGE;
     // Namensfelder linksbündig ausrichten (Normalfelder)
     DFLIBL = %TRIML(DFLIBL);
     // Namensfelder linksbündig ausrichten (Subdateifelder)
@@ -542,9 +542,9 @@ BegSr SR065;
     ENDFOR;
   EndIf;
   // *** Fehlerprüfung nur für Modus 'Erstellen', 'Kopieren' und 'Ändern' ***
-  If PIMode = '*CREATE' Or
-    PIMode = '*COPY' Or
-    PIMode = '*CHANGE';
+  If PIMode = MNTLIBL_CREATE Or
+    PIMode = MNTLIBL_COPY Or
+    PIMode = MNTLIBL_CHANGE;
     MNTLIBL_setValues(
       DFLIBL :  // --> Library list
       DFDSCR :  // --> Description
@@ -731,12 +731,12 @@ BegSr SR080;
     ITHIPG(ITNbr) = 'RF0004GP';
     ITHILP(ITNbr) = '*LIBL';
     Select;
-    When PIMode = '*CREATE' Or
-      PIMode = '*COPY' Or
-      PIMode = '*CHANGE';
+    When PIMode = MNTLIBL_CREATE Or
+      PIMode = MNTLIBL_COPY Or
+      PIMode = MNTLIBL_CHANGE;
       ITHIMO(ITNbr) = 'FKT/EDT';
-    When PIMode = '*DISPLAY' Or
-      PIMode = '*DELETE';
+    When PIMode = MNTLIBL_DISPLAY Or
+      PIMode = MNTLIBL_DELETE;
       ITHIMO(ITNbr) = 'FKT/DSP';
     EndSl;
     If DFROW010 >= 23 And

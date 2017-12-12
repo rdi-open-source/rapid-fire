@@ -43,6 +43,8 @@ DCL-F SUBTOBENOT
 
 //*-----------------------------------------------------------------------------------------*
 
+/INCLUDE QCPYSRC,MNTJOB
+
 /INCLUDE QCPYSRC,MNTSTBN
 
 /INCLUDE QCPYSRC,HDLRCDLCK
@@ -54,12 +56,6 @@ DCL-F SUBTOBENOT
 DCL-DS PSDS LEN(429) QUALIFIED PSDS;
 END-DS;
 
-DCL-C MODE_CREATE '*CREATE';
-DCL-C MODE_COPY '*COPY';
-DCL-C MODE_CHANGE '*CHANGE';
-DCL-C MODE_DELETE '*DELETE';
-DCL-C MODE_DISPLAY '*DISPLAY';
-
 DCL-S g_MODE  CHAR(10);      // Mode
 DCL-S g_JOB   CHAR(10);      // Job
 DCL-S g_POS   PACKED(6 : 0); // Position
@@ -67,6 +63,7 @@ DCL-S g_TYPE  CHAR(10);      // Type
 DCL-S g_USR   CHAR(10);      // User
 DCL-S g_MSGQL CHAR(10);      // Message queue (Library)
 DCL-S g_MSGQ  CHAR(10);      // Message queue
+DCL-S g_OPN  IND INZ(*OFF); // Open indicator
 
 //*=========================================================================================*
 //* Open Files                                                                              *
@@ -79,6 +76,8 @@ DCL-PROC MNTSTBN_openFiles EXPORT;
 
   open JOBS;
   open SUBTOBENOT;
+
+  g_OPN = *on;
 
 END-PROC MNTSTBN_openFiles;
 
@@ -93,6 +92,8 @@ DCL-PROC MNTSTBN_closeFiles EXPORT;
 
   close JOBS;
   close SUBTOBENOT;
+
+  g_OPN = *off;
 
 END-PROC MNTSTBN_closeFiles;
 
@@ -134,14 +135,14 @@ DCL-PROC MNTSTBN_initialize EXPORT;
 
     select;
 
-    when (g_MODE = MODE_CREATE);
+    when (g_MODE = MNTSTBN_CREATE);
 
       p_SUCCESS = 'Y';
       p_MSG = *blanks;
       return *on;
 
-    when (g_MODE = MODE_CHANGE or
-          g_MODE = MODE_DELETE);
+    when (g_MODE = MNTSTBN_CHANGE or
+          g_MODE = MNTSTBN_DELETE);
 
       dou (not %error);
         chain(e) (g_JOB : g_POS) SUBTOBERF;
@@ -159,14 +160,33 @@ DCL-PROC MNTSTBN_initialize EXPORT;
         return *on;
       endif;
 
-    when (g_MODE = MODE_DISPLAY or
-          g_MODE = MODE_COPY);
+    when (g_MODE = MNTSTBN_DISPLAY or
+          g_MODE = MNTSTBN_COPY);
 
       chain(n) (g_JOB : g_POS) SUBTOBERF;
       if (not %found);
         p_SUCCESS = 'N';
         p_MSG = '002';
         return *off;
+      else;
+        p_SUCCESS = 'Y';
+        p_MSG = *blanks;
+        return *on;
+      endif;
+
+    when (g_MODE = MNTSTBN_CHKACT);
+
+      if (g_POS <> *zero);
+        chain(n) (g_JOB : g_POS) SUBTOBERF;
+        if (not %found);
+          p_SUCCESS = 'N';
+          p_MSG = '002';
+          return *off;
+        else;
+          p_SUCCESS = 'Y';
+          p_MSG = *blanks;
+          return *on;
+        endif;
       else;
         p_SUCCESS = 'Y';
         p_MSG = *blanks;
@@ -199,7 +219,7 @@ DCL-PROC MNTSTBN_getValues EXPORT;
     p_MSGQ  CHAR(10);      // <-- Message queue
   END-PI;
 
-  if (g_MODE = MODE_CREATE);
+  if (g_MODE = MNTSTBN_CREATE);
 
     p_POS = *zero;
     p_TYPE = *blanks;
@@ -267,8 +287,8 @@ DCL-PROC MNTSTBN_check EXPORT;
   Dou (1 = 1);
 
     //*** Check only for mode CREATE and COPY ***
-    if (g_MODE = MODE_CREATE or
-        g_MODE = MODE_COPY);
+    if (g_MODE = MNTSTBN_CREATE or
+        g_MODE = MNTSTBN_COPY);
 
       // The value in field 'Position' is not valid
       if g_POS = *zero;
@@ -288,9 +308,9 @@ DCL-PROC MNTSTBN_check EXPORT;
     endif;
 
     //*** Check only for mode CREATE, COPY and CHANGE ***
-    if (g_MODE = MODE_CREATE or
-        g_MODE = MODE_COPY or
-        g_MODE = MODE_CHANGE);
+    if (g_MODE = MNTSTBN_CREATE or
+        g_MODE = MNTSTBN_COPY or
+        g_MODE = MNTSTBN_CHANGE);
 
       // The value in field 'Type' is not valid
       if g_TYPE <> '*USR' And
@@ -335,7 +355,7 @@ DCL-PROC MNTSTBN_check EXPORT;
     endif;
 
     //*** Check only for mode DELETE ***
-    if (g_MODE = MODE_DELETE);
+    if (g_MODE = MNTSTBN_DELETE);
     endif;
 
   enddo;
@@ -373,19 +393,19 @@ DCL-PROC MNTSTBN_book EXPORT;
 
   select;
 
-  when (g_MODE = MODE_CREATE);
+  when (g_MODE = MNTSTBN_CREATE);
     exsr modeCreate;
 
-  when (g_MODE = MODE_COPY);
+  when (g_MODE = MNTSTBN_COPY);
     exsr modeCopy;
 
-  when (g_MODE = MODE_CHANGE);
+  when (g_MODE = MNTSTBN_CHANGE);
     exsr modeChange;
 
-  when (g_MODE = MODE_DELETE);
+  when (g_MODE = MNTSTBN_DELETE);
     exsr modeDelete;
 
-  when (g_MODE = MODE_DISPLAY);
+  when (g_MODE = MNTSTBN_DISPLAY);
     exsr modeDisplay;
 
   endsl;
@@ -470,3 +490,158 @@ DCL-PROC MNTSTBN_book EXPORT;
   endsr;
 
 END-PROC MNTSTBN_book;
+
+//*=========================================================================================*
+//* Check Action                                                                            *
+//*=========================================================================================*
+
+DCL-PROC MNTSTBN_checkAction EXPORT;
+
+  DCL-PI MNTSTBN_checkAction IND;  // <-- Success
+    p_ACT     CHAR(10) CONST;      // --> Action
+    p_JOB     CHAR(10) CONST;      // --> Job
+    p_POS     PACKED(3 : 0) CONST; // --> Position
+    p_SUCCESS CHAR(1);             // <-- Success
+    p_MSG     CHAR(256);           // <-- Message
+  END-PI;
+
+  DCL-S l_MSGID   CHAR(7);   // Message-Id.
+  DCL-S l_MSGDTA  CHAR(256); // Message data
+  DCL-S l_SUCCESS CHAR(1);   // Success
+  DCL-S l_MSG     CHAR(256); // Message
+  DCL-S l_OPN     IND;       // Open indicator
+
+  // Initialize returning fields
+  p_MSG = *blanks;
+
+  // Initialize message fields
+  l_MSGID = *blanks;
+  l_MSGDTA = *blanks;
+
+  dou (1 = 1);
+
+    // Invalid parameter values. Error = Position has to be zero.
+    if (p_ACT = MNTSTBN_CREATE and
+        p_POS <> *zero);
+      l_MSGID = 'ERR0003';
+      leave;
+    endif;
+
+    // Invalid parameter values. Error = &1.
+    l_OPN = g_OPN;
+    if (not l_OPN);
+      MNTSTBN_openFiles();
+    endif;
+    MNTSTBN_initialize(
+      MNTSTBN_CHKACT : // --> Mode
+      p_JOB :          // --> Job
+      p_POS :          // --> Position
+      l_SUCCESS :      // <-- Success
+      l_MSG            // <-- Message
+    );
+    if (not l_OPN);
+      MNTSTBN_closeFiles();
+    endif;
+    if (l_SUCCESS = 'N');
+      l_MSGID = 'ERR0004';
+      l_MSGDTA = l_MSG;
+      leave;
+    endif;
+
+    // The action is not valid for such type of jobs
+    if (not MNTJOB_checkAction(
+              MNTJOB_MNTSTBN : // --> Action
+              p_JOB :          // --> Job
+              l_SUCCESS :      // <-- Success
+              l_MSG            // <-- Message
+            )
+       );
+      l_MSGID = 'ERR0007';
+      l_MSGDTA = l_MSG;
+      leave;
+    endif;
+
+    // The action is only valid for jobs with status *RDY
+    if ((p_ACT = MNTSTBN_CREATE or
+         p_ACT = MNTSTBN_COPY or
+         p_ACT = MNTSTBN_CHANGE or
+         p_ACT = MNTSTBN_DELETE) and
+        X1STS <> '*RDY');
+      l_MSGID = 'ERR0008';
+      leave;
+    endif;
+
+  enddo;
+
+  // Return
+  if (l_MSGID = *blanks);
+
+    p_SUCCESS = 'Y';
+    return *on;
+
+  else;
+
+    p_MSG = rtvMsgText(
+      l_MSGID :   // --> Message-Id.
+      'MNTSTBN' : // --> Message file
+      '*LIBL' :   // --> Library
+      l_MSGDTA    // --> Message data
+    );
+
+    p_SUCCESS = 'N';
+    return *off;
+
+  endif;
+
+END-PROC MNTSTBN_checkAction;
+
+//*=========================================================================================*
+//* Get Valid Actions                                                                       *
+//*=========================================================================================*
+
+DCL-PROC MNTSTBN_getValidActions EXPORT;
+
+  DCL-PI MNTSTBN_getValidActions;
+    p_JOB     CHAR(10) CONST;      // --> Job
+    p_POS     PACKED(3 : 0) CONST; // --> Position
+    p_NBRACT  PACKED(2 : 0);       // <-- Number of actions
+    p_ACT     CHAR(10) DIM(25);    // <-- Actions
+  END-PI;
+
+  DCL-S l_ACT     CHAR(10);      // --> Action
+  DCL-S l_SUCCESS CHAR(1);       // <-- Success
+  DCL-S l_MSG     CHAR(256);     // <-- Message
+
+  p_NBRACT = *zero;
+  p_ACT(*) = *blanks;
+
+  l_ACT = MNTSTBN_COPY;
+    exsr checkAction;
+
+  l_ACT = MNTSTBN_CHANGE;
+    exsr checkAction;
+
+  l_ACT = MNTSTBN_DELETE;
+    exsr checkAction;
+
+  l_ACT = MNTSTBN_DISPLAY;
+    exsr checkAction;
+
+  return;
+
+  begsr checkAction;
+
+    if (MNTSTBN_checkAction(
+          l_ACT :     // --> Action
+          p_JOB :     // --> Job
+          p_POS :     // --> Position
+          l_SUCCESS : // <-- Success
+          l_MSG       // <-- Message
+        ));
+      p_NBRACT += 1;
+      p_ACT(p_NBRACT) = l_ACT;
+    endif;
+
+  endsr;
+
+END-PROC MNTSTBN_getValidActions;

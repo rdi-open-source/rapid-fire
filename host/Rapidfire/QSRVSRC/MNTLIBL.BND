@@ -47,5 +47,9 @@
 
                 EXPORT     SYMBOL('MNTLIBL_book')
 
+                EXPORT     SYMBOL('MNTLIBL_checkAction')
+
+                EXPORT     SYMBOL('MNTLIBL_getValidActions')
+
              ENDPGMEXP
 

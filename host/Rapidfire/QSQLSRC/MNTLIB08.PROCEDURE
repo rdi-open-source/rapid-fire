@@ -13,19 +13,19 @@
 -- *------------+--------+--------------------------------------------------*
 -- *   Datum    I Progr. I Beschreibung                                     *
 -- *------------+--------+--------------------------------------------------*
--- * 12.12.2017 I   FH   I Dateierstellung                                  *
+-- * 11.12.2017 I   FH   I Dateierstellung                                  *
 -- *------------+--------+--------------------------------------------------*
 
-CREATE PROCEDURE "MNTLIBL_checkAction"
+CREATE PROCEDURE "MNTLIB_checkAction"
 (
   IN    ACT      CHAR(10),
   IN    JOB      CHAR(10),
-  IN    LIBL     CHAR(10),
+  IN    LIB      CHAR(10),
   INOUT SUCCESS  CHAR(1),
   INOUT MSG      CHAR(256)
 )
-EXTERNAL NAME MNTLIBL("MNTLIBL_checkAction")
-SPECIFIC MNTLIBL08
+EXTERNAL NAME MNTLIB("MNTLIB_checkAction")
+SPECIFIC MNTLIB08
 LANGUAGE RPGLE
 PARAMETER STYLE GENERAL
 MODIFIES SQL DATA

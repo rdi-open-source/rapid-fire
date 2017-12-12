@@ -28,11 +28,11 @@ CTL-OPT ExtBinInt(*YES);
 /Include QCPYSRC,MNTFILE
 /Include QCPYSRC,SQLSTS
 
-DCL-S g_SUCCESS CHAR(1);   // Success
-DCL-S g_FLD     CHAR(10);  // Field
-DCL-S g_MSG     CHAR(256); // Message
-DCL-S g_DMY     IND;       // Dummy
-DCL-S g_ACT     CHAR(10);  // Action
+DCL-S g_SUCCESS CHAR(1);       // Success
+DCL-S g_FLD     CHAR(10);      // Field
+DCL-S g_MSG     CHAR(256);     // Message
+DCL-S g_DMY     IND;           // Dummy
+DCL-S g_ACT     CHAR(10);      // Action
 DCL-S g_POS     PACKED(6 : 0); // Position
 DCL-S g_FILE    CHAR(10);      // File
 DCL-S g_TYPE    CHAR(10);      // Type
@@ -40,8 +40,8 @@ DCL-S g_CPL     CHAR(10);      // Copy program (Library)
 DCL-S g_CP      CHAR(10);      // Copy program
 DCL-S g_VPL     CHAR(10);      // Conversion program (Library)
 DCL-S g_VP      CHAR(10);      // Conversion program
-DCL-S g_NBRACTS PACKED(2 : 0); // <-- Number of actions
-DCL-S g_ACTS    CHAR(250);     // <-- Actions
+DCL-S g_NBRACTS PACKED(2 : 0); // Number of actions
+DCL-S g_ACTS    CHAR(250);     // Actions
 
 //*-----------------------------------------------------------------------------------------*
 

@@ -51,6 +51,8 @@ DCL-F LIBLETYS
 
 //*-----------------------------------------------------------------------------------------*
 
+/INCLUDE QCPYSRC,MNTJOB
+
 /INCLUDE QCPYSRC,MNTLIBL
 
 /INCLUDE QCPYSRC,HDLRCDLCK
@@ -62,18 +64,13 @@ DCL-F LIBLETYS
 DCL-DS PSDS LEN(429) QUALIFIED PSDS;
 END-DS;
 
-DCL-C MODE_CREATE '*CREATE';
-DCL-C MODE_COPY '*COPY';
-DCL-C MODE_CHANGE '*CHANGE';
-DCL-C MODE_DELETE '*DELETE';
-DCL-C MODE_DISPLAY '*DISPLAY';
-
-DCL-S g_MODE CHAR(10);               // Mode
-DCL-S g_JOB  CHAR(10);               // Job
-DCL-S g_LIBL CHAR(10);               // Library list
-DCL-S g_DSCR CHAR(35);               // Description
+DCL-S g_MODE CHAR(10);              // Mode
+DCL-S g_JOB  CHAR(10);              // Job
+DCL-S g_LIBL CHAR(10);              // Library list
+DCL-S g_DSCR CHAR(35);              // Description
 DCL-S g_SEQ  ZONED(4 : 0) DIM(250); // Sequence
-DCL-S g_LIB  CHAR(10) DIM(250);      // Library
+DCL-S g_LIB  CHAR(10) DIM(250);     // Library
+DCL-S g_OPN  IND INZ(*OFF);         // Open indicator
 
 //*=========================================================================================*
 //* Open Files                                                                              *
@@ -87,6 +84,8 @@ DCL-PROC MNTLIBL_openFiles EXPORT;
   open JOBS;
   open LIBLS;
   open LIBLETYS;
+
+  g_OPN = *on;
 
 END-PROC MNTLIBL_openFiles;
 
@@ -102,6 +101,8 @@ DCL-PROC MNTLIBL_closeFiles EXPORT;
   close JOBS;
   close LIBLS;
   close LIBLETYS;
+
+  g_OPN = *off;
 
 END-PROC MNTLIBL_closeFiles;
 
@@ -143,14 +144,14 @@ DCL-PROC MNTLIBL_initialize EXPORT;
 
     select;
 
-    when (g_MODE = MODE_CREATE);
+    when (g_MODE = MNTLIBL_CREATE);
 
       p_SUCCESS = 'Y';
       p_MSG = *blanks;
       return *on;
 
-    when (g_MODE = MODE_CHANGE or
-          g_MODE = MODE_DELETE);
+    when (g_MODE = MNTLIBL_CHANGE or
+          g_MODE = MNTLIBL_DELETE);
 
       dou (not %error);
         chain(e) (g_JOB : g_LIBL) LIBLSTRF;
@@ -168,14 +169,33 @@ DCL-PROC MNTLIBL_initialize EXPORT;
         return *on;
       endif;
 
-    when (g_MODE = MODE_DISPLAY or
-          g_MODE = MODE_COPY);
+    when (g_MODE = MNTLIBL_DISPLAY or
+          g_MODE = MNTLIBL_COPY);
 
       chain(n) (g_JOB : g_LIBL) LIBLSTRF;
       if (not %found);
         p_SUCCESS = 'N';
         p_MSG = '002';
         return *off;
+      else;
+        p_SUCCESS = 'Y';
+        p_MSG = *blanks;
+        return *on;
+      endif;
+
+    when (g_MODE = MNTLIBL_CHKACT);
+
+      if (g_LIBL <> *blanks);
+        chain(n) (g_JOB : g_LIBL) LIBLSTRF;
+        if (not %found);
+          p_SUCCESS = 'N';
+          p_MSG = '002';
+          return *off;
+        else;
+          p_SUCCESS = 'Y';
+          p_MSG = *blanks;
+          return *on;
+        endif;
       else;
         p_SUCCESS = 'Y';
         p_MSG = *blanks;
@@ -209,7 +229,7 @@ DCL-PROC MNTLIBL_getValues EXPORT;
 
   DCL-S l_CNT PACKED(4 : 0); // Counter
 
-  if (g_MODE = MODE_CREATE);
+  if (g_MODE = MNTLIBL_CREATE);
 
     p_LIBL = *blanks;
     p_DSCR = *blanks;
@@ -312,8 +332,8 @@ DCL-PROC MNTLIBL_check EXPORT;
   dou (1 = 1);
 
     //*** Check only for mode CREATE and COPY ***
-    if (g_MODE = MODE_CREATE or
-        g_MODE = MODE_COPY);
+    if (g_MODE = MNTLIBL_CREATE or
+        g_MODE = MNTLIBL_COPY);
 
       // The value in field 'Library list' is not valid
       If ChkVal('*NAME' : 10 : %Addr(g_LIBL)) = '*INVALID';
@@ -333,9 +353,9 @@ DCL-PROC MNTLIBL_check EXPORT;
     endif;
 
     //*** Check only for mode CREATE, COPY and CHANGE ***
-    if (g_MODE = MODE_CREATE or
-        g_MODE = MODE_COPY or
-        g_MODE = MODE_CHANGE);
+    if (g_MODE = MNTLIBL_CREATE or
+        g_MODE = MNTLIBL_COPY or
+        g_MODE = MNTLIBL_CHANGE);
 
       // The value in field 'Description' is not valid
       If g_DSCR = *Blanks;
@@ -406,7 +426,7 @@ DCL-PROC MNTLIBL_check EXPORT;
     endif;
 
     //*** Check only for mode DELETE ***
-    if (g_MODE = MODE_DELETE);
+    if (g_MODE = MNTLIBL_DELETE);
     endif;
 
   enddo;
@@ -445,19 +465,19 @@ DCL-PROC MNTLIBL_book EXPORT;
 
   select;
 
-  when (g_MODE = MODE_CREATE);
+  when (g_MODE = MNTLIBL_CREATE);
     exsr modeCreate;
 
-  when (g_MODE = MODE_COPY);
+  when (g_MODE = MNTLIBL_COPY);
     exsr modeCopy;
 
-  when (g_MODE = MODE_CHANGE);
+  when (g_MODE = MNTLIBL_CHANGE);
     exsr modeChange;
 
-  when (g_MODE = MODE_DELETE);
+  when (g_MODE = MNTLIBL_DELETE);
     exsr modeDelete;
 
-  when (g_MODE = MODE_DISPLAY);
+  when (g_MODE = MNTLIBL_DISPLAY);
     exsr modeDisplay;
 
   endsl;
@@ -550,8 +570,8 @@ DCL-PROC MNTLIBL_book EXPORT;
 
   begsr fillLibraries;
 
-    if g_MODE <> MODE_CREATE and
-       g_MODE <> MODE_COPY;
+    if g_MODE <> MNTLIBL_CREATE and
+       g_MODE <> MNTLIBL_COPY;
       SetLL ( g_JOB : g_LIBL ) LIBLERF;
       DoU %EOF;
         DoU Not %Error;
@@ -580,3 +600,158 @@ DCL-PROC MNTLIBL_book EXPORT;
   endsr;
 
 END-PROC MNTLIBL_book;
+
+//*=========================================================================================*
+//* Check Action                                                                            *
+//*=========================================================================================*
+
+DCL-PROC MNTLIBL_checkAction EXPORT;
+
+  DCL-PI MNTLIBL_checkAction IND;  // <-- Success
+    p_ACT     CHAR(10) CONST;      // --> Action
+    p_JOB     CHAR(10) CONST;      // --> Job
+    p_LIBL    CHAR(10) CONST;      // --> Library list
+    p_SUCCESS CHAR(1);             // <-- Success
+    p_MSG     CHAR(256);           // <-- Message
+  END-PI;
+
+  DCL-S l_MSGID   CHAR(7);   // Message-Id.
+  DCL-S l_MSGDTA  CHAR(256); // Message data
+  DCL-S l_SUCCESS CHAR(1);   // Success
+  DCL-S l_MSG     CHAR(256); // Message
+  DCL-S l_OPN     IND;       // Open indicator
+
+  // Initialize returning fields
+  p_MSG = *blanks;
+
+  // Initialize message fields
+  l_MSGID = *blanks;
+  l_MSGDTA = *blanks;
+
+  dou (1 = 1);
+
+    // Invalid parameter values. Error = Library list has to be blanks.
+    if (p_ACT = MNTLIBL_CREATE and
+        p_LIBL <> *blanks);
+      l_MSGID = 'ERR0004';
+      leave;
+    endif;
+
+    // Invalid parameter values. Error = &1.
+    l_OPN = g_OPN;
+    if (not l_OPN);
+      MNTLIBL_openFiles();
+    endif;
+    MNTLIBL_initialize(
+      MNTLIBL_CHKACT : // --> Mode
+      p_JOB :          // --> Job
+      p_LIBL :         // --> Library list
+      l_SUCCESS :      // <-- Success
+      l_MSG            // <-- Message
+    );
+    if (not l_OPN);
+      MNTLIBL_closeFiles();
+    endif;
+    if (l_SUCCESS = 'N');
+      l_MSGID = 'ERR0005';
+      l_MSGDTA = l_MSG;
+      leave;
+    endif;
+
+    // The action is not valid for such type of jobs
+    if (not MNTJOB_checkAction(
+              MNTJOB_MNTLIBL : // --> Action
+              p_JOB :          // --> Job
+              l_SUCCESS :      // <-- Success
+              l_MSG            // <-- Message
+            )
+       );
+      l_MSGID = 'ERR0006';
+      l_MSGDTA = l_MSG;
+      leave;
+    endif;
+
+    // The action is only valid for jobs with status *RDY
+    if ((p_ACT = MNTLIBL_CREATE or
+         p_ACT = MNTLIBL_COPY or
+         p_ACT = MNTLIBL_CHANGE or
+         p_ACT = MNTLIBL_DELETE) and
+        X1STS <> '*RDY');
+      l_MSGID = 'ERR0008';
+      leave;
+    endif;
+
+  enddo;
+
+  // Return
+  if (l_MSGID = *blanks);
+
+    p_SUCCESS = 'Y';
+    return *on;
+
+  else;
+
+    p_MSG = rtvMsgText(
+      l_MSGID :   // --> Message-Id.
+      'MNTLIBL' : // --> Message file
+      '*LIBL' :   // --> Library
+      l_MSGDTA    // --> Message data
+    );
+
+    p_SUCCESS = 'N';
+    return *off;
+
+  endif;
+
+END-PROC MNTLIBL_checkAction;
+
+//*=========================================================================================*
+//* Get Valid Actions                                                                       *
+//*=========================================================================================*
+
+DCL-PROC MNTLIBL_getValidActions EXPORT;
+
+  DCL-PI MNTLIBL_getValidActions;
+    p_JOB     CHAR(10) CONST;   // --> Job
+    p_LIBL    CHAR(10) CONST;   // --> Library list
+    p_NBRACT  PACKED(2 : 0);    // <-- Number of actions
+    p_ACT     CHAR(10) DIM(25); // <-- Actions
+  END-PI;
+
+  DCL-S l_ACT     CHAR(10);      // --> Action
+  DCL-S l_SUCCESS CHAR(1);       // <-- Success
+  DCL-S l_MSG     CHAR(256);     // <-- Message
+
+  p_NBRACT = *zero;
+  p_ACT(*) = *blanks;
+
+  l_ACT = MNTLIBL_COPY;
+    exsr checkAction;
+
+  l_ACT = MNTLIBL_CHANGE;
+    exsr checkAction;
+
+  l_ACT = MNTLIBL_DELETE;
+    exsr checkAction;
+
+  l_ACT = MNTLIBL_DISPLAY;
+    exsr checkAction;
+
+  return;
+
+  begsr checkAction;
+
+    if (MNTLIBL_checkAction(
+          l_ACT :     // --> Action
+          p_JOB :     // --> Job
+          p_LIBL :    // --> Library list
+          l_SUCCESS : // <-- Success
+          l_MSG       // <-- Message
+        ));
+      p_NBRACT += 1;
+      p_ACT(p_NBRACT) = l_ACT;
+    endif;
+
+  endsr;
+
+END-PROC MNTLIBL_getValidActions;

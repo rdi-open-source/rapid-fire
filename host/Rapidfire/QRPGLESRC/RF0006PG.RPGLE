@@ -181,25 +181,25 @@ If MNTLIB_initialize(
   DFJOB = PIJOB;
   Select;
     // Modus : 'Erstellen'
-  When PIMode = '*CREATE';
+  When PIMode = MNTLIB_CREATE;
     ExSr SR005;
     If PIRtCd = '*ENTER';
       PILIB = DFLIB;
     EndIf;
     // Modus : 'Ändern'
-  When PIMode = '*CHANGE';
+  When PIMode = MNTLIB_CHANGE;
     ExSr SR010;
     // Modus : 'Kopieren'
-  When PIMode = '*COPY';
+  When PIMode = MNTLIB_COPY;
     ExSr SR015;
     If PIRtCd = '*ENTER';
       PILIB = DFLIB;
     EndIf;
     // Modus : 'Löschen'
-  When PIMode = '*DELETE';
+  When PIMode = MNTLIB_DELETE;
     ExSr SR020;
     // Modus : 'Anzeigen'
-  When PIMode = '*DISPLAY';
+  When PIMode = MNTLIB_DISPLAY;
     ExSr SR025;
   EndSl;
 EndIf;
@@ -451,16 +451,16 @@ EndSr;
 
 BegSr SR050;
   // Namensfelder linksbündig ausrichten
-  If PIMode = '*CREATE' Or
-    PIMode = '*COPY' Or
-    PIMode = '*CHANGE';
+  If PIMode = MNTLIB_CREATE Or
+    PIMode = MNTLIB_COPY Or
+    PIMode = MNTLIB_CHANGE;
     DFLIB = %TRIML(DFLIB);
     DFSLIB = %TRIML(DFSLIB);
   EndIf;
   // *** Fehlerprüfung nur für Modus 'Erstellen', 'Kopieren' und 'Ändern' ***
-  If PIMode = '*CREATE' Or
-    PIMode = '*COPY' Or
-    PIMode = '*CHANGE';
+  If PIMode = MNTLIB_CREATE Or
+    PIMode = MNTLIB_COPY Or
+    PIMode = MNTLIB_CHANGE;
     MNTLIB_setValues(
       DFLIB  :  // <-- Library
       DFSLIB    // <-- Shadow Library
@@ -565,12 +565,12 @@ BegSr SR060;
     ITHIPG(ITNbr) = 'RF0006GP';
     ITHILP(ITNbr) = '*LIBL';
     Select;
-    When PIMode = '*CREATE' Or
-      PIMode = '*COPY' Or
-      PIMode = '*CHANGE';
+    When PIMode = MNTLIB_CREATE Or
+      PIMode = MNTLIB_COPY Or
+      PIMode = MNTLIB_CHANGE;
       ITHIMO(ITNbr) = 'FKT/EDT';
-    When PIMode = '*DISPLAY' Or
-      PIMode = '*DELETE';
+    When PIMode = MNTLIB_DISPLAY Or
+      PIMode = MNTLIB_DELETE;
       ITHIMO(ITNbr) = 'FKT/DSP';
     EndSl;
     If DFROW010 >= 23 And

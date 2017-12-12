@@ -45,5 +45,9 @@
 
                 EXPORT     SYMBOL('MNTSTBN_book')
 
+                EXPORT     SYMBOL('MNTSTBN_checkAction')
+
+                EXPORT     SYMBOL('MNTSTBN_getValidActions')
+
              ENDPGMEXP
 

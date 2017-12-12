@@ -140,6 +140,10 @@ END-PI;
 
 /Copy QCPYSRC,ERRC0100
 
+// Prozedurenprototyp für Prozedur 'MNTLIB'
+
+/Copy QCPYSRC,MNTLIB
+
 // Dateiinformationsdatenstruktur für RF0005DF
 
 DCL-DS FIDS_RF0005DF;
@@ -231,6 +235,8 @@ DCL-S ITPag010 ZONED(4) Inz(RcdPerPage);                                 // (Sub
 DCL-S ITRRN010 ZONED(4);                                                 // (Subdatei) Aktuel
 DCL-S ITCnt010 ZONED(4);                                                 // (Subdatei) Letzte
 DCL-S ITMsgId CHAR(7);                                                   // Nachrichten-Id.
+DCL-S ITMsgDta CHAR(256);                                                // Nachrichtendaten
+DCL-S ITMsgF   CHAR(10);                                                 // Nachrichtendatei
 DCL-S ITAct CHAR(10);                                                    // Aktion
 DCL-S ITMode CHAR(10);                                                   // Modus
 DCL-S ITMore CHAR(10);                                                   // Weitere Sätze zur
@@ -262,6 +268,8 @@ DCL-S ITRghC INT(10) Dim(2);                                             // Rech
 DCL-S ITCsrL INT(10) Dim(2);                                             // Cursorposition
 DCL-S ITHlp CHAR(1);                                                     // Kontextbezogene H
 DCL-S ITMoreKeys ZONED(1);                                               // Weitere Tasten
+DCL-S ITXMsg CHAR(256);                                                  // Nachricht
+DCL-S ITSUCC CHAR(1);                                                    // Erfolg
 
 //*-----------------------------------------------------------------------------------------*
 
@@ -323,6 +331,8 @@ BegSr SR010;
   ITSts = RmvErrMsg('*SAME');
   // Fehlernachrichten-Id. initialisieren
   ITMsgId = *Blanks;
+  ITMsgDta = *Blanks;
+  ITMsgF = *Blanks;
   // Fehlerbezugszahlen initialisieren
   *IN(80) = *OFF;
   *IN(81) = *OFF;
@@ -410,6 +420,8 @@ BegSr SR010;
     ITSts = RmvErrMsg('*SAME');
     // Fehlernachrichten-Id. initialisieren
     ITMsgId = *Blanks;
+    ITMsgDta = *Blanks;
+    ITMsgF = *Blanks;
     // Fehlerbezugszahlen initialisieren
     *IN(80) = *OFF;
     *IN(81) = *OFF;
@@ -765,6 +777,8 @@ BegSr SR025;
     // No prompt for the requested field available
   Other;
     ITMsgId = 'ERR0004';
+    ITMsgDta = *Blanks;
+    ITMsgF = 'RF0005MF';
   EndSl;
   // Cursor auf der letzten Position positionieren
   *IN(90) = *ON;
@@ -784,8 +798,23 @@ EndSr;
 //*-----------------------------------------------------------------------------------------*
 
 BegSr SR030;
+
+  // Check action
+  If Not MNTLIB_checkAction(
+       MNTLIB_CREATE : // --> Action
+       PIJOB :         // --> Job
+       *Blanks :       // --> Library
+       ITSUCC :        // <-- Success
+       ITXMsg          // <-- Message
+     );
+    ITMsgId = 'CPF9897';
+    ITMsgDta = ITXMsg;
+    ITMsgF = 'QCPFMSG';
+    LeaveSr;
+  EndIf;
+
   // Funktionstaste : 'F6=Erstellen'
-  ITMode = '*CREATE';
+  ITMode = MNTLIB_CREATE;
   SlcLIB = *Blanks;
   ExSr SR130;
   // Eine neue Position wurde erstellt
@@ -904,6 +933,8 @@ BegSr SR055;
   // The bottom of the list has already been reached
   If ITMore = '*NO';
     ITMsgId = 'ERR0003';
+    ITMsgDta = *Blanks;
+    ITMsgF = 'RF0005MF';
   EndIf;
 EndSr;
 
@@ -918,6 +949,8 @@ BegSr SR060;
   // The top of the list has already been reached
   If ITMore = '*NO';
     ITMsgId = 'ERR0002';
+    ITMsgDta = *Blanks;
+    ITMsgF = 'RF0005MF';
   EndIf;
 EndSr;
 
@@ -1278,25 +1311,65 @@ BegSr SR095;
     *IN(87) = *OFF;
     *IN(88) = *OFF;
     *IN(89) = *OFF;
+
+    // Aktion ermitteln
+    Select;
+    When DFOPT = *Blanks;
+      ITACT = MNTLIB_NONE;
+    When DFOPT = '1';
+      ITACT = MNTLIB_SELECT;
+    When DFOPT = '2';
+      ITACT = MNTLIB_CHANGE;
+    When DFOPT = '3';
+      ITACT = MNTLIB_COPY;
+    When DFOPT = '4';
+      ITACT = MNTLIB_DELETE;
+    When DFOPT = '5';
+      ITACT = MNTLIB_DISPLAY;
+    Other;
+      ITACT = MNTLIB_ERROR;
+    EndSl;
+
     // The option is not valid
-    IF ITMsgId = *BLanks And
+    If ITMsgId = *Blanks And
       ((PIMode = '*EDIT' And
-      DFOPT <> *Blanks And
-      DFOPT <> '2' And
-      DFOPT <> '3' And
-      DFOPT <> '4' And
-      DFOPT <> '5') Or
+      ITACT <> MNTLIB_NONE And
+      ITACT <> MNTLIB_CHANGE And
+      ITACT <> MNTLIB_COPY And
+      ITACT <> MNTLIB_DELETE And
+      ITACT <> MNTLIB_DISPLAY) Or
       (PIMode = '*SELECT' And
-      DFOPT <> *Blanks And
-      DFOPT <> '1') Or
+      ITACT <> *Blanks And
+      ITACT <> MNTLIB_SELECT) Or
       (PIMode = '*DISPLAY' And
-      DFOPT <> *Blanks And
-      DFOPT <> '5'));
+      ITACT <> MNTLIB_NONE And
+      ITACT <> MNTLIB_DISPLAY));
       ITMsgId = 'ERR0001';
+      ITMsgDta = *Blanks;
+      ITMsgF = 'RF0005MF';
       *IN(81) = *OFF;
       *IN(82) = *OFF;
       *IN(83) = *ON;
     EndIf;
+
+    // Check action
+    If ITMsgId = *Blanks And
+       Not MNTLIB_checkAction(
+         ITACT :  // --> Action
+         PIJOB :  // --> Job
+         DFLIB :  // --> Library
+         ITSUCC : // <-- Success
+         ITXMsg   // <-- Message
+       );
+      // Fehler setzen
+      ITMsgId = 'CPF9897';
+      ITMsgDta = ITXMsg;
+      ITMsgF = 'QCPFMSG';
+      *IN(81) = *OFF;
+      *IN(82) = *OFF;
+      *IN(83) = *ON;
+    EndIf;
+
     // Bezugszahl für 'Subdateisatz ist ein geänderter Satz' auf 'Ja' setzen
     *IN63 = *On;
     // Subdateisatz aktualisieren
@@ -1315,9 +1388,9 @@ BegSr SR100;
   ITSts = SndErrMsg(
    '*SAME' :                                                             // --> Aufrufstapele
    ITMsgId :                                                             // --> Nachrichten-I
-   'RF0005MF' :                                                          // --> Nachrichtenda
+   ITMsgF :                                                              // --> Nachrichtenda
    '*LIBL' :                                                             // --> Bibliothek Na
-   *Blanks                                                               // --> Nachrichtenda
+   ITMsgDta                                                              // --> Nachrichtenda
   );
 EndSr;
 
@@ -1488,22 +1561,22 @@ BegSr SR125;
     PIRtCd = '*SELECT';
     // Auswahl : '2=Ändern'
   When OptOpt(ITOEvl) = '2';
-    ITMode = '*CHANGE';
+    ITMode = MNTLIB_CHANGE;
     SlcKey = OptKey(ITOEvl);
     ExSr SR130;
     // Auswahl : '3=Kopieren'
   When OptOpt(ITOEvl) = '3';
-    ITMode = '*COPY';
+    ITMode = MNTLIB_COPY;
     SlcKey = OptKey(ITOEvl);
     ExSr SR130;
     // Auswahl : '4=Löschen'
   When OptOpt(ITOEvl) = '4';
-    ITMode = '*DELETE';
+    ITMode = MNTLIB_DELETE;
     SlcKey = OptKey(ITOEvl);
     ExSr SR130;
     // Auswahl : '5=Anzeigen'
   When OptOpt(ITOEvl) = '5';
-    ITMode = '*DISPLAY';
+    ITMode = MNTLIB_DISPLAY;
     SlcKey = OptKey(ITOEvl);
     ExSr SR130;
   EndSl;

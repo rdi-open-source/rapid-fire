@@ -55,3 +55,30 @@ END-PR;
 DCL-PR MNTSTBN_book
        EXTPROC('MNTSTBN_book');
 END-PR;
+
+DCL-PR MNTSTBN_checkAction IND // <-- Success
+       EXTPROC('MNTSTBN_checkAction');
+  *N CHAR(10) CONST;           // --> Action
+  *N CHAR(10) CONST;           // --> Job
+  *N PACKED(3 : 0) CONST;      // --> Position
+  *N CHAR(1);                  // <-- Success
+  *N CHAR(256);                // <-- Message
+END-PR;
+
+DCL-PR MNTSTBN_getValidActions
+       EXTPROC('MNTSTBN_getValidActions');
+  *N CHAR(10) CONST;      // --> Job
+  *N PACKED(3 : 0) CONST; // --> Position
+  *N PACKED(2 : 0);       // <-- Number of actions
+  *N CHAR(10) DIM(25);    // <-- Actions
+END-PR;
+
+DCL-C MNTSTBN_ERROR   '*ERROR';
+DCL-C MNTSTBN_NONE    '*NONE';
+DCL-C MNTSTBN_SELECT  '*SELECT';
+DCL-C MNTSTBN_CREATE  '*CREATE';
+DCL-C MNTSTBN_COPY    '*COPY';
+DCL-C MNTSTBN_CHANGE  '*CHANGE';
+DCL-C MNTSTBN_DELETE  '*DELETE';
+DCL-C MNTSTBN_DISPLAY '*DISPLAY';
+DCL-C MNTSTBN_CHKACT  '*CHKACT';

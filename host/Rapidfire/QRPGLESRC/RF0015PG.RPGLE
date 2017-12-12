@@ -186,25 +186,25 @@ If MNTSTBN_initialize(
   DFJOB = PIJOB;
   Select;
     // Modus : 'Erstellen'
-  When PIMode = '*CREATE';
+  When PIMode = MNTSTBN_CREATE;
     ExSr SR005;
     If PIRtCd = '*ENTER';
       PIPOS = DFPOS;
     EndIf;
     // Modus : 'Ändern'
-  When PIMode = '*CHANGE';
+  When PIMode = MNTSTBN_CHANGE;
     ExSr SR010;
     // Modus : 'Kopieren'
-  When PIMode = '*COPY';
+  When PIMode = MNTSTBN_COPY;
     ExSr SR015;
     If PIRtCd = '*ENTER';
       PIPOS = DFPOS;
     EndIf;
     // Modus : 'Löschen'
-  When PIMode = '*DELETE';
+  When PIMode = MNTSTBN_DELETE;
     ExSr SR020;
     // Modus : 'Anzeigen'
-  When PIMode = '*DISPLAY';
+  When PIMode = MNTSTBN_DISPLAY;
     ExSr SR025;
   EndSl;
 EndIf;
@@ -459,18 +459,18 @@ EndSr;
 
 BegSr SR050;
   // Namensfelder linksbündig ausrichten
-  If PIMode = '*CREATE' Or
-    PIMode = '*COPY' Or
-    PIMode = '*CHANGE';
+  If PIMode = MNTSTBN_CREATE Or
+    PIMode = MNTSTBN_COPY Or
+    PIMode = MNTSTBN_CHANGE;
     DFTYPE = %TRIML(DFTYPE);
     DFUSR = %TRIML(DFUSR);
     DFMSGQ = %TRIML(DFMSGQ);
     DFMSGQL = %TRIML(DFMSGQL);
   EndIf;
   // *** Fehlerprüfung nur für Modus 'Erstellen', 'Kopieren' und 'Ändern' ***
-  If PIMode = '*CREATE' Or
-    PIMode = '*COPY' Or
-    PIMode = '*CHANGE';
+  If PIMode = MNTSTBN_CREATE Or
+    PIMode = MNTSTBN_COPY Or
+    PIMode = MNTSTBN_CHANGE;
     MNTSTBN_setValues(
       DFPOS   : // <-- Position
       DFTYPE  : // <-- Type
@@ -620,12 +620,12 @@ BegSr SR060;
     ITHIPG(ITNbr) = 'RF0015GP';
     ITHILP(ITNbr) = '*LIBL';
     Select;
-    When PIMode = '*CREATE' Or
-      PIMode = '*COPY' Or
-      PIMode = '*CHANGE';
+    When PIMode = MNTSTBN_CREATE Or
+      PIMode = MNTSTBN_COPY Or
+      PIMode = MNTSTBN_CHANGE;
       ITHIMO(ITNbr) = 'FKT/EDT';
-    When PIMode = '*DISPLAY' Or
-      PIMode = '*DELETE';
+    When PIMode = MNTSTBN_DISPLAY Or
+      PIMode = MNTSTBN_DELETE;
       ITHIMO(ITNbr) = 'FKT/DSP';
     EndSl;
     If DFROW010 >= 23 And

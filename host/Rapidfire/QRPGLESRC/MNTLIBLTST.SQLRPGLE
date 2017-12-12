@@ -44,6 +44,8 @@ DCL-DS *N;                         // Library
   g_LIBX CHAR(2500);
   g_LIB CHAR(10) DIM(250) OVERLAY(g_LIBX);
 END-DS;
+DCL-S g_NBRACTS PACKED(2 : 0);     // Number of actions
+DCL-S g_ACTS    CHAR(250);         // Actions
 
 //*-----------------------------------------------------------------------------------------*
 
@@ -233,6 +235,74 @@ if (SqlCheckState(sqlState));
           endif;
 
         endif;
+
+      endif;
+
+      // *** CHECK ACTION ***
+
+      g_ACT = MNTLIBL_CREATE;
+      EXEC SQL
+        CALL "MNTLIBL_checkAction"(
+          :g_ACT,
+          'MYJOB',
+          ' ',
+          :g_SUCCESS,
+          :g_MSG
+        );
+      setIgnoreWarnings();
+      if (SqlCheckState(sqlState));
+
+        if (g_SUCCESS = 'N');
+
+          // ... Display error on screen.
+          // ... g_MSG contains the message
+
+        else;
+
+          g_DMY = *on;
+
+        endif;
+
+      endif;
+
+      g_ACT = MNTLIBL_CHANGE;
+      EXEC SQL
+        CALL "MNTLIBL_checkAction"(
+          :g_ACT,
+          'MYJOB',
+          'MYLIBL',
+          :g_SUCCESS,
+          :g_MSG
+        );
+      setIgnoreWarnings();
+      if (SqlCheckState(sqlState));
+
+        if (g_SUCCESS = 'N');
+
+          // ... Display error on screen.
+          // ... g_MSG contains the message
+
+        else;
+
+          g_DMY = *on;
+
+        endif;
+
+      endif;
+
+      // *** GET VALID ACTIONS ***
+
+      EXEC SQL
+        CALL "MNTLIBL_getValidActions"(
+          'MYJOB',
+          'MYLIBL',
+          :g_NBRACTS,
+          :g_ACTS
+        );
+      setIgnoreWarnings();
+      if (SqlCheckState(sqlState));
+
+        g_DMY = *on;
 
       endif;
 

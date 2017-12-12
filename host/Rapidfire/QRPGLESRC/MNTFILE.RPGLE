@@ -50,6 +50,8 @@ DCL-F FILESI01
 
 //*-----------------------------------------------------------------------------------------*
 
+/INCLUDE QCPYSRC,MNTJOB
+
 /INCLUDE QCPYSRC,MNTFILE
 
 /INCLUDE QCPYSRC,HDLRCDLCK
@@ -644,6 +646,19 @@ DCL-PROC MNTFILE_checkAction EXPORT;
       leave;
     endif;
 
+    // The action is not valid for such type of jobs
+    if (not MNTJOB_checkAction(
+              MNTJOB_MNTFILE : // --> Action
+              p_JOB :          // --> Job
+              l_SUCCESS :      // <-- Success
+              l_MSG            // <-- Message
+            )
+       );
+      l_MSGID = 'ERR0022';
+      l_MSGDTA = l_MSG;
+      leave;
+    endif;
+
     // The action is only valid for jobs with status *RDY
     if ((p_ACT = MNTFILE_CREATE or
          p_ACT = MNTFILE_COPY or
@@ -654,7 +669,7 @@ DCL-PROC MNTFILE_checkAction EXPORT;
       leave;
     endif;
 
-    // The option is only valid for physical files
+    // The action is only valid for files with "Type" *PHYSICAL
     If ((p_ACT = MNTFILE_MNTCNV Or
          p_ACT = MNTFILE_GNRCPYPGM) And
        X3TYPE <> '*PHYSICAL');
@@ -662,7 +677,7 @@ DCL-PROC MNTFILE_checkAction EXPORT;
       leave;
     EndIf;
 
-    // The option is only valid for jobs with "Create environment" *YES
+    // The action is only valid for jobs with "Create environment" *YES
     If (p_ACT = MNTFILE_MNTCMD And
        X1CRTE <> '*YES');
       l_MSGID = 'ERR0020';

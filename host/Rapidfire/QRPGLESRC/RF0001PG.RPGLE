@@ -81,18 +81,6 @@
 //*------------+--------+-------------------------------------------------------------------*
 //* 13.06.2016 I   TR   I Enabled option 12 (Files) for all job statuses.                   *
 //*------------+--------+-------------------------------------------------------------------*
-//* >>PRE-COMPILER<<                                                                        *
-//*   >>CRTCMD<< CRTBNDRPG PGM(&LI/&OB) SRCFILE(&SL/&SF) SRCMBR(&SM);                       *
-//*   >>IMPORTANT<<                                                                         *
-//*     >>PARM<< DFTACTGRP(*NO);                                                            *
-//*     >>PARM<< DBGVIEW(&U1);                                                              *
-//*     >>PARM<< ACTGRP(&U2);                                                               *
-//*     >>PARM<< TGTRLS(&TR);                                                               *
-//*     >>PARM<< OPTION(*EVENTF);                                                           *
-//*   >>END-IMPORTANT<<                                                                     *
-//*   >>EXECUTE<<                                                                           *
-//* >>END-PRE-COMPILER<<                                                                    *
-//*-----------------------------------------------------------------------------------------*
 
 // Control
 
@@ -904,6 +892,20 @@ EndSr;
 //*-----------------------------------------------------------------------------------------*
 
 BegSr SR030;
+
+  // Check action
+  If Not MNTJOB_checkAction(
+       MNTJOB_CREATE : // --> Action
+       *Blanks :       // --> Job
+       ITSUCC :        // <-- Success
+       ITXMsg          // <-- Message
+     );
+    ITMsgId = 'CPF9897';
+    ITMsgDta = ITXMsg;
+    ITMsgF = 'QCPFMSG';
+    LeaveSr;
+  EndIf;
+
   // Funktionstaste : 'F6=Erstellen'
   ITMode = MNTJOB_CREATE;
   SlcJOB = *Blanks;
