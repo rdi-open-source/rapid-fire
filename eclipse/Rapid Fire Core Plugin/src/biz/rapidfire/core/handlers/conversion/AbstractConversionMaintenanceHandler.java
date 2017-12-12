@@ -82,7 +82,7 @@ public abstract class AbstractConversionMaintenanceHandler extends AbstractResou
 
     @Override
     protected boolean isValidAction(IRapidFireConversionResource conversion) throws Exception {
-        return true;
+        return getOrCreateManager(conversion.getParentJob()).isValidAction(conversion, conversionAction);
     }
 
     @Override

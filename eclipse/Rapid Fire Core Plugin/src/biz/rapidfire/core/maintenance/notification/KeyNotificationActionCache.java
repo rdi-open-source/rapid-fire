@@ -6,22 +6,22 @@
  * http://www.eclipse.org/legal/cpl-v10.html
  *******************************************************************************/
 
-package biz.rapidfire.core.maintenance.job;
+package biz.rapidfire.core.maintenance.notification;
 
 import biz.rapidfire.core.maintenance.KeyResourceActionCache;
-import biz.rapidfire.core.model.IRapidFireJobResource;
+import biz.rapidfire.core.model.IRapidFireNotificationResource;
 
 /**
- * This class produces the key value for the JobActionCache.
+ * This class produces the key value for the NotificationActionCache.
  * 
  * <pre>
- * Form of the key:    [dataLibrary] + [jobName], [jobStatus]
- * Example key value:  RFPRI, CUSTUPD, RDY
+ * Form of the key:    [dataLibrary] + [jobName], [jobStatus], [position_isZero]
+ * Example key value:  RFPRI, CUSTUPD, RDY, IS_ZERO
  * </pre>
  */
-public class KeyJobActionCache extends KeyResourceActionCache {
+public class KeyNotificationActionCache extends KeyResourceActionCache {
 
-    public KeyJobActionCache(IRapidFireJobResource job) {
-        super(job);
+    public KeyNotificationActionCache(IRapidFireNotificationResource notification) {
+        super(notification.getParentJob(), isNumericValueZero(notification.getPosition()));
     }
 }

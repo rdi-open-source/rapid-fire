@@ -6,22 +6,22 @@
  * http://www.eclipse.org/legal/cpl-v10.html
  *******************************************************************************/
 
-package biz.rapidfire.core.maintenance.job;
+package biz.rapidfire.core.maintenance.librarylist;
 
 import biz.rapidfire.core.maintenance.KeyResourceActionCache;
-import biz.rapidfire.core.model.IRapidFireJobResource;
+import biz.rapidfire.core.model.IRapidFireLibraryListResource;
 
 /**
- * This class produces the key value for the JobActionCache.
+ * This class produces the key value for the LibraryListActionCache.
  * 
  * <pre>
- * Form of the key:    [dataLibrary] + [jobName], [jobStatus]
- * Example key value:  RFPRI, CUSTUPD, RDY
+ * Form of the key:    [dataLibrary] + [jobName], [jobStatus], [libraryListName_isEmpty]
+ * Example key value:  RFPRI, CUSTUPD, RDY, IS_EMPTY
  * </pre>
  */
-public class KeyJobActionCache extends KeyResourceActionCache {
+public class KeyLibraryListActionCache extends KeyResourceActionCache {
 
-    public KeyJobActionCache(IRapidFireJobResource job) {
-        super(job);
+    public KeyLibraryListActionCache(IRapidFireLibraryListResource libraryList) {
+        super(libraryList.getParentJob(), isStringValueEmpty(libraryList.getName()));
     }
 }

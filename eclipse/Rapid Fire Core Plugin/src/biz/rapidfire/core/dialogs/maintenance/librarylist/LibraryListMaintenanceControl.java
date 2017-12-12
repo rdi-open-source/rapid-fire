@@ -34,9 +34,11 @@ public class LibraryListMaintenanceControl extends AbstractMaintenanceControl {
     private boolean isParentKeyFieldsVisible;
 
     public LibraryListMaintenanceControl(Composite parent, int style) {
-        super(parent, style);
+        super(parent, SWT.NONE, true);
+    }
 
-        setParentKeyFieldsVisible(true);
+    public LibraryListMaintenanceControl(Composite parent, boolean parentKeyFieldsVisible, int style) {
+        super(parent, style, parentKeyFieldsVisible);
     }
 
     public void setFocusJobName() {

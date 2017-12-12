@@ -47,7 +47,7 @@ public class LibraryListPage extends AbstractWizardPage {
 
     public void createContent(Composite parent) {
 
-        libraryListMaintenanceControl = new LibraryListMaintenanceControl(parent, SWT.NONE);
+        libraryListMaintenanceControl = new LibraryListMaintenanceControl(parent, false, SWT.NONE);
         libraryListMaintenanceControl.setParentKeyFieldsVisible(false);
         libraryListMaintenanceControl.addModifyListener(this);
         libraryListMaintenanceControl.addSelectionListener(this);

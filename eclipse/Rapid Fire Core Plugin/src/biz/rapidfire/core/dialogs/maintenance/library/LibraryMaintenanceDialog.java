@@ -63,7 +63,7 @@ public class LibraryMaintenanceDialog extends AbstractMaintenanceDialog {
     @Override
     protected void createEditorAreaContent(Composite parent) {
 
-        LibraryMaintenanceControl libraryMaintenanceControl = new LibraryMaintenanceControl(parent, SWT.NONE);
+        libraryMaintenanceControl = new LibraryMaintenanceControl(parent, SWT.NONE);
         libraryMaintenanceControl.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
         libraryMaintenanceControl.setMode(getMode());
     }

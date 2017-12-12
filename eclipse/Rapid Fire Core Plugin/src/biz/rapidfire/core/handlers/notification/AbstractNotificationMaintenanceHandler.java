@@ -82,7 +82,7 @@ public abstract class AbstractNotificationMaintenanceHandler extends
 
     @Override
     protected boolean isValidAction(IRapidFireNotificationResource notification) throws Exception {
-        return true;
+        return getOrCreateManager(notification.getParentJob()).isValidAction(notification, notificationAction);
     }
 
     @Override

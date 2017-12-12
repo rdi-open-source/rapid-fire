@@ -79,7 +79,7 @@ public abstract class AbstractLibraryMaintenanceHandler extends AbstractResource
 
     @Override
     protected boolean isValidAction(IRapidFireLibraryResource library) throws Exception {
-        return true;
+        return getOrCreateManager(library.getParentJob()).isValidAction(library, libraryAction);
     }
 
     @Override

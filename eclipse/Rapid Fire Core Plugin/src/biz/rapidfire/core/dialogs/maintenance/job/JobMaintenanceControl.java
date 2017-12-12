@@ -30,7 +30,11 @@ public class JobMaintenanceControl extends AbstractMaintenanceControl {
     private Text textJobQueueLibraryName;
 
     public JobMaintenanceControl(Composite parent, int style) {
-        super(parent, style);
+        super(parent, style, true);
+    }
+
+    public JobMaintenanceControl(Composite parent, boolean parentKeyFieldsVisible, int style) {
+        super(parent, style, parentKeyFieldsVisible);
     }
 
     public void setFocusJobName() {

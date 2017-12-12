@@ -10,6 +10,7 @@ package biz.rapidfire.core.maintenance.library;
 
 import java.sql.CallableStatement;
 import java.sql.Types;
+import java.util.Set;
 
 import biz.rapidfire.core.Messages;
 import biz.rapidfire.core.maintenance.AbstractManager;
@@ -167,9 +168,65 @@ public class LibraryManager extends AbstractManager<IRapidFireLibraryResource, L
     }
 
     @Override
-    public Result checkAction(LibraryKey key, LibraryAction libraryAction) throws Exception {
-        // TODO: check action!
-        Result result = new Result(Success.YES.label(), null);
-        return result;
+    public Result checkAction(LibraryKey key, LibraryAction libraryListAction) throws Exception {
+
+        CallableStatement statement = dao.prepareCall(dao
+            .insertLibraryQualifier("{CALL " + IJDBCConnection.LIBRARY + "\"MNTLIB_checkAction\"(?, ?, ?, ?, ?)}")); //$NON-NLS-1$ //$NON-NLS-2$
+
+        statement.setString(ILibraryCheckAction.ACTION, libraryListAction.label());
+        statement.setString(ILibraryCheckAction.JOB, key.getJobName());
+        statement.setString(ILibraryCheckAction.LIBRARY, key.getLibrary());
+        statement.setString(ILibraryCheckAction.SUCCESS, Success.NO.label());
+        statement.setString(ILibraryCheckAction.MESSAGE, EMPTY_STRING);
+
+        statement.registerOutParameter(ILibraryCheckAction.SUCCESS, Types.CHAR);
+        statement.registerOutParameter(ILibraryCheckAction.MESSAGE, Types.CHAR);
+
+        statement.execute();
+
+        String success = statement.getString(ILibraryCheckAction.SUCCESS);
+        String message = statement.getString(ILibraryCheckAction.MESSAGE);
+
+        return new Result(null, message, success);
+    }
+
+    public LibraryAction[] getValidActions(IRapidFireLibraryResource libraryList) throws Exception {
+
+        CallableStatement statement = dao.prepareCall(dao
+            .insertLibraryQualifier("{CALL " + IJDBCConnection.LIBRARY + "\"MNTLIB_getValidActions\"(?, ?, ?, ?)}")); //$NON-NLS-1$ //$NON-NLS-2$
+
+        statement.setString(ILibraryGetValidActions.JOB, libraryList.getParentJob().getName());
+        statement.setString(ILibraryGetValidActions.LIBRARY, libraryList.getKey().getLibrary());
+        statement.setInt(ILibraryGetValidActions.NUMBER_ACTIONS, 0);
+        statement.setString(ILibraryGetValidActions.ACTIONS, EMPTY_STRING);
+
+        statement.registerOutParameter(ILibraryGetValidActions.NUMBER_ACTIONS, Types.DECIMAL);
+        statement.registerOutParameter(ILibraryGetValidActions.ACTIONS, Types.CHAR);
+
+        statement.execute();
+
+        int numberActions = statement.getBigDecimal(ILibraryGetValidActions.NUMBER_ACTIONS).intValue();
+        String[] actions = splitActions(statement.getString(ILibraryGetValidActions.ACTIONS), numberActions);
+
+        LibraryAction[] libraryActions = new LibraryAction[actions.length];
+        for (int i = 0; i < libraryActions.length; i++) {
+            libraryActions[i] = LibraryAction.find(actions[i].trim());
+        }
+
+        return libraryActions;
+    }
+
+    public boolean isValidAction(IRapidFireLibraryResource libraryList, LibraryAction action) throws Exception {
+
+        KeyLibraryActionCache libraryActionsKey = new KeyLibraryActionCache(libraryList);
+
+        Set<LibraryAction> actionsSet = LibraryActionCache.getInstance().getActions(libraryActionsKey);
+        if (actionsSet == null) {
+            LibraryAction[] fileActions = getValidActions(libraryList);
+            LibraryActionCache.getInstance().putActions(libraryActionsKey, fileActions);
+            actionsSet = LibraryActionCache.getInstance().getActions(libraryActionsKey);
+        }
+
+        return actionsSet.contains(action);
     }
 }

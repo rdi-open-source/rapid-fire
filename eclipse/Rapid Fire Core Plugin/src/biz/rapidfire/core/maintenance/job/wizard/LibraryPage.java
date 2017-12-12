@@ -43,8 +43,7 @@ public class LibraryPage extends AbstractWizardPage {
 
     public void createContent(Composite parent) {
 
-        libraryMaintenanceControl = new LibraryMaintenanceControl(parent, SWT.NONE);
-        libraryMaintenanceControl.setParentKeyFieldsVisible(false);
+        libraryMaintenanceControl = new LibraryMaintenanceControl(parent, false, SWT.NONE);
         libraryMaintenanceControl.addModifyListener(this);
         libraryMaintenanceControl.setMode(MaintenanceMode.CREATE);
         libraryMaintenanceControl.setLayoutData(new GridData(SWT.FILL, SWT.BEGINNING, true, false, 2, 1));

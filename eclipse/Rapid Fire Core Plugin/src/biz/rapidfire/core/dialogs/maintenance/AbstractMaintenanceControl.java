@@ -19,18 +19,26 @@ import biz.rapidfire.core.maintenance.MaintenanceMode;
 
 public abstract class AbstractMaintenanceControl extends Composite implements ModifyListener, SelectionListener {
 
+    private boolean isParentKeyFieldsVisible;
+
     private boolean enableParentKeyFields;
     private boolean enableKeyFields;
     private boolean enableFields;
 
-    public AbstractMaintenanceControl(Composite parent, int style) {
+    public AbstractMaintenanceControl(Composite parent, int style, boolean parentKeyFieldsVisible) {
         super(parent, style);
+
+        this.isParentKeyFieldsVisible = parentKeyFieldsVisible;
 
         GridLayout layout = new GridLayout(2, false);
         setLayout(layout);
 
         createContent(this);
         setMode(MaintenanceMode.DISPLAY);
+    }
+
+    protected boolean isParentKeyFieldsVisible() {
+        return isParentKeyFieldsVisible;
     }
 
     public void setMode(MaintenanceMode mode) {

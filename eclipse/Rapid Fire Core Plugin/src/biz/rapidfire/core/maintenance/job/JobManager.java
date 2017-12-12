@@ -285,7 +285,7 @@ public class JobManager extends AbstractManager<IRapidFireJobResource, JobKey, J
 
     public boolean isValidAction(IRapidFireJobResource job, JobAction action) throws Exception {
 
-        KeyJobActionCache jobActionsKey = new KeyJobActionCache(job.getStatus(), job.isDoCreateEnvironment());
+        KeyJobActionCache jobActionsKey = new KeyJobActionCache(job);
 
         Set<JobAction> actionsSet = JobActionCache.getInstance().getActions(jobActionsKey);
         if (actionsSet == null) {

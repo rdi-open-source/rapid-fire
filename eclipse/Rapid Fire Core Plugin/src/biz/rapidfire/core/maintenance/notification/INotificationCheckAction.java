@@ -6,9 +6,13 @@
  * http://www.eclipse.org/legal/cpl-v10.html
  *******************************************************************************/
 
-package biz.rapidfire.core.maintenance;
+package biz.rapidfire.core.maintenance.notification;
 
-public interface IKeyResourceActionCache {
+public interface INotificationCheckAction {
 
-    public String getValue();
+    public static final int ACTION = 1;
+    public static final int JOB = 2;
+    public static final int POSITION = 3;
+    public static final int SUCCESS = 4;
+    public static final int MESSAGE = 5;
 }

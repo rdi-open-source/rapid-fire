@@ -10,6 +10,7 @@ package biz.rapidfire.core.maintenance.notification;
 
 import java.sql.CallableStatement;
 import java.sql.Types;
+import java.util.Set;
 
 import biz.rapidfire.core.Messages;
 import biz.rapidfire.core.maintenance.AbstractManager;
@@ -182,8 +183,64 @@ public class NotificationManager extends AbstractManager<IRapidFireNotificationR
 
     @Override
     public Result checkAction(NotificationKey key, NotificationAction areaAction) throws Exception {
-        // TODO: check action!
-        Result result = new Result(Success.YES.label(), null);
-        return result;
+
+        CallableStatement statement = dao.prepareCall(dao
+            .insertLibraryQualifier("{CALL " + IJDBCConnection.LIBRARY + "\"MNTSTBN_checkAction\"(?, ?, ?, ?, ?)}")); //$NON-NLS-1$ //$NON-NLS-2$
+
+        statement.setString(INotificationCheckAction.ACTION, areaAction.label());
+        statement.setString(INotificationCheckAction.JOB, key.getJobName());
+        statement.setInt(INotificationCheckAction.POSITION, key.getPosition());
+        statement.setString(INotificationCheckAction.SUCCESS, Success.NO.label());
+        statement.setString(INotificationCheckAction.MESSAGE, EMPTY_STRING);
+
+        statement.registerOutParameter(INotificationCheckAction.SUCCESS, Types.CHAR);
+        statement.registerOutParameter(INotificationCheckAction.MESSAGE, Types.CHAR);
+
+        statement.execute();
+
+        String success = statement.getString(INotificationCheckAction.SUCCESS);
+        String message = statement.getString(INotificationCheckAction.MESSAGE);
+
+        return new Result(null, message, success);
+    }
+
+    public NotificationAction[] getValidActions(IRapidFireNotificationResource notification) throws Exception {
+
+        CallableStatement statement = dao.prepareCall(dao
+            .insertLibraryQualifier("{CALL " + IJDBCConnection.LIBRARY + "\"MNTSTBN_getValidActions\"(?, ?, ?, ?)}")); //$NON-NLS-1$ //$NON-NLS-2$
+
+        statement.setString(INotificationGetValidActions.JOB, notification.getParentJob().getName());
+        statement.setInt(INotificationGetValidActions.POSITION, notification.getKey().getPosition());
+        statement.setInt(INotificationGetValidActions.NUMBER_ACTIONS, 0);
+        statement.setString(INotificationGetValidActions.ACTIONS, EMPTY_STRING);
+
+        statement.registerOutParameter(INotificationGetValidActions.NUMBER_ACTIONS, Types.DECIMAL);
+        statement.registerOutParameter(INotificationGetValidActions.ACTIONS, Types.CHAR);
+
+        statement.execute();
+
+        int numberActions = statement.getBigDecimal(INotificationGetValidActions.NUMBER_ACTIONS).intValue();
+        String[] actions = splitActions(statement.getString(INotificationGetValidActions.ACTIONS), numberActions);
+
+        NotificationAction[] notificationActions = new NotificationAction[actions.length];
+        for (int i = 0; i < notificationActions.length; i++) {
+            notificationActions[i] = NotificationAction.find(actions[i].trim());
+        }
+
+        return notificationActions;
+    }
+
+    public boolean isValidAction(IRapidFireNotificationResource notification, NotificationAction action) throws Exception {
+
+        KeyNotificationActionCache notificationActionsKey = new KeyNotificationActionCache(notification);
+
+        Set<NotificationAction> actionsSet = NotificationActionCache.getInstance().getActions(notificationActionsKey);
+        if (actionsSet == null) {
+            NotificationAction[] fileActions = getValidActions(notification);
+            NotificationActionCache.getInstance().putActions(notificationActionsKey, fileActions);
+            actionsSet = NotificationActionCache.getInstance().getActions(notificationActionsKey);
+        }
+
+        return actionsSet.contains(action);
     }
 }

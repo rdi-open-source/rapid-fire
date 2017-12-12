@@ -81,8 +81,8 @@ public abstract class AbstractAreaMaintenanceHandler extends AbstractResourceMai
     }
 
     @Override
-    protected boolean isValidAction(IRapidFireAreaResource job) throws Exception {
-        return true;
+    protected boolean isValidAction(IRapidFireAreaResource area) throws Exception {
+        return getOrCreateManager(area.getParentJob()).isValidAction(area, areaAction);
     }
 
     @Override

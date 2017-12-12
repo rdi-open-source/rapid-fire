@@ -28,9 +28,11 @@ public class LibraryMaintenanceControl extends AbstractMaintenanceControl {
     private boolean isParentKeyFieldsVisible;
 
     public LibraryMaintenanceControl(Composite parent, int style) {
-        super(parent, style);
+        super(parent, SWT.NONE, true);
+    }
 
-        setParentKeyFieldsVisible(true);
+    public LibraryMaintenanceControl(Composite parent, boolean parentKeyFieldsVisible, int style) {
+        super(parent, style, parentKeyFieldsVisible);
     }
 
     public void setFocusJobName() {
@@ -43,10 +45,6 @@ public class LibraryMaintenanceControl extends AbstractMaintenanceControl {
 
     public void setFocusShadowLibraryName() {
         textShadowLibrary.setFocus();
-    }
-
-    public void setParentKeyFieldsVisible(boolean enabled) {
-        this.isParentKeyFieldsVisible = enabled;
     }
 
     public void setMode(MaintenanceMode mode) {

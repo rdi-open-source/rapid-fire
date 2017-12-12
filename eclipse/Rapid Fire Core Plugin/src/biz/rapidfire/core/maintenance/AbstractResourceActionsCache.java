@@ -14,7 +14,7 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-public abstract class AbstractResourceActionsCache<K extends IKeyResourceActionCache, A extends IResourceAction> {
+public abstract class AbstractResourceActionsCache<K extends KeyResourceActionCache, A extends IResourceAction> {
 
     private Map<String, Set<A>> cachedKeys;
 

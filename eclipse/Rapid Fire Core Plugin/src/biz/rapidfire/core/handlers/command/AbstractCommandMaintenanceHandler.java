@@ -82,7 +82,7 @@ public abstract class AbstractCommandMaintenanceHandler extends AbstractResource
 
     @Override
     protected boolean isValidAction(IRapidFireCommandResource command) throws Exception {
-        return true;
+        return getOrCreateManager(command.getParentJob()).isValidAction(command, commandAction);
     }
 
     @Override

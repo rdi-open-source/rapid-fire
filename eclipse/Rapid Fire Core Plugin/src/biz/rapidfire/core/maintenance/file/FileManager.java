@@ -239,8 +239,7 @@ public class FileManager extends AbstractManager<IRapidFireFileResource, FileKey
 
     public boolean isValidAction(IRapidFireFileResource file, FileAction action) throws Exception {
 
-        KeyFileActionCache fileActionsKey = new KeyFileActionCache(file.getParentJob().getStatus(), file.getParentJob().isDoCreateEnvironment(),
-            file.getFileType());
+        KeyFileActionCache fileActionsKey = new KeyFileActionCache(file);
 
         Set<FileAction> actionsSet = FileActionCache.getInstance().getActions(fileActionsKey);
         if (actionsSet == null) {
