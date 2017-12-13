@@ -8,7 +8,6 @@
 
 package biz.rapidfire.core.maintenance.job.wizard;
 
-import org.eclipse.jface.wizard.IWizardPage;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
@@ -37,6 +36,18 @@ public class LibraryPage extends AbstractWizardPage {
         setDescription(Messages.Wizard_Page_Libraries_description);
     }
 
+    @Override
+    public void setFocus() {
+
+        if (StringHelper.isNullOrEmpty(libraryMaintenanceControl.getLibraryName())) {
+            libraryMaintenanceControl.setFocusLibraryName();
+        } else if (StringHelper.isNullOrEmpty(libraryMaintenanceControl.getShadowLibraryName())) {
+            libraryMaintenanceControl.setFocusShadowLibraryName();
+        } else {
+            libraryMaintenanceControl.setFocusLibraryName();
+        }
+    }
+
     public LibraryValues getValues() {
         return libraryValues;
     }
@@ -53,7 +64,7 @@ public class LibraryPage extends AbstractWizardPage {
         libraryMaintenanceControl.setShadowLibraryName(libraryValues.getShadowLibrary());
     }
 
-    protected void updatePageComplete() {
+    protected void updatePageComplete(Object source) {
 
         String message = null;
 
@@ -80,17 +91,5 @@ public class LibraryPage extends AbstractWizardPage {
 
         libraryValues.getKey().setLibrary(libraryMaintenanceControl.getLibraryName());
         libraryValues.setShadowLibrary(libraryMaintenanceControl.getShadowLibraryName());
-    }
-
-    @Override
-    public IWizardPage getNextPage() {
-
-        NewJobWizard wizard = (NewJobWizard)getWizard();
-
-        if (wizard.isSkipLibraryListPage()) {
-            return null;
-        }
-
-        return super.getNextPage();
     }
 }

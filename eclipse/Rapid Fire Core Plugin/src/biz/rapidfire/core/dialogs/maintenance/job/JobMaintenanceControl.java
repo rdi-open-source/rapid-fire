@@ -19,6 +19,7 @@ import org.eclipse.swt.widgets.Text;
 import biz.rapidfire.core.Messages;
 import biz.rapidfire.core.dialogs.maintenance.AbstractMaintenanceControl;
 import biz.rapidfire.core.maintenance.MaintenanceMode;
+import biz.rapidfire.core.model.IRapidFireJobResource;
 import biz.rapidfire.core.swt.widgets.WidgetFactory;
 
 public class JobMaintenanceControl extends AbstractMaintenanceControl {
@@ -79,6 +80,7 @@ public class JobMaintenanceControl extends AbstractMaintenanceControl {
         WidgetFactory.createLabel(parent, Messages.Label_Description_colon, Messages.Tooltip_Description);
 
         textDescription = WidgetFactory.createDescriptionText(parent);
+        textDescription.setTextLimit(IRapidFireJobResource.DESCRIPTION_MAX_LENGTH);
         textDescription.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
         textDescription.setToolTipText(Messages.Tooltip_Description);
 

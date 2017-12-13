@@ -21,6 +21,9 @@ import org.eclipse.core.runtime.IStatus;
 
 public class Validator {
 
+    public static final String LIBRARY_LIBL = "*LIBL"; //$NON-NLS-1$
+    public static final String LIBRARY_CURLIB = "*CURLIB"; //$NON-NLS-1$
+
     private static final String TYPE_NAME = "*NAME"; //$NON-NLS-1$
     private static final String TYPE_DEC = "*DEC"; //$NON-NLS-1$
     private static final String TYPE_CHAR = "*CHAR"; //$NON-NLS-1$

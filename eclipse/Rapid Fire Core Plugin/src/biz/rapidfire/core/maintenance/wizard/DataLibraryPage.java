@@ -8,6 +8,7 @@ import org.eclipse.swt.widgets.Text;
 import biz.rapidfire.core.Messages;
 import biz.rapidfire.core.helpers.StringHelper;
 import biz.rapidfire.core.swt.widgets.WidgetFactory;
+import biz.rapidfire.core.validators.Validator;
 import biz.rapidfire.rsebase.swt.widgets.SystemHostCombo;
 
 public class DataLibraryPage extends AbstractWizardPage {
@@ -17,11 +18,31 @@ public class DataLibraryPage extends AbstractWizardPage {
     private SystemHostCombo comboConnection;
     private Text textDataLibrary;
 
+    private String connectionName;
+    private String dataLibraryName;
+
+    private Validator libraryValidator;
+
     public DataLibraryPage() {
         super(NAME);
 
+        this.libraryValidator = Validator.getLibraryNameInstance();
+
         setTitle(Messages.Wizard_Page_Data_Library);
         setDescription(Messages.Wizard_Page_Data_Library_description);
+    }
+
+    @Override
+    public void setFocus() {
+        textDataLibrary.setFocus();
+    }
+
+    public String getConnectionName() {
+        return connectionName;
+    }
+
+    public String getDataLibraryName() {
+        return dataLibraryName;
     }
 
     public void createContent(Composite parent) {
@@ -40,7 +61,7 @@ public class DataLibraryPage extends AbstractWizardPage {
         textDataLibrary.setToolTipText(Messages.Tooltip_Job);
     }
 
-    protected void updatePageComplete() {
+    protected void updatePageComplete(Object source) {
 
         String message = null;
 
@@ -50,7 +71,11 @@ public class DataLibraryPage extends AbstractWizardPage {
         } else if (StringHelper.isNullOrEmpty(textDataLibrary.getText())) {
             // textDataLibrary.setFocus();
             message = Messages.The_Rapid_Fire_product_library_name_is_missing;
+        } else if (!libraryValidator.validate(textDataLibrary.getText())) {
+            message = Messages.bindParameters(Messages.Library_name_A_is_not_valid, textDataLibrary.getText());
         }
+
+        updateValues();
 
         if (message == null) {
             setPageComplete(true);
@@ -59,5 +84,11 @@ public class DataLibraryPage extends AbstractWizardPage {
         }
 
         setErrorMessage(message);
+    }
+
+    private void updateValues() {
+
+        this.connectionName = comboConnection.getConnectionName();
+        this.dataLibraryName = textDataLibrary.getText();
     }
 }

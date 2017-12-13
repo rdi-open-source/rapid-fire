@@ -190,6 +190,7 @@ public class Messages extends NLS {
     public static String Restoring_library_A;
     public static String Library_A_successfull_transfered;
     public static String No_errors;
+    public static String NewJobWizard_Rapid_Fire_job_A_created;
 
     // Action labels
     public static String ActionLabel_Auto_refresh_menu_item;
@@ -283,8 +284,11 @@ public class Messages extends NLS {
     public static String Could_not_rereieve_Rapid_Fire_version_information_due_to_backend_error_A;
     public static String Connection_A_not_found;
     public static String Connection_is_missing;
+    public static String Could_not_connect_to_A;
     public static String The_Rapid_Fire_product_library_name_is_missing;
     public static String Library_list_entries_are_missing;
+    public static String Error_on_wizard_page_A_B;
+    public static String Library_A_not_found_on_system_B;
 
     // API error messages
     public static String EntityManager_Unknown_error_code_A;

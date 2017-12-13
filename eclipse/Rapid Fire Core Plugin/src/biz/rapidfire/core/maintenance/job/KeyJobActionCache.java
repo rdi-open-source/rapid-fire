@@ -8,7 +8,7 @@
 
 package biz.rapidfire.core.maintenance.job;
 
-import biz.rapidfire.core.maintenance.KeyResourceActionCache;
+import biz.rapidfire.core.maintenance.AbstractKeyResourceActionCache;
 import biz.rapidfire.core.model.IRapidFireJobResource;
 
 /**
@@ -19,7 +19,7 @@ import biz.rapidfire.core.model.IRapidFireJobResource;
  * Example key value:  RFPRI, CUSTUPD, RDY
  * </pre>
  */
-public class KeyJobActionCache extends KeyResourceActionCache {
+public class KeyJobActionCache extends AbstractKeyResourceActionCache {
 
     public KeyJobActionCache(IRapidFireJobResource job) {
         super(job);

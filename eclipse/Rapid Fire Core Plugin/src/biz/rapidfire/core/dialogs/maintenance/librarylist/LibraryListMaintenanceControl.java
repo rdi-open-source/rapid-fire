@@ -20,6 +20,7 @@ import org.eclipse.swt.widgets.Text;
 import biz.rapidfire.core.Messages;
 import biz.rapidfire.core.dialogs.maintenance.AbstractMaintenanceControl;
 import biz.rapidfire.core.maintenance.MaintenanceMode;
+import biz.rapidfire.core.model.IRapidFireLibraryListResource;
 import biz.rapidfire.core.swt.widgets.WidgetFactory;
 import biz.rapidfire.core.swt.widgets.listeditors.librarylist.LibraryListEditor;
 import biz.rapidfire.core.swt.widgets.listeditors.librarylist.LibraryListItem;
@@ -97,7 +98,8 @@ public class LibraryListMaintenanceControl extends AbstractMaintenanceControl {
 
         WidgetFactory.createLabel(parent, Messages.Label_Description_colon, Messages.Tooltip_Description);
 
-        textDescription = WidgetFactory.createNameText(parent);
+        textDescription = WidgetFactory.createText(parent);
+        textDescription.setTextLimit(IRapidFireLibraryListResource.DESCRIPTION_MAX_LENGTH);
         textDescription.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
         textDescription.setToolTipText(Messages.Tooltip_Description);
 

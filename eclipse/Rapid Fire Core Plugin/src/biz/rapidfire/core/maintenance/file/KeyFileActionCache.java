@@ -8,7 +8,7 @@
 
 package biz.rapidfire.core.maintenance.file;
 
-import biz.rapidfire.core.maintenance.KeyResourceActionCache;
+import biz.rapidfire.core.maintenance.AbstractKeyResourceActionCache;
 import biz.rapidfire.core.model.IRapidFireFileResource;
 
 /**
@@ -19,7 +19,7 @@ import biz.rapidfire.core.model.IRapidFireFileResource;
  * Example key value:  RFPRI, CUSTUPD, RDY, IS_ZERO
  * </pre>
  */
-public class KeyFileActionCache extends KeyResourceActionCache {
+public class KeyFileActionCache extends AbstractKeyResourceActionCache {
 
     public KeyFileActionCache(IRapidFireFileResource file) {
         super(file.getParentJob(), isNumericValueZero(file.getPosition()));

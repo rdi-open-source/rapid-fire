@@ -13,6 +13,8 @@ import biz.rapidfire.core.subsystem.RapidFireFilter;
 
 public interface IRapidFireJobResource extends IRapidFireResource {
 
+    public static final int DESCRIPTION_MAX_LENGTH = 35;
+
     /*
      * Key attributes
      */

@@ -19,13 +19,11 @@ import biz.rapidfire.core.helpers.StringHelper;
 import biz.rapidfire.core.maintenance.IResourceValues;
 import biz.rapidfire.core.maintenance.job.shared.JobKey;
 import biz.rapidfire.core.maintenance.librarylist.shared.LibraryListKey;
+import biz.rapidfire.core.model.IRapidFireLibraryListResource;
 
 public class LibraryListValues implements IResourceValues {
 
     private static final String EMPTY = ""; //$NON-NLS-1$
-
-    static final int LENGTH_SEQUENCE_NUMBERS = 1000;
-    static final int LENGTH_LIBRARIES = 2500;
 
     private LibraryListKey key;
     private String description;
@@ -79,7 +77,7 @@ public class LibraryListValues implements IResourceValues {
     }
 
     public String getSequenceNumberAsString() {
-        return StringHelper.getFixLength(sequenceNumbersString, LENGTH_SEQUENCE_NUMBERS).replaceAll(" ", "0"); //$NON-NLS-1$ 
+        return StringHelper.getFixLength(sequenceNumbersString, IRapidFireLibraryListResource.LENGTH_SEQUENCE_NUMBERS).replaceAll(" ", "0"); //$NON-NLS-1$ //$NON-NLS-2$ 
     }
 
     public void setLibraryList(LibraryListEntry[] libraryList) {

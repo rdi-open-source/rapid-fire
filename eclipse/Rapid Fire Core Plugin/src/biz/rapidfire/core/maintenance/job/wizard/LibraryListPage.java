@@ -41,6 +41,20 @@ public class LibraryListPage extends AbstractWizardPage {
         setDescription(Messages.Wizard_Page_Library_List_description);
     }
 
+    @Override
+    public void setFocus() {
+
+        if (StringHelper.isNullOrEmpty(libraryListMaintenanceControl.getLibraryListName())) {
+            libraryListMaintenanceControl.setFocusLibraryListName();
+        } else if (StringHelper.isNullOrEmpty(libraryListMaintenanceControl.getDescription())) {
+            libraryListMaintenanceControl.setFocusDescription();
+        } else if (libraryListMaintenanceControl.getLibrariesCount() == 0) {
+            libraryListMaintenanceControl.setFocusLibraryListEditor();
+        } else {
+            libraryListMaintenanceControl.setFocusLibraryListName();
+        }
+    }
+
     public LibraryListValues getValues() {
         return libraryListValues;
     }
@@ -60,7 +74,7 @@ public class LibraryListPage extends AbstractWizardPage {
         setLibraryList(libraryListValues.getLibraryList());
     }
 
-    protected void updatePageComplete() {
+    protected void updatePageComplete(Object source) {
 
         String message = null;
 

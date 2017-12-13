@@ -12,6 +12,10 @@ import biz.rapidfire.core.maintenance.librarylist.shared.LibraryListKey;
 
 public interface IRapidFireLibraryListResource extends IRapidFireChildResource {
 
+    public static final int DESCRIPTION_MAX_LENGTH = 35;
+    public static final int LENGTH_SEQUENCE_NUMBERS = 1000;
+    public static final int LENGTH_LIBRARIES = 2500;
+
     public LibraryListKey getKey();
 
     /*

@@ -18,26 +18,49 @@ import biz.rapidfire.core.helpers.StringHelper;
 import biz.rapidfire.core.maintenance.MaintenanceMode;
 import biz.rapidfire.core.maintenance.job.JobValues;
 import biz.rapidfire.core.maintenance.wizard.AbstractWizardPage;
+import biz.rapidfire.core.validators.Validator;
 
 public class JobPage extends AbstractWizardPage {
 
     public static final String NAME = "JOB_PAGE"; //$NON-NLS-1$
 
-    private JobValues jobValues;
+    private JobValues nameValues;
+
+    private Validator nameValidator;
+    private Validator libraryValidator;
 
     private JobMaintenanceControl jobMaintenanceControl;
 
     public JobPage(JobValues jobValues) {
         super(NAME);
 
-        this.jobValues = jobValues;
+        this.nameValues = jobValues;
+
+        this.nameValidator = Validator.getNameInstance();
+        this.libraryValidator = Validator.getLibraryNameInstance(Validator.LIBRARY_LIBL, Validator.LIBRARY_CURLIB);
 
         setTitle(Messages.Wizard_Page_Job);
         setDescription(Messages.Wizard_Page_Job_description);
     }
 
+    @Override
+    public void setFocus() {
+
+        if (StringHelper.isNullOrEmpty(jobMaintenanceControl.getJobName())) {
+            jobMaintenanceControl.setFocusJobName();
+        } else if (StringHelper.isNullOrEmpty(jobMaintenanceControl.getDescription())) {
+            jobMaintenanceControl.setFocusDescription();
+        } else if (StringHelper.isNullOrEmpty(jobMaintenanceControl.getJobQueueName())) {
+            jobMaintenanceControl.setFocusJobQueueName();
+        } else if (StringHelper.isNullOrEmpty(jobMaintenanceControl.getJobQueueLibraryName())) {
+            jobMaintenanceControl.setFocusJobQueueLibraryName();
+        } else {
+            jobMaintenanceControl.setFocusJobName();
+        }
+    }
+
     public JobValues getValues() {
-        return jobValues;
+        return nameValues;
     }
 
     public void createContent(Composite parent) {
@@ -48,29 +71,29 @@ public class JobPage extends AbstractWizardPage {
         jobMaintenanceControl.setMode(MaintenanceMode.CREATE);
         jobMaintenanceControl.setLayoutData(new GridData(SWT.FILL, SWT.BEGINNING, true, false, 2, 1));
 
-        jobMaintenanceControl.setJobName(jobValues.getKey().getJobName());
-        jobMaintenanceControl.setDescription(jobValues.getDescription());
-        jobMaintenanceControl.setCreateEnvironment(jobValues.isCreateEnvironment());
-        jobMaintenanceControl.setJobQueueName(jobValues.getJobQueueName());
-        jobMaintenanceControl.setJobQueueLibraryName(jobValues.getJobQueueLibraryName());
+        jobMaintenanceControl.setJobName(nameValues.getKey().getJobName());
+        jobMaintenanceControl.setDescription(nameValues.getDescription());
+        jobMaintenanceControl.setCreateEnvironment(nameValues.isCreateEnvironment());
+        jobMaintenanceControl.setJobQueueName(nameValues.getJobQueueName());
+        jobMaintenanceControl.setJobQueueLibraryName(nameValues.getJobQueueLibraryName());
 
-        // updateSkipLibraryListPage();
+        updateSkipLibraryListPage();
     }
 
-    protected void updatePageComplete() {
+    protected void updatePageComplete(Object source) {
 
         String message = null;
 
-        if (StringHelper.isNullOrEmpty(jobMaintenanceControl.getJobName())) {
+        if (!nameValidator.validate(jobMaintenanceControl.getJobName())) {
             // jobMaintenanceControl.setFocusJobName();
-            message = Messages.bind(Messages.Job_name_A_is_not_valid, jobMaintenanceControl.getJobName());
+            message = Messages.bindParameters(Messages.Job_name_A_is_not_valid, jobMaintenanceControl.getJobName());
         } else if (StringHelper.isNullOrEmpty(jobMaintenanceControl.getDescription())) {
             // jobMaintenanceControl.setFocusDescription();
             message = Messages.bind(Messages.Description_A_is_not_valid, jobMaintenanceControl.getDescription());
-        } else if (StringHelper.isNullOrEmpty(jobMaintenanceControl.getJobQueueName())) {
+        } else if (!nameValidator.validate(jobMaintenanceControl.getJobQueueName())) {
             // jobMaintenanceControl.setFocusJobQueueName();
-            message = Messages.bind(Messages.Job_queue_name_A_is_not_valid, jobMaintenanceControl.getJobQueueName());
-        } else if (StringHelper.isNullOrEmpty(jobMaintenanceControl.getJobQueueLibraryName())) {
+            message = Messages.bindParameters(Messages.Job_queue_name_A_is_not_valid, jobMaintenanceControl.getJobQueueName());
+        } else if (!libraryValidator.validate(jobMaintenanceControl.getJobQueueLibraryName())) {
             // jobMaintenanceControl.setFocusJobQueueLibraryName();
             message = Messages.bind(Messages.Library_name_A_is_not_valid, jobMaintenanceControl.getJobQueueLibraryName());
         }
@@ -88,11 +111,11 @@ public class JobPage extends AbstractWizardPage {
 
     private void updateValues() {
 
-        jobValues.getKey().setJobName(jobMaintenanceControl.getJobName());
-        jobValues.setDescription(jobMaintenanceControl.getDescription());
-        jobValues.setCreateEnvironment(jobMaintenanceControl.isCreateEnvironment());
-        jobValues.setJobQueueName(jobMaintenanceControl.getJobQueueName());
-        jobValues.setJobQueueLibraryName(jobMaintenanceControl.getJobQueueLibraryName());
+        nameValues.getKey().setJobName(jobMaintenanceControl.getJobName());
+        nameValues.setDescription(jobMaintenanceControl.getDescription());
+        nameValues.setCreateEnvironment(jobMaintenanceControl.isCreateEnvironment());
+        nameValues.setJobQueueName(jobMaintenanceControl.getJobQueueName());
+        nameValues.setJobQueueLibraryName(jobMaintenanceControl.getJobQueueLibraryName());
 
         updateSkipLibraryListPage();
     }
@@ -100,6 +123,6 @@ public class JobPage extends AbstractWizardPage {
     private void updateSkipLibraryListPage() {
 
         NewJobWizard wizard = (NewJobWizard)getWizard();
-        wizard.setSkipLibraryListPage(!jobValues.isCreateEnvironment());
+        wizard.setSkipLibraryListPage(!nameValues.isCreateEnvironment());
     }
 }

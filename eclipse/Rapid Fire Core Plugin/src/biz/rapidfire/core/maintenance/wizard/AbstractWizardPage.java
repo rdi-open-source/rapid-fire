@@ -20,8 +20,14 @@ import org.eclipse.swt.widgets.Composite;
 
 public abstract class AbstractWizardPage extends WizardPage implements ModifyListener, SelectionListener {
 
+    private boolean isEnabled;
+
     protected AbstractWizardPage(String name) {
         super(name);
+
+    }
+
+    public void setFocus() {
     }
 
     public void createControl(Composite parent) {
@@ -33,22 +39,32 @@ public abstract class AbstractWizardPage extends WizardPage implements ModifyLis
         createContent(container);
 
         setControl(container);
-        updatePageComplete();
+        updatePageComplete(null);
+
+        setErrorMessage(null);
     }
 
-    public void modifyText(ModifyEvent arg0) {
-        updatePageComplete();
+    public boolean isEnabled() {
+        return isEnabled;
+    }
+
+    public void setEnabled(boolean visible) {
+        this.isEnabled = visible;
+    }
+
+    public void modifyText(ModifyEvent event) {
+        updatePageComplete(event.getSource());
     }
 
     public void widgetDefaultSelected(SelectionEvent event) {
-        updatePageComplete();
+        updatePageComplete(event.getSource());
     }
 
     public void widgetSelected(SelectionEvent event) {
-        updatePageComplete();
+        updatePageComplete(event.getSource());
     }
 
-    protected abstract void updatePageComplete();
+    protected abstract void updatePageComplete(Object source);
 
     protected abstract void createContent(Composite container);
 }

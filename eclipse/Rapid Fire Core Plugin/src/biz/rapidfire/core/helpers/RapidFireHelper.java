@@ -61,6 +61,10 @@ public class RapidFireHelper extends AbstractRapidFireHelper {
     }
 
     public static boolean checkRapidFireLibrary(Shell shell, AS400 as400, String library) {
+        return checkRapidFireLibrary(shell, as400, library, null);
+    }
+
+    public static boolean checkRapidFireLibrary(Shell shell, AS400 as400, String library, StringBuilder errorMessage) {
 
         if (as400 == null) {
             return false;
@@ -77,23 +81,28 @@ public class RapidFireHelper extends AbstractRapidFireHelper {
         String clientProvided = comparableVersion(RapidFireCorePlugin.getDefault().getVersion());
         String clientNeedsServer = comparableVersion(RapidFireCorePlugin.getDefault().getMinServerVersion());
 
+        String message = null;
         if (serverProvided.compareTo(clientNeedsServer) < 0) {
 
-            String message = Messages.bind(
+            message = Messages.bind(
                 Messages.Rapid_Fire_library_A_on_system_B_is_of_version_C_but_at_least_version_D_is_required_Please_update_the_Rapid_Fire_library,
                 new String[] { library, as400.getSystemName(), getVersionFormatted(serverProvided), getVersionFormatted(clientNeedsServer) });
-            MessageDialogAsync.displayError(shell, message);
 
-            return false;
-        }
+        } else if (clientProvided.compareTo(serverNeedsClient) < 0) {
 
-        if (clientProvided.compareTo(serverNeedsClient) < 0) {
-
-            String message = Messages
+            message = Messages
                 .bind(
                     Messages.The_installed_Rapid_Fire_plug_in_version_A_is_outdated_because_the_installed_Rapid_Fire_library_requires_at_least_version_B_of_the_Rapid_Fire_plug_in_Please_update_your_Rapid_Fire_plug_in,
                     new String[] { getVersionFormatted(clientProvided), getVersionFormatted(serverNeedsClient) });
-            MessageDialogAsync.displayError(shell, message);
+        }
+
+        if (message != null) {
+
+            if (errorMessage != null) {
+                errorMessage.replace(0, errorMessage.length(), message);
+            } else {
+                MessageDialogAsync.displayError(shell, message);
+            }
 
             return false;
         }

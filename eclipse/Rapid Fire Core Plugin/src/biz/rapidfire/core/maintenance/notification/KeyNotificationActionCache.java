@@ -8,7 +8,7 @@
 
 package biz.rapidfire.core.maintenance.notification;
 
-import biz.rapidfire.core.maintenance.KeyResourceActionCache;
+import biz.rapidfire.core.maintenance.AbstractKeyResourceActionCache;
 import biz.rapidfire.core.model.IRapidFireNotificationResource;
 
 /**
@@ -19,7 +19,7 @@ import biz.rapidfire.core.model.IRapidFireNotificationResource;
  * Example key value:  RFPRI, CUSTUPD, RDY, IS_ZERO
  * </pre>
  */
-public class KeyNotificationActionCache extends KeyResourceActionCache {
+public class KeyNotificationActionCache extends AbstractKeyResourceActionCache {
 
     public KeyNotificationActionCache(IRapidFireNotificationResource notification) {
         super(notification.getParentJob(), isNumericValueZero(notification.getPosition()));

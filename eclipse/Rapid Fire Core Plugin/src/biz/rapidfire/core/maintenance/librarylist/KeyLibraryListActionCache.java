@@ -8,7 +8,7 @@
 
 package biz.rapidfire.core.maintenance.librarylist;
 
-import biz.rapidfire.core.maintenance.KeyResourceActionCache;
+import biz.rapidfire.core.maintenance.AbstractKeyResourceActionCache;
 import biz.rapidfire.core.model.IRapidFireLibraryListResource;
 
 /**
@@ -19,7 +19,7 @@ import biz.rapidfire.core.model.IRapidFireLibraryListResource;
  * Example key value:  RFPRI, CUSTUPD, RDY, IS_EMPTY
  * </pre>
  */
-public class KeyLibraryListActionCache extends KeyResourceActionCache {
+public class KeyLibraryListActionCache extends AbstractKeyResourceActionCache {
 
     public KeyLibraryListActionCache(IRapidFireLibraryListResource libraryList) {
         super(libraryList.getParentJob(), isStringValueEmpty(libraryList.getName()));

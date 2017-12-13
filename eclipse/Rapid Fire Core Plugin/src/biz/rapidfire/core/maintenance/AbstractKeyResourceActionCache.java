@@ -10,7 +10,7 @@ package biz.rapidfire.core.maintenance;
 
 import biz.rapidfire.core.model.IRapidFireJobResource;
 
-public abstract class KeyResourceActionCache {
+public abstract class AbstractKeyResourceActionCache {
 
     public static final String SEPARATOR = ", "; //$NON-NLS-1$
 
@@ -22,7 +22,7 @@ public abstract class KeyResourceActionCache {
 
     private String value;
 
-    public KeyResourceActionCache(IRapidFireJobResource job, String... keyExtensions) {
+    public AbstractKeyResourceActionCache(IRapidFireJobResource job, String... keyExtensions) {
         produceKey(job, keyExtensions);
     }
 
