@@ -8,13 +8,10 @@
 
 package biz.rapidfire.core.handlers.area;
 
-import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.jface.dialogs.MessageDialog;
 
 import biz.rapidfire.core.Messages;
-import biz.rapidfire.core.RapidFireCorePlugin;
 import biz.rapidfire.core.handlers.AbstractResourceMaintenanceHandler;
-import biz.rapidfire.core.helpers.ExceptionHelper;
 import biz.rapidfire.core.maintenance.MaintenanceMode;
 import biz.rapidfire.core.maintenance.Result;
 import biz.rapidfire.core.maintenance.area.AreaManager;
@@ -32,40 +29,13 @@ public abstract class AbstractAreaMaintenanceHandler extends AbstractResourceMai
     private AreaAction areaAction;
 
     public AbstractAreaMaintenanceHandler(MaintenanceMode mode, AreaAction areaAction) {
-        super(mode);
+        super(mode, areaAction);
 
         this.areaAction = areaAction;
     }
 
     protected AreaManager getManager() {
         return manager;
-    }
-
-    @Override
-    protected Object executeWithResource(IRapidFireAreaResource area) throws ExecutionException {
-
-        try {
-
-            if (canExecuteAction(area, areaAction)) {
-                Result result = initialize(area);
-                if (result != null && result.isError()) {
-                    MessageDialog.openError(getShell(), Messages.E_R_R_O_R, result.getMessage());
-                } else {
-                    performAction(area);
-                }
-            }
-
-        } catch (Throwable e) {
-            logError(e);
-        } finally {
-            try {
-                terminate();
-            } catch (Throwable e) {
-                logError(e);
-            }
-        }
-
-        return null;
     }
 
     protected AreaManager getOrCreateManager(IRapidFireJobResource job) throws Exception {
@@ -102,18 +72,16 @@ public abstract class AbstractAreaMaintenanceHandler extends AbstractResourceMai
 
         try {
 
-            // TODO: check action!
             Result result = getOrCreateManager(area.getParentJob()).checkAction(area.getKey(), areaAction);
             if (result.isSuccessfull()) {
                 return true;
             } else {
-                // TODO: fix message
                 message = Messages
                     .bindParameters(Messages.The_requested_operation_is_invalid_for_job_status_A, area.getParentJob().getStatus().label);
             }
 
         } catch (Exception e) {
-            logError("*** Could not check job action. Failed creating the job manager ***", e); //$NON-NLS-1$
+            logError(e);
         }
 
         if (message != null) {
@@ -123,7 +91,7 @@ public abstract class AbstractAreaMaintenanceHandler extends AbstractResourceMai
         return false;
     }
 
-    private Result initialize(IRapidFireAreaResource area) throws Exception {
+    protected Result initialize(IRapidFireAreaResource area) throws Exception {
 
         manager.openFiles();
 
@@ -133,18 +101,14 @@ public abstract class AbstractAreaMaintenanceHandler extends AbstractResourceMai
         return result;
     }
 
-    protected abstract void performAction(IRapidFireAreaResource area) throws Exception;
-
-    private void terminate() throws Exception {
+    protected void terminate(boolean closeConnection) throws Exception {
 
         if (manager != null) {
             manager.closeFiles();
+            if (closeConnection) {
+                manager.recoverError();
+            }
             manager = null;
         }
-    }
-
-    private void logError(Throwable e) {
-        RapidFireCorePlugin.logError("*** Could not handle Rapid Fire area resource request ***", e); //$NON-NLS-1$
-        MessageDialog.openError(getShell(), Messages.E_R_R_O_R, ExceptionHelper.getLocalizedMessage(e));
     }
 }

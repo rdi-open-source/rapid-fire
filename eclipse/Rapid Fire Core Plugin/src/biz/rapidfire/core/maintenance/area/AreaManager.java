@@ -22,6 +22,7 @@ import biz.rapidfire.core.maintenance.file.shared.FileKey;
 import biz.rapidfire.core.maintenance.job.shared.JobKey;
 import biz.rapidfire.core.model.IRapidFireAreaResource;
 import biz.rapidfire.core.model.dao.IJDBCConnection;
+import biz.rapidfire.core.model.dao.JDBCConnectionManager;
 
 public class AreaManager extends AbstractManager<IRapidFireAreaResource, AreaKey, AreaValues, AreaAction> {
 
@@ -190,5 +191,10 @@ public class AreaManager extends AbstractManager<IRapidFireAreaResource, AreaKey
         // TODO: check action!
         Result result = new Result(Success.YES.label(), null);
         return result;
+    }
+
+    @Override
+    public void recoverError() {
+        JDBCConnectionManager.getInstance().close(dao);
     }
 }

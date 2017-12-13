@@ -8,13 +8,10 @@
 
 package biz.rapidfire.core.handlers.conversion;
 
-import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.jface.dialogs.MessageDialog;
 
 import biz.rapidfire.core.Messages;
-import biz.rapidfire.core.RapidFireCorePlugin;
 import biz.rapidfire.core.handlers.AbstractResourceMaintenanceHandler;
-import biz.rapidfire.core.helpers.ExceptionHelper;
 import biz.rapidfire.core.maintenance.MaintenanceMode;
 import biz.rapidfire.core.maintenance.Result;
 import biz.rapidfire.core.maintenance.conversion.ConversionManager;
@@ -32,40 +29,13 @@ public abstract class AbstractConversionMaintenanceHandler extends AbstractResou
     private ConversionAction conversionAction;
 
     public AbstractConversionMaintenanceHandler(MaintenanceMode mode, ConversionAction conversionAction) {
-        super(mode);
+        super(mode, conversionAction);
 
         this.conversionAction = conversionAction;
     }
 
     protected ConversionManager getManager() {
         return manager;
-    }
-
-    @Override
-    protected Object executeWithResource(IRapidFireConversionResource conversion) throws ExecutionException {
-
-        try {
-
-            if (canExecuteAction(conversion, conversionAction)) {
-                Result result = initialize(conversion);
-                if (result != null && result.isError()) {
-                    MessageDialog.openError(getShell(), Messages.E_R_R_O_R, result.getMessage());
-                } else {
-                    performAction(conversion);
-                }
-            }
-
-        } catch (Throwable e) {
-            logError(e);
-        } finally {
-            try {
-                terminate();
-            } catch (Throwable e) {
-                logError(e);
-            }
-        }
-
-        return null;
     }
 
     protected ConversionManager getOrCreateManager(IRapidFireJobResource job) throws Exception {
@@ -106,13 +76,12 @@ public abstract class AbstractConversionMaintenanceHandler extends AbstractResou
             if (result.isSuccessfull()) {
                 return true;
             } else {
-                // TODO: fix message
                 message = Messages.bindParameters(Messages.The_requested_operation_is_invalid_for_job_status_A,
                     conversion.getParentJob().getStatus().label);
             }
 
         } catch (Exception e) {
-            logError("*** Could not check job action. Failed creating the job manager ***", e); //$NON-NLS-1$
+            logError(e);
         }
 
         if (message != null) {
@@ -122,7 +91,7 @@ public abstract class AbstractConversionMaintenanceHandler extends AbstractResou
         return false;
     }
 
-    private Result initialize(IRapidFireConversionResource conversion) throws Exception {
+    protected Result initialize(IRapidFireConversionResource conversion) throws Exception {
 
         manager.openFiles();
 
@@ -133,18 +102,14 @@ public abstract class AbstractConversionMaintenanceHandler extends AbstractResou
         return result;
     }
 
-    protected abstract void performAction(IRapidFireConversionResource conversion) throws Exception;
-
-    private void terminate() throws Exception {
+    protected void terminate(boolean closeConnection) throws Exception {
 
         if (manager != null) {
             manager.closeFiles();
+            if (closeConnection) {
+                manager.recoverError();
+            }
             manager = null;
         }
-    }
-
-    private void logError(Throwable e) {
-        RapidFireCorePlugin.logError("*** Could not handle Rapid Fire conversion resource request ***", e); //$NON-NLS-1$
-        MessageDialog.openError(getShell(), Messages.E_R_R_O_R, ExceptionHelper.getLocalizedMessage(e));
     }
 }

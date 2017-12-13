@@ -22,6 +22,7 @@ import biz.rapidfire.core.maintenance.librarylist.shared.LibraryListAction;
 import biz.rapidfire.core.maintenance.librarylist.shared.LibraryListKey;
 import biz.rapidfire.core.model.IRapidFireLibraryListResource;
 import biz.rapidfire.core.model.dao.IJDBCConnection;
+import biz.rapidfire.core.model.dao.JDBCConnectionManager;
 
 public class LibraryListManager extends AbstractManager<IRapidFireLibraryListResource, LibraryListKey, LibraryListValues, LibraryListAction> {
 
@@ -243,5 +244,10 @@ public class LibraryListManager extends AbstractManager<IRapidFireLibraryListRes
         }
 
         return actionsSet.contains(action);
+    }
+
+    @Override
+    public void recoverError() {
+        JDBCConnectionManager.getInstance().close(dao);
     }
 }

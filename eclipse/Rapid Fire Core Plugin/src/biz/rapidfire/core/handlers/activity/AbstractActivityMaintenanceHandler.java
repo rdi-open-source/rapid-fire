@@ -30,7 +30,7 @@ public abstract class AbstractActivityMaintenanceHandler extends AbstractResourc
     private ActivityAction currentActivityAction;
 
     public AbstractActivityMaintenanceHandler(MaintenanceMode mode, ActivityAction activityAction) {
-        super(mode);
+        super(mode, null);
 
         this.initialActivityAction = activityAction;
         this.currentActivityAction = this.initialActivityAction;
@@ -42,6 +42,8 @@ public abstract class AbstractActivityMaintenanceHandler extends AbstractResourc
 
     @Override
     protected Object executeWithResource(IRapidFireJobResource job) throws ExecutionException {
+
+        boolean isError = false;
 
         try {
 
@@ -57,12 +59,9 @@ public abstract class AbstractActivityMaintenanceHandler extends AbstractResourc
 
         } catch (Throwable e) {
             logError(e);
+            isError = true;
         } finally {
-            try {
-                terminate();
-            } catch (Throwable e) {
-                logError(e);
-            }
+            terminateInternally(isError);
         }
 
         return null;
@@ -118,13 +117,13 @@ public abstract class AbstractActivityMaintenanceHandler extends AbstractResourc
             return true;
 
         } catch (Exception e) {
-            logError("*** Could not check job action. Failed creating the job manager ***", e); //$NON-NLS-1$
+            logError(e);
         }
 
         return false;
     }
 
-    private Result initialize(IRapidFireJobResource job) throws Exception {
+    protected Result initialize(IRapidFireJobResource job) throws Exception {
 
         JobKey jobKey = job.getKey();
         Result result = getOrCreateManager(job).initialize(getMaintenanceMode(), jobKey);
@@ -132,28 +131,13 @@ public abstract class AbstractActivityMaintenanceHandler extends AbstractResourc
         return result;
     }
 
-    protected abstract void performAction(IRapidFireJobResource job) throws Exception;
-
-    private void terminate() throws Exception {
+    protected void terminate(boolean closeConnection) throws Exception {
 
         if (manager != null) {
+            if (closeConnection) {
+                manager.recoverError();
+            }
             manager = null;
         }
-    }
-
-    // TODO: remove when no longer needed
-    // private Result changeMaintenanceMode(IRapidFireResource resource,
-    // MaintenanceMode mode, ActivityAction activityAction) throws Exception {
-    //
-    // terminate();
-    //
-    // super.changeMaintenanceMode(mode);
-    // this.currentActivityAction = activityAction;
-    //
-    // return initialize((IRapidFireJobResource)resource);
-    // }
-
-    private void logError(Throwable e) {
-        logError("*** Could not handle Rapid Fire activity resource request ***", e); //$NON-NLS-1$
     }
 }

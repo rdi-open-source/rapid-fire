@@ -8,7 +8,6 @@
 
 package biz.rapidfire.core.handlers.library;
 
-import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.jface.dialogs.MessageDialog;
 
 import biz.rapidfire.core.Messages;
@@ -29,40 +28,13 @@ public abstract class AbstractLibraryMaintenanceHandler extends AbstractResource
     private LibraryAction libraryAction;
 
     public AbstractLibraryMaintenanceHandler(MaintenanceMode mode, LibraryAction libraryAction) {
-        super(mode);
+        super(mode, libraryAction);
 
         this.libraryAction = libraryAction;
     }
 
     protected LibraryManager getManager() {
         return manager;
-    }
-
-    @Override
-    protected Object executeWithResource(IRapidFireLibraryResource library) throws ExecutionException {
-
-        try {
-
-            if (canExecuteAction(library, libraryAction)) {
-                Result result = initialize(library);
-                if (result != null && result.isError()) {
-                    MessageDialog.openError(getShell(), Messages.E_R_R_O_R, result.getMessage());
-                } else {
-                    performAction(library);
-                }
-            }
-
-        } catch (Throwable e) {
-            logError(e);
-        } finally {
-            try {
-                terminate();
-            } catch (Throwable e) {
-                logError(e);
-            }
-        }
-
-        return null;
     }
 
     protected LibraryManager getOrCreateManager(IRapidFireJobResource job) throws Exception {
@@ -99,18 +71,16 @@ public abstract class AbstractLibraryMaintenanceHandler extends AbstractResource
 
         try {
 
-            // TODO: check action!
             Result result = getOrCreateManager(library.getParentJob()).checkAction(library.getKey(), libraryAction);
             if (result.isSuccessfull()) {
                 return true;
             } else {
-                // TODO: fix message
                 message = Messages.bindParameters(Messages.The_requested_operation_is_invalid_for_job_status_A,
                     library.getParentJob().getStatus().label);
             }
 
         } catch (Exception e) {
-            logError("*** Could not check job action. Failed creating the job manager ***", e); //$NON-NLS-1$
+            logError(e);
         }
 
         if (message != null) {
@@ -120,7 +90,7 @@ public abstract class AbstractLibraryMaintenanceHandler extends AbstractResource
         return false;
     }
 
-    private Result initialize(IRapidFireLibraryResource file) throws Exception {
+    protected Result initialize(IRapidFireLibraryResource file) throws Exception {
 
         manager.openFiles();
 
@@ -132,17 +102,14 @@ public abstract class AbstractLibraryMaintenanceHandler extends AbstractResource
         return null;
     }
 
-    protected abstract void performAction(IRapidFireLibraryResource file) throws Exception;
-
-    private void terminate() throws Exception {
+    protected void terminate(boolean closeConnection) throws Exception {
 
         if (manager != null) {
             manager.closeFiles();
+            if (closeConnection) {
+                manager.recoverError();
+            }
             manager = null;
         }
-    }
-
-    private void logError(Throwable e) {
-        logError("*** Could not handle Rapid Fire library resource request ***", e); //$NON-NLS-1$
     }
 }

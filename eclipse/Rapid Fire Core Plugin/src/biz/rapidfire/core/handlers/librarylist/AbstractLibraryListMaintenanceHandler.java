@@ -8,7 +8,6 @@
 
 package biz.rapidfire.core.handlers.librarylist;
 
-import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.jface.dialogs.MessageDialog;
 
 import biz.rapidfire.core.Messages;
@@ -30,40 +29,13 @@ public abstract class AbstractLibraryListMaintenanceHandler extends
     private LibraryListAction libraryListAction;
 
     public AbstractLibraryListMaintenanceHandler(MaintenanceMode mode, LibraryListAction libraryListAction) {
-        super(mode);
+        super(mode, libraryListAction);
 
         this.libraryListAction = libraryListAction;
     }
 
     protected LibraryListManager getManager() {
         return manager;
-    }
-
-    @Override
-    protected Object executeWithResource(IRapidFireLibraryListResource libraryList) throws ExecutionException {
-
-        try {
-
-            if (canExecuteAction(libraryList, libraryListAction)) {
-                Result result = initialize(libraryList);
-                if (result != null && result.isError()) {
-                    MessageDialog.openError(getShell(), Messages.E_R_R_O_R, result.getMessage());
-                } else {
-                    performAction(libraryList);
-                }
-            }
-
-        } catch (Throwable e) {
-            logError(e);
-        } finally {
-            try {
-                terminate();
-            } catch (Throwable e) {
-                logError(e);
-            }
-        }
-
-        return null;
     }
 
     protected LibraryListManager getOrCreateManager(IRapidFireJobResource job) throws Exception {
@@ -100,18 +72,16 @@ public abstract class AbstractLibraryListMaintenanceHandler extends
 
         try {
 
-            // TODO: check action!
             Result result = getOrCreateManager(libraryList.getParentJob()).checkAction(libraryList.getKey(), libraryListAction);
             if (result.isSuccessfull()) {
                 return true;
             } else {
-                // TODO: fix message
                 message = Messages.bindParameters(Messages.The_requested_operation_is_invalid_for_job_status_A, libraryList.getParentJob()
                     .getStatus().label);
             }
 
         } catch (Exception e) {
-            logError("*** Could not check job action. Failed creating the job manager ***", e); //$NON-NLS-1$
+            logError(e);
         }
 
         if (message != null) {
@@ -121,7 +91,7 @@ public abstract class AbstractLibraryListMaintenanceHandler extends
         return false;
     }
 
-    private Result initialize(IRapidFireLibraryListResource file) throws Exception {
+    protected Result initialize(IRapidFireLibraryListResource file) throws Exception {
 
         manager.openFiles();
 
@@ -130,17 +100,14 @@ public abstract class AbstractLibraryListMaintenanceHandler extends
         return result;
     }
 
-    protected abstract void performAction(IRapidFireLibraryListResource file) throws Exception;
-
-    private void terminate() throws Exception {
+    protected void terminate(boolean closeConnection) throws Exception {
 
         if (manager != null) {
             manager.closeFiles();
+            if (closeConnection) {
+                manager.recoverError();
+            }
             manager = null;
         }
-    }
-
-    private void logError(Throwable e) {
-        logError("*** Could not handle Rapid Fire library list resource request ***", e); //$NON-NLS-1$
     }
 }

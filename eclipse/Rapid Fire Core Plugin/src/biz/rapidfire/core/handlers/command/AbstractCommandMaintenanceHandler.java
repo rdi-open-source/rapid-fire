@@ -8,13 +8,10 @@
 
 package biz.rapidfire.core.handlers.command;
 
-import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.jface.dialogs.MessageDialog;
 
 import biz.rapidfire.core.Messages;
-import biz.rapidfire.core.RapidFireCorePlugin;
 import biz.rapidfire.core.handlers.AbstractResourceMaintenanceHandler;
-import biz.rapidfire.core.helpers.ExceptionHelper;
 import biz.rapidfire.core.maintenance.MaintenanceMode;
 import biz.rapidfire.core.maintenance.Result;
 import biz.rapidfire.core.maintenance.command.CommandManager;
@@ -32,40 +29,13 @@ public abstract class AbstractCommandMaintenanceHandler extends AbstractResource
     private CommandAction commandAction;
 
     public AbstractCommandMaintenanceHandler(MaintenanceMode mode, CommandAction commandAction) {
-        super(mode);
+        super(mode, commandAction);
 
         this.commandAction = commandAction;
     }
 
     protected CommandManager getManager() {
         return manager;
-    }
-
-    @Override
-    protected Object executeWithResource(IRapidFireCommandResource command) throws ExecutionException {
-
-        try {
-
-            if (canExecuteAction(command, commandAction)) {
-                Result result = initialize(command);
-                if (result != null && result.isError()) {
-                    MessageDialog.openError(getShell(), Messages.E_R_R_O_R, result.getMessage());
-                } else {
-                    performAction(command);
-                }
-            }
-
-        } catch (Throwable e) {
-            logError(e);
-        } finally {
-            try {
-                terminate();
-            } catch (Throwable e) {
-                logError(e);
-            }
-        }
-
-        return null;
     }
 
     protected CommandManager getOrCreateManager(IRapidFireJobResource job) throws Exception {
@@ -102,18 +72,16 @@ public abstract class AbstractCommandMaintenanceHandler extends AbstractResource
 
         try {
 
-            // TODO: check action!
             Result result = getOrCreateManager(command.getParentJob()).checkAction(command.getKey(), commandAction);
             if (result.isSuccessfull()) {
                 return true;
             } else {
-                // TODO: fix message
                 message = Messages.bindParameters(Messages.The_requested_operation_is_invalid_for_job_status_A,
                     command.getParentJob().getStatus().label);
             }
 
         } catch (Exception e) {
-            logError("*** Could not check job action. Failed creating the job manager ***", e); //$NON-NLS-1$
+            logError(e);
         }
 
         if (message != null) {
@@ -123,7 +91,7 @@ public abstract class AbstractCommandMaintenanceHandler extends AbstractResource
         return false;
     }
 
-    private Result initialize(IRapidFireCommandResource command) throws Exception {
+    protected Result initialize(IRapidFireCommandResource command) throws Exception {
 
         manager.openFiles();
 
@@ -134,18 +102,14 @@ public abstract class AbstractCommandMaintenanceHandler extends AbstractResource
         return result;
     }
 
-    protected abstract void performAction(IRapidFireCommandResource command) throws Exception;
-
-    private void terminate() throws Exception {
+    protected void terminate(boolean closeConnection) throws Exception {
 
         if (manager != null) {
             manager.closeFiles();
+            if (closeConnection) {
+                manager.recoverError();
+            }
             manager = null;
         }
-    }
-
-    private void logError(Throwable e) {
-        RapidFireCorePlugin.logError("*** Could not handle Rapid Fire command resource request ***", e); //$NON-NLS-1$
-        MessageDialog.openError(getShell(), Messages.E_R_R_O_R, ExceptionHelper.getLocalizedMessage(e));
     }
 }

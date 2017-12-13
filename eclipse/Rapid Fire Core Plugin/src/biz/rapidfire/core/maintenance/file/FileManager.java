@@ -23,6 +23,7 @@ import biz.rapidfire.core.maintenance.job.IJobCheckAction;
 import biz.rapidfire.core.maintenance.job.shared.JobKey;
 import biz.rapidfire.core.model.IRapidFireFileResource;
 import biz.rapidfire.core.model.dao.IJDBCConnection;
+import biz.rapidfire.core.model.dao.JDBCConnectionManager;
 
 public class FileManager extends AbstractManager<IRapidFireFileResource, FileKey, FileValues, FileAction> {
 
@@ -249,5 +250,10 @@ public class FileManager extends AbstractManager<IRapidFireFileResource, FileKey
         }
 
         return actionsSet.contains(action);
+    }
+
+    @Override
+    public void recoverError() {
+        JDBCConnectionManager.getInstance().close(dao);
     }
 }

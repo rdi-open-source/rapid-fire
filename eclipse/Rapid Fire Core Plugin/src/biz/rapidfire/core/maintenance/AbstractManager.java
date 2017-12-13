@@ -34,6 +34,8 @@ public abstract class AbstractManager<R extends IRapidFireResource, K extends IR
 
     public abstract Result checkAction(K key, A resourceAction) throws Exception;
 
+    public abstract void recoverError();
+
     public boolean isValidAction(R resource, A resourceAction) throws Exception {
         return true;
     }

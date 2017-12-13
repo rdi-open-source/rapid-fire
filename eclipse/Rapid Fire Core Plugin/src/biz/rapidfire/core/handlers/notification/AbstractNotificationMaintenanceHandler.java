@@ -8,13 +8,10 @@
 
 package biz.rapidfire.core.handlers.notification;
 
-import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.jface.dialogs.MessageDialog;
 
 import biz.rapidfire.core.Messages;
-import biz.rapidfire.core.RapidFireCorePlugin;
 import biz.rapidfire.core.handlers.AbstractResourceMaintenanceHandler;
-import biz.rapidfire.core.helpers.ExceptionHelper;
 import biz.rapidfire.core.maintenance.MaintenanceMode;
 import biz.rapidfire.core.maintenance.Result;
 import biz.rapidfire.core.maintenance.job.shared.JobKey;
@@ -32,40 +29,13 @@ public abstract class AbstractNotificationMaintenanceHandler extends
     private NotificationAction notificationAction;
 
     public AbstractNotificationMaintenanceHandler(MaintenanceMode mode, NotificationAction notificationAction) {
-        super(mode);
+        super(mode, notificationAction);
 
         this.notificationAction = notificationAction;
     }
 
     protected NotificationManager getManager() {
         return manager;
-    }
-
-    @Override
-    protected Object executeWithResource(IRapidFireNotificationResource notification) throws ExecutionException {
-
-        try {
-
-            if (canExecuteAction(notification, notificationAction)) {
-                Result result = initialize(notification);
-                if (result != null && result.isError()) {
-                    MessageDialog.openError(getShell(), Messages.E_R_R_O_R, result.getMessage());
-                } else {
-                    performAction(notification);
-                }
-            }
-
-        } catch (Throwable e) {
-            logError(e);
-        } finally {
-            try {
-                terminate();
-            } catch (Throwable e) {
-                logError(e);
-            }
-        }
-
-        return null;
     }
 
     protected NotificationManager getOrCreateManager(IRapidFireJobResource job) throws Exception {
@@ -102,18 +72,16 @@ public abstract class AbstractNotificationMaintenanceHandler extends
 
         try {
 
-            // TODO: check action!
             Result result = getOrCreateManager(notification.getParentJob()).checkAction(notification.getKey(), notificationAction);
             if (result.isSuccessfull()) {
                 return true;
             } else {
-                // TODO: fix message
                 message = Messages.bindParameters(Messages.The_requested_operation_is_invalid_for_job_status_A, notification.getParentJob()
                     .getStatus().label);
             }
 
         } catch (Exception e) {
-            logError("*** Could not check job action. Failed creating the job manager ***", e); //$NON-NLS-1$
+            logError(e);
         }
 
         if (message != null) {
@@ -123,7 +91,7 @@ public abstract class AbstractNotificationMaintenanceHandler extends
         return false;
     }
 
-    private Result initialize(IRapidFireNotificationResource notification) throws Exception {
+    protected Result initialize(IRapidFireNotificationResource notification) throws Exception {
 
         manager.openFiles();
 
@@ -132,18 +100,14 @@ public abstract class AbstractNotificationMaintenanceHandler extends
         return result;
     }
 
-    protected abstract void performAction(IRapidFireNotificationResource notification) throws Exception;
-
-    private void terminate() throws Exception {
+    protected void terminate(boolean closeConnection) throws Exception {
 
         if (manager != null) {
             manager.closeFiles();
+            if (closeConnection) {
+                manager.recoverError();
+            }
             manager = null;
         }
-    }
-
-    private void logError(Throwable e) {
-        RapidFireCorePlugin.logError("*** Could not handle Rapid Fire notification resource request ***", e); //$NON-NLS-1$
-        MessageDialog.openError(getShell(), Messages.E_R_R_O_R, ExceptionHelper.getLocalizedMessage(e));
     }
 }

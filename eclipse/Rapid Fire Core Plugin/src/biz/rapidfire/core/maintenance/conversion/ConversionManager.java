@@ -24,6 +24,7 @@ import biz.rapidfire.core.maintenance.file.shared.FileKey;
 import biz.rapidfire.core.maintenance.job.shared.JobKey;
 import biz.rapidfire.core.model.IRapidFireConversionResource;
 import biz.rapidfire.core.model.dao.IJDBCConnection;
+import biz.rapidfire.core.model.dao.JDBCConnectionManager;
 
 public class ConversionManager extends AbstractManager<IRapidFireConversionResource, ConversionKey, ConversionValues, ConversionAction> {
 
@@ -209,5 +210,10 @@ public class ConversionManager extends AbstractManager<IRapidFireConversionResou
         // TODO: check action!
         Result result = new Result(Success.YES.label(), null);
         return result;
+    }
+
+    @Override
+    public void recoverError() {
+        JDBCConnectionManager.getInstance().close(dao);
     }
 }

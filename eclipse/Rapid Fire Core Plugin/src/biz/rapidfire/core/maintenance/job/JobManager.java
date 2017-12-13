@@ -23,6 +23,7 @@ import biz.rapidfire.core.maintenance.job.shared.JobKey;
 import biz.rapidfire.core.maintenance.job.shared.JobTestMode;
 import biz.rapidfire.core.model.IRapidFireJobResource;
 import biz.rapidfire.core.model.dao.IJDBCConnection;
+import biz.rapidfire.core.model.dao.JDBCConnectionManager;
 
 public class JobManager extends AbstractManager<IRapidFireJobResource, JobKey, JobValues, JobAction> {
 
@@ -295,5 +296,10 @@ public class JobManager extends AbstractManager<IRapidFireJobResource, JobKey, J
         }
 
         return actionsSet.contains(action);
+    }
+
+    @Override
+    public void recoverError() {
+        JDBCConnectionManager.getInstance().close(dao);
     }
 }

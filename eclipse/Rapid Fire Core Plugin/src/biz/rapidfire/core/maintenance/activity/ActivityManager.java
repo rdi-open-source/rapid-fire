@@ -20,6 +20,7 @@ import biz.rapidfire.core.maintenance.job.shared.JobKey;
 import biz.rapidfire.core.model.IRapidFireActivityResource;
 import biz.rapidfire.core.model.IRapidFireJobResource;
 import biz.rapidfire.core.model.dao.IJDBCConnection;
+import biz.rapidfire.core.model.dao.JDBCConnectionManager;
 
 public class ActivityManager {
 
@@ -79,5 +80,9 @@ public class ActivityManager {
                 statement.execute();
             }
         }
+    }
+
+    public void recoverError() {
+        JDBCConnectionManager.getInstance().close(dao);
     }
 }

@@ -12,6 +12,7 @@ import java.util.Iterator;
 
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.StructuredSelection;
@@ -19,11 +20,14 @@ import org.eclipse.jface.viewers.TreeSelection;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.PlatformUI;
 
+import biz.rapidfire.core.Messages;
 import biz.rapidfire.core.RapidFireCorePlugin;
 import biz.rapidfire.core.dialogs.MessageDialogAsync;
 import biz.rapidfire.core.handlers.shared.IMaintenanceHandler;
+import biz.rapidfire.core.helpers.ExceptionHelper;
 import biz.rapidfire.core.maintenance.IResourceAction;
 import biz.rapidfire.core.maintenance.MaintenanceMode;
+import biz.rapidfire.core.maintenance.Result;
 import biz.rapidfire.core.model.IRapidFireResource;
 import biz.rapidfire.rsebase.handlers.AbstractSelectionHandler;
 import biz.rapidfire.rsebase.helpers.ExpressionsHelper;
@@ -35,10 +39,12 @@ public abstract class AbstractResourceMaintenanceHandler<R extends IRapidFireRes
     private MaintenanceMode initialMode;
     private MaintenanceMode currentMode;
     private boolean isEnabled;
+    private A action;
 
-    public AbstractResourceMaintenanceHandler(MaintenanceMode mode) {
+    public AbstractResourceMaintenanceHandler(MaintenanceMode mode, A action) {
         this.initialMode = mode;
         this.currentMode = this.initialMode;
+        this.action = action;
     }
 
     protected MaintenanceMode getMaintenanceMode() {
@@ -135,13 +141,53 @@ public abstract class AbstractResourceMaintenanceHandler<R extends IRapidFireRes
         return MaintenanceMode.DELETE.equals(initialMode);
     }
 
+    protected Object executeWithResource(R notification) throws ExecutionException {
+
+        boolean isError = false;
+
+        try {
+
+            if (canExecuteAction(notification, action)) {
+                Result result = initialize(notification);
+                if (result != null && result.isError()) {
+                    MessageDialog.openError(getShell(), Messages.E_R_R_O_R, result.getMessage());
+                } else {
+                    performAction(notification);
+                }
+            }
+
+        } catch (Throwable e) {
+            logError(e);
+            isError = true;
+        } finally {
+            terminateInternally(isError);
+        }
+
+        return null;
+    }
+
+    protected void terminateInternally(boolean isError) {
+
+        try {
+
+            terminate(isError);
+
+        } catch (Throwable e) {
+            logError(e);
+        }
+    }
+
     protected abstract boolean isInstanceOf(Object object);
 
     protected abstract boolean isValidAction(R resource) throws Exception;
 
-    protected abstract Object executeWithResource(R resource) throws ExecutionException;
-
     protected abstract boolean canExecuteAction(R resource, A action);
+
+    protected abstract Result initialize(R resource) throws Exception;
+
+    protected abstract void performAction(R resource) throws Exception;
+
+    protected abstract void terminate(boolean isError) throws Exception;
 
     protected boolean isCommitControl() {
 
@@ -166,18 +212,19 @@ public abstract class AbstractResourceMaintenanceHandler<R extends IRapidFireRes
         return false;
     }
 
+    protected void logError(Throwable e) {
+
+        String logMessage = "*** Could not handle Rapid Fire resource request in: " + getClass().getSimpleName() + " ***"; //$NON-NLS-1$ //$NON-NLS-2$
+        RapidFireCorePlugin.logError(logMessage, e);
+        setErrorMessage(ExceptionHelper.getLocalizedMessage(e));
+        displayError();
+    }
+
     private void displayError() {
 
         if (message != null) {
             MessageDialogAsync.displayError(getShell(), message);
             message = null;
         }
-    }
-
-    protected void logError(String message, Throwable e) {
-
-        RapidFireCorePlugin.logError(message, e);
-        setErrorMessage(message);
-        displayError();
     }
 }

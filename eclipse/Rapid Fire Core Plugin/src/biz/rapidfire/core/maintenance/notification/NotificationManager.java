@@ -22,6 +22,7 @@ import biz.rapidfire.core.maintenance.notification.shared.NotificationAction;
 import biz.rapidfire.core.maintenance.notification.shared.NotificationKey;
 import biz.rapidfire.core.model.IRapidFireNotificationResource;
 import biz.rapidfire.core.model.dao.IJDBCConnection;
+import biz.rapidfire.core.model.dao.JDBCConnectionManager;
 
 public class NotificationManager extends AbstractManager<IRapidFireNotificationResource, NotificationKey, NotificationValues, NotificationAction> {
 
@@ -242,5 +243,10 @@ public class NotificationManager extends AbstractManager<IRapidFireNotificationR
         }
 
         return actionsSet.contains(action);
+    }
+
+    @Override
+    public void recoverError() {
+        JDBCConnectionManager.getInstance().close(dao);
     }
 }

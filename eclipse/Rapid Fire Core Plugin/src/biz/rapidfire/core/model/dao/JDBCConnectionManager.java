@@ -128,6 +128,13 @@ public class JDBCConnectionManager extends AbstractDAOManager {
         return true;
     }
 
+    public void close(IJDBCConnection jdbcConnection) {
+
+        closeConnection((JDBCConnection)jdbcConnection);
+
+        cachedHosts.remove(jdbcConnection.getConnectionName());
+    }
+
     public void connected(String connectionName) {
         // There is nothing to do here. Connections are created on request.
     }
@@ -248,7 +255,12 @@ public class JDBCConnectionManager extends AbstractDAOManager {
 
             if (!jdbcConnection.isClosed()) {
 
-                stopConnection(jdbcConnection);
+                try {
+                    stopConnection(jdbcConnection);
+                } catch (Exception e) {
+                    RapidFireCorePlugin.logError("*** Could not stop JDBC connection '" + jdbcConnection.getConnectionName() + "' ***", e); //$NON-NLS-1$ //$NON-NLS-2$
+                    MessageDialogAsync.displayError(ExceptionHelper.getLocalizedMessage(e));
+                }
 
                 jdbcConnection.close();
             }
