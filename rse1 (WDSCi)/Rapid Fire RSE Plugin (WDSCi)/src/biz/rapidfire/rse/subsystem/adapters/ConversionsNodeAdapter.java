@@ -38,8 +38,8 @@ public class ConversionsNodeAdapter extends AbstractNodeAdapter {
     }
 
     @Override
-    public String getAbsoluteName(Object element) {
-        return "node.conversions"; //$NON-NLS-1$
+    protected String getAbsoluteNamePrefix() {
+        return "node.conversions."; //$NON-NLS-1$
     }
 
     @Override

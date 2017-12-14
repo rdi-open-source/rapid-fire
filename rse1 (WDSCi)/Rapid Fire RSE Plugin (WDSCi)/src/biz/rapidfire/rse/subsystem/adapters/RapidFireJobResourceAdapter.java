@@ -70,7 +70,7 @@ public class RapidFireJobResourceAdapter extends AbstractResourceAdapter impleme
     @Override
     public String getText(Object element) {
 
-        RapidFireJobResource resource = (RapidFireJobResource)element;
+        RapidFireJobResource resource = getResource(element);
 
         return resource.getName();
     }
@@ -81,11 +81,15 @@ public class RapidFireJobResourceAdapter extends AbstractResourceAdapter impleme
     @Override
     public String getAbsoluteName(Object element) {
 
-        RapidFireJobResource resource = (RapidFireJobResource)element;
+        RapidFireJobResource resource = getResource(element);
 
-        String name = "RapidFireJob." + resource.getDataLibrary() + "." + resource.getName(); //$NON-NLS-1$ //$NON-NLS-2$
+        String name = getAbsoluteNamePrefix() + resource.getDataLibrary() + "." + resource.getName(); //$NON-NLS-1$
 
         return name;
+    }
+
+    public String getAbsoluteNamePrefix() {
+        return "RapidFireJob."; //$NON-NLS-1$
     }
 
     /**
@@ -116,10 +120,10 @@ public class RapidFireJobResourceAdapter extends AbstractResourceAdapter impleme
     public Object[] getChildren(Object element) {
 
         AbstractResource[] children = new AbstractResource[4];
-        children[0] = new LibrariesNode((RapidFireJobResource)element);
-        children[1] = new LibraryListsNode((RapidFireJobResource)element);
-        children[2] = new FilesNode((RapidFireJobResource)element);
-        children[3] = new NotificationsNode((RapidFireJobResource)element);
+        children[0] = new LibrariesNode(getResource(element));
+        children[1] = new LibraryListsNode(getResource(element));
+        children[2] = new FilesNode(getResource(element));
+        children[3] = new NotificationsNode(getResource(element));
 
         return children;
     }
@@ -184,5 +188,9 @@ public class RapidFireJobResourceAdapter extends AbstractResourceAdapter impleme
         }
 
         return null;
+    }
+
+    private RapidFireJobResource getResource(Object element) {
+        return (RapidFireJobResource)element;
     }
 }

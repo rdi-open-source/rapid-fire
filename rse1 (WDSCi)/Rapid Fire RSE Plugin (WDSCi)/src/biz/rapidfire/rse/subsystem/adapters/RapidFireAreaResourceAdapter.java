@@ -51,7 +51,7 @@ public class RapidFireAreaResourceAdapter extends AbstractResourceAdapter implem
     @Override
     public String getText(Object element) {
 
-        RapidFireAreaResource resource = (RapidFireAreaResource)element;
+        RapidFireAreaResource resource = getResource(element);
 
         return resource.getName();
     }
@@ -62,11 +62,16 @@ public class RapidFireAreaResourceAdapter extends AbstractResourceAdapter implem
     @Override
     public String getAbsoluteName(Object element) {
 
-        RapidFireAreaResource resource = (RapidFireAreaResource)element;
+        RapidFireAreaResource resource = getResource(element);
 
-        String name = "RapidFireArea." + resource.getDataLibrary() + "." + resource.getJob() + "." + resource.getPosition() + "." + resource.getName(); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+        String name = getAbsoluteNamePrefix() + resource.getDataLibrary()
+            + "." + resource.getJob() + "." + resource.getPosition() + "." + resource.getName(); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
         return name;
+    }
+
+    public String getAbsoluteNamePrefix() {
+        return "RapidFireArea."; //$NON-NLS-1$
     }
 
     /**
@@ -145,5 +150,9 @@ public class RapidFireAreaResourceAdapter extends AbstractResourceAdapter implem
             return resource.getCommandExtension();
         }
         return null;
+    }
+
+    private RapidFireAreaResource getResource(Object element) {
+        return (RapidFireAreaResource)element;
     }
 }
