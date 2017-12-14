@@ -48,7 +48,7 @@ public class RapidFireLibraryResourceAdapter extends AbstractResourceAdapter imp
     @Override
     public String getText(Object element) {
 
-        RapidFireLibraryResource resource = (RapidFireLibraryResource)element;
+        RapidFireLibraryResource resource = getResource(element);
 
         return resource.getName();
     }
@@ -59,11 +59,15 @@ public class RapidFireLibraryResourceAdapter extends AbstractResourceAdapter imp
     @Override
     public String getAbsoluteName(Object element) {
 
-        RapidFireLibraryResource resource = (RapidFireLibraryResource)element;
+        RapidFireLibraryResource resource = getResource(element);
 
-        String name = "RapidFireLibrary." + resource.getDataLibrary() + "." + resource.getJob() + "." + resource.getName(); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+        String name = getAbsoluteNamePrefix() + resource.getDataLibrary() + "." + resource.getJob() + "." + resource.getName(); //$NON-NLS-1$ //$NON-NLS-2$
 
         return name;
+    }
+
+    public String getAbsoluteNamePrefix() {
+        return "RapidFireLibrary."; //$NON-NLS-1$
     }
 
     /**
@@ -82,7 +86,7 @@ public class RapidFireLibraryResourceAdapter extends AbstractResourceAdapter imp
 
     @Override
     public Object getParent(Object element) {
-        return null;
+        return null; //$NON-NLS-1$
     }
 
     @Override
@@ -127,5 +131,9 @@ public class RapidFireLibraryResourceAdapter extends AbstractResourceAdapter imp
             return resource.getShadowLibrary();
         }
         return null;
+    }
+
+    private RapidFireLibraryResource getResource(Object element) {
+        return (RapidFireLibraryResource)element;
     }
 }

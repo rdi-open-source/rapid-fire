@@ -61,6 +61,10 @@ public class RapidFireAreaResource extends AbstractResource implements IRapidFir
         return this.parentJob;
     }
 
+    public IRapidFireFileResource getParent() {
+        return parentFile;
+    }
+
     /*
      * IRapidFireAreaResource methods
      */

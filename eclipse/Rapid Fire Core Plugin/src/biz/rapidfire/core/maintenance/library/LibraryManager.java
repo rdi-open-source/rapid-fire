@@ -10,6 +10,7 @@ package biz.rapidfire.core.maintenance.library;
 
 import java.sql.CallableStatement;
 import java.sql.Types;
+import java.util.HashSet;
 import java.util.Set;
 
 import biz.rapidfire.core.Messages;
@@ -169,12 +170,12 @@ public class LibraryManager extends AbstractManager<IRapidFireLibraryResource, L
     }
 
     @Override
-    public Result checkAction(LibraryKey key, LibraryAction libraryListAction) throws Exception {
+    public Result checkAction(LibraryKey key, LibraryAction libraryAction) throws Exception {
 
         CallableStatement statement = dao.prepareCall(dao
             .insertLibraryQualifier("{CALL " + IJDBCConnection.LIBRARY + "\"MNTLIB_checkAction\"(?, ?, ?, ?, ?)}")); //$NON-NLS-1$ //$NON-NLS-2$
 
-        statement.setString(ILibraryCheckAction.ACTION, libraryListAction.label());
+        statement.setString(ILibraryCheckAction.ACTION, libraryAction.label());
         statement.setString(ILibraryCheckAction.JOB, key.getJobName());
         statement.setString(ILibraryCheckAction.LIBRARY, key.getLibrary());
         statement.setString(ILibraryCheckAction.SUCCESS, Success.NO.label());
@@ -191,13 +192,13 @@ public class LibraryManager extends AbstractManager<IRapidFireLibraryResource, L
         return new Result(null, message, success);
     }
 
-    public LibraryAction[] getValidActions(IRapidFireLibraryResource libraryList) throws Exception {
+    protected LibraryAction[] getValidActions(LibraryKey libraryKey) throws Exception {
 
         CallableStatement statement = dao.prepareCall(dao
             .insertLibraryQualifier("{CALL " + IJDBCConnection.LIBRARY + "\"MNTLIB_getValidActions\"(?, ?, ?, ?)}")); //$NON-NLS-1$ //$NON-NLS-2$
 
-        statement.setString(ILibraryGetValidActions.JOB, libraryList.getParentJob().getName());
-        statement.setString(ILibraryGetValidActions.LIBRARY, libraryList.getKey().getLibrary());
+        statement.setString(ILibraryGetValidActions.JOB, libraryKey.getJobName());
+        statement.setString(ILibraryGetValidActions.LIBRARY, libraryKey.getLibrary());
         statement.setInt(ILibraryGetValidActions.NUMBER_ACTIONS, 0);
         statement.setString(ILibraryGetValidActions.ACTIONS, EMPTY_STRING);
 
@@ -209,21 +210,26 @@ public class LibraryManager extends AbstractManager<IRapidFireLibraryResource, L
         int numberActions = statement.getBigDecimal(ILibraryGetValidActions.NUMBER_ACTIONS).intValue();
         String[] actions = splitActions(statement.getString(ILibraryGetValidActions.ACTIONS), numberActions);
 
-        LibraryAction[] libraryActions = new LibraryAction[actions.length];
-        for (int i = 0; i < libraryActions.length; i++) {
-            libraryActions[i] = LibraryAction.find(actions[i].trim());
+        Set<LibraryAction> libraryActions = new HashSet<LibraryAction>();
+        for (String action : actions) {
+            libraryActions.add(LibraryAction.find(action.trim()));
         }
 
-        return libraryActions;
+        Result result = checkAction(LibraryKey.createNew(new JobKey(libraryKey.getJobName())), LibraryAction.CREATE);
+        if (result.isSuccessfull()) {
+            libraryActions.add(LibraryAction.CREATE);
+        }
+
+        return libraryActions.toArray(new LibraryAction[libraryActions.size()]);
     }
 
-    public boolean isValidAction(IRapidFireLibraryResource libraryList, LibraryAction action) throws Exception {
+    public boolean isValidAction(IRapidFireLibraryResource library, LibraryAction action) throws Exception {
 
-        KeyLibraryActionCache libraryActionsKey = new KeyLibraryActionCache(libraryList);
+        KeyLibraryActionCache libraryActionsKey = new KeyLibraryActionCache(library);
 
         Set<LibraryAction> actionsSet = LibraryActionCache.getInstance().getActions(libraryActionsKey);
         if (actionsSet == null) {
-            LibraryAction[] fileActions = getValidActions(libraryList);
+            LibraryAction[] fileActions = getValidActions(library.getKey());
             LibraryActionCache.getInstance().putActions(libraryActionsKey, fileActions);
             actionsSet = LibraryActionCache.getInstance().getActions(libraryActionsKey);
         }

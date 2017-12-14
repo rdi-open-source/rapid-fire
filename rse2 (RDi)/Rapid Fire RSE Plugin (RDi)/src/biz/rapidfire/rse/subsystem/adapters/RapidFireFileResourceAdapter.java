@@ -44,7 +44,7 @@ public class RapidFireFileResourceAdapter extends AbstractResourceAdapter implem
     @Override
     public ImageDescriptor getImageDescriptor(Object element) {
 
-        RapidFireFileResource resource = (RapidFireFileResource)element;
+        RapidFireFileResource resource = getResource(element);
 
         if (resource.getFileType() == FileType.LOGICAL) {
             return RapidFireRSEPlugin.getDefault().getImageRegistry().getDescriptor(RapidFireRSEPlugin.IMAGE_LOGICAL_FILE);
@@ -65,7 +65,7 @@ public class RapidFireFileResourceAdapter extends AbstractResourceAdapter implem
     @Override
     public String getText(Object element) {
 
-        RapidFireFileResource resource = (RapidFireFileResource)element;
+        RapidFireFileResource resource = getResource(element);
 
         return resource.getName();
     }
@@ -76,11 +76,15 @@ public class RapidFireFileResourceAdapter extends AbstractResourceAdapter implem
     @Override
     public String getAbsoluteName(Object element) {
 
-        RapidFireFileResource resource = (RapidFireFileResource)element;
+        RapidFireFileResource resource = getResource(element);
 
-        String name = "RapidFireFile." + resource.getDataLibrary() + "." + resource.getJob() + "." + resource.getPosition(); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+        String name = getAbsoluteNamePrefix() + resource.getDataLibrary() + "." + resource.getJob() + "." + resource.getPosition(); //$NON-NLS-1$ //$NON-NLS-2$
 
         return name;
+    }
+
+    public String getAbsoluteNamePrefix() {
+        return "RapidFireFile."; //$NON-NLS-1$
     }
 
     /**
@@ -94,7 +98,7 @@ public class RapidFireFileResourceAdapter extends AbstractResourceAdapter implem
 
     @Override
     public String getRemoteType(Object element) {
-        return "file";
+        return "file"; //$NON-NLS-1$
     }
 
     @Override
@@ -171,5 +175,9 @@ public class RapidFireFileResourceAdapter extends AbstractResourceAdapter implem
             return resource.getConversionProgramLibrary();
         }
         return null;
+    }
+
+    private RapidFireFileResource getResource(Object element) {
+        return (RapidFireFileResource)element;
     }
 }

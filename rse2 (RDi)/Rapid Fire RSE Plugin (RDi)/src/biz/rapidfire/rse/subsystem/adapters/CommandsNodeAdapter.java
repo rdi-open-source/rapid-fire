@@ -39,8 +39,8 @@ public class CommandsNodeAdapter extends AbstractNodeAdapter {
     }
 
     @Override
-    public String getAbsoluteName(Object element) {
-        return "node.commands"; //$NON-NLS-1$
+    protected String getAbsoluteNamePrefix() {
+        return "node.commands.";
     }
 
     @Override

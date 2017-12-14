@@ -8,7 +8,9 @@
 
 package biz.rapidfire.core.model;
 
-public interface IRapidFireChildResource extends IRapidFireResource {
+public interface IRapidFireChildResource<P> extends IRapidFireResource {
 
     public IRapidFireJobResource getParentJob();
+
+    public P getParent();
 }

@@ -42,8 +42,8 @@ public class FilesNodeAdapter extends AbstractNodeAdapter {
     }
 
     @Override
-    public String getAbsoluteName(Object element) {
-        return "node.files"; //$NON-NLS-1$
+    protected String getAbsoluteNamePrefix() {
+        return "node.files.";
     }
 
     @Override

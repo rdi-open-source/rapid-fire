@@ -61,6 +61,10 @@ public class RapidFireConversionResource extends AbstractResource implements IRa
         return this.parentJob;
     }
 
+    public IRapidFireFileResource getParent() {
+        return parentFile;
+    }
+
     /*
      * IRapidFireConversionResource methods
      */

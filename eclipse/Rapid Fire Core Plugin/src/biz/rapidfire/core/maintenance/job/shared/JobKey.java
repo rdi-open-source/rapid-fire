@@ -16,6 +16,13 @@ public class JobKey implements IResourceKey {
 
     private String jobName;
 
+    public static JobKey createNew() {
+
+        JobKey key = new JobKey(""); //$NON-NLS-1$
+
+        return key;
+    }
+
     public JobKey(String jobName) {
         if (jobName != null) {
             this.jobName = jobName.trim();

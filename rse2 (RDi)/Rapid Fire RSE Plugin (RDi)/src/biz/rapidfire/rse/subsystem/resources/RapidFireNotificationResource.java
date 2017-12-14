@@ -60,6 +60,10 @@ public class RapidFireNotificationResource extends AbstractResource implements I
         return this.parentJob;
     }
 
+    public IRapidFireJobResource getParent() {
+        return this.parentJob;
+    }
+
     /*
      * IRapidFireNotificationResource methods
      */

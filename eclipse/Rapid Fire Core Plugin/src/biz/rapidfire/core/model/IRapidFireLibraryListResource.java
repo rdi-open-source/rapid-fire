@@ -10,7 +10,7 @@ package biz.rapidfire.core.model;
 
 import biz.rapidfire.core.maintenance.librarylist.shared.LibraryListKey;
 
-public interface IRapidFireLibraryListResource extends IRapidFireChildResource {
+public interface IRapidFireLibraryListResource extends IRapidFireChildResource<IRapidFireJobResource> {
 
     public static final int DESCRIPTION_MAX_LENGTH = 35;
     public static final int LENGTH_SEQUENCE_NUMBERS = 1000;

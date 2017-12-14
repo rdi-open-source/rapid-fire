@@ -10,6 +10,7 @@ package biz.rapidfire.core.maintenance.notification;
 
 import java.sql.CallableStatement;
 import java.sql.Types;
+import java.util.HashSet;
 import java.util.Set;
 
 import biz.rapidfire.core.Messages;
@@ -205,13 +206,13 @@ public class NotificationManager extends AbstractManager<IRapidFireNotificationR
         return new Result(null, message, success);
     }
 
-    public NotificationAction[] getValidActions(IRapidFireNotificationResource notification) throws Exception {
+    protected NotificationAction[] getValidActions(NotificationKey notificationKey) throws Exception {
 
         CallableStatement statement = dao.prepareCall(dao
             .insertLibraryQualifier("{CALL " + IJDBCConnection.LIBRARY + "\"MNTSTBN_getValidActions\"(?, ?, ?, ?)}")); //$NON-NLS-1$ //$NON-NLS-2$
 
-        statement.setString(INotificationGetValidActions.JOB, notification.getParentJob().getName());
-        statement.setInt(INotificationGetValidActions.POSITION, notification.getKey().getPosition());
+        statement.setString(INotificationGetValidActions.JOB, notificationKey.getJobName());
+        statement.setInt(INotificationGetValidActions.POSITION, notificationKey.getPosition());
         statement.setInt(INotificationGetValidActions.NUMBER_ACTIONS, 0);
         statement.setString(INotificationGetValidActions.ACTIONS, EMPTY_STRING);
 
@@ -223,12 +224,17 @@ public class NotificationManager extends AbstractManager<IRapidFireNotificationR
         int numberActions = statement.getBigDecimal(INotificationGetValidActions.NUMBER_ACTIONS).intValue();
         String[] actions = splitActions(statement.getString(INotificationGetValidActions.ACTIONS), numberActions);
 
-        NotificationAction[] notificationActions = new NotificationAction[actions.length];
-        for (int i = 0; i < notificationActions.length; i++) {
-            notificationActions[i] = NotificationAction.find(actions[i].trim());
+        Set<NotificationAction> notificationActions = new HashSet<NotificationAction>();
+        for (String action : actions) {
+            notificationActions.add(NotificationAction.find(action.trim()));
         }
 
-        return notificationActions;
+        Result result = checkAction(NotificationKey.createNew(new JobKey(notificationKey.getJobName())), NotificationAction.CREATE);
+        if (result.isSuccessfull()) {
+            notificationActions.add(NotificationAction.CREATE);
+        }
+
+        return notificationActions.toArray(new NotificationAction[notificationActions.size()]);
     }
 
     public boolean isValidAction(IRapidFireNotificationResource notification, NotificationAction action) throws Exception {
@@ -237,7 +243,7 @@ public class NotificationManager extends AbstractManager<IRapidFireNotificationR
 
         Set<NotificationAction> actionsSet = NotificationActionCache.getInstance().getActions(notificationActionsKey);
         if (actionsSet == null) {
-            NotificationAction[] fileActions = getValidActions(notification);
+            NotificationAction[] fileActions = getValidActions(notification.getKey());
             NotificationActionCache.getInstance().putActions(notificationActionsKey, fileActions);
             actionsSet = NotificationActionCache.getInstance().getActions(notificationActionsKey);
         }

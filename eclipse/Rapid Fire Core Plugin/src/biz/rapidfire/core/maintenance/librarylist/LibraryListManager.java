@@ -10,6 +10,7 @@ package biz.rapidfire.core.maintenance.librarylist;
 
 import java.sql.CallableStatement;
 import java.sql.Types;
+import java.util.HashSet;
 import java.util.Set;
 
 import biz.rapidfire.core.Messages;
@@ -206,13 +207,13 @@ public class LibraryListManager extends AbstractManager<IRapidFireLibraryListRes
         return new Result(null, message, success);
     }
 
-    public LibraryListAction[] getValidActions(IRapidFireLibraryListResource libraryList) throws Exception {
+    protected LibraryListAction[] getValidActions(LibraryListKey libraryListKey) throws Exception {
 
         CallableStatement statement = dao.prepareCall(dao
             .insertLibraryQualifier("{CALL " + IJDBCConnection.LIBRARY + "\"MNTLIBL_getValidActions\"(?, ?, ?, ?)}")); //$NON-NLS-1$ //$NON-NLS-2$
 
-        statement.setString(ILibraryListGetValidActions.JOB, libraryList.getParentJob().getName());
-        statement.setString(ILibraryListGetValidActions.LIBRARY_LIST, libraryList.getKey().getLibraryList());
+        statement.setString(ILibraryListGetValidActions.JOB, libraryListKey.getJobName());
+        statement.setString(ILibraryListGetValidActions.LIBRARY_LIST, libraryListKey.getLibraryList());
         statement.setInt(ILibraryListGetValidActions.NUMBER_ACTIONS, 0);
         statement.setString(ILibraryListGetValidActions.ACTIONS, EMPTY_STRING);
 
@@ -224,12 +225,17 @@ public class LibraryListManager extends AbstractManager<IRapidFireLibraryListRes
         int numberActions = statement.getBigDecimal(ILibraryListGetValidActions.NUMBER_ACTIONS).intValue();
         String[] actions = splitActions(statement.getString(ILibraryListGetValidActions.ACTIONS), numberActions);
 
-        LibraryListAction[] fileActions = new LibraryListAction[actions.length];
-        for (int i = 0; i < fileActions.length; i++) {
-            fileActions[i] = LibraryListAction.find(actions[i].trim());
+        Set<LibraryListAction> libraryListActions = new HashSet<LibraryListAction>();
+        for (String action : actions) {
+            libraryListActions.add(LibraryListAction.find(action.trim()));
         }
 
-        return fileActions;
+        Result result = checkAction(LibraryListKey.createNew(new JobKey(libraryListKey.getJobName())), LibraryListAction.CREATE);
+        if (result.isSuccessfull()) {
+            libraryListActions.add(LibraryListAction.CREATE);
+        }
+
+        return libraryListActions.toArray(new LibraryListAction[libraryListActions.size()]);
     }
 
     public boolean isValidAction(IRapidFireLibraryListResource libraryList, LibraryListAction action) throws Exception {
@@ -238,7 +244,7 @@ public class LibraryListManager extends AbstractManager<IRapidFireLibraryListRes
 
         Set<LibraryListAction> actionsSet = LibraryListActionCache.getInstance().getActions(fileActionsKey);
         if (actionsSet == null) {
-            LibraryListAction[] fileActions = getValidActions(libraryList);
+            LibraryListAction[] fileActions = getValidActions(libraryList.getKey());
             LibraryListActionCache.getInstance().putActions(fileActionsKey, fileActions);
             actionsSet = LibraryListActionCache.getInstance().getActions(fileActionsKey);
         }

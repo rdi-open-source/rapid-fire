@@ -18,6 +18,13 @@ public class LibraryListKey implements IResourceKey {
     private JobKey jobKey;
     private String libraryList;
 
+    public static LibraryListKey createNew(JobKey jobKey) {
+
+        LibraryListKey key = new LibraryListKey(jobKey, ""); //$NON-NLS-1$
+
+        return key;
+    }
+
     public LibraryListKey(JobKey jobKey, String libraryList) {
 
         this.jobKey = jobKey;

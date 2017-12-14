@@ -10,7 +10,7 @@ package biz.rapidfire.core.model;
 
 import biz.rapidfire.core.maintenance.library.shared.LibraryKey;
 
-public interface IRapidFireLibraryResource extends IRapidFireChildResource {
+public interface IRapidFireLibraryResource extends IRapidFireChildResource<IRapidFireJobResource> {
 
     public LibraryKey getKey();
 

@@ -18,6 +18,13 @@ public class NotificationKey implements IResourceKey {
     private JobKey jobKey;
     private int position;
 
+    public static NotificationKey createNew(JobKey jobKey) {
+
+        NotificationKey key = new NotificationKey(jobKey, 0);
+
+        return key;
+    }
+
     public NotificationKey(JobKey jobKey, int position) {
 
         this.jobKey = jobKey;

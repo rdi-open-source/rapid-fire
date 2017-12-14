@@ -39,8 +39,8 @@ public class LibraryListsNodeAdapter extends AbstractNodeAdapter {
     }
 
     @Override
-    public String getAbsoluteName(Object element) {
-        return "node.library.lists"; //$NON-NLS-1$
+    protected String getAbsoluteNamePrefix() {
+        return "node.library.lists.";
     }
 
     @Override

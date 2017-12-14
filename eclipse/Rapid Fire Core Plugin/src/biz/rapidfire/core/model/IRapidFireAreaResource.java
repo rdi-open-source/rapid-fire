@@ -10,7 +10,7 @@ package biz.rapidfire.core.model;
 
 import biz.rapidfire.core.maintenance.area.shared.AreaKey;
 
-public interface IRapidFireAreaResource extends IRapidFireChildResource {
+public interface IRapidFireAreaResource extends IRapidFireChildResource<IRapidFireFileResource> {
 
     /*
      * Key attributes

@@ -11,7 +11,7 @@ package biz.rapidfire.core.model;
 import biz.rapidfire.core.maintenance.file.shared.FileKey;
 import biz.rapidfire.core.maintenance.file.shared.FileType;
 
-public interface IRapidFireFileResource extends IRapidFireChildResource {
+public interface IRapidFireFileResource extends IRapidFireChildResource<IRapidFireJobResource> {
 
     /*
      * Key attributes

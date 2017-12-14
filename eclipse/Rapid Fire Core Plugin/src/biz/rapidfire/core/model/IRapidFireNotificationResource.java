@@ -11,7 +11,7 @@ package biz.rapidfire.core.model;
 import biz.rapidfire.core.maintenance.notification.shared.NotificationKey;
 import biz.rapidfire.core.maintenance.notification.shared.NotificationType;
 
-public interface IRapidFireNotificationResource extends IRapidFireChildResource {
+public interface IRapidFireNotificationResource extends IRapidFireChildResource<IRapidFireJobResource> {
 
     public NotificationKey getKey();
 

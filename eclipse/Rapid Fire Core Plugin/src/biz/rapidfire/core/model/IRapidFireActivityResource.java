@@ -10,7 +10,7 @@ package biz.rapidfire.core.model;
 
 import java.sql.Time;
 
-public interface IRapidFireActivityResource extends IRapidFireChildResource {
+public interface IRapidFireActivityResource<P> extends IRapidFireChildResource<P> {
 
     /*
      * Key attributes

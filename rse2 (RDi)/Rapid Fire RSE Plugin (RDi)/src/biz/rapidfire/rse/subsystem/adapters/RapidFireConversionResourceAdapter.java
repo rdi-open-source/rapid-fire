@@ -51,7 +51,7 @@ public class RapidFireConversionResourceAdapter extends AbstractResourceAdapter 
     @Override
     public String getText(Object element) {
 
-        RapidFireConversionResource resource = (RapidFireConversionResource)element;
+        RapidFireConversionResource resource = getResource(element);
 
         return resource.getFieldToConvert();
     }
@@ -62,11 +62,16 @@ public class RapidFireConversionResourceAdapter extends AbstractResourceAdapter 
     @Override
     public String getAbsoluteName(Object element) {
 
-        RapidFireConversionResource resource = (RapidFireConversionResource)element;
+        RapidFireConversionResource resource = getResource(element);
 
-        String name = "RapidFireConversion." + resource.getDataLibrary() + "." + resource.getJob() + "." + resource.getPosition() + "." + resource.getFieldToConvert(); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+        String name = getAbsoluteNamePrefix() + resource.getDataLibrary()
+            + "." + resource.getJob() + "." + resource.getPosition() + "." + resource.getFieldToConvert(); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
 
         return name;
+    }
+
+    public String getAbsoluteNamePrefix() {
+        return "RapidFireConversion."; //$NON-NLS-1$
     }
 
     /**
@@ -80,7 +85,7 @@ public class RapidFireConversionResourceAdapter extends AbstractResourceAdapter 
 
     @Override
     public String getRemoteType(Object element) {
-        return "conversion";
+        return "conversion"; //$NON-NLS-1$
     }
 
     @Override
@@ -133,5 +138,9 @@ public class RapidFireConversionResourceAdapter extends AbstractResourceAdapter 
             return resource.getNewFieldName();
         }
         return null;
+    }
+
+    private RapidFireConversionResource getResource(Object element) {
+        return (RapidFireConversionResource)element;
     }
 }

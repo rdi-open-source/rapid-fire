@@ -10,6 +10,7 @@ package biz.rapidfire.core.maintenance.job;
 
 import java.sql.CallableStatement;
 import java.sql.Types;
+import java.util.HashSet;
 import java.util.Set;
 
 import biz.rapidfire.core.Messages;
@@ -200,12 +201,12 @@ public class JobManager extends AbstractManager<IRapidFireJobResource, JobKey, J
         return new Result(null, message, success);
     }
 
-    public JobAction[] getValidActions(IRapidFireJobResource job) throws Exception {
+    protected JobAction[] getValidActions(JobKey jobKey) throws Exception {
 
         CallableStatement statement = dao.prepareCall(dao
             .insertLibraryQualifier("{CALL " + IJDBCConnection.LIBRARY + "\"MNTJOB_getValidActions\"(?, ?, ?)}")); //$NON-NLS-1$ //$NON-NLS-2$
 
-        statement.setString(IJobGetValidActions.JOB, job.getName());
+        statement.setString(IJobGetValidActions.JOB, jobKey.getJobName());
         statement.setInt(IJobGetValidActions.NUMBER_ACTIONS, 0);
         statement.setString(IJobGetValidActions.ACTIONS, EMPTY_STRING);
 
@@ -217,12 +218,17 @@ public class JobManager extends AbstractManager<IRapidFireJobResource, JobKey, J
         int numberActions = statement.getBigDecimal(IJobGetValidActions.NUMBER_ACTIONS).intValue();
         String[] actions = splitActions(statement.getString(IJobGetValidActions.ACTIONS), numberActions);
 
-        JobAction[] jobActions = new JobAction[actions.length];
-        for (int i = 0; i < jobActions.length; i++) {
-            jobActions[i] = JobAction.find(actions[i].trim());
+        Set<JobAction> jobActions = new HashSet<JobAction>();
+        for (String action : actions) {
+            jobActions.add(JobAction.find(action.trim()));
         }
 
-        return jobActions;
+        Result result = checkAction(JobKey.createNew(), JobAction.CREATE);
+        if (result.isSuccessfull()) {
+            jobActions.add(JobAction.CREATE);
+        }
+
+        return jobActions.toArray(new JobAction[jobActions.size()]);
     }
 
     public Result testJob(JobKey key) throws Exception {
@@ -290,7 +296,7 @@ public class JobManager extends AbstractManager<IRapidFireJobResource, JobKey, J
 
         Set<JobAction> actionsSet = JobActionCache.getInstance().getActions(jobActionsKey);
         if (actionsSet == null) {
-            JobAction[] jobActions = getValidActions(job);
+            JobAction[] jobActions = getValidActions(job.getKey());
             JobActionCache.getInstance().putActions(jobActionsKey, jobActions);
             actionsSet = JobActionCache.getInstance().getActions(jobActionsKey);
         }

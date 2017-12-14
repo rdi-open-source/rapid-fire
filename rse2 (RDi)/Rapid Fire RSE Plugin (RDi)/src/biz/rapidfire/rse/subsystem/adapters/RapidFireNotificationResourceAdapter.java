@@ -38,7 +38,7 @@ public class RapidFireNotificationResourceAdapter extends AbstractResourceAdapte
     @Override
     public ImageDescriptor getImageDescriptor(Object element) {
 
-        RapidFireNotificationResource resource = (RapidFireNotificationResource)element;
+        RapidFireNotificationResource resource = getResource(element);
 
         if (resource.getNotificationType() == NotificationType.MSGQ) {
             return RapidFireRSEPlugin.getDefault().getImageRegistry().getDescriptor(RapidFireRSEPlugin.IMAGE_MESSAGE_QUEUE);
@@ -59,7 +59,7 @@ public class RapidFireNotificationResourceAdapter extends AbstractResourceAdapte
     @Override
     public String getText(Object element) {
 
-        RapidFireNotificationResource resource = (RapidFireNotificationResource)element;
+        RapidFireNotificationResource resource = getResource(element);
 
         StringBuilder text = new StringBuilder();
 
@@ -80,11 +80,15 @@ public class RapidFireNotificationResourceAdapter extends AbstractResourceAdapte
     @Override
     public String getAbsoluteName(Object element) {
 
-        RapidFireNotificationResource resource = (RapidFireNotificationResource)element;
+        RapidFireNotificationResource resource = getResource(element);
 
-        String name = "RapidFireNotification." + resource.getDataLibrary() + "." + resource.getJob() + "." + resource.getPosition(); //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+        String name = getAbsoluteNamePrefix() + resource.getDataLibrary() + "." + resource.getJob() + "." + resource.getPosition(); //$NON-NLS-1$ //$NON-NLS-2$
 
         return name;
+    }
+
+    public String getAbsoluteNamePrefix() {
+        return "RapidFireNotification."; //$NON-NLS-1$
     }
 
     /**
@@ -103,7 +107,7 @@ public class RapidFireNotificationResourceAdapter extends AbstractResourceAdapte
 
     @Override
     public Object getParent(Object element) {
-        return null;
+        return null; //$NON-NLS-1$
     }
 
     @Override
@@ -159,5 +163,9 @@ public class RapidFireNotificationResourceAdapter extends AbstractResourceAdapte
             return resource.getMessageQueueLibrary();
         }
         return null;
+    }
+
+    private RapidFireNotificationResource getResource(Object element) {
+        return (RapidFireNotificationResource)element;
     }
 }

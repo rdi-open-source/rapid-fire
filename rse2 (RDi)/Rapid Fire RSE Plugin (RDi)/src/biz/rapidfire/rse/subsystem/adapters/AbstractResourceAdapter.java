@@ -41,9 +41,15 @@ public abstract class AbstractResourceAdapter extends AbstractSystemViewAdapter 
         return Messages.EMPTY;
     }
 
+    /**
+     * Returns the absolute name of the node. The name must be unique for the
+     * "Remote Systems" view.
+     */
     public String getAbsoluteName(Object element) {
-        return null;
+        return Integer.toString(element.hashCode());
     }
+
+    protected abstract String getAbsoluteNamePrefix();
 
     @Override
     public String getType(Object paramObject) {

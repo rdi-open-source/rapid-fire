@@ -18,6 +18,13 @@ public class FileKey implements IResourceKey {
     private JobKey jobKey;
     private int position;
 
+    public static FileKey createNew(JobKey jobKey) {
+
+        FileKey key = new FileKey(jobKey, 0);
+
+        return key;
+    }
+
     public FileKey(JobKey jobKey, int position) {
 
         this.jobKey = jobKey;
