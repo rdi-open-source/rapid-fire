@@ -60,12 +60,6 @@
             subtypefilter="*"
             namefilter="*"
             id="biz.rapidfire.rse.job.actions">
-            
-            <separator name="activity"/>
-            <separator name="maintenance"/>
-            <separator name="status"/>
-            <separator name="run"/>
-            <separator name="reset"/>
          
          <action
                label="%command_Change_Activity_Plan"

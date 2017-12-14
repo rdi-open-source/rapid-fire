@@ -38,8 +38,8 @@ public class NotificationsNodeAdapter extends AbstractNodeAdapter {
     }
 
     @Override
-    public String getAbsoluteName(Object element) {
-        return "node.notifications"; //$NON-NLS-1$
+    protected String getAbsoluteNamePrefix() {
+        return "node.notifications."; //$NON-NLS-1$
     }
 
     @Override

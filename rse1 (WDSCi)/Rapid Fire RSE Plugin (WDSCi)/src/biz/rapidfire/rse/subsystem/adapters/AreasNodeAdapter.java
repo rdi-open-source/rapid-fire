@@ -38,8 +38,8 @@ public class AreasNodeAdapter extends AbstractNodeAdapter {
     }
 
     @Override
-    public String getAbsoluteName(Object element) {
-        return "node.areas"; //$NON-NLS-1$
+    protected String getAbsoluteNamePrefix() {
+        return "node.areas."; //$NON-NLS-1$
     }
 
     @Override
