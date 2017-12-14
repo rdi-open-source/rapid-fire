@@ -27,7 +27,7 @@ public class RapidFireCommandResource extends AbstractResource implements IRapid
     private RapidFireCommandResourceDelegate delegate;
 
     public static RapidFireCommandResource createEmptyInstance(IRapidFireFileResource file) {
-        return new RapidFireCommandResource(file, CommandType.COMPILE, 0); 
+        return new RapidFireCommandResource(file, CommandType.COMPILE, 0);
     }
 
     public RapidFireCommandResource(IRapidFireFileResource file, CommandType commandType, int sequence) {
@@ -61,6 +61,10 @@ public class RapidFireCommandResource extends AbstractResource implements IRapid
 
     public IRapidFireJobResource getParentJob() {
         return this.parentJob;
+    }
+
+    public IRapidFireFileResource getParent() {
+        return parentFile;
     }
 
     /*
