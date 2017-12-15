@@ -11,21 +11,21 @@ package biz.rapidfire.rse.subsystem.actions;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.rse.core.subsystems.ISubSystem;
-import org.eclipse.rse.ui.actions.SystemBaseAction;
 import org.eclipse.swt.widgets.Shell;
 
 import biz.rapidfire.core.RapidFireCorePlugin;
 import biz.rapidfire.core.handlers.librarylist.NewLibraryListHandler;
 import biz.rapidfire.core.model.IRapidFireJobResource;
+import biz.rapidfire.core.model.IRapidFireLibraryListResource;
 import biz.rapidfire.rse.Messages;
 import biz.rapidfire.rse.RapidFireRSEPlugin;
 import biz.rapidfire.rse.subsystem.resources.LibraryListsNode;
 import biz.rapidfire.rse.subsystem.resources.RapidFireLibraryListResource;
 
-public class NewLibraryListAction extends SystemBaseAction {
+public class NewLibraryListAction extends AbstractNewNodePopupMenuAction<LibraryListsNode, IRapidFireLibraryListResource> {
 
     public NewLibraryListAction(Shell shell) {
-        super(Messages.ActionLabel_New_Library_List, Messages.ActionTooltip_New_Library_List, shell);
+        super(Messages.ActionLabel_New_Library_List, Messages.ActionTooltip_New_Library_List, shell, new NewLibraryListHandler());
 
         setImageDescriptor(RapidFireRSEPlugin.getDefault().getImageRegistry().getDescriptor(RapidFireRSEPlugin.IMAGE_NEW_LIBRARY_LIST));
         setContextMenuGroup("group.new");
@@ -43,13 +43,27 @@ public class NewLibraryListAction extends SystemBaseAction {
             RapidFireLibraryListResource library = RapidFireLibraryListResource.createEmptyInstance(job);
             library.setSubSystem((ISubSystem)job.getParentSubSystem());
 
-            NewLibraryListHandler handler = new NewLibraryListHandler();
             IStructuredSelection selection = new StructuredSelection(library);
-            handler.executeWithSelection(selection);
+            getHandler().executeWithSelection(selection);
 
         } catch (Exception e) {
             RapidFireCorePlugin.logError("*** Could not execute 'New Library List' handler ***", e); //$NON-NLS-1$
         }
 
+    }
+
+    @Override
+    protected IRapidFireLibraryListResource createNewResource(LibraryListsNode node) {
+        return RapidFireLibraryListResource.createEmptyInstance(node.getJob());
+    }
+
+    @Override
+    protected LibraryListsNode getResource(Object object) {
+
+        if (object instanceof LibraryListsNode) {
+            return (LibraryListsNode)object;
+        }
+
+        return null;
     }
 }

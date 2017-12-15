@@ -11,21 +11,21 @@ package biz.rapidfire.rse.subsystem.actions;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.rse.core.subsystems.ISubSystem;
-import org.eclipse.rse.ui.actions.SystemBaseAction;
 import org.eclipse.swt.widgets.Shell;
 
 import biz.rapidfire.core.RapidFireCorePlugin;
 import biz.rapidfire.core.handlers.file.NewFileHandler;
+import biz.rapidfire.core.model.IRapidFireFileResource;
 import biz.rapidfire.core.model.IRapidFireJobResource;
 import biz.rapidfire.rse.Messages;
 import biz.rapidfire.rse.RapidFireRSEPlugin;
 import biz.rapidfire.rse.subsystem.resources.FilesNode;
 import biz.rapidfire.rse.subsystem.resources.RapidFireFileResource;
 
-public class NewFileAction extends SystemBaseAction {
+public class NewFileAction extends AbstractNewNodePopupMenuAction<FilesNode, IRapidFireFileResource> {
 
     public NewFileAction(Shell shell) {
-        super(Messages.ActionLabel_New_File, Messages.ActionTooltip_New_File, shell);
+        super(Messages.ActionLabel_New_File, Messages.ActionTooltip_New_File, shell, new NewFileHandler());
 
         setImageDescriptor(RapidFireRSEPlugin.getDefault().getImageRegistry().getDescriptor(RapidFireRSEPlugin.IMAGE_NEW_FILE));
         setContextMenuGroup("group.new");
@@ -43,13 +43,27 @@ public class NewFileAction extends SystemBaseAction {
             RapidFireFileResource file = RapidFireFileResource.createEmptyInstance(job);
             file.setSubSystem((ISubSystem)job.getParentSubSystem());
 
-            NewFileHandler handler = new NewFileHandler();
             IStructuredSelection selection = new StructuredSelection(file);
-            handler.executeWithSelection(selection);
+            getHandler().executeWithSelection(selection);
 
         } catch (Exception e) {
             RapidFireCorePlugin.logError("*** Could not execute 'New File' handler ***", e); //$NON-NLS-1$
         }
 
+    }
+
+    @Override
+    protected IRapidFireFileResource createNewResource(FilesNode node) {
+        return RapidFireFileResource.createEmptyInstance(node.getJob());
+    }
+
+    @Override
+    protected FilesNode getResource(Object object) {
+
+        if (object instanceof FilesNode) {
+            return (FilesNode)object;
+        }
+
+        return null;
     }
 }

@@ -11,21 +11,21 @@ package biz.rapidfire.rse.subsystem.actions;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.rse.core.subsystems.ISubSystem;
-import org.eclipse.rse.ui.actions.SystemBaseAction;
 import org.eclipse.swt.widgets.Shell;
 
 import biz.rapidfire.core.RapidFireCorePlugin;
 import biz.rapidfire.core.handlers.notification.NewNotificationHandler;
 import biz.rapidfire.core.model.IRapidFireJobResource;
+import biz.rapidfire.core.model.IRapidFireNotificationResource;
 import biz.rapidfire.rse.Messages;
 import biz.rapidfire.rse.RapidFireRSEPlugin;
 import biz.rapidfire.rse.subsystem.resources.NotificationsNode;
 import biz.rapidfire.rse.subsystem.resources.RapidFireNotificationResource;
 
-public class NewNotificationAction extends SystemBaseAction {
+public class NewNotificationAction extends AbstractNewNodePopupMenuAction<NotificationsNode, IRapidFireNotificationResource> {
 
     public NewNotificationAction(Shell shell) {
-        super(Messages.ActionLabel_New_Notification, Messages.ActionTooltip_New_Notification, shell);
+        super(Messages.ActionLabel_New_Notification, Messages.ActionTooltip_New_Notification, shell, new NewNotificationHandler());
 
         setImageDescriptor(RapidFireRSEPlugin.getDefault().getImageRegistry().getDescriptor(RapidFireRSEPlugin.IMAGE_NEW_NOTIFICATION));
         setContextMenuGroup("group.new");
@@ -43,13 +43,27 @@ public class NewNotificationAction extends SystemBaseAction {
             RapidFireNotificationResource notification = RapidFireNotificationResource.createEmptyInstance(job);
             notification.setSubSystem((ISubSystem)job.getParentSubSystem());
 
-            NewNotificationHandler handler = new NewNotificationHandler();
             IStructuredSelection selection = new StructuredSelection(notification);
-            handler.executeWithSelection(selection);
+            getHandler().executeWithSelection(selection);
 
         } catch (Exception e) {
             RapidFireCorePlugin.logError("*** Could not execute 'New Notification' handler ***", e); //$NON-NLS-1$
         }
 
+    }
+
+    @Override
+    protected IRapidFireNotificationResource createNewResource(NotificationsNode node) {
+        return RapidFireNotificationResource.createEmptyInstance(node.getJob());
+    }
+
+    @Override
+    protected NotificationsNode getResource(Object object) {
+
+        if (object instanceof NotificationsNode) {
+            return (NotificationsNode)object;
+        }
+
+        return null;
     }
 }
