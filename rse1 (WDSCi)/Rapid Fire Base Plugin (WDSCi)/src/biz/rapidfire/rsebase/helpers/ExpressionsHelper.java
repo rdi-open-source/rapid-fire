@@ -8,16 +8,14 @@
 
 package biz.rapidfire.rsebase.helpers;
 
+/**
+ * Compile dummy as a replacement for
+ * 'biz.rapidfire.rsebase.helpers.ExpressionsHelper', which is not available
+ * for WDSCi.
+ */
 public class ExpressionsHelper {
 
-    private static final String SELECTION = "selection";
-
     public static Object getSelection(Object evaluationContext) {
-        return getVariable(evaluationContext, SELECTION);
+        throw new RuntimeException("Method 'getSelection()' must not be called for WDSCi.");
     }
-
-    private static Object getVariable(Object evaluationContext, String key) {
-        throw new RuntimeException("Method 'getVariable()' must not be called for WDSCi.");
-    }
-
 }
