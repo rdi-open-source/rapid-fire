@@ -91,6 +91,24 @@
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
+     /*   Cmd-ADDMSGD für Message-ID :   ERR0004                    */
+     /* Invalid parameter values. Error = "Field to convert" has to */
+     /*-------------------------------------------------------------*/
+
+             ADDMSGD +
+                MSGID(ERR0004) +
+                MSGF(&LIB/&OBJ) +
+                MSG(+
+'Invalid parameter values. Error = "Field to convert" has to be blanks-
+.'                                                                    +
+                ) +
+                SEV(00) +
+     /*   Keine Ersatzvariablen definiert!                          */ +
+                ALROPT(*NO) +
+                CCSID( 65535) +
+                /*  -EOF-  */
+
+     /*-------------------------------------------------------------*/
      /*   Cmd-ADDMSGD für Message-ID :   ERR0005                    */
      /* Both fields have to be different.                           */
      /*-------------------------------------------------------------*/
@@ -117,6 +135,61 @@
                 MSGF(&LIB/&OBJ) +
                 MSG(+
 'The value in field ''Statement'' is not valid.'                      +
+                ) +
+                SEV(00) +
+     /*   Keine Ersatzvariablen definiert!                          */ +
+                ALROPT(*NO) +
+                CCSID( 65535) +
+                /*  -EOF-  */
+
+     /*-------------------------------------------------------------*/
+     /*   Cmd-ADDMSGD für Message-ID :   ERR0007                    */
+     /* Invalid parameter values. Error = &1.                       */
+     /*-------------------------------------------------------------*/
+
+             ADDMSGD +
+                MSGID(ERR0007) +
+                MSGF(&LIB/&OBJ) +
+                MSG(+
+'Invalid parameter values. Error = &1.'                               +
+                ) +
+                SEV(00) +
+                FMT( +
+                    (*CHAR 0256) +
+                ) +
+                ALROPT(*NO) +
+                CCSID( 65535) +
+                /*  -EOF-  */
+
+     /*-------------------------------------------------------------*/
+     /*   Cmd-ADDMSGD für Message-ID :   ERR0008                    */
+     /* &1                                                          */
+     /*-------------------------------------------------------------*/
+
+             ADDMSGD +
+                MSGID(ERR0008) +
+                MSGF(&LIB/&OBJ) +
+                MSG(+
+'&1'                                                                  +
+                ) +
+                SEV(00) +
+                FMT( +
+                    (*CHAR 0256) +
+                ) +
+                ALROPT(*NO) +
+                CCSID( 65535) +
+                /*  -EOF-  */
+
+     /*-------------------------------------------------------------*/
+     /*   Cmd-ADDMSGD für Message-ID :   ERR0009                    */
+     /* The action is only valid for jobs with status *RDY.         */
+     /*-------------------------------------------------------------*/
+
+             ADDMSGD +
+                MSGID(ERR0009) +
+                MSGF(&LIB/&OBJ) +
+                MSG(+
+'The action is only valid for jobs with status *RDY.'                 +
                 ) +
                 SEV(00) +
      /*   Keine Ersatzvariablen definiert!                          */ +
