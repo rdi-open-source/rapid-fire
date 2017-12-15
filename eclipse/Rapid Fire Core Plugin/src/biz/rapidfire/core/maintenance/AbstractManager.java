@@ -11,6 +11,7 @@ package biz.rapidfire.core.maintenance;
 import java.sql.CallableStatement;
 import java.sql.SQLException;
 
+import biz.rapidfire.core.maintenance.shared.IResourceAction;
 import biz.rapidfire.core.model.IRapidFireResource;
 
 public abstract class AbstractManager<R extends IRapidFireResource, K extends IResourceKey, V extends IResourceValues, A extends IResourceAction> {

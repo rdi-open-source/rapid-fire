@@ -14,6 +14,8 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
+import biz.rapidfire.core.maintenance.shared.IResourceAction;
+
 public abstract class AbstractResourceActionsCache<K extends AbstractKeyResourceActionCache, A extends IResourceAction> {
 
     private Map<String, Set<A>> cachedKeys;

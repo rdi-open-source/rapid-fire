@@ -11,7 +11,7 @@ package biz.rapidfire.core.maintenance.librarylist.shared;
 import java.util.HashMap;
 import java.util.Map;
 
-import biz.rapidfire.core.maintenance.IResourceAction;
+import biz.rapidfire.core.maintenance.shared.IResourceAction;
 
 public enum LibraryListAction implements IResourceAction {
     CREATE ("*CREATE"),

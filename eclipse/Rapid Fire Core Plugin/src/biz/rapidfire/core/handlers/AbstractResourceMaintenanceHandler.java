@@ -25,9 +25,9 @@ import biz.rapidfire.core.RapidFireCorePlugin;
 import biz.rapidfire.core.dialogs.MessageDialogAsync;
 import biz.rapidfire.core.handlers.shared.IMaintenanceHandler;
 import biz.rapidfire.core.helpers.ExceptionHelper;
-import biz.rapidfire.core.maintenance.IResourceAction;
 import biz.rapidfire.core.maintenance.MaintenanceMode;
 import biz.rapidfire.core.maintenance.Result;
+import biz.rapidfire.core.maintenance.shared.IResourceAction;
 import biz.rapidfire.core.model.IRapidFireResource;
 import biz.rapidfire.rsebase.handlers.AbstractSelectionHandler;
 import biz.rapidfire.rsebase.helpers.ExpressionsHelper;
@@ -55,6 +55,7 @@ public abstract class AbstractResourceMaintenanceHandler<R extends IRapidFireRes
         this.currentMode = mode;
     }
 
+    @SuppressWarnings("unchecked")
     private void selectionChanged(Object selection) {
 
         isEnabled = false;
@@ -74,29 +75,50 @@ public abstract class AbstractResourceMaintenanceHandler<R extends IRapidFireRes
             while (iterator.hasNext()) {
                 Object object = iterator.next();
                 if (isInstanceOf(object)) {
-                    try {
-                        isEnabled = isValidAction((R)object);
-                    } catch (Exception e) {
-                        isEnabled = false;
-                    }
+                    setEnabledByResource((R)object);
                 } else {
                     break;
                 }
 
-                if (!isEnabled) {
+                if (!isEnabled()) {
                     break;
                 }
             }
         }
     }
 
-    public void setEnabled(Object evaluationContext) {
-        Object selection = ExpressionsHelper.getSelection(evaluationContext);
+    /**
+     * Set the enabled state of the handler. When this method is called by the
+     * Eclipse framework, the framework passes an
+     * 'org.eclipse.core.expressions.EvaluationContext'. When the method is
+     * called one of the "NewResourceAction" classes of the RapidFireRSEPlugin,
+     * it gets a resource object.
+     */
+    public void setEnabled(Object object) {
+
+        if (isInstanceOf(object)) {
+            setEnabledByResource((R)object);
+        } else {
+            Object selection = ExpressionsHelper.getSelection(object);
+            selectionChanged(selection);
+        }
+    }
+
+    /**
+     * Set the enabled state of the handler. It is called by the WDSCi version
+     * of the plugin.
+     */
+    public void setEnabledWDSCi(ISelection selection) {
         selectionChanged(selection);
     }
 
-    public void setEnabledWDSCi(ISelection selection) {
-        selectionChanged(selection);
+    private void setEnabledByResource(R resource) {
+
+        try {
+            isEnabled = isValidAction(resource);
+        } catch (Exception e) {
+            isEnabled = false;
+        }
     }
 
     public boolean isEnabled() {
@@ -114,15 +136,19 @@ public abstract class AbstractResourceMaintenanceHandler<R extends IRapidFireRes
         execute(event);
     }
 
+    @SuppressWarnings("unchecked")
     public Object executeWithSelection(ISelection selection) throws ExecutionException {
 
         if (selection instanceof IStructuredSelection) {
             IStructuredSelection structuredSelection = (IStructuredSelection)selection;
-            Iterator<IRapidFireResource> iterator = structuredSelection.iterator();
+            Iterator<?> iterator = structuredSelection.iterator();
             while (iterator.hasNext()) {
                 currentMode = initialMode;
                 setErrorMessage(null);
-                executeWithResource((R)iterator.next());
+                Object object = iterator.next();
+                if (isInstanceOf(object)) {
+                    executeWithResource((R)object);
+                }
                 if (isError()) {
                     displayError();
                 }

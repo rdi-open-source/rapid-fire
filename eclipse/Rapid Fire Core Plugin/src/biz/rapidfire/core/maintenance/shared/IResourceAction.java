@@ -6,7 +6,7 @@
  * http://www.eclipse.org/legal/cpl-v10.html
  *******************************************************************************/
 
-package biz.rapidfire.core.maintenance;
+package biz.rapidfire.core.maintenance.shared;
 
 import biz.rapidfire.core.maintenance.activity.shared.ActivityAction;
 import biz.rapidfire.core.maintenance.area.shared.AreaAction;
