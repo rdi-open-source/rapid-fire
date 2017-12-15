@@ -22,7 +22,7 @@ DCL-PR MNTAREA_initialize IND // <-- Success
        EXTPROC('MNTAREA_initialize');
   *N CHAR(10) CONST;          // --> Mode
   *N CHAR(10) CONST;          // --> Job
-  *N PACKED(6) CONST;         // --> Position
+  *N PACKED(6 : 0) CONST;     // --> Position
   *N CHAR(10) CONST;          // --> Area
   *N CHAR(1);                 // <-- Success
   *N CHAR(256);               // <-- Message
@@ -56,3 +56,32 @@ END-PR;
 DCL-PR MNTAREA_book
        EXTPROC('MNTAREA_book');
 END-PR;
+
+DCL-PR MNTAREA_checkAction IND // <-- Success
+       EXTPROC('MNTAREA_checkAction');
+  *N CHAR(10) CONST;           // --> Action
+  *N CHAR(10) CONST;           // --> Job
+  *N PACKED(6 : 0) CONST;      // --> Position
+  *N CHAR(10) CONST;           // --> Area
+  *N CHAR(1);                  // <-- Success
+  *N CHAR(256);                // <-- Message
+END-PR;
+
+DCL-PR MNTAREA_getValidActions
+       EXTPROC('MNTAREA_getValidActions');
+  *N CHAR(10) CONST;      // --> Job
+  *N PACKED(6 : 0) CONST; // --> Position
+  *N CHAR(10) CONST;      // --> Area
+  *N PACKED(2 : 0);       // <-- Number of actions
+  *N CHAR(10) DIM(25);    // <-- Actions
+END-PR;
+
+DCL-C MNTAREA_ERROR   '*ERROR';
+DCL-C MNTAREA_NONE    '*NONE';
+DCL-C MNTAREA_SELECT  '*SELECT';
+DCL-C MNTAREA_CREATE  '*CREATE';
+DCL-C MNTAREA_COPY    '*COPY';
+DCL-C MNTAREA_CHANGE  '*CHANGE';
+DCL-C MNTAREA_DELETE  '*DELETE';
+DCL-C MNTAREA_DISPLAY '*DISPLAY';
+DCL-C MNTAREA_CHKACT  '*CHKACT';

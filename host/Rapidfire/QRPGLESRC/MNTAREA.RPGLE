@@ -64,7 +64,11 @@ DCL-F LIBLS
 
 //*-----------------------------------------------------------------------------------------*
 
+/INCLUDE QCPYSRC,MNTFILE
+
 /INCLUDE QCPYSRC,MNTAREA
+
+/INCLUDE QCPYSRC,RAPIDFIRE
 
 /INCLUDE QCPYSRC,HDLRCDLCK
 
@@ -75,12 +79,6 @@ DCL-F LIBLS
 DCL-DS PSDS LEN(429) QUALifIED PSDS;
 END-DS;
 
-DCL-C MODE_CREATE '*CREATE';
-DCL-C MODE_COPY '*COPY';
-DCL-C MODE_CHANGE '*CHANGE';
-DCL-C MODE_DELETE '*DELETE';
-DCL-C MODE_DISPLAY '*DISPLAY';
-
 DCL-S g_MODE  CHAR(10);      // Mode
 DCL-S g_JOB   CHAR(10);      // Job
 DCL-S g_POS   PACKED(6 : 0); // Position
@@ -89,6 +87,7 @@ DCL-S g_LIB   CHAR(10);      // Library
 DCL-S g_LIBL  CHAR(10);      // Library list
 DCL-S g_CCSID CHAR(1024);    // Coded character set ID
 DCL-S g_CEXT  CHAR(10);      // Command extension
+DCL-S g_OPN   IND INZ(*OFF); // Open indicator
 
 //*=========================================================================================*
 //* Open Files                                                                              *
@@ -104,6 +103,8 @@ DCL-PROC MNTAREA_openFiles EXPORT;
   open AREAS;
   open LIBRARIES;
   open LIBLS;
+
+  g_OPN = *on;
 
 END-PROC MNTAREA_openFiles;
 
@@ -121,6 +122,8 @@ DCL-PROC MNTAREA_closeFiles EXPORT;
   close AREAS;
   close LIBRARIES;
   close LIBLS;
+
+  g_OPN = *off;
 
 END-PROC MNTAREA_closeFiles;
 
@@ -174,14 +177,14 @@ DCL-PROC MNTAREA_initialize EXPORT;
 
       select;
 
-      when (g_MODE = MODE_CREATE);
+      when (g_MODE = MNTAREA_CREATE);
 
         p_SUCCESS = 'Y';
         p_MSG = *blanks;
         return *on;
 
-      when (g_MODE = MODE_CHANGE or
-            g_MODE = MODE_DELETE);
+      when (g_MODE = MNTAREA_CHANGE or
+            g_MODE = MNTAREA_DELETE);
 
         dou (not %error);
           chain(e) (g_JOB : g_POS : g_ARA) AREARF;
@@ -199,14 +202,33 @@ DCL-PROC MNTAREA_initialize EXPORT;
           return *on;
         endif;
 
-      when (g_MODE = MODE_DISPLAY or
-            g_MODE = MODE_COPY);
+      when (g_MODE = MNTAREA_DISPLAY or
+            g_MODE = MNTAREA_COPY);
 
         chain(n) (g_JOB : g_POS : g_ARA) AREARF;
         if (not %found);
           p_SUCCESS = 'N';
           p_MSG = '003';
           return *off;
+        else;
+          p_SUCCESS = 'Y';
+          p_MSG = *blanks;
+          return *on;
+        endif;
+
+      when (g_MODE = MNTAREA_CHKACT);
+
+        if (g_ARA <> *blanks);
+          chain(n) (g_JOB : g_POS : g_ARA) AREARF;
+          if (not %found);
+            p_SUCCESS = 'N';
+            p_MSG = '003';
+            return *off;
+          else;
+            p_SUCCESS = 'Y';
+            p_MSG = *blanks;
+            return *on;
+          endif;
         else;
           p_SUCCESS = 'Y';
           p_MSG = *blanks;
@@ -241,7 +263,7 @@ DCL-PROC MNTAREA_getValues EXPORT;
     p_CEXT  CHAR(1024); // <-- Command extension
   END-PI;
 
-  if (g_MODE = MODE_CREATE);
+  if (g_MODE = MNTAREA_CREATE);
 
     p_ARA   = *blanks;
     p_LIB   = *blanks;
@@ -310,8 +332,8 @@ DCL-PROC MNTAREA_check EXPORT;
   dou (1 = 1);
 
     //*** Check only for mode CREATE and COPY ***
-    if (g_MODE = MODE_CREATE or
-        g_MODE = MODE_COPY);
+    if (g_MODE = MNTAREA_CREATE or
+        g_MODE = MNTAREA_COPY);
 
       // The value in field 'Area' is not valid
       if g_ARA <> '*NONE' and
@@ -332,9 +354,9 @@ DCL-PROC MNTAREA_check EXPORT;
     endif;
 
     //*** Check only for mode CREATE, COPY and CHANGE ***
-    if (g_MODE = MODE_CREATE or
-        g_MODE = MODE_COPY or
-        g_MODE = MODE_CHANGE);
+    if (g_MODE = MNTAREA_CREATE or
+        g_MODE = MNTAREA_COPY or
+        g_MODE = MNTAREA_CHANGE);
 
       // The value in field 'Library' is not valid
       if ChkVal('*NAME' : 10 : %Addr(g_LIB)) = '*INVALID';
@@ -393,7 +415,7 @@ DCL-PROC MNTAREA_check EXPORT;
       endif;
 
       //*** Check only for mode DELETE ***
-      if (g_MODE = MODE_DELETE);
+      if (g_MODE = MNTAREA_DELETE);
       endif;
 
     endif;
@@ -432,19 +454,19 @@ DCL-PROC MNTAREA_book EXPORT;
 
   select;
 
-  when (g_MODE = MODE_CREATE);
+  when (g_MODE = MNTAREA_CREATE);
     exsr modeCreate;
 
-  when (g_MODE = MODE_COPY);
+  when (g_MODE = MNTAREA_COPY);
     exsr modeCopy;
 
-  when (g_MODE = MODE_CHANGE);
+  when (g_MODE = MNTAREA_CHANGE);
     exsr modeChange;
 
-  when (g_MODE = MODE_DELETE);
+  when (g_MODE = MNTAREA_DELETE);
     exsr modeDelete;
 
-  when (g_MODE = MODE_DISPLAY);
+  when (g_MODE = MNTAREA_DISPLAY);
     exsr modeDisplay;
 
   endsl;
@@ -474,7 +496,9 @@ DCL-PROC MNTAREA_book EXPORT;
     XDCAP = *Zero;
     write AREARF;
 
-    commit;
+    if RAPIDFIRE_getAutoCommit() = 'Y';
+      commit;
+    endif;
 
   endsr;
 
@@ -499,7 +523,9 @@ DCL-PROC MNTAREA_book EXPORT;
     XDCAP = *Zero;
     write AREARF;
 
-    commit;
+    if RAPIDFIRE_getAutoCommit() = 'Y';
+      commit;
+    endif;
 
   endsr;
 
@@ -513,7 +539,9 @@ DCL-PROC MNTAREA_book EXPORT;
 
     update AREARF;
 
-    commit;
+    if RAPIDFIRE_getAutoCommit() = 'Y';
+      commit;
+    endif;
 
   endsr;
 
@@ -525,7 +553,9 @@ DCL-PROC MNTAREA_book EXPORT;
 
     delete AREARF;
 
-    commit;
+    if RAPIDFIRE_getAutoCommit() = 'Y';
+      commit;
+    endif;
 
   endsr;
 
@@ -552,3 +582,163 @@ DCL-PROC MNTAREA_book EXPORT;
   endsr;
 
 END-PROC MNTAREA_book;
+
+//*=========================================================================================*
+//* Check Action                                                                            *
+//*=========================================================================================*
+
+DCL-PROC MNTAREA_checkAction EXPORT;
+
+  DCL-PI MNTAREA_checkAction IND;  // <-- Success
+    p_ACT     CHAR(10) CONST;      // --> Action
+    p_JOB     CHAR(10) CONST;      // --> Job
+    p_POS     PACKED(6 : 0) CONST; // --> Position
+    p_ARA     CHAR(10) CONST;      // --> Area
+    p_SUCCESS CHAR(1);             // <-- Success
+    p_MSG     CHAR(256);           // <-- Message
+  END-PI;
+
+  DCL-S l_MSGID   CHAR(7);   // Message-Id.
+  DCL-S l_MSGDTA  CHAR(256); // Message data
+  DCL-S l_SUCCESS CHAR(1);   // Success
+  DCL-S l_MSG     CHAR(256); // Message
+  DCL-S l_OPN     IND;       // Open indicator
+
+  // Initialize returning fields
+  p_MSG = *blanks;
+
+  // Initialize message fields
+  l_MSGID = *blanks;
+  l_MSGDTA = *blanks;
+
+  dou (1 = 1);
+
+    // Invalid parameter values. Error = Area has to be blanks.
+    if (p_ACT = MNTAREA_CREATE and
+        p_ARA <> *blanks);
+      l_MSGID = 'ERR0004';
+      leave;
+    endif;
+
+    // Invalid parameter values. Error = &1.
+    l_OPN = g_OPN;
+    if (not l_OPN);
+      MNTAREA_openFiles();
+    endif;
+    MNTAREA_initialize(
+      MNTAREA_CHKACT : // --> Mode
+      p_JOB :          // --> Job
+      p_POS :          // --> Position
+      p_ARA :          // --> Area
+      l_SUCCESS :      // <-- Success
+      l_MSG            // <-- Message
+    );
+    if (not l_OPN);
+      MNTAREA_closeFiles();
+    endif;
+    if (l_SUCCESS = 'N');
+      l_MSGID = 'ERR0009';
+      l_MSGDTA = l_MSG;
+      leave;
+    endif;
+
+    // The action is not valid for such type of files
+    if (not MNTFILE_checkAction(
+              MNTFILE_MNTARA : // --> Action
+              p_JOB :          // --> Job
+              p_POS :          // --> Position
+              l_SUCCESS :      // <-- Success
+              l_MSG            // <-- Message
+            )
+       );
+      l_MSGID = 'ERR0010';
+      l_MSGDTA = l_MSG;
+      leave;
+    endif;
+
+    // The action is only valid for jobs with status *RDY
+    if ((p_ACT = MNTAREA_CREATE or
+         p_ACT = MNTAREA_COPY or
+         p_ACT = MNTAREA_CHANGE or
+         p_ACT = MNTAREA_DELETE) and
+        X1STS <> '*RDY');
+      l_MSGID = 'ERR0011';
+      leave;
+    endif;
+
+  enddo;
+
+  // Return
+  if (l_MSGID = *blanks);
+
+    p_SUCCESS = 'Y';
+    return *on;
+
+  else;
+
+    p_MSG = rtvMsgText(
+      l_MSGID :   // --> Message-Id.
+      'MNTAREA' : // --> Message file
+      '*LIBL' :   // --> Library
+      l_MSGDTA    // --> Message data
+    );
+
+    p_SUCCESS = 'N';
+    return *off;
+
+  endif;
+
+END-PROC MNTAREA_checkAction;
+
+//*=========================================================================================*
+//* Get Valid Actions                                                                       *
+//*=========================================================================================*
+
+DCL-PROC MNTAREA_getValidActions EXPORT;
+
+  DCL-PI MNTAREA_getValidActions;
+    p_JOB    CHAR(10) CONST;      // --> Job
+    p_POS    PACKED(6 : 0) CONST; // --> Position
+    p_ARA    CHAR(10) CONST;      // --> Area
+    p_NBRACT PACKED(2 : 0);       // <-- Number of actions
+    p_ACT    CHAR(10) DIM(25);    // <-- Actions
+  END-PI;
+
+  DCL-S l_ACT     CHAR(10);      // --> Action
+  DCL-S l_SUCCESS CHAR(1);       // <-- Success
+  DCL-S l_MSG     CHAR(256);     // <-- Message
+
+  p_NBRACT = *zero;
+  p_ACT(*) = *blanks;
+
+  l_ACT = MNTAREA_COPY;
+    exsr checkAction;
+
+  l_ACT = MNTAREA_CHANGE;
+    exsr checkAction;
+
+  l_ACT = MNTAREA_DELETE;
+    exsr checkAction;
+
+  l_ACT = MNTAREA_DISPLAY;
+    exsr checkAction;
+
+  return;
+
+  begsr checkAction;
+
+    if (MNTAREA_checkAction(
+          l_ACT :     // --> Action
+          p_JOB :     // --> Job
+          p_POS :     // --> Position
+          p_ARA :     // --> Area
+          l_SUCCESS : // <-- Success
+          l_MSG       // <-- Message
+        ));
+      p_NBRACT += 1;
+      p_ACT(p_NBRACT) = l_ACT;
+    endif;
+
+  endsr;
+
+END-PROC MNTAREA_getValidActions;

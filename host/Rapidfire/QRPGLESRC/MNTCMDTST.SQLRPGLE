@@ -36,6 +36,8 @@ DCL-S g_ACT     CHAR(10);      // Action
 DCL-S g_TYPE    CHAR(10);      // Type
 DCL-S g_SEQ     PACKED(3 : 0); // Sequence
 DCL-S g_CMD     CHAR(1024);    // Command
+DCL-S g_NBRACTS PACKED(2 : 0); // Number of actions
+DCL-S g_ACTS    CHAR(250);     // Actions
 
 //*-----------------------------------------------------------------------------------------*
 
@@ -212,6 +214,80 @@ if (SqlCheckState(sqlState));
           endif;
 
         endif;
+
+      endif;
+
+      // *** CHECK ACTION ***
+
+      g_ACT = MNTCMD_CREATE;
+      EXEC SQL
+        CALL "MNTCMD_checkAction"(
+          :g_ACT,
+          'MYJOB',
+          1,
+          ' ',
+          0,
+          :g_SUCCESS,
+          :g_MSG
+        );
+      setIgnoreWarnings();
+      if (SqlCheckState(sqlState));
+
+        if (g_SUCCESS = 'N');
+
+          // ... Display error on screen.
+          // ... g_MSG contains the message
+
+        else;
+
+          g_DMY = *on;
+
+        endif;
+
+      endif;
+
+      g_ACT = MNTCMD_CHANGE;
+      EXEC SQL
+        CALL "MNTCMD_checkAction"(
+          :g_ACT,
+          'MYJOB',
+          1,
+          '*COMPILE',
+          5,
+          :g_SUCCESS,
+          :g_MSG
+        );
+      setIgnoreWarnings();
+      if (SqlCheckState(sqlState));
+
+        if (g_SUCCESS = 'N');
+
+          // ... Display error on screen.
+          // ... g_MSG contains the message
+
+        else;
+
+          g_DMY = *on;
+
+        endif;
+
+      endif;
+
+      // *** GET VALID ACTIONS ***
+
+      EXEC SQL
+        CALL "MNTCMD_getValidActions"(
+          'MYJOB',
+          1,
+          '*COMPILE',
+          5,
+          :g_NBRACTS,
+          :g_ACTS
+        );
+      setIgnoreWarnings();
+      if (SqlCheckState(sqlState));
+
+        g_DMY = *on;
 
       endif;
 

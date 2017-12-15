@@ -28,19 +28,21 @@ CTL-OPT ExtBinInt(*YES);
 /Include QCPYSRC,MNTCNV
 /Include QCPYSRC,SQLSTS
 
-DCL-S g_SUCCESS CHAR(1);   // Success
-DCL-S g_FLD     CHAR(10);  // Field
-DCL-S g_MSG     CHAR(256); // Message
-DCL-S g_DMY     IND;       // Dummy
-DCL-S g_ACT     CHAR(10);  // Action
-DCL-S g_FTC     CHAR(10);  // Field to convert
-DCL-S g_RFT     CHAR(10);  // Rename field in old file to
-DCL-S g_STM1    CHAR(60);  // Statement
-DCL-S g_STM2    CHAR(60);  // Statement
-DCL-S g_STM3    CHAR(60);  // Statement
-DCL-S g_STM4    CHAR(60);  // Statement
-DCL-S g_STM5    CHAR(60);  // Statement
-DCL-S g_STM6    CHAR(60);  // Statement
+DCL-S g_SUCCESS CHAR(1);       // Success
+DCL-S g_FLD     CHAR(10);      // Field
+DCL-S g_MSG     CHAR(256);     // Message
+DCL-S g_DMY     IND;           // Dummy
+DCL-S g_ACT     CHAR(10);      // Action
+DCL-S g_FTC     CHAR(10);      // Field to convert
+DCL-S g_RFT     CHAR(10);      // Rename field in old file to
+DCL-S g_STM1    CHAR(60);      // Statement
+DCL-S g_STM2    CHAR(60);      // Statement
+DCL-S g_STM3    CHAR(60);      // Statement
+DCL-S g_STM4    CHAR(60);      // Statement
+DCL-S g_STM5    CHAR(60);      // Statement
+DCL-S g_STM6    CHAR(60);      // Statement
+DCL-S g_NBRACTS PACKED(2 : 0); // Number of actions
+DCL-S g_ACTS    CHAR(250);     // Actions
 
 //*-----------------------------------------------------------------------------------------*
 
@@ -240,6 +242,77 @@ if (SqlCheckState(sqlState));
           endif;
 
         endif;
+
+      endif;
+
+      // *** CHECK ACTION ***
+
+      g_ACT = MNTCNV_CREATE;
+      EXEC SQL
+        CALL "MNTCNV_checkAction"(
+          :g_ACT,
+          'MYJOB',
+          1,
+          ' ',
+          :g_SUCCESS,
+          :g_MSG
+        );
+      setIgnoreWarnings();
+      if (SqlCheckState(sqlState));
+
+        if (g_SUCCESS = 'N');
+
+          // ... Display error on screen.
+          // ... g_MSG contains the message
+
+        else;
+
+          g_DMY = *on;
+
+        endif;
+
+      endif;
+
+      g_ACT = MNTCNV_CHANGE;
+      EXEC SQL
+        CALL "MNTCNV_checkAction"(
+          :g_ACT,
+          'MYJOB',
+          1,
+          'MYCNV',
+          :g_SUCCESS,
+          :g_MSG
+        );
+      setIgnoreWarnings();
+      if (SqlCheckState(sqlState));
+
+        if (g_SUCCESS = 'N');
+
+          // ... Display error on screen.
+          // ... g_MSG contains the message
+
+        else;
+
+          g_DMY = *on;
+
+        endif;
+
+      endif;
+
+      // *** GET VALID ACTIONS ***
+
+      EXEC SQL
+        CALL "MNTCNV_getValidActions"(
+          'MYJOB',
+          1,
+          'MYCNV',
+          :g_NBRACTS,
+          :g_ACTS
+        );
+      setIgnoreWarnings();
+      if (SqlCheckState(sqlState));
+
+        g_DMY = *on;
 
       endif;
 

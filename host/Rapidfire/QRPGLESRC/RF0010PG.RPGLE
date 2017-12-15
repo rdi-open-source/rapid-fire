@@ -185,25 +185,25 @@ If MNTCNV_initialize(
   DFPOS = PIPOS;
   Select;
     // Modus : 'Erstellen'
-  When PIMode = '*CREATE';
+  When PIMode = MNTCNV_CREATE;
     ExSr SR005;
     If PIRtCd = '*ENTER';
       PIFTC = DFFTC;
     EndIf;
     // Modus : 'Ändern'
-  When PIMode = '*CHANGE';
+  When PIMode = MNTCNV_CHANGE;
     ExSr SR010;
     // Modus : 'Kopieren'
-  When PIMode = '*COPY';
+  When PIMode = MNTCNV_COPY;
     ExSr SR015;
     If PIRtCd = '*ENTER';
       PIFTC = DFFTC;
     EndIf;
     // Modus : 'Löschen'
-  When PIMode = '*DELETE';
+  When PIMode = MNTCNV_DELETE;
     ExSr SR020;
     // Modus : 'Anzeigen'
-  When PIMode = '*DISPLAY';
+  When PIMode = MNTCNV_DISPLAY;
     ExSr SR025;
   EndSl;
 EndIf;
@@ -461,16 +461,16 @@ EndSr;
 
 BegSr SR050;
   // Namensfelder linksbündig ausrichten
-  If PIMode = '*CREATE' Or
-    PIMode = '*COPY' Or
-    PIMode = '*CHANGE';
+  If PIMode = MNTCNV_CREATE Or
+    PIMode = MNTCNV_COPY Or
+    PIMode = MNTCNV_CHANGE;
     DFFTC = %TRIML(DFFTC);
     DFRFT = %TRIML(DFRFT);
   EndIf;
   // *** Fehlerprüfung nur für Modus 'Erstellen', 'Kopieren' und 'Ändern' ***
-  If PIMode = '*CREATE' Or
-    PIMode = '*COPY' Or
-    PIMode = '*CHANGE';
+  If PIMode = MNTCNV_CREATE Or
+    PIMode = MNTCNV_COPY Or
+    PIMode = MNTCNV_CHANGE;
     MNTCNV_setValues(
       DFFTC  : // <-- Field to convert
       DFRFT  : // <-- Rename field in old file to
@@ -614,12 +614,12 @@ BegSr SR060;
     ITHIPG(ITNbr) = 'RF0010GP';
     ITHILP(ITNbr) = '*LIBL';
     Select;
-    When PIMode = '*CREATE' Or
-      PIMode = '*COPY' Or
-      PIMode = '*CHANGE';
+    When PIMode = MNTCNV_CREATE Or
+      PIMode = MNTCNV_COPY Or
+      PIMode = MNTCNV_CHANGE;
       ITHIMO(ITNbr) = 'FKT/EDT';
-    When PIMode = '*DISPLAY' Or
-      PIMode = '*DELETE';
+    When PIMode = MNTCNV_DISPLAY Or
+      PIMode = MNTCNV_DELETE;
       ITHIMO(ITNbr) = 'FKT/DSP';
     EndSl;
     If DFROW010 >= 23 And

@@ -22,7 +22,7 @@ DCL-PR MNTCNV_initialize IND // <-- Success
        EXTPROC('MNTCNV_initialize');
   *N CHAR(10) CONST;         // --> Mode
   *N CHAR(10) CONST;         // --> Job
-  *N PACKED(6) CONST;        // --> Position
+  *N PACKED(6 : 0) CONST;    // --> Position
   *N CHAR(10) CONST;         // --> Field to convert
   *N CHAR(1);                // <-- Success
   *N CHAR(256);              // <-- Message
@@ -62,3 +62,32 @@ END-PR;
 DCL-PR MNTCNV_book
        EXTPROC('MNTCNV_book');
 END-PR;
+
+DCL-PR MNTCNV_checkAction IND // <-- Success
+       EXTPROC('MNTCNV_checkAction');
+  *N CHAR(10) CONST;           // --> Action
+  *N CHAR(10) CONST;           // --> Job
+  *N PACKED(6 : 0) CONST;      // --> Position
+  *N CHAR(10) CONST;           // --> Field to convert
+  *N CHAR(1);                  // <-- Success
+  *N CHAR(256);                // <-- Message
+END-PR;
+
+DCL-PR MNTCNV_getValidActions
+       EXTPROC('MNTCNV_getValidActions');
+  *N CHAR(10) CONST;      // --> Job
+  *N PACKED(6 : 0) CONST; // --> Position
+  *N CHAR(10) CONST;      // --> Field to convert
+  *N PACKED(2 : 0);       // <-- Number of actions
+  *N CHAR(10) DIM(25);    // <-- Actions
+END-PR;
+
+DCL-C MNTCNV_ERROR   '*ERROR';
+DCL-C MNTCNV_NONE    '*NONE';
+DCL-C MNTCNV_SELECT  '*SELECT';
+DCL-C MNTCNV_CREATE  '*CREATE';
+DCL-C MNTCNV_COPY    '*COPY';
+DCL-C MNTCNV_CHANGE  '*CHANGE';
+DCL-C MNTCNV_DELETE  '*DELETE';
+DCL-C MNTCNV_DISPLAY '*DISPLAY';
+DCL-C MNTCNV_CHKACT  '*CHKACT';

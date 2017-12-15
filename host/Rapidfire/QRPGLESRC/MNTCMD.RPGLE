@@ -50,7 +50,11 @@ DCL-F COMMANDS
 
 //*-----------------------------------------------------------------------------------------*
 
+/INCLUDE QCPYSRC,MNTFILE
+
 /INCLUDE QCPYSRC,MNTCMD
+
+/INCLUDE QCPYSRC,RAPIDFIRE
 
 /INCLUDE QCPYSRC,HDLRCDLCK
 
@@ -61,18 +65,13 @@ DCL-F COMMANDS
 DCL-DS PSDS LEN(429) QUALifIED PSDS;
 END-DS;
 
-DCL-C MODE_CREATE '*CREATE';
-DCL-C MODE_COPY '*COPY';
-DCL-C MODE_CHANGE '*CHANGE';
-DCL-C MODE_DELETE '*DELETE';
-DCL-C MODE_DISPLAY '*DISPLAY';
-
 DCL-S g_MODE CHAR(10);      // Mode
 DCL-S g_JOB  CHAR(10);      // Job
 DCL-S g_POS  PACKED(6 : 0); // Position
 DCL-S g_TYPE CHAR(10);      // Type
 DCL-S g_SEQ  PACKED(3 : 0); // Sequence
 DCL-S g_CMD  CHAR(1024);    // Command
+DCL-S g_OPN   IND INZ(*OFF); // Open indicator
 
 //*=========================================================================================*
 //* Open Files                                                                              *
@@ -86,6 +85,8 @@ DCL-PROC MNTCMD_openFiles EXPORT;
   open JOBS;
   open FILES;
   open COMMANDS;
+
+  g_OPN = *on;
 
 END-PROC MNTCMD_openFiles;
 
@@ -101,6 +102,8 @@ DCL-PROC MNTCMD_closeFiles EXPORT;
   close JOBS;
   close FILES;
   close COMMANDS;
+
+  g_OPN = *off;
 
 END-PROC MNTCMD_closeFiles;
 
@@ -156,14 +159,14 @@ DCL-PROC MNTCMD_initialize EXPORT;
 
       select;
 
-      when (g_MODE = MODE_CREATE);
+      when (g_MODE = MNTCMD_CREATE);
 
         p_SUCCESS = 'Y';
         p_MSG = *blanks;
         return *on;
 
-      when (g_MODE = MODE_CHANGE or
-            g_MODE = MODE_DELETE);
+      when (g_MODE = MNTCMD_CHANGE or
+            g_MODE = MNTCMD_DELETE);
 
         dou (not %error);
           chain(e) (g_JOB : g_POS : g_TYPE : g_SEQ) CMDRF;
@@ -181,14 +184,34 @@ DCL-PROC MNTCMD_initialize EXPORT;
           return *on;
         endif;
 
-      when (g_MODE = MODE_DISPLAY or
-            g_MODE = MODE_COPY);
+      when (g_MODE = MNTCMD_DISPLAY or
+            g_MODE = MNTCMD_COPY);
 
         chain(n) (g_JOB : g_POS : g_TYPE : g_SEQ) CMDRF;
         if (not %found);
           p_SUCCESS = 'N';
           p_MSG = '003';
           return *off;
+        else;
+          p_SUCCESS = 'Y';
+          p_MSG = *blanks;
+          return *on;
+        endif;
+
+      when (g_MODE = MNTCMD_CHKACT);
+
+        if (g_TYPE <> *blanks or
+            g_SEQ <> *zero);
+          chain(n) (g_JOB : g_POS : g_TYPE : g_SEQ) CMDRF;
+          if (not %found);
+            p_SUCCESS = 'N';
+            p_MSG = '003';
+            return *off;
+          else;
+            p_SUCCESS = 'Y';
+            p_MSG = *blanks;
+            return *on;
+          endif;
         else;
           p_SUCCESS = 'Y';
           p_MSG = *blanks;
@@ -221,7 +244,7 @@ DCL-PROC MNTCMD_getValues EXPORT;
     p_CMD  CHAR(1024);    // <-- Command
   END-PI;
 
-  if (g_MODE = MODE_CREATE);
+  if (g_MODE = MNTCMD_CREATE);
 
     p_TYPE = *blanks;
     p_SEQ = *zero;
@@ -281,8 +304,8 @@ DCL-PROC MNTCMD_check EXPORT;
   dou (1 = 1);
 
     //*** Check only for mode CREATE and COPY ***
-    if (g_MODE = MODE_CREATE or
-        g_MODE = MODE_COPY);
+    if (g_MODE = MNTCMD_CREATE or
+        g_MODE = MNTCMD_COPY);
 
       // The value in field 'Type' is not valid
       if g_TYPE <> '*PRERUN' And
@@ -319,9 +342,9 @@ DCL-PROC MNTCMD_check EXPORT;
     endif;
 
     //*** Check only for mode CREATE, COPY and CHANGE ***
-    if (g_MODE = MODE_CREATE or
-        g_MODE = MODE_COPY or
-        g_MODE = MODE_CHANGE);
+    if (g_MODE = MNTCMD_CREATE or
+        g_MODE = MNTCMD_COPY or
+        g_MODE = MNTCMD_CHANGE);
 
       // The value in field 'Command' is not valid
       if g_CMD = *Blanks;
@@ -333,7 +356,7 @@ DCL-PROC MNTCMD_check EXPORT;
     endif;
 
     //*** Check only for mode DELETE ***
-    if (g_MODE = MODE_DELETE);
+    if (g_MODE = MNTCMD_DELETE);
     endif;
 
   enddo;
@@ -371,19 +394,19 @@ DCL-PROC MNTCMD_book EXPORT;
 
   select;
 
-  when (g_MODE = MODE_CREATE);
+  when (g_MODE = MNTCMD_CREATE);
     exsr modeCreate;
 
-  when (g_MODE = MODE_COPY);
+  when (g_MODE = MNTCMD_COPY);
     exsr modeCopy;
 
-  when (g_MODE = MODE_CHANGE);
+  when (g_MODE = MNTCMD_CHANGE);
     exsr modeChange;
 
-  when (g_MODE = MODE_DELETE);
+  when (g_MODE = MNTCMD_DELETE);
     exsr modeDelete;
 
-  when (g_MODE = MODE_DISPLAY);
+  when (g_MODE = MNTCMD_DISPLAY);
     exsr modeDisplay;
 
   endsl;
@@ -402,7 +425,9 @@ DCL-PROC MNTCMD_book EXPORT;
 
     write CMDRF;
 
-    commit;
+    if RAPIDFIRE_getAutoCommit() = 'Y';
+      commit;
+    endif;
 
   endsr;
 
@@ -416,7 +441,9 @@ DCL-PROC MNTCMD_book EXPORT;
 
     write CMDRF;
 
-    commit;
+    if RAPIDFIRE_getAutoCommit() = 'Y';
+      commit;
+    endif;
 
   endsr;
 
@@ -430,7 +457,9 @@ DCL-PROC MNTCMD_book EXPORT;
 
     update CMDRF;
 
-    commit;
+    if RAPIDFIRE_getAutoCommit() = 'Y';
+      commit;
+    endif;
 
   endsr;
 
@@ -442,7 +471,9 @@ DCL-PROC MNTCMD_book EXPORT;
 
     delete CMDRF;
 
-    commit;
+    if RAPIDFIRE_getAutoCommit() = 'Y';
+      commit;
+    endif;
 
   endsr;
 
@@ -467,3 +498,168 @@ DCL-PROC MNTCMD_book EXPORT;
   endsr;
 
 END-PROC MNTCMD_book;
+
+//*=========================================================================================*
+//* Check Action                                                                            *
+//*=========================================================================================*
+
+DCL-PROC MNTCMD_checkAction EXPORT;
+
+  DCL-PI MNTCMD_checkAction IND;   // <-- Success
+    p_ACT     CHAR(10) CONST;      // --> Action
+    p_JOB     CHAR(10) CONST;      // --> Job
+    p_POS     PACKED(6 : 0) CONST; // --> Position
+    p_TYPE    CHAR(10) CONST;      // --> Type
+    p_SEQ     PACKED(3 : 0) CONST; // --> Sequence
+    p_SUCCESS CHAR(1);             // <-- Success
+    p_MSG     CHAR(256);           // <-- Message
+  END-PI;
+
+  DCL-S l_MSGID   CHAR(7);   // Message-Id.
+  DCL-S l_MSGDTA  CHAR(256); // Message data
+  DCL-S l_SUCCESS CHAR(1);   // Success
+  DCL-S l_MSG     CHAR(256); // Message
+  DCL-S l_OPN     IND;       // Open indicator
+
+  // Initialize returning fields
+  p_MSG = *blanks;
+
+  // Initialize message fields
+  l_MSGID = *blanks;
+  l_MSGDTA = *blanks;
+
+  dou (1 = 1);
+
+    // Invalid parameter values. Error = Type has to be blanks and sequence has to be zero.
+    if (p_ACT = MNTCMD_CREATE and
+        (p_TYPE <> *blanks or
+        p_SEQ <> *zero));
+      l_MSGID = 'ERR0003';
+      leave;
+    endif;
+
+    // Invalid parameter values. Error = &1.
+    l_OPN = g_OPN;
+    if (not l_OPN);
+      MNTCMD_openFiles();
+    endif;
+    MNTCMD_initialize(
+      MNTCMD_CHKACT : // --> Mode
+      p_JOB :         // --> Job
+      p_POS :         // --> Position
+      p_TYPE :        // --> Type
+      p_SEQ :         // --> Sequence
+      l_SUCCESS :     // <-- Success
+      l_MSG           // <-- Message
+    );
+    if (not l_OPN);
+      MNTCMD_closeFiles();
+    endif;
+    if (l_SUCCESS = 'N');
+      l_MSGID = 'ERR0004';
+      l_MSGDTA = l_MSG;
+      leave;
+    endif;
+
+    // The action is not valid for such type of files
+    if (not MNTFILE_checkAction(
+              MNTFILE_MNTARA : // --> Action
+              p_JOB :          // --> Job
+              p_POS :          // --> Position
+              l_SUCCESS :      // <-- Success
+              l_MSG            // <-- Message
+            )
+       );
+      l_MSGID = 'ERR0005';
+      l_MSGDTA = l_MSG;
+      leave;
+    endif;
+
+    // The action is only valid for jobs with status *RDY
+    if ((p_ACT = MNTCMD_CREATE or
+         p_ACT = MNTCMD_COPY or
+         p_ACT = MNTCMD_CHANGE or
+         p_ACT = MNTCMD_DELETE) and
+        X1STS <> '*RDY');
+      l_MSGID = 'ERR0007';
+      leave;
+    endif;
+
+  enddo;
+
+  // Return
+  if (l_MSGID = *blanks);
+
+    p_SUCCESS = 'Y';
+    return *on;
+
+  else;
+
+    p_MSG = rtvMsgText(
+      l_MSGID :  // --> Message-Id.
+      'MNTCMD' : // --> Message file
+      '*LIBL' :  // --> Library
+      l_MSGDTA   // --> Message data
+    );
+
+    p_SUCCESS = 'N';
+    return *off;
+
+  endif;
+
+END-PROC MNTCMD_checkAction;
+
+//*=========================================================================================*
+//* Get Valid Actions                                                                       *
+//*=========================================================================================*
+
+DCL-PROC MNTCMD_getValidActions EXPORT;
+
+  DCL-PI MNTCMD_getValidActions;
+    p_JOB    CHAR(10) CONST;      // --> Job
+    p_POS    PACKED(6 : 0) CONST; // --> Position
+    p_TYPE   CHAR(10) CONST;      // --> Type
+    p_SEQ    PACKED(3 : 0) CONST; // --> Sequence
+    p_NBRACT PACKED(2 : 0);       // <-- Number of actions
+    p_ACT    CHAR(10) DIM(25);    // <-- Actions
+  END-PI;
+
+  DCL-S l_ACT     CHAR(10);      // --> Action
+  DCL-S l_SUCCESS CHAR(1);       // <-- Success
+  DCL-S l_MSG     CHAR(256);     // <-- Message
+
+  p_NBRACT = *zero;
+  p_ACT(*) = *blanks;
+
+  l_ACT = MNTCMD_COPY;
+    exsr checkAction;
+
+  l_ACT = MNTCMD_CHANGE;
+    exsr checkAction;
+
+  l_ACT = MNTCMD_DELETE;
+    exsr checkAction;
+
+  l_ACT = MNTCMD_DISPLAY;
+    exsr checkAction;
+
+  return;
+
+  begsr checkAction;
+
+    if (MNTCMD_checkAction(
+          l_ACT :     // --> Action
+          p_JOB :     // --> Job
+          p_POS :     // --> Position
+          p_TYPE :    // --> Type
+          p_SEQ :     // --> Sequence
+          l_SUCCESS : // <-- Success
+          l_MSG       // <-- Message
+        ));
+      p_NBRACT += 1;
+      p_ACT(p_NBRACT) = l_ACT;
+    endif;
+
+  endsr;
+
+END-PROC MNTCMD_getValidActions;

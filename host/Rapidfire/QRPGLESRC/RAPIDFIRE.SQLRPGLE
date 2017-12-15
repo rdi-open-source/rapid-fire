@@ -51,6 +51,7 @@ CTL-OPT ExtBinInt(*YES);
 // Global field declarations
 
 DCL-S g_isError IND Inz(*OFF);
+DCL-S g_AUTCMT CHAR(1) Inz('Y');
 
 //*-----------------------------------------------------------------------------------------*
 
@@ -262,3 +263,104 @@ DCL-PROC RAPIDFIRE_stop EXPORT;
   endif;
 
 END-PROC RAPIDFIRE_stop;
+
+//*=========================================================================================*
+//* Get Auto Commit                                                                         *
+//*=========================================================================================*
+
+DCL-PROC RAPIDFIRE_getAutoCommit EXPORT;
+
+  DCL-PI RAPIDFIRE_getAutoCommit CHAR(1); // <-- Auto Commit
+  END-PI;
+
+  return g_AUTCMT;
+
+END-PROC RAPIDFIRE_getAutoCommit;
+
+//*=========================================================================================*
+//* Set Auto Commit                                                                         *
+//*=========================================================================================*
+
+DCL-PROC RAPIDFIRE_setAutoCommit EXPORT;
+
+  DCL-PI RAPIDFIRE_setAutoCommit IND; // <-- Success
+    p_AUTCMT  CHAR(1) CONST;          // --> Auto Commit
+    p_SUCCESS CHAR(1);                // <-- Success
+    p_MSG     CHAR(256);              // <-- Message
+  END-PI;
+
+  if (p_AUTCMT = 'Y' or
+      p_AUTCMT = 'N');
+    g_AUTCMT = p_AUTCMT;
+    p_SUCCESS = 'Y';
+    p_MSG = *blanks;
+  else;
+    p_SUCCESS = 'N';
+    p_MSG = '001';
+  endif;
+
+  if (p_SUCCESS = 'Y');
+    return *on;
+  else;
+    return *off;
+  endif;
+
+END-PROC RAPIDFIRE_setAutoCommit;
+
+//*=========================================================================================*
+//* Commit                                                                                  *
+//*=========================================================================================*
+
+DCL-PROC RAPIDFIRE_commit EXPORT;
+
+  DCL-PI RAPIDFIRE_commit IND; // <-- Success
+    p_SUCCESS CHAR(1);         // <-- Success
+    p_MSG     CHAR(256);       // <-- Message
+  END-PI;
+
+  commit(e);
+
+  if (not %error);
+    p_SUCCESS = 'Y';
+    p_MSG = *blanks;
+  else;
+    p_SUCCESS = 'N';
+    p_MSG = '001';
+  endif;
+
+  if (p_SUCCESS = 'Y');
+    return *on;
+  else;
+    return *off;
+  endif;
+
+END-PROC RAPIDFIRE_commit;
+
+//*=========================================================================================*
+//* Rollback                                                                                *
+//*=========================================================================================*
+
+DCL-PROC RAPIDFIRE_rollback EXPORT;
+
+  DCL-PI RAPIDFIRE_rollback IND; // <-- Success
+    p_SUCCESS CHAR(1);           // <-- Success
+    p_MSG     CHAR(256);         // <-- Message
+  END-PI;
+
+  rolbk(e);
+
+  if (not %error);
+    p_SUCCESS = 'Y';
+    p_MSG = *blanks;
+  else;
+    p_SUCCESS = 'N';
+    p_MSG = '001';
+  endif;
+
+  if (p_SUCCESS = 'Y');
+    return *on;
+  else;
+    return *off;
+  endif;
+
+END-PROC RAPIDFIRE_rollback;

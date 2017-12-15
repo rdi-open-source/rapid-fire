@@ -33,12 +33,35 @@ END-PR;
 
 DCL-PR RAPIDFIRE_start IND // <-- Success
        EXTPROC('RAPIDFIRE_start');
-  *N CHAR(1);   // <-- Success
-  *N CHAR(256); // <-- Message
+  *N CHAR(1);              // <-- Success
+  *N CHAR(256);            // <-- Message
 END-PR;
 
 DCL-PR RAPIDFIRE_stop IND // <-- Success
        EXTPROC('RAPIDFIRE_stop');
-  *N CHAR(1);   // <-- Success
-  *N CHAR(256); // <-- Message
+  *N CHAR(1);             // <-- Success
+  *N CHAR(256);           // <-- Message
+END-PR;
+
+DCL-PR RAPIDFIRE_getAutoCommit CHAR(1) // <-- Auto Commit
+       EXTPROC('RAPIDFIRE_getAutoCommit');
+END-PR;
+
+DCL-PR RAPIDFIRE_setAutoCommit IND // <-- Success
+       EXTPROC('RAPIDFIRE_setAutoCommit');
+  *N CHAR(1) CONST;                // --> Auto Commit
+  *N CHAR(1);                      // <-- Success
+  *N CHAR(256);                    // <-- Message
+END-PR;
+
+DCL-PR RAPIDFIRE_commit IND // <-- Success
+       EXTPROC('RAPIDFIRE_commit');
+  *N CHAR(1);               // <-- Success
+  *N CHAR(256);             // <-- Message
+END-PR;
+
+DCL-PR RAPIDFIRE_rollback IND // <-- Success
+       EXTPROC('RAPIDFIRE_rollback');
+  *N CHAR(1);                 // <-- Success
+  *N CHAR(256);               // <-- Message
 END-PR;

@@ -54,6 +54,8 @@ DCL-F FILESI01
 
 /INCLUDE QCPYSRC,MNTFILE
 
+/INCLUDE QCPYSRC,RAPIDFIRE
+
 /INCLUDE QCPYSRC,HDLRCDLCK
 
 /INCLUDE QCPYSRC,RTVMSGD
@@ -519,7 +521,9 @@ DCL-PROC MNTFILE_book EXPORT;
 
     write FILERF;
 
-    commit;
+    if RAPIDFIRE_getAutoCommit() = 'Y';
+      commit;
+    endif;
 
   endsr;
 
@@ -533,7 +537,9 @@ DCL-PROC MNTFILE_book EXPORT;
 
     write FILERF;
 
-    commit;
+    if RAPIDFIRE_getAutoCommit() = 'Y';
+      commit;
+    endif;
 
   endsr;
 
@@ -547,7 +553,9 @@ DCL-PROC MNTFILE_book EXPORT;
 
     update FILERF;
 
-    commit;
+    if RAPIDFIRE_getAutoCommit() = 'Y';
+      commit;
+    endif;
 
   endsr;
 
@@ -559,7 +567,9 @@ DCL-PROC MNTFILE_book EXPORT;
 
     delete FILERF;
 
-    commit;
+    if RAPIDFIRE_getAutoCommit() = 'Y';
+      commit;
+    endif;
 
   endsr;
 

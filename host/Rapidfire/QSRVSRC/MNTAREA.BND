@@ -19,7 +19,6 @@
      /*      >>PARM<<  TEXT('Maintain Areas');                                                    */
      /*      >>PARM<<  BNDDIR(&LI/RAPIDFIRE);                                                     */
      /*      >>PARM<<  ACTGRP(RAPIDFIRE);                                                         */
-     /*      >>PARM<<  TGTRLS(&TR);                                                               */
      /*      >>PARM<<  DETAIL(*BASIC);                                                            */
      /*    >>END-IMPORTANT<<                                                                      */
      /*    >>EXECUTE<<                                                                            */
@@ -45,6 +44,10 @@
                 EXPORT     SYMBOL('MNTAREA_check')
 
                 EXPORT     SYMBOL('MNTAREA_book')
+
+                EXPORT     SYMBOL('MNTAREA_checkAction')
+
+                EXPORT     SYMBOL('MNTAREA_getValidActions')
 
              ENDPGMEXP
 

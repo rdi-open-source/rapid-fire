@@ -54,6 +54,8 @@ DCL-F LIBRARII01
 
 /INCLUDE QCPYSRC,MNTLIB
 
+/INCLUDE QCPYSRC,RAPIDFIRE
+
 /INCLUDE QCPYSRC,HDLRCDLCK
 
 /INCLUDE QCPYSRC,RTVMSGD
@@ -398,7 +400,9 @@ DCL-PROC MNTLIB_book EXPORT;
 
     write LIBRF;
 
-    commit;
+    if RAPIDFIRE_getAutoCommit() = 'Y';
+      commit;
+    endif;
 
   endsr;
 
@@ -412,7 +416,9 @@ DCL-PROC MNTLIB_book EXPORT;
 
     write LIBRF;
 
-    commit;
+    if RAPIDFIRE_getAutoCommit() = 'Y';
+      commit;
+    endif;
 
   endsr;
 
@@ -426,7 +432,9 @@ DCL-PROC MNTLIB_book EXPORT;
 
     update LIBRF;
 
-    commit;
+    if RAPIDFIRE_getAutoCommit() = 'Y';
+      commit;
+    endif;
 
   endsr;
 
@@ -438,7 +446,9 @@ DCL-PROC MNTLIB_book EXPORT;
 
     delete LIBRF;
 
-    commit;
+    if RAPIDFIRE_getAutoCommit() = 'Y';
+      commit;
+    endif;
 
   endsr;
 

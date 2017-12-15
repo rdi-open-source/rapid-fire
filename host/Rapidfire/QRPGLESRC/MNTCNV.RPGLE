@@ -50,7 +50,11 @@ DCL-F CNVS
 
 //*-----------------------------------------------------------------------------------------*
 
+/INCLUDE QCPYSRC,MNTFILE
+
 /INCLUDE QCPYSRC,MNTCNV
+
+/INCLUDE QCPYSRC,RAPIDFIRE
 
 /INCLUDE QCPYSRC,HDLRCDLCK
 
@@ -61,23 +65,18 @@ DCL-F CNVS
 DCL-DS PSDS LEN(429) QUALifIED PSDS;
 END-DS;
 
-DCL-C MODE_CREATE '*CREATE';
-DCL-C MODE_COPY '*COPY';
-DCL-C MODE_CHANGE '*CHANGE';
-DCL-C MODE_DELETE '*DELETE';
-DCL-C MODE_DISPLAY '*DISPLAY';
-
-DCL-S g_MODE CHAR(10);      // Mode
-DCL-S g_JOB  CHAR(10);      // Job
-DCL-S g_POS  PACKED(6 : 0); // Position
-DCL-S g_FTC  CHAR(10);      // The field to convert
-DCL-s g_RFT  CHAR(10);      // Rename field in old file to
-DCL-s g_STM1 CHAR(60);      // Statement
-DCL-s g_STM2 CHAR(60);      // Statement
-DCL-s g_STM3 CHAR(60);      // Statement
-DCL-s g_STM4 CHAR(60);      // Statement
-DCL-s g_STM5 CHAR(60);      // Statement
-DCL-s g_STM6 CHAR(60);      // Statement
+DCL-S g_MODE CHAR(10);       // Mode
+DCL-S g_JOB  CHAR(10);       // Job
+DCL-S g_POS  PACKED(6 : 0);  // Position
+DCL-S g_FTC  CHAR(10);       // The field to convert
+DCL-s g_RFT  CHAR(10);       // Rename field in old file to
+DCL-s g_STM1 CHAR(60);       // Statement
+DCL-s g_STM2 CHAR(60);       // Statement
+DCL-s g_STM3 CHAR(60);       // Statement
+DCL-s g_STM4 CHAR(60);       // Statement
+DCL-s g_STM5 CHAR(60);       // Statement
+DCL-s g_STM6 CHAR(60);       // Statement
+DCL-S g_OPN   IND INZ(*OFF); // Open indicator
 
 //*=========================================================================================*
 //* Open Files                                                                              *
@@ -91,6 +90,8 @@ DCL-PROC MNTCNV_openFiles EXPORT;
   open JOBS;
   open FILES;
   open CNVS;
+
+  g_OPN = *on;
 
 END-PROC MNTCNV_openFiles;
 
@@ -106,6 +107,8 @@ DCL-PROC MNTCNV_closeFiles EXPORT;
   close JOBS;
   close FILES;
   close CNVS;
+
+  g_OPN = *off;
 
 END-PROC MNTCNV_closeFiles;
 
@@ -159,14 +162,14 @@ DCL-PROC MNTCNV_initialize EXPORT;
 
       select;
 
-      when (g_MODE = MODE_CREATE);
+      when (g_MODE = MNTCNV_CREATE);
 
         p_SUCCESS = 'Y';
         p_MSG = *blanks;
         return *on;
 
-      when (g_MODE = MODE_CHANGE or
-            g_MODE = MODE_DELETE);
+      when (g_MODE = MNTCNV_CHANGE or
+            g_MODE = MNTCNV_DELETE);
 
         dou (not %error);
           chain(e) (g_JOB : g_POS : g_FTC) CNVRF;
@@ -184,14 +187,33 @@ DCL-PROC MNTCNV_initialize EXPORT;
           return *on;
         endif;
 
-      when (g_MODE = MODE_DISPLAY or
-            g_MODE = MODE_COPY);
+      when (g_MODE = MNTCNV_DISPLAY or
+            g_MODE = MNTCNV_COPY);
 
         chain(n) (g_JOB : g_POS : g_FTC) CNVRF;
         if (not %found);
           p_SUCCESS = 'N';
           p_MSG = '003';
           return *off;
+        else;
+          p_SUCCESS = 'Y';
+          p_MSG = *blanks;
+          return *on;
+        endif;
+
+      when (g_MODE = MNTCNV_CHKACT);
+
+        if (g_FTC <> *blanks);
+          chain(n) (g_JOB : g_POS : g_FTC) CNVRF;
+          if (not %found);
+            p_SUCCESS = 'N';
+            p_MSG = '003';
+            return *off;
+          else;
+            p_SUCCESS = 'Y';
+            p_MSG = *blanks;
+            return *on;
+          endif;
         else;
           p_SUCCESS = 'Y';
           p_MSG = *blanks;
@@ -229,7 +251,7 @@ DCL-PROC MNTCNV_getValues EXPORT;
     p_STM6 CHAR(60); // <-- Statement
   END-PI;
 
-  if (g_MODE = MODE_CREATE);
+  if (g_MODE = MNTCNV_CREATE);
 
     p_FTC  = *Blanks;
     p_RFT  = *Blanks;
@@ -309,8 +331,8 @@ DCL-PROC MNTCNV_check EXPORT;
   dou (1 = 1);
 
     //*** Check only for mode CREATE and COPY ***
-    if (g_MODE = MODE_CREATE or
-        g_MODE = MODE_COPY);
+    if (g_MODE = MNTCNV_CREATE or
+        g_MODE = MNTCNV_COPY);
 
       // The value in field 'Field to convert' is not valid
       if ChkVal('*NAME' : 10 : %Addr(g_FTC)) = '*INVALID';
@@ -330,9 +352,9 @@ DCL-PROC MNTCNV_check EXPORT;
     endif;
 
     //*** Check only for mode CREATE, COPY and CHANGE ***
-    if (g_MODE = MODE_CREATE or
-        g_MODE = MODE_COPY or
-        g_MODE = MODE_CHANGE);
+    if (g_MODE = MNTCNV_CREATE or
+        g_MODE = MNTCNV_COPY or
+        g_MODE = MNTCNV_CHANGE);
 
       // The value in field 'Rename field in old file to' is not valid
       if g_RFT <> '*NONE' And
@@ -364,7 +386,7 @@ DCL-PROC MNTCNV_check EXPORT;
     endif;
 
     //*** Check only for mode DELETE ***
-    if (g_MODE = MODE_DELETE);
+    if (g_MODE = MNTCNV_DELETE);
 
     endif;
 
@@ -402,19 +424,19 @@ DCL-PROC MNTCNV_book EXPORT;
 
   select;
 
-  when (g_MODE = MODE_CREATE);
+  when (g_MODE = MNTCNV_CREATE);
     exsr modeCreate;
 
-  when (g_MODE = MODE_COPY);
+  when (g_MODE = MNTCNV_COPY);
     exsr modeCopy;
 
-  when (g_MODE = MODE_CHANGE);
+  when (g_MODE = MNTCNV_CHANGE);
     exsr modeChange;
 
-  when (g_MODE = MODE_DELETE);
+  when (g_MODE = MNTCNV_DELETE);
     exsr modeDelete;
 
-  when (g_MODE = MODE_DISPLAY);
+  when (g_MODE = MNTCNV_DISPLAY);
     exsr modeDisplay;
 
   endsl;
@@ -433,7 +455,9 @@ DCL-PROC MNTCNV_book EXPORT;
 
     write CNVRF;
 
-    commit;
+    if RAPIDFIRE_getAutoCommit() = 'Y';
+      commit;
+    endif;
 
   endsr;
 
@@ -447,7 +471,9 @@ DCL-PROC MNTCNV_book EXPORT;
 
     write CNVRF;
 
-    commit;
+    if RAPIDFIRE_getAutoCommit() = 'Y';
+      commit;
+    endif;
 
   endsr;
 
@@ -461,7 +487,9 @@ DCL-PROC MNTCNV_book EXPORT;
 
     update CNVRF;
 
-    commit;
+    if RAPIDFIRE_getAutoCommit() = 'Y';
+      commit;
+    endif;
 
   endsr;
 
@@ -473,7 +501,9 @@ DCL-PROC MNTCNV_book EXPORT;
 
     delete CNVRF;
 
-    commit;
+    if RAPIDFIRE_getAutoCommit() = 'Y';
+      commit;
+    endif;
 
   endsr;
 
@@ -503,3 +533,163 @@ DCL-PROC MNTCNV_book EXPORT;
   endsr;
 
 END-PROC MNTCNV_book;
+
+//*=========================================================================================*
+//* Check Action                                                                            *
+//*=========================================================================================*
+
+DCL-PROC MNTCNV_checkAction EXPORT;
+
+  DCL-PI MNTCNV_checkAction IND;   // <-- Success
+    p_ACT     CHAR(10) CONST;      // --> Action
+    p_JOB     CHAR(10) CONST;      // --> Job
+    p_POS     PACKED(6 : 0) CONST; // --> Position
+    p_FTC     CHAR(10) CONST;      // --> Field to convert
+    p_SUCCESS CHAR(1);             // <-- Success
+    p_MSG     CHAR(256);           // <-- Message
+  END-PI;
+
+  DCL-S l_MSGID   CHAR(7);   // Message-Id.
+  DCL-S l_MSGDTA  CHAR(256); // Message data
+  DCL-S l_SUCCESS CHAR(1);   // Success
+  DCL-S l_MSG     CHAR(256); // Message
+  DCL-S l_OPN     IND;       // Open indicator
+
+  // Initialize returning fields
+  p_MSG = *blanks;
+
+  // Initialize message fields
+  l_MSGID = *blanks;
+  l_MSGDTA = *blanks;
+
+  dou (1 = 1);
+
+    // Invalid parameter values. Error = "Field to convert" has to be blanks.
+    if (p_ACT = MNTCNV_CREATE and
+        p_FTC <> *blanks);
+      l_MSGID = 'ERR0004';
+      leave;
+    endif;
+
+    // Invalid parameter values. Error = &1.
+    l_OPN = g_OPN;
+    if (not l_OPN);
+      MNTCNV_openFiles();
+    endif;
+    MNTCNV_initialize(
+      MNTCNV_CHKACT : // --> Mode
+      p_JOB :         // --> Job
+      p_POS :         // --> Position
+      p_FTC :         // --> Field to convert
+      l_SUCCESS :     // <-- Success
+      l_MSG           // <-- Message
+    );
+    if (not l_OPN);
+      MNTCNV_closeFiles();
+    endif;
+    if (l_SUCCESS = 'N');
+      l_MSGID = 'ERR0007';
+      l_MSGDTA = l_MSG;
+      leave;
+    endif;
+
+    // The action is not valid for such type of files
+    if (not MNTFILE_checkAction(
+              MNTFILE_MNTCNV : // --> Action
+              p_JOB :          // --> Job
+              p_POS :          // --> Position
+              l_SUCCESS :      // <-- Success
+              l_MSG            // <-- Message
+            )
+       );
+      l_MSGID = 'ERR0008';
+      l_MSGDTA = l_MSG;
+      leave;
+    endif;
+
+    // The action is only valid for jobs with status *RDY
+    if ((p_ACT = MNTCNV_CREATE or
+         p_ACT = MNTCNV_COPY or
+         p_ACT = MNTCNV_CHANGE or
+         p_ACT = MNTCNV_DELETE) and
+        X1STS <> '*RDY');
+      l_MSGID = 'ERR0009';
+      leave;
+    endif;
+
+  enddo;
+
+  // Return
+  if (l_MSGID = *blanks);
+
+    p_SUCCESS = 'Y';
+    return *on;
+
+  else;
+
+    p_MSG = rtvMsgText(
+      l_MSGID :  // --> Message-Id.
+      'MNTCNV' : // --> Message file
+      '*LIBL' :  // --> Library
+      l_MSGDTA   // --> Message data
+    );
+
+    p_SUCCESS = 'N';
+    return *off;
+
+  endif;
+
+END-PROC MNTCNV_checkAction;
+
+//*=========================================================================================*
+//* Get Valid Actions                                                                       *
+//*=========================================================================================*
+
+DCL-PROC MNTCNV_getValidActions EXPORT;
+
+  DCL-PI MNTCNV_getValidActions;
+    p_JOB    CHAR(10) CONST;      // --> Job
+    p_POS    PACKED(6 : 0) CONST; // --> Position
+    p_FTC    CHAR(10) CONST;      // --> Field to convert
+    p_NBRACT PACKED(2 : 0);       // <-- Number of actions
+    p_ACT    CHAR(10) DIM(25);    // <-- Actions
+  END-PI;
+
+  DCL-S l_ACT     CHAR(10);      // --> Action
+  DCL-S l_SUCCESS CHAR(1);       // <-- Success
+  DCL-S l_MSG     CHAR(256);     // <-- Message
+
+  p_NBRACT = *zero;
+  p_ACT(*) = *blanks;
+
+  l_ACT = MNTCNV_COPY;
+    exsr checkAction;
+
+  l_ACT = MNTCNV_CHANGE;
+    exsr checkAction;
+
+  l_ACT = MNTCNV_DELETE;
+    exsr checkAction;
+
+  l_ACT = MNTCNV_DISPLAY;
+    exsr checkAction;
+
+  return;
+
+  begsr checkAction;
+
+    if (MNTCNV_checkAction(
+          l_ACT :     // --> Action
+          p_JOB :     // --> Job
+          p_POS :     // --> Position
+          p_FTC :     // --> Field to convert
+          l_SUCCESS : // <-- Success
+          l_MSG       // <-- Message
+        ));
+      p_NBRACT += 1;
+      p_ACT(p_NBRACT) = l_ACT;
+    endif;
+
+  endsr;
+
+END-PROC MNTCNV_getValidActions;

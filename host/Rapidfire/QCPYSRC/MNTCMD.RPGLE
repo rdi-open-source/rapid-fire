@@ -21,26 +21,26 @@ END-PR;
 DCL-PR MNTCMD_initialize IND // <-- Success
        EXTPROC('MNTCMD_initialize');
   *N CHAR(10) CONST;            // --> Mode
-  *N  CHAR(10) CONST;           // --> Job
-  *N PACKED(6) CONST;           // --> Position
+  *N CHAR(10) CONST;            // --> Job
+  *N PACKED(6 : 0) CONST;       // --> Position
   *N CHAR(10) CONST;            // --> Type
-  *N PACKED(3) CONST;           // --> Sequence
+  *N PACKED(3 : 0) CONST;       // --> Sequence
   *N CHAR(1);                   // <-- Success
   *N CHAR(256);                 // <-- Message
 END-PR;
 
 DCL-PR MNTCMD_getValues
        EXTPROC('MNTCMD_getValues');
-  *N CHAR(10);   // <-- Type
-  *N PACKED(3);  // <-- Sequence
-  *N CHAR(1024); // <-- Command
+  *N CHAR(10);      // <-- Type
+  *N PACKED(3 : 0); // <-- Sequence
+  *N CHAR(1024);    // <-- Command
 END-PR;
 
 DCL-PR MNTCMD_setValues
        EXTPROC('MNTCMD_setValues');
-  *N CHAR(10) CONST;   // <-- Type
-  *N PACKED(3) CONST;  // <-- Sequence
-  *N CHAR(1024) CONST; // <-- Command
+  *N CHAR(10) CONST;      // <-- Type
+  *N PACKED(3 : 0) CONST; // <-- Sequence
+  *N CHAR(1024) CONST;    // <-- Command
 END-PR;
 
 DCL-PR MNTCMD_check IND // <-- Success
@@ -53,3 +53,34 @@ END-PR;
 DCL-PR MNTCMD_book
        EXTPROC('MNTCMD_book');
 END-PR;
+
+DCL-PR MNTCMD_checkAction IND  // <-- Success
+       EXTPROC('MNTCMD_checkAction');
+  *N CHAR(10) CONST;           // --> Action
+  *N CHAR(10) CONST;           // --> Job
+  *N PACKED(6 : 0) CONST;      // --> Position
+  *N CHAR(10) CONST;           // --> Type
+  *N PACKED(3 : 0) CONST;      // --> Sequence
+  *N CHAR(1);                  // <-- Success
+  *N CHAR(256);                // <-- Message
+END-PR;
+
+DCL-PR MNTCMD_getValidActions
+       EXTPROC('MNTCMD_getValidActions');
+  *N CHAR(10) CONST;      // --> Job
+  *N PACKED(6 : 0) CONST; // --> Position
+  *N CHAR(10) CONST;      // --> Type
+  *N PACKED(3 : 0) CONST; // --> Sequence
+  *N PACKED(2 : 0);       // <-- Number of actions
+  *N CHAR(10) DIM(25);    // <-- Actions
+END-PR;
+
+DCL-C MNTCMD_ERROR   '*ERROR';
+DCL-C MNTCMD_NONE    '*NONE';
+DCL-C MNTCMD_SELECT  '*SELECT';
+DCL-C MNTCMD_CREATE  '*CREATE';
+DCL-C MNTCMD_COPY    '*COPY';
+DCL-C MNTCMD_CHANGE  '*CHANGE';
+DCL-C MNTCMD_DELETE  '*DELETE';
+DCL-C MNTCMD_DISPLAY '*DISPLAY';
+DCL-C MNTCMD_CHKACT  '*CHKACT';

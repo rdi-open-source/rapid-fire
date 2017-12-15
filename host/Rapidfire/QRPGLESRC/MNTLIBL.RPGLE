@@ -55,6 +55,8 @@ DCL-F LIBLETYS
 
 /INCLUDE QCPYSRC,MNTLIBL
 
+/INCLUDE QCPYSRC,RAPIDFIRE
+
 /INCLUDE QCPYSRC,HDLRCDLCK
 
 /INCLUDE QCPYSRC,RTVMSGD
@@ -497,7 +499,9 @@ DCL-PROC MNTLIBL_book EXPORT;
 
     exsr fillLibraries;
 
-    commit;
+    if RAPIDFIRE_getAutoCommit() = 'Y';
+      commit;
+    endif;
 
   endsr;
 
@@ -513,7 +517,9 @@ DCL-PROC MNTLIBL_book EXPORT;
 
     exsr fillLibraries;
 
-    commit;
+    if RAPIDFIRE_getAutoCommit() = 'Y';
+      commit;
+    endif;
 
   endsr;
 
@@ -529,7 +535,9 @@ DCL-PROC MNTLIBL_book EXPORT;
 
     exsr fillLibraries;
 
-    commit;
+    if RAPIDFIRE_getAutoCommit() = 'Y';
+      commit;
+    endif;
 
   endsr;
 
@@ -541,7 +549,9 @@ DCL-PROC MNTLIBL_book EXPORT;
 
     delete LIBLSTRF;
 
-    commit;
+    if RAPIDFIRE_getAutoCommit() = 'Y';
+      commit;
+    endif;
 
   endsr;
 

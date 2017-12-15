@@ -22,31 +22,31 @@ DCL-PR MNTFILE_initialize IND // <-- Success
        EXTPROC('MNTFILE_initialize');
   *N CHAR(10) CONST;          // --> Mode
   *N CHAR(10) CONST;          // --> Job
-  *N PACKED(6) CONST;         // --> Position
+  *N PACKED(6 : 0) CONST;     // --> Position
   *N CHAR(1);                 // <-- Success
   *N CHAR(256);               // <-- Message
 END-PR;
 
 DCL-PR MNTFILE_getValues
        EXTPROC('MNTFILE_getValues');
-  *N PACKED(6); // <-- Position
-  *N CHAR(10);  // <-- File
-  *N CHAR(10);  // <-- Type
-  *N CHAR(10);  // <-- Copy program (Library)
-  *N CHAR(10);  // <-- Copy program
-  *N CHAR(10);  // <-- Conversion program (Library)
-  *N CHAR(10);  // <-- Conversion program
+  *N PACKED(6 : 0); // <-- Position
+  *N CHAR(10);      // <-- File
+  *N CHAR(10);      // <-- Type
+  *N CHAR(10);      // <-- Copy program (Library)
+  *N CHAR(10);      // <-- Copy program
+  *N CHAR(10);      // <-- Conversion program (Library)
+  *N CHAR(10);      // <-- Conversion program
 END-PR;
 
 DCL-PR MNTFILE_setValues
        EXTPROC('MNTFILE_setValues');
-  *N PACKED(6) CONST; // <-- Position
-  *N CHAR(10) CONST;  // <-- File
-  *N CHAR(10) CONST;  // <-- Type
-  *N CHAR(10) CONST;  // <-- Copy program (Library)
-  *N CHAR(10) CONST;  // <-- Copy program
-  *N CHAR(10) CONST;  // <-- Conversion program (Library)
-  *N CHAR(10) CONST;  // <-- Conversion program
+  *N PACKED(6 : 0) CONST; // <-- Position
+  *N CHAR(10) CONST;      // <-- File
+  *N CHAR(10) CONST;      // <-- Type
+  *N CHAR(10) CONST;      // <-- Copy program (Library)
+  *N CHAR(10) CONST;      // <-- Copy program
+  *N CHAR(10) CONST;      // <-- Conversion program (Library)
+  *N CHAR(10) CONST;      // <-- Conversion program
 END-PR;
 
 DCL-PR MNTFILE_check IND // <-- Success

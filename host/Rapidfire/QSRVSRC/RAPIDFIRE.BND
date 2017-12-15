@@ -10,23 +10,23 @@
      /*                                                                                           */
      /* Rapid Fire                                                                                */
      /*                                                                                           */
+     /*-------------------------------------------------------------------------------------------*/
+     /*  >>PRE-COMPILER<<                                                                         */
+     /*    >>CRTCMD<< CRTSRVPGM    SRVPGM(&LI/&OB) EXPORT(*SRCFILE) +                             */
+     /*                              SRCFILE(&SL/&SF) SRCMBR(&SM);                                */
+     /*    >>IMPORTANT<<                                                                          */
+     /*      >>PARM<<  MODULE(RAPIDFIRE);                                                         */
+     /*      >>PARM<<  TEXT('Rapid Fire');                                                        */
+     /*      >>PARM<<  BNDDIR(&LI/RAPIDFIRE);                                                     */
+     /*      >>PARM<<  ACTGRP(RAPIDFIRE);                                                         */
+     /*      >>PARM<<  DETAIL(*BASIC);                                                            */
+     /*    >>END-IMPORTANT<<                                                                      */
+     /*    >>EXECUTE<<                                                                            */
+     /*  >>END-PRE-COMPILER<<                                                                     */
      /*------------+--------+---------------------------------------------------------------------*/
      /*   Datum    I Progr. I Beschreibung                                                        */
      /*------------+--------+---------------------------------------------------------------------*/
      /* 03.02.2016 I   TR   I STRPREPRC Header hinzugefügt.                                       */
-     /*-------------------------------------------------------------------------------------------*/
-     /*  >>PRE-COMPILER<<                                                                         */
-     /*    >>CRTCMD<< CRTSRVPGM    SRVPGM(&LI/&OB) EXPORT(*SRCFILE) SRCFILE(&SL/&SF) SRCMBR(&SM); */
-     /*    >>IMPORTANT<<                                                                          */
-     /*      >>PARM<< MODULE(RAPIDFIRE);                                                          */
-     /*      >>PARM<< TEXT('Rapid Fire');                                                         */
-     /*      >>PARM<< BNDDIR(&U0);                                                                */
-     /*      >>PARM<< ACTGRP(&U2);                                                                */
-     /*      >>PARM<< TGTRLS(&TR);                                                                */
-     /*      >>PARM<< DETAIL(*BASIC);                                                             */
-     /*    >>END-IMPORTANT<<                                                                      */
-     /*    >>EXECUTE<<                                                                            */
-     /*  >>END-PRE-COMPILER<<                                                                     */
      /*-------------------------------------------------------------------------------------------*/
 
              STRPGMEXP
@@ -36,6 +36,10 @@
                 EXPORT     SYMBOL('RAPIDFIRE_SET_ERROR')
                 EXPORT     SYMBOL('RAPIDFIRE_start')
                 EXPORT     SYMBOL('RAPIDFIRE_stop')
+                EXPORT     SYMBOL('RAPIDFIRE_getAutoCommit')
+                EXPORT     SYMBOL('RAPIDFIRE_setAutoCommit')
+                EXPORT     SYMBOL('RAPIDFIRE_commit')
+                EXPORT     SYMBOL('RAPIDFIRE_rollback')
 
              ENDPGMEXP
 

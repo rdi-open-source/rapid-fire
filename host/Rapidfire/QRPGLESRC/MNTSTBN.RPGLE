@@ -47,6 +47,8 @@ DCL-F SUBTOBENOT
 
 /INCLUDE QCPYSRC,MNTSTBN
 
+/INCLUDE QCPYSRC,RAPIDFIRE
+
 /INCLUDE QCPYSRC,HDLRCDLCK
 
 /INCLUDE QCPYSRC,RTVMSGD
@@ -423,7 +425,9 @@ DCL-PROC MNTSTBN_book EXPORT;
 
     write SUBTOBERF;
 
-    commit;
+    if RAPIDFIRE_getAutoCommit() = 'Y';
+      commit;
+    endif;
 
   endsr;
 
@@ -437,7 +441,9 @@ DCL-PROC MNTSTBN_book EXPORT;
 
     write SUBTOBERF;
 
-    commit;
+    if RAPIDFIRE_getAutoCommit() = 'Y';
+      commit;
+    endif;
 
   endsr;
 
@@ -451,7 +457,9 @@ DCL-PROC MNTSTBN_book EXPORT;
 
     update SUBTOBERF;
 
-    commit;
+    if RAPIDFIRE_getAutoCommit() = 'Y';
+      commit;
+    endif;
 
   endsr;
 
@@ -463,7 +471,9 @@ DCL-PROC MNTSTBN_book EXPORT;
 
     delete SUBTOBERF;
 
-    commit;
+    if RAPIDFIRE_getAutoCommit() = 'Y';
+      commit;
+    endif;
 
   endsr;
 

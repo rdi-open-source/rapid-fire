@@ -19,7 +19,6 @@
      /*      >>PARM<<  TEXT('Maintain Conversions');                                              */
      /*      >>PARM<<  BNDDIR(&LI/RAPIDFIRE);                                                     */
      /*      >>PARM<<  ACTGRP(RAPIDFIRE);                                                         */
-     /*      >>PARM<<  TGTRLS(&TR);                                                               */
      /*      >>PARM<<  DETAIL(*BASIC);                                                            */
      /*    >>END-IMPORTANT<<                                                                      */
      /*    >>EXECUTE<<                                                                            */
@@ -45,6 +44,10 @@
                 EXPORT     SYMBOL('MNTCNV_check')
 
                 EXPORT     SYMBOL('MNTCNV_book')
+
+                EXPORT     SYMBOL('MNTCNV_checkAction')
+
+                EXPORT     SYMBOL('MNTCNV_getValidActions')
 
              ENDPGMEXP
 

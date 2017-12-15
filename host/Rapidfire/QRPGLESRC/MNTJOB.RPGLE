@@ -46,6 +46,8 @@ DCL-F LIBLS
 
 /INCLUDE QCPYSRC,MNTJOB
 
+/INCLUDE QCPYSRC,RAPIDFIRE
+
 /INCLUDE QCPYSRC,HDLRCDLCK
 
 /INCLUDE QCPYSRC,RTVMSGD
@@ -418,7 +420,9 @@ DCL-PROC MNTJOB_book EXPORT;
 
     ExSr librarList;
 
-    commit;
+    if RAPIDFIRE_getAutoCommit() = 'Y';
+      commit;
+    endif;
 
   endsr;
 
@@ -443,7 +447,9 @@ DCL-PROC MNTJOB_book EXPORT;
 
     ExSr librarList;
 
-    commit;
+    if RAPIDFIRE_getAutoCommit() = 'Y';
+      commit;
+    endif;
 
   endsr;
 
@@ -459,7 +465,9 @@ DCL-PROC MNTJOB_book EXPORT;
 
     ExSr librarList;
 
-    commit;
+    if RAPIDFIRE_getAutoCommit() = 'Y';
+      commit;
+    endif;
 
   endsr;
 
@@ -471,7 +479,9 @@ DCL-PROC MNTJOB_book EXPORT;
 
     delete JOBRF;
 
-    commit;
+    if RAPIDFIRE_getAutoCommit() = 'Y';
+      commit;
+    endif;
 
   endsr;
 

@@ -28,16 +28,18 @@ CTL-OPT ExtBinInt(*YES);
 /Include QCPYSRC,MNTAREA
 /Include QCPYSRC,SQLSTS
 
-DCL-S g_SUCCESS CHAR(1);    // Success
-DCL-S g_FLD     CHAR(10);   // Field
-DCL-S g_MSG     CHAR(256);  // Message
-DCL-S g_DMY     IND;        // Dummy
-DCL-S g_ACT     CHAR(10);   // Action
-DCL-S g_ARA     CHAR(10);   // Area
-DCL-S g_LIB     CHAR(10);   // Library
-DCL-S g_LIBL    CHAR(10);   // Library list
-DCL-S g_CCSID   CHAR(10);   // Coded character set ID
-DCL-S g_CEXT    CHAR(1024); // Command extension
+DCL-S g_SUCCESS CHAR(1);       // Success
+DCL-S g_FLD     CHAR(10);      // Field
+DCL-S g_MSG     CHAR(256);     // Message
+DCL-S g_DMY     IND;           // Dummy
+DCL-S g_ACT     CHAR(10);      // Action
+DCL-S g_ARA     CHAR(10);      // Area
+DCL-S g_LIB     CHAR(10);      // Library
+DCL-S g_LIBL    CHAR(10);      // Library list
+DCL-S g_CCSID   CHAR(10);      // Coded character set ID
+DCL-S g_CEXT    CHAR(1024);    // Command extension
+DCL-S g_NBRACTS PACKED(2 : 0); // Number of actions
+DCL-S g_ACTS    CHAR(250);     // Actions
 
 //*-----------------------------------------------------------------------------------------*
 
@@ -222,6 +224,77 @@ if (SqlCheckState(sqlState));
           endif;
 
         endif;
+
+      endif;
+
+      // *** CHECK ACTION ***
+
+      g_ACT = MNTAREA_CREATE;
+      EXEC SQL
+        CALL "MNTAREA_checkAction"(
+          :g_ACT,
+          'MYJOB',
+          1,
+          ' ',
+          :g_SUCCESS,
+          :g_MSG
+        );
+      setIgnoreWarnings();
+      if (SqlCheckState(sqlState));
+
+        if (g_SUCCESS = 'N');
+
+          // ... Display error on screen.
+          // ... g_MSG contains the message
+
+        else;
+
+          g_DMY = *on;
+
+        endif;
+
+      endif;
+
+      g_ACT = MNTAREA_CHANGE;
+      EXEC SQL
+        CALL "MNTAREA_checkAction"(
+          :g_ACT,
+          'MYJOB',
+          1,
+          'MYAREA',
+          :g_SUCCESS,
+          :g_MSG
+        );
+      setIgnoreWarnings();
+      if (SqlCheckState(sqlState));
+
+        if (g_SUCCESS = 'N');
+
+          // ... Display error on screen.
+          // ... g_MSG contains the message
+
+        else;
+
+          g_DMY = *on;
+
+        endif;
+
+      endif;
+
+      // *** GET VALID ACTIONS ***
+
+      EXEC SQL
+        CALL "MNTAREA_getValidActions"(
+          'MYJOB',
+          1,
+          'MYAREA',
+          :g_NBRACTS,
+          :g_ACTS
+        );
+      setIgnoreWarnings();
+      if (SqlCheckState(sqlState));
+
+        g_DMY = *on;
 
       endif;
 
