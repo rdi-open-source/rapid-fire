@@ -15,17 +15,17 @@ import org.eclipse.swt.widgets.Shell;
 import biz.rapidfire.core.RapidFireCorePlugin;
 import biz.rapidfire.core.handlers.library.NewLibraryHandler;
 import biz.rapidfire.core.model.IRapidFireJobResource;
+import biz.rapidfire.core.model.IRapidFireLibraryResource;
 import biz.rapidfire.rse.Messages;
 import biz.rapidfire.rse.RapidFireRSEPlugin;
+import biz.rapidfire.rse.subsystem.actions.AbstractNewNodePopupMenuAction;
 import biz.rapidfire.rse.subsystem.resources.LibrariesNode;
 import biz.rapidfire.rse.subsystem.resources.RapidFireLibraryResource;
 
-import com.ibm.etools.systems.core.ui.actions.SystemBaseAction;
-
-public class NewLibrariesNodePopupMenuAction extends SystemBaseAction {
+public class NewLibrariesNodePopupMenuAction extends AbstractNewNodePopupMenuAction<LibrariesNode, IRapidFireLibraryResource> {
 
     public NewLibrariesNodePopupMenuAction(Shell shell) {
-        super(Messages.ActionLabel_New_Library, Messages.ActionTooltip_New_Library, shell);
+        super(Messages.ActionLabel_New_Library, Messages.ActionTooltip_New_Library, shell,new NewLibraryHandler());
 
         setImageDescriptor(RapidFireRSEPlugin.getDefault().getImageRegistry().getDescriptor(RapidFireRSEPlugin.IMAGE_NEW_LIBRARY));
         setContextMenuGroup("group.new");
@@ -44,14 +44,28 @@ public class NewLibrariesNodePopupMenuAction extends SystemBaseAction {
 
                 RapidFireLibraryResource library = RapidFireLibraryResource.createEmptyInstance(job);
 
-                NewLibraryHandler handler = new NewLibraryHandler();
                 IStructuredSelection selection = new StructuredSelection(library);
-                handler.executeWithSelection(selection);
+                getHandler().executeWithSelection(selection);
             }
 
         } catch (Exception e) {
             RapidFireCorePlugin.logError("*** Could not execute 'New Library' handler ***", e); //$NON-NLS-1$
         }
 
+    }
+
+    @Override
+    protected IRapidFireLibraryResource createNewResource(LibrariesNode node) {
+        return RapidFireLibraryResource.createEmptyInstance(node.getJob());
+    }
+
+    @Override
+    protected LibrariesNode getResource(Object object) {
+
+        if (object instanceof LibrariesNode) {
+            return (LibrariesNode)object;
+        }
+
+        return null;
     }
 }

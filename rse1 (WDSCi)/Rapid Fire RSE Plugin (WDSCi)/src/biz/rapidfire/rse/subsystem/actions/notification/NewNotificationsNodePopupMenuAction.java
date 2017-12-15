@@ -15,17 +15,17 @@ import org.eclipse.swt.widgets.Shell;
 import biz.rapidfire.core.RapidFireCorePlugin;
 import biz.rapidfire.core.handlers.notification.NewNotificationHandler;
 import biz.rapidfire.core.model.IRapidFireJobResource;
+import biz.rapidfire.core.model.IRapidFireNotificationResource;
 import biz.rapidfire.rse.Messages;
 import biz.rapidfire.rse.RapidFireRSEPlugin;
+import biz.rapidfire.rse.subsystem.actions.AbstractNewNodePopupMenuAction;
 import biz.rapidfire.rse.subsystem.resources.NotificationsNode;
 import biz.rapidfire.rse.subsystem.resources.RapidFireNotificationResource;
 
-import com.ibm.etools.systems.core.ui.actions.SystemBaseAction;
-
-public class NewNotificationsNodePopupMenuAction extends SystemBaseAction {
+public class NewNotificationsNodePopupMenuAction extends AbstractNewNodePopupMenuAction<NotificationsNode, IRapidFireNotificationResource> {
 
     public NewNotificationsNodePopupMenuAction(Shell shell) {
-        super(Messages.ActionLabel_New_Notification, Messages.ActionTooltip_New_Notification, shell);
+        super(Messages.ActionLabel_New_Notification, Messages.ActionTooltip_New_Notification, shell,new NewNotificationHandler());
 
         setImageDescriptor(RapidFireRSEPlugin.getDefault().getImageRegistry().getDescriptor(RapidFireRSEPlugin.IMAGE_NEW_NOTIFICATION));
         setContextMenuGroup("group.new");
@@ -44,14 +44,28 @@ public class NewNotificationsNodePopupMenuAction extends SystemBaseAction {
 
                 RapidFireNotificationResource notification = RapidFireNotificationResource.createEmptyInstance(job);
 
-                NewNotificationHandler handler = new NewNotificationHandler();
                 IStructuredSelection selection = new StructuredSelection(notification);
-                handler.executeWithSelection(selection);
+                getHandler().executeWithSelection(selection);
             }
 
         } catch (Exception e) {
             RapidFireCorePlugin.logError("*** Could not execute 'New Notification' handler ***", e); //$NON-NLS-1$
         }
 
+    }
+
+    @Override
+    protected IRapidFireNotificationResource createNewResource(NotificationsNode node) {
+        return RapidFireNotificationResource.createEmptyInstance(node.getJob());
+    }
+
+    @Override
+    protected NotificationsNode getResource(Object object) {
+
+        if (object instanceof NotificationsNode) {
+            return (NotificationsNode)object;
+        }
+
+        return null;
     }
 }

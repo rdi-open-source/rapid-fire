@@ -15,17 +15,18 @@ import org.eclipse.swt.widgets.Shell;
 import biz.rapidfire.core.RapidFireCorePlugin;
 import biz.rapidfire.core.handlers.librarylist.NewLibraryListHandler;
 import biz.rapidfire.core.model.IRapidFireJobResource;
+import biz.rapidfire.core.model.IRapidFireLibraryListResource;
 import biz.rapidfire.rse.Messages;
 import biz.rapidfire.rse.RapidFireRSEPlugin;
+import biz.rapidfire.rse.subsystem.actions.AbstractNewNodePopupMenuAction;
 import biz.rapidfire.rse.subsystem.resources.LibrariesNode;
+import biz.rapidfire.rse.subsystem.resources.LibraryListsNode;
 import biz.rapidfire.rse.subsystem.resources.RapidFireLibraryListResource;
 
-import com.ibm.etools.systems.core.ui.actions.SystemBaseAction;
-
-public class NewLibraryListsNodePopupMenuAction extends SystemBaseAction {
+public class NewLibraryListsNodePopupMenuAction extends AbstractNewNodePopupMenuAction<LibraryListsNode, IRapidFireLibraryListResource> {
 
     public NewLibraryListsNodePopupMenuAction(Shell shell) {
-        super(Messages.ActionLabel_New_Library, Messages.ActionTooltip_New_Library, shell);
+        super(Messages.ActionLabel_New_Library, Messages.ActionTooltip_New_Library, shell,new NewLibraryListHandler());
 
         setImageDescriptor(RapidFireRSEPlugin.getDefault().getImageRegistry().getDescriptor(RapidFireRSEPlugin.IMAGE_NEW_LIBRARY));
         setContextMenuGroup("group.new");
@@ -44,14 +45,28 @@ public class NewLibraryListsNodePopupMenuAction extends SystemBaseAction {
 
                 RapidFireLibraryListResource library = RapidFireLibraryListResource.createEmptyInstance(job);
 
-                NewLibraryListHandler handler = new NewLibraryListHandler();
                 IStructuredSelection selection = new StructuredSelection(library);
-                handler.executeWithSelection(selection);
+                getHandler().executeWithSelection(selection);
             }
 
         } catch (Exception e) {
             RapidFireCorePlugin.logError("*** Could not execute 'New Library List' handler ***", e); //$NON-NLS-1$
         }
 
+    }
+
+    @Override
+    protected IRapidFireLibraryListResource createNewResource(LibraryListsNode node) {
+        return RapidFireLibraryListResource.createEmptyInstance(node.getJob());
+    }
+
+    @Override
+    protected LibraryListsNode getResource(Object object) {
+
+        if (object instanceof LibraryListsNode) {
+            return (LibraryListsNode)object;
+        }
+
+        return null;
     }
 }
