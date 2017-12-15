@@ -18,6 +18,13 @@ public class AreaKey implements IResourceKey {
     private FileKey fileKey;
     private String area;
 
+    public static AreaKey createNew(FileKey fileKey) {
+
+        AreaKey key = new AreaKey(fileKey, ""); //$NON-NLS-1$
+
+        return key;
+    }
+
     public AreaKey(FileKey fileKey, String area) {
 
         this.fileKey = fileKey;

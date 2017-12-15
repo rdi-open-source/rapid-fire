@@ -10,6 +10,8 @@ package biz.rapidfire.core.maintenance.area;
 
 import java.sql.CallableStatement;
 import java.sql.Types;
+import java.util.HashSet;
+import java.util.Set;
 
 import biz.rapidfire.core.Messages;
 import biz.rapidfire.core.maintenance.AbstractManager;
@@ -188,9 +190,72 @@ public class AreaManager extends AbstractManager<IRapidFireAreaResource, AreaKey
 
     @Override
     public Result checkAction(AreaKey key, AreaAction areaAction) throws Exception {
-        // TODO: check action!
-        Result result = new Result(Success.YES.label(), null);
-        return result;
+
+        CallableStatement statement = dao.prepareCall(dao
+            .insertLibraryQualifier("{CALL " + IJDBCConnection.LIBRARY + "\"MNTAREA_checkAction\"(?, ?, ?, ?, ?, ?)}")); //$NON-NLS-1$ //$NON-NLS-2$
+
+        statement.setString(IAreaCheckAction.ACTION, areaAction.label());
+        statement.setString(IAreaCheckAction.JOB, key.getJobName());
+        statement.setInt(IAreaCheckAction.POSITION, key.getPosition());
+        statement.setString(IAreaCheckAction.AREA, key.getArea());
+        statement.setString(IAreaCheckAction.SUCCESS, Success.NO.label());
+        statement.setString(IAreaCheckAction.MESSAGE, EMPTY_STRING);
+
+        statement.registerOutParameter(IAreaCheckAction.SUCCESS, Types.CHAR);
+        statement.registerOutParameter(IAreaCheckAction.MESSAGE, Types.CHAR);
+
+        statement.execute();
+
+        String success = statement.getString(IAreaCheckAction.SUCCESS);
+        String message = statement.getString(IAreaCheckAction.MESSAGE);
+
+        return new Result(null, message, success);
+    }
+
+    protected AreaAction[] getValidActions(AreaKey areaKey) throws Exception {
+
+        CallableStatement statement = dao.prepareCall(dao
+            .insertLibraryQualifier("{CALL " + IJDBCConnection.LIBRARY + "\"MNTAREA_getValidActions\"(?, ?, ?, ?, ?)}")); //$NON-NLS-1$ //$NON-NLS-2$
+
+        statement.setString(IAreaGetValidActions.JOB, areaKey.getJobName());
+        statement.setInt(IAreaGetValidActions.POSITION, areaKey.getPosition());
+        statement.setString(IAreaGetValidActions.AREA, areaKey.getArea());
+        statement.setInt(IAreaGetValidActions.NUMBER_ACTIONS, 0);
+        statement.setString(IAreaGetValidActions.ACTIONS, EMPTY_STRING);
+
+        statement.registerOutParameter(IAreaGetValidActions.NUMBER_ACTIONS, Types.DECIMAL);
+        statement.registerOutParameter(IAreaGetValidActions.ACTIONS, Types.CHAR);
+
+        statement.execute();
+
+        int numberActions = statement.getBigDecimal(IAreaGetValidActions.NUMBER_ACTIONS).intValue();
+        String[] actions = splitActions(statement.getString(IAreaGetValidActions.ACTIONS), numberActions);
+
+        Set<AreaAction> areaActions = new HashSet<AreaAction>();
+        for (String action : actions) {
+            areaActions.add(AreaAction.find(action.trim()));
+        }
+
+        Result result = checkAction(AreaKey.createNew(new FileKey(new JobKey(areaKey.getJobName()), areaKey.getPosition())), AreaAction.CREATE);
+        if (result.isSuccessfull()) {
+            areaActions.add(AreaAction.CREATE);
+        }
+
+        return areaActions.toArray(new AreaAction[areaActions.size()]);
+    }
+
+    public boolean isValidAction(IRapidFireAreaResource area, AreaAction action) throws Exception {
+
+        KeyAreaActionCache areaActionsKey = new KeyAreaActionCache(area);
+
+        Set<AreaAction> actionsSet = AreaActionCache.getInstance().getActions(areaActionsKey);
+        if (actionsSet == null) {
+            AreaAction[] areaActions = getValidActions(area.getKey());
+            AreaActionCache.getInstance().putActions(areaActionsKey, areaActions);
+            actionsSet = AreaActionCache.getInstance().getActions(areaActionsKey);
+        }
+
+        return actionsSet.contains(action);
     }
 
     @Override
