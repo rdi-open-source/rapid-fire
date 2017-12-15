@@ -84,7 +84,7 @@ public class RapidFireSubSystemConfigurationAdapter extends SubSystemConfigurati
 
         // For WDSCi see:
         // RapidFireSubSystemFactory.supportsMultipleFilterStrings()
-        selectedFilter.setSingleFilterStringOnly(false);
+        selectedFilter.setSingleFilterStringOnly(true);
 
         selectedFilter.getSystemFilterPool().getSystemFilterPoolManager().getSystemFilterPosition(selectedFilter);
 
