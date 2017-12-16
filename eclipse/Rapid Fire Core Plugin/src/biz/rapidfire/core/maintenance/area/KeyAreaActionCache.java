@@ -15,13 +15,13 @@ import biz.rapidfire.core.model.IRapidFireAreaResource;
  * This class produces the key value for the FileActionCache.
  * 
  * <pre>
- * Form of the key:    [dataLibrary] + [jobName], [jobStatus], [position_isZero]
- * Example key value:  RFPRI, CUSTUPD, RDY, IS_ZERO
+ * Form of the key:    [dataLibrary] + [jobName], [jobStatus], [area_isEmpty]
+ * Example key value:  RFPRI, CUSTUPD, RDY, 10, IS_EMPTY
  * </pre>
  */
 public class KeyAreaActionCache extends AbstractKeyResourceActionCache {
 
     public KeyAreaActionCache(IRapidFireAreaResource area) {
-        super(area.getParentJob(), isNumericValueZero(area.getPosition()));
+        super(area.getParentJob(), Integer.toString(area.getPosition()), isStringValueEmpty(area.getName()));
     }
 }
