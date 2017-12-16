@@ -12,6 +12,8 @@ public interface ICommandGetValidActions {
 
     public static final int JOB = 1;
     public static final int POSITION = 2;
-    public static final int NUMBER_ACTIONS = 3;
-    public static final int ACTIONS = 4;
+    public static final int COMMAND_TYPE = 3;
+    public static final int SEQUENCE = 4;
+    public static final int NUMBER_ACTIONS = 5;
+    public static final int ACTIONS = 6;
 }

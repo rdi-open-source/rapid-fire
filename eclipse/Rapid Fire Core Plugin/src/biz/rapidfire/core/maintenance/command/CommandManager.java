@@ -10,6 +10,8 @@ package biz.rapidfire.core.maintenance.command;
 
 import java.sql.CallableStatement;
 import java.sql.Types;
+import java.util.HashSet;
+import java.util.Set;
 
 import biz.rapidfire.core.Messages;
 import biz.rapidfire.core.maintenance.AbstractManager;
@@ -183,9 +185,75 @@ public class CommandManager extends AbstractManager<IRapidFireCommandResource, C
 
     @Override
     public Result checkAction(CommandKey key, CommandAction commandAction) throws Exception {
-        // TODO: check action!
-        Result result = new Result(Success.YES.label(), null);
-        return result;
+
+        CallableStatement statement = dao.prepareCall(dao
+            .insertLibraryQualifier("{CALL " + IJDBCConnection.LIBRARY + "\"MNTCMD_checkAction\"(?, ?, ?, ?, ?, ?, ?)}")); //$NON-NLS-1$ //$NON-NLS-2$
+
+        statement.setString(ICommandCheckAction.ACTION, commandAction.label());
+        statement.setString(ICommandCheckAction.JOB, key.getJobName());
+        statement.setInt(ICommandCheckAction.POSITION, key.getPosition());
+        statement.setString(ICommandCheckAction.COMMAND_TYPE, key.getCommandType());
+        statement.setInt(ICommandCheckAction.SEQUENCE, key.getSequence());
+        statement.setString(ICommandCheckAction.SUCCESS, Success.NO.label());
+        statement.setString(ICommandCheckAction.MESSAGE, EMPTY_STRING);
+
+        statement.registerOutParameter(ICommandCheckAction.SUCCESS, Types.CHAR);
+        statement.registerOutParameter(ICommandCheckAction.MESSAGE, Types.CHAR);
+
+        statement.execute();
+
+        String success = statement.getString(ICommandCheckAction.SUCCESS);
+        String message = statement.getString(ICommandCheckAction.MESSAGE);
+
+        return new Result(null, message, success);
+    }
+
+    protected CommandAction[] getValidActions(CommandKey commandKey) throws Exception {
+
+        CallableStatement statement = dao.prepareCall(dao
+            .insertLibraryQualifier("{CALL " + IJDBCConnection.LIBRARY + "\"MNTCMD_getValidActions\"(?, ?, ?, ?, ?, ?)}")); //$NON-NLS-1$ //$NON-NLS-2$
+
+        statement.setString(ICommandGetValidActions.JOB, commandKey.getJobName());
+        statement.setInt(ICommandGetValidActions.POSITION, commandKey.getPosition());
+        statement.setString(ICommandGetValidActions.COMMAND_TYPE, commandKey.getCommandType());
+        statement.setInt(ICommandGetValidActions.SEQUENCE, commandKey.getSequence());
+        statement.setInt(ICommandGetValidActions.NUMBER_ACTIONS, 0);
+        statement.setString(ICommandGetValidActions.ACTIONS, EMPTY_STRING);
+
+        statement.registerOutParameter(ICommandGetValidActions.NUMBER_ACTIONS, Types.DECIMAL);
+        statement.registerOutParameter(ICommandGetValidActions.ACTIONS, Types.CHAR);
+
+        statement.execute();
+
+        int numberActions = statement.getBigDecimal(ICommandGetValidActions.NUMBER_ACTIONS).intValue();
+        String[] actions = splitActions(statement.getString(ICommandGetValidActions.ACTIONS), numberActions);
+
+        Set<CommandAction> commandActions = new HashSet<CommandAction>();
+        for (String action : actions) {
+            commandActions.add(CommandAction.find(action.trim()));
+        }
+
+        Result result = checkAction(CommandKey.createNew(new FileKey(new JobKey(commandKey.getJobName()), commandKey.getPosition())),
+            CommandAction.CREATE);
+        if (result.isSuccessfull()) {
+            commandActions.add(CommandAction.CREATE);
+        }
+
+        return commandActions.toArray(new CommandAction[commandActions.size()]);
+    }
+
+    public boolean isValidAction(IRapidFireCommandResource command, CommandAction action) throws Exception {
+
+        KeyCommandActionCache commandActionsKey = new KeyCommandActionCache(command);
+
+        Set<CommandAction> actionsSet = CommandActionCache.getInstance().getActions(commandActionsKey);
+        if (actionsSet == null) {
+            CommandAction[] commandActions = getValidActions(command.getKey());
+            CommandActionCache.getInstance().putActions(commandActionsKey, commandActions);
+            actionsSet = CommandActionCache.getInstance().getActions(commandActionsKey);
+        }
+
+        return actionsSet.contains(action);
     }
 
     @Override

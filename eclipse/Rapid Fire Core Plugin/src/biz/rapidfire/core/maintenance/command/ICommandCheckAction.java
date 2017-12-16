@@ -13,6 +13,8 @@ public interface ICommandCheckAction {
     public static final int ACTION = 1;
     public static final int JOB = 2;
     public static final int POSITION = 3;
-    public static final int SUCCESS = 4;
-    public static final int MESSAGE = 5;
+    public static final int COMMAND_TYPE = 4;
+    public static final int SEQUENCE = 5;
+    public static final int SUCCESS = 6;
+    public static final int MESSAGE = 7;
 }

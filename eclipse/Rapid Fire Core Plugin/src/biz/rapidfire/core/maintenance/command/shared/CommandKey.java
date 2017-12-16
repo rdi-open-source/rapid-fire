@@ -19,6 +19,13 @@ public class CommandKey implements IResourceKey {
     private CommandType commandType;
     private int sequence;
 
+    public static CommandKey createNew(FileKey fileKey) {
+
+        CommandKey key = new CommandKey(fileKey, null, 0);
+
+        return key;
+    }
+
     public CommandKey(FileKey fileKey, CommandType commandType, int sequence) {
 
         this.fileKey = fileKey;
