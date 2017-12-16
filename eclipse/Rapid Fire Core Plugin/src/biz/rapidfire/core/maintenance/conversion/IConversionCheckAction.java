@@ -13,6 +13,7 @@ public interface IConversionCheckAction {
     public static final int ACTION = 1;
     public static final int JOB = 2;
     public static final int POSITION = 3;
-    public static final int SUCCESS = 4;
-    public static final int MESSAGE = 5;
+    public static final int FIELD_TO_CONVERT = 4;
+    public static final int SUCCESS = 5;
+    public static final int MESSAGE = 6;
 }

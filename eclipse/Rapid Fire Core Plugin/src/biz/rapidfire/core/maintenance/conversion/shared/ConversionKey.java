@@ -18,6 +18,13 @@ public class ConversionKey implements IResourceKey {
     private FileKey fileKey;
     private String fieldToConvert;
 
+    public static ConversionKey createNew(FileKey fileKey) {
+
+        ConversionKey key = new ConversionKey(fileKey, ""); //$NON-NLS-1$
+
+        return key;
+    }
+
     public ConversionKey(FileKey fileKey, String fieldName) {
 
         this.fileKey = fileKey;

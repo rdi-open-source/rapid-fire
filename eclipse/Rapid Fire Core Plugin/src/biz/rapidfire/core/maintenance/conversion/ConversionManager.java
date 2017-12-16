@@ -10,8 +10,10 @@ package biz.rapidfire.core.maintenance.conversion;
 
 import java.sql.CallableStatement;
 import java.sql.Types;
+import java.util.HashSet;
 import java.util.LinkedList;
 import java.util.List;
+import java.util.Set;
 
 import biz.rapidfire.core.Messages;
 import biz.rapidfire.core.maintenance.AbstractManager;
@@ -207,9 +209,73 @@ public class ConversionManager extends AbstractManager<IRapidFireConversionResou
 
     @Override
     public Result checkAction(ConversionKey key, ConversionAction conversionAction) throws Exception {
-        // TODO: check action!
-        Result result = new Result(Success.YES.label(), null);
-        return result;
+
+        CallableStatement statement = dao.prepareCall(dao
+            .insertLibraryQualifier("{CALL " + IJDBCConnection.LIBRARY + "\"MNTCNV_checkAction\"(?, ?, ?, ?, ?, ?)}")); //$NON-NLS-1$ //$NON-NLS-2$
+
+        statement.setString(IConversionCheckAction.ACTION, conversionAction.label());
+        statement.setString(IConversionCheckAction.JOB, key.getJobName());
+        statement.setInt(IConversionCheckAction.POSITION, key.getPosition());
+        statement.setString(IConversionCheckAction.FIELD_TO_CONVERT, key.getFieldToConvert());
+        statement.setString(IConversionCheckAction.SUCCESS, Success.NO.label());
+        statement.setString(IConversionCheckAction.MESSAGE, EMPTY_STRING);
+
+        statement.registerOutParameter(IConversionCheckAction.SUCCESS, Types.CHAR);
+        statement.registerOutParameter(IConversionCheckAction.MESSAGE, Types.CHAR);
+
+        statement.execute();
+
+        String success = statement.getString(IConversionCheckAction.SUCCESS);
+        String message = statement.getString(IConversionCheckAction.MESSAGE);
+
+        return new Result(null, message, success);
+    }
+
+    protected ConversionAction[] getValidActions(ConversionKey conversionKey) throws Exception {
+
+        CallableStatement statement = dao.prepareCall(dao
+            .insertLibraryQualifier("{CALL " + IJDBCConnection.LIBRARY + "\"MNTCNV_getValidActions\"(?, ?, ?, ?, ?)}")); //$NON-NLS-1$ //$NON-NLS-2$
+
+        statement.setString(IConversionGetValidActions.JOB, conversionKey.getJobName());
+        statement.setInt(IConversionGetValidActions.POSITION, conversionKey.getPosition());
+        statement.setString(IConversionGetValidActions.FIELD_TO_CONVERT, conversionKey.getFieldToConvert());
+        statement.setInt(IConversionGetValidActions.NUMBER_ACTIONS, 0);
+        statement.setString(IConversionGetValidActions.ACTIONS, EMPTY_STRING);
+
+        statement.registerOutParameter(IConversionGetValidActions.NUMBER_ACTIONS, Types.DECIMAL);
+        statement.registerOutParameter(IConversionGetValidActions.ACTIONS, Types.CHAR);
+
+        statement.execute();
+
+        int numberActions = statement.getBigDecimal(IConversionGetValidActions.NUMBER_ACTIONS).intValue();
+        String[] actions = splitActions(statement.getString(IConversionGetValidActions.ACTIONS), numberActions);
+
+        Set<ConversionAction> conversionActions = new HashSet<ConversionAction>();
+        for (String action : actions) {
+            conversionActions.add(ConversionAction.find(action.trim()));
+        }
+
+        Result result = checkAction(ConversionKey.createNew(new FileKey(new JobKey(conversionKey.getJobName()), conversionKey.getPosition())),
+            ConversionAction.CREATE);
+        if (result.isSuccessfull()) {
+            conversionActions.add(ConversionAction.CREATE);
+        }
+
+        return conversionActions.toArray(new ConversionAction[conversionActions.size()]);
+    }
+
+    public boolean isValidAction(IRapidFireConversionResource conversion, ConversionAction action) throws Exception {
+
+        KeyConversionActionCache conversionActionsKey = new KeyConversionActionCache(conversion);
+
+        Set<ConversionAction> actionsSet = ConversionActionCache.getInstance().getActions(conversionActionsKey);
+        if (actionsSet == null) {
+            ConversionAction[] conversionActions = getValidActions(conversion.getKey());
+            ConversionActionCache.getInstance().putActions(conversionActionsKey, conversionActions);
+            actionsSet = ConversionActionCache.getInstance().getActions(conversionActionsKey);
+        }
+
+        return actionsSet.contains(action);
     }
 
     @Override

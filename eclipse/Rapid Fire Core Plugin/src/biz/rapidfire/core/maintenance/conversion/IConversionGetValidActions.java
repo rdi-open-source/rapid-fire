@@ -12,6 +12,7 @@ public interface IConversionGetValidActions {
 
     public static final int JOB = 1;
     public static final int POSITION = 2;
-    public static final int NUMBER_ACTIONS = 3;
-    public static final int ACTIONS = 4;
+    public static final int FIELD_TO_CONVERT = 3;
+    public static final int NUMBER_ACTIONS = 4;
+    public static final int ACTIONS = 5;
 }

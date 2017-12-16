@@ -15,13 +15,13 @@ import biz.rapidfire.core.model.IRapidFireConversionResource;
  * This class produces the key value for the FileActionCache.
  * 
  * <pre>
- * Form of the key:    [dataLibrary] + [jobName], [jobStatus], [position_isZero]
- * Example key value:  RFPRI, CUSTUPD, RDY, IS_ZERO
+ * Form of the key:    [dataLibrary] + [jobName], [jobStatus], [position], [fieldToConvert_isEmpty]
+ * Example key value:  RFPRI, CUSTUPD, RDY, 10, IS_EMPTY
  * </pre>
  */
 public class KeyConversionActionCache extends AbstractKeyResourceActionCache {
 
     public KeyConversionActionCache(IRapidFireConversionResource conversion) {
-        super(conversion.getParentJob(), isNumericValueZero(conversion.getPosition()));
+        super(conversion.getParentJob(), Integer.toString(conversion.getPosition()), isStringValueEmpty(conversion.getFieldToConvert()));
     }
 }
