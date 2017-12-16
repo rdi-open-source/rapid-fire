@@ -563,7 +563,7 @@ DCL-PROC MNTCMD_checkAction EXPORT;
 
     // The action is not valid for such type of files
     if (not MNTFILE_checkAction(
-              MNTFILE_MNTARA : // --> Action
+              MNTFILE_MNTCMD : // --> Action
               p_JOB :          // --> Job
               p_POS :          // --> Position
               l_SUCCESS :      // <-- Success
