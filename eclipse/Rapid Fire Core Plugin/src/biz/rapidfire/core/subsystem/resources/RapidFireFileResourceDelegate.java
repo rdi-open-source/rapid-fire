@@ -118,7 +118,13 @@ public class RapidFireFileResourceDelegate implements Comparable<IRapidFireFileR
             return result;
         }
 
-        return getName().compareTo(resource.getName());
+        if (getPosition() > resource.getPosition()) {
+            return 1;
+        } else if (getPosition() < resource.getPosition()) {
+            return -1;
+        } else {
+            return 0;
+        }
     }
 
     @Override
