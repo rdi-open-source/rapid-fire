@@ -38,6 +38,15 @@ public class JobKey implements IResourceKey {
     }
 
     @Override
+    public String toString() {
+
+        StringBuilder buffer = new StringBuilder();
+        buffer.append(getJobName());
+
+        return buffer.toString();
+    }
+
+    @Override
     public Object clone() {
         try {
 

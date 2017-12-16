@@ -33,4 +33,5 @@ import biz.rapidfire.core.maintenance.notification.shared.NotificationKey;
  */
 public interface IResourceKey extends Cloneable {
 
+    public static final String DELIMITER = ","; //$NON-NLS-1$
 }

@@ -61,6 +61,19 @@ public class CommandKey implements IResourceKey {
     }
 
     @Override
+    public String toString() {
+
+        StringBuilder buffer = new StringBuilder();
+        buffer.append(fileKey.toString());
+        buffer.append(DELIMITER);
+        buffer.append(getCommandType());
+        buffer.append(DELIMITER);
+        buffer.append(getSequence());
+
+        return buffer.toString();
+    }
+
+    @Override
     public Object clone() {
         try {
 

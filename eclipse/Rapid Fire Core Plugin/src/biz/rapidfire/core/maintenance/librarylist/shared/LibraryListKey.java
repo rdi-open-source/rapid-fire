@@ -46,6 +46,17 @@ public class LibraryListKey implements IResourceKey {
     }
 
     @Override
+    public String toString() {
+
+        StringBuilder buffer = new StringBuilder();
+        buffer.append(jobKey.toString());
+        buffer.append(DELIMITER);
+        buffer.append(getLibraryList());
+
+        return buffer.toString();
+    }
+
+    @Override
     public Object clone() {
         try {
 

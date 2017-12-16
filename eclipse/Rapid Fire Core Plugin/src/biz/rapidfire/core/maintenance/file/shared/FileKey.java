@@ -44,6 +44,17 @@ public class FileKey implements IResourceKey {
     }
 
     @Override
+    public String toString() {
+
+        StringBuilder buffer = new StringBuilder();
+        buffer.append(jobKey.toString());
+        buffer.append(DELIMITER);
+        buffer.append(getPosition());
+
+        return buffer.toString();
+    }
+
+    @Override
     public Object clone() {
         try {
 
