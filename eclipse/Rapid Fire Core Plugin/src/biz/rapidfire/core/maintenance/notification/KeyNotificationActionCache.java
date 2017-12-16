@@ -15,7 +15,7 @@ import biz.rapidfire.core.model.IRapidFireNotificationResource;
  * This class produces the key value for the NotificationActionCache.
  * 
  * <pre>
- * Form of the key:    [dataLibrary] + [jobName], [jobStatus], [position_isZero]
+ * Form of the key:    [dataLibrary], [jobName], [jobStatus], [position_isZero]
  * Example key value:  RFPRI, CUSTUPD, RDY, IS_ZERO
  * </pre>
  */

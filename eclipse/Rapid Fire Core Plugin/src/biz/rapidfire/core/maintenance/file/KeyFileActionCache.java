@@ -15,7 +15,7 @@ import biz.rapidfire.core.model.IRapidFireFileResource;
  * This class produces the key value for the FileActionCache.
  * 
  * <pre>
- * Form of the key:    [dataLibrary] + [jobName], [jobStatus], [position_isZero]
+ * Form of the key:    [dataLibrary], [jobName], [jobStatus], [position_isZero]
  * Example key value:  RFPRI, CUSTUPD, RDY, IS_ZERO
  * </pre>
  */

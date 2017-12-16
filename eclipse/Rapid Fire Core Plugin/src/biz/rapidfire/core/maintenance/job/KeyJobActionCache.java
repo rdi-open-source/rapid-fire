@@ -15,7 +15,7 @@ import biz.rapidfire.core.model.IRapidFireJobResource;
  * This class produces the key value for the JobActionCache.
  * 
  * <pre>
- * Form of the key:    [dataLibrary] + [jobName], [jobStatus]
+ * Form of the key:    [dataLibrary], [jobName], [jobStatus]
  * Example key value:  RFPRI, CUSTUPD, RDY
  * </pre>
  */
