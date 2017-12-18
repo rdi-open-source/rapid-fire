@@ -62,8 +62,12 @@ public final class Preferences {
     private static final String HOST_NAME = DOMAIN + "HOST_NAME"; //$NON-NLS-1$
     private static final String FTP_PORT_NUMBER = DOMAIN + "FTP_PORT_NUMBER"; //$NON-NLS-1$
     private static final String RAPID_FIRE_LIBRARY = DOMAIN + "LIBRARY"; //$NON-NLS-1$
-    private static final String APPEARANCE_DATE_FORMAT = "DATE_FORMAT"; //$NON-NLS-1$
-    private static final String APPEARANCE_TIME_FORMAT = "TIME_FORMAT"; //$NON-NLS-1$
+    private static final String APPEARANCE_DATE_FORMAT = DOMAIN + "DATE_FORMAT"; //$NON-NLS-1$
+    private static final String APPEARANCE_TIME_FORMAT = DOMAIN + "TIME_FORMAT"; //$NON-NLS-1$
+
+    private static final String WIZARD = DOMAIN + "WIZARD.";
+    private static final String WIZARD_CONNECTION = WIZARD + "CONNECTION"; //$NON-NLS-1$
+    private static final String WIZARD_RAPID_FIRE_LIBRARY = WIZARD + "RAPID_FIRE_LIBRARY"; //$NON-NLS-1$
 
     private static final String DATE_FORMAT_LOCALE = "*LOCALE"; //$NON-NLS-1$
     private static final String TIME_FORMAT_LOCALE = "*LOCALE"; //$NON-NLS-1$
@@ -126,6 +130,14 @@ public final class Preferences {
         return preferenceStore.getString(APPEARANCE_TIME_FORMAT);
     }
 
+    public String getWizardConnection() {
+        return preferenceStore.getString(WIZARD_CONNECTION);
+    }
+
+    public String getWizardRapidFireLibrary() {
+        return preferenceStore.getString(WIZARD_RAPID_FIRE_LIBRARY);
+    }
+
     /*
      * Preferences: SETTER
      */
@@ -154,6 +166,14 @@ public final class Preferences {
         preferenceStore.setValue(APPEARANCE_TIME_FORMAT, dateFormatLabel);
     }
 
+    public void setWizardConnection(String connectionName) {
+        preferenceStore.setValue(WIZARD_CONNECTION, connectionName);
+    }
+
+    public void setWizardRapidFireLibrary(String libraryName) {
+        preferenceStore.setValue(WIZARD_RAPID_FIRE_LIBRARY, libraryName);
+    }
+
     /*
      * Preferences: Default Initializer
      */
@@ -166,6 +186,9 @@ public final class Preferences {
         preferenceStore.setDefault(PROGRESS_BAR_SIZE, getDefaultIsLargeProgressBar());
         preferenceStore.setDefault(APPEARANCE_DATE_FORMAT, getDefaultDateFormatLabel());
         preferenceStore.setDefault(APPEARANCE_TIME_FORMAT, getDefaultTimeFormatLabel());
+
+        preferenceStore.setDefault(WIZARD_CONNECTION, getDefaultWizardConnection());
+        preferenceStore.setDefault(WIZARD_RAPID_FIRE_LIBRARY, getDefaultWizardRapidFireLibrary());
     }
 
     /*
@@ -210,6 +233,14 @@ public final class Preferences {
 
     public String getDefaultTimeFormatLabel() {
         return TIME_FORMAT_LOCALE;
+    }
+
+    public String getDefaultWizardConnection() {
+        return "";
+    }
+
+    public String getDefaultWizardRapidFireLibrary() {
+        return "RAPIDFIRE"; //$NON-NLS-1$
     }
 
     public void registerPreferencesListener(IPropertyChangeListener listener) {

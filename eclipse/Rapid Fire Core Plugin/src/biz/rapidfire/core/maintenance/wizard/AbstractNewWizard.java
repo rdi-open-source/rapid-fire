@@ -71,8 +71,15 @@ public abstract class AbstractNewWizard extends Wizard implements INewWizard, IP
 
     @Override
     public void addPages() {
-        if (StringHelper.isNullOrEmpty(connectionName) || StringHelper.isNullOrEmpty(dataLibrary)) {
-            addPage(new DataLibraryPage());
+
+        DataLibraryPage page = new DataLibraryPage();
+        addPage(page);
+
+        if (!StringHelper.isNullOrEmpty(connectionName)) {
+            page.setConnectionName(connectionName);
+        }
+        if (!StringHelper.isNullOrEmpty(dataLibrary)) {
+            page.setDataLibraryName(dataLibrary);
         }
     }
 
@@ -159,6 +166,17 @@ public abstract class AbstractNewWizard extends Wizard implements INewWizard, IP
         }
 
         return;
+    }
+
+    protected void storePreferences() {
+
+        IWizardPage[] pages = getPages();
+        for (IWizardPage page : pages) {
+            if (page instanceof AbstractWizardPage) {
+                AbstractWizardPage wizardPage = (AbstractWizardPage)page;
+                wizardPage.storePreferences();
+            }
+        }
     }
 
     @Override

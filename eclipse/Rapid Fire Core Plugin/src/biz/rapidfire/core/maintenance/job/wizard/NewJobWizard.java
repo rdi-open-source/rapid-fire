@@ -149,6 +149,8 @@ public class NewJobWizard extends AbstractNewWizard {
                 libraryListManager.book();
             }
 
+            storePreferences();
+
             MessageDialog.openInformation(getShell(), Messages.Wizard_Title_New_Job_wizard,
                 Messages.bindParameters(Messages.NewJobWizard_Rapid_Fire_job_A_created, getJobValues().getKey().getJobName()));
 

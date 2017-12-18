@@ -18,6 +18,8 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 
+import biz.rapidfire.core.preferences.Preferences;
+
 public abstract class AbstractWizardPage extends WizardPage implements ModifyListener, SelectionListener {
 
     private boolean isEnabled;
@@ -39,6 +41,8 @@ public abstract class AbstractWizardPage extends WizardPage implements ModifyLis
         createContent(container);
 
         setControl(container);
+        setInputData();
+        addControlListeners();
         updatePageComplete(null);
 
         setErrorMessage(null);
@@ -64,7 +68,19 @@ public abstract class AbstractWizardPage extends WizardPage implements ModifyLis
         updatePageComplete(event.getSource());
     }
 
+    protected void setInputData() {
+    }
+
+    protected abstract void addControlListeners();
+
     protected abstract void updatePageComplete(Object source);
 
     protected abstract void createContent(Composite container);
+
+    protected Preferences getPreferences() {
+        return Preferences.getInstance();
+    }
+
+    protected void storePreferences() {
+    }
 }

@@ -63,15 +63,24 @@ public class LibraryListPage extends AbstractWizardPage {
 
         libraryListMaintenanceControl = new LibraryListMaintenanceControl(parent, false, SWT.NONE);
         libraryListMaintenanceControl.setParentKeyFieldsVisible(false);
-        libraryListMaintenanceControl.addModifyListener(this);
-        libraryListMaintenanceControl.addSelectionListener(this);
         libraryListMaintenanceControl.setMode(MaintenanceMode.CREATE);
         libraryListMaintenanceControl.setLayoutData(new GridData(SWT.FILL, SWT.BEGINNING, true, false, 2, 1));
+    }
+
+    @Override
+    protected void setInputData() {
 
         libraryListMaintenanceControl.setJobName(libraryListValues.getKey().getJobName());
         libraryListMaintenanceControl.setLibraryListName(libraryListValues.getKey().getLibraryList());
         libraryListMaintenanceControl.setDescription(libraryListValues.getDescription());
         setLibraryList(libraryListValues.getLibraryList());
+    }
+
+    @Override
+    protected void addControlListeners() {
+
+        libraryListMaintenanceControl.addModifyListener(this);
+        libraryListMaintenanceControl.addSelectionListener(this);
     }
 
     protected void updatePageComplete(Object source) {
@@ -125,5 +134,12 @@ public class LibraryListPage extends AbstractWizardPage {
         }
 
         libraryListMaintenanceControl.setLibraries(list.toArray(new LibraryListItem[list.size()]));
+    }
+
+    @Override
+    protected void storePreferences() {
+
+        // getPreferences().setConnectionName(connectionName);
+        // getPreferences().setRapidFireLibrary(dataLibraryName);
     }
 }

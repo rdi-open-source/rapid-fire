@@ -41,14 +41,21 @@ public class DataLibraryPage extends AbstractWizardPage {
         return connectionName;
     }
 
+    public void setConnectionName(String connectionName) {
+        this.connectionName = connectionName;
+    }
+
     public String getDataLibraryName() {
         return dataLibraryName;
+    }
+
+    public void setDataLibraryName(String dataLibraryName) {
+        this.dataLibraryName = dataLibraryName;
     }
 
     public void createContent(Composite parent) {
 
         comboConnection = WidgetFactory.createSystemHostCombo(parent, SWT.BORDER);
-        comboConnection.addSelectionListener(this);
         comboConnection.setLayoutData(new GridData(SWT.FILL, SWT.DEFAULT, true, false, 2, 1));
         comboConnection.setToolTipText(Messages.Tooltip_Connection_name);
         comboConnection.getCombo().setToolTipText(Messages.Tooltip_Connection_name);
@@ -56,9 +63,31 @@ public class DataLibraryPage extends AbstractWizardPage {
         WidgetFactory.createLabel(parent, Messages.Label_Rapid_Fire_library_colon, Messages.Tooltip_Rapid_Fire_library);
 
         textDataLibrary = WidgetFactory.createNameText(parent);
-        textDataLibrary.addModifyListener(this);
         textDataLibrary.setLayoutData(new GridData(SWT.FILL, SWT.BEGINNING, true, false));
         textDataLibrary.setToolTipText(Messages.Tooltip_Job);
+    }
+
+    @Override
+    protected void setInputData() {
+
+        if (connectionName != null) {
+            comboConnection.selectConnection(connectionName);
+        } else {
+            comboConnection.selectConnection(getPreferences().getWizardConnection());
+        }
+
+        if (dataLibraryName != null) {
+            textDataLibrary.setText(dataLibraryName);
+        } else {
+            textDataLibrary.setText(getPreferences().getWizardRapidFireLibrary());
+        }
+    }
+
+    @Override
+    protected void addControlListeners() {
+
+        comboConnection.addSelectionListener(this);
+        textDataLibrary.addModifyListener(this);
     }
 
     protected void updatePageComplete(Object source) {
@@ -90,5 +119,12 @@ public class DataLibraryPage extends AbstractWizardPage {
 
         this.connectionName = comboConnection.getConnectionName();
         this.dataLibraryName = textDataLibrary.getText();
+    }
+
+    @Override
+    protected void storePreferences() {
+
+        getPreferences().setConnectionName(connectionName);
+        getPreferences().setRapidFireLibrary(dataLibraryName);
     }
 }

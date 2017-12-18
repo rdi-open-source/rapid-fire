@@ -66,10 +66,12 @@ public class JobPage extends AbstractWizardPage {
     public void createContent(Composite parent) {
 
         jobMaintenanceControl = new JobMaintenanceControl(parent, SWT.NONE);
-        jobMaintenanceControl.addModifyListener(this);
-        jobMaintenanceControl.addSelectionListener(this);
         jobMaintenanceControl.setMode(MaintenanceMode.CREATE);
         jobMaintenanceControl.setLayoutData(new GridData(SWT.FILL, SWT.BEGINNING, true, false, 2, 1));
+    }
+
+    @Override
+    protected void setInputData() {
 
         jobMaintenanceControl.setJobName(nameValues.getKey().getJobName());
         jobMaintenanceControl.setDescription(nameValues.getDescription());
@@ -78,6 +80,13 @@ public class JobPage extends AbstractWizardPage {
         jobMaintenanceControl.setJobQueueLibraryName(nameValues.getJobQueueLibraryName());
 
         updateSkipLibraryListPage();
+    }
+
+    @Override
+    protected void addControlListeners() {
+
+        jobMaintenanceControl.addModifyListener(this);
+        jobMaintenanceControl.addSelectionListener(this);
     }
 
     protected void updatePageComplete(Object source) {
@@ -124,5 +133,12 @@ public class JobPage extends AbstractWizardPage {
 
         NewJobWizard wizard = (NewJobWizard)getWizard();
         wizard.setSkipLibraryListPage(!nameValues.isCreateEnvironment());
+    }
+
+    @Override
+    protected void storePreferences() {
+
+        // getPreferences().setConnectionName(connectionName);
+        // getPreferences().setRapidFireLibrary(dataLibraryName);
     }
 }
