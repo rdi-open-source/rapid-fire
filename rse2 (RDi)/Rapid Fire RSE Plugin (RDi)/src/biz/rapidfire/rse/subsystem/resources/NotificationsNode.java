@@ -8,27 +8,13 @@
 
 package biz.rapidfire.rse.subsystem.resources;
 
-import org.eclipse.rse.core.subsystems.AbstractResource;
-
+import biz.rapidfire.core.maintenance.wizard.shared.IWizardSupporter;
 import biz.rapidfire.core.model.IRapidFireJobResource;
 import biz.rapidfire.rse.Messages;
 
-public class NotificationsNode extends AbstractResource {
-
-    private String label;
-    private IRapidFireJobResource job;
+public class NotificationsNode extends AbstractNodeResource implements IWizardSupporter {
 
     public NotificationsNode(IRapidFireJobResource job) {
-        this.label = Messages.NodeText_Files;
-        this.job = job;
+        super(job, Messages.NodeText_Files);
     }
-
-    public String getLabel() {
-        return label;
-    }
-
-    public IRapidFireJobResource getJob() {
-        return job;
-    }
-
 }

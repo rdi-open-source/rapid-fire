@@ -8,27 +8,21 @@
 
 package biz.rapidfire.rse.subsystem.resources;
 
-import org.eclipse.rse.core.subsystems.AbstractResource;
-
+import biz.rapidfire.core.maintenance.wizard.shared.IWizardSupporter;
 import biz.rapidfire.core.model.IRapidFireFileResource;
 import biz.rapidfire.rse.Messages;
 
-public class ConversionsNode extends AbstractResource {
+public class ConversionsNode extends AbstractNodeResource implements IWizardSupporter {
 
-    private String label;
     private IRapidFireFileResource file;
 
     public ConversionsNode(IRapidFireFileResource file) {
-        this.label = Messages.NodeText_Conversions;
-        this.file = file;
-    }
+        super(file.getParentJob(), Messages.NodeText_Conversions);
 
-    public String getLabel() {
-        return label;
+        this.file = file;
     }
 
     public IRapidFireFileResource getFile() {
         return file;
     }
-
 }

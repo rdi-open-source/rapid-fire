@@ -43,7 +43,7 @@
         category="biz.rapidfire.wizards"
         icon="icons/rapidfire_job.gif">
          <description>%Wizard_job_description</description>
-         <selection class="biz.rapidfire.core.model.IRapidFireResource"/>
+         <selection class="biz.rapidfire.core.maintenance.wizard.shared.IWizardSupporter"/>
       </wizard>
    </extension>
   

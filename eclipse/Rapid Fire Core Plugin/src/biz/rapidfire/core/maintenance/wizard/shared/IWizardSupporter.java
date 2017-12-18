@@ -6,15 +6,14 @@
  * http://www.eclipse.org/legal/cpl-v10.html
  *******************************************************************************/
 
-package biz.rapidfire.rse.subsystem.resources;
+package biz.rapidfire.core.maintenance.wizard.shared;
 
-import biz.rapidfire.core.maintenance.wizard.shared.IWizardSupporter;
-import biz.rapidfire.core.model.IRapidFireJobResource;
-import biz.rapidfire.rse.Messages;
+import biz.rapidfire.core.model.IRapidFireResource;
 
-public class LibraryListsNode extends AbstractNodeResource implements IWizardSupporter {
+/**
+ * Interface for tagging Rapid Fire resources that support the "new" wizards.
+ * Required for the Eclispe "org.eclipse.ui.newWizards" extension point.
+ */
+public interface IWizardSupporter extends IRapidFireResource {
 
-    public LibraryListsNode(IRapidFireJobResource job) {
-        super(job, Messages.NodeText_LibraryLists);
-    }
 }

@@ -14,12 +14,13 @@ import org.eclipse.rse.core.subsystems.AbstractResource;
 import org.eclipse.rse.core.subsystems.ISubSystem;
 
 import biz.rapidfire.core.exceptions.IllegalParameterException;
+import biz.rapidfire.core.maintenance.wizard.shared.IWizardSupporter;
 import biz.rapidfire.core.model.IRapidFireActivityResource;
 import biz.rapidfire.core.model.IRapidFireJobResource;
 import biz.rapidfire.core.subsystem.IRapidFireSubSystem;
 import biz.rapidfire.core.subsystem.resources.RapidFireActivityResourceDelegate;
 
-public class RapidFireActivityResource extends AbstractResource implements IRapidFireActivityResource<IRapidFireJobResource>,
+public class RapidFireActivityResource extends AbstractResource implements IWizardSupporter, IRapidFireActivityResource<IRapidFireJobResource>,
     Comparable<IRapidFireActivityResource> {
 
     private IRapidFireJobResource parentJob;
