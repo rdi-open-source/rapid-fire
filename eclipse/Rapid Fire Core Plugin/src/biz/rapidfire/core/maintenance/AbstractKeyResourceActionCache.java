@@ -30,10 +30,11 @@ public abstract class AbstractKeyResourceActionCache {
 
         StringBuilder buffer = new StringBuilder();
 
-        buffer.append(job.getDataLibrary());
-        buffer.append(SEPARATOR);
-        buffer.append(job.getName());
-        buffer.append(SEPARATOR);
+        // buffer.append(job.getDataLibrary());
+        // buffer.append(SEPARATOR);
+        // buffer.append(job.getName());
+        // buffer.append(SEPARATOR);
+
         buffer.append(job.getStatus());
 
         if (keyExtensions != null && keyExtensions.length > 0) {
