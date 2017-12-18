@@ -8,27 +8,21 @@
 
 package biz.rapidfire.rse.subsystem.resources;
 
+import biz.rapidfire.core.maintenance.wizard.shared.IWizardSupporter;
 import biz.rapidfire.core.model.IRapidFireFileResource;
 import biz.rapidfire.rse.Messages;
 
-import com.ibm.etools.systems.subsystems.impl.AbstractResource;
+public class AreasNode extends AbstractNodeResource implements IWizardSupporter {
 
-public class AreasNode extends AbstractResource {
-
-    private String label;
     private IRapidFireFileResource file;
 
-    public AreasNode(IRapidFireFileResource job) {
-        this.label = Messages.NodeText_Areas;
-        this.file = job;
-    }
+    public AreasNode(IRapidFireFileResource file) {
+        super(file.getParentJob(), Messages.NodeText_Areas);
 
-    public String getLabel() {
-        return label;
+        this.file = file;
     }
 
     public IRapidFireFileResource getFile() {
         return file;
     }
-
 }

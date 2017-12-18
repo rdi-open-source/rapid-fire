@@ -11,6 +11,7 @@ package biz.rapidfire.rse.subsystem.resources;
 import biz.rapidfire.core.exceptions.IllegalParameterException;
 import biz.rapidfire.core.maintenance.command.shared.CommandKey;
 import biz.rapidfire.core.maintenance.command.shared.CommandType;
+import biz.rapidfire.core.maintenance.wizard.shared.IWizardSupporter;
 import biz.rapidfire.core.model.IRapidFireCommandResource;
 import biz.rapidfire.core.model.IRapidFireFileResource;
 import biz.rapidfire.core.model.IRapidFireJobResource;
@@ -20,7 +21,8 @@ import biz.rapidfire.core.subsystem.resources.RapidFireCommandResourceDelegate;
 import com.ibm.etools.systems.subsystems.SubSystem;
 import com.ibm.etools.systems.subsystems.impl.AbstractResource;
 
-public class RapidFireCommandResource extends AbstractResource implements IRapidFireCommandResource, Comparable<IRapidFireCommandResource> {
+public class RapidFireCommandResource extends AbstractResource implements IWizardSupporter, IRapidFireCommandResource,
+    Comparable<IRapidFireCommandResource> {
 
     private IRapidFireJobResource parentJob;
     private IRapidFireFileResource parentFile;

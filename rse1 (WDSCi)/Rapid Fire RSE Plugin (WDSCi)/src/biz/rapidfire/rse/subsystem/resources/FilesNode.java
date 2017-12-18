@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2017-2017 Rapid Fire Project Owners
+ * Copyright (c) 2017-2017 Rapid Fire Project Team
  * All rights reserved. This program and the accompanying materials 
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
@@ -8,27 +8,13 @@
 
 package biz.rapidfire.rse.subsystem.resources;
 
+import biz.rapidfire.core.maintenance.wizard.shared.IWizardSupporter;
 import biz.rapidfire.core.model.IRapidFireJobResource;
 import biz.rapidfire.rse.Messages;
 
-import com.ibm.etools.systems.subsystems.impl.AbstractResource;
-
-public class FilesNode extends AbstractResource {
-
-    private String label;
-    private IRapidFireJobResource job;
+public class FilesNode extends AbstractNodeResource implements IWizardSupporter {
 
     public FilesNode(IRapidFireJobResource job) {
-        this.label = Messages.NodeText_Files;
-        this.job = job;
+        super(job, Messages.NodeText_Files);
     }
-
-    public String getLabel() {
-        return label;
-    }
-
-    public IRapidFireJobResource getJob() {
-        return job;
-    }
-
 }

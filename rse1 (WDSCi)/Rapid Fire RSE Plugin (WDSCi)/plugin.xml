@@ -21,6 +21,31 @@
       </configuration>
       
    </extension>
+      	
+		<!--
+		  ==========================================
+		    Rapid Fire Wizards
+		  ==========================================
+		-->
+   
+   <extension
+     point = "org.eclipse.ui.newWizards">
+     
+      <category
+        id = "biz.rapidfire.wizards"
+        name="%Rapid_Fire">
+      </category>
+      
+      <wizard
+        id = "biz.rapidfire.wizards.new.job"
+        name = "%Wizard_job_name"
+        class="biz.rapidfire.core.maintenance.job.wizard.NewJobWizard"
+        category="biz.rapidfire.wizards"
+        icon="icons/rapidfire_job.gif">
+         <description>%Wizard_job_description</description>
+         <selection class="biz.rapidfire.core.maintenance.wizard.shared.IWizardSupporter"/>
+      </wizard>
+   </extension>
 
       	<!--
       	  ==========================================

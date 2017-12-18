@@ -11,6 +11,7 @@ package biz.rapidfire.rse.subsystem.resources;
 import java.sql.Time;
 
 import biz.rapidfire.core.exceptions.IllegalParameterException;
+import biz.rapidfire.core.maintenance.wizard.shared.IWizardSupporter;
 import biz.rapidfire.core.model.IRapidFireActivityResource;
 import biz.rapidfire.core.model.IRapidFireJobResource;
 import biz.rapidfire.core.subsystem.IRapidFireSubSystem;
@@ -19,7 +20,8 @@ import biz.rapidfire.core.subsystem.resources.RapidFireActivityResourceDelegate;
 import com.ibm.etools.systems.subsystems.SubSystem;
 import com.ibm.etools.systems.subsystems.impl.AbstractResource;
 
-public class RapidFireActivityResource extends AbstractResource implements IRapidFireActivityResource, Comparable<IRapidFireActivityResource> {
+public class RapidFireActivityResource extends AbstractResource implements IWizardSupporter, IRapidFireActivityResource,
+    Comparable<IRapidFireActivityResource> {
 
     private IRapidFireJobResource parentJob;
     private RapidFireActivityResourceDelegate delegate;

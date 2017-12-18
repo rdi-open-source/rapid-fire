@@ -8,27 +8,13 @@
 
 package biz.rapidfire.rse.subsystem.resources;
 
+import biz.rapidfire.core.maintenance.wizard.shared.IWizardSupporter;
 import biz.rapidfire.core.model.IRapidFireJobResource;
 import biz.rapidfire.rse.Messages;
 
-import com.ibm.etools.systems.subsystems.impl.AbstractResource;
-
-public class LibraryListsNode extends AbstractResource {
-
-    private String label;
-    private IRapidFireJobResource job;
+public class LibraryListsNode extends AbstractNodeResource implements IWizardSupporter {
 
     public LibraryListsNode(IRapidFireJobResource job) {
-        this.label = Messages.NodeText_LibraryLists;
-        this.job = job;
+        super(job, Messages.NodeText_LibraryLists);
     }
-
-    public String getLabel() {
-        return label;
-    }
-
-    public IRapidFireJobResource getJob() {
-        return job;
-    }
-
 }
