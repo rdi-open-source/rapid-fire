@@ -72,7 +72,14 @@ public abstract class AbstractLibraryListMaintenanceHandler extends
 
         try {
 
-            Result result = getOrCreateManager(libraryList.getParentJob()).checkAction(libraryList.getKey(), libraryListAction);
+            Result result;
+            if (libraryListAction == LibraryListAction.CREATE) {
+                result = getOrCreateManager(libraryList.getParentJob()).checkAction(LibraryListKey.createNew(libraryList.getParent().getKey()),
+                    libraryListAction);
+            } else {
+                result = getOrCreateManager(libraryList.getParentJob()).checkAction(libraryList.getKey(), libraryListAction);
+            }
+
             if (result.isSuccessfull()) {
                 return true;
             } else {

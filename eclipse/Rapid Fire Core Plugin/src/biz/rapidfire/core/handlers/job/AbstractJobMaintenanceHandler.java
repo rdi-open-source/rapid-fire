@@ -73,7 +73,12 @@ public abstract class AbstractJobMaintenanceHandler extends AbstractResourceMain
 
         try {
 
-            Result result = getOrCreateManager(job).checkAction(new JobKey(job.getName()), action);
+            Result result;
+            if (action == JobAction.CREATE) {
+                result = getOrCreateManager(job).checkAction(JobKey.createNew(), action);
+            } else {
+                result = getOrCreateManager(job).checkAction(new JobKey(job.getName()), action);
+            }
 
             if (result.isSuccessfull()) {
                 return true;

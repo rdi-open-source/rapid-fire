@@ -72,7 +72,14 @@ public abstract class AbstractConversionMaintenanceHandler extends AbstractResou
 
         try {
 
-            Result result = getOrCreateManager(conversion.getParentJob()).checkAction(conversion.getKey(), conversionAction);
+            Result result;
+            if (conversionAction == ConversionAction.CREATE) {
+                result = getOrCreateManager(conversion.getParentJob()).checkAction(ConversionKey.createNew(conversion.getParent().getKey()),
+                    conversionAction);
+            } else {
+                result = getOrCreateManager(conversion.getParentJob()).checkAction(conversion.getKey(), conversionAction);
+            }
+
             if (result.isSuccessfull()) {
                 return true;
             } else {

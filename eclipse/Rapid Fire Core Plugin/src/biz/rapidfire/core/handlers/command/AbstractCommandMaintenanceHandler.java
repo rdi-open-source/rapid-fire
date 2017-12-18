@@ -66,13 +66,19 @@ public abstract class AbstractCommandMaintenanceHandler extends AbstractResource
     }
 
     @Override
-    protected boolean canExecuteAction(IRapidFireCommandResource command, CommandAction commanddAction) {
+    protected boolean canExecuteAction(IRapidFireCommandResource command, CommandAction commandAction) {
 
         String message = null;
 
         try {
 
-            Result result = getOrCreateManager(command.getParentJob()).checkAction(command.getKey(), commandAction);
+            Result result;
+            if (commandAction == CommandAction.CREATE) {
+                result = getOrCreateManager(command.getParentJob()).checkAction(CommandKey.createNew(command.getParent().getKey()), commandAction);
+            } else {
+                result = getOrCreateManager(command.getParentJob()).checkAction(command.getKey(), commandAction);
+            }
+
             if (result.isSuccessfull()) {
                 return true;
             } else {

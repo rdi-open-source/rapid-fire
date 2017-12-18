@@ -71,7 +71,13 @@ public abstract class AbstractFileMaintenanceHandler extends AbstractResourceMai
 
         try {
 
-            Result result = getOrCreateManager(file.getParentJob()).checkAction(file.getKey(), fileAction);
+            Result result;
+            if (fileAction == FileAction.CREATE) {
+                result = getOrCreateManager(file.getParentJob()).checkAction(FileKey.createNew(file.getParent().getKey()), fileAction);
+            } else {
+                result = getOrCreateManager(file.getParentJob()).checkAction(file.getKey(), fileAction);
+            }
+
             if (result.isSuccessfull()) {
                 return true;
             } else {
