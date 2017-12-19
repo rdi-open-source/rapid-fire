@@ -289,6 +289,9 @@ public class Messages extends NLS {
     public static String Library_list_entries_are_missing;
     public static String Error_on_wizard_page_A_B;
     public static String Library_A_not_found_on_system_B;
+    public static String Could_not_commit_transaction_of_connection_A;
+    public static String Could_not_rollback_transaction_of_connection_A;
+    public static String Could_set_auto_commit_property_for_connection_A;
 
     // API error messages
     public static String EntityManager_Unknown_error_code_A;
@@ -296,6 +299,12 @@ public class Messages extends NLS {
     public static String RapidFire_Start_001;
 
     public static String RapidFire_Stop_001;
+
+    public static String RapidFire_Set_Auto_Commit_001;
+
+    public static String RapidFire_Commit_001;
+
+    public static String RapidFire_Rollback_001;
 
     public static String JobManager_001;
     public static String JobManager_002;

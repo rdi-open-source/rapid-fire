@@ -19,7 +19,7 @@ import biz.rapidfire.rse.subsystem.resources.RapidFireConversionResource;
 public class ConversionsDAO extends AbstractConversionsDAO implements IConversionsDAO {
 
     public ConversionsDAO(String connectionName, String libraryName) throws Exception {
-        super(JDBCConnectionManager.getInstance().getConnection(connectionName, libraryName, false));
+        super(JDBCConnectionManager.getInstance().getConnectionForRead(connectionName, libraryName));
     }
 
     @Override

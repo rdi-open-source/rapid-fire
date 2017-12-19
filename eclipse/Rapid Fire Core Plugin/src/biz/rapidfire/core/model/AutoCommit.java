@@ -1,36 +1,33 @@
 /*******************************************************************************
- * Copyright (c) 2017-2017 Rapid Fire Project Team
+ * Copyright (c) 2017-2017 Rapid Fire Project Owners
  * All rights reserved. This program and the accompanying materials 
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/cpl-v10.html
  *******************************************************************************/
 
-package biz.rapidfire.core.maintenance.activity.shared;
+package biz.rapidfire.core.model;
 
 import java.util.HashMap;
 import java.util.Map;
 
-import biz.rapidfire.core.maintenance.shared.IResourceAction;
-
-public enum ActivityAction implements IResourceAction {
-    CREATE ("*CREATE"),
-    CHANGE ("*CHANGE"),
-    DISPLAY ("*DISPLAY");
+public enum AutoCommit {
+    YES ("Y"),
+    NO ("N");
 
     private String label;
 
-    private static Map<String, ActivityAction> actions;
+    private static Map<String, AutoCommit> success;
 
     static {
-        actions = new HashMap<String, ActivityAction>();
-        for (ActivityAction status : ActivityAction.values()) {
-            actions.put(status.label, status);
+        success = new HashMap<String, AutoCommit>();
+        for (AutoCommit successItem : AutoCommit.values()) {
+            success.put(successItem.label, successItem);
         }
     }
 
-    private ActivityAction(String label) {
-        this.label = label;
+    private AutoCommit(String value) {
+        this.label = value;
     }
 
     public String label() {
@@ -38,14 +35,14 @@ public enum ActivityAction implements IResourceAction {
     }
 
     public static String[] labels() {
-        return actions.keySet().toArray(new String[actions.size()]);
+        return success.keySet().toArray(new String[success.size()]);
     }
 
-    public static ActivityAction find(String label) {
+    public static AutoCommit find(String label) {
         // TODO: remove debug code
         if (label.length() != label.trim().length()) {
             throw new IllegalArgumentException("Expect to see a trimmed value here."); //$NON-NLS-1$
         }
-        return actions.get(label);
+        return success.get(label);
     }
 }

@@ -475,7 +475,7 @@
       
       <handler
          commandId="biz.rapidfire.core.command.Activity.change"
-         class="biz.rapidfire.core.handlers.activity.ChangeActivitiesHandler">
+         class="biz.rapidfire.core.handlers.job.MaintainActivitiesHandler">
          <enabledWhen>
             <with variable="selection">
                <count value="+" />

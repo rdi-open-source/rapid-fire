@@ -21,7 +21,7 @@ import biz.rapidfire.rse.subsystem.resources.RapidFireActivityResource;
 public class ActivitiesDAO extends AbstractActivitiesDAO implements IActivitiesDAO {
 
     public ActivitiesDAO(String connectionName, String libraryName) throws Exception {
-        super(JDBCConnectionManager.getInstance().getConnection(connectionName, libraryName, false));
+        super(JDBCConnectionManager.getInstance().getConnectionForRead(connectionName, libraryName));
     }
 
     @Override

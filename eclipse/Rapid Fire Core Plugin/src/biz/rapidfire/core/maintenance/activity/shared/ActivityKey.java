@@ -6,7 +6,7 @@
  * http://www.eclipse.org/legal/cpl-v10.html
  *******************************************************************************/
 
-package biz.rapidfire.core.maintenance.activity;
+package biz.rapidfire.core.maintenance.activity.shared;
 
 import java.sql.Time;
 
@@ -19,6 +19,13 @@ public class ActivityKey implements IResourceKey {
 
     private JobKey jobKey;
     private Time startTime;
+
+    public static ActivityKey createNew(JobKey jobKey) {
+
+        ActivityKey key = new ActivityKey(jobKey, null);
+
+        return key;
+    }
 
     public ActivityKey(JobKey jobKey, Time startTime) {
 

@@ -130,7 +130,7 @@ public class RapidFireCommandResourceDelegate implements Comparable<IRapidFireCo
 
         StringBuilder buffer = new StringBuilder();
 
-        buffer.append(getCommand());
+        buffer.append(getCommandType().label());
         buffer.append("/"); //$NON-NLS-1$
         buffer.append(getSequence());
         buffer.append(" ("); //$NON-NLS-1$

@@ -8,7 +8,7 @@
 
 package biz.rapidfire.core.maintenance;
 
-import biz.rapidfire.core.maintenance.activity.ActivityKey;
+import biz.rapidfire.core.maintenance.activity.shared.ActivityKey;
 import biz.rapidfire.core.maintenance.area.shared.AreaKey;
 import biz.rapidfire.core.maintenance.command.shared.CommandKey;
 import biz.rapidfire.core.maintenance.conversion.shared.ConversionKey;

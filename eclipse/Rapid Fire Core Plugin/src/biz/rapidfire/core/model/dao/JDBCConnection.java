@@ -35,16 +35,18 @@ class JDBCConnection implements IJDBCConnection {
     private Connection connection;
     private String libraryName;
     private boolean isCommitControl;
+    private boolean isAutoCommit;
     private String catalogSeparator;
 
-    public JDBCConnection(String connectionName, AS400 system, Connection jdbcConnection, String libraryName, boolean isCommitControl)
-        throws Exception {
+    public JDBCConnection(String connectionName, AS400 system, Connection jdbcConnection, String libraryName, boolean isCommitControl,
+        boolean isAutoCommit) throws Exception {
 
         this.connectionName = connectionName;
         this.system = system;
         this.connection = jdbcConnection;
         this.libraryName = libraryName;
         this.isCommitControl = isCommitControl;
+        this.isAutoCommit = isAutoCommit;
         this.catalogSeparator = connection.getMetaData().getCatalogSeparator();
     }
 
@@ -210,6 +212,10 @@ class JDBCConnection implements IJDBCConnection {
 
     public boolean isCommitControl() {
         return isCommitControl;
+    }
+
+    public boolean isAutoCommit() {
+        return isAutoCommit;
     }
 
     @Override

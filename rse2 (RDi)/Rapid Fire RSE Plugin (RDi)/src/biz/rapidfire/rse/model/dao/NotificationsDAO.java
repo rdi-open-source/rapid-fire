@@ -19,7 +19,7 @@ import biz.rapidfire.rse.subsystem.resources.RapidFireNotificationResource;
 public class NotificationsDAO extends AbstractNotificationsDAO implements INotificationsDAO {
 
     public NotificationsDAO(String connectionName, String libraryName) throws Exception {
-        super(JDBCConnectionManager.getInstance().getConnection(connectionName, libraryName, false));
+        super(JDBCConnectionManager.getInstance().getConnectionForRead(connectionName, libraryName));
     }
 
     @Override

@@ -36,23 +36,17 @@ public abstract class AbstractResourceMaintenanceHandler<R extends IRapidFireRes
     implements IMaintenanceHandler {
 
     private String message;
-    private MaintenanceMode initialMode;
-    private MaintenanceMode currentMode;
+    private MaintenanceMode mode;
     private boolean isEnabled;
     private A action;
 
     public AbstractResourceMaintenanceHandler(MaintenanceMode mode, A action) {
-        this.initialMode = mode;
-        this.currentMode = this.initialMode;
+        this.mode = mode;
         this.action = action;
     }
 
     protected MaintenanceMode getMaintenanceMode() {
-        return currentMode;
-    }
-
-    protected void changeMaintenanceMode(MaintenanceMode mode) {
-        this.currentMode = mode;
+        return mode;
     }
 
     @SuppressWarnings("unchecked")
@@ -143,7 +137,6 @@ public abstract class AbstractResourceMaintenanceHandler<R extends IRapidFireRes
             IStructuredSelection structuredSelection = (IStructuredSelection)selection;
             Iterator<?> iterator = structuredSelection.iterator();
             while (iterator.hasNext()) {
-                currentMode = initialMode;
                 setErrorMessage(null);
                 Object object = iterator.next();
                 if (isInstanceOf(object)) {
@@ -164,7 +157,7 @@ public abstract class AbstractResourceMaintenanceHandler<R extends IRapidFireRes
 
     @Override
     protected boolean isDeleteMode() {
-        return MaintenanceMode.DELETE.equals(initialMode);
+        return MaintenanceMode.DELETE.equals(mode);
     }
 
     protected Object executeWithResource(R notification) throws ExecutionException {

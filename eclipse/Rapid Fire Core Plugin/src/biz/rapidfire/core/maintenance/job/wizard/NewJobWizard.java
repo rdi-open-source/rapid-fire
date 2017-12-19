@@ -93,6 +93,8 @@ public class NewJobWizard extends AbstractNewWizard {
 
         try {
 
+            storePreferences();
+
             Result result;
 
             result = validateDataLibrary();
@@ -107,7 +109,11 @@ public class NewJobWizard extends AbstractNewWizard {
             String connectionName = dataLibraryPage.getConnectionName();
             String dataLibrary = dataLibraryPage.getDataLibraryName();
 
-            connection = JDBCConnectionManager.getInstance().getConnection(connectionName, dataLibrary, true);
+            /*
+             * Get JDBC connection with manual commit control (auto commit
+             * disabled).
+             */
+            connection = JDBCConnectionManager.getInstance().getConnection(connectionName, dataLibrary, true, false);
 
             jobManager = new JobManager(connection);
 
@@ -149,7 +155,7 @@ public class NewJobWizard extends AbstractNewWizard {
                 libraryListManager.book();
             }
 
-            storePreferences();
+            JDBCConnectionManager.getInstance().commit(connection);
 
             MessageDialog.openInformation(getShell(), Messages.Wizard_Title_New_Job_wizard,
                 Messages.bindParameters(Messages.NewJobWizard_Rapid_Fire_job_A_created, getJobValues().getKey().getJobName()));
@@ -157,6 +163,14 @@ public class NewJobWizard extends AbstractNewWizard {
             return true;
 
         } catch (Exception e) {
+
+            if (connection != null) {
+                try {
+                    JDBCConnectionManager.getInstance().rollback(connection);
+                } catch (Exception e2) {
+                    RapidFireCorePlugin.logError("*** Could not rollback connection '" + connection.getConnectionName() + "' ***", e); //$NON-NLS-1$ //$NON-NLS-2$                
+                }
+            }
 
             RapidFireCorePlugin.logError("*** Failed to execute Job wizard ***", e); //$NON-NLS-1$
             MessageDialogAsync.displayError(getShell(), ExceptionHelper.getLocalizedMessage(e));
