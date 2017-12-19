@@ -25,7 +25,7 @@ public enum JobAction implements IResourceAction {
     MNTLIBL ("*MNTLIBL"), //$NON-NLS-1$
     MNTFILE ("*MNTFILE"), //$NON-NLS-1$
     MNTSTBN ("*MNTSTBN"), //$NON-NLS-1$
-    MNTSCDE ("*MNTSCDE"), //$NON-NLS-1$
+    MNTAS ("*MNTAS"), //$NON-NLS-1$
     TSTJOB ("*TSTJOB"), //$NON-NLS-1$
     STRJOB ("*STRJOB"), //$NON-NLS-1$
     ENDJOB ("*ENDJOB"), //$NON-NLS-1$
