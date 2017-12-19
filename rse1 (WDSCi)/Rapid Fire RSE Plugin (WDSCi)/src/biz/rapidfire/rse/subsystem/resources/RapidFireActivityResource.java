@@ -11,6 +11,7 @@ package biz.rapidfire.rse.subsystem.resources;
 import java.sql.Time;
 
 import biz.rapidfire.core.exceptions.IllegalParameterException;
+import biz.rapidfire.core.maintenance.activity.shared.ActivityKey;
 import biz.rapidfire.core.maintenance.wizard.shared.IWizardSupporter;
 import biz.rapidfire.core.model.IRapidFireActivityResource;
 import biz.rapidfire.core.model.IRapidFireJobResource;
@@ -39,6 +40,10 @@ public class RapidFireActivityResource extends AbstractResource implements IWiza
         this.parentJob = job;
         this.delegate = new RapidFireActivityResourceDelegate(job.getDataLibrary(), job.getName(), time);
         super.setSubSystem((SubSystem)job.getParentSubSystem());
+    }
+
+    public ActivityKey getKey() {
+        return new ActivityKey(parentJob.getKey(), delegate.getStartTime());
     }
 
     /*

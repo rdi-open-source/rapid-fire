@@ -19,7 +19,7 @@ import biz.rapidfire.rse.subsystem.resources.RapidFireAreaResource;
 public class AreasDAO extends AbstractAreasDAO implements IAreasDAO {
 
     public AreasDAO(String connectionName, String libraryName) throws Exception {
-        super(JDBCConnectionManager.getInstance().getConnection(connectionName, libraryName, false));
+        super(JDBCConnectionManager.getInstance().getConnectionForRead(connectionName, libraryName));
     }
 
     @Override

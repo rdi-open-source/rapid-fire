@@ -6,14 +6,14 @@
  * http://www.eclipse.org/legal/cpl-v10.html
  *******************************************************************************/
 
-package biz.rapidfire.rse.subsystem.actions.activity;
+package biz.rapidfire.rse.subsystem.actions.job;
 
-import biz.rapidfire.core.handlers.activity.ChangeActivitiesHandler;
+import biz.rapidfire.core.handlers.job.MaintainActivitiesHandler;
 import biz.rapidfire.rse.subsystem.actions.AbstractResourceAction;
 
-public class ChangeActivitiesAction extends AbstractResourceAction {
+public class MaintainActivitiesAction extends AbstractResourceAction {
 
-    public ChangeActivitiesAction() {
-        super(new ChangeActivitiesHandler());
+    public MaintainActivitiesAction() {
+        super(new MaintainActivitiesHandler());
     }
 }
