@@ -25,7 +25,7 @@ import biz.rapidfire.rse.subsystem.resources.RapidFireFileResource;
 public class NewFilesNodePopupMenuAction extends AbstractNewNodePopupMenuAction<FilesNode, IRapidFireFileResource> {
 
     public NewFilesNodePopupMenuAction(Shell shell) {
-        super(Messages.ActionLabel_New_File, Messages.ActionTooltip_New_File, shell,new NewFileHandler());
+        super(Messages.ActionLabel_New_File, Messages.ActionTooltip_New_File, shell, new NewFileHandler());
 
         setImageDescriptor(RapidFireRSEPlugin.getDefault().getImageRegistry().getDescriptor(RapidFireRSEPlugin.IMAGE_NEW_FILE));
         setContextMenuGroup("group.new");

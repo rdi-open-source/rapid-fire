@@ -70,6 +70,7 @@ public class RapidFireAreaResourceAdapter extends AbstractResourceAdapter implem
         return name;
     }
 
+    @Override
     public String getAbsoluteNamePrefix() {
         return "RapidFireArea."; //$NON-NLS-1$
     }

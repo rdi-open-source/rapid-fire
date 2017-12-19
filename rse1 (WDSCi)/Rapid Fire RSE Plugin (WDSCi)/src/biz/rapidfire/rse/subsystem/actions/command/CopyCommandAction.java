@@ -8,10 +8,6 @@
 
 package biz.rapidfire.rse.subsystem.actions.command;
 
-import org.eclipse.core.commands.ExecutionEvent;
-import org.eclipse.core.commands.ExecutionException;
-
-import biz.rapidfire.core.handlers.command.ChangeCommandHandler;
 import biz.rapidfire.core.handlers.command.CopyCommandHandler;
 import biz.rapidfire.rse.subsystem.actions.AbstractResourceAction;
 

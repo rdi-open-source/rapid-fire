@@ -25,7 +25,7 @@ import biz.rapidfire.rse.subsystem.resources.RapidFireNotificationResource;
 public class NewNotificationsNodePopupMenuAction extends AbstractNewNodePopupMenuAction<NotificationsNode, IRapidFireNotificationResource> {
 
     public NewNotificationsNodePopupMenuAction(Shell shell) {
-        super(Messages.ActionLabel_New_Notification, Messages.ActionTooltip_New_Notification, shell,new NewNotificationHandler());
+        super(Messages.ActionLabel_New_Notification, Messages.ActionTooltip_New_Notification, shell, new NewNotificationHandler());
 
         setImageDescriptor(RapidFireRSEPlugin.getDefault().getImageRegistry().getDescriptor(RapidFireRSEPlugin.IMAGE_NEW_NOTIFICATION));
         setContextMenuGroup("group.new");

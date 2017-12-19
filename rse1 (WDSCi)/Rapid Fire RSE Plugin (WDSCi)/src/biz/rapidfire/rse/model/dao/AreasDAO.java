@@ -15,7 +15,7 @@ import biz.rapidfire.core.model.dao.IAreasDAO;
 import biz.rapidfire.core.model.dao.JDBCConnectionManager;
 import biz.rapidfire.rse.subsystem.resources.RapidFireAreaResource;
 
-//TODO: move to core plugin
+// TODO: move to core plugin
 public class AreasDAO extends AbstractAreasDAO implements IAreasDAO {
 
     public AreasDAO(String connectionName, String libraryName) throws Exception {

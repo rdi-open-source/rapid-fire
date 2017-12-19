@@ -84,6 +84,7 @@ public class RapidFireCommandResourceAdapter extends AbstractResourceAdapter imp
         return name;
     }
 
+    @Override
     public String getAbsoluteNamePrefix() {
         return "RapidFireCommand."; //$NON-NLS-1$
     }
