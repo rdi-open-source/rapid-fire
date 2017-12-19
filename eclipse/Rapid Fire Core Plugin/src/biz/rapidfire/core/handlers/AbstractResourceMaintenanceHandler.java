@@ -88,7 +88,6 @@ public abstract class AbstractResourceMaintenanceHandler<R extends IRapidFireRes
      * called one of the "NewResourceAction" classes of the RapidFireRSEPlugin,
      * it gets a resource object.
      */
-    @Override
     public void setEnabled(Object object) {
 
         if (isInstanceOf(object)) {
