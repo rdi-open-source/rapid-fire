@@ -20,7 +20,7 @@ import biz.rapidfire.rse.subsystem.resources.RapidFireCommandResource;
 public class CommandsDAO extends AbstractCommandsDAO implements ICommandsDAO {
 
     public CommandsDAO(String connectionName, String libraryName) throws Exception {
-        super(JDBCConnectionManager.getInstance().getConnection(connectionName, libraryName, false));
+        super(JDBCConnectionManager.getInstance().getConnectionForRead(connectionName, libraryName));
     }
 
     @Override

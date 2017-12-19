@@ -18,7 +18,7 @@ import biz.rapidfire.rse.subsystem.resources.RapidFireJobResource;
 public class JobsDAO extends AbstractJobsDAO implements IJobsDAO {
 
     public JobsDAO(String connectionName, String libraryName) throws Exception {
-        super(JDBCConnectionManager.getInstance().getConnection(connectionName, libraryName, false));
+        super(JDBCConnectionManager.getInstance().getConnectionForRead(connectionName, libraryName));
     }
 
     @Override

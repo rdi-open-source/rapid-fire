@@ -90,9 +90,9 @@
                label="%command_Change_Activity_Plan"
                tooltip="%command_Change_Activity_Plan_Description"
                icon="icons/activity.gif"
-               class="biz.rapidfire.rse.subsystem.actions.activity.ChangeActivitiesAction"
+               class="biz.rapidfire.rse.subsystem.actions.job.MaintainActivitiesAction"
                enablesFor="1"
-               id="biz.rapidfire.rse.subsystem.actions.activity.ChangeActivitiesAction"
+               id="biz.rapidfire.rse.subsystem.actions.activity.MaintainActivitiesAction"
                menubarPath="activity">
          </action>
          
