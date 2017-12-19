@@ -37,8 +37,6 @@
 //*        >>PARM<<  OUTPUT(*PRINT);                                                        *
 //*        >>PARM<<  DBGVIEW(*SOURCE);                                                      *
 //*        >>PARM<<  GENLVL(0);                                                             *
-//*        >>PARM<<  TGTRLS(&TR);                                                           *
-//*        >>PARM<<  OPTION(*EVENTF);                                                       *
 //*   >>END-IMPORTANT<<                                                                     *
 //*   >>EXECUTE<<                                                                           *
 //* >>END-PRE-COMPILER<<                                                                    *
@@ -1818,6 +1816,7 @@ DCL-PROC PROMOTER_generate_Copy_Program EXPORT;
               'OUTPUT(*PRINT) ' +
               'GENLVL(0) ' +
               'DBGVIEW(*SOURCE) ' +
+              'TGTRLS(*CURRENT) ' +
               'CLOSQLCSR(*ENDMOD) ' +
               'TEXT(''* * *   R A P I D   F I R E   * * *'')'
             );

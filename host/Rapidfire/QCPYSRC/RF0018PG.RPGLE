@@ -11,7 +11,6 @@
 //*-----------------------------------------------------------------------------------------*
 
 DCL-PR RF0018PG ExtPgm('RF0018PG');
-  *N CHAR(10) Const;                                                     // --> Modus
   *N CHAR(10) Const;                                                     // --> Job
   *N PACKED(6) Const;                                                    // --> Position
   *N CHAR(10);                                                           // <-- Rückkehrcode

@@ -16,12 +16,6 @@
 //*                                                                                         *
 //* (01 - 49) Freie Bezugszahlen für sonstige Dinge                                         *
 //*                                                                                         *
-//* 01      --> Modus : 'Erstellen'                                                         *
-//* 02      --> Modus : 'Ändern'                                                            *
-//* 03      --> Modus : 'Kopieren'                                                          *
-//* 04      --> Modus : 'Löschen'                                                           *
-//* 05      --> Modus : 'Anzeigen'                                                          *
-//*                                                                                         *
 //*-----------------------------------------------------------------------------------------*
 //*                                                                                         *
 //* (50 - 59) Reservierte Bezugszahlen für Diverses                                         *
@@ -59,8 +53,6 @@
 //* Übergabeparameter                                                                       *
 //* =================                                                                       *
 //*                                                                                         *
-//* PIMode     / *CREATE    --> Modus : 'Erstellen'                                         *
-//*                                                                                         *
 //* PIRtCd     / *F3        --> Der Benutzer hat die Taste F3 gedrückt                      *
 //*              *F12       --> Der Benutzer hat die Taste F12 gedrückt                     *
 //*              *ENTER     --> Der Benutzer hat die Taste ENTER gedrückt                   *
@@ -68,7 +60,7 @@
 //* Aufruf von der Befehlszeile                                                             *
 //* ===========================                                                             *
 //*                                                                                         *
-//* CALL PGM(RF0018PG) PARM('*CREATE' 'DIV6.B' X'0000001F' 'DIV6' '')                       *
+//* CALL PGM(RF0018PG) PARM('DIV6.B' X'0000001F' 'DIV6' '')                                 *
 //*                                                                                         *
 //*-----------------------------------------------------------------------------------------*
 //*  >>PRE-COMPILER<<                                                                       *
@@ -113,7 +105,6 @@ DCL-F LIBRARIES Disk(*EXT) USAGE(*INPUT)
 // Prozedurenschnittstelle für Prozedur 'RF0008PG'
 
 DCL-PI RF0018PG;
-  PIMode CHAR(10) Const;                                                 // --> Modus
   PIJOB CHAR(10) Const;                                                  // --> Job
   PIPOS PACKED(6) Const;                                                 // --> Position
   PIRtCd CHAR(10);                                                       // <-- Rückkehrcode
@@ -133,29 +124,9 @@ END-PI;
 
 /Copy QCPYSRC,SNDERRMSG
 
-// Prozedurenprototyp für Prozedur 'HdlRcdLck'
-
-/Copy QCPYSRC,HDLRCDLCK
-
 // Prozedurenprototyp für Prozedur 'QUHDSPH'
 
 /Copy QCPYSRC,QUHDSPH
-
-// Prozedurenprototyp für Prozedur 'ChkVal'
-
-/Copy QCPYSRC,CHKVAL
-
-// Prozedurenprototyp für Prozeduren 'ChkObj'
-
-/Copy QCPYSRC,CHKOBJ
-
-// Prozedurenprototyp für Prozeduren 'Promoter'
-
-/Copy QCPYSRC,PROMOTER
-
-// Konstanten für Rapid Fire Jobs
-
-/Copy QCPYSRC,RAPIDFIRE
 
 // Prozedurenprototyp für Prozedur 'RF0016PG'
 
@@ -165,12 +136,11 @@ END-PI;
 
 /Copy QCPYSRC,ERRC0100
 
-// Programmstatusdatenstruktur
+// Prozedurenprototyp für Prozedur 'GNRCPYPGM'
 
-DCL-DS PSDS LEN(429) PSDS;
-END-DS;
+/Copy QCPYSRC,GNRCPYPGM
 
-// Dateiinformationsdatenstruktur für RF0008DF
+// Dateiinformationsdatenstruktur für RF0018DF
 
 DCL-DS FIDS_RF0018DF;
   AIDCde CHAR(1) POS(369);
@@ -191,6 +161,8 @@ DCL-S ITLoop IND Inz(*On);                                               // Schl
 DCL-S ITFktKey CHAR(10);                                                 // Funktionstaste
 DCL-S ITSts CHAR(10);                                                    // Nachrichten-Id. b
 DCL-S ITMsgId CHAR(7);                                                   // Nachrichten-Id.
+DCL-S ITMsgDta CHAR(256);                                                // Nachrichtendaten
+DCL-S ITMsgF   CHAR(10);                                                 // Nachrichtendatei
 DCL-S ITDsp INT(10) Dim(2);                                              // Anzeige Hilfetext
 DCL-S ITNbr INT(10);                                                     // Anzahl Hilfetextm
 DCL-S ITLftC INT(10) Dim(2);                                             // Linke Ecke
@@ -198,64 +170,58 @@ DCL-S ITRghC INT(10) Dim(2);                                             // Rech
 DCL-S ITCsrL INT(10) Dim(2);                                             // Cursorposition
 DCL-S ITHlp CHAR(1);                                                     // Kontextbezogene H
 DCL-S ITAra CHAR(10);                                                    // Prompt: Area
-
-DCL-DS g_qSrcMbr likeds(qMbr_t) inz;
-DCL-S DO_X PACKED(7);
+DCL-S ITXFld CHAR(10);                                                   // Feld
+DCL-S ITXMsg CHAR(256);                                                  // Nachricht
+DCL-S ITSUCC CHAR(1);                                                    // Erfolg
 
 //*-----------------------------------------------------------------------------------------*
 
 // Bezugszahl für 'Schlüsselwort SFLEND in Nachrichtensubdatei aktivieren' auf 'Ja' setzen
 *IN50 = *On;
-// Datensatz lesen
-Chain ( PIJOB : PIPOS ) FILESF;
-// Fehler : Der Datensatz konnte nicht gefunden werden
-If Not (%Found);
-  PIRtCd = '*ERROR';
-Else;
-  // Job initialisieren
+// Dateien öffnen
+GNRCPYPGM_openFiles();
+// Initialisieren
+If GNRCPYPGM_initialize(
+  PIJOB  : // --> Job
+  PIPOS  : // --> Position
+  ITSUCC : // <-- Success
+  ITXMsg   // <-- Message
+);
+  // Kopffelder initialisieren
   DFJOB = PIJOB;
   DFPOS = PIPOS;
-  DFFILE = X3FILE;
-  Select;
-    // Modus : 'Erstellen'
-  When PIMode = '*CREATE';
-    ExSr SR005;
-  EndSl;
+  Chain ( PIJOB : PIPOS ) FILESF;
+  If Not (%Found);
+    DFFILE = *Blanks;
+  Else;
+    DFFILE = X3FILE;
+  EndIf;
+  // Bildschirm initialisieren
+  ExSr SR030;
+  // Bildschirm verarbeiten
+  ExSr SR045;
 EndIf;
+// Dateien schließen
+GNRCPYPGM_closeFiles();
 // Programm nicht hauptspeicherresident verlassen
 *INLR = *On;
 
 //*-----------------------------------------------------------------------------------------*
-//* Erstellen                                                                               *
-//*-----------------------------------------------------------------------------------------*
-
-BegSr SR005;
-  // Überschrift für Modus 'Erstellen' anzeigen
-  *IN(1) = *ON;
-  *IN(2) = *OFF;
-  *IN(3) = *OFF;
-  *IN(4) = *OFF;
-  *IN(5) = *OFF;
-  // Bildschirm mit Standartwerten füllen
-  ExSr SR030;
-  // Bildschirm verarbeiten
-  ExSr SR045;
-EndSr;
-
-//*-----------------------------------------------------------------------------------------*
-//* Bildschirm mit Standartwerten füllen                                                    *
+//* Bildschirm initialisieren                                                               *
 //*-----------------------------------------------------------------------------------------*
 
 BegSr SR030;
-  DFSRCF = *Blanks;
-  DFSRCL = *Blanks;
-  DFSRCM = *Blanks;
-  DFREP  = '*NO';
-  DFARA  = *Blanks;
-  DFLIB  = *Blanks;
-  DFSLIB = *Blanks;
-  DFVP = '*NONE';
-  DFVPL = *Blanks;
+  GNRCPYPGM_getValues(
+    DFSRCF : // <-- Source file
+    DFSRCL : // <-- Source file library
+    DFSRCM : // <-- Source member
+    DFREP :  // <-- Replace
+    DFARA :  // <-- Area
+    DFLIB :  // <-- Library
+    DFSLIB : // <-- Shadow library
+    DFVP :   // <-- Conversion program
+    DFVPL    // <-- Conversion program library
+  );
 EndSr;
 
 //*-----------------------------------------------------------------------------------------*
@@ -267,6 +233,8 @@ BegSr SR045;
   ITSts = RmvErrMsg('*SAME');
   // Fehlernachrichten-Id. initialisieren
   ITMsgId = *Blanks;
+  ITMsgDta = *Blanks;
+  ITMsgF = *Blanks;
   // Fehlerbezugszahlen initialisieren
   *IN(80) = *OFF;
   *IN(81) = *OFF;
@@ -310,6 +278,8 @@ BegSr SR045;
     ITSts = RmvErrMsg('*SAME');
     // Fehlernachrichten-Id. initialisieren
     ITMsgId = *Blanks;
+    ITMsgDta = *Blanks;
+    ITMsgF = *Blanks;
     // Fehlerbezugszahlen initialisieren
     *IN(80) = *OFF;
     *IN(81) = *OFF;
@@ -362,6 +332,7 @@ BegSr SR045;
       DFPGMQ = '*';
       Write DSPF999C;
       Write DSPF010;
+      // Generieren Kopierprogramm
       ExSr SR070;
       If PIRtCd = '*F10';
         PIRtCd = '*F12';
@@ -376,184 +347,89 @@ EndSr;
 //*-----------------------------------------------------------------------------------------*
 
 BegSr SR050;
-  // Namensfelder linksbündig ausrichten
-  If PIMode = '*CREATE';
-    DFSRCF = %TRIML(DFSRCF);
-    DFSRCL = %TRIML(DFSRCL);
-    DFSRCM = %TRIML(DFSRCM);
-  EndIf;
-  FOR DO_X = 1 TO 1;
-    // *** Fehlerprüfung nur für Modus 'Erstellen'
-    If PIMode = '*CREATE';
-      // The value in field 'Source File' is not valid.
-      If ChkVal('*NAME' : 10 : %Addr(DFSRCF)) =
-        '*INVALID';
-        ITMsgId = 'ERR0001';
-        *IN(87) = *ON;
-        *IN(88) = *OFF;
-        *IN(89) = *OFF;
-        Leave;
-      EndIf;
-      // The value in field 'Library' is not valid.
-      If ChkVal('*NAME' : 10 : %Addr(DFSRCL)) =
-        '*INVALID';
-        ITMsgId = 'ERR0002';
-        *IN(87) = *OFF;
-        *IN(88) = *ON;
-        *IN(89) = *OFF;
-        Leave;
-      EndIf;
-      // The value in field 'Source member' is not valid.
-      If ChkVal('*NAME' : 10 : %Addr(DFSRCM)) =
-        '*INVALID';
-        ITMsgId = 'ERR0003';
-        *IN(87) = *ON;
-        *IN(88) = *ON;
-        *IN(89) = *OFF;
-        Leave;
-      EndIf;
-      // Library does not exist.
-      If not Library_exist (DFSRCL);
-        ITMsgId = 'ERR0004';
-        *IN(87) = *OFF;
-        *IN(88) = *ON;
-        *IN(89) = *OFF;
-        Leave;
-      EndIf;
-      // File does not exist.
-      If not File_exist (DFSRCF: DFSRCL);
-        ITMsgId = 'ERR0005';
-        *IN(87) = *ON;
-        *IN(88) = *OFF;
-        *IN(89) = *OFF;
-        Leave;
-      EndIf;
-      // File is not a source file.
-      If not File_isSourceFile(DFSRCF: DFSRCL);
-        ITMsgId = 'ERR0006';
-        *IN(87) = *ON;
-        *IN(88) = *OFF;
-        *IN(89) = *OFF;
-        Leave;
-      EndIf;
-      // The value in field 'Replace' is not valid.
-      If DFREP <> '*YES' And DFREP <> '*NO';
-        ITMsgId = 'ERR0014';
-        *IN(87) = *ON;
-        *IN(88) = *ON;
-        *IN(89) = *ON;
-        Leave;
-      EndIf;
-      // Member already exists.
-      If DFREP <> '*YES' And
-        Member_exist (DFSRCF: DFSRCL: DFSRCM);
-        ITMsgId = 'ERR0007';
-        *IN(87) = *ON;
-        *IN(88) = *ON;
-        *IN(89) = *OFF;
-        Leave;
-      EndIf;
-      // Specify 'Area' or 'Library' and 'Shadow library'
-      If DFARA = '' And DFLIB = '' And DFSLIB = '';
-        ITMsgId = 'ERR0017';
-        *IN(87) = *OFF;                                                  // Area
-        *IN(88) = *OFF;                                                  // Area
-        *IN(89) = *ON;                                                   // Area
-        *IN(84) = *ON;                                                   // Library
-        *IN(85) = *OFF;                                                  // Library
-        *IN(86) = *OFF;                                                  // Library
-        Leave;
-      EndIf;
-      // Area not found.
-      If DFARA <> '*NONE' And DFARA <> '' And
-        ChkVal('*NAME' : 10 : %Addr(DFARA)) =
-        '*INVALID';
-        ITMsgId = 'ERR0008';
-        *IN(87) = *OFF;
-        *IN(88) = *OFF;
-        *IN(89) = *ON;
-        Leave;
-      EndIf;
-      // Prüfen Area ...
-      If DFARA <> '';
-        Setll ( DFJOB : DFPOS : DFARA ) AREARF;
-        If not %equal(AREAS);
-          ITMsgId = 'ERR0009';
-          *IN(87) = *OFF;
-          *IN(88) = *OFF;
-          *IN(89) = *ON;
-          Leave;
-        EndIf;
-        // Vorbelegen der Bibliotheken ...
-        ExSr SR075;
-        If ITMsgId <> '';
-          Leave;
-        EndIf;
-      Endif;
-      // Prüfen der Datenbibliothek mit der 'von' Datei ...
-      If not Library_exist (DFLIB);
-        ITMsgId = 'ERR0018';
-        *IN(84) = *ON;                                                   // 'From' Library
-        *IN(85) = *OFF;                                                  // 'From' Library
-        *IN(86) = *OFF;                                                  // 'From' Library
-        Leave;
-      EndIf;
-      // Prüfen 'von' Datei ...
-      If not File_exist (DFFILE: DFLIB);
-        ITMsgId = 'ERR0020';
-        *IN(84) = *ON;                                                   // 'From' Library
-        *IN(85) = *OFF;                                                  // 'From' Library
-        *IN(86) = *OFF;                                                  // 'From' Library
-        Leave;
-      EndIf;
-      // Prüfen der Schattenbibliothek mit der 'nach' Datei ...
-      If not Library_exist (DFSLIB);
-        ITMsgId = 'ERR0019';
-        *IN(84) = *OFF;                                                  // 'To' Library
-        *IN(85) = *ON;                                                   // 'To' Library
-        *IN(86) = *OFF;                                                  // 'To' Library
-        Leave;                                                           // (Shadow library)
-      EndIf;
-      // Prüfen 'nach' Datei ...
-      If not File_exist (DFFILE: DFSLIB);
-        ITMsgId = 'ERR0021';
-        *IN(84) = *OFF;                                                  // 'To' Library
-        *IN(85) = *ON;                                                   // 'To' Library
-        *IN(86) = *OFF;                                                  // 'To' Library
-        Leave;                                                           // (Shadow library)
-      EndIf;
-      // The value in field 'Conversion program' is not valid.
-      If DFVP <> '*NONE' And
-        ChkVal('*NAME' : 10 : %Addr(DFVP)) =
-        '*INVALID';
-        ITMsgId = 'ERR0011';
-        *IN(87) = *ON;
-        *IN(88) = *OFF;
-        *IN(89) = *ON;
-        Leave;
-      EndIf;
-      // The value in field 'Library' is not valid.
-      If DFVP = '*NONE';
-        If DFVPL <> '';
-          ITMsgId = 'ERR0013';
-          *IN(87) = *OFF;
-          *IN(88) = *ON;
-          *IN(89) = *ON;
-          Leave;
-        EndIf;
-      Else;
-        If ChkVal('*NAME' : 10 : %Addr(DFVPL)) =
-          '*INVALID';
-          ITMsgId = 'ERR0012';
-          *IN(87) = *OFF;
-          *IN(88) = *ON;
-          *IN(89) = *ON;
-          Leave;
-        EndIf;
-      EndIf;
 
-    EndIf;
-  ENDFOR;
+  // Namensfelder linksbündig ausrichten
+  DFSRCF = %TRIML(DFSRCF);
+  DFSRCL = %TRIML(DFSRCL);
+  DFSRCM = %TRIML(DFSRCM);
+  DFREP  = %TRIML(DFREP);
+  DFARA  = %TRIML(DFARA);
+  DFLIB  = %TRIML(DFLIB);
+  DFSLIB = %TRIML(DFSLIB);
+  DFVP   = %TRIML(DFVP);
+  DFVPL  = %TRIML(DFVPL);
+
+  // Werte übergeben
+  GNRCPYPGM_setValues(
+    DFSRCF : // --> Source file
+    DFSRCL : // --> Source file library
+    DFSRCM : // --> Source member
+    DFREP :  // --> Replace
+    DFARA :  // --> Area
+    DFLIB :  // --> Library
+    DFSLIB : // --> Shadow library
+    DFVP :   // --> Conversion program
+    DFVPL    // --> Conversion program library
+  );
+
+  // Prüfen
+  If Not GNRCPYPGM_check(
+    ITSUCC : // <-- Erfolg
+    ITXFld : // <-- Feld
+    ITXMsg   // <-- Nachricht
+  );
+    // Fehler setzen
+    ITMsgId = 'CPF9897';
+    ITMsgDta = ITXMsg;
+    ITMsgF = 'QCPFMSG';
+    Select;
+    When (ITXFld = 'SRCF');
+      *IN(87) = *ON;
+      *IN(88) = *OFF;
+      *IN(89) = *OFF;
+    When (ITXFld = 'SRCL');
+      *IN(87) = *OFF;
+      *IN(88) = *ON;
+      *IN(89) = *OFF;
+    When (ITXFld = 'SRCM');
+      *IN(87) = *ON;
+      *IN(88) = *ON;
+      *IN(89) = *OFF;
+    When (ITXFld = 'REP');
+      *IN(87) = *ON;
+      *IN(88) = *ON;
+      *IN(89) = *ON;
+    When (ITXFld = 'ARA_LIB');
+      *IN(87) = *OFF; // Area
+      *IN(88) = *OFF; // Area
+      *IN(89) = *ON;  // Area
+      *IN(84) = *ON;  // Library
+      *IN(85) = *OFF; // Library
+      *IN(86) = *OFF; // Library
+    When (ITXFld = 'ARA');
+      *IN(87) = *OFF;
+      *IN(88) = *OFF;
+      *IN(89) = *ON;
+    When (ITXFld = 'LIB');
+      *IN(84) = *ON;
+      *IN(85) = *OFF;
+      *IN(86) = *OFF;
+    When (ITXFld = 'SLIB');
+      *IN(84) = *OFF;
+      *IN(85) = *ON;
+      *IN(86) = *OFF;
+    When (ITXFld = 'VP');
+      *IN(87) = *ON;
+      *IN(88) = *OFF;
+      *IN(89) = *ON;
+    When (ITXFld = 'VPL');
+      *IN(87) = *OFF;
+      *IN(88) = *ON;
+      *IN(89) = *ON;
+    Endsl;
+
+  EndIf;
+
 EndSr;
 
 //*-----------------------------------------------------------------------------------------*
@@ -567,9 +443,9 @@ BegSr SR055;
   ITSts = SndErrMsg(
    '*SAME' :                                                             // --> Aufrufstapele
    ITMsgId :                                                             // --> Nachrichten-I
-   'RF0018MF' :                                                          // --> Nachrichtenda
+   ITMsgF  :                                                             // --> Nachrichtenda
    '*LIBL' :                                                             // --> Bibliothek Na
-   *Blanks                                                               // --> Nachrichtenda
+   ITMsgDta                                                              // --> Nachrichtenda
   );
 EndSr;
 
@@ -721,15 +597,7 @@ BegSr SR060;
     ITNbr = ITNbr + 1;
     ITHIPG(ITNbr) = 'RF0018GP';
     ITHILP(ITNbr) = '*LIBL';
-    Select;
-    When PIMode = '*CREATE' Or
-      PIMode = '*COPY' Or
-      PIMode = '*CHANGE';
-      ITHIMO(ITNbr) = 'FKT/EDT';
-    When PIMode = '*DISPLAY' Or
-      PIMode = '*DELETE';
-      ITHIMO(ITNbr) = 'FKT/DSP';
-    EndSl;
+    ITHIMO(ITNbr) = 'FKT';
     If DFROW010 >= 23 And
       DFROW010 <= 23 And
       DFCOL010 >= 2 And
@@ -799,6 +667,8 @@ BegSr SR065;
     // No prompt for the requested field available
   Other;
     ITMsgId = 'ERR0015';
+    ITMsgDta = *Blanks;
+    ITMsgF = 'RF0018MF';
   EndSl;
   // Cursor auf der letzten Position positionieren
   *IN(90) = *ON;
@@ -819,8 +689,6 @@ EndSr;
 
 BegSr SR070;
 
-  ITLoop = *ON;
-
   DoW ITLoop;
     // Satzformate auf den Bildschirm ausgeben
     ExFmt DSPF020W;
@@ -839,18 +707,8 @@ BegSr SR070;
   EndDo;
   // Job starten
   If PIRtCd = '*F10';
-    RAPIDFIRE_set_Error(
-    RAPIDFIRE_JOB_NONE :
-    *OFF
-    );
-    g_qSrcMbr.file = DFSRCF;                                             // Source file
-    g_qSrcMbr.lib = DFSRCL;                                              // Library
-    g_qSrcMbr.name = DFSRCM;                                             // Member
-    PROMOTER_generate_Copy_Program(
-      DFJOB: DFPOS: DFARA:
-      DFLIB: DFSLIB: DFFILE:
-      DFVPL: DFVP: *ON: g_qSrcMbr);
-    If RAPIDFIRE_is_Error(RAPIDFIRE_JOB_NONE);
+    // Verbuchen
+    If Not GNRCPYPGM_book(ITSUCC : ITXMsg);
       Exfmt DSPF030W;
     EndIf;
   EndIf;
@@ -870,11 +728,6 @@ BegSr SR075;
     If %found(LIBRARIES);
       DFLIB = X2LIB;
       DFSLIB = X2SLIB;
-    Else;
-      ITMsgId = 'ERR0010';
-      *IN(87) = *OFF;
-      *IN(88) = *OFF;
-      *IN(89) = *ON;
     EndIf;
   EndIf;
 EndSr;

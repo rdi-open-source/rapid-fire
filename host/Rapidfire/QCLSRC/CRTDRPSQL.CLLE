@@ -212,12 +212,43 @@
 
              CHGVAR     VAR(&NAME) VALUE('MNTAS01')
              CALLSUBR   SUBR(EXECUTE)
+             CHGVAR     VAR(&NAME) VALUE('MNTAS02')
+             CALLSUBR   SUBR(EXECUTE)
+             CHGVAR     VAR(&NAME) VALUE('MNTAS03')
+             CALLSUBR   SUBR(EXECUTE)
 
              CHGVAR     VAR(&NAME) VALUE('JOB01')
              CALLSUBR   SUBR(EXECUTE)
              CHGVAR     VAR(&NAME) VALUE('JOB02')
              CALLSUBR   SUBR(EXECUTE)
              CHGVAR     VAR(&NAME) VALUE('JOB03')
+             CALLSUBR   SUBR(EXECUTE)
+
+             CHGVAR     VAR(&NAME) VALUE('PROMOTER01')
+             CALLSUBR   SUBR(EXECUTE)
+
+             CHGVAR     VAR(&NAME) VALUE('GNRCPYPGM1')
+             CALLSUBR   SUBR(EXECUTE)
+             CHGVAR     VAR(&NAME) VALUE('GNRCPYPGM2')
+             CALLSUBR   SUBR(EXECUTE)
+             CHGVAR     VAR(&NAME) VALUE('GNRCPYPGM3')
+             CALLSUBR   SUBR(EXECUTE)
+             CHGVAR     VAR(&NAME) VALUE('GNRCPYPGM4')
+             CALLSUBR   SUBR(EXECUTE)
+             CHGVAR     VAR(&NAME) VALUE('GNRCPYPGM5')
+             CALLSUBR   SUBR(EXECUTE)
+             CHGVAR     VAR(&NAME) VALUE('GNRCPYPGM6')
+             CALLSUBR   SUBR(EXECUTE)
+             CHGVAR     VAR(&NAME) VALUE('GNRCPYPGM7')
+             CALLSUBR   SUBR(EXECUTE)
+
+             CHGVAR     VAR(&NAME) VALUE('CHKSTSE01')
+             CALLSUBR   SUBR(EXECUTE)
+             CHGVAR     VAR(&NAME) VALUE('CHKSTSE02')
+             CALLSUBR   SUBR(EXECUTE)
+             CHGVAR     VAR(&NAME) VALUE('CHKSTSE03')
+             CALLSUBR   SUBR(EXECUTE)
+             CHGVAR     VAR(&NAME) VALUE('CHKSTSE04')
              CALLSUBR   SUBR(EXECUTE)
 
              ENDDO

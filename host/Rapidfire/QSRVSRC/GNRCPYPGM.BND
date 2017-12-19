@@ -8,15 +8,15 @@
      /*                                                                                           */
      /*-------------------------------------------------------------------------------------------*/
      /*                                                                                           */
-     /* Maintain Activity Schedule                                                                */
+     /* Maintain Areas                                                                            */
      /*                                                                                           */
      /*-------------------------------------------------------------------------------------------*/
      /*  >>PRE-COMPILER<<                                                                         */
      /*    >>CRTCMD<< CRTSRVPGM    SRVPGM(&LI/&OB) EXPORT(*SRCFILE) +                             */
      /*                              SRCFILE(&SL/&SF) SRCMBR(&SM);                                */
      /*    >>IMPORTANT<<                                                                          */
-     /*      >>PARM<<  MODULE(MNTAS);                                                             */
-     /*      >>PARM<<  TEXT('Maintain Activity Schedule');                                        */
+     /*      >>PARM<<  MODULE(GNRCPYPGM);                                                         */
+     /*      >>PARM<<  TEXT('Maintain Areas');                                                    */
      /*      >>PARM<<  BNDDIR(&LI/RAPIDFIRE);                                                     */
      /*      >>PARM<<  ACTGRP(RAPIDFIRE);                                                         */
      /*      >>PARM<<  DETAIL(*BASIC);                                                            */
@@ -26,16 +26,24 @@
      /*------------+--------+---------------------------------------------------------------------*/
      /*   Datum    I Progr. I Beschreibung                                                        */
      /*------------+--------+---------------------------------------------------------------------*/
-     /* 26.10.2017 I   FH   I Creation                                                            */
+     /* 06.11.2017 I   ML   I Creation                                                            */
      /*-------------------------------------------------------------------------------------------*/
 
              STRPGMEXP
 
-                EXPORT     SYMBOL('MNTAS_setActivity')
+                EXPORT     SYMBOL('GNRCPYPGM_openFiles')
 
-                EXPORT     SYMBOL('MNTAS_checkAction')
+                EXPORT     SYMBOL('GNRCPYPGM_closeFiles')
 
-                EXPORT     SYMBOL('MNTAS_getValidActions')
+                EXPORT     SYMBOL('GNRCPYPGM_initialize')
+
+                EXPORT     SYMBOL('GNRCPYPGM_getValues')
+
+                EXPORT     SYMBOL('GNRCPYPGM_setValues')
+
+                EXPORT     SYMBOL('GNRCPYPGM_check')
+
+                EXPORT     SYMBOL('GNRCPYPGM_book')
 
              ENDPGMEXP
 

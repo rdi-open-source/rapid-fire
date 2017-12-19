@@ -1739,7 +1739,6 @@ EndSr;
 
 BegSr SR145;
   RF0018PG(
-   '*CREATE' :                                                           // --> Modus
    PIJOB :                                                               // --> Job
    SlcPOS :                                                              // --> Position
    PIRtCd                                                                // <-- Rückkehrcode

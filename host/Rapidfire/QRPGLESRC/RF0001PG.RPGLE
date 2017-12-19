@@ -1498,7 +1498,7 @@ BegSr SR095;
     When DFOPT = '31';
       ITACT = MNTJOB_DSPERR;
     When DFOPT = '99';
-      ITACT = MNTJOB_MNTSCDE;
+      ITACT = MNTJOB_MNTAS;
     Other;
       ITACT = MNTJOB_ERROR;
     EndSl;
@@ -1522,7 +1522,7 @@ BegSr SR095;
       ITACT <> MNTJOB_RESETJOBA And
       ITACT <> MNTJOB_DSPSTS And
       ITACT <> MNTJOB_DSPERR And
-      ITACT <> MNTJOB_MNTSCDE) Or
+      ITACT <> MNTJOB_MNTAS) Or
       (PIMode = '*SELECT' And
       ITACT <> MNTJOB_NONE And
       ITACT <> MNTJOB_SELECT));

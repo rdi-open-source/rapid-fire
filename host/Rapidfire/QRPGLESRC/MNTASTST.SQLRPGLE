@@ -25,12 +25,16 @@ CTL-OPT ExtBinInt(*YES);
 
 //*-----------------------------------------------------------------------------------------*
 
+/Include QCPYSRC,MNTAS
 /Include QCPYSRC,SQLSTS
 
 DCL-S g_SUCCESS CHAR(1);   // Success
 DCL-S g_MSG     CHAR(256); // Message
 DCL-S g_DMY     IND;       // Dummy
 DCL-S g_TIME    TIME;      // Time
+DCL-S g_ACT     CHAR(10);  // Action
+DCL-S g_NBRACTS PACKED(2 : 0); // Number of actions
+DCL-S g_ACTS    CHAR(250);     // Actions
 
 //*-----------------------------------------------------------------------------------------*
 
@@ -60,6 +64,51 @@ if (SqlCheckState(sqlState));
       CALL "MNTAS_setActivity"(
         'MYJOB',
         :g_TIME
+      );
+    setIgnoreWarnings();
+    if (SqlCheckState(sqlState));
+
+      g_DMY = *on;
+
+    endif;
+
+    // *** CHECK ACTION ***
+
+    g_ACT = MNTAS_ACTVTY;
+    g_TIME = T'00.15.00';
+    EXEC SQL
+      CALL "MNTAS_checkAction"(
+        :g_ACT,
+        'MYJOB',
+        :g_TIME,
+        :g_SUCCESS,
+        :g_MSG
+      );
+    setIgnoreWarnings();
+    if (SqlCheckState(sqlState));
+
+      if (g_SUCCESS = 'N');
+
+        // ... Display error on screen.
+        // ... g_MSG contains the message
+
+      else;
+
+        g_DMY = *on;
+
+      endif;
+
+    endif;
+
+    // *** GET VALID ACTIONS ***
+
+    g_TIME = T'00.15.00';
+    EXEC SQL
+      CALL "MNTAS_getValidActions"(
+        'MYJOB',
+        :g_TIME,
+        :g_NBRACTS,
+        :g_ACTS
       );
     setIgnoreWarnings();
     if (SqlCheckState(sqlState));

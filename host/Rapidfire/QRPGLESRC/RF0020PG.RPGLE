@@ -228,6 +228,8 @@ DCL-S ITPag010 ZONED(4) Inz(RcdPerPage);                                 // (Sub
 DCL-S ITRRN010 ZONED(4);                                                 // (Subdatei) Aktuel
 DCL-S ITCnt010 ZONED(4);                                                 // (Subdatei) Letzte
 DCL-S ITMsgId CHAR(7);                                                   // Nachrichten-Id.
+DCL-S ITMsgDta CHAR(256);                                                // Nachrichtendaten
+DCL-S ITMsgF   CHAR(10);                                                 // Nachrichtendatei
 DCL-S ITAct CHAR(10);                                                    // Aktion
 DCL-S ITMode CHAR(10);                                                   // Modus
 DCL-S ITMore CHAR(10);                                                   // Weitere Sätze zur
@@ -259,6 +261,8 @@ DCL-S ITRghC INT(10) Dim(2);                                             // Rech
 DCL-S ITCsrL INT(10) Dim(2);                                             // Cursorposition
 DCL-S ITHlp CHAR(1);                                                     // Kontextbezogene H
 DCL-S ITMoreKeys ZONED(1);                                               // Weitere Tasten
+DCL-S ITXMsg CHAR(256);                                                  // Nachricht
+DCL-S ITSUCC CHAR(1);                                                    // Erfolg
 
 //*-----------------------------------------------------------------------------------------*
 
@@ -315,6 +319,8 @@ BegSr SR010;
   ITSts = RmvErrMsg('*SAME');
   // Fehlernachrichten-Id. initialisieren
   ITMsgId = *Blanks;
+  ITMsgDta = *Blanks;
+  ITMsgF = *Blanks;
   // Fehlerbezugszahlen initialisieren
   *IN(80) = *OFF;
   *IN(81) = *OFF;
@@ -395,6 +401,8 @@ BegSr SR010;
     ITSts = RmvErrMsg('*SAME');
     // Fehlernachrichten-Id. initialisieren
     ITMsgId = *Blanks;
+    ITMsgDta = *Blanks;
+    ITMsgF = *Blanks;
     // Fehlerbezugszahlen initialisieren
     *IN(80) = *OFF;
     *IN(81) = *OFF;
@@ -745,6 +753,8 @@ BegSr SR025;
     // No prompt for the requested field available
   Other;
     ITMsgId = 'ERR0004';
+    ITMsgDta = *Blanks;
+    ITMsgF = 'RF0020MF';
   EndSl;
   // Cursor auf der letzten Position positionieren
   *IN(90) = *ON;
@@ -862,6 +872,8 @@ BegSr SR055;
   // The bottom of the list has already been reached
   If ITMore = '*NO';
     ITMsgId = 'ERR0003';
+    ITMsgDta = *Blanks;
+    ITMsgF = 'RF0020MF';
   EndIf;
 EndSr;
 
@@ -876,6 +888,8 @@ BegSr SR060;
   // The top of the list has already been reached
   If ITMore = '*NO';
     ITMsgId = 'ERR0002';
+    ITMsgDta = *Blanks;
+    ITMsgF = 'RF0020MF';
   EndIf;
 EndSr;
 
@@ -1242,18 +1256,50 @@ BegSr SR095;
     *IN(87) = *OFF;
     *IN(88) = *OFF;
     *IN(89) = *OFF;
+
+    // Aktion ermitteln
+    Select;
+    When DFOPT = *Blanks;
+      ITACT = MNTAS_NONE;
+    When DFOPT = '1';
+      ITACT = MNTAS_ACTVTY;
+    Other;
+      ITACT = MNTAS_ERROR;
+    EndSl;
+
     // The option is not valid
     If ITMsgId = *Blanks And
       ((PIMode = '*EDIT' And
-      DFOPT <> *Blanks And
-      DFOPT <> '1') Or
+      ITACT <> MNTAS_NONE And
+      ITACT <> MNTAS_ACTVTY) Or
       (PIMode = '*DISPLAY' And
-      DFOPT <> *Blanks));
+      ITACT <> MNTAS_NONE));
       ITMsgId = 'ERR0001';
+      ITMsgDta = *Blanks;
+      ITMsgF = 'RF0020MF';
       *IN(81) = *OFF;
       *IN(82) = *OFF;
       *IN(83) = *ON;
     EndIf;
+
+    // Check action
+    If ITMsgId = *Blanks And
+       Not MNTAS_checkAction(
+         ITACT :  // --> Action
+         PIJOB :  // --> Job
+         DFSTR :  // --> Start time
+         ITSUCC : // <-- Success
+         ITXMsg   // <-- Message
+       );
+      // Fehler setzen
+      ITMsgId = 'CPF9897';
+      ITMsgDta = ITXMsg;
+      ITMsgF = 'QCPFMSG';
+      *IN(81) = *OFF;
+      *IN(82) = *OFF;
+      *IN(83) = *ON;
+    EndIf;
+
     // Bezugszahl für 'Subdateisatz ist ein geänderter Satz' auf 'Ja' setzen
     *IN63 = *On;
     // Subdateisatz aktualisieren
@@ -1277,9 +1323,9 @@ BegSr SR100;
   ITSts = SndErrMsg(
    '*SAME' :                                                             // --> Aufrufstapele
    ITMsgId :                                                             // --> Nachrichten-I
-   'RF0020MF' :                                                          // --> Nachrichtenda
+   ITMsgF :                                                              // --> Nachrichtenda
    '*LIBL' :                                                             // --> Bibliothek Na
-   *Blanks                                                               // --> Nachrichtenda
+   ITMsgDta                                                              // --> Nachrichtenda
   );
 EndSr;
 

@@ -700,7 +700,7 @@ DCL-PROC MNTJOB_getValidActions EXPORT;
   l_ACT = MNTJOB_MNTSTBN;
     exsr checkAction;
 
-  l_ACT = MNTJOB_MNTSCDE;
+  l_ACT = MNTJOB_MNTAS;
     exsr checkAction;
 
   l_ACT = MNTJOB_TSTJOB;

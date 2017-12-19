@@ -105,10 +105,6 @@ END-PI;
 
 /Copy QCPYSRC,SNDERRMSG
 
-// Prozedurenprototyp für Prozedur 'CPLSTSE'
-
-/Copy QCPYSRC,CPLSTSE
-
 // Prozedurenprototyp für Prozedur 'RF0019PG'
 
 /Copy QCPYSRC,RF0019PG
@@ -120,6 +116,14 @@ END-PI;
 // Datenstruktur für Format 'ERRC0100' für Fehlercode
 
 /Copy QCPYSRC,ERRC0100
+
+// Prozedurenprototyp für Prozedur 'CPLSTSE'
+
+/Copy QCPYSRC,CPLSTSE
+
+// Prozedurenprototyp für Prozedur 'CHKSTSE'
+
+/Copy QCPYSRC,CHKSTSE
 
 // Dateiinformationsdatenstruktur für RF0013DF
 
@@ -219,6 +223,8 @@ DCL-S ITPag010 ZONED(4) Inz(RcdPerPage);                                 // (Sub
 DCL-S ITRRN010 ZONED(4);                                                 // (Subdatei) Aktuel
 DCL-S ITCnt010 ZONED(4);                                                 // (Subdatei) Letzte
 DCL-S ITMsgId CHAR(7);                                                   // Nachrichten-Id.
+DCL-S ITMsgDta CHAR(256);                                                // Nachrichtendaten
+DCL-S ITMsgF   CHAR(10);                                                 // Nachrichtendatei
 DCL-S ITAct CHAR(10);                                                    // Aktion
 DCL-S ITMode CHAR(10);                                                   // Modus
 DCL-S ITMore CHAR(10);                                                   // Weitere Sätze zur
@@ -260,6 +266,8 @@ DCL-S ITCTA PACKED(10 : 0);                                              // Chan
 DCL-S ITCAP PACKED(10 : 0);                                              // Changes applied
 DCL-S ITPRZ PACKED(3 : 0);                                               // Prozent
 DCL-S DO_X PACKED(7 : 0);
+DCL-S ITXMsg CHAR(256);                                                  // Nachricht
+DCL-S ITSUCC CHAR(1);                                                    // Erfolg
 
 //*-----------------------------------------------------------------------------------------*
 
@@ -313,6 +321,8 @@ BegSr SR010;
   ITSts = RmvErrMsg('*SAME');
   // Fehlernachrichten-Id. initialisieren
   ITMsgId = *Blanks;
+  ITMsgDta = *Blanks;
+  ITMsgF = *Blanks;
   // Fehlerbezugszahlen initialisieren
   *IN(80) = *OFF;
   *IN(81) = *OFF;
@@ -364,6 +374,8 @@ BegSr SR010;
     ITSts = RmvErrMsg('*SAME');
     // Fehlernachrichten-Id. initialisieren
     ITMsgId = *Blanks;
+    ITMsgDta = *Blanks;
+    ITMsgF = *Blanks;
     // Fehlerbezugszahlen initialisieren
     *IN(80) = *OFF;
     *IN(81) = *OFF;
@@ -700,6 +712,8 @@ BegSr SR055;
   // The bottom of the list has already been reached
   If ITMore = '*NO';
     ITMsgId = 'ERR0003';
+    ITMsgDta = *Blanks;
+    ITMsgF = 'RF0013MF';
   EndIf;
 EndSr;
 
@@ -714,6 +728,8 @@ BegSr SR060;
   // The top of the list has already been reached
   If ITMore = '*NO';
     ITMsgId = 'ERR0002';
+    ITMsgDta = *Blanks;
+    ITMsgF = 'RF0013MF';
   EndIf;
 EndSr;
 
@@ -1137,28 +1153,48 @@ BegSr SR095;
     *IN(87) = *OFF;
     *IN(88) = *OFF;
     *IN(89) = *OFF;
+
+    // Aktion ermitteln
+    Select;
+    When DFOPT = *Blanks;
+      ITACT = CHKSTSE_NONE;
+    When DFOPT = '99';
+      ITACT = CHKSTSE_REAPYCHG;
+    Other;
+      ITACT = CHKSTSE_ERROR;
+    EndSl;
+
     // The option is not valid
     If ITMsgId = *Blanks And
-      DFOPT <> *Blanks And
-      DFOPT <> '99';
+      (ITACT <> CHKSTSE_NONE And
+      ITACT <> CHKSTSE_REAPYCHG);
       ITMsgId = 'ERR0001';
+      ITMsgDta = *Blanks;
+      ITMsgF = 'RF0013MF';
       *IN(81) = *OFF;
       *IN(82) = *OFF;
       *IN(83) = *ON;
     EndIf;
-    // The option "Reapply all changes" is only valid in status *RUN and phase *APY-CHG
+
+    // Check action
     If ITMsgId = *Blanks And
-      DFOPT = '99';
-      Chain ( PIJOB ) JOBRF;
-      If %Found And
-        Not (X1STS = '*RUN' And
-        X1PHS = '*APY-CHG');
-        ITMsgId = 'ERR0005';
-        *IN(81) = *OFF;
-        *IN(82) = *OFF;
-        *IN(83) = *ON;
-      EndIf;
+       Not CHKSTSE_checkAction(
+         ITACT :  // --> Action
+         PIJOB :  // --> Job
+         DFPOS :  // --> Position
+         DFARA :  // --> Area
+         ITSUCC : // <-- Success
+         ITXMsg   // <-- Message
+       );
+      // Fehler setzen
+      ITMsgId = 'CPF9897';
+      ITMsgDta = ITXMsg;
+      ITMsgF = 'QCPFMSG';
+      *IN(81) = *OFF;
+      *IN(82) = *OFF;
+      *IN(83) = *ON;
     EndIf;
+
     // Bezugszahl für 'Subdateisatz ist ein geänderter Satz' auf 'Ja' setzen
     *IN63 = *On;
     // Subdateisatz aktualisieren
@@ -1177,9 +1213,9 @@ BegSr SR100;
   ITSts = SndErrMsg(
    '*SAME' :                                                             // --> Aufrufstapele
    ITMsgId :                                                             // --> Nachrichten-I
-   'RF0013MF' :                                                          // --> Nachrichtenda
+   ITMsgF :                                                              // --> Nachrichtenda
    '*LIBL' :                                                             // --> Bibliothek Na
-   *Blanks                                                               // --> Nachrichtenda
+   ITMsgDta                                                              // --> Nachrichtenda
   );
 EndSr;
 

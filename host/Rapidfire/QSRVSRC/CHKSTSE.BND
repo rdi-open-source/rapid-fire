@@ -8,15 +8,15 @@
      /*                                                                                           */
      /*-------------------------------------------------------------------------------------------*/
      /*                                                                                           */
-     /* Maintain Activity Schedule                                                                */
+     /* Check Status Entry                                                                        */
      /*                                                                                           */
      /*-------------------------------------------------------------------------------------------*/
      /*  >>PRE-COMPILER<<                                                                         */
      /*    >>CRTCMD<< CRTSRVPGM    SRVPGM(&LI/&OB) EXPORT(*SRCFILE) +                             */
      /*                              SRCFILE(&SL/&SF) SRCMBR(&SM);                                */
      /*    >>IMPORTANT<<                                                                          */
-     /*      >>PARM<<  MODULE(MNTAS);                                                             */
-     /*      >>PARM<<  TEXT('Maintain Activity Schedule');                                        */
+     /*      >>PARM<<  MODULE(CHKSTSE);                                                           */
+     /*      >>PARM<<  TEXT('Complete Status Entry');                                             */
      /*      >>PARM<<  BNDDIR(&LI/RAPIDFIRE);                                                     */
      /*      >>PARM<<  ACTGRP(RAPIDFIRE);                                                         */
      /*      >>PARM<<  DETAIL(*BASIC);                                                            */
@@ -26,16 +26,18 @@
      /*------------+--------+---------------------------------------------------------------------*/
      /*   Datum    I Progr. I Beschreibung                                                        */
      /*------------+--------+---------------------------------------------------------------------*/
-     /* 26.10.2017 I   FH   I Creation                                                            */
+     /* 19.12.2017 I   FH   I Creation                                                            */
      /*-------------------------------------------------------------------------------------------*/
 
              STRPGMEXP
 
-                EXPORT     SYMBOL('MNTAS_setActivity')
+                EXPORT     SYMBOL('CHKSTSE_openFiles')
 
-                EXPORT     SYMBOL('MNTAS_checkAction')
+                EXPORT     SYMBOL('CHKSTSE_closeFiles')
 
-                EXPORT     SYMBOL('MNTAS_getValidActions')
+                EXPORT     SYMBOL('CHKSTSE_checkAction')
+
+                EXPORT     SYMBOL('CHKSTSE_getValidActions')
 
              ENDPGMEXP
 

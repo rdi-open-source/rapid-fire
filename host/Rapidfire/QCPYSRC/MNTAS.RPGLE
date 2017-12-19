@@ -15,3 +15,24 @@ DCL-PR MNTAS_setActivity
   *N CHAR(10) CONST; // --> Job
   *N TIME CONST;     // --> Start time
 END-PR;
+
+DCL-PR MNTAS_checkAction IND // <-- Success
+       EXTPROC('MNTAS_checkAction');
+  *N CHAR(10) CONST;         // --> Action
+  *N CHAR(10) CONST;         // --> Job
+  *N TIME CONST;             // --> Start time
+  *N CHAR(1);                // <-- Success
+  *N CHAR(256);              // <-- Message
+END-PR;
+
+DCL-PR MNTAS_getValidActions
+       EXTPROC('MNTAS_getValidActions');
+  *N CHAR(10) CONST;   // --> Job
+  *N TIME CONST;       // --> Start time
+  *N PACKED(2 : 0);    // <-- Number of actions
+  *N CHAR(10) DIM(25); // <-- Actions
+END-PR;
+
+DCL-C MNTAS_ERROR  '*ERROR';
+DCL-C MNTAS_NONE   '*NONE';
+DCL-C MNTAS_ACTVTY '*ACTVTY';
