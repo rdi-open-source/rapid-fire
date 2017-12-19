@@ -242,6 +242,7 @@ public class CommandManager extends AbstractManager<IRapidFireCommandResource, C
         return commandActions.toArray(new CommandAction[commandActions.size()]);
     }
 
+    @Override
     public boolean isValidAction(IRapidFireCommandResource command, CommandAction action) throws Exception {
 
         KeyCommandActionCache commandActionsKey = new KeyCommandActionCache(command);

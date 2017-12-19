@@ -96,6 +96,7 @@ public abstract class AbstractLibraryMaintenanceHandler extends AbstractResource
         return false;
     }
 
+    @Override
     protected Result initialize(IRapidFireLibraryResource file) throws Exception {
 
         manager.openFiles();
@@ -108,6 +109,7 @@ public abstract class AbstractLibraryMaintenanceHandler extends AbstractResource
         return null;
     }
 
+    @Override
     protected void terminate(boolean closeConnection) throws Exception {
 
         if (manager != null) {

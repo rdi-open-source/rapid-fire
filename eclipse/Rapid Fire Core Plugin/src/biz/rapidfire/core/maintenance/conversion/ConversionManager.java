@@ -264,6 +264,7 @@ public class ConversionManager extends AbstractManager<IRapidFireConversionResou
         return conversionActions.toArray(new ConversionAction[conversionActions.size()]);
     }
 
+    @Override
     public boolean isValidAction(IRapidFireConversionResource conversion, ConversionAction action) throws Exception {
 
         KeyConversionActionCache conversionActionsKey = new KeyConversionActionCache(conversion);

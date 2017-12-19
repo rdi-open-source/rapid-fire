@@ -18,10 +18,12 @@ public abstract class AbstractJobActionHandler extends AbstractJobMaintenanceHan
         super(null, jobAction);
     }
 
+    @Override
     protected Result initialize(IRapidFireJobResource job) throws Exception {
         return Result.createSuccessResult();
     }
 
+    @Override
     protected abstract void performAction(IRapidFireJobResource job) throws Exception;
 
     protected void terminate() throws Exception {

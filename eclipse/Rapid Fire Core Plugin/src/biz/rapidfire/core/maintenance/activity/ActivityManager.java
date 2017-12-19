@@ -64,6 +64,7 @@ public class ActivityManager extends AbstractManager<IRapidFireActivityResource,
         this.newValues = values;
     }
 
+    @Override
     public void book() throws Exception {
 
         CallableStatement statement = dao
@@ -81,6 +82,7 @@ public class ActivityManager extends AbstractManager<IRapidFireActivityResource,
         }
     }
 
+    @Override
     public Result checkAction(ActivityKey key, ActivityAction activityAction) throws Exception {
 
         CallableStatement statement = dao.prepareCall(dao
@@ -134,6 +136,7 @@ public class ActivityManager extends AbstractManager<IRapidFireActivityResource,
         return activityActions.toArray(new ActivityAction[activityActions.size()]);
     }
 
+    @Override
     public boolean isValidAction(IRapidFireActivityResource activity, ActivityAction action) throws Exception {
 
         KeyActivityActionCache activityActionsKey = new KeyActivityActionCache(activity);
@@ -148,6 +151,7 @@ public class ActivityManager extends AbstractManager<IRapidFireActivityResource,
         return actionsSet.contains(action);
     }
 
+    @Override
     public void recoverError() {
         JDBCConnectionManager.getInstance().close(dao);
     }

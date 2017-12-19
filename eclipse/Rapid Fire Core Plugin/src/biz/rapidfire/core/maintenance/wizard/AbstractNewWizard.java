@@ -154,7 +154,7 @@ public abstract class AbstractNewWizard extends Wizard implements INewWizard, IP
     public void init(IWorkbench workbench, IStructuredSelection selection) {
 
         if (selection instanceof IStructuredSelection) {
-            IStructuredSelection structuredSelection = (IStructuredSelection)selection;
+            IStructuredSelection structuredSelection = selection;
             if (!structuredSelection.isEmpty()) {
                 Object element = structuredSelection.getFirstElement();
                 if (element instanceof IRapidFireResource) {

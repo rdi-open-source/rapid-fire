@@ -98,6 +98,7 @@ public abstract class AbstractConversionMaintenanceHandler extends AbstractResou
         return false;
     }
 
+    @Override
     protected Result initialize(IRapidFireConversionResource conversion) throws Exception {
 
         manager.openFiles();
@@ -109,6 +110,7 @@ public abstract class AbstractConversionMaintenanceHandler extends AbstractResou
         return result;
     }
 
+    @Override
     protected void terminate(boolean closeConnection) throws Exception {
 
         if (manager != null) {

@@ -96,6 +96,7 @@ public abstract class AbstractFileMaintenanceHandler extends AbstractResourceMai
         return false;
     }
 
+    @Override
     protected Result initialize(IRapidFireFileResource file) throws Exception {
 
         manager.openFiles();
@@ -105,6 +106,7 @@ public abstract class AbstractFileMaintenanceHandler extends AbstractResourceMai
         return result;
     }
 
+    @Override
     protected void terminate(boolean closeConnection) throws Exception {
 
         if (manager != null) {

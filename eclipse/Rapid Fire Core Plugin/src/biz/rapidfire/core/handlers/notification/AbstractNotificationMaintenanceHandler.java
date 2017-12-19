@@ -97,6 +97,7 @@ public abstract class AbstractNotificationMaintenanceHandler extends
         return false;
     }
 
+    @Override
     protected Result initialize(IRapidFireNotificationResource notification) throws Exception {
 
         manager.openFiles();
@@ -106,6 +107,7 @@ public abstract class AbstractNotificationMaintenanceHandler extends
         return result;
     }
 
+    @Override
     protected void terminate(boolean closeConnection) throws Exception {
 
         if (manager != null) {

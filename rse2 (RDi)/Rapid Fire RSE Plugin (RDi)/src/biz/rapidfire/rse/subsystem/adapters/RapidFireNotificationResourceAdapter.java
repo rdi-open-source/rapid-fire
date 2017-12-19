@@ -87,6 +87,7 @@ public class RapidFireNotificationResourceAdapter extends AbstractResourceAdapte
         return name;
     }
 
+    @Override
     public String getAbsoluteNamePrefix() {
         return "RapidFireNotification."; //$NON-NLS-1$
     }
@@ -107,7 +108,7 @@ public class RapidFireNotificationResourceAdapter extends AbstractResourceAdapte
 
     @Override
     public Object getParent(Object element) {
-        return null; //$NON-NLS-1$
+        return null;
     }
 
     @Override

@@ -97,6 +97,7 @@ public abstract class AbstractAreaMaintenanceHandler extends AbstractResourceMai
         return false;
     }
 
+    @Override
     protected Result initialize(IRapidFireAreaResource area) throws Exception {
 
         manager.openFiles();
@@ -107,6 +108,7 @@ public abstract class AbstractAreaMaintenanceHandler extends AbstractResourceMai
         return result;
     }
 
+    @Override
     protected void terminate(boolean closeConnection) throws Exception {
 
         if (manager != null) {

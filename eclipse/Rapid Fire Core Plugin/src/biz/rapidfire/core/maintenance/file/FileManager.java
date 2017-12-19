@@ -244,6 +244,7 @@ public class FileManager extends AbstractManager<IRapidFireFileResource, FileKey
         return fileActions.toArray(new FileAction[fileActions.size()]);
     }
 
+    @Override
     public boolean isValidAction(IRapidFireFileResource file, FileAction action) throws Exception {
 
         KeyFileActionCache fileActionsKey = new KeyFileActionCache(file);

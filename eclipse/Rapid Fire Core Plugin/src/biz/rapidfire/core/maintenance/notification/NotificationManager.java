@@ -237,6 +237,7 @@ public class NotificationManager extends AbstractManager<IRapidFireNotificationR
         return notificationActions.toArray(new NotificationAction[notificationActions.size()]);
     }
 
+    @Override
     public boolean isValidAction(IRapidFireNotificationResource notification, NotificationAction action) throws Exception {
 
         KeyNotificationActionCache notificationActionsKey = new KeyNotificationActionCache(notification);

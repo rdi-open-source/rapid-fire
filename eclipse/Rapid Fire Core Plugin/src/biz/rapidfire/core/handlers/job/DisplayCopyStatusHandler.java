@@ -34,7 +34,7 @@ public class DisplayCopyStatusHandler extends AbstractJobMaintenanceHandler impl
 
             FileCopyStatusView view = (FileCopyStatusView)PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
                 .showView(FileCopyStatusView.ID);
-            view.setInput((IRapidFireJobResource)job);
+            view.setInput(job);
 
         } catch (PartInitException e) {
             RapidFireCorePlugin.logError("*** Could not open job status view ***", e);

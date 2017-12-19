@@ -8,7 +8,6 @@
 
 package biz.rapidfire.core.maintenance.job;
 
-
 public interface IJobStart {
 
     public static final int JOB = 1;

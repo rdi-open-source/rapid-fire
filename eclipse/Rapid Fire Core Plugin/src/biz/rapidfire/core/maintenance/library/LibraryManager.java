@@ -223,6 +223,7 @@ public class LibraryManager extends AbstractManager<IRapidFireLibraryResource, L
         return libraryActions.toArray(new LibraryAction[libraryActions.size()]);
     }
 
+    @Override
     public boolean isValidAction(IRapidFireLibraryResource library, LibraryAction action) throws Exception {
 
         KeyLibraryActionCache libraryActionsKey = new KeyLibraryActionCache(library);

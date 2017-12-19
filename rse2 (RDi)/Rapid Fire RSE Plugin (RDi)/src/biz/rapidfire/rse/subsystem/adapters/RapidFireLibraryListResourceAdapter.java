@@ -66,6 +66,7 @@ public class RapidFireLibraryListResourceAdapter extends AbstractResourceAdapter
         return name;
     }
 
+    @Override
     public String getAbsoluteNamePrefix() {
         return "RapidFireLibraryList."; //$NON-NLS-1$
     }
@@ -86,7 +87,7 @@ public class RapidFireLibraryListResourceAdapter extends AbstractResourceAdapter
 
     @Override
     public Object getParent(Object element) {
-        return null; //$NON-NLS-1$
+        return null;
     }
 
     @Override

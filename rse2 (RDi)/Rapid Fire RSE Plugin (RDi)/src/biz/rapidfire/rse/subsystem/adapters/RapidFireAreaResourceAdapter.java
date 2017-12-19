@@ -60,6 +60,7 @@ public class RapidFireAreaResourceAdapter extends AbstractResourceAdapter implem
     /**
      * Returns the absolute name of the resource for building hash values.
      */
+    @Override
     public String getAbsoluteName(Object element) {
 
         RapidFireAreaResource resource = getResource(element);
@@ -70,6 +71,7 @@ public class RapidFireAreaResourceAdapter extends AbstractResourceAdapter implem
         return name;
     }
 
+    @Override
     public String getAbsoluteNamePrefix() {
         return "RapidFireArea."; //$NON-NLS-1$
     }

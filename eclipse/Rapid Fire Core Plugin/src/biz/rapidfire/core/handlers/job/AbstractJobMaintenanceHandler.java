@@ -97,6 +97,7 @@ public abstract class AbstractJobMaintenanceHandler extends AbstractResourceMain
         return false;
     }
 
+    @Override
     protected Result initialize(IRapidFireJobResource job) throws Exception {
 
         manager.openFiles();
@@ -106,6 +107,7 @@ public abstract class AbstractJobMaintenanceHandler extends AbstractResourceMain
         return result;
     }
 
+    @Override
     protected void terminate(boolean closeConnection) throws Exception {
 
         if (manager != null) {

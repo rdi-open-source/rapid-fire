@@ -63,6 +63,7 @@ public class JobPage extends AbstractWizardPage {
         return nameValues;
     }
 
+    @Override
     public void createContent(Composite parent) {
 
         jobMaintenanceControl = new JobMaintenanceControl(parent, SWT.NONE);
@@ -89,6 +90,7 @@ public class JobPage extends AbstractWizardPage {
         jobMaintenanceControl.addSelectionListener(this);
     }
 
+    @Override
     protected void updatePageComplete(Object source) {
 
         String message = null;

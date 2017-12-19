@@ -290,6 +290,7 @@ public class JobManager extends AbstractManager<IRapidFireJobResource, JobKey, J
         return Result.createSuccessResult();
     }
 
+    @Override
     public boolean isValidAction(IRapidFireJobResource job, JobAction action) throws Exception {
 
         KeyJobActionCache jobActionsKey = new KeyJobActionCache(job);

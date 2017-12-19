@@ -58,6 +58,7 @@ public class JobMaintenanceControl extends AbstractMaintenanceControl {
         textJobQueueLibraryName.setFocus();
     }
 
+    @Override
     public void setMode(MaintenanceMode mode) {
 
         super.setMode(mode);
@@ -69,6 +70,7 @@ public class JobMaintenanceControl extends AbstractMaintenanceControl {
         textJobQueueLibraryName.setEnabled(isFieldsEnabled());
     }
 
+    @Override
     protected void createContent(Composite parent) {
 
         WidgetFactory.createLabel(parent, Messages.Label_Job_colon, Messages.Tooltip_Job);

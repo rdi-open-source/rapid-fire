@@ -71,6 +71,7 @@ public class Version implements Comparable<Version> {
         return parsedVersion;
     }
 
+    @Override
     public final String toString() {
         return parsedVersion;
     }

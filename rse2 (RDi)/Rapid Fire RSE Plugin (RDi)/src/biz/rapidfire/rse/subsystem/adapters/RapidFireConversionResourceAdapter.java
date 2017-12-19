@@ -70,6 +70,7 @@ public class RapidFireConversionResourceAdapter extends AbstractResourceAdapter 
         return name;
     }
 
+    @Override
     public String getAbsoluteNamePrefix() {
         return "RapidFireConversion."; //$NON-NLS-1$
     }

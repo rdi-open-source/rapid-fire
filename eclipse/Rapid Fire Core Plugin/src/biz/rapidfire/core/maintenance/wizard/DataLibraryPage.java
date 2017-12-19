@@ -53,6 +53,7 @@ public class DataLibraryPage extends AbstractWizardPage {
         this.dataLibraryName = dataLibraryName;
     }
 
+    @Override
     public void createContent(Composite parent) {
 
         comboConnection = WidgetFactory.createSystemHostCombo(parent, SWT.BORDER);
@@ -90,6 +91,7 @@ public class DataLibraryPage extends AbstractWizardPage {
         textDataLibrary.addModifyListener(this);
     }
 
+    @Override
     protected void updatePageComplete(Object source) {
 
         String message = null;

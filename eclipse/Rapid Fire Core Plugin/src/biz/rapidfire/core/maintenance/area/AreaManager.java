@@ -244,6 +244,7 @@ public class AreaManager extends AbstractManager<IRapidFireAreaResource, AreaKey
         return areaActions.toArray(new AreaAction[areaActions.size()]);
     }
 
+    @Override
     public boolean isValidAction(IRapidFireAreaResource area, AreaAction action) throws Exception {
 
         KeyAreaActionCache areaActionsKey = new KeyAreaActionCache(area);

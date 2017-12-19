@@ -98,6 +98,7 @@ public abstract class AbstractLibraryListMaintenanceHandler extends
         return false;
     }
 
+    @Override
     protected Result initialize(IRapidFireLibraryListResource file) throws Exception {
 
         manager.openFiles();
@@ -107,6 +108,7 @@ public abstract class AbstractLibraryListMaintenanceHandler extends
         return result;
     }
 
+    @Override
     protected void terminate(boolean closeConnection) throws Exception {
 
         if (manager != null) {
