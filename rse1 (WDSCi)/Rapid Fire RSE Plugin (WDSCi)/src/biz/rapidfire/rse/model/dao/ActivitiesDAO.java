@@ -17,7 +17,7 @@ import biz.rapidfire.core.model.dao.IActivitiesDAO;
 import biz.rapidfire.core.model.dao.JDBCConnectionManager;
 import biz.rapidfire.rse.subsystem.resources.RapidFireActivityResource;
 
-//TODO: move to core plugin
+// TODO: move to core plugin
 public class ActivitiesDAO extends AbstractActivitiesDAO implements IActivitiesDAO {
 
     public ActivitiesDAO(String connectionName, String libraryName) throws Exception {

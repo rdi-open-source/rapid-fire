@@ -8,10 +8,6 @@
 
 package biz.rapidfire.rse.subsystem.actions.file;
 
-import org.eclipse.core.commands.ExecutionEvent;
-import org.eclipse.core.commands.ExecutionException;
-
-import biz.rapidfire.core.handlers.file.ChangeFileHandler;
 import biz.rapidfire.core.handlers.file.CopyFileHandler;
 import biz.rapidfire.rse.subsystem.actions.AbstractResourceAction;
 

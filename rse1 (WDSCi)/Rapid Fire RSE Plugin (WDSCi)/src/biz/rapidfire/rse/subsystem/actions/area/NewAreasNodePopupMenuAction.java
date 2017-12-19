@@ -25,7 +25,7 @@ import biz.rapidfire.rse.subsystem.resources.RapidFireAreaResource;
 public class NewAreasNodePopupMenuAction extends AbstractNewNodePopupMenuAction<AreasNode, IRapidFireAreaResource> {
 
     public NewAreasNodePopupMenuAction(Shell shell) {
-        super(Messages.ActionLabel_New_Area, Messages.ActionTooltip_New_Area, shell,new NewAreaHandler());
+        super(Messages.ActionLabel_New_Area, Messages.ActionTooltip_New_Area, shell, new NewAreaHandler());
 
         setImageDescriptor(RapidFireRSEPlugin.getDefault().getImageRegistry().getDescriptor(RapidFireRSEPlugin.IMAGE_NEW_AREA));
         setContextMenuGroup("group.new");

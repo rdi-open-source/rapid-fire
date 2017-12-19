@@ -25,7 +25,7 @@ import biz.rapidfire.rse.subsystem.resources.RapidFireLibraryResource;
 public class NewLibrariesNodePopupMenuAction extends AbstractNewNodePopupMenuAction<LibrariesNode, IRapidFireLibraryResource> {
 
     public NewLibrariesNodePopupMenuAction(Shell shell) {
-        super(Messages.ActionLabel_New_Library, Messages.ActionTooltip_New_Library, shell,new NewLibraryHandler());
+        super(Messages.ActionLabel_New_Library, Messages.ActionTooltip_New_Library, shell, new NewLibraryHandler());
 
         setImageDescriptor(RapidFireRSEPlugin.getDefault().getImageRegistry().getDescriptor(RapidFireRSEPlugin.IMAGE_NEW_LIBRARY));
         setContextMenuGroup("group.new");

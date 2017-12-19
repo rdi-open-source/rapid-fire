@@ -25,7 +25,7 @@ import biz.rapidfire.rse.subsystem.resources.RapidFireConversionResource;
 public class NewConversionsNodePopupMenuAction extends AbstractNewNodePopupMenuAction<ConversionsNode, IRapidFireConversionResource> {
 
     public NewConversionsNodePopupMenuAction(Shell shell) {
-        super(Messages.ActionLabel_New_Conversion, Messages.ActionTooltip_New_Conversion, shell,new NewConversionHandler());
+        super(Messages.ActionLabel_New_Conversion, Messages.ActionTooltip_New_Conversion, shell, new NewConversionHandler());
 
         setImageDescriptor(RapidFireRSEPlugin.getDefault().getImageRegistry().getDescriptor(RapidFireRSEPlugin.IMAGE_NEW_CONVERSION));
         setContextMenuGroup("group.new");
