@@ -13,7 +13,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Random;
 
 import org.eclipse.swt.widgets.Shell;
 
@@ -106,8 +105,8 @@ public abstract class AbstractFileCopyStatusDAO {
         fileCopyStatus.setChangesToApply(changesToApply);
         fileCopyStatus.setChangesApplied(changesApplied);
 
-        // TODO: remove debug code
-        percentDone = new Random().nextInt((100) + 1);
+        // TODO: enable/disable debug code
+        // percentDone = new Random().nextInt((100) + 1);
 
         fileCopyStatus.setPercentDone(percentDone);
 
