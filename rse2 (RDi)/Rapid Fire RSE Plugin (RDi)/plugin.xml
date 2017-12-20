@@ -87,8 +87,8 @@
       <command
          id="biz.rapidfire.core.command.Activity.change"
          categoryId="biz.rapidfire.category.Commands"
-         name="%command_Change_Activity_Plan"
-         description="%command_Change_Activity_Plan_Description">
+         name="%command_Open_Activity_Plan"
+         description="%command_Open_Activity_Plan_Description">
       </command>
          
       <command
