@@ -20,7 +20,7 @@ import biz.rapidfire.rse.Messages;
 import biz.rapidfire.rse.RapidFireRSEPlugin;
 import biz.rapidfire.rse.subsystem.resources.RapidFireCommandResource;
 
-public class RapidFireCommandResourceAdapter extends AbstractResourceAdapter implements ISystemRemoteElementAdapter {
+public class RapidFireCommandResourceAdapter extends AbstractResourceAdapter<IRapidFireCommandResource> implements ISystemRemoteElementAdapter {
 
     private static final String DATA_LIBRARY = "DATA_LIBRARY"; //$NON-NLS-1$
     private static final String JOB = "JOB"; //$NON-NLS-1$

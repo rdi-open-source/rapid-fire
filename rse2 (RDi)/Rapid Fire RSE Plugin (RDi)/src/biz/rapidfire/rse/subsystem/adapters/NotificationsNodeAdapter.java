@@ -26,7 +26,7 @@ import biz.rapidfire.rse.RapidFireRSEPlugin;
 import biz.rapidfire.rse.subsystem.actions.NewNotificationAction;
 import biz.rapidfire.rse.subsystem.resources.NotificationsNode;
 
-public class NotificationsNodeAdapter extends AbstractNodeAdapter {
+public class NotificationsNodeAdapter extends AbstractNodeAdapter<NotificationsNode> {
 
     @Override
     public final boolean hasChildren(IAdaptable element) {

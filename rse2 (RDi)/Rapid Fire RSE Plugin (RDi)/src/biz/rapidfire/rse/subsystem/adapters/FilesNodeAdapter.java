@@ -29,7 +29,7 @@ import biz.rapidfire.rse.RapidFireRSEPlugin;
 import biz.rapidfire.rse.subsystem.actions.NewFileAction;
 import biz.rapidfire.rse.subsystem.resources.FilesNode;
 
-public class FilesNodeAdapter extends AbstractNodeAdapter {
+public class FilesNodeAdapter extends AbstractNodeAdapter<FilesNode> {
 
     @Override
     public final boolean hasChildren(IAdaptable element) {

@@ -26,7 +26,7 @@ import biz.rapidfire.rse.subsystem.resources.LibraryListsNode;
 import biz.rapidfire.rse.subsystem.resources.NotificationsNode;
 import biz.rapidfire.rse.subsystem.resources.RapidFireJobResource;
 
-public class RapidFireJobResourceAdapter extends AbstractResourceAdapter implements ISystemRemoteElementAdapter {
+public class RapidFireJobResourceAdapter extends AbstractResourceAdapter<IRapidFireJobResource> implements ISystemRemoteElementAdapter {
 
     private static final String DATA_LIBRARY = "DATA_LIBRARY"; //$NON-NLS-1$
     private static final String JOB = "JOB"; //$NON-NLS-1$
@@ -173,9 +173,9 @@ public class RapidFireJobResourceAdapter extends AbstractResourceAdapter impleme
         } else if (propKey.equals(JOB_QUEUE_LIBRARY)) {
             return resource.getJobQueueLibrary();
         } else if (propKey.equals(STATUS)) {
-            return resource.getStatus().label;
+            return resource.getStatus().label();
         } else if (propKey.equals(PHASE)) {
-            return resource.getPhase().label;
+            return resource.getPhase().label();
         } else if (propKey.equals(ERROR)) {
             return resource.isError();
         } else if (propKey.equals(ERROR_TEXT)) {

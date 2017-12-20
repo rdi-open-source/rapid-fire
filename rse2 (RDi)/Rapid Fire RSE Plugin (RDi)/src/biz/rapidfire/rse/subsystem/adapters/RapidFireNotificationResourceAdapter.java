@@ -21,7 +21,8 @@ import biz.rapidfire.rse.Messages;
 import biz.rapidfire.rse.RapidFireRSEPlugin;
 import biz.rapidfire.rse.subsystem.resources.RapidFireNotificationResource;
 
-public class RapidFireNotificationResourceAdapter extends AbstractResourceAdapter implements ISystemRemoteElementAdapter {
+public class RapidFireNotificationResourceAdapter extends AbstractResourceAdapter<IRapidFireNotificationResource> implements
+    ISystemRemoteElementAdapter {
 
     private static final String DATA_LIBRARY = "DATA_LIBRARY"; //$NON-NLS-1$
     private static final String JOB = "JOB"; //$NON-NLS-1$

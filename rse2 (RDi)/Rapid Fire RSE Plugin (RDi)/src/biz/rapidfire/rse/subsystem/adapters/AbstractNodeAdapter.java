@@ -11,7 +11,9 @@ package biz.rapidfire.rse.subsystem.adapters;
 import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.ui.views.properties.IPropertyDescriptor;
 
-public abstract class AbstractNodeAdapter extends AbstractResourceAdapter {
+import biz.rapidfire.core.model.IRapidFireResource;
+
+public abstract class AbstractNodeAdapter<R extends IRapidFireResource> extends AbstractResourceAdapter<R> {
 
     @Override
     public final Object getParent(Object element) {

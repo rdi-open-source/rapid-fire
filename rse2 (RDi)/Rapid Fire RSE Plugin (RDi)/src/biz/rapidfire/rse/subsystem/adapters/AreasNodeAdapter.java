@@ -26,7 +26,7 @@ import biz.rapidfire.rse.RapidFireRSEPlugin;
 import biz.rapidfire.rse.subsystem.actions.NewAreaAction;
 import biz.rapidfire.rse.subsystem.resources.AreasNode;
 
-public class AreasNodeAdapter extends AbstractNodeAdapter {
+public class AreasNodeAdapter extends AbstractNodeAdapter<AreasNode> {
 
     @Override
     public final boolean hasChildren(IAdaptable element) {

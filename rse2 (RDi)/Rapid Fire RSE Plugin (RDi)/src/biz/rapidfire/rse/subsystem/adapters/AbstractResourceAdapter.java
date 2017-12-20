@@ -12,16 +12,26 @@ import org.eclipse.core.runtime.IAdaptable;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.viewers.IStructuredSelection;
+import org.eclipse.rse.core.subsystems.ISubSystem;
 import org.eclipse.rse.ui.SystemMenuManager;
 import org.eclipse.rse.ui.view.AbstractSystemViewAdapter;
 import org.eclipse.rse.ui.view.ISystemRemoteElementAdapter;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.views.properties.IPropertyDescriptor;
 
+import biz.rapidfire.core.model.IRapidFireResource;
 import biz.rapidfire.rse.Messages;
 import biz.rapidfire.rse.subsystem.RapidFireSubSystemFactory;
 
-public abstract class AbstractResourceAdapter extends AbstractSystemViewAdapter implements ISystemRemoteElementAdapter {
+public abstract class AbstractResourceAdapter<R extends IRapidFireResource> extends AbstractSystemViewAdapter implements ISystemRemoteElementAdapter {
+
+    @Override
+    public ISubSystem getSubSystem(Object element) {
+
+        R node = (R)element;
+
+        return (ISubSystem)node.getParentSubSystem();
+    }
 
     @Override
     public void addActions(SystemMenuManager menu, IStructuredSelection selection, Shell parent, String menuGroup) {

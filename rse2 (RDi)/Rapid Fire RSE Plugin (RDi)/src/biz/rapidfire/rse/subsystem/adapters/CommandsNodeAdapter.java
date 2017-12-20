@@ -26,7 +26,7 @@ import biz.rapidfire.rse.RapidFireRSEPlugin;
 import biz.rapidfire.rse.subsystem.actions.NewCommandAction;
 import biz.rapidfire.rse.subsystem.resources.CommandsNode;
 
-public class CommandsNodeAdapter extends AbstractNodeAdapter {
+public class CommandsNodeAdapter extends AbstractNodeAdapter<CommandsNode> {
 
     @Override
     public final boolean hasChildren(IAdaptable element) {

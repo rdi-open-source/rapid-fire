@@ -26,7 +26,7 @@ import biz.rapidfire.rse.RapidFireRSEPlugin;
 import biz.rapidfire.rse.subsystem.actions.NewConversionAction;
 import biz.rapidfire.rse.subsystem.resources.ConversionsNode;
 
-public class ConversionsNodeAdapter extends AbstractNodeAdapter {
+public class ConversionsNodeAdapter extends AbstractNodeAdapter<ConversionsNode> {
 
     @Override
     public final boolean hasChildren(IAdaptable element) {

@@ -25,7 +25,7 @@ import biz.rapidfire.rse.subsystem.resources.CommandsNode;
 import biz.rapidfire.rse.subsystem.resources.ConversionsNode;
 import biz.rapidfire.rse.subsystem.resources.RapidFireFileResource;
 
-public class RapidFireFileResourceAdapter extends AbstractResourceAdapter implements ISystemRemoteElementAdapter {
+public class RapidFireFileResourceAdapter extends AbstractResourceAdapter<IRapidFireFileResource> implements ISystemRemoteElementAdapter {
 
     private static final String DATA_LIBRARY = "DATA_LIBRARY"; //$NON-NLS-1$
     private static final String JOB = "JOB"; //$NON-NLS-1$

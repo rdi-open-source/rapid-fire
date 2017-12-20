@@ -26,7 +26,7 @@ import biz.rapidfire.rse.RapidFireRSEPlugin;
 import biz.rapidfire.rse.subsystem.actions.NewLibraryListAction;
 import biz.rapidfire.rse.subsystem.resources.LibraryListsNode;
 
-public class LibraryListsNodeAdapter extends AbstractNodeAdapter {
+public class LibraryListsNodeAdapter extends AbstractNodeAdapter<LibraryListsNode> {
 
     @Override
     public final boolean hasChildren(IAdaptable element) {
