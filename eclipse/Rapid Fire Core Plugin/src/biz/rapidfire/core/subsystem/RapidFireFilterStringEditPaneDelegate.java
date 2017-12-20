@@ -67,7 +67,7 @@ public class RapidFireFilterStringEditPaneDelegate {
         List<String> items = new LinkedList<String>();
         items.add(RapidFireFilter.ASTERISK);
         for (Status status : values) {
-            items.add(status.label);
+            items.add(status.label());
         }
 
         Combo combo = WidgetFactory.createReadOnlyCombo(parent);

@@ -70,13 +70,15 @@ public class NewJobWizard extends AbstractNewWizard {
 
         for (int i = 0; i < getPageCount(); i++) {
             AbstractWizardPage page = (AbstractWizardPage)getPages()[i];
-            if (LibraryListPage.NAME.equals(page.getName()) && !page.isEnabled()) {
-                // ignore library list page
-            } else {
-                if (!page.isPageComplete()) {
-                    return false;
-                }
+            // TODO: remove after testing
+            // if (LibraryListPage.NAME.equals(page.getName()) &&
+            // !page.isEnabled()) {
+            // // ignore library list page
+            // } else {
+            if (!page.isPageComplete()) {
+                return false;
             }
+            // }
         }
 
         return true;
@@ -113,7 +115,7 @@ public class NewJobWizard extends AbstractNewWizard {
              * Get JDBC connection with manual commit control (auto commit
              * disabled).
              */
-            connection = JDBCConnectionManager.getInstance().getConnection(connectionName, dataLibrary, true, false);
+            connection = JDBCConnectionManager.getInstance().getConnectionForUpdateNoAutoCommit(connectionName, dataLibrary);
 
             jobManager = new JobManager(connection);
 

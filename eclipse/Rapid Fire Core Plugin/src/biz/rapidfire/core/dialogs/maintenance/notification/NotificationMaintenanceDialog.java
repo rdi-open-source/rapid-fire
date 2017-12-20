@@ -17,7 +17,6 @@ import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
-import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
@@ -26,7 +25,6 @@ import biz.rapidfire.core.RapidFireCorePlugin;
 import biz.rapidfire.core.dialogs.maintenance.AbstractMaintenanceDialog;
 import biz.rapidfire.core.helpers.ExceptionHelper;
 import biz.rapidfire.core.helpers.IntHelper;
-import biz.rapidfire.core.helpers.StringHelper;
 import biz.rapidfire.core.jface.dialogs.Size;
 import biz.rapidfire.core.jface.dialogs.XDialog;
 import biz.rapidfire.core.maintenance.MaintenanceMode;
@@ -39,10 +37,6 @@ import biz.rapidfire.core.maintenance.notification.shared.NotificationType;
 import biz.rapidfire.core.swt.widgets.WidgetFactory;
 
 public class NotificationMaintenanceDialog extends AbstractMaintenanceDialog {
-
-    private static final String DFT_VALUE = "dft.value";
-    private static final String PREV_VALUE = "prev.value";
-    private static final String EMPTY_STRING = "";
 
     private NotificationManager manager;
 
@@ -153,18 +147,30 @@ public class NotificationMaintenanceDialog extends AbstractMaintenanceDialog {
         comboMessageQueueLibraryName.setToolTipText(Messages.Tooltip_Message_queue_library_name);
         comboMessageQueueLibraryName.setEnabled(enableFields);
         comboMessageQueueLibraryName.setItems(MessageQueueLibrary.labels());
+
+        comboType.addSelectionListener(new SelectionListener() {
+
+            public void widgetSelected(SelectionEvent event) {
+                updateControlEnablement();
+            }
+
+            public void widgetDefaultSelected(SelectionEvent event) {
+                widgetSelected(event);
+            }
+        });
     }
 
-    private void setDefaultValue(Control control, String defaultValue) {
-        control.setData(DFT_VALUE, defaultValue);
-    }
+    private void updateControlEnablement() {
 
-    private String getDefaultValue(Control control) {
-        String value = (String)control.getData(DFT_VALUE);
-        if (value != null) {
-            return value;
+        if (NotificationType.MSGQ.label().equals(comboType.getText())) {
+            textUser.setEnabled(false);
+            textMessageQueueName.setEnabled(enableFields);
+            comboMessageQueueLibraryName.setEnabled(enableFields);
+        } else if (NotificationType.USR.label().equals(comboType.getText())) {
+            textUser.setEnabled(enableFields);
+            textMessageQueueName.setEnabled(false);
+            comboMessageQueueLibraryName.setEnabled(false);
         }
-        return EMPTY_STRING;
     }
 
     @Override
@@ -185,36 +191,11 @@ public class NotificationMaintenanceDialog extends AbstractMaintenanceDialog {
         if (NotificationType.MSGQ.equals(values.getNotificationType())) {
             setText(comboMessageQueueLibraryName, values.getMessageQueueLibraryName());
         } else {
+            // intentionally calling setText() directly!
             comboMessageQueueLibraryName.setText(values.getMessageQueueLibraryName());
         }
-    }
 
-    private void setText(Text textControl, String text) {
-
-        if (StringHelper.isNullOrEmpty(text)) {
-            String defaultValue = getDefaultValue(textControl);
-            if (StringHelper.isNullOrEmpty(defaultValue)) {
-                textControl.setText(EMPTY_STRING);
-            } else {
-                textControl.setText(defaultValue);
-            }
-        } else {
-            textControl.setText(text);
-        }
-    }
-
-    private void setText(Combo comboControl, String text) {
-
-        if (StringHelper.isNullOrEmpty(text)) {
-            String defaultValue = getDefaultValue(comboControl);
-            if (StringHelper.isNullOrEmpty(defaultValue)) {
-                comboControl.setText(EMPTY_STRING);
-            } else {
-                comboControl.setText(defaultValue);
-            }
-        } else {
-            comboControl.setText(text);
-        }
+        updateControlEnablement();
     }
 
     @Override
@@ -314,36 +295,6 @@ public class NotificationMaintenanceDialog extends AbstractMaintenanceDialog {
 
         public void widgetDefaultSelected(SelectionEvent event) {
             widgetSelected(event);
-        }
-
-        private void saveCurrentValue(Text textControl) {
-            storeCurrentValue(textControl, textControl.getText());
-            textControl.setText(EMPTY_STRING);
-        }
-
-        private void saveCurrentValue(Combo comboControl) {
-            storeCurrentValue(comboControl, comboControl.getText());
-            comboControl.setText(EMPTY_STRING);
-        }
-
-        private void restorePreviousValue(Text control) {
-            setText(control, getPreviousValue(control));
-        }
-
-        private void restorePreviousValue(Combo control) {
-            setText(control, getPreviousValue(control));
-        }
-
-        private void storeCurrentValue(Control control, String text) {
-            control.setData(PREV_VALUE, text);
-        }
-
-        private String getPreviousValue(Control control) {
-            String text = (String)control.getData(PREV_VALUE);
-            if (text == null) {
-                return EMPTY_STRING;
-            }
-            return text;
         }
     }
 }

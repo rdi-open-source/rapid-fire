@@ -161,7 +161,15 @@ public class RapidFireJobResourceDelegate implements Comparable<IRapidFireJobRes
 
     @Override
     public String toString() {
-        return getName();
+
+        StringBuilder buffer = new StringBuilder();
+
+        buffer.append(getName());
+        buffer.append(" ("); //$NON-NLS-1$
+        buffer.append(getStatus().label());
+        buffer.append(")"); //$NON-NLS-1$
+
+        return buffer.toString();
     }
 
 }

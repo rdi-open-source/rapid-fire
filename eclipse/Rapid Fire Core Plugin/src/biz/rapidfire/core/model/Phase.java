@@ -18,7 +18,7 @@ public enum Phase {
     READY_PRODUCTION ("*RDY-PRD"), //$NON-NLS-1$
     ABORT ("*ABORT"); //$NON-NLS-1$
 
-    public String label;
+    private String label;
 
     private static Map<String, Phase> phases;
 
@@ -31,6 +31,10 @@ public enum Phase {
 
     private Phase(String label) {
         this.label = label;
+    }
+
+    public String label() {
+        return label;
     }
 
     public String[] labels() {

@@ -20,7 +20,6 @@ import biz.rapidfire.core.maintenance.notification.shared.NotificationAction;
 import biz.rapidfire.core.maintenance.notification.shared.NotificationKey;
 import biz.rapidfire.core.model.IRapidFireJobResource;
 import biz.rapidfire.core.model.IRapidFireNotificationResource;
-import biz.rapidfire.core.model.dao.JDBCConnectionManager;
 
 public abstract class AbstractNotificationMaintenanceHandler extends
     AbstractResourceMaintenanceHandler<IRapidFireNotificationResource, NotificationAction> {
@@ -43,8 +42,7 @@ public abstract class AbstractNotificationMaintenanceHandler extends
         if (manager == null) {
             String connectionName = job.getParentSubSystem().getConnectionName();
             String dataLibrary = job.getDataLibrary();
-            boolean commitControl = isCommitControl();
-            manager = new NotificationManager(JDBCConnectionManager.getInstance().getConnection(connectionName, dataLibrary, commitControl));
+            manager = new NotificationManager(getJdbcConnection(connectionName, dataLibrary));
         }
 
         return manager;
@@ -83,7 +81,7 @@ public abstract class AbstractNotificationMaintenanceHandler extends
                 return true;
             } else {
                 message = Messages.bindParameters(Messages.The_requested_operation_is_invalid_for_job_status_A, notification.getParentJob()
-                    .getStatus().label);
+                    .getStatus().label());
             }
 
         } catch (Exception e) {

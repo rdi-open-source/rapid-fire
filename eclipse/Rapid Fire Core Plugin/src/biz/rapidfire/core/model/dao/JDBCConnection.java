@@ -229,6 +229,9 @@ class JDBCConnection implements IJDBCConnection {
         buffer.append(":");
         buffer.append("Commit=");
         buffer.append(isCommitControl());
+        buffer.append(":");
+        buffer.append("AutoCommit=");
+        buffer.append(isAutoCommit());
 
         return buffer.toString();
     }

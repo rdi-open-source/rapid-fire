@@ -114,6 +114,7 @@ public class CommandMaintenanceDialog extends AbstractMaintenanceDialog {
         WidgetFactory.createLabel(parent, Messages.Label_Command_type_colon, Messages.Tooltip_Command_type);
 
         comboCommandType = WidgetFactory.createReadOnlyCombo(parent);
+        setDefaultValue(comboCommandType, CommandType.COMPILE.label());
         comboCommandType.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
         comboCommandType.setToolTipText(Messages.Tooltip_Command_type);
         comboCommandType.setEnabled(enableKeyFields);
@@ -142,12 +143,12 @@ public class CommandMaintenanceDialog extends AbstractMaintenanceDialog {
     @Override
     protected void setScreenValues() {
 
-        textJobName.setText(values.getKey().getJobName());
-        textPosition.setText(Integer.toString(values.getKey().getPosition()));
-        comboCommandType.setText(values.getKey().getCommandType());
-        textSequence.setText(Integer.toString(values.getKey().getSequence()));
+        setText(textJobName, values.getKey().getJobName());
+        setText(textPosition, Integer.toString(values.getKey().getPosition()));
+        setText(comboCommandType, values.getKey().getCommandType());
+        setText(textSequence, Integer.toString(values.getKey().getSequence()));
 
-        textCommand.setText(values.getCommand());
+        setText(textCommand, values.getCommand());
     }
 
     @Override

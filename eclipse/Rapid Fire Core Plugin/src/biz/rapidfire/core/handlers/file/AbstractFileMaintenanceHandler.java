@@ -20,7 +20,6 @@ import biz.rapidfire.core.maintenance.file.shared.FileKey;
 import biz.rapidfire.core.maintenance.job.shared.JobKey;
 import biz.rapidfire.core.model.IRapidFireFileResource;
 import biz.rapidfire.core.model.IRapidFireJobResource;
-import biz.rapidfire.core.model.dao.JDBCConnectionManager;
 
 public abstract class AbstractFileMaintenanceHandler extends AbstractResourceMaintenanceHandler<IRapidFireFileResource, FileAction> {
 
@@ -42,8 +41,7 @@ public abstract class AbstractFileMaintenanceHandler extends AbstractResourceMai
         if (manager == null) {
             String connectionName = file.getParentSubSystem().getConnectionName();
             String dataLibrary = file.getDataLibrary();
-            boolean commitControl = isCommitControl();
-            manager = new FileManager(JDBCConnectionManager.getInstance().getConnection(connectionName, dataLibrary, commitControl));
+            manager = new FileManager(getJdbcConnection(connectionName, dataLibrary));
         }
 
         return manager;
@@ -81,8 +79,8 @@ public abstract class AbstractFileMaintenanceHandler extends AbstractResourceMai
             if (result.isSuccessfull()) {
                 return true;
             } else {
-                message = Messages
-                    .bindParameters(Messages.The_requested_operation_is_invalid_for_job_status_A, file.getParentJob().getStatus().label);
+                message = Messages.bindParameters(Messages.The_requested_operation_is_invalid_for_job_status_A, file.getParentJob().getStatus()
+                    .label());
             }
 
         } catch (Exception e) {

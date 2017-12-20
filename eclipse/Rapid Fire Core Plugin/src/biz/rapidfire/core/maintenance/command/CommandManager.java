@@ -247,7 +247,8 @@ public class CommandManager extends AbstractManager<IRapidFireCommandResource, C
 
         KeyCommandActionCache commandActionsKey = new KeyCommandActionCache(command);
 
-        Set<CommandAction> actionsSet = CommandActionCache.getInstance().getActions(commandActionsKey);
+        Set<CommandAction> actionsSet = null;
+        CommandActionCache.getInstance().getActions(commandActionsKey);
         if (actionsSet == null) {
             CommandAction[] commandActions = getValidActions(command.getKey());
             CommandActionCache.getInstance().putActions(commandActionsKey, commandActions);

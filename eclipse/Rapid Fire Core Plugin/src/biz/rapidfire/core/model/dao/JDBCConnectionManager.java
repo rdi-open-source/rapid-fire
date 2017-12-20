@@ -119,11 +119,11 @@ public class JDBCConnectionManager extends AbstractDAOManager {
         return getConnection(connectionName, libraryName, true, true);
     }
 
-    public IJDBCConnection getConnection(String connectionName, String libraryName, boolean isCommitControl) throws Exception {
-        return getConnection(connectionName, libraryName, isCommitControl, true);
+    public IJDBCConnection getConnectionForUpdateNoAutoCommit(String connectionName, String libraryName) throws Exception {
+        return getConnection(connectionName, libraryName, true, false);
     }
 
-    public synchronized IJDBCConnection getConnection(String connectionName, String libraryName, boolean isCommitControl, boolean isAutoCommit)
+    private synchronized IJDBCConnection getConnection(String connectionName, String libraryName, boolean isCommitControl, boolean isAutoCommit)
         throws Exception {
 
         if (!isCommitControl) {

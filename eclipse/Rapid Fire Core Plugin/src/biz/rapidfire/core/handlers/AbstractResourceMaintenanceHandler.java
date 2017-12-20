@@ -29,6 +29,8 @@ import biz.rapidfire.core.maintenance.MaintenanceMode;
 import biz.rapidfire.core.maintenance.Result;
 import biz.rapidfire.core.maintenance.shared.IResourceAction;
 import biz.rapidfire.core.model.IRapidFireResource;
+import biz.rapidfire.core.model.dao.IJDBCConnection;
+import biz.rapidfire.core.model.dao.JDBCConnectionManager;
 import biz.rapidfire.rsebase.handlers.AbstractSelectionHandler;
 import biz.rapidfire.rsebase.helpers.ExpressionsHelper;
 
@@ -47,6 +49,15 @@ public abstract class AbstractResourceMaintenanceHandler<R extends IRapidFireRes
 
     protected MaintenanceMode getMaintenanceMode() {
         return mode;
+    }
+
+    protected IJDBCConnection getJdbcConnection(String connectionName, String dataLibrary) throws Exception {
+
+        if (isCommitControl()) {
+            return JDBCConnectionManager.getInstance().getConnectionForUpdate(connectionName, dataLibrary);
+        } else {
+            return JDBCConnectionManager.getInstance().getConnectionForRead(connectionName, dataLibrary);
+        }
     }
 
     @SuppressWarnings("unchecked")
@@ -161,18 +172,18 @@ public abstract class AbstractResourceMaintenanceHandler<R extends IRapidFireRes
         return MaintenanceMode.DELETE.equals(mode);
     }
 
-    protected Object executeWithResource(R notification) throws ExecutionException {
+    protected Object executeWithResource(R resource) throws ExecutionException {
 
         boolean isError = false;
 
         try {
 
-            if (canExecuteAction(notification, action)) {
-                Result result = initialize(notification);
+            if (canExecuteAction(resource, action)) {
+                Result result = initialize(resource);
                 if (result != null && result.isError()) {
                     MessageDialog.openError(getShell(), Messages.E_R_R_O_R, result.getMessage());
                 } else {
-                    performAction(notification);
+                    performAction(resource);
                 }
             }
 
@@ -212,11 +223,11 @@ public abstract class AbstractResourceMaintenanceHandler<R extends IRapidFireRes
     protected boolean isCommitControl() {
 
         MaintenanceMode mode = getMaintenanceMode();
-        if (MaintenanceMode.CHANGE == mode || MaintenanceMode.DELETE == mode) {
-            return true;
+        if (MaintenanceMode.DISPLAY == mode) {
+            return false;
         }
 
-        return false;
+        return true;
     }
 
     protected void setErrorMessage(String message) {

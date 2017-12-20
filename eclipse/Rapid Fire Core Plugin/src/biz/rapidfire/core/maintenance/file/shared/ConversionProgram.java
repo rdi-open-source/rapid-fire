@@ -12,7 +12,6 @@ import java.util.HashMap;
 import java.util.Map;
 
 public enum ConversionProgram {
-    GEN ("*GEN"), //$NON-NLS-1$
     NONE ("*NONE"); //$NON-NLS-1$
 
     private String label;

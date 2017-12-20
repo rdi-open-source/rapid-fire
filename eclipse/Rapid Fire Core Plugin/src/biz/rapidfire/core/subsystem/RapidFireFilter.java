@@ -158,7 +158,7 @@ public class RapidFireFilter {
             return false;
         }
 
-        if (!ASTERISK.equals(getStatus()) & !getStatus().equals(job.getStatus().label)) {
+        if (!ASTERISK.equals(getStatus()) & !getStatus().equals(job.getStatus().label())) {
             return false;
         }
 

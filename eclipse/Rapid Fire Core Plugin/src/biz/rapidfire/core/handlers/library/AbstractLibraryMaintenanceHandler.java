@@ -20,7 +20,6 @@ import biz.rapidfire.core.maintenance.library.shared.LibraryAction;
 import biz.rapidfire.core.maintenance.library.shared.LibraryKey;
 import biz.rapidfire.core.model.IRapidFireJobResource;
 import biz.rapidfire.core.model.IRapidFireLibraryResource;
-import biz.rapidfire.core.model.dao.JDBCConnectionManager;
 
 public abstract class AbstractLibraryMaintenanceHandler extends AbstractResourceMaintenanceHandler<IRapidFireLibraryResource, LibraryAction> {
 
@@ -42,8 +41,7 @@ public abstract class AbstractLibraryMaintenanceHandler extends AbstractResource
         if (manager == null) {
             String connectionName = job.getParentSubSystem().getConnectionName();
             String dataLibrary = job.getDataLibrary();
-            boolean commitControl = isCommitControl();
-            manager = new LibraryManager(JDBCConnectionManager.getInstance().getConnection(connectionName, dataLibrary, commitControl));
+            manager = new LibraryManager(getJdbcConnection(connectionName, dataLibrary));
         }
 
         return manager;
@@ -81,8 +79,8 @@ public abstract class AbstractLibraryMaintenanceHandler extends AbstractResource
             if (result.isSuccessfull()) {
                 return true;
             } else {
-                message = Messages.bindParameters(Messages.The_requested_operation_is_invalid_for_job_status_A,
-                    library.getParentJob().getStatus().label);
+                message = Messages.bindParameters(Messages.The_requested_operation_is_invalid_for_job_status_A, library.getParentJob().getStatus()
+                    .label());
             }
 
         } catch (Exception e) {

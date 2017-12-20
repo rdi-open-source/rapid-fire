@@ -18,7 +18,7 @@ public enum Status {
     END_PND ("*END-PND"), //$NON-NLS-1$
     END ("*END"); //$NON-NLS-1$
 
-    public String label;
+    private String label;
 
     private static Map<String, Status> statuses;
 
@@ -31,6 +31,10 @@ public enum Status {
 
     private Status(String label) {
         this.label = label;
+    }
+
+    public String label() {
+        return label;
     }
 
     public String[] labels() {

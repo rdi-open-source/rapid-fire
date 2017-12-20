@@ -18,7 +18,6 @@ import biz.rapidfire.core.maintenance.job.JobManager;
 import biz.rapidfire.core.maintenance.job.shared.JobAction;
 import biz.rapidfire.core.maintenance.job.shared.JobKey;
 import biz.rapidfire.core.model.IRapidFireJobResource;
-import biz.rapidfire.core.model.dao.JDBCConnectionManager;
 
 public abstract class AbstractJobMaintenanceHandler extends AbstractResourceMaintenanceHandler<IRapidFireJobResource, JobAction> {
 
@@ -44,8 +43,7 @@ public abstract class AbstractJobMaintenanceHandler extends AbstractResourceMain
         if (manager == null) {
             String connectionName = job.getParentSubSystem().getConnectionName();
             String dataLibrary = job.getDataLibrary();
-            boolean commitControl = isCommitControl();
-            manager = new JobManager(JDBCConnectionManager.getInstance().getConnection(connectionName, dataLibrary, commitControl));
+            manager = new JobManager(getJdbcConnection(connectionName, dataLibrary));
         }
 
         return manager;
@@ -83,7 +81,7 @@ public abstract class AbstractJobMaintenanceHandler extends AbstractResourceMain
             if (result.isSuccessfull()) {
                 return true;
             } else {
-                message = Messages.bindParameters(Messages.The_requested_operation_is_invalid_for_job_status_A, job.getStatus().label);
+                message = Messages.bindParameters(Messages.The_requested_operation_is_invalid_for_job_status_A, job.getStatus().label());
             }
 
         } catch (Exception e) {

@@ -29,6 +29,9 @@ import biz.rapidfire.core.maintenance.Result;
 import biz.rapidfire.core.maintenance.area.AreaManager;
 import biz.rapidfire.core.maintenance.area.AreaValues;
 import biz.rapidfire.core.maintenance.area.IAreaCheck;
+import biz.rapidfire.core.maintenance.area.shared.Area;
+import biz.rapidfire.core.maintenance.area.shared.Ccsid;
+import biz.rapidfire.core.maintenance.area.shared.LibraryList;
 import biz.rapidfire.core.swt.widgets.WidgetFactory;
 
 public class AreaMaintenanceDialog extends AbstractMaintenanceDialog {
@@ -114,6 +117,7 @@ public class AreaMaintenanceDialog extends AbstractMaintenanceDialog {
         WidgetFactory.createLabel(parent, Messages.Label_Area_colon, Messages.Tooltip_Area);
 
         comboArea = WidgetFactory.createNameCombo(parent);
+        setDefaultValue(comboArea, Area.NONE.label());
         comboArea.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
         comboArea.setToolTipText(Messages.Tooltip_Area);
         comboArea.setEnabled(enableKeyFields);
@@ -129,6 +133,7 @@ public class AreaMaintenanceDialog extends AbstractMaintenanceDialog {
         WidgetFactory.createLabel(parent, Messages.Label_Area_library_list_colon, Messages.Tooltip_Area_library_list);
 
         comboLibraryList = WidgetFactory.createNameCombo(parent);
+        setDefaultValue(comboLibraryList, LibraryList.NONE.label());
         comboLibraryList.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
         comboLibraryList.setToolTipText(Messages.Tooltip_Area_library_list);
         comboLibraryList.setEnabled(enableFields);
@@ -137,6 +142,7 @@ public class AreaMaintenanceDialog extends AbstractMaintenanceDialog {
         WidgetFactory.createLabel(parent, Messages.Label_Area_library_ccsid, Messages.Tooltip_Area_library_ccsid);
 
         comboLibraryCcsid = WidgetFactory.createNameCombo(parent);
+        setDefaultValue(comboLibraryCcsid, Ccsid.JOB.label());
         comboLibraryCcsid.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
         comboLibraryCcsid.setToolTipText(Messages.Tooltip_Area_library_ccsid);
         comboLibraryCcsid.setEnabled(enableFields);
@@ -158,14 +164,14 @@ public class AreaMaintenanceDialog extends AbstractMaintenanceDialog {
     @Override
     protected void setScreenValues() {
 
-        textJobName.setText(values.getKey().getJobName());
-        textPosition.setText(Integer.toString(values.getKey().getPosition()));
+        setText(textJobName, values.getKey().getJobName());
+        setText(textPosition, Integer.toString(values.getKey().getPosition()));
 
-        comboArea.setText(values.getKey().getArea());
-        textLibrary.setText(values.getLibrary());
-        comboLibraryList.setText(values.getLibraryList());
-        comboLibraryCcsid.setText(values.getLibraryCcsid());
-        textCommandExtension.setText(values.getCommandExtension());
+        setText(comboArea, values.getKey().getArea());
+        setText(textLibrary, values.getLibrary());
+        setText(comboLibraryList, values.getLibraryList());
+        setText(comboLibraryCcsid, values.getLibraryCcsid());
+        setText(textCommandExtension, values.getCommandExtension());
     }
 
     @Override

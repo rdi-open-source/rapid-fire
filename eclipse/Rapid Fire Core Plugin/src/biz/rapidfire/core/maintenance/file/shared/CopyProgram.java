@@ -12,7 +12,8 @@ import java.util.HashMap;
 import java.util.Map;
 
 public enum CopyProgram {
-    GEN ("*GEN"); //$NON-NLS-1$
+    GEN ("*GEN"), //$NON-NLS-1$
+    NONE ("*NONE"); //$NON-NLS-1$
 
     private String label;
 

@@ -49,8 +49,8 @@ public class MaintainActivitiesHandler extends AbstractJobMaintenanceHandler imp
         ActivityMaintenanceDialog dialog;
         if (canChangeJob(job)) {
 
-            IJDBCConnection jdbcConnection = JDBCConnectionManager.getInstance().getConnection(job.getParentSubSystem().getConnectionName(),
-                job.getDataLibrary(), true, false);
+            IJDBCConnection jdbcConnection = JDBCConnectionManager.getInstance().getConnectionForUpdateNoAutoCommit(
+                job.getParentSubSystem().getConnectionName(), job.getDataLibrary());
 
             activityManager = new ActivityManager(jdbcConnection);
 
@@ -58,9 +58,12 @@ public class MaintainActivitiesHandler extends AbstractJobMaintenanceHandler imp
 
             dialog = ActivityMaintenanceDialog.getChangeDialog(getShell(), activityManager);
             dialog.setValue(values);
-            openDialog(dialog, job, activityManager); // Book changes.
-
-            JDBCConnectionManager.getInstance().commit(jdbcConnection);
+            if (dialog.open() == Dialog.OK) {
+                activityManager.book(); // Book changes.
+                JDBCConnectionManager.getInstance().commit(jdbcConnection);
+            } else {
+                JDBCConnectionManager.getInstance().rollback(jdbcConnection);
+            }
 
         } else {
 
@@ -70,9 +73,12 @@ public class MaintainActivitiesHandler extends AbstractJobMaintenanceHandler imp
 
             dialog = ActivityMaintenanceDialog.getDisplayDialog(getShell(), activityManager);
             dialog.setValue(values);
-            openDialog(dialog, job, null); // Nothing to update here.
+            dialog.open();
+            // Nothing to update here.
 
         }
+
+        refreshUI(job);
     }
 
     private boolean canChangeJob(IRapidFireJobResource job) {

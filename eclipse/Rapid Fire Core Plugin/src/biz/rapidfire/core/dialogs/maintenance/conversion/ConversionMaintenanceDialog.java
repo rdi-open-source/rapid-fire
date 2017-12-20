@@ -29,6 +29,7 @@ import biz.rapidfire.core.maintenance.Result;
 import biz.rapidfire.core.maintenance.conversion.ConversionManager;
 import biz.rapidfire.core.maintenance.conversion.ConversionValues;
 import biz.rapidfire.core.maintenance.conversion.IConversionCheck;
+import biz.rapidfire.core.maintenance.conversion.shared.NewFieldName;
 import biz.rapidfire.core.swt.widgets.WidgetFactory;
 
 public class ConversionMaintenanceDialog extends AbstractMaintenanceDialog {
@@ -124,6 +125,7 @@ public class ConversionMaintenanceDialog extends AbstractMaintenanceDialog {
         WidgetFactory.createLabel(parent, Messages.Label_Rename_field_in_old_file_to_colon, Messages.Tooltip_Rename_field_in_old_file_to);
 
         comboNewFieldName = WidgetFactory.createNameCombo(parent);
+        setDefaultValue(comboNewFieldName, NewFieldName.NONE.label());
         comboNewFieldName.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
         comboNewFieldName.setToolTipText(Messages.Tooltip_Rename_field_in_old_file_to);
         comboNewFieldName.setEnabled(enableFields);
@@ -158,19 +160,19 @@ public class ConversionMaintenanceDialog extends AbstractMaintenanceDialog {
     @Override
     protected void setScreenValues() {
 
-        textJobName.setText(values.getKey().getJobName());
-        textPosition.setText(Integer.toString(values.getKey().getPosition()));
-        textFieldToConvert.setText(values.getKey().getFieldToConvert());
+        setText(textJobName, values.getKey().getJobName());
+        setText(textPosition, Integer.toString(values.getKey().getPosition()));
+        setText(textFieldToConvert, values.getKey().getFieldToConvert());
 
-        comboNewFieldName.setText(values.getNewFieldName());
+        setText(comboNewFieldName, values.getNewFieldName());
 
         String[] conversions = values.getConversions();
-        textStatement1.setText(conversions[0]);
-        textStatement2.setText(conversions[1]);
-        textStatement3.setText(conversions[2]);
-        textStatement4.setText(conversions[3]);
-        textStatement5.setText(conversions[4]);
-        textStatement6.setText(conversions[5]);
+        setText(textStatement1, conversions[0]);
+        setText(textStatement2, conversions[1]);
+        setText(textStatement3, conversions[2]);
+        setText(textStatement4, conversions[3]);
+        setText(textStatement5, conversions[4]);
+        setText(textStatement6, conversions[5]);
     }
 
     @Override
