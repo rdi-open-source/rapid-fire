@@ -13,6 +13,8 @@ import java.sql.Types;
 import java.util.HashSet;
 import java.util.Set;
 
+import org.eclipse.swt.widgets.Shell;
+
 import biz.rapidfire.core.Messages;
 import biz.rapidfire.core.maintenance.AbstractManager;
 import biz.rapidfire.core.maintenance.MaintenanceMode;
@@ -23,6 +25,8 @@ import biz.rapidfire.core.maintenance.area.shared.AreaKey;
 import biz.rapidfire.core.maintenance.file.shared.FileKey;
 import biz.rapidfire.core.maintenance.job.shared.JobKey;
 import biz.rapidfire.core.model.IRapidFireAreaResource;
+import biz.rapidfire.core.model.IRapidFireLibraryListResource;
+import biz.rapidfire.core.model.IRapidFireLibraryResource;
 import biz.rapidfire.core.model.dao.IJDBCConnection;
 import biz.rapidfire.core.model.dao.JDBCConnectionManager;
 
@@ -262,5 +266,21 @@ public class AreaManager extends AbstractManager<IRapidFireAreaResource, AreaKey
     @Override
     public void recoverError() {
         JDBCConnectionManager.getInstance().close(dao);
+    }
+
+    public IRapidFireLibraryResource[] getLibraries(Shell shell, IRapidFireAreaResource area) throws Exception {
+
+        IRapidFireLibraryResource[] libraries = area.getParentSubSystem().getLibraries(area.getParentJob(), shell);
+
+        return libraries;
+
+    }
+
+    public IRapidFireLibraryListResource[] getLibraryLists(Shell shell, IRapidFireAreaResource area) throws Exception {
+
+        IRapidFireLibraryListResource[] libraryLists = area.getParentSubSystem().getLibraryLists(area.getParentJob(), shell);
+
+        return libraryLists;
+
     }
 }

@@ -29,6 +29,8 @@ public class NewAreaHandler extends AbstractAreaMaintenanceHandler implements IH
         AreaValues values = getManager().getValues();
 
         AreaMaintenanceDialog dialog = AreaMaintenanceDialog.getCreateDialog(getShell(), getManager());
+        dialog.setLibraries(getManager().getLibraries(getShell(), area));
+        dialog.setLibraryLists(getManager().getLibraryLists(getShell(), area));
         dialog.setValue(values);
 
         if (dialog.open() == Dialog.OK) {

@@ -8,6 +8,12 @@
 
 package biz.rapidfire.core.dialogs.maintenance.area;
 
+import java.util.Arrays;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Set;
+
 import org.eclipse.jface.dialogs.IDialogSettings;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.SWT;
@@ -32,6 +38,8 @@ import biz.rapidfire.core.maintenance.area.IAreaCheck;
 import biz.rapidfire.core.maintenance.area.shared.Area;
 import biz.rapidfire.core.maintenance.area.shared.Ccsid;
 import biz.rapidfire.core.maintenance.area.shared.LibraryList;
+import biz.rapidfire.core.model.IRapidFireLibraryListResource;
+import biz.rapidfire.core.model.IRapidFireLibraryResource;
 import biz.rapidfire.core.swt.widgets.WidgetFactory;
 
 public class AreaMaintenanceDialog extends AbstractMaintenanceDialog {
@@ -43,7 +51,7 @@ public class AreaMaintenanceDialog extends AbstractMaintenanceDialog {
     private Text textJobName;
     private Text textPosition;
     private Combo comboArea;
-    private Text textLibrary;
+    private Combo comboLibrary;
     private Combo comboLibraryList;
     private Combo comboLibraryCcsid;
     private Text textCommandExtension;
@@ -51,6 +59,9 @@ public class AreaMaintenanceDialog extends AbstractMaintenanceDialog {
     private boolean enableParentKeyFields;
     private boolean enableKeyFields;
     private boolean enableFields;
+
+    private IRapidFireLibraryResource[] libraries;
+    private IRapidFireLibraryListResource[] libraryLists;
 
     public static AreaMaintenanceDialog getCreateDialog(Shell shell, AreaManager manager) {
         return new AreaMaintenanceDialog(shell, MaintenanceMode.CREATE, manager);
@@ -74,6 +85,20 @@ public class AreaMaintenanceDialog extends AbstractMaintenanceDialog {
 
     public void setValue(AreaValues values) {
         this.values = values;
+    }
+
+    public void setLibraries(IRapidFireLibraryResource[] libraries) {
+
+        this.libraries = libraries;
+
+        Arrays.sort(this.libraries);
+    }
+
+    public void setLibraryLists(IRapidFireLibraryListResource[] libraryLists) {
+
+        this.libraryLists = libraryLists;
+
+        Arrays.sort(this.libraryLists);
     }
 
     private AreaMaintenanceDialog(Shell shell, MaintenanceMode mode, AreaManager manager) {
@@ -125,10 +150,11 @@ public class AreaMaintenanceDialog extends AbstractMaintenanceDialog {
 
         WidgetFactory.createLabel(parent, Messages.Label_Area_library_colon, Messages.Tooltip_Area_library);
 
-        textLibrary = WidgetFactory.createNameText(parent);
-        textLibrary.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
-        textLibrary.setToolTipText(Messages.Tooltip_Area_library);
-        textLibrary.setEnabled(enableFields);
+        comboLibrary = WidgetFactory.createNameCombo(parent);
+        comboLibrary.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+        comboLibrary.setToolTipText(Messages.Tooltip_Area_library);
+        comboLibrary.setEnabled(enableFields);
+        comboLibrary.setItems(getLibraries());
 
         WidgetFactory.createLabel(parent, Messages.Label_Area_library_list_colon, Messages.Tooltip_Area_library_list);
 
@@ -137,7 +163,7 @@ public class AreaMaintenanceDialog extends AbstractMaintenanceDialog {
         comboLibraryList.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
         comboLibraryList.setToolTipText(Messages.Tooltip_Area_library_list);
         comboLibraryList.setEnabled(enableFields);
-        comboLibraryList.setItems(AreaValues.getLibraryListSpecialValues());
+        comboLibraryList.setItems(getLibraryLists(AreaValues.getLibraryListSpecialValues()));
 
         WidgetFactory.createLabel(parent, Messages.Label_Area_library_ccsid, Messages.Tooltip_Area_library_ccsid);
 
@@ -156,6 +182,50 @@ public class AreaMaintenanceDialog extends AbstractMaintenanceDialog {
         textCommandExtension.setEnabled(enableFields);
     }
 
+    private String[] getLibraries(String... librarySpecialValues) {
+
+        Set<String> duplicates = new HashSet<String>();
+
+        List<String> items = new LinkedList<String>();
+        for (String librarySpecialValue : librarySpecialValues) {
+            checkDuplicatesAndAddItem(duplicates, librarySpecialValue, items);
+        }
+
+        if (libraries != null) {
+            for (IRapidFireLibraryResource library : libraries) {
+                checkDuplicatesAndAddItem(duplicates, library.getName(), items);
+            }
+        }
+
+        return items.toArray(new String[items.size()]);
+    }
+
+    private String[] getLibraryLists(String... libraryListSpecialValues) {
+
+        Set<String> duplicates = new HashSet<String>();
+
+        List<String> items = new LinkedList<String>();
+        for (String libraryListSpecialValue : libraryListSpecialValues) {
+            checkDuplicatesAndAddItem(duplicates, libraryListSpecialValue, items);
+        }
+
+        if (libraryLists != null) {
+            for (IRapidFireLibraryListResource libraryList : libraryLists) {
+                checkDuplicatesAndAddItem(duplicates, libraryList.getName(), items);
+            }
+        }
+
+        return items.toArray(new String[items.size()]);
+    }
+
+    private void checkDuplicatesAndAddItem(Set<String> duplicates, String item, List<String> items) {
+
+        if (!duplicates.contains(item)) {
+            items.add(item);
+            duplicates.add(item);
+        }
+    }
+
     @Override
     protected String getDialogTitle() {
         return Messages.DialogTitle_Area;
@@ -168,7 +238,7 @@ public class AreaMaintenanceDialog extends AbstractMaintenanceDialog {
         setText(textPosition, Integer.toString(values.getKey().getPosition()));
 
         setText(comboArea, values.getKey().getArea());
-        setText(textLibrary, values.getLibrary());
+        setText(comboLibrary, values.getLibrary());
         setText(comboLibraryList, values.getLibraryList());
         setText(comboLibraryCcsid, values.getLibraryCcsid());
         setText(textCommandExtension, values.getCommandExtension());
@@ -179,7 +249,7 @@ public class AreaMaintenanceDialog extends AbstractMaintenanceDialog {
 
         AreaValues newValues = values.clone();
         newValues.getKey().setArea(comboArea.getText());
-        newValues.setLibrary(textLibrary.getText());
+        newValues.setLibrary(comboLibrary.getText());
         newValues.setLibraryList(comboLibraryList.getText());
         newValues.setLibraryCcsid(comboLibraryCcsid.getText());
 
@@ -211,8 +281,8 @@ public class AreaMaintenanceDialog extends AbstractMaintenanceDialog {
             comboArea.setFocus();
             message = Messages.bind(Messages.Area_name_A_is_not_valid, comboArea.getText());
         } else if (IAreaCheck.FIELD_LIBRARY.equals(fieldName)) {
-            textLibrary.setFocus();
-            message = Messages.bind(Messages.Library_name_A_is_not_valid, textLibrary.getText());
+            comboLibrary.setFocus();
+            message = Messages.bind(Messages.Library_name_A_is_not_valid, comboLibrary.getText());
         } else if (IAreaCheck.FIELD_LIBRARY_LIST.equals(fieldName)) {
             comboLibraryList.setFocus();
             message = Messages.bind(Messages.Library_list_name_A_is_not_valid, comboLibraryList.getText());
