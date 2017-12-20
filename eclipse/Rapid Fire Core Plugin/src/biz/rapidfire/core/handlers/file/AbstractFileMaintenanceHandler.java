@@ -36,11 +36,11 @@ public abstract class AbstractFileMaintenanceHandler extends AbstractResourceMai
         return manager;
     }
 
-    protected FileManager getOrCreateManager(IRapidFireJobResource file) throws Exception {
+    protected FileManager getOrCreateManager(IRapidFireJobResource job) throws Exception {
 
         if (manager == null) {
-            String connectionName = file.getParentSubSystem().getConnectionName();
-            String dataLibrary = file.getDataLibrary();
+            String connectionName = job.getParentSubSystem().getConnectionName();
+            String dataLibrary = job.getDataLibrary();
             manager = new FileManager(getJdbcConnection(connectionName, dataLibrary));
         }
 
