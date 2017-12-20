@@ -73,18 +73,12 @@ public abstract class AbstractMaintenanceControl extends Composite implements Mo
     protected abstract void createContent(Composite parent);
 
     public void widgetDefaultSelected(SelectionEvent arg0) {
-        // TODO Auto-generated method stub
-
     }
 
     public void widgetSelected(SelectionEvent arg0) {
-        // TODO Auto-generated method stub
-
     }
 
     public void modifyText(ModifyEvent arg0) {
-        // TODO Auto-generated method stub
-
     }
 
 }
