@@ -179,9 +179,9 @@ public class RapidFireJobResourceAdapter extends AbstractResourceAdapter<IRapidF
         } else if (propKey.equals(JOB_QUEUE_LIBRARY)) {
             return resource.getJobQueueLibrary();
         } else if (propKey.equals(STATUS)) {
-            return resource.getStatus().label;
+            return resource.getStatus().label();
         } else if (propKey.equals(PHASE)) {
-            return resource.getPhase().label;
+            return resource.getPhase().label();
         } else if (propKey.equals(ERROR)) {
             return resource.isError();
         } else if (propKey.equals(ERROR_TEXT)) {
