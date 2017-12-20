@@ -25,7 +25,7 @@ import biz.rapidfire.rse.subsystem.resources.LibraryListsNode;
 
 import com.ibm.etools.systems.core.ui.SystemMenuManager;
 
-public class LibraryListsNodeAdapter extends AbstractNodeAdapter {
+public class LibraryListsNodeAdapter extends AbstractNodeAdapter<LibraryListsNode> {
 
     @Override
     public final boolean hasChildren(Object element) {

@@ -19,7 +19,7 @@ import biz.rapidfire.rse.subsystem.resources.RapidFireCommandResource;
 
 import com.ibm.etools.systems.core.ui.view.ISystemRemoteElementAdapter;
 
-public class RapidFireCommandResourceAdapter extends AbstractResourceAdapter implements ISystemRemoteElementAdapter {
+public class RapidFireCommandResourceAdapter extends AbstractResourceAdapter<IRapidFireCommandResource> implements ISystemRemoteElementAdapter {
 
     private static final String DATA_LIBRARY = "DATA_LIBRARY"; //$NON-NLS-1$
     private static final String JOB = "JOB"; //$NON-NLS-1$

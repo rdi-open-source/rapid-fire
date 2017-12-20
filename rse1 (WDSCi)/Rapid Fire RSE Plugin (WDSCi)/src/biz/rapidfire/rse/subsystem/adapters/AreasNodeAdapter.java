@@ -25,7 +25,7 @@ import biz.rapidfire.rse.subsystem.resources.AreasNode;
 
 import com.ibm.etools.systems.core.ui.SystemMenuManager;
 
-public class AreasNodeAdapter extends AbstractNodeAdapter {
+public class AreasNodeAdapter extends AbstractNodeAdapter<AreasNode> {
 
     @Override
     public final boolean hasChildren(Object element) {

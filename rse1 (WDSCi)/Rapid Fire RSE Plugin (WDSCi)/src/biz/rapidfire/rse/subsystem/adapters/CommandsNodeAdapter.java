@@ -25,7 +25,7 @@ import biz.rapidfire.rse.subsystem.resources.CommandsNode;
 
 import com.ibm.etools.systems.core.ui.SystemMenuManager;
 
-public class CommandsNodeAdapter extends AbstractNodeAdapter {
+public class CommandsNodeAdapter extends AbstractNodeAdapter<CommandsNode> {
 
     @Override
     public final boolean hasChildren(Object element) {

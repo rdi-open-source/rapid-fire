@@ -28,7 +28,7 @@ import biz.rapidfire.rse.subsystem.resources.FilesNode;
 
 import com.ibm.etools.systems.core.ui.SystemMenuManager;
 
-public class FilesNodeAdapter extends AbstractNodeAdapter {
+public class FilesNodeAdapter extends AbstractNodeAdapter<FilesNode> {
 
     @Override
     public final boolean hasChildren(Object element) {

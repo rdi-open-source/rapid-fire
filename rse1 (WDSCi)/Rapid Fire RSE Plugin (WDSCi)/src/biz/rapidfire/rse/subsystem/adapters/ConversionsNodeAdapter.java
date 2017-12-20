@@ -25,7 +25,7 @@ import biz.rapidfire.rse.subsystem.resources.ConversionsNode;
 
 import com.ibm.etools.systems.core.ui.SystemMenuManager;
 
-public class ConversionsNodeAdapter extends AbstractNodeAdapter {
+public class ConversionsNodeAdapter extends AbstractNodeAdapter<ConversionsNode> {
 
     @Override
     public final boolean hasChildren(Object element) {

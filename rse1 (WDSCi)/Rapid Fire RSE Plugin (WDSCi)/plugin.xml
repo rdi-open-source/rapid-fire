@@ -87,8 +87,8 @@
             id="biz.rapidfire.rse.job.actions">
          
          <action
-               label="%command_Change_Activity_Plan"
-               tooltip="%command_Change_Activity_Plan_Description"
+               label="%command_Open_Activity_Plan"
+               tooltip="%command_Open_Activity_Plan_Description"
                icon="icons/activity.gif"
                class="biz.rapidfire.rse.subsystem.actions.job.MaintainActivitiesAction"
                enablesFor="1"
