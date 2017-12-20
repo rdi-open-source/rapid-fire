@@ -22,7 +22,7 @@ import biz.rapidfire.rse.subsystem.resources.RapidFireLibraryListResource;
 import com.ibm.etools.systems.core.ui.SystemMenuManager;
 import com.ibm.etools.systems.core.ui.view.ISystemRemoteElementAdapter;
 
-public class RapidFireLibraryListResourceAdapter extends AbstractResourceAdapter implements ISystemRemoteElementAdapter {
+public class RapidFireLibraryListResourceAdapter extends AbstractResourceAdapter<IRapidFireLibraryListResource> implements ISystemRemoteElementAdapter {
 
     private static final String DATA_LIBRARY = "DATA_LIBRARY"; //$NON-NLS-1$
     private static final String JOB = "JOB"; //$NON-NLS-1$

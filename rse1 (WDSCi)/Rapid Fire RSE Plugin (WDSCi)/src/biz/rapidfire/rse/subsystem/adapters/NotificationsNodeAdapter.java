@@ -25,7 +25,7 @@ import biz.rapidfire.rse.subsystem.resources.NotificationsNode;
 
 import com.ibm.etools.systems.core.ui.SystemMenuManager;
 
-public class NotificationsNodeAdapter extends AbstractNodeAdapter {
+public class NotificationsNodeAdapter extends AbstractNodeAdapter<NotificationsNode> {
 
     @Override
     public final boolean hasChildren(Object element) {
