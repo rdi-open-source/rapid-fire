@@ -26,7 +26,6 @@ public class DisplayErrorHandler extends AbstractJobMaintenanceHandler implement
     protected void performAction(IRapidFireJobResource job) throws Exception {
 
         if (job.isError()) {
-            // TODO: get and display current error message
             MessageDialog.openError(getShell(), Messages.DialogTitle_Job_Error_Message, job.getErrorText());
         } else {
             MessageDialog.openInformation(getShell(), Messages.DialogTitle_Job_Error_Message, Messages.No_errors);

@@ -36,7 +36,7 @@ import biz.rapidfire.core.model.dao.JDBCConnectionManager;
 
 import com.ibm.as400.access.AS400;
 
-// TODO: http://www.vogella.com/tutorials/EclipseWizards/article.html
+// Source: http://www.vogella.com/tutorials/EclipseWizards/article.html
 public abstract class AbstractNewWizard extends Wizard implements INewWizard, IPageChangedListener {
 
     private String connectionName;

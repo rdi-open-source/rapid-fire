@@ -15,7 +15,6 @@ import biz.rapidfire.core.model.dao.IConversionsDAO;
 import biz.rapidfire.core.model.dao.JDBCConnectionManager;
 import biz.rapidfire.rse.subsystem.resources.RapidFireConversionResource;
 
-//TODO: move to core plugin
 public class ConversionsDAO extends AbstractConversionsDAO implements IConversionsDAO {
 
     public ConversionsDAO(String connectionName, String libraryName) throws Exception {

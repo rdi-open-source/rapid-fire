@@ -15,7 +15,6 @@ import biz.rapidfire.core.model.dao.ILibraryListsDAO;
 import biz.rapidfire.core.model.dao.JDBCConnectionManager;
 import biz.rapidfire.rse.subsystem.resources.RapidFireLibraryListResource;
 
-//TODO: move to core plugin
 public class LibraryListsDAO extends AbstractLibraryListsDAO implements ILibraryListsDAO {
 
     public LibraryListsDAO(String connectionName, String libraryName) throws Exception {

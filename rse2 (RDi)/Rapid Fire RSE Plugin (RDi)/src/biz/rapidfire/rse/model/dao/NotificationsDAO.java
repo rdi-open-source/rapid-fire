@@ -15,7 +15,6 @@ import biz.rapidfire.core.model.dao.INotificationsDAO;
 import biz.rapidfire.core.model.dao.JDBCConnectionManager;
 import biz.rapidfire.rse.subsystem.resources.RapidFireNotificationResource;
 
-//TODO: move to core plugin
 public class NotificationsDAO extends AbstractNotificationsDAO implements INotificationsDAO {
 
     public NotificationsDAO(String connectionName, String libraryName) throws Exception {

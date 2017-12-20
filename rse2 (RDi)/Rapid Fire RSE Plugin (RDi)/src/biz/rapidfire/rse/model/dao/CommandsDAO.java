@@ -16,7 +16,6 @@ import biz.rapidfire.core.model.dao.ICommandsDAO;
 import biz.rapidfire.core.model.dao.JDBCConnectionManager;
 import biz.rapidfire.rse.subsystem.resources.RapidFireCommandResource;
 
-//TODO: move to core plugin
 public class CommandsDAO extends AbstractCommandsDAO implements ICommandsDAO {
 
     public CommandsDAO(String connectionName, String libraryName) throws Exception {
