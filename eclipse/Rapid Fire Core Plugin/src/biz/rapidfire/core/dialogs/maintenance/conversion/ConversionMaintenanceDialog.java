@@ -8,6 +8,8 @@
 
 package biz.rapidfire.core.dialogs.maintenance.conversion;
 
+import java.util.Arrays;
+
 import org.eclipse.jface.dialogs.IDialogSettings;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.SWT;
@@ -40,7 +42,7 @@ public class ConversionMaintenanceDialog extends AbstractMaintenanceDialog {
 
     private Text textJobName;
     private Text textPosition;
-    private Text textFieldToConvert;
+    private Combo comboFieldToConvert;
     private Combo comboNewFieldName;
     private Text textStatement1;
     private Text textStatement2;
@@ -52,6 +54,8 @@ public class ConversionMaintenanceDialog extends AbstractMaintenanceDialog {
     private boolean enableParentKeyFields;
     private boolean enableKeyFields;
     private boolean enableFields;
+
+    private String[] fieldNames;
 
     public static ConversionMaintenanceDialog getCreateDialog(Shell shell, ConversionManager manager) {
         return new ConversionMaintenanceDialog(shell, MaintenanceMode.CREATE, manager);
@@ -75,6 +79,13 @@ public class ConversionMaintenanceDialog extends AbstractMaintenanceDialog {
 
     public void setValue(ConversionValues values) {
         this.values = values;
+    }
+
+    public void setFields(String[] fieldNames) {
+
+        this.fieldNames = fieldNames;
+
+        Arrays.sort(fieldNames);
     }
 
     private ConversionMaintenanceDialog(Shell shell, MaintenanceMode mode, ConversionManager manager) {
@@ -117,10 +128,11 @@ public class ConversionMaintenanceDialog extends AbstractMaintenanceDialog {
 
         WidgetFactory.createLabel(parent, Messages.Label_Field_to_convert_colon, Messages.Tooltip_Field_to_convert);
 
-        textFieldToConvert = WidgetFactory.createNameText(parent);
-        textFieldToConvert.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
-        textFieldToConvert.setToolTipText(Messages.Tooltip_Field_to_convert);
-        textFieldToConvert.setEnabled(enableKeyFields);
+        comboFieldToConvert = WidgetFactory.createNameCombo(parent);
+        comboFieldToConvert.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+        comboFieldToConvert.setToolTipText(Messages.Tooltip_Field_to_convert);
+        comboFieldToConvert.setEnabled(enableKeyFields);
+        comboFieldToConvert.setItems(fieldNames);
 
         WidgetFactory.createLabel(parent, Messages.Label_Rename_field_in_old_file_to_colon, Messages.Tooltip_Rename_field_in_old_file_to);
 
@@ -162,7 +174,7 @@ public class ConversionMaintenanceDialog extends AbstractMaintenanceDialog {
 
         setText(textJobName, values.getKey().getJobName());
         setText(textPosition, Integer.toString(values.getKey().getPosition()));
-        setText(textFieldToConvert, values.getKey().getFieldToConvert());
+        setText(comboFieldToConvert, values.getKey().getFieldToConvert());
 
         setText(comboNewFieldName, values.getNewFieldName());
 
@@ -179,7 +191,7 @@ public class ConversionMaintenanceDialog extends AbstractMaintenanceDialog {
     protected void okPressed() {
 
         ConversionValues newValues = values.clone();
-        newValues.getKey().setFieldToConvert(textFieldToConvert.getText());
+        newValues.getKey().setFieldToConvert(comboFieldToConvert.getText());
         newValues.setNewFieldName(comboNewFieldName.getText());
 
         String[] conversions = new String[6];
@@ -217,8 +229,8 @@ public class ConversionMaintenanceDialog extends AbstractMaintenanceDialog {
         String message = null;
 
         if (IConversionCheck.FIELD_FIELD_TO_CONVERT.equals(fieldName)) {
-            textFieldToConvert.setFocus();
-            message = Messages.bindParameters(Messages.Field_name_A_is_not_valid, textFieldToConvert.getText());
+            comboFieldToConvert.setFocus();
+            message = Messages.bindParameters(Messages.Field_name_A_is_not_valid, comboFieldToConvert.getText());
         } else if (IConversionCheck.FIELD_NEW_FIELD_NAME.equals(fieldName)) {
             comboNewFieldName.setFocus();
             message = Messages.bindParameters(Messages.Field_name_A_is_not_valid, comboNewFieldName.getText());

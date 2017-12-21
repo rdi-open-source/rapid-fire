@@ -26,5 +26,6 @@ Bundle-ActivationPolicy: lazy
 Eclipse-LazyStart: true
 Export-Package: biz.rapidfire.rsebase.handlers,
  biz.rapidfire.rsebase.helpers,
+ biz.rapidfire.rsebase.host.files,
  biz.rapidfire.rsebase.model.dao,
  biz.rapidfire.rsebase.swt.widgets

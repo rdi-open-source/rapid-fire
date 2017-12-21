@@ -292,6 +292,8 @@ public class Messages extends NLS {
     public static String Could_not_commit_transaction_of_connection_A;
     public static String Could_not_rollback_transaction_of_connection_A;
     public static String Could_set_auto_commit_property_for_connection_A;
+    public static String Field_list_not_available_Areas_have_not_yet_been_defined;
+    public static String File_A_not_found_in_areas;
 
     // API error messages
     public static String EntityManager_Unknown_error_code_A;

@@ -15,7 +15,13 @@ import java.util.LinkedList;
 import java.util.List;
 import java.util.Set;
 
+import org.eclipse.swt.widgets.Shell;
+
 import biz.rapidfire.core.Messages;
+import biz.rapidfire.core.exceptions.FieldsNotAvailableException;
+import biz.rapidfire.core.helpers.RapidFireHelper;
+import biz.rapidfire.core.host.files.Field;
+import biz.rapidfire.core.host.files.FieldList;
 import biz.rapidfire.core.maintenance.AbstractManager;
 import biz.rapidfire.core.maintenance.MaintenanceMode;
 import biz.rapidfire.core.maintenance.Result;
@@ -24,9 +30,14 @@ import biz.rapidfire.core.maintenance.conversion.shared.ConversionAction;
 import biz.rapidfire.core.maintenance.conversion.shared.ConversionKey;
 import biz.rapidfire.core.maintenance.file.shared.FileKey;
 import biz.rapidfire.core.maintenance.job.shared.JobKey;
+import biz.rapidfire.core.model.IRapidFireAreaResource;
 import biz.rapidfire.core.model.IRapidFireConversionResource;
+import biz.rapidfire.core.model.IRapidFireFileResource;
 import biz.rapidfire.core.model.dao.IJDBCConnection;
 import biz.rapidfire.core.model.dao.JDBCConnectionManager;
+
+import com.ibm.as400.access.AS400;
+import com.ibm.as400.access.QSYSObjectPathName;
 
 public class ConversionManager extends AbstractManager<IRapidFireConversionResource, ConversionKey, ConversionValues, ConversionAction> {
 
@@ -282,5 +293,56 @@ public class ConversionManager extends AbstractManager<IRapidFireConversionResou
     @Override
     public void recoverError() {
         JDBCConnectionManager.getInstance().close(dao);
+    }
+
+    public Field[] getFields(Shell shell, IRapidFireFileResource file) throws Exception {
+
+        String connectionName = file.getParentSubSystem().getConnectionName();
+        String libraryName = null;
+        String fileName = null;
+
+        IRapidFireAreaResource[] areas = file.getParentSubSystem().getAreas(file, shell);
+        if (areas == null || areas.length == 0) {
+            throw new FieldsNotAvailableException(Messages.Field_list_not_available_Areas_have_not_yet_been_defined);
+        }
+
+        final int LIBRARY_NOT_FOUND = 1;
+        final int FILE_NOT_FOUND = 2;
+
+        int errorType = 0;
+        for (IRapidFireAreaResource iRapidFireAreaResource : areas) {
+            libraryName = iRapidFireAreaResource.getLibrary();
+            AS400 system = file.getParentSubSystem().getHostSystem();
+            if (RapidFireHelper.checkLibrary(system, libraryName)) {
+                fileName = file.getName();
+                if (RapidFireHelper.checkObject(system, new QSYSObjectPathName(libraryName, file.getName(), "FILE"))) { //$NON-NLS-1$
+                    break;
+                } else {
+                    errorType = FILE_NOT_FOUND;
+                }
+            } else {
+                errorType = LIBRARY_NOT_FOUND;
+            }
+        }
+
+        if (errorType != 0) {
+
+            switch (errorType) {
+            case FILE_NOT_FOUND:
+                throw new FieldsNotAvailableException(Messages.bindParameters(Messages.File_A_not_found_in_areas, fileName));
+
+            case LIBRARY_NOT_FOUND:
+                throw new FieldsNotAvailableException(Messages.bindParameters(Messages.Library_A_not_found_on_system_B, libraryName, connectionName));
+
+            default:
+                break;
+            }
+
+            return null;
+        }
+
+        FieldList fieldList = new FieldList(connectionName, fileName, libraryName); //$NON-NLS-1$
+
+        return fieldList.getFields();
     }
 }

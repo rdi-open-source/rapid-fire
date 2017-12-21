@@ -21,6 +21,8 @@ import biz.rapidfire.core.model.IRapidFireLibraryListResource;
 import biz.rapidfire.core.model.IRapidFireLibraryResource;
 import biz.rapidfire.core.model.IRapidFireNotificationResource;
 
+import com.ibm.as400.access.AS400;
+
 public interface IRapidFireSubSystem {
 
     public IRapidFireJobResource[] getJobs(String library, Shell shell) throws Exception;
@@ -44,4 +46,6 @@ public interface IRapidFireSubSystem {
     public IFileCopyStatus[] getFileCopyStatus(IRapidFireJobResource job, Shell shell) throws Exception;
 
     public String getConnectionName();
+
+    public AS400 getHostSystem();
 }
