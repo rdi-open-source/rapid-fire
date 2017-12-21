@@ -108,6 +108,26 @@ public class RapidFireSubSystem extends DefaultSubSystemImpl implements IISeries
         return getSystemConnectionName();
     }
 
+    public AS400 getHostSystem() {
+
+        String connectionName = getConnectionName();
+
+        try {
+
+            ISeriesConnection connection = ISeriesConnection.getConnection(connectionName);
+            if (connection == null) {
+                return null;
+            }
+
+            return connection.getAS400ToolboxObject(getShell());
+
+        } catch (Throwable e) {
+            RapidFireCorePlugin.logError("*** Could not get 'system' of connection " + connectionName + " ***", e); //$NON-NLS-1$ //$NON-NLS-2$
+        }
+
+        return null;
+    }
+
     @Override
     protected Object[] internalResolveFilterString(IProgressMonitor monitor, String filterString) throws InvocationTargetException,
         InterruptedException {
