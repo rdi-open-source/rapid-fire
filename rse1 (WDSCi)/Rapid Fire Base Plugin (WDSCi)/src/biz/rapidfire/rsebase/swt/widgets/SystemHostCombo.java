@@ -16,7 +16,8 @@ import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 
-import com.ibm.etools.iseries.core.api.ISeriesConnection;
+import biz.rapidfire.rsebase.host.SystemConnectionHelper;
+
 import com.ibm.etools.iseries.core.ui.widgets.ISeriesConnectionCombo;
 import com.ibm.etools.systems.model.SystemConnection;
 
@@ -29,8 +30,19 @@ public class SystemHostCombo {
     }
 
     public SystemHostCombo(Composite parent, int style) {
-        ISeriesConnection connection=null;
-        this.connectionCombo = new ISeriesConnectionCombo(parent, connection, true);
+        this(parent, style, true);
+    }
+
+    public SystemHostCombo(Composite parent, int style, boolean showNewButton) {
+        this(parent, style, showNewButton, true);
+    }
+
+    public SystemHostCombo(Composite parent, int style, boolean showNewButton, boolean showLabel) {
+        
+        this.connectionCombo = new ISeriesConnectionCombo(parent, style, null, showNewButton, showLabel);
+
+        this.connectionCombo.setConnections(SystemConnectionHelper.getHosts());
+        this.connectionCombo.setItems(SystemConnectionHelper.getConnectionNames());
     }
 
     public void addModifyListener(ModifyListener listener) {
@@ -93,9 +105,9 @@ public class SystemHostCombo {
 
         SystemConnection[] hosts = connectionCombo.getConnections();
         for (int i = 0; i < hosts.length; i++) {
-            SystemConnection connection = hosts[i];
-            if (connectionName.equalsIgnoreCase(connection.getAliasName())) {
-                connectionCombo.setSelectionIndex(i);
+            SystemConnection host = hosts[i];
+            if (connectionName.equalsIgnoreCase(host.getAliasName())) {
+                connectionCombo.select(host);
                 return true;
             }
         }
