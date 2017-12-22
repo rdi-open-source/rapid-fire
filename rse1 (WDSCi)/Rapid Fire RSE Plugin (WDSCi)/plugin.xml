@@ -242,7 +242,8 @@
                icon="icons/generate_copy_program.gif"
                class="biz.rapidfire.rse.subsystem.actions.filecopyprogramgenerator.GenerateFileCopyProgramAction"
                enablesFor="1"
-               id="biz.rapidfire.rse.subsystem.actions.filecopyprogramgenerator.GenerateFileCopyProgramAction">
+               id="biz.rapidfire.rse.subsystem.actions.filecopyprogramgenerator.GenerateFileCopyProgramAction"
+               menubarPath="generate">
          </action>
             
          <action
