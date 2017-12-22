@@ -20,6 +20,7 @@ import biz.rapidfire.core.Messages;
 import biz.rapidfire.core.RapidFireCorePlugin;
 import biz.rapidfire.core.dialogs.maintenance.AbstractMaintenanceDialog;
 import biz.rapidfire.core.helpers.RapidFireHelper;
+import biz.rapidfire.core.helpers.StringHelper;
 import biz.rapidfire.core.jface.dialogs.Size;
 import biz.rapidfire.core.jface.dialogs.XDialog;
 import biz.rapidfire.core.maintenance.MaintenanceMode;
@@ -118,6 +119,10 @@ public class FileCopyProgramGeneratorMaintenanceDialog extends AbstractMaintenan
 
         AS400 system = RapidFireHelper.getSystem(connectionName);
 
+        if (StringHelper.isNullOrEmpty(library)) {
+            return Messages.Library_name_is_missing;
+        }
+
         if (!RapidFireHelper.checkLibrary(system, library)) {
             return Messages.bindParameters(Messages.Library_A_not_found_on_system_B, library, connectionName);
         }
@@ -129,6 +134,10 @@ public class FileCopyProgramGeneratorMaintenanceDialog extends AbstractMaintenan
 
         AS400 system = RapidFireHelper.getSystem(connectionName);
 
+        if (StringHelper.isNullOrEmpty(file)) {
+            return Messages.File_name_is_missing;
+        }
+
         if (!RapidFireHelper.checkFile(system, library, file)) {
             return Messages.bindParameters(Messages.File_C_not_found_in_library_B_on_system_A, connectionName, library, file);
         }
@@ -139,6 +148,10 @@ public class FileCopyProgramGeneratorMaintenanceDialog extends AbstractMaintenan
     private String validateMember(String connectionName, String library, String file, String member) {
 
         AS400 system = RapidFireHelper.getSystem(connectionName);
+
+        if (StringHelper.isNullOrEmpty(member)) {
+            return Messages.Member_name_is_missing;
+        }
 
         if (RapidFireHelper.checkMember(system, library, file, member)) {
             if (MessageDialog.openQuestion(getShell(), Messages.E_R_R_O_R,

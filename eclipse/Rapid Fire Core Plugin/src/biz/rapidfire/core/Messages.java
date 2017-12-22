@@ -298,6 +298,9 @@ public class Messages extends NLS {
     public static String Member_D_not_found_in_File_B_C_on_system_A;
     public static String Member_A_exists_Do_you_want_to_replace_the_member_A;
     public static String Member_A_already_exists;
+    public static String Library_name_is_missing;
+    public static String File_name_is_missing;
+    public static String Member_name_is_missing;
 
     // API error messages
     public static String EntityManager_Unknown_error_code_A;

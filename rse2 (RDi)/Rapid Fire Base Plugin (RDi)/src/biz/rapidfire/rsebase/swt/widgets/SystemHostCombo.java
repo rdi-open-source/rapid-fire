@@ -17,6 +17,8 @@ import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 
+import biz.rapidfire.rsebase.host.SystemConnectionHelper;
+
 import com.ibm.etools.iseries.rse.ui.widgets.IBMiConnectionCombo;
 
 public class SystemHostCombo {
@@ -36,7 +38,11 @@ public class SystemHostCombo {
     }
 
     public SystemHostCombo(Composite parent, int style, boolean showNewButton, boolean showLabel) {
+
         this.connectionCombo = new IBMiConnectionCombo(parent, style, null, showNewButton, showLabel);
+
+        this.connectionCombo.setConnections(SystemConnectionHelper.getHosts());
+        this.connectionCombo.setItems(SystemConnectionHelper.getConnectionNames());
     }
 
     public void addModifyListener(ModifyListener listener) {
@@ -101,7 +107,7 @@ public class SystemHostCombo {
         for (int i = 0; i < hosts.length; i++) {
             IHost host = hosts[i];
             if (connectionName.equalsIgnoreCase(host.getAliasName())) {
-                connectionCombo.setSelectionIndex(i);
+                connectionCombo.select(host);
                 return true;
             }
         }
