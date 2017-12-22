@@ -16,6 +16,6 @@ public class LibraryListResourceDecorator extends AbstractResourceDecorator<IRap
 
     @Override
     public void decorate(IRapidFireLibraryListResource resource, IDecoration decorationBuilder) {
-        decorationBuilder.addSuffix(DELIMITER + resource.getDescription());
+        decorationBuilder.addSuffix(DELIMITER + QUOTES + resource.getDescription() + QUOTES);
     }
 }

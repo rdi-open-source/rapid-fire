@@ -16,6 +16,8 @@ import biz.rapidfire.core.RapidFireCorePlugin;
 public abstract class AbstractResourceDecorator<M> {
 
     protected static final String DELIMITER = " - ";
+    protected static final String SPACE = " ";
+    protected static final String QUOTES = "\"";
 
     private ImageDescriptor errorOverlay;
 
