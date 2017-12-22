@@ -37,7 +37,6 @@ import biz.rapidfire.core.model.dao.IJDBCConnection;
 import biz.rapidfire.core.model.dao.JDBCConnectionManager;
 
 import com.ibm.as400.access.AS400;
-import com.ibm.as400.access.QSYSObjectPathName;
 
 public class ConversionManager extends AbstractManager<IRapidFireConversionResource, ConversionKey, ConversionValues, ConversionAction> {
 
@@ -315,7 +314,7 @@ public class ConversionManager extends AbstractManager<IRapidFireConversionResou
             AS400 system = file.getParentSubSystem().getHostSystem();
             if (RapidFireHelper.checkLibrary(system, libraryName)) {
                 fileName = file.getName();
-                if (RapidFireHelper.checkObject(system, new QSYSObjectPathName(libraryName, file.getName(), "FILE"))) { //$NON-NLS-1$
+                if (RapidFireHelper.checkFile(system, libraryName, file.getName())) { //$NON-NLS-1$
                     break;
                 } else {
                     errorType = FILE_NOT_FOUND;

@@ -294,6 +294,10 @@ public class Messages extends NLS {
     public static String Could_set_auto_commit_property_for_connection_A;
     public static String Field_list_not_available_Areas_have_not_yet_been_defined;
     public static String File_A_not_found_in_areas;
+    public static String File_C_not_found_in_library_B_on_system_A;
+    public static String Member_D_not_found_in_File_B_C_on_system_A;
+    public static String Member_A_exists_Do_you_want_to_replace_the_member_A;
+    public static String Member_A_already_exists;
 
     // API error messages
     public static String EntityManager_Unknown_error_code_A;

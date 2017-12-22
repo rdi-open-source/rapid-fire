@@ -29,7 +29,9 @@ import biz.rapidfire.core.exceptions.IllegalParameterException;
 import biz.rapidfire.core.maintenance.MaintenanceMode;
 import biz.rapidfire.core.swt.widgets.listeditors.librarylist.LibraryListEditor;
 import biz.rapidfire.core.swt.widgets.listeditors.stringlist.StringListEditor;
+import biz.rapidfire.rsebase.host.SystemFileType;
 import biz.rapidfire.rsebase.swt.widgets.SystemHostCombo;
+import biz.rapidfire.rsebase.swt.widgets.SystemMemberPrompt;
 
 /**
  * Factory for creating SWT widgets.
@@ -83,7 +85,52 @@ public final class WidgetFactory {
      * @return system host combo for selection a connection
      */
     public static SystemHostCombo createSystemHostCombo(Composite parent, int style) {
-        return WidgetFactory.getInstance().produceSystemHostCombo(parent, style);
+        return createSystemHostCombo(parent, style, true);
+    }
+
+    /**
+     * Produces a SystemHostCombo.
+     * 
+     * @param parent - a composite control which will be the parent of the new
+     *        instance (cannot be null)
+     * @param style - the style of control to construct
+     * @param showNewButton - specifies whether to display the "New" button
+     * @return system host combo for selection a connection
+     */
+    public static SystemHostCombo createSystemHostCombo(Composite parent, int style, boolean showNewButton) {
+        return WidgetFactory.getInstance().produceSystemHostCombo(parent, style, showNewButton);
+    }
+
+    /**
+     * Produces a SystemMemberPrompt.
+     * 
+     * @param parent - a composite control which will be the parent of the new
+     *        instance (cannot be null)
+     * @param style - the style of control to construct
+     * @param fileType - Pass one of the types of
+     *        biz.rapidfire.rsebase.swt.widgets.SystemFileType such as SRC
+     * @return system member prompt for selection a file member
+     */
+    public static SystemMemberPrompt createSystemMemberPrompt(Composite parent, int style, SystemFileType fileType) {
+        return WidgetFactory.getInstance().produceSystemMemberPrompt(parent, style, true, true, fileType);
+    }
+
+    /**
+     * Produces a SystemMemberPrompt.
+     * 
+     * @param parent - a composite control which will be the parent of the new
+     *        instance (cannot be null)
+     * @param style - the style of control to construct
+     * @param allowGeneric - Pass true to allow generic names in the entry field
+     * @param allowLibl - Pass false if allowGeneric is false, to restrict user
+     *        from entering/selecting "*LIBL" for the library
+     * @param fileType - Pass one of the types of
+     *        biz.rapidfire.rsebase.swt.widgets.SystemFileType such as SRC
+     * @return system member prompt for selection a file member
+     */
+    public static SystemMemberPrompt createSystemMemberPrompt(Composite parent, int style, boolean allowGeneric, boolean allowLibl,
+        SystemFileType fileType) {
+        return WidgetFactory.getInstance().produceSystemMemberPrompt(parent, style, allowGeneric, allowLibl, fileType);
     }
 
     /**
@@ -886,11 +933,18 @@ public final class WidgetFactory {
         return filler;
     }
 
-    private SystemHostCombo produceSystemHostCombo(Composite parent, int style) {
+    private SystemHostCombo produceSystemHostCombo(Composite parent, int style, boolean showNewButton) {
 
-        SystemHostCombo systemHostCombo = new SystemHostCombo(parent, style);
+        SystemHostCombo systemHostCombo = new SystemHostCombo(parent, style, showNewButton);
 
         return systemHostCombo;
+    }
+
+    private SystemMemberPrompt produceSystemMemberPrompt(Composite parent, int style, boolean allowGeneric, boolean allowLibl, SystemFileType fileType) {
+
+        SystemMemberPrompt systemMemberPrompt = new SystemMemberPrompt(parent, style, allowGeneric, allowLibl, fileType);
+
+        return systemMemberPrompt;
     }
 
     private Label produceLabel(Composite parent, String text, String tooltip) {

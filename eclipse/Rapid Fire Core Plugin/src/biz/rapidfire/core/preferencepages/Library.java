@@ -74,7 +74,7 @@ public class Library extends PreferencePage implements IWorkbenchPreferencePage 
         Composite container = new Composite(parent, SWT.NONE);
         container.setLayout(new GridLayout(3, false));
 
-        comboConnection = WidgetFactory.createSystemHostCombo(container, SWT.BORDER);
+        comboConnection = WidgetFactory.createSystemHostCombo(container, SWT.NONE);
         comboConnection.setLayoutData(new GridData(SWT.FILL, SWT.DEFAULT, true, false, 3, 1));
         comboConnection.setToolTipText(Messages.Tooltip_Connection_name);
         comboConnection.getCombo().setToolTipText(Messages.Tooltip_Connection_name);

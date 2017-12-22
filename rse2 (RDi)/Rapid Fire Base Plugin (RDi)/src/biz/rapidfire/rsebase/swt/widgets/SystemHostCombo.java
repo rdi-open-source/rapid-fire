@@ -28,7 +28,15 @@ public class SystemHostCombo {
     }
 
     public SystemHostCombo(Composite parent, int style) {
-        this.connectionCombo = new IBMiConnectionCombo(parent, null, true);
+        this(parent, style, true);
+    }
+
+    public SystemHostCombo(Composite parent, int style, boolean showNewButton) {
+        this(parent, style, showNewButton, true);
+    }
+
+    public SystemHostCombo(Composite parent, int style, boolean showNewButton, boolean showLabel) {
+        this.connectionCombo = new IBMiConnectionCombo(parent, style, null, showNewButton, showLabel);
     }
 
     public void addModifyListener(ModifyListener listener) {

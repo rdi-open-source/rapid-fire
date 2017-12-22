@@ -26,9 +26,10 @@ import com.ibm.as400.access.CommandCall;
 import com.ibm.as400.access.ErrorCompletingRequestException;
 import com.ibm.as400.access.IllegalObjectTypeException;
 import com.ibm.as400.access.ObjectDoesNotExistException;
-import com.ibm.as400.access.QSYSObjectPathName;
 
 public class RapidFireHelper extends AbstractRapidFireHelper {
+
+    private static final String QSYS = "QSYS";
 
     public static String getRapidFireLibraryVersion(AS400 as400, String library) {
 
@@ -111,20 +112,37 @@ public class RapidFireHelper extends AbstractRapidFireHelper {
     }
 
     public static boolean checkLibrary(AS400 system, String library) {
-        return checkObject(system, new QSYSObjectPathName("QSYS", library, "LIB")); //$NON-NLS-1$ //$NON-NLS-2$
+        return checkObject(system, QSYS, library, SystemObjectType.LIB);
     }
 
-    public static boolean checkObject(AS400 system, QSYSObjectPathName pathName) {
+    public static boolean checkFile(AS400 system, String library, String file) {
+        return checkObject(system, library, file, SystemObjectType.FILE);
+    }
+
+    public static boolean checkMember(AS400 system, String library, String file, String member) {
+        return checkObject(system, library, file, member, SystemObjectType.MBR);
+    }
+
+    public static boolean checkObject(AS400 system, String library, String file, SystemObjectType objectType) {
+        return checkObject(system, library, file, null, objectType);
+    }
+
+    public static boolean checkObject(AS400 system, String library, String object, String member, SystemObjectType objectType) {
 
         StringBuilder command = new StringBuilder();
         command.append("CHKOBJ OBJ("); //$NON-NLS-1$
-        command.append(pathName.getLibraryName());
+        command.append(library);
         command.append("/"); //$NON-NLS-1$
-        command.append(pathName.getObjectName());
+        command.append(object);
         command.append(") OBJTYPE("); //$NON-NLS-1$
-        command.append("*"); //$NON-NLS-1$
-        command.append(pathName.getObjectType());
+        command.append(objectType.value());
         command.append(")"); //$NON-NLS-1$
+
+        if (!StringHelper.isNullOrEmpty(member)) {
+            command.append(" MBR("); //$NON-NLS-1$
+            command.append(member);
+            command.append(")"); //$NON-NLS-1$
+        }
 
         try {
             String message = executeCommand(system, command.toString());
@@ -136,6 +154,15 @@ public class RapidFireHelper extends AbstractRapidFireHelper {
         }
 
         return false;
+    }
+
+    private static String getSystemObjectType(String objectType) {
+
+        if ("MBR".equals(objectType)) { //$NON-NLS-1$
+            return "FILE"; //$NON-NLS-1$
+        }
+
+        return objectType;
     }
 
     private static String executeCommand(AS400 as400, String command) throws Exception {

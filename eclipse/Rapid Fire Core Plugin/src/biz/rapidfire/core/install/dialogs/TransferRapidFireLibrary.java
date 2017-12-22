@@ -47,7 +47,6 @@ import com.ibm.as400.access.AS400FTP;
 import com.ibm.as400.access.AS400Message;
 import com.ibm.as400.access.CommandCall;
 import com.ibm.as400.access.FTP;
-import com.ibm.as400.access.QSYSObjectPathName;
 
 public class TransferRapidFireLibrary extends Shell {
 
@@ -212,7 +211,7 @@ public class TransferRapidFireLibrary extends Shell {
 
     private boolean saveFileExists(String workLibrary, String saveFileName) {
 
-        if (!RapidFireHelper.checkObject(as400, new QSYSObjectPathName(workLibrary, saveFileName, "*FILE"))) {
+        if (!RapidFireHelper.checkFile(as400, workLibrary, saveFileName)) {
             return false;
         }
 

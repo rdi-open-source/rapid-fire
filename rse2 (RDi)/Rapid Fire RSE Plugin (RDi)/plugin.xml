@@ -215,6 +215,13 @@
          name="%command_Display_File"
          description="%command_Display_File_Description">
       </command>
+         
+      <command
+         id="biz.rapidfire.core.command.File.generateCopyProgram"
+         categoryId="biz.rapidfire.category.Commands"
+         name="%command_Generate_Copy_Program"
+         description="%command_Generate_Copy_Program_Description">
+      </command>
    
       	<!--
       	  ==========================================
@@ -703,6 +710,19 @@
       <handler
          commandId="biz.rapidfire.core.command.File.display"
          class="biz.rapidfire.core.handlers.file.DisplayFileHandler">
+         <enabledWhen>
+            <with variable="selection">
+               <count value="1" />
+               <iterate operator="and">
+                  <adapt type="biz.rapidfire.rse.subsystem.resources.RapidFireFileResource" />
+               </iterate>
+            </with>
+         </enabledWhen>
+      </handler>
+      
+      <handler
+         commandId="biz.rapidfire.core.command.File.generateCopyProgram"
+         class="biz.rapidfire.core.handlers.filecopyprogramgenerator.GenerateFileCopyProgramHandler">
          <enabledWhen>
             <with variable="selection">
                <count value="1" />
@@ -1464,6 +1484,31 @@
          <command
             commandId="biz.rapidfire.core.command.File.display" 
             icon="icons/display.gif"
+            >
+	        <visibleWhen>
+	           <with variable="selection">
+	              <iterate operator="and">
+	                 <adapt type="biz.rapidfire.rse.subsystem.resources.RapidFireFileResource" />
+	              </iterate>
+	           </with>
+	        </visibleWhen>
+         </command>
+         
+         <separator
+            name="generate"
+            visible="true">
+	        <visibleWhen>
+	           <with variable="selection">
+	              <iterate operator="and">
+	                 <adapt type="biz.rapidfire.rse.subsystem.resources.RapidFireFileResource" />
+	              </iterate>
+	           </with>
+	        </visibleWhen>
+         </separator>
+         
+         <command
+            commandId="biz.rapidfire.core.command.File.generateCopyProgram" 
+            icon="icons/generate_copy_program.gif"
             >
 	        <visibleWhen>
 	           <with variable="selection">
