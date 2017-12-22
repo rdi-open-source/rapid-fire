@@ -11,8 +11,6 @@ package biz.rapidfire.core.dialogs.maintenance.file;
 import org.eclipse.jface.dialogs.IDialogSettings;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.events.ModifyEvent;
-import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Point;
@@ -49,7 +47,7 @@ public class FileMaintenanceDialog extends AbstractMaintenanceDialog {
     private Text textJobName;
     private Text textPosition;
     private Text textFileName;
-    private Combo comboType;
+    private Combo comboFileType;
     private Combo comboCopyProgramName;
     private Text textCopyProgramLibraryName;
     private Combo comboConversionProgramName;
@@ -130,12 +128,13 @@ public class FileMaintenanceDialog extends AbstractMaintenanceDialog {
 
         WidgetFactory.createLabel(parent, Messages.Label_FileType_colon, Messages.Tooltip_FileType);
 
-        comboType = WidgetFactory.createReadOnlyCombo(parent);
-        setDefaultValue(comboType, FileType.PHYSICAL.label());
-        comboType.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
-        comboType.setToolTipText(Messages.Tooltip_Create_environment);
-        comboType.setEnabled(enableFields);
-        comboType.setItems(FileValues.getTypeLabels());
+        comboFileType = WidgetFactory.createReadOnlyCombo(parent);
+        setDefaultValue(comboFileType, FileType.PHYSICAL.label());
+        comboFileType.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+        comboFileType.setToolTipText(Messages.Tooltip_Create_environment);
+        comboFileType.setEnabled(enableFields);
+        comboFileType.setItems(FileValues.getTypeLabels());
+        comboFileType.addSelectionListener(new FileTypeChangedListener());
 
         WidgetFactory.createLabel(parent, Messages.Label_Copy_program_name_colon, Messages.Tooltip_Copy_program_name);
 
@@ -146,12 +145,10 @@ public class FileMaintenanceDialog extends AbstractMaintenanceDialog {
         comboCopyProgramName.setEnabled(enableFields);
         comboCopyProgramName.setItems(FileValues.getCopyProgramSpecialValues());
         comboCopyProgramName.addSelectionListener(new ProgramChangedListener());
-        comboCopyProgramName.addModifyListener(new ProgramChangedListener());
 
         WidgetFactory.createLabel(parent, Messages.Label_Copy_program_library_name_colon, Messages.Tooltip_Copy_program_library_name);
 
         textCopyProgramLibraryName = WidgetFactory.createNameText(parent);
-        // setDefaultValue(textCopyProgramLibraryName, "*LIBL");
         textCopyProgramLibraryName.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
         textCopyProgramLibraryName.setToolTipText(Messages.Tooltip_Copy_program_library_name);
         textCopyProgramLibraryName.setEnabled(enableFields);
@@ -165,12 +162,10 @@ public class FileMaintenanceDialog extends AbstractMaintenanceDialog {
         comboConversionProgramName.setEnabled(enableFields);
         comboConversionProgramName.setItems(FileValues.getConversionProgramSpecialValues());
         comboConversionProgramName.addSelectionListener(new ProgramChangedListener());
-        comboConversionProgramName.addModifyListener(new ProgramChangedListener());
 
         WidgetFactory.createLabel(parent, Messages.Label_Conversion_program_library_name_colon, Messages.Tooltip_Conversion_program_library_name);
 
         textConversionProgramLibraryName = WidgetFactory.createNameText(parent);
-        // setDefaultValue(textCopyProgramLibraryName, "*LIBL");
         textConversionProgramLibraryName.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
         textConversionProgramLibraryName.setToolTipText(Messages.Tooltip_Conversion_program_library_name);
         textConversionProgramLibraryName.setEnabled(enableFields);
@@ -188,7 +183,7 @@ public class FileMaintenanceDialog extends AbstractMaintenanceDialog {
 
         setText(textPosition, Integer.toString(values.getKey().getPosition()));
         setText(textFileName, values.getFileName());
-        setText(comboType, values.getFileType());
+        setText(comboFileType, values.getFileType());
         setText(comboCopyProgramName, values.getCopyProgramName());
         setText(textCopyProgramLibraryName, values.getCopyProgramLibraryName());
         setText(comboConversionProgramName, values.getConversionProgramName());
@@ -201,7 +196,7 @@ public class FileMaintenanceDialog extends AbstractMaintenanceDialog {
         FileValues newValues = values.clone();
         newValues.getKey().setPosition(IntHelper.tryParseInt(textPosition.getText(), -1));
         newValues.setFileName(textFileName.getText());
-        newValues.setFileType(comboType.getText());
+        newValues.setFileType(comboFileType.getText());
         newValues.setCopyProgramName(comboCopyProgramName.getText());
         newValues.setCopyProgramLibraryName(textCopyProgramLibraryName.getText());
         newValues.setConversionProgramName(comboConversionProgramName.getText());
@@ -241,8 +236,8 @@ public class FileMaintenanceDialog extends AbstractMaintenanceDialog {
             textFileName.setFocus();
             message = Messages.bind(Messages.File_name_A_is_not_valid, textFileName.getText());
         } else if (IFileCheck.FIELD_TYPE.equals(fieldName)) {
-            comboType.setFocus();
-            message = Messages.bindParameters(Messages.File_type_A_is_not_valid, comboType.getText());
+            comboFileType.setFocus();
+            message = Messages.bindParameters(Messages.File_type_A_is_not_valid, comboFileType.getText());
         } else if (IFileCheck.FIELD_COPY_PROGRAM_NAME.equals(fieldName)) {
             comboCopyProgramName.setFocus();
             message = Messages.bind(Messages.Copy_program_name_A_is_not_valid, comboCopyProgramName.getText());
@@ -258,6 +253,21 @@ public class FileMaintenanceDialog extends AbstractMaintenanceDialog {
         }
 
         setErrorMessage(message, result);
+    }
+
+    private void updateControlEnablement() {
+
+        if (comboFileType.getText().equals(FileType.LOGICAL.label())) {
+            comboCopyProgramName.setEnabled(false);
+            textCopyProgramLibraryName.setEnabled(false);
+            comboConversionProgramName.setEnabled(false);
+            textConversionProgramLibraryName.setEnabled(false);
+        } else {
+            comboCopyProgramName.setEnabled(true);
+            textCopyProgramLibraryName.setEnabled(true);
+            comboConversionProgramName.setEnabled(true);
+            textConversionProgramLibraryName.setEnabled(true);
+        }
     }
 
     /**
@@ -285,7 +295,39 @@ public class FileMaintenanceDialog extends AbstractMaintenanceDialog {
         return super.getDialogBoundsSettings(RapidFireCorePlugin.getDefault().getDialogSettings());
     }
 
-    private class ProgramChangedListener implements SelectionListener, ModifyListener {
+    private class FileTypeChangedListener implements SelectionListener {
+
+        public void widgetSelected(SelectionEvent event) {
+
+            if (comboFileType.getText().equals(FileType.LOGICAL.label())) {
+                if (!comboCopyProgramName.getText().equals(CopyProgram.NONE.label())) {
+                    saveCurrentValue(comboCopyProgramName);
+                    saveCurrentValue(textCopyProgramLibraryName);
+                    setText(comboCopyProgramName, CopyProgram.NONE.label());
+                    setText(textCopyProgramLibraryName, EMPTY_STRING);
+                }
+                if (!comboConversionProgramName.getText().equals(CopyProgram.NONE.label())) {
+                    saveCurrentValue(comboConversionProgramName);
+                    saveCurrentValue(textConversionProgramLibraryName);
+                    setText(comboConversionProgramName, ConversionProgram.NONE.label());
+                    setText(textConversionProgramLibraryName, EMPTY_STRING);
+                }
+            } else if (comboFileType.getText().equals(FileType.PHYSICAL.label())) {
+                restorePreviousValue(comboCopyProgramName);
+                restorePreviousValue(textCopyProgramLibraryName);
+                restorePreviousValue(comboConversionProgramName);
+                restorePreviousValue(textConversionProgramLibraryName);
+            }
+
+            updateControlEnablement();
+        }
+
+        public void widgetDefaultSelected(SelectionEvent event) {
+            widgetSelected(event);
+        }
+    }
+
+    private class ProgramChangedListener implements SelectionListener {
 
         public void widgetSelected(SelectionEvent event) {
 
@@ -331,19 +373,6 @@ public class FileMaintenanceDialog extends AbstractMaintenanceDialog {
 
         public void widgetDefaultSelected(SelectionEvent event) {
             widgetSelected(event);
-        }
-
-        public void modifyText(ModifyEvent event) {
-
-            if (event.getSource().equals(comboCopyProgramName)) {
-                if (StringHelper.isNullOrEmpty(textCopyProgramLibraryName.getText())) {
-                    performCopyProgramChanged();
-                }
-            } else if (event.getSource().equals(comboConversionProgramName)) {
-                if (StringHelper.isNullOrEmpty(textConversionProgramLibraryName.getText())) {
-                    performConversionProgramChanged();
-                }
-            }
         }
     }
 }
