@@ -237,6 +237,15 @@
             id="biz.rapidfire.rse.job.actions">
             
          <action
+               label="%command_Generate_Copy_Program"
+               tooltip="%command_Generate_Copy_Program_Description"
+               icon="icons/generate_copy_program.gif"
+               class="biz.rapidfire.rse.subsystem.actions.filecopyprogramgenerator.GenerateFileCopyProgramAction"
+               enablesFor="1"
+               id="biz.rapidfire.rse.subsystem.actions.filecopyprogramgenerator.GenerateFileCopyProgramAction">
+         </action>
+            
+         <action
                label="%command_Display_File"
                tooltip="%command_Display_File_Description"
                icon="icons/display.gif"
