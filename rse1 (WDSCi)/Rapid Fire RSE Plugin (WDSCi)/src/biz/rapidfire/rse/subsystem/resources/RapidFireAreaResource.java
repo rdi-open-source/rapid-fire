@@ -118,6 +118,10 @@ public class RapidFireAreaResource extends AbstractResource implements IWizardSu
         return delegate.compareTo(resource);
     }
 
+    public String getLabel() {
+        return delegate.getName();
+    }
+
     @Override
     public String toString() {
         return delegate.toString();

@@ -11,9 +11,9 @@ package biz.rapidfire.rsebase.swt.widgets;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 
-import com.ibm.etools.iseries.core.ui.widgets.ISeriesMemberPrompt;
-
 import biz.rapidfire.rsebase.host.SystemFileType;
+
+import com.ibm.etools.iseries.core.ui.widgets.ISeriesMemberPrompt;
 
 public class SystemMemberPrompt {
 
@@ -35,12 +35,24 @@ public class SystemMemberPrompt {
         return memberPrompt.getLibraryName();
     }
 
+    public void setLibraryName(String libraryName) {
+        this.memberPrompt.setLibraryName(libraryName);
+    }
+
     public String getFileName() {
         return memberPrompt.getFileName();
     }
 
+    public void setFileName(String fileName) {
+        this.memberPrompt.setFileName(fileName);
+    }
+
     public String getMemberName() {
         return memberPrompt.getMemberName();
+    }
+
+    public void setMemberName(String memberName) {
+        memberPrompt.setMemberName(memberName);
     }
 
     public void setLayoutData(Object layoutData) {

@@ -38,6 +38,7 @@ import biz.rapidfire.core.model.dao.IActivitiesDAO;
 import biz.rapidfire.core.model.dao.IAreasDAO;
 import biz.rapidfire.core.model.dao.ICommandsDAO;
 import biz.rapidfire.core.model.dao.IConversionsDAO;
+import biz.rapidfire.core.model.dao.ILibrariesDAO;
 import biz.rapidfire.core.model.dao.INotificationsDAO;
 import biz.rapidfire.core.model.queries.FileCopyStatus;
 import biz.rapidfire.core.subsystem.IRapidFireSubSystem;
@@ -240,6 +241,20 @@ public class RapidFireSubSystem extends DefaultSubSystemImpl implements IISeries
         }
 
         return libraries.toArray(new IRapidFireLibraryResource[libraries.size()]);
+    }
+
+    public IRapidFireLibraryResource getLibrary(IRapidFireJobResource job, String libraryName, Shell shell) throws Exception {
+
+        if (!successFullyLoaded()) {
+            return null;
+        }
+
+        String dataLibraryName = job.getDataLibrary();
+
+        ILibrariesDAO dao = new LibrariesDAO(getConnectionName(), dataLibraryName);
+        IRapidFireLibraryResource library = dao.load(job, libraryName, shell);
+
+        return library;
     }
 
     public IRapidFireNotificationResource[] getNotifications(IRapidFireJobResource job, Shell shell) throws Exception {
