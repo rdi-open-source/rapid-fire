@@ -6,7 +6,7 @@
  * http://www.eclipse.org/legal/cpl-v10.html
  *******************************************************************************/
 
-package biz.rapidfire.rsebase.host;
+package biz.rapidfire.rsebase.helpers.internal;
 
 import java.util.Arrays;
 import java.util.Comparator;

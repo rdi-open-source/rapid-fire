@@ -8,8 +8,13 @@
 
 package biz.rapidfire.rsebase.helpers;
 
+import org.eclipse.swt.widgets.Display;
+
 import com.ibm.as400.access.AS400;
+import com.ibm.etools.iseries.comm.interfaces.IISeriesMember;
 import com.ibm.etools.iseries.core.api.ISeriesConnection;
+import com.ibm.etools.iseries.core.api.ISeriesMember;
+import com.ibm.etools.iseries.core.resources.ISeriesEditableSrcPhysicalFileMember;
 
 public class AbstractRapidFireHelper {
 
@@ -59,5 +64,21 @@ public class AbstractRapidFireHelper {
         }
 
         return ISeriesConnection.getConnection(profile, connectionName);
+    }
+
+    public static boolean openMember(String connectionName, String libraryName, String fileName, String memberName) throws Exception {
+
+        ISeriesConnection connection = ISeriesConnection.getConnection(connectionName);
+        if (connection == null) {
+            return false;
+        }
+
+        IISeriesMember qsysMember = connection.getISeriesMember(libraryName, fileName, memberName);
+        if (qsysMember instanceof ISeriesMember) {
+            ISeriesEditableSrcPhysicalFileMember editableMember = new ISeriesEditableSrcPhysicalFileMember((ISeriesMember)qsysMember);
+            editableMember.open(Display.getCurrent().getActiveShell(), false);
+        }
+
+        return true;
     }
 }
