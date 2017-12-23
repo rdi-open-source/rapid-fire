@@ -8,7 +8,11 @@
 
 package biz.rapidfire.rsebase.helpers;
 
+import org.eclipse.swt.widgets.Display;
+
 import com.ibm.as400.access.AS400;
+import com.ibm.etools.iseries.rse.ui.resources.QSYSEditableRemoteSourceFileMember;
+import com.ibm.etools.iseries.services.qsys.api.IQSYSMember;
 import com.ibm.etools.iseries.subsystems.qsys.api.IBMiConnection;
 
 public class AbstractRapidFireHelper {
@@ -59,5 +63,21 @@ public class AbstractRapidFireHelper {
         }
 
         return IBMiConnection.getConnection(profile, connectionName);
+    }
+
+    public static boolean openMember(String connectionName, String libraryName, String fileName, String memberName) throws Exception {
+
+        IBMiConnection connection = IBMiConnection.getConnection(connectionName);
+        if (connection == null) {
+            return false;
+        }
+
+        IQSYSMember qsysMember = connection.getMember(libraryName, fileName, memberName, null);
+
+        QSYSEditableRemoteSourceFileMember editableMember = new QSYSEditableRemoteSourceFileMember(qsysMember);
+
+        editableMember.open(Display.getCurrent().getActiveShell(), false);
+
+        return true;
     }
 }

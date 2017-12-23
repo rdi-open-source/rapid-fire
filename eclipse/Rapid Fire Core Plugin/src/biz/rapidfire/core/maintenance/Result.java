@@ -29,7 +29,7 @@ public class Result {
         this.recordNbr = recordNbr;
     }
 
-    public Result(String fieldName, String message, String success) {
+    public Result(String fieldName, String message, Success success) {
 
         if (fieldName != null) {
             this.fieldName = fieldName.trim();
@@ -39,7 +39,11 @@ public class Result {
             this.message = message.trim();
         }
 
-        this.success = Success.find(success);
+        this.success = success;
+    }
+
+    public Result(String fieldName, String message, String success) {
+        this(fieldName, message, Success.find(success));
     }
 
     public String getFieldName() {

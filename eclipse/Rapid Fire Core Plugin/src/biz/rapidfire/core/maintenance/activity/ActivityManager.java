@@ -65,7 +65,7 @@ public class ActivityManager extends AbstractManager<IRapidFireActivityResource,
     }
 
     @Override
-    public void book() throws Exception {
+    public Result book() throws Exception {
 
         CallableStatement statement = dao
             .prepareCall(dao.insertLibraryQualifier("{CALL " + IJDBCConnection.LIBRARY + "\"MNTAS_setActivity\"(?, ?)}")); //$NON-NLS-1$ //$NON-NLS-2$
@@ -80,6 +80,8 @@ public class ActivityManager extends AbstractManager<IRapidFireActivityResource,
                 statement.execute();
             }
         }
+
+        return null;
     }
 
     @Override

@@ -170,10 +170,12 @@ public class NotificationManager extends AbstractManager<IRapidFireNotificationR
     }
 
     @Override
-    public void book() throws Exception {
+    public Result book() throws Exception {
 
         CallableStatement statement = dao.prepareCall(dao.insertLibraryQualifier("{CALL " + IJDBCConnection.LIBRARY + "\"MNTSTBN_book\"()}")); //$NON-NLS-1$ //$NON-NLS-2$
         statement.execute();
+
+        return null;
     }
 
     @Override

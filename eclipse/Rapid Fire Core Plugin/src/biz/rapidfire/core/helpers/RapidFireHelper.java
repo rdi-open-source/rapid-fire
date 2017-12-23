@@ -127,20 +127,20 @@ public class RapidFireHelper extends AbstractRapidFireHelper {
         return checkObject(system, library, file, null, objectType);
     }
 
-    public static boolean checkObject(AS400 system, String library, String object, String member, SystemObjectType objectType) {
+    public static boolean checkObject(AS400 system, String libraryName, String objectName, String memberName, SystemObjectType objectType) {
 
         StringBuilder command = new StringBuilder();
         command.append("CHKOBJ OBJ("); //$NON-NLS-1$
-        command.append(library);
+        command.append(libraryName);
         command.append("/"); //$NON-NLS-1$
-        command.append(object);
+        command.append(objectName);
         command.append(") OBJTYPE("); //$NON-NLS-1$
         command.append(objectType.value());
         command.append(")"); //$NON-NLS-1$
 
-        if (!StringHelper.isNullOrEmpty(member)) {
+        if (!StringHelper.isNullOrEmpty(memberName)) {
             command.append(" MBR("); //$NON-NLS-1$
-            command.append(member);
+            command.append(memberName);
             command.append(")"); //$NON-NLS-1$
         }
 
@@ -156,13 +156,33 @@ public class RapidFireHelper extends AbstractRapidFireHelper {
         return false;
     }
 
-    private static String getSystemObjectType(String objectType) {
+    public static String removeMember(String connectionName, String libraryName, String fileName, String memberName) throws Exception {
+        return removeMember(getSystem(connectionName), libraryName, fileName, memberName);
+    }
 
-        if ("MBR".equals(objectType)) { //$NON-NLS-1$
-            return "FILE"; //$NON-NLS-1$
+    public static String removeMember(AS400 system, String libraryName, String fileName, String memberName) throws Exception {
+
+        StringBuilder command = new StringBuilder();
+        command.append("RMVM FILE("); //$NON-NLS-1$
+        command.append(libraryName);
+        command.append("/"); //$NON-NLS-1$
+        command.append(fileName);
+        command.append(") MBR("); //$NON-NLS-1$
+        command.append(memberName);
+        command.append(")"); //$NON-NLS-1$
+
+        String message = null;
+
+        try {
+
+            message = executeCommand(system, command.toString());
+
+        } catch (Exception e) {
+            RapidFireCorePlugin.logError(ExceptionHelper.getLocalizedMessage(e), e);
+            message = ExceptionHelper.getLocalizedMessage(e);
         }
 
-        return objectType;
+        return message;
     }
 
     private static String executeCommand(AS400 as400, String command) throws Exception {
@@ -173,11 +193,11 @@ public class RapidFireHelper extends AbstractRapidFireHelper {
         if (messageList.length > 0) {
             for (int idx = 0; idx < messageList.length; idx++) {
                 if (messageList[idx].getType() == AS400Message.ESCAPE) {
-                    return messageList[idx].getID();
+                    return messageList[idx].getID() + ": " + messageList[idx].getText();
                 }
             }
         }
-        return ""; //$NON-NLS-1$
+        return null; //$NON-NLS-1$
     }
 
     /**

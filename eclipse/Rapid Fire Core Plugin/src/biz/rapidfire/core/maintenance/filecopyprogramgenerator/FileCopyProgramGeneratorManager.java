@@ -10,15 +10,12 @@ package biz.rapidfire.core.maintenance.filecopyprogramgenerator;
 
 import java.sql.CallableStatement;
 import java.sql.Types;
-import java.util.HashSet;
-import java.util.Set;
 
 import biz.rapidfire.core.Messages;
 import biz.rapidfire.core.maintenance.AbstractManager;
 import biz.rapidfire.core.maintenance.MaintenanceMode;
 import biz.rapidfire.core.maintenance.Result;
 import biz.rapidfire.core.maintenance.Success;
-import biz.rapidfire.core.maintenance.file.FileValues;
 import biz.rapidfire.core.maintenance.file.shared.FileKey;
 import biz.rapidfire.core.maintenance.filecopyprogramgenerator.shared.FileCopyProgramGeneratorAction;
 import biz.rapidfire.core.maintenance.job.shared.JobKey;
@@ -26,7 +23,8 @@ import biz.rapidfire.core.model.IRapidFireFileResource;
 import biz.rapidfire.core.model.dao.IJDBCConnection;
 import biz.rapidfire.core.model.dao.JDBCConnectionManager;
 
-public class FileCopyProgramGeneratorManager extends AbstractManager<IRapidFireFileResource, FileKey, FileValues, FileCopyProgramGeneratorAction> {
+public class FileCopyProgramGeneratorManager extends
+    AbstractManager<IRapidFireFileResource, FileKey, FileCopyProgramGeneratorValues, FileCopyProgramGeneratorAction> {
 
     private static final String ERROR_001 = "001"; //$NON-NLS-1$
     private static final String ERROR_002 = "002"; //$NON-NLS-1$
@@ -43,13 +41,42 @@ public class FileCopyProgramGeneratorManager extends AbstractManager<IRapidFireF
     @Override
     public void openFiles() throws Exception {
 
-        CallableStatement statement = dao.prepareCall(dao.insertLibraryQualifier("{CALL " + IJDBCConnection.LIBRARY + "\"CHKSTSE_openFiles\"()}")); //$NON-NLS-1$ //$NON-NLS-2$
+        CallableStatement statement = dao.prepareCall(dao.insertLibraryQualifier("{CALL " + IJDBCConnection.LIBRARY + "\"GNRCPYPGM_openFiles\"()}")); //$NON-NLS-1$ //$NON-NLS-2$
         statement.execute();
     }
 
     @Override
     public Result initialize(MaintenanceMode mode, FileKey key) throws Exception {
-        throw new IllegalAccessError("Calling initialize() is not allowed. Method has not been implemented.");
+
+        jobKey = new JobKey(key.getJobName());
+
+        CallableStatement statement = dao.prepareCall(dao
+            .insertLibraryQualifier("{CALL " + IJDBCConnection.LIBRARY + "\"GNRCPYPGM_initialize\"(?, ?, ?, ?)}")); //$NON-NLS-1$ //$NON-NLS-2$
+
+        statement.setString(IFileCopyProgramGeneratorInitialize.JOB, key.getJobName());
+        statement.setInt(IFileCopyProgramGeneratorInitialize.POSITION, key.getPosition());
+        statement.setString(IFileCopyProgramGeneratorInitialize.SUCCESS, Success.NO.label());
+        statement.setString(IFileCopyProgramGeneratorInitialize.ERROR_CODE, EMPTY_STRING);
+
+        statement.registerOutParameter(IFileCopyProgramGeneratorInitialize.SUCCESS, Types.CHAR);
+        statement.registerOutParameter(IFileCopyProgramGeneratorInitialize.ERROR_CODE, Types.CHAR);
+
+        statement.execute();
+
+        String success = getStringTrim(statement, IFileCopyProgramGeneratorInitialize.SUCCESS);
+        String errorCode = getStringTrim(statement, IFileCopyProgramGeneratorInitialize.ERROR_CODE);
+
+        String message;
+        if (Success.YES.label().equals(success)) {
+            message = null;
+        } else {
+            message = Messages.bindParameters(Messages.Could_not_initialize_file_manager_for_file_at_position_C_of_job_A_in_library_B,
+                key.getJobName(), dao.getLibraryName(), key.getPosition(), getErrorMessage(errorCode));
+        }
+
+        Result result = new Result(success, message);
+
+        return result;
     }
 
     /**
@@ -73,104 +100,119 @@ public class FileCopyProgramGeneratorManager extends AbstractManager<IRapidFireF
     }
 
     @Override
-    public FileValues getValues() throws Exception {
-        throw new IllegalAccessError("Calling getValues() is not allowed. Method has not been implemented.");
+    public FileCopyProgramGeneratorValues getValues() throws Exception {
+
+        CallableStatement statement = dao.prepareCall(dao
+            .insertLibraryQualifier("{CALL " + IJDBCConnection.LIBRARY + "\"GNRCPYPGM_getValues\"(?, ?, ?, ?, ?, ?, ?, ?, ?)}")); //$NON-NLS-1$ //$NON-NLS-2$
+
+        statement.setString(IFileCopyProgramGeneratorGetValues.SOURCE_FILE, EMPTY_STRING);
+        statement.setString(IFileCopyProgramGeneratorGetValues.SOURCE_FILE_LIBRARY, EMPTY_STRING);
+        statement.setString(IFileCopyProgramGeneratorGetValues.SOURCE_MEMBER, EMPTY_STRING);
+        statement.setString(IFileCopyProgramGeneratorGetValues.REPLACE, EMPTY_STRING);
+        statement.setString(IFileCopyProgramGeneratorGetValues.AREA, EMPTY_STRING);
+        statement.setString(IFileCopyProgramGeneratorGetValues.LIBRARY, EMPTY_STRING);
+        statement.setString(IFileCopyProgramGeneratorGetValues.SHADOW_LIBRARY, EMPTY_STRING);
+        statement.setString(IFileCopyProgramGeneratorGetValues.CONVERSION_PROGRAM, EMPTY_STRING);
+        statement.setString(IFileCopyProgramGeneratorGetValues.CONVERSION_PROGRAM_LIBRARY, EMPTY_STRING);
+
+        statement.registerOutParameter(IFileCopyProgramGeneratorGetValues.SOURCE_FILE, Types.CHAR);
+        statement.registerOutParameter(IFileCopyProgramGeneratorGetValues.SOURCE_FILE_LIBRARY, Types.CHAR);
+        statement.registerOutParameter(IFileCopyProgramGeneratorGetValues.SOURCE_MEMBER, Types.CHAR);
+        statement.registerOutParameter(IFileCopyProgramGeneratorGetValues.REPLACE, Types.CHAR);
+        statement.registerOutParameter(IFileCopyProgramGeneratorGetValues.AREA, Types.CHAR);
+        statement.registerOutParameter(IFileCopyProgramGeneratorGetValues.LIBRARY, Types.CHAR);
+        statement.registerOutParameter(IFileCopyProgramGeneratorGetValues.SHADOW_LIBRARY, Types.CHAR);
+        statement.registerOutParameter(IFileCopyProgramGeneratorGetValues.CONVERSION_PROGRAM, Types.CHAR);
+        statement.registerOutParameter(IFileCopyProgramGeneratorGetValues.CONVERSION_PROGRAM_LIBRARY, Types.CHAR);
+
+        statement.execute();
+
+        FileCopyProgramGeneratorValues values = new FileCopyProgramGeneratorValues();
+        values.setSourceFile(getStringTrim(statement, IFileCopyProgramGeneratorGetValues.SOURCE_FILE));
+        values.setSourceFileLibrary(getStringTrim(statement, IFileCopyProgramGeneratorGetValues.SOURCE_FILE_LIBRARY));
+        values.setSourceMember(getStringTrim(statement, IFileCopyProgramGeneratorGetValues.SOURCE_MEMBER));
+        values.setReplace(getStringTrim(statement, IFileCopyProgramGeneratorGetValues.REPLACE));
+        values.setArea(getStringTrim(statement, IFileCopyProgramGeneratorGetValues.AREA));
+        values.setLibrary(getStringTrim(statement, IFileCopyProgramGeneratorGetValues.LIBRARY));
+        values.setShadowLibrary(getStringTrim(statement, IFileCopyProgramGeneratorGetValues.SHADOW_LIBRARY));
+        values.setConversionProgram(getStringTrim(statement, IFileCopyProgramGeneratorGetValues.CONVERSION_PROGRAM));
+        values.setConversionProgramLibrary(getStringTrim(statement, IFileCopyProgramGeneratorGetValues.CONVERSION_PROGRAM_LIBRARY));
+
+        return values;
     }
 
     @Override
-    public void setValues(FileValues values) throws Exception {
-        throw new IllegalAccessError("Calling setValues() is not allowed. Method has not been implemented.");
+    public void setValues(FileCopyProgramGeneratorValues values) throws Exception {
+
+        CallableStatement statement = dao.prepareCall(dao
+            .insertLibraryQualifier("{CALL " + IJDBCConnection.LIBRARY + "\"GNRCPYPGM_setValues\"(?, ?, ?, ?, ?, ?, ?, ?, ?)}")); //$NON-NLS-1$ //$NON-NLS-2$
+
+        statement.setString(IFileCopyProgramGeneratorSetValues.SOURCE_FILE, values.getSourceFile());
+        statement.setString(IFileCopyProgramGeneratorSetValues.SOURCE_FILE_LIBRARY, values.getSourceFileLibrary());
+        statement.setString(IFileCopyProgramGeneratorSetValues.SOURCE_MEMBER, values.getSourceMember());
+        statement.setString(IFileCopyProgramGeneratorSetValues.REPLACE, values.getReplace());
+        statement.setString(IFileCopyProgramGeneratorSetValues.AREA, values.getArea());
+        statement.setString(IFileCopyProgramGeneratorSetValues.LIBRARY, values.getLibrary());
+        statement.setString(IFileCopyProgramGeneratorSetValues.SHADOW_LIBRARY, values.getShadowLibrary());
+        statement.setString(IFileCopyProgramGeneratorSetValues.CONVERSION_PROGRAM, values.getConversionProgram());
+        statement.setString(IFileCopyProgramGeneratorSetValues.CONVERSION_PROGRAM_LIBRARY, values.getConversionProgramLibrary());
+
+        statement.execute();
     }
 
     @Override
     public Result check() throws Exception {
-        throw new IllegalAccessError("Calling check() is not allowed. Method has not been implemented.");
+
+        CallableStatement statement = dao.prepareCall(dao
+            .insertLibraryQualifier("{CALL " + IJDBCConnection.LIBRARY + "\"GNRCPYPGM_check\"(?, ?, ?)}")); //$NON-NLS-1$ //$NON-NLS-2$
+
+        statement.setString(IFileCopyProgramGeneratorCheck.SUCCESS, Success.NO.label());
+        statement.setString(IFileCopyProgramGeneratorCheck.FIELD_NAME, EMPTY_STRING);
+        statement.setString(IFileCopyProgramGeneratorCheck.MESSAGE, EMPTY_STRING);
+
+        statement.registerOutParameter(IFileCopyProgramGeneratorCheck.SUCCESS, Types.CHAR);
+        statement.registerOutParameter(IFileCopyProgramGeneratorCheck.FIELD_NAME, Types.CHAR);
+        statement.registerOutParameter(IFileCopyProgramGeneratorCheck.MESSAGE, Types.CHAR);
+
+        statement.execute();
+
+        String success = getStringTrim(statement, IFileCopyProgramGeneratorCheck.SUCCESS);
+        String fieldName = getStringTrim(statement, IFileCopyProgramGeneratorCheck.FIELD_NAME);
+        String message = getStringTrim(statement, IFileCopyProgramGeneratorCheck.MESSAGE);
+
+        return new Result(fieldName, message, success);
     }
 
     @Override
-    public void book() throws Exception {
+    public Result book() throws Exception {
 
-        CallableStatement statement = dao.prepareCall(dao.insertLibraryQualifier("{CALL " + IJDBCConnection.LIBRARY + "\"CHKSTSE_book\"()}")); //$NON-NLS-1$ //$NON-NLS-2$
+        CallableStatement statement = dao.prepareCall(dao.insertLibraryQualifier("{CALL " + IJDBCConnection.LIBRARY + "\"GNRCPYPGM_book\"(?, ?)}")); //$NON-NLS-1$ //$NON-NLS-2$
+
+        statement.setString(IFileCopyProgramGeneratorBook.SUCCESS, Success.NO.label());
+        statement.setString(IFileCopyProgramGeneratorBook.MESSAGE, EMPTY_STRING);
+
+        statement.registerOutParameter(IFileCopyProgramGeneratorBook.SUCCESS, Types.CHAR);
+        statement.registerOutParameter(IFileCopyProgramGeneratorBook.MESSAGE, Types.CHAR);
+
         statement.execute();
+
+        String success = getStringTrim(statement, IFileCopyProgramGeneratorBook.SUCCESS);
+        String message = getStringTrim(statement, IFileCopyProgramGeneratorBook.MESSAGE);
+
+        return new Result(null, message, success);
     }
 
     @Override
     public void closeFiles() throws Exception {
 
-        CallableStatement statement = dao.prepareCall(dao.insertLibraryQualifier("{CALL " + IJDBCConnection.LIBRARY + "\"CHKSTSE_closeFiles\"()}")); //$NON-NLS-1$ //$NON-NLS-2$
+        CallableStatement statement = dao.prepareCall(dao.insertLibraryQualifier("{CALL " + IJDBCConnection.LIBRARY + "\"GNRCPYPGM_closeFiles\"()}")); //$NON-NLS-1$ //$NON-NLS-2$
         statement.execute();
     }
 
     @Override
-    public Result checkAction(FileKey fileKey, FileCopyProgramGeneratorAction action) throws Exception {
+    public Result checkAction(FileKey key, FileCopyProgramGeneratorAction fileAction) throws Exception {
 
-        CallableStatement statement = dao.prepareCall(dao
-            .insertLibraryQualifier("{CALL " + IJDBCConnection.LIBRARY + "\"CHKSTSE_checkAction\"(?, ?, ?, ?, ?, ?)}")); //$NON-NLS-1$ //$NON-NLS-2$
-
-        statement.setString(IFileCopyProgramGeneratorCheckAction.ACTION, action.label());
-        statement.setString(IFileCopyProgramGeneratorCheckAction.JOB, fileKey.getJobName());
-        statement.setInt(IFileCopyProgramGeneratorCheckAction.POSITION, fileKey.getPosition());
-        statement.setString(IFileCopyProgramGeneratorCheckAction.AREA, Success.NO.label());
-        statement.setString(IFileCopyProgramGeneratorCheckAction.SUCCESS, Success.NO.label());
-        statement.setString(IFileCopyProgramGeneratorCheckAction.MESSAGE, EMPTY_STRING);
-
-        statement.registerOutParameter(IFileCopyProgramGeneratorCheckAction.SUCCESS, Types.CHAR);
-        statement.registerOutParameter(IFileCopyProgramGeneratorCheckAction.MESSAGE, Types.CHAR);
-
-        statement.execute();
-
-        String success = statement.getString(IFileCopyProgramGeneratorCheckAction.SUCCESS);
-        String message = statement.getString(IFileCopyProgramGeneratorCheckAction.MESSAGE);
-
-        return new Result(null, message, success);
-    }
-
-    protected FileCopyProgramGeneratorAction[] getValidActions(FileKey fileKey) throws Exception {
-
-        CallableStatement statement = dao.prepareCall(dao
-            .insertLibraryQualifier("{CALL " + IJDBCConnection.LIBRARY + "\"CHKSTSE_getValidActions\"(?, ?, ?, ?, ?)}")); //$NON-NLS-1$ //$NON-NLS-2$
-
-        statement.setString(IFileCopyProgramGeneratorGetValidActions.JOB, fileKey.getJobName());
-        statement.setInt(IFileCopyProgramGeneratorGetValidActions.POSITION, fileKey.getPosition());
-        statement.setString(IFileCopyProgramGeneratorGetValidActions.AREA, fileKey.getJobName());
-        statement.setInt(IFileCopyProgramGeneratorGetValidActions.NUMBER_ACTIONS, 0);
-        statement.setString(IFileCopyProgramGeneratorGetValidActions.ACTIONS, EMPTY_STRING);
-
-        statement.registerOutParameter(IFileCopyProgramGeneratorGetValidActions.NUMBER_ACTIONS, Types.DECIMAL);
-        statement.registerOutParameter(IFileCopyProgramGeneratorGetValidActions.ACTIONS, Types.CHAR);
-
-        statement.execute();
-
-        int numberActions = statement.getBigDecimal(IFileCopyProgramGeneratorGetValidActions.NUMBER_ACTIONS).intValue();
-        String[] actions = splitActions(statement.getString(IFileCopyProgramGeneratorGetValidActions.ACTIONS), numberActions);
-
-        Set<FileCopyProgramGeneratorAction> fileCopyProgramGeneratorActions = new HashSet<FileCopyProgramGeneratorAction>();
-        for (String action : actions) {
-            fileCopyProgramGeneratorActions.add(FileCopyProgramGeneratorAction.find(action.trim()));
-        }
-
-        Result result = checkAction(FileKey.createNew(new JobKey(fileKey.getJobName())), FileCopyProgramGeneratorAction.CREATE);
-        if (result.isSuccessfull()) {
-            fileCopyProgramGeneratorActions.add(FileCopyProgramGeneratorAction.CREATE);
-        }
-
-        return fileCopyProgramGeneratorActions.toArray(new FileCopyProgramGeneratorAction[fileCopyProgramGeneratorActions.size()]);
-    }
-
-    @Override
-    public boolean isValidAction(IRapidFireFileResource file, FileCopyProgramGeneratorAction action) throws Exception {
-
-        KeyFileCopyProgramGeneratorActionCache fileCopyProgramGeneratorActionsKey = new KeyFileCopyProgramGeneratorActionCache(file);
-
-        Set<FileCopyProgramGeneratorAction> actionsSet = FileCopyProgramGeneratorActionCache.getInstance().getActions(
-            fileCopyProgramGeneratorActionsKey);
-        if (actionsSet == null) {
-            FileCopyProgramGeneratorAction[] fileCopyProgramGeneratorActions = getValidActions(file.getKey());
-            FileCopyProgramGeneratorActionCache.getInstance().putActions(fileCopyProgramGeneratorActionsKey, fileCopyProgramGeneratorActions);
-            actionsSet = FileCopyProgramGeneratorActionCache.getInstance().getActions(fileCopyProgramGeneratorActionsKey);
-        }
-
-        return actionsSet.contains(action);
+        return Result.createSuccessResult();
     }
 
     @Override

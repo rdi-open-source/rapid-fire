@@ -10,9 +10,8 @@ package biz.rapidfire.core.maintenance.filecopyprogramgenerator;
 
 public interface IFileCopyProgramGeneratorInitialize {
 
-    public static final int MODE = 1;
-    public static final int JOB = 2;
-    public static final int POSITION = 3;
-    public static final int SUCCESS = 4;
-    public static final int ERROR_CODE = 5;
+    public static final int JOB = 1;
+    public static final int POSITION = 2;
+    public static final int SUCCESS = 3;
+    public static final int ERROR_CODE = 4;
 }

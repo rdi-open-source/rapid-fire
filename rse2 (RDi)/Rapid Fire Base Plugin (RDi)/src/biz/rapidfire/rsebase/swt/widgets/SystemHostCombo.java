@@ -17,7 +17,7 @@ import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 
-import biz.rapidfire.rsebase.host.SystemConnectionHelper;
+import biz.rapidfire.rsebase.helpers.internal.SystemConnectionHelper;
 
 import com.ibm.etools.iseries.rse.ui.widgets.IBMiConnectionCombo;
 

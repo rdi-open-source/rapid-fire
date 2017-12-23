@@ -179,10 +179,12 @@ public class AreaManager extends AbstractManager<IRapidFireAreaResource, AreaKey
     }
 
     @Override
-    public void book() throws Exception {
+    public Result book() throws Exception {
 
         CallableStatement statement = dao.prepareCall(dao.insertLibraryQualifier("{CALL " + IJDBCConnection.LIBRARY + "\"MNTAREA_book\"()}")); //$NON-NLS-1$ //$NON-NLS-2$
         statement.execute();
+
+        return null;
     }
 
     @Override

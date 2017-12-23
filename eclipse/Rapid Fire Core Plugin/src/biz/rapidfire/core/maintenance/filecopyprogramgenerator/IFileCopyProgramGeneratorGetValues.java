@@ -8,8 +8,15 @@
 
 package biz.rapidfire.core.maintenance.filecopyprogramgenerator;
 
-import biz.rapidfire.core.maintenance.ICheck;
+public interface IFileCopyProgramGeneratorGetValues {
 
-public interface IFileCopyProgramGeneratorCheckAction extends ICheck {
-
+    public static final int SOURCE_FILE = 1;
+    public static final int SOURCE_FILE_LIBRARY = 2;
+    public static final int SOURCE_MEMBER = 3;
+    public static final int REPLACE = 4;
+    public static final int AREA = 5;
+    public static final int LIBRARY = 6;
+    public static final int SHADOW_LIBRARY = 7;
+    public static final int CONVERSION_PROGRAM = 8;
+    public static final int CONVERSION_PROGRAM_LIBRARY = 9;
 }

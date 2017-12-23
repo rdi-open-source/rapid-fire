@@ -17,6 +17,7 @@ import biz.rapidfire.core.maintenance.Result;
 import biz.rapidfire.core.maintenance.file.shared.FileKey;
 import biz.rapidfire.core.maintenance.filecopyprogramgenerator.FileCopyProgramGeneratorManager;
 import biz.rapidfire.core.maintenance.filecopyprogramgenerator.shared.FileCopyProgramGeneratorAction;
+import biz.rapidfire.core.maintenance.job.shared.JobKey;
 import biz.rapidfire.core.model.IRapidFireFileResource;
 import biz.rapidfire.core.model.IRapidFireJobResource;
 
@@ -24,12 +25,12 @@ public abstract class AbstractProgramGeneratorHandler extends
     AbstractResourceMaintenanceHandler<IRapidFireFileResource, FileCopyProgramGeneratorAction> {
 
     private FileCopyProgramGeneratorManager manager;
-    private FileCopyProgramGeneratorAction FileCopyProgramGeneratorAction;
+    private FileCopyProgramGeneratorAction fileCopyProgramGeneratorAction;
 
-    public AbstractProgramGeneratorHandler(MaintenanceMode mode, FileCopyProgramGeneratorAction FileCopyProgramGeneratorAction) {
-        super(mode, FileCopyProgramGeneratorAction);
+    public AbstractProgramGeneratorHandler(MaintenanceMode mode, FileCopyProgramGeneratorAction fileCopyProgramGeneratorAction) {
+        super(mode, fileCopyProgramGeneratorAction);
 
-        this.FileCopyProgramGeneratorAction = FileCopyProgramGeneratorAction;
+        this.fileCopyProgramGeneratorAction = fileCopyProgramGeneratorAction;
     }
 
     protected FileCopyProgramGeneratorManager getManager() {
@@ -49,7 +50,7 @@ public abstract class AbstractProgramGeneratorHandler extends
 
     @Override
     protected boolean isValidAction(IRapidFireFileResource file) throws Exception {
-        return getOrCreateManager(file.getParentJob()).isValidAction(file, FileCopyProgramGeneratorAction);
+        return getOrCreateManager(file.getParentJob()).isValidAction(file, fileCopyProgramGeneratorAction);
     }
 
     @Override
@@ -63,18 +64,18 @@ public abstract class AbstractProgramGeneratorHandler extends
     }
 
     @Override
-    protected boolean canExecuteAction(IRapidFireFileResource file, FileCopyProgramGeneratorAction FileCopyProgramGeneratorAction) {
+    protected boolean canExecuteAction(IRapidFireFileResource file, FileCopyProgramGeneratorAction fileCopyProgramGeneratorAction) {
 
         String message = null;
 
         try {
 
             Result result;
-            if (FileCopyProgramGeneratorAction == FileCopyProgramGeneratorAction.CREATE) {
+            if (fileCopyProgramGeneratorAction == FileCopyProgramGeneratorAction.CREATE) {
                 result = getOrCreateManager(file.getParentJob()).checkAction(FileKey.createNew(file.getParent().getKey()),
-                    FileCopyProgramGeneratorAction);
+                    fileCopyProgramGeneratorAction);
             } else {
-                result = getOrCreateManager(file.getParentJob()).checkAction(file.getKey(), FileCopyProgramGeneratorAction);
+                result = getOrCreateManager(file.getParentJob()).checkAction(file.getKey(), fileCopyProgramGeneratorAction);
             }
 
             if (result.isSuccessfull()) {
@@ -100,7 +101,7 @@ public abstract class AbstractProgramGeneratorHandler extends
 
         manager.openFiles();
 
-        Result result = Result.createSuccessResult();
+        Result result = manager.initialize(getMaintenanceMode(), new FileKey(new JobKey(file.getJob()), file.getPosition()));
 
         return result;
     }

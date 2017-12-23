@@ -8,8 +8,9 @@
 
 package biz.rapidfire.core.maintenance.filecopyprogramgenerator;
 
-import biz.rapidfire.core.maintenance.ICheck;
 
-public interface IFileCopyProgramGeneratorCheckAction extends ICheck {
+public interface IFileCopyProgramGeneratorBook {
 
+    public static final int SUCCESS = 1;
+    public static final int MESSAGE = 2;
 }

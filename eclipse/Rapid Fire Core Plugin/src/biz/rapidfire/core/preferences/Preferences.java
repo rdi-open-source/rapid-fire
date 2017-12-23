@@ -69,6 +69,9 @@ public final class Preferences {
     private static final String WIZARD_CONNECTION = WIZARD + "CONNECTION"; //$NON-NLS-1$
     private static final String WIZARD_RAPID_FIRE_LIBRARY = WIZARD + "RAPID_FIRE_LIBRARY"; //$NON-NLS-1$
 
+    private static final String GENERATOR = DOMAIN + "GENERATOR.";
+    private static final String GENERATOR_OPEN_MEMBER = GENERATOR + "OPEN_MEMBER"; //$NON-NLS-1$
+
     private static final String DATE_FORMAT_LOCALE = "*LOCALE"; //$NON-NLS-1$
     private static final String TIME_FORMAT_LOCALE = "*LOCALE"; //$NON-NLS-1$
 
@@ -138,6 +141,10 @@ public final class Preferences {
         return preferenceStore.getString(WIZARD_RAPID_FIRE_LIBRARY);
     }
 
+    public boolean isOpenGeneratedCopyProgram() {
+        return preferenceStore.getBoolean(GENERATOR_OPEN_MEMBER);
+    }
+
     /*
      * Preferences: SETTER
      */
@@ -170,6 +177,10 @@ public final class Preferences {
         preferenceStore.setValue(WIZARD_CONNECTION, connectionName);
     }
 
+    public void setOpenGeneratedCopyProgram(boolean openMember) {
+        preferenceStore.setValue(GENERATOR_OPEN_MEMBER, openMember);
+    }
+
     public void setWizardRapidFireLibrary(String libraryName) {
         preferenceStore.setValue(WIZARD_RAPID_FIRE_LIBRARY, libraryName);
     }
@@ -189,6 +200,8 @@ public final class Preferences {
 
         preferenceStore.setDefault(WIZARD_CONNECTION, getDefaultWizardConnection());
         preferenceStore.setDefault(WIZARD_RAPID_FIRE_LIBRARY, getDefaultWizardRapidFireLibrary());
+
+        preferenceStore.setDefault(GENERATOR_OPEN_MEMBER, getDefaultOpenGeneratedCopyProgram());
     }
 
     /*
@@ -241,6 +254,10 @@ public final class Preferences {
 
     public String getDefaultWizardRapidFireLibrary() {
         return "RAPIDFIRE"; //$NON-NLS-1$
+    }
+
+    private boolean getDefaultOpenGeneratedCopyProgram() {
+        return true;
     }
 
     public void registerPreferencesListener(IPropertyChangeListener listener) {

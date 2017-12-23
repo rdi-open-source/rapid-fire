@@ -156,10 +156,12 @@ public class LibraryManager extends AbstractManager<IRapidFireLibraryResource, L
     }
 
     @Override
-    public void book() throws Exception {
+    public Result book() throws Exception {
 
         CallableStatement statement = dao.prepareCall(dao.insertLibraryQualifier("{CALL " + IJDBCConnection.LIBRARY + "\"MNTLIB_book\"()}")); //$NON-NLS-1$ //$NON-NLS-2$
         statement.execute();
+
+        return null;
     }
 
     @Override

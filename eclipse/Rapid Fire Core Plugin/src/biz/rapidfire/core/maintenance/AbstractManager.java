@@ -29,7 +29,7 @@ public abstract class AbstractManager<R extends IRapidFireResource, K extends IR
 
     public abstract Result check() throws Exception;
 
-    public abstract void book() throws Exception;
+    public abstract Result book() throws Exception;
 
     public abstract void closeFiles() throws Exception;
 

@@ -166,10 +166,12 @@ public class JobManager extends AbstractManager<IRapidFireJobResource, JobKey, J
     }
 
     @Override
-    public void book() throws Exception {
+    public Result book() throws Exception {
 
         CallableStatement statement = dao.prepareCall(dao.insertLibraryQualifier("{CALL " + IJDBCConnection.LIBRARY + "\"MNTJOB_book\"()}")); //$NON-NLS-1$ //$NON-NLS-2$
         statement.execute();
+
+        return null;
     }
 
     @Override

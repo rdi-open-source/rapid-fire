@@ -40,6 +40,7 @@ public class Messages extends NLS {
     public static String Dialog_Title_Reset_Job_A;
     public static String Dialog_Title_Reset_Job_A_after_abortion;
     public static String DialogTitle_Job_Error_Message;
+    public static String Dialog_File_Copy_Program_Generator;
 
     public static String Wizard_Title_New_Job_wizard;
     public static String Wizard_Page_Data_Library;
@@ -126,6 +127,7 @@ public class Messages extends NLS {
     public static String Label_Date_colon;
     public static String Label_Time_colon;
     public static String Label_Job_status_view;
+    public static String Label_Open_member_colon;
 
     public static String Tooltip_Library;
     public static String Tooltip_Job;
@@ -167,6 +169,7 @@ public class Messages extends NLS {
     public static String Tooltip_Connection_name;
     public static String Tooltip_Specifies_the_format_for_displaying_date_values;
     public static String Tooltip_Specifies_the_format_for_displaying_time_values;
+    public static String Tooltip_Open_member;
 
     // Questions
     public static String Question_Do_you_want_to_delete_library_A;
@@ -191,6 +194,7 @@ public class Messages extends NLS {
     public static String Library_A_successfull_transfered;
     public static String No_errors;
     public static String NewJobWizard_Rapid_Fire_job_A_created;
+    public static String Copy_program_successfully_generated;
 
     // Action labels
     public static String ActionLabel_Auto_refresh_menu_item;
@@ -301,6 +305,7 @@ public class Messages extends NLS {
     public static String Library_name_is_missing;
     public static String File_name_is_missing;
     public static String Member_name_is_missing;
+    public static String Could_not_generate_copy_program_Do_you_want_to_try_again;
 
     // API error messages
     public static String EntityManager_Unknown_error_code_A;

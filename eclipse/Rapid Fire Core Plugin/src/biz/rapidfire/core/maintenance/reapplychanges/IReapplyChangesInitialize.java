@@ -6,10 +6,13 @@
  * http://www.eclipse.org/legal/cpl-v10.html
  *******************************************************************************/
 
-package biz.rapidfire.core.maintenance.filecopyprogramgenerator;
+package biz.rapidfire.core.maintenance.reapplychanges;
 
-import biz.rapidfire.core.maintenance.ICheck;
+public interface IReapplyChangesInitialize {
 
-public interface IFileCopyProgramGeneratorCheckAction extends ICheck {
-
+    public static final int MODE = 1;
+    public static final int JOB = 2;
+    public static final int POSITION = 3;
+    public static final int SUCCESS = 4;
+    public static final int ERROR_CODE = 5;
 }

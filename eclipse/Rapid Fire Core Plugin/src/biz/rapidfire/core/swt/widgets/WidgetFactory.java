@@ -652,7 +652,18 @@ public final class WidgetFactory {
      * @return checkbox field
      */
     public static Button createCheckbox(Composite parent) {
-        return WidgetFactory.getInstance().produceCheckboxField(parent);
+        return WidgetFactory.getInstance().produceCheckboxField(parent, SWT.NONE, null, null);
+    }
+
+    /**
+     * Produces a checkbox field.
+     * 
+     * @param parent - parent composite
+     * @param label - label of the checkbox
+     * @return checkbox field
+     */
+    public static Button createCheckbox(Composite parent, String label, String tooltip, int style) {
+        return WidgetFactory.getInstance().produceCheckboxField(parent, style, label, tooltip);
     }
 
     /**
@@ -833,9 +844,41 @@ public final class WidgetFactory {
         return spinner;
     }
 
-    private Button produceCheckboxField(Composite parent) {
+    private Button produceCheckboxField(Composite parent, int style, String text, String tooltip) {
 
-        Button checkBox = new Button(parent, SWT.CHECK);
+        if (!isOption(style, SWT.NONE) && !isOption(style, SWT.LEFT) && !isOption(style, SWT.RIGHT)) {
+            throw new RuntimeException("Invalid style option: " + style);
+        }
+
+        int numColumns;
+        if (text != null) {
+            numColumns = 2;
+        } else {
+            numColumns = 1;
+        }
+
+        Composite inner = new Composite(parent, SWT.NONE);
+        GridLayout gl = new GridLayout(numColumns, false);
+        gl.marginHeight = 0;
+        gl.marginWidth = 0;
+        inner.setLayout(gl);
+
+        Label labelControl = null;
+        if (numColumns == 2 && isOption(style, SWT.LEFT)) {
+            labelControl = createLabel(inner, text, tooltip);
+        }
+
+        Button checkBox = new Button(inner, SWT.CHECK);
+
+        if (numColumns == 2 && isOption(style, SWT.RIGHT)) {
+            labelControl = createLabel(inner, text, tooltip);
+        }
+
+        if (labelControl != null) {
+            if (tooltip != null) {
+                labelControl.setToolTipText(tooltip);
+            }
+        }
 
         return checkBox;
     }
@@ -955,6 +998,15 @@ public final class WidgetFactory {
         label.setToolTipText(tooltip);
 
         return label;
+    }
+
+    private boolean isOption(int style, int option) {
+
+        if ((style & option) == option) {
+            return true;
+        }
+
+        return false;
     }
 
     /**
