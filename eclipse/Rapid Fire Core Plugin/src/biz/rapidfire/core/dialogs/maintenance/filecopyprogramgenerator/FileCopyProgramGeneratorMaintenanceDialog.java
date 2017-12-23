@@ -180,7 +180,7 @@ public class FileCopyProgramGeneratorMaintenanceDialog extends AbstractMaintenan
 
     @Override
     protected String getDialogTitle() {
-        return Messages.DialogTitle_File;
+        return Messages.DialogFile_Copy_Program_Generator;
     }
 
     @Override
