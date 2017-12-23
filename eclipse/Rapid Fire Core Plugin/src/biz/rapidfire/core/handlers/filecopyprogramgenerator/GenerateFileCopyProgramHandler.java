@@ -74,9 +74,9 @@ public class GenerateFileCopyProgramHandler extends AbstractProgramGeneratorHand
                         String sourceMember = dialog.getSourceMember();
                         RapidFireHelper.openMember(connectionName, sourceFileLibrary, sourceFile, sourceMember);
                     }
+                    MessageDialog.openInformation(getShell(), Messages.DialogFile_Copy_Program_Generator,
+                        Messages.Copy_program_successfully_generated);
                 }
-
-                MessageDialog.openInformation(getShell(), Messages.DialogFile_Copy_Program_Generator, Messages.Copy_program_successfully_generated);
             }
 
         } while (busyResult.isError() && rc == Dialog.OK);

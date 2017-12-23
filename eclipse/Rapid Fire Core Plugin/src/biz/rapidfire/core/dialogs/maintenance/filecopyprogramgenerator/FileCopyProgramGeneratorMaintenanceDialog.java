@@ -237,7 +237,7 @@ public class FileCopyProgramGeneratorMaintenanceDialog extends AbstractMaintenan
         values.setSourceFileLibrary(sourceFileLibrary);
         values.setSourceMember(sourceMember);
         values.setReplace(false);
-        values.setArea("");
+        values.setArea(""); //$NON-NLS-1$
         values.setLibrary(library);
         values.setShadowLibrary(shadowLibrary);
         values.setConversionProgram(conversionProgram);
