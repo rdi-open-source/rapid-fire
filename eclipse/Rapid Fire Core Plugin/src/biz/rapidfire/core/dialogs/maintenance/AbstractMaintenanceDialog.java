@@ -37,12 +37,14 @@ public abstract class AbstractMaintenanceDialog extends XDialog {
 
     private MaintenanceMode mode;
     private boolean isScrollable;
+    private int defaultNumColumns;
 
     public AbstractMaintenanceDialog(Shell shell, MaintenanceMode mode) {
         super(shell);
 
         this.mode = mode;
         this.isScrollable = true;
+        this.defaultNumColumns = 2;
     }
 
     protected boolean isDisplayMode() {
@@ -82,7 +84,7 @@ public abstract class AbstractMaintenanceDialog extends XDialog {
             editorArea = new Composite(container, SWT.NONE);
         }
 
-        editorArea.setLayout(new GridLayout(2, false));
+        editorArea.setLayout(new GridLayout(getNumColumns(), false));
 
         WidgetFactory.createDialogSubTitle(editorArea, getMode());
 
@@ -99,6 +101,10 @@ public abstract class AbstractMaintenanceDialog extends XDialog {
         }
 
         return container;
+    }
+
+    protected int getNumColumns() {
+        return defaultNumColumns;
     }
 
     protected void setErrorMessage(String errorMessage, Result apiCallResult) {

@@ -11,12 +11,16 @@ package biz.rapidfire.core.handlers.filecopyprogramgenerator;
 import org.eclipse.core.commands.IHandler;
 import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.swt.custom.BusyIndicator;
 
 import biz.rapidfire.core.Messages;
+import biz.rapidfire.core.RapidFireCorePlugin;
 import biz.rapidfire.core.dialogs.maintenance.filecopyprogramgenerator.FileCopyProgramGeneratorMaintenanceDialog;
+import biz.rapidfire.core.helpers.ExceptionHelper;
 import biz.rapidfire.core.helpers.RapidFireHelper;
 import biz.rapidfire.core.maintenance.MaintenanceMode;
 import biz.rapidfire.core.maintenance.Result;
+import biz.rapidfire.core.maintenance.Success;
 import biz.rapidfire.core.maintenance.filecopyprogramgenerator.shared.FileCopyProgramGeneratorAction;
 import biz.rapidfire.core.model.IRapidFireFileResource;
 
@@ -31,26 +35,33 @@ public class GenerateFileCopyProgramHandler extends AbstractProgramGeneratorHand
 
         int rc = 0;
 
-        Result result = null;
+        final BusyResult busyResult = new BusyResult();
 
         do {
 
             FileCopyProgramGeneratorMaintenanceDialog dialog = FileCopyProgramGeneratorMaintenanceDialog.getCreateDialog(getShell(), getManager());
             dialog.setConnectionName(file.getParentSubSystem().getConnectionName());
+            dialog.setAreas(file.getParentSubSystem().getAreas(file, getShell()));
 
             rc = dialog.open();
             if (rc == Dialog.OK) {
 
-                // TODO: implement busy indicator
-                // BusyIndicator.showWhile(getShell().getDisplay(), new
-                // Runnable() {
-                //
-                // public void run() {
-                result = getManager().book();
-                // }
-                // });
+                BusyIndicator.showWhile(getShell().getDisplay(), new Runnable() {
 
-                if (result.isError()) {
+                    public void run() {
+                        try {
+
+                            busyResult.setResult(getManager().book());
+
+                        } catch (Exception e) {
+                            RapidFireCorePlugin.logError("*** Unexpected exception when generating the copy program ***", e); //$NON-NLS-1$
+                            String message = ExceptionHelper.getLocalizedMessage(e);
+                            busyResult.setResult(new Result(Success.NO.label(), message));
+                        }
+                    }
+                });
+
+                if (busyResult.isError()) {
                     if (!MessageDialog
                         .openQuestion(getShell(), Messages.E_R_R_O_R, Messages.Could_not_generate_copy_program_Do_you_want_to_try_again)) {
                         rc = Dialog.CANCEL;
@@ -65,10 +76,27 @@ public class GenerateFileCopyProgramHandler extends AbstractProgramGeneratorHand
                     }
                 }
 
-                MessageDialog.openInformation(getShell(), Messages.Dialog_File_Copy_Program_Generator, Messages.Copy_program_successfully_generated);
+                MessageDialog.openInformation(getShell(), Messages.DialogFile_Copy_Program_Generator, Messages.Copy_program_successfully_generated);
             }
 
-        } while (result != null && result.isError() && rc == Dialog.OK);
+        } while (busyResult.isError() && rc == Dialog.OK);
 
+    }
+
+    private class BusyResult {
+
+        private Result result;
+
+        public BusyResult() {
+            this.result = Result.createSuccessResult();
+        }
+
+        public boolean isError() {
+            return result.isError();
+        }
+
+        public void setResult(Result result) {
+            this.result = result;
+        }
     }
 }

@@ -9,8 +9,9 @@
 package biz.rapidfire.core.model;
 
 import biz.rapidfire.core.maintenance.area.shared.AreaKey;
+import biz.rapidfire.core.swt.widgets.viewers.stringlist.IStringListItem;
 
-public interface IRapidFireAreaResource extends IRapidFireChildResource<IRapidFireFileResource> {
+public interface IRapidFireAreaResource extends IRapidFireChildResource<IRapidFireFileResource>, IStringListItem {
 
     /*
      * Key attributes

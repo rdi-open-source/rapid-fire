@@ -31,16 +31,17 @@ public class Messages extends NLS {
     public static String DialogTitle_Notification;
     public static String DialogTitle_Area;
     public static String DialogTitle_Activity_Schedule;
-    public static String Dialog_Title_Transfer_Rapid_Fire_library;
+    public static String DialogTitle_Transfer_Rapid_Fire_library;
     public static String DialogTitle_Delete_Object;
-    public static String Dialog_Title_Sign_On;
-    public static String Dialog_Title_Test_Job_A;
-    public static String Dialog_Title_Start_Job_A;
-    public static String Dialog_Title_End_Job_A;
-    public static String Dialog_Title_Reset_Job_A;
-    public static String Dialog_Title_Reset_Job_A_after_abortion;
+    public static String DialogTitle_Sign_On;
+    public static String DialogTitle_Test_Job_A;
+    public static String DialogTitle_Start_Job_A;
+    public static String DialogTitle_End_Job_A;
+    public static String DialogTitle_Reset_Job_A;
+    public static String DialogTitle_Reset_Job_A_after_abortion;
     public static String DialogTitle_Job_Error_Message;
-    public static String Dialog_File_Copy_Program_Generator;
+    public static String DialogFile_Copy_Program_Generator;
+    public static String DialogTitle_Select_area;
 
     public static String Wizard_Title_New_Job_wizard;
     public static String Wizard_Page_Data_Library;
@@ -73,6 +74,7 @@ public class Messages extends NLS {
     public static String ColumnLabel_Active;
     public static String ColumnLabel_Start_time;
     public static String ColumnLabel_End_time;
+    public static String ColumnLabel_Area;
 
     // Dialog labels
     public static String Label_E_Mail_colon;
@@ -170,6 +172,7 @@ public class Messages extends NLS {
     public static String Tooltip_Specifies_the_format_for_displaying_date_values;
     public static String Tooltip_Specifies_the_format_for_displaying_time_values;
     public static String Tooltip_Open_member;
+    public static String Tooltip_Select_libraries_by_area;
 
     // Questions
     public static String Question_Do_you_want_to_delete_library_A;

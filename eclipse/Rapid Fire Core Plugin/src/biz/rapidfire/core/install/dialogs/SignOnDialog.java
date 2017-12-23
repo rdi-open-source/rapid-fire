@@ -60,7 +60,7 @@ public class SignOnDialog extends XDialog {
     @Override
     protected void configureShell(Shell newShell) {
         super.configureShell(newShell);
-        newShell.setText(Messages.Dialog_Title_Sign_On);
+        newShell.setText(Messages.DialogTitle_Sign_On);
     }
 
     public AS400 getAS400() {

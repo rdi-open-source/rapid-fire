@@ -8,14 +8,18 @@
 
 package biz.rapidfire.core.dialogs.maintenance.filecopyprogramgenerator;
 
+import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.IDialogSettings;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.SWT;
+import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
+import org.eclipse.swt.widgets.Text;
 
 import biz.rapidfire.core.Messages;
 import biz.rapidfire.core.RapidFireCorePlugin;
@@ -30,28 +34,44 @@ import biz.rapidfire.core.maintenance.Result;
 import biz.rapidfire.core.maintenance.file.shared.ConversionProgram;
 import biz.rapidfire.core.maintenance.filecopyprogramgenerator.FileCopyProgramGeneratorManager;
 import biz.rapidfire.core.maintenance.filecopyprogramgenerator.FileCopyProgramGeneratorValues;
+import biz.rapidfire.core.model.IRapidFireAreaResource;
+import biz.rapidfire.core.model.IRapidFireLibraryResource;
 import biz.rapidfire.core.preferences.Preferences;
 import biz.rapidfire.core.swt.widgets.WidgetFactory;
+import biz.rapidfire.core.swt.widgets.viewers.stringlist.ItemSelectionDialog;
 import biz.rapidfire.rsebase.host.SystemFileType;
 import biz.rapidfire.rsebase.swt.widgets.SystemHostCombo;
 import biz.rapidfire.rsebase.swt.widgets.SystemMemberPrompt;
 
 import com.ibm.as400.access.AS400;
 
-public class FileCopyProgramGeneratorMaintenanceDialog extends AbstractMaintenanceDialog {
+public class FileCopyProgramGeneratorMaintenanceDialog extends AbstractMaintenanceDialog implements SelectionListener {
+
+    private static final int NUM_COLUMNS = 3;
 
     private FileCopyProgramGeneratorManager manager;
 
     private SystemHostCombo systemHostCombo;
     private SystemMemberPrompt memberPrompt;
-
+    private Button buttonSelectArea;
+    private Text textLibrary;
+    private Text textShadowLibrary;
+    private Text textConversionProgram;
+    private Text textConversionProgramLibrary;
     private Button checkboxOpenMember;
 
-    private boolean isOpenMember;
     private String connectionName;
+    private IRapidFireAreaResource[] areaItems;
+
     private String sourceFile;
     private String sourceFileLibrary;
     private String sourceMember;
+    private String library;
+    private String shadowLibrary;
+    private String conversionProgram;
+    private String conversionProgramLibrary;
+
+    private boolean isOpenMember;
 
     public static FileCopyProgramGeneratorMaintenanceDialog getCreateDialog(Shell shell, FileCopyProgramGeneratorManager manager) {
         return new FileCopyProgramGeneratorMaintenanceDialog(shell, MaintenanceMode.CREATE, manager);
@@ -97,21 +117,62 @@ public class FileCopyProgramGeneratorMaintenanceDialog extends AbstractMaintenan
         }
     }
 
+    public void setAreas(IRapidFireAreaResource[] areas) {
+        this.areaItems = areas;
+    }
+
+    @Override
+    protected int getNumColumns() {
+        return NUM_COLUMNS;
+    }
+
     @Override
     protected void createEditorAreaContent(Composite parent) {
 
-        // Group memberGroup = new Group(parent, SWT.NONE);
-        // memberGroup.setLayout(new GridLayout(1, false));
-        // memberGroup.setLayoutData(new GridData(SWT.FILL, SWT.BEGINNING, true,
-        // false, 2, 1));
-
         systemHostCombo = WidgetFactory.createSystemHostCombo(parent, SWT.NONE, false);
-        systemHostCombo.setLayoutData(new GridData(SWT.FILL, SWT.BEGINNING, true, false, 2, 1));
+        systemHostCombo.setLayoutData(new GridData(SWT.FILL, SWT.BEGINNING, true, false, NUM_COLUMNS, 1));
 
         memberPrompt = WidgetFactory.createSystemMemberPrompt(parent, SWT.NONE, false, false, SystemFileType.SRC);
-        memberPrompt.setLayoutData(new GridData(SWT.FILL, SWT.BEGINNING, true, false, 2, 1));
+        memberPrompt.setLayoutData(new GridData(SWT.FILL, SWT.BEGINNING, true, false, NUM_COLUMNS, 1));
 
-        WidgetFactory.createSeparator(parent, 2);
+        WidgetFactory.createLineFiller(parent);
+
+        WidgetFactory.createLabel(parent, Messages.Label_Library_colon, Messages.Tooltip_Library);
+
+        textLibrary = WidgetFactory.createNameText(parent);
+        textLibrary.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+
+        buttonSelectArea = WidgetFactory.createPushButton(parent, RapidFireCorePlugin.getDefault().getImage(RapidFireCorePlugin.IMAGE_LIBRARY));
+        buttonSelectArea.setToolTipText(Messages.Tooltip_Select_libraries_by_area);
+        buttonSelectArea.addSelectionListener(this);
+
+        WidgetFactory.createLabel(parent, Messages.Label_Shadow_library_colon, Messages.Tooltip_Shadow_library);
+
+        textShadowLibrary = WidgetFactory.createNameText(parent);
+        textShadowLibrary.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+
+        WidgetFactory.createLabel(parent, null, null).setVisible(false); // filler
+
+        WidgetFactory.createLineFiller(parent);
+
+        WidgetFactory.createLabel(parent, Messages.Label_Conversion_program_name_colon, Messages.Tooltip_Conversion_program_name);
+
+        textConversionProgram = WidgetFactory.createNameText(parent);
+        textConversionProgram.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+        setDefaultValue(textConversionProgram, ConversionProgram.NONE.label());
+
+        WidgetFactory.createLabel(parent, null, null).setVisible(false); // filler
+
+        WidgetFactory.createLabel(parent, Messages.Label_Conversion_program_library_name_colon, Messages.Tooltip_Conversion_program_library_name);
+
+        textConversionProgramLibrary = WidgetFactory.createNameText(parent);
+        textConversionProgramLibrary.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+
+        WidgetFactory.createLabel(parent, null, null).setVisible(false); // filler
+
+        WidgetFactory.createLineFiller(parent);
+
+        WidgetFactory.createSeparator(parent, NUM_COLUMNS);
 
         checkboxOpenMember = WidgetFactory.createCheckbox(parent, Messages.Label_Open_member_colon, Messages.Tooltip_Open_member, SWT.LEFT);
         checkboxOpenMember.setSelection(isOpenMember());
@@ -128,6 +189,11 @@ public class FileCopyProgramGeneratorMaintenanceDialog extends AbstractMaintenan
         if (connectionName != null) {
             systemHostCombo.selectConnection(connectionName);
         }
+
+        setText(textLibrary, "");
+        setText(textShadowLibrary, "");
+        setText(textConversionProgram, "");
+        setText(textConversionProgramLibrary, "");
     }
 
     @Override
@@ -141,6 +207,10 @@ public class FileCopyProgramGeneratorMaintenanceDialog extends AbstractMaintenan
         sourceFileLibrary = memberPrompt.getLibraryName();
         sourceFile = memberPrompt.getFileName();
         sourceMember = memberPrompt.getMemberName();
+        library = textLibrary.getText();
+        shadowLibrary = textShadowLibrary.getText();
+        conversionProgram = textConversionProgram.getText();
+        conversionProgramLibrary = textConversionProgramLibrary.getText();
 
         String errorMessage;
 
@@ -167,21 +237,38 @@ public class FileCopyProgramGeneratorMaintenanceDialog extends AbstractMaintenan
         values.setSourceFileLibrary(sourceFileLibrary);
         values.setSourceMember(sourceMember);
         values.setReplace(false);
-        values.setArea("RFPRI");
-        values.setLibrary("RFPRI");
-        values.setShadowLibrary("RADDATZ");
-        values.setConversionProgram(ConversionProgram.NONE.label());
-        values.setConversionProgramLibrary("");
+        values.setArea("");
+        values.setLibrary(library);
+        values.setShadowLibrary(shadowLibrary);
+        values.setConversionProgram(conversionProgram);
+        values.setConversionProgramLibrary(conversionProgramLibrary);
 
         isOpenMember = checkboxOpenMember.getSelection();
 
         try {
+
             manager.setValues(values);
             Result result = manager.check();
+
+            FileCopyProgramGeneratorValues newValues = manager.getValues();
+
             if (result.isError()) {
                 MessageDialog.openError(getShell(), Messages.E_R_R_O_R, result.getMessage());
                 return;
             }
+
+            if (!values.equals(newValues)) {
+                memberPrompt.setFileName(newValues.getSourceFile());
+                memberPrompt.setLibraryName(newValues.getSourceFileLibrary());
+                memberPrompt.setMemberName(newValues.getSourceMember());
+                // textArea.setText(newValues.getArea());
+                textLibrary.setText(newValues.getLibrary());
+                textShadowLibrary.setText(newValues.getShadowLibrary());
+                textConversionProgram.setText(newValues.getConversionProgram());
+                textConversionProgramLibrary.setText(newValues.getConversionProgramLibrary());
+                return;
+            }
+
         } catch (Exception e) {
             MessageDialog.openError(getShell(), Messages.E_R_R_O_R, ExceptionHelper.getLocalizedMessage(e));
             return;
@@ -251,6 +338,44 @@ public class FileCopyProgramGeneratorMaintenanceDialog extends AbstractMaintenan
         return null;
     }
 
+    public void widgetDefaultSelected(SelectionEvent event) {
+        widgetSelected(event);
+    }
+
+    public void widgetSelected(SelectionEvent event) {
+
+        if (event.getSource() == buttonSelectArea) {
+            ItemSelectionDialog<IRapidFireAreaResource> dialog = new ItemSelectionDialog<IRapidFireAreaResource>(getShell(),
+                Messages.DialogTitle_Select_area, Messages.ColumnLabel_Area);
+            dialog.setInputData(areaItems);
+            if (dialog.open() == Dialog.OK) {
+                IRapidFireAreaResource selectedArea = dialog.getSelectedItem();
+                setLibraries(selectedArea);
+                return;
+            }
+        }
+    }
+
+    private void setLibraries(IRapidFireAreaResource area) {
+
+        try {
+
+            IRapidFireLibraryResource library = area.getParentSubSystem().getLibrary(area.getParentJob(), area.getLibrary(), getShell());
+            if (library != null) {
+                if (library.getName() != null) {
+                    textLibrary.setText(library.getName());
+                }
+                if (library.getShadowLibrary() != null) {
+                    textShadowLibrary.setText(library.getShadowLibrary());
+                }
+            }
+
+        } catch (Exception e) {
+            RapidFireCorePlugin.logError("*** Could not read libraries of area: " + area.getName() + " ***", e); //$NON-NLS-1$ //$NON-NLS-2$
+        }
+
+    }
+
     /**
      * Overridden to make this dialog resizable.
      */
@@ -264,7 +389,7 @@ public class FileCopyProgramGeneratorMaintenanceDialog extends AbstractMaintenan
      */
     @Override
     protected Point getDefaultSize() {
-        return getShell().computeSize(Size.getSize(300), SWT.DEFAULT, true);
+        return getShell().computeSize(Size.getSize(400), SWT.DEFAULT, true);
     }
 
     /**

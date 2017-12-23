@@ -246,6 +246,20 @@ public class RapidFireSubSystem extends SubSystem implements IISeriesSubSystem, 
         return libraries.toArray(new IRapidFireLibraryResource[libraries.size()]);
     }
 
+    public IRapidFireLibraryResource getLibrary(IRapidFireJobResource job, String libraryName, Shell shell) throws Exception {
+
+        if (!successFullyLoaded()) {
+            return null;
+        }
+
+        String dataLibraryName = job.getDataLibrary();
+
+        ILibrariesDAO dao = new LibrariesDAO(getConnectionName(), dataLibraryName);
+        IRapidFireLibraryResource library = dao.load(job, libraryName, shell);
+
+        return library;
+    }
+
     public IRapidFireNotificationResource[] getNotifications(IRapidFireJobResource job, Shell shell) throws Exception {
 
         if (!successFullyLoaded()) {

@@ -35,12 +35,24 @@ public class SystemMemberPrompt {
         return memberPrompt.getLibraryName();
     }
 
+    public void setLibraryName(String libraryName) {
+        this.memberPrompt.setLibraryName(libraryName);
+    }
+
     public String getFileName() {
         return memberPrompt.getFileName();
     }
 
+    public void setFileName(String fileName) {
+        this.memberPrompt.setFileName(fileName);
+    }
+
     public String getMemberName() {
         return memberPrompt.getMemberName();
+    }
+
+    public void setMemberName(String memberName) {
+        memberPrompt.setMemberName(memberName);
     }
 
     public void setLayoutData(Object layoutData) {

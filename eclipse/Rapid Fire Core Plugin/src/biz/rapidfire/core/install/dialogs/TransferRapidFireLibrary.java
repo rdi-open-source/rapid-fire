@@ -86,7 +86,7 @@ public class TransferRapidFireLibrary extends Shell {
         gl_shell.verticalSpacing = 10;
         setLayout(gl_shell);
 
-        setText(Messages.Dialog_Title_Transfer_Rapid_Fire_library);
+        setText(Messages.DialogTitle_Transfer_Rapid_Fire_library);
         setSize(500, 330);
 
         buttonStart = WidgetFactory.createPushButton(this);

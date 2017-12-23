@@ -64,15 +64,15 @@ public class ConfirmActionDialog {
 
         switch (jobAction) {
         case TSTJOB:
-            return Messages.bindParameters(Messages.Dialog_Title_Test_Job_A, jobName);
+            return Messages.bindParameters(Messages.DialogTitle_Test_Job_A, jobName);
         case STRJOB:
-            return Messages.bindParameters(Messages.Dialog_Title_Start_Job_A, jobName);
+            return Messages.bindParameters(Messages.DialogTitle_Start_Job_A, jobName);
         case ENDJOB:
-            return Messages.bindParameters(Messages.Dialog_Title_End_Job_A, jobName);
+            return Messages.bindParameters(Messages.DialogTitle_End_Job_A, jobName);
         case RESETJOB:
-            return Messages.bindParameters(Messages.Dialog_Title_Reset_Job_A, jobName);
+            return Messages.bindParameters(Messages.DialogTitle_Reset_Job_A, jobName);
         case RESETJOBA:
-            return Messages.bindParameters(Messages.Dialog_Title_Reset_Job_A_after_abortion, jobName);
+            return Messages.bindParameters(Messages.DialogTitle_Reset_Job_A_after_abortion, jobName);
 
         default:
             return "???"; // //$NON-NLS-1$

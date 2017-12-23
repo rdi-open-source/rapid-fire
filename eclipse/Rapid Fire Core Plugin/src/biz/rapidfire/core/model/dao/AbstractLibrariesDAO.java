@@ -64,6 +64,41 @@ public abstract class AbstractLibrariesDAO {
         return libraries;
     }
 
+    public IRapidFireLibraryResource load(IRapidFireJobResource job, String libraryName, Shell shell) throws Exception {
+
+        IRapidFireLibraryResource library = null;
+
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+
+        if (!dao.checkRapidFireLibrary(shell)) {
+            return null;
+        }
+
+        try {
+
+            String sqlStatement = getSqlStatement();
+            sqlStatement = sqlStatement + " AND LIBRARY = ?";
+            preparedStatement = dao.prepareStatement(sqlStatement);
+            preparedStatement.setString(1, job.getName());
+            preparedStatement.setString(2, libraryName);
+            resultSet = preparedStatement.executeQuery();
+            resultSet.setFetchSize(2);
+
+            if (resultSet != null) {
+                while (resultSet.next()) {
+                    library = produceLibrary(resultSet, job);
+                }
+            }
+
+        } finally {
+            dao.closeStatement(preparedStatement);
+            dao.closeResultSet(resultSet);
+        }
+
+        return library;
+    }
+
     private IRapidFireLibraryResource produceLibrary(ResultSet resultSet, IRapidFireJobResource job) throws SQLException {
 
         // String job = resultSet.getString(JOB).trim();

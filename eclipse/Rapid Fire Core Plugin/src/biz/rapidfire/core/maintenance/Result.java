@@ -58,10 +58,6 @@ public class Result {
         return message;
     }
 
-    public void setMessage(String message) {
-        this.message = message.trim();
-    }
-
     public boolean isSuccessfull() {
         return Success.YES.equals(success);
     }

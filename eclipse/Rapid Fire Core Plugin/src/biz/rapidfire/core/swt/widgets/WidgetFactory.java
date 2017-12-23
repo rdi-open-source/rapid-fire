@@ -11,6 +11,7 @@ package biz.rapidfire.core.swt.widgets;
 import org.eclipse.jface.preference.ColorSelector;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Color;
+import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
@@ -704,6 +705,19 @@ public final class WidgetFactory {
     }
 
     /**
+     * Produces a push button with an image.
+     * 
+     * @param parent - parent composite
+     * @param image - button image
+     * @return push button
+     */
+    public static Button createPushButton(Composite parent, Image image) {
+        Button button = WidgetFactory.getInstance().producePushButton(parent);
+        button.setImage(image);
+        return button;
+    }
+
+    /**
      * Produces a read-only push button field.
      * 
      * @param parent - parent composite
@@ -994,8 +1008,14 @@ public final class WidgetFactory {
 
         Label label = new Label(parent, SWT.NONE);
         label.setLayoutData(new GridData(SWT.BEGINNING, SWT.CENTER, false, false));
-        label.setText(text);
-        label.setToolTipText(tooltip);
+
+        if (text != null) {
+            label.setText(text);
+        }
+
+        if (tooltip != null) {
+            label.setToolTipText(tooltip);
+        }
 
         return label;
     }

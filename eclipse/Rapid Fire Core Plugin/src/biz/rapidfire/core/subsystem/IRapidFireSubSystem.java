@@ -35,6 +35,8 @@ public interface IRapidFireSubSystem {
 
     public IRapidFireLibraryResource[] getLibraries(IRapidFireJobResource job, Shell shell) throws Exception;
 
+    public IRapidFireLibraryResource getLibrary(IRapidFireJobResource job, String libraryName, Shell shell) throws Exception;
+
     public IRapidFireNotificationResource[] getNotifications(IRapidFireJobResource job, Shell shell) throws Exception;
 
     public IRapidFireAreaResource[] getAreas(IRapidFireFileResource file, Shell shell) throws Exception;

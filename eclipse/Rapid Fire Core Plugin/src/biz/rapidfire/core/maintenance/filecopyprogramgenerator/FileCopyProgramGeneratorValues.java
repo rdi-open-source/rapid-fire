@@ -8,6 +8,9 @@
 
 package biz.rapidfire.core.maintenance.filecopyprogramgenerator;
 
+import org.apache.commons.lang.builder.EqualsBuilder;
+import org.apache.commons.lang.builder.HashCodeBuilder;
+
 import biz.rapidfire.core.maintenance.IResourceValues;
 import biz.rapidfire.core.maintenance.filecopyprogramgenerator.shared.Replace;
 
@@ -125,5 +128,54 @@ public class FileCopyProgramGeneratorValues implements IResourceValues {
 
     public void setConversionProgramLibrary(String conversionProgramLibrary) {
         this.conversionProgramLibrary = conversionProgramLibrary;
+    }
+
+    @Override
+    public boolean equals(Object object) {
+
+        if (object == this) return true;
+        if (!(object instanceof FileCopyProgramGeneratorValues)) {
+            return false;
+        }
+
+        FileCopyProgramGeneratorValues value = (FileCopyProgramGeneratorValues)object;
+
+        EqualsBuilder equalsBuilder = new EqualsBuilder();
+
+        equalsBuilder.append(sourceFile, value.getSourceFile());
+        equalsBuilder.append(sourceFileLibrary, value.getSourceFileLibrary());
+        equalsBuilder.append(sourceMember, value.getSourceMember());
+
+        equalsBuilder.append(isReplace(), value.isReplace());
+        equalsBuilder.append(area, value.getArea());
+
+        equalsBuilder.append(library, value.getLibrary());
+        equalsBuilder.append(shadowLibrary, value.getShadowLibrary());
+
+        equalsBuilder.append(conversionProgram, value.getConversionProgram());
+        equalsBuilder.append(conversionProgramLibrary, value.getConversionProgramLibrary());
+
+        return equalsBuilder.isEquals();
+    }
+
+    @Override
+    public int hashCode() {
+
+        HashCodeBuilder hashBuilder = new HashCodeBuilder(37, 3);
+
+        hashBuilder.append(sourceFile);
+        hashBuilder.append(sourceFileLibrary);
+        hashBuilder.append(sourceMember);
+
+        hashBuilder.append(isReplace());
+        hashBuilder.append(area);
+
+        hashBuilder.append(library);
+        hashBuilder.append(shadowLibrary);
+
+        hashBuilder.append(conversionProgram);
+        hashBuilder.append(conversionProgramLibrary);
+
+        return hashBuilder.toHashCode();
     }
 }
