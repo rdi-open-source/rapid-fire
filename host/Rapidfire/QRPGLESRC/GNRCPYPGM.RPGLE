@@ -134,6 +134,20 @@ DCL-PROC GNRCPYPGM_initialize EXPORT;
     p_MSG     CHAR(256);           // <-- Message
   END-PI;
 
+  // Set default values
+
+  g_SRCF = *BLANKS;
+  g_SRCL = *BLANKS;
+  g_SRCM = *BLANKS;
+  g_REP  = '*NO';
+  g_ARA  = *BLANKS;
+  g_LIB  = *BLANKS;
+  g_SLIB = *BLANKS;
+  g_VP   = '*NONE';
+  g_VPL  = *BLANKS;
+
+  // Read JOBS and FILES records.
+
   g_JOB = p_JOB;
   g_POS = p_POS;
 
@@ -183,15 +197,15 @@ DCL-PROC GNRCPYPGM_getValues EXPORT;
     p_VPL  CHAR(10); // <-- Conversion program library
   END-PI;
 
-  p_SRCF = *Blanks;
-  p_SRCL = *Blanks;
-  p_SRCM = *Blanks;
-  p_REP  = '*NO';
-  p_ARA  = *Blanks;
-  p_LIB  = *Blanks;
-  p_SLIB = *Blanks;
-  p_VP   = '*NONE';
-  p_VPL  = *Blanks;
+  p_SRCF = g_SRCF;
+  p_SRCL = g_SRCL;
+  p_SRCM = g_SRCM;
+  p_REP  = g_REP;
+  p_ARA  = g_ARA;
+  p_LIB  = g_LIB;
+  p_SLIB = g_SLIB;
+  p_VP   = g_VP;
+  p_VPL  = g_VPL;
 
 END-PROC GNRCPYPGM_getValues;
 
@@ -452,7 +466,6 @@ DCL-PROC GNRCPYPGM_book EXPORT;
   PROMOTER_generate_Copy_Program(
     g_JOB :
     g_POS :
-    g_ARA :
     g_LIB :
     g_SLIB :
     X3FILE :
