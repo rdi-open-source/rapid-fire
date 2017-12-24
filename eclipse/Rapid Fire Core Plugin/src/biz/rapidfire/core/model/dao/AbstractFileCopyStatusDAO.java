@@ -63,7 +63,7 @@ public abstract class AbstractFileCopyStatusDAO {
 
             if (resultSet != null) {
                 while (resultSet.next()) {
-                    fileCopyStatuses.add(produceFileCopyStatus(resultSet));
+                    fileCopyStatuses.add(produceFileCopyStatus(job, resultSet));
                 }
             }
 
@@ -75,9 +75,8 @@ public abstract class AbstractFileCopyStatusDAO {
         return fileCopyStatuses;
     }
 
-    private FileCopyStatus produceFileCopyStatus(ResultSet resultSet) throws SQLException {
+    private FileCopyStatus produceFileCopyStatus(IRapidFireJobResource job, ResultSet resultSet) throws SQLException {
 
-        String job = resultSet.getString(JOB).trim();
         int position = resultSet.getInt(POSITION);
         String area = resultSet.getString(AREA).trim();
         String file = resultSet.getString(FILE).trim();

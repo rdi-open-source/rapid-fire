@@ -70,8 +70,9 @@ public class FileCopyProgramGeneratorManager extends
         if (Success.YES.label().equals(success)) {
             message = null;
         } else {
-            message = Messages.bindParameters(Messages.Could_not_initialize_file_manager_for_file_at_position_C_of_job_A_in_library_B,
-                key.getJobName(), dao.getLibraryName(), key.getPosition(), getErrorMessage(errorCode));
+            message = Messages.bindParameters(
+                Messages.Could_not_initialize_file_copy_program_generator_manager_for_file_at_position_C_of_job_A_in_library_B, key.getJobName(),
+                dao.getLibraryName(), key.getPosition(), getErrorMessage(errorCode));
         }
 
         Result result = new Result(success, message);

@@ -6,10 +6,10 @@
  * http://www.eclipse.org/legal/cpl-v10.html
  *******************************************************************************/
 
-package biz.rapidfire.core.maintenance.filecopyprogramgenerator;
+package biz.rapidfire.core.maintenance.reapplychanges;
 
 import biz.rapidfire.core.maintenance.AbstractKeyResourceActionCache;
-import biz.rapidfire.core.model.IRapidFireAreaResource;
+import biz.rapidfire.core.model.IFileCopyStatus;
 
 /**
  * This class produces the key value for the FileActionCache.
@@ -19,9 +19,9 @@ import biz.rapidfire.core.model.IRapidFireAreaResource;
  * Example key value:  RFPRI, CUSTUPD, RDY, IS_ZERO
  * </pre>
  */
-public class KeyFileCopyProgramGeneratorActionCache extends AbstractKeyResourceActionCache {
+public class KeyReapplyChangesActionCache extends AbstractKeyResourceActionCache {
 
-    public KeyFileCopyProgramGeneratorActionCache(IRapidFireAreaResource area) {
-        super(area.getParentJob(), area.getParentJob().getPhase().label());
+    public KeyReapplyChangesActionCache(IFileCopyStatus area) {
+        super(area.getJob(), area.getJob().getPhase().label());
     }
 }

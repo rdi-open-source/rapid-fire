@@ -8,9 +8,13 @@
 
 package biz.rapidfire.core.model;
 
-public interface IFileCopyStatus {
+import biz.rapidfire.core.maintenance.area.shared.AreaKey;
 
-    public String getJob();
+public interface IFileCopyStatus extends IRapidFireResource {
+
+    public AreaKey getKey();
+
+    public IRapidFireJobResource getJob();
 
     public int getPosition();
 

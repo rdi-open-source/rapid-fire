@@ -8,11 +8,15 @@
 
 package biz.rapidfire.core.model.queries;
 
+import biz.rapidfire.core.maintenance.area.shared.AreaKey;
+import biz.rapidfire.core.maintenance.file.shared.FileKey;
 import biz.rapidfire.core.model.IFileCopyStatus;
+import biz.rapidfire.core.model.IRapidFireJobResource;
+import biz.rapidfire.core.subsystem.IRapidFireSubSystem;
 
 public class FileCopyStatus implements IFileCopyStatus {
 
-    private String job;
+    private IRapidFireJobResource job;
     private int position;
     private String area;
     private String file;
@@ -26,11 +30,27 @@ public class FileCopyStatus implements IFileCopyStatus {
     private long changesApplied;
     private int percentDone;
 
-    public String getJob() {
+    public AreaKey getKey() {
+
+        FileKey fileKey = new FileKey(job.getKey(), position);
+        AreaKey key = new AreaKey(fileKey, area);
+
+        return key;
+    }
+
+    public String getDataLibrary() {
+        return job.getDataLibrary();
+    }
+
+    public IRapidFireSubSystem getParentSubSystem() {
+        return job.getParentSubSystem();
+    }
+
+    public IRapidFireJobResource getJob() {
         return job;
     }
 
-    public void setJob(String job) {
+    public void setJob(IRapidFireJobResource job) {
         this.job = job;
     }
 
@@ -128,5 +148,9 @@ public class FileCopyStatus implements IFileCopyStatus {
 
     public void setPercentDone(int percentDone) {
         this.percentDone = percentDone;
+    }
+
+    public Object getAdapter(Class arg0) {
+        return null;
     }
 }

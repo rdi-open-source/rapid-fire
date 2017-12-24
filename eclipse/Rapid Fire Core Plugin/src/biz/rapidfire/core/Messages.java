@@ -42,6 +42,7 @@ public class Messages extends NLS {
     public static String DialogTitle_Job_Error_Message;
     public static String DialogFile_Copy_Program_Generator;
     public static String DialogTitle_Select_area;
+    public static String DialogTitle_Reapply_all_changes;
 
     public static String Wizard_Title_New_Job_wizard;
     public static String Wizard_Page_Data_Library;
@@ -183,6 +184,8 @@ public class Messages extends NLS {
     public static String Question_Do_you_want_to_reset_job_A;
     public static String Question_Do_you_want_to_reset_job_A_after_abortion;
     public static String Question_Delete_shadow_library;
+    public static String Question_Do_you_want_to_reapply_all_changes_to_file_B_of_copy_job_A;
+    public static String Question_Could_not_generate_copy_program_Do_you_want_to_try_again;
 
     // Status messages
     public static String About_to_transfer_library_A_to_host_B_using_port_C;
@@ -209,6 +212,7 @@ public class Messages extends NLS {
     public static String ActionLabel_Close;
     public static String ActionLabel_Copy;
     public static String ActionLabel_Transfer_Rapid_Fire_library;
+    public static String ActionLabel_Reapply_changes;
 
     public static String ActionTooltip_Refresh;
     public static String ActionTooltip_Auto_refresh_menu_item_every_A_seconds;
@@ -219,6 +223,7 @@ public class Messages extends NLS {
     public static String ActionTooltip_Close;
     public static String ActionTooltip_Copy;
     public static String ActionTooltip_Transfer_Rapid_Fire_library;
+    public static String ActionTooltip_Reapply_changes;
 
     // Property labels
     public static String Batch_job_name;
@@ -308,7 +313,8 @@ public class Messages extends NLS {
     public static String Library_name_is_missing;
     public static String File_name_is_missing;
     public static String Member_name_is_missing;
-    public static String Could_not_generate_copy_program_Do_you_want_to_try_again;
+    public static String Could_not_initialize_file_copy_program_generator_manager_for_file_at_position_C_of_job_A_in_library_B;
+    public static String Could_not_initialize_reapply_changes_manager_for_job_A_in_library_B;
 
     // API error messages
     public static String EntityManager_Unknown_error_code_A;

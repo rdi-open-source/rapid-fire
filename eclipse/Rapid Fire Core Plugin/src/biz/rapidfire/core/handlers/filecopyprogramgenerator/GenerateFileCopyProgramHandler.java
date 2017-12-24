@@ -63,7 +63,7 @@ public class GenerateFileCopyProgramHandler extends AbstractProgramGeneratorHand
 
                 if (busyResult.isError()) {
                     if (!MessageDialog
-                        .openQuestion(getShell(), Messages.E_R_R_O_R, Messages.Could_not_generate_copy_program_Do_you_want_to_try_again)) {
+                        .openQuestion(getShell(), Messages.E_R_R_O_R, Messages.Question_Could_not_generate_copy_program_Do_you_want_to_try_again)) {
                         rc = Dialog.CANCEL;
                     }
                 } else {

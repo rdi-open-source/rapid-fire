@@ -13,6 +13,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.runtime.IProgressMonitor;
 import org.eclipse.core.runtime.IStatus;
 import org.eclipse.core.runtime.Status;
@@ -25,18 +26,25 @@ import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.util.IPropertyChangeListener;
 import org.eclipse.jface.util.PropertyChangeEvent;
 import org.eclipse.jface.viewers.IStructuredContentProvider;
+import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.ITableLabelProvider;
 import org.eclipse.jface.viewers.LabelProvider;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.custom.BusyIndicator;
+import org.eclipse.swt.events.MenuAdapter;
+import org.eclipse.swt.events.MenuEvent;
+import org.eclipse.swt.events.SelectionAdapter;
+import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Menu;
+import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
@@ -50,10 +58,13 @@ import biz.rapidfire.core.Messages;
 import biz.rapidfire.core.RapidFireCorePlugin;
 import biz.rapidfire.core.action.RefreshViewIntervalAction;
 import biz.rapidfire.core.dialogs.MessageDialogAsync;
+import biz.rapidfire.core.handlers.reapplychanges.ReapplyChangesHandler;
 import biz.rapidfire.core.helpers.ExceptionHelper;
 import biz.rapidfire.core.job.IJobFinishedListener;
+import biz.rapidfire.core.maintenance.reapplychanges.ReapplyChangesManager;
 import biz.rapidfire.core.model.IFileCopyStatus;
 import biz.rapidfire.core.model.IRapidFireJobResource;
+import biz.rapidfire.core.model.dao.JDBCConnectionManager;
 import biz.rapidfire.core.model.queries.FileCopyStatus;
 import biz.rapidfire.core.preferences.Preferences;
 import biz.rapidfire.core.subsystem.IRapidFireSubSystem;
@@ -116,6 +127,7 @@ public class FileCopyStatusView extends ViewPart implements IPropertyChangeListe
         createActions();
         initializeToolBar();
         initializeViewMenu();
+        initializeTableItemMenu();
     }
 
     private void createJobStatusTable(Composite parent) {
@@ -145,57 +157,6 @@ public class FileCopyStatusView extends ViewPart implements IPropertyChangeListe
         for (int i = 0; i < availableColumns.size(); i++) {
             columnIds[i] = availableColumns.get(i);
         }
-
-        // final TableColumn columnFile = new TableColumn(tblJobStatuses,
-        // SWT.NONE);
-        // columnFile.setWidth(80);
-        // columnFile.setText(Messages.ColumnLabel_File);
-        //
-        // final TableColumn columnLibrary = new TableColumn(tblJobStatuses,
-        // SWT.NONE);
-        // columnLibrary.setWidth(80);
-        // columnLibrary.setText(Messages.ColumnLabel_Library);
-        //
-        // final TableColumn columnProgress = new TableColumn(tblJobStatuses,
-        // SWT.CENTER);
-        // columnProgress.setWidth(110);
-        // columnProgress.setText(Messages.ColumnLabel_Progress);
-        // int columnIndexProgressBar = tblJobStatuses.getColumnCount() - 1;
-        //
-        // final TableColumn columnRecordsInProductionLibrary = new
-        // TableColumn(tblJobStatuses, SWT.NONE);
-        // columnRecordsInProductionLibrary.setWidth(110);
-        // columnRecordsInProductionLibrary.setText(Messages.ColumnLabel_Records_in_production_library);
-        //
-        // final TableColumn columnRecordsInShadowLibrary = new
-        // TableColumn(tblJobStatuses, SWT.NONE);
-        // columnRecordsInShadowLibrary.setWidth(110);
-        // columnRecordsInShadowLibrary.setText(Messages.ColumnLabel_Records_in_shadow_library);
-        //
-        // final TableColumn columnRecordsToCopy = new
-        // TableColumn(tblJobStatuses, SWT.NONE);
-        // columnRecordsToCopy.setWidth(110);
-        // columnRecordsToCopy.setText(Messages.ColumnLabel_Records_to_copy);
-        //
-        // final TableColumn columnRecordsCopied = new
-        // TableColumn(tblJobStatuses, SWT.NONE);
-        // columnRecordsCopied.setWidth(110);
-        // columnRecordsCopied.setText(Messages.ColumnLabel_Records_copied);
-        //
-        // final TableColumn columnEstimatedTime = new
-        // TableColumn(tblJobStatuses, SWT.NONE);
-        // columnEstimatedTime.setWidth(110);
-        // columnEstimatedTime.setText(Messages.ColumnLabel_Estimated_time);
-        //
-        // final TableColumn columnChangesToApply = new
-        // TableColumn(tblJobStatuses, SWT.NONE);
-        // columnChangesToApply.setWidth(110);
-        // columnChangesToApply.setText(Messages.ColumnLabel_Changes_to_apply);
-        //
-        // final TableColumn columnApplied = new TableColumn(tblJobStatuses,
-        // SWT.NONE);
-        // columnApplied.setWidth(110);
-        // columnApplied.setText(Messages.ColumnLabel_Changes_applied);
 
         tblJobStatuses.setLinesVisible(true);
         tblJobStatuses.setHeaderVisible(true);
@@ -257,6 +218,15 @@ public class FileCopyStatusView extends ViewPart implements IPropertyChangeListe
         IMenuManager viewMenu = actionBars.getMenuManager();
 
         viewMenu.add(createAuoRefreshSubMenu());
+    }
+
+    private void initializeTableItemMenu() {
+
+        final Table tblJobStatuses = tvJobStatuses.getTable();
+        Menu jobStatusesPopupMenu = new Menu(tblJobStatuses);
+        jobStatusesPopupMenu.addMenuListener(new JobStatusItemPopupMenu());
+        tblJobStatuses.setMenu(jobStatusesPopupMenu);
+
     }
 
     private MenuManager createAuoRefreshSubMenu() {
@@ -367,6 +337,68 @@ public class FileCopyStatusView extends ViewPart implements IPropertyChangeListe
 
     private boolean isDataAvailable() {
         return inputDataAvailable;
+    }
+
+    private void performReapplyChanges() {
+
+        ReapplyChangesHandler handler = new ReapplyChangesHandler();
+        handler.setEnabledWDSCi(tvJobStatuses.getSelection());
+
+        // FileCopyStatus[] statusItems = retrieveSelectedTableItems();
+        // for (FileCopyStatus statusItem : statusItems) {
+        // if (!doPerformReapplyChanges(statusItem)) {
+        // break;
+        // }
+        // }
+    }
+
+    private boolean doPerformReapplyChanges(FileCopyStatus statusItem) {
+
+        String connectionName = inputData.getParentSubSystem().getConnectionName();
+        String libraryName = inputData.getDataLibrary();
+
+        ReapplyChangesManager manager = null;
+
+        try {
+
+            manager = new ReapplyChangesManager(JDBCConnectionManager.getInstance().getConnectionForUpdate(connectionName, libraryName));
+
+            manager.openFiles();
+
+            return true;
+
+        } catch (Throwable e) {
+            RapidFireCorePlugin.logError("*** Could no reapply changes to file " + statusItem.getFile() + " ***", e); //$NON-NLS-1$ //$NON-NLS-2$
+            MessageDialog.openError(getShell(), Messages.E_R_R_O_R, ExceptionHelper.getLocalizedMessage(e));
+            return false;
+        } finally {
+            if (manager != null) {
+                try {
+                    manager.closeFiles();
+                } catch (Exception e) {
+                    RapidFireCorePlugin.logError("*** Could no close files. ***", e); //$NON-NLS-1$
+                    MessageDialog.openError(getShell(), Messages.E_R_R_O_R, ExceptionHelper.getLocalizedMessage(e));
+                }
+            }
+        }
+
+    }
+
+    private FileCopyStatus[] retrieveSelectedTableItems() {
+
+        FileCopyStatus[] selectedItems;
+        if (tvJobStatuses.getSelection() instanceof IStructuredSelection) {
+            IStructuredSelection structuredSelection = (IStructuredSelection)tvJobStatuses.getSelection();
+            Object[] items = structuredSelection.toArray();
+            selectedItems = new FileCopyStatus[items.length];
+            for (int i = 0; i < items.length; i++) {
+                selectedItems[i] = (FileCopyStatus)items[i];
+            }
+        } else {
+            selectedItems = new FileCopyStatus[0];
+        }
+
+        return selectedItems;
     }
 
     private Shell getShell() {
@@ -621,5 +653,54 @@ public class FileCopyStatusView extends ViewPart implements IPropertyChangeListe
             return Status.OK_STATUS;
         }
 
+    }
+
+    private class JobStatusItemPopupMenu extends MenuAdapter {
+
+        private ReapplyChangesHandler handler;
+        private Menu menu;
+
+        private MenuItem menuItemReapplyChanges;
+
+        @Override
+        public void menuShown(MenuEvent event) {
+
+            this.handler = new ReapplyChangesHandler();
+            this.menu = (Menu)event.getSource();
+
+            destroyMenuItems();
+            createMenuItems();
+        }
+
+        public void destroyMenuItems() {
+
+            if (!((menuItemReapplyChanges == null) || (menuItemReapplyChanges.isDisposed()))) {
+                menuItemReapplyChanges.dispose();
+            }
+        }
+
+        public void createMenuItems() {
+            createMenuItemReapplyChanges();
+        }
+
+        public void createMenuItemReapplyChanges() {
+
+            menuItemReapplyChanges = new MenuItem(this.menu, SWT.NONE);
+            menuItemReapplyChanges.setText(Messages.ActionLabel_Reapply_changes);
+            menuItemReapplyChanges.setImage(RapidFireCorePlugin.getDefault().getImageRegistry().get(RapidFireCorePlugin.IMAGE_REAPPLY_CHANGES));
+            menuItemReapplyChanges.addSelectionListener(new SelectionAdapter() {
+                @Override
+                public void widgetSelected(SelectionEvent e) {
+                    try {
+                        handler.executeWithSelection(tvJobStatuses.getSelection());
+                    } catch (ExecutionException e1) {
+                        RapidFireCorePlugin.logError("*** Could not execute 'ReapplyChangesHandler'  ***", e1);
+                    }
+                }
+            });
+
+            handler.setEnabledWDSCi(tvJobStatuses.getSelection());
+            menuItemReapplyChanges.setEnabled(handler.isEnabled());
+        }
     }
 }

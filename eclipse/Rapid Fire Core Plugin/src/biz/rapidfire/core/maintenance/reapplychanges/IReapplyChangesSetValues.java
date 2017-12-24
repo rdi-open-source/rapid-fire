@@ -8,9 +8,9 @@
 
 package biz.rapidfire.core.maintenance.reapplychanges;
 
-public interface IReapplyChangesInitialize {
+public interface IReapplyChangesSetValues {
 
     public static final int JOB = 1;
-    public static final int SUCCESS = 2;
-    public static final int ERROR_CODE = 3;
+    public static final int POSITION = 2;
+    public static final int AREA = 3;
 }

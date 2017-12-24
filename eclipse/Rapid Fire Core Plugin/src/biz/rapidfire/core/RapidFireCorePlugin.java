@@ -52,6 +52,7 @@ public class RapidFireCorePlugin extends AbstractExtendedUIPlugin {
     public static final String IMAGE_ENABLED = "enabled.gif"; //$NON-NLS-1$
 
     public static final String IMAGE_TRANSFER_LIBRARY = "transfer_library.gif";
+    public static final String IMAGE_REAPPLY_CHANGES = "reapply_changes.gif";
 
     public static final String COLOR_PROGRESS_BAR_FOREGROUND = "COLOR_PROGRESS_BAR_FOREGROUND"; //$NON-NLS-1$
     public static final String COLOR_PROGRESS_BAR_BACKGROUND = "COLOR_PROGRESS_BAR_BACKGROUND"; //$NON-NLS-1$
@@ -151,6 +152,7 @@ public class RapidFireCorePlugin extends AbstractExtendedUIPlugin {
         reg.put(IMAGE_ENABLED, getImageDescriptor(IMAGE_ENABLED));
         reg.put(IMAGE_DISABLED, getImageDescriptor(IMAGE_DISABLED));
         reg.put(IMAGE_TRANSFER_LIBRARY, getImageDescriptor(IMAGE_TRANSFER_LIBRARY));
+        reg.put(IMAGE_REAPPLY_CHANGES, getImageDescriptor(IMAGE_REAPPLY_CHANGES));
 
         reg.put(OVERLAY_ERROR, getImageDescriptor(OVERLAY_ERROR));
         reg.put(OVERLAY_YELLOW_CIRCLE, getImageDescriptor(OVERLAY_YELLOW_CIRCLE));

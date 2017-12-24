@@ -9,20 +9,17 @@ import biz.rapidfire.core.maintenance.AbstractManager;
 import biz.rapidfire.core.maintenance.MaintenanceMode;
 import biz.rapidfire.core.maintenance.Result;
 import biz.rapidfire.core.maintenance.Success;
-import biz.rapidfire.core.maintenance.file.FileValues;
-import biz.rapidfire.core.maintenance.file.shared.FileKey;
-import biz.rapidfire.core.maintenance.filecopyprogramgenerator.FileCopyProgramGeneratorActionCache;
-import biz.rapidfire.core.maintenance.filecopyprogramgenerator.KeyFileCopyProgramGeneratorActionCache;
-import biz.rapidfire.core.maintenance.filecopyprogramgenerator.shared.FileCopyProgramGeneratorAction;
-import biz.rapidfire.core.maintenance.job.shared.JobKey;
-import biz.rapidfire.core.model.IRapidFireFileResource;
+import biz.rapidfire.core.maintenance.area.shared.AreaKey;
+import biz.rapidfire.core.model.IFileCopyStatus;
 import biz.rapidfire.core.model.dao.IJDBCConnection;
 import biz.rapidfire.core.model.dao.JDBCConnectionManager;
 
-public class ReapplyChangesManager extends AbstractManager<IRapidFireFileResource, FileKey, FileValues, FileCopyProgramGeneratorAction> {
+public class ReapplyChangesManager extends AbstractManager<IFileCopyStatus, AreaKey, ReapplyChangesValues, ReapplyChangesAction> {
 
     private static final String EMPTY_STRING = ""; //$NON-NLS-1$
     private IJDBCConnection dao;
+
+    private ReapplyChangesValues values;
 
     public ReapplyChangesManager(IJDBCConnection dao) {
         this.dao = dao;
@@ -36,18 +33,20 @@ public class ReapplyChangesManager extends AbstractManager<IRapidFireFileResourc
     }
 
     @Override
-    public Result initialize(MaintenanceMode mode, FileKey key) throws Exception {
-        throw new IllegalAccessError("Calling initialize() is not allowed. Method has not been implemented.");
+    public Result initialize(MaintenanceMode mode, AreaKey areaKey) throws Exception {
+
+        return Result.createSuccessResult();
     }
 
     @Override
-    public FileValues getValues() throws Exception {
+    public ReapplyChangesValues getValues() throws Exception {
         throw new IllegalAccessError("Calling getValues() is not allowed. Method has not been implemented.");
     }
 
     @Override
-    public void setValues(FileValues values) throws Exception {
-        throw new IllegalAccessError("Calling setValues() is not allowed. Method has not been implemented.");
+    public void setValues(ReapplyChangesValues values) throws Exception {
+
+        this.values = values;
     }
 
     @Override
@@ -57,6 +56,15 @@ public class ReapplyChangesManager extends AbstractManager<IRapidFireFileResourc
 
     @Override
     public Result book() throws Exception {
+
+        CallableStatement statement = dao.prepareCall(dao
+            .insertLibraryQualifier("{CALL " + IJDBCConnection.LIBRARY + "\"PROMOTER_reapplyAllChanges\"(?, ?, ?)}")); //$NON-NLS-1$ //$NON-NLS-2$
+
+        statement.setString(IReapplyChangesSetValues.JOB, values.getJob());
+        statement.setInt(IReapplyChangesSetValues.POSITION, values.getPosition());
+        statement.setString(IReapplyChangesSetValues.AREA, values.getArea());
+
+        statement.execute();
 
         return null;
     }
@@ -69,14 +77,14 @@ public class ReapplyChangesManager extends AbstractManager<IRapidFireFileResourc
     }
 
     @Override
-    public Result checkAction(FileKey fileKey, FileCopyProgramGeneratorAction action) throws Exception {
+    public Result checkAction(AreaKey areaKey, ReapplyChangesAction action) throws Exception {
 
         CallableStatement statement = dao.prepareCall(dao
             .insertLibraryQualifier("{CALL " + IJDBCConnection.LIBRARY + "\"CHKSTSE_checkAction\"(?, ?, ?, ?, ?, ?)}")); //$NON-NLS-1$ //$NON-NLS-2$
 
         statement.setString(IReapplyChangesCheckAction.ACTION, action.label());
-        statement.setString(IReapplyChangesCheckAction.JOB, fileKey.getJobName());
-        statement.setInt(IReapplyChangesCheckAction.POSITION, fileKey.getPosition());
+        statement.setString(IReapplyChangesCheckAction.JOB, areaKey.getJobName());
+        statement.setInt(IReapplyChangesCheckAction.POSITION, areaKey.getPosition());
         statement.setString(IReapplyChangesCheckAction.AREA, Success.NO.label());
         statement.setString(IReapplyChangesCheckAction.SUCCESS, Success.NO.label());
         statement.setString(IReapplyChangesCheckAction.MESSAGE, EMPTY_STRING);
@@ -92,14 +100,14 @@ public class ReapplyChangesManager extends AbstractManager<IRapidFireFileResourc
         return new Result(null, message, success);
     }
 
-    protected FileCopyProgramGeneratorAction[] getValidActions(FileKey fileKey) throws Exception {
+    protected ReapplyChangesAction[] getValidActions(AreaKey areaKey) throws Exception {
 
         CallableStatement statement = dao.prepareCall(dao
             .insertLibraryQualifier("{CALL " + IJDBCConnection.LIBRARY + "\"CHKSTSE_getValidActions\"(?, ?, ?, ?, ?)}")); //$NON-NLS-1$ //$NON-NLS-2$
 
-        statement.setString(IReapplyChangesGetValidActions.JOB, fileKey.getJobName());
-        statement.setInt(IReapplyChangesGetValidActions.POSITION, fileKey.getPosition());
-        statement.setString(IReapplyChangesGetValidActions.AREA, fileKey.getJobName());
+        statement.setString(IReapplyChangesGetValidActions.JOB, areaKey.getJobName());
+        statement.setInt(IReapplyChangesGetValidActions.POSITION, areaKey.getPosition());
+        statement.setString(IReapplyChangesGetValidActions.AREA, areaKey.getJobName());
         statement.setInt(IReapplyChangesGetValidActions.NUMBER_ACTIONS, 0);
         statement.setString(IReapplyChangesGetValidActions.ACTIONS, EMPTY_STRING);
 
@@ -111,30 +119,24 @@ public class ReapplyChangesManager extends AbstractManager<IRapidFireFileResourc
         int numberActions = statement.getBigDecimal(IReapplyChangesGetValidActions.NUMBER_ACTIONS).intValue();
         String[] actions = splitActions(statement.getString(IReapplyChangesGetValidActions.ACTIONS), numberActions);
 
-        Set<FileCopyProgramGeneratorAction> fileCopyProgramGeneratorActions = new HashSet<FileCopyProgramGeneratorAction>();
+        Set<ReapplyChangesAction> areaActions = new HashSet<ReapplyChangesAction>();
         for (String action : actions) {
-            fileCopyProgramGeneratorActions.add(FileCopyProgramGeneratorAction.find(action.trim()));
+            areaActions.add(ReapplyChangesAction.find(action.trim()));
         }
 
-        Result result = checkAction(FileKey.createNew(new JobKey(fileKey.getJobName())), FileCopyProgramGeneratorAction.CREATE);
-        if (result.isSuccessfull()) {
-            fileCopyProgramGeneratorActions.add(FileCopyProgramGeneratorAction.CREATE);
-        }
-
-        return fileCopyProgramGeneratorActions.toArray(new FileCopyProgramGeneratorAction[fileCopyProgramGeneratorActions.size()]);
+        return areaActions.toArray(new ReapplyChangesAction[areaActions.size()]);
     }
 
     @Override
-    public boolean isValidAction(IRapidFireFileResource file, FileCopyProgramGeneratorAction action) throws Exception {
+    public boolean isValidAction(IFileCopyStatus area, ReapplyChangesAction action) throws Exception {
 
-        KeyFileCopyProgramGeneratorActionCache fileCopyProgramGeneratorActionsKey = new KeyFileCopyProgramGeneratorActionCache(file);
+        KeyReapplyChangesActionCache reapplyChangesActionsKey = new KeyReapplyChangesActionCache(area);
 
-        Set<FileCopyProgramGeneratorAction> actionsSet = FileCopyProgramGeneratorActionCache.getInstance().getActions(
-            fileCopyProgramGeneratorActionsKey);
+        Set<ReapplyChangesAction> actionsSet = ReapplyChangesActionCache.getInstance().getActions(reapplyChangesActionsKey);
         if (actionsSet == null) {
-            FileCopyProgramGeneratorAction[] fileCopyProgramGeneratorActions = getValidActions(file.getKey());
-            FileCopyProgramGeneratorActionCache.getInstance().putActions(fileCopyProgramGeneratorActionsKey, fileCopyProgramGeneratorActions);
-            actionsSet = FileCopyProgramGeneratorActionCache.getInstance().getActions(fileCopyProgramGeneratorActionsKey);
+            ReapplyChangesAction[] fileCopyProgramGeneratorActions = getValidActions(area.getKey());
+            ReapplyChangesActionCache.getInstance().putActions(reapplyChangesActionsKey, fileCopyProgramGeneratorActions);
+            actionsSet = ReapplyChangesActionCache.getInstance().getActions(reapplyChangesActionsKey);
         }
 
         return actionsSet.contains(action);
