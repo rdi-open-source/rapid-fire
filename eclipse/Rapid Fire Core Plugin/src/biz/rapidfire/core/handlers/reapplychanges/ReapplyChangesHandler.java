@@ -49,7 +49,7 @@ public class ReapplyChangesHandler extends AbstractReapplyChangesHandler impleme
             String[] buttonLabels = new String[] { IDialogConstants.YES_LABEL, IDialogConstants.YES_TO_ALL_LABEL, IDialogConstants.NO_LABEL,
                 IDialogConstants.CANCEL_LABEL };
 
-            MessageDialog dialog = new MessageDialog(getShell(), title, null, question, MessageDialog.QUESTION_WITH_CANCEL, buttonLabels, CANCEL);
+            MessageDialog dialog = new MessageDialog(getShell(), title, null, question, MessageDialog.QUESTION, buttonLabels, CANCEL);
             rc = dialog.open();
         } else {
             rc = YES_TO_ALL;
