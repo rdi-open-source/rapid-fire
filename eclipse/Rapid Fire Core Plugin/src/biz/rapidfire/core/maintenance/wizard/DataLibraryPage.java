@@ -56,7 +56,7 @@ public class DataLibraryPage extends AbstractWizardPage {
     @Override
     public void createContent(Composite parent) {
 
-        comboConnection = WidgetFactory.createSystemHostCombo(parent, SWT.BORDER);
+        comboConnection = WidgetFactory.createSystemHostCombo(parent, SWT.NONE);
         comboConnection.setLayoutData(new GridData(SWT.FILL, SWT.DEFAULT, true, false, 2, 1));
         comboConnection.setToolTipText(Messages.Tooltip_Connection_name);
         comboConnection.getCombo().setToolTipText(Messages.Tooltip_Connection_name);
