@@ -56,12 +56,12 @@ public class NewJobWizard extends AbstractNewWizard {
         addPage(new LibraryListPage(libraryListValues));
     }
 
-    protected void setSkipLibraryListPage(boolean skip) {
+    protected void setPageEnablement(String pageId, boolean enabled) {
 
-        if (skip) {
-            hidePage(LibraryListPage.NAME);
+        if (enabled) {
+            showPage(pageId);
         } else {
-            showPage(LibraryListPage.NAME);
+            hidePage(pageId);
         }
     }
 

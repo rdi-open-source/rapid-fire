@@ -80,7 +80,7 @@ public class JobPage extends AbstractWizardPage {
         jobMaintenanceControl.setJobQueueName(nameValues.getJobQueueName());
         jobMaintenanceControl.setJobQueueLibraryName(nameValues.getJobQueueLibraryName());
 
-        updateSkipLibraryListPage();
+        updatePageEnablement();
     }
 
     @Override
@@ -128,13 +128,17 @@ public class JobPage extends AbstractWizardPage {
         nameValues.setJobQueueName(jobMaintenanceControl.getJobQueueName());
         nameValues.setJobQueueLibraryName(jobMaintenanceControl.getJobQueueLibraryName());
 
-        updateSkipLibraryListPage();
+        updatePageEnablement();
     }
 
-    private void updateSkipLibraryListPage() {
+    private void updatePageEnablement() {
 
         NewJobWizard wizard = (NewJobWizard)getWizard();
-        wizard.setSkipLibraryListPage(!nameValues.isCreateEnvironment());
+        if (nameValues.isCreateEnvironment()) {
+            wizard.setPageEnablement(LibraryListPage.NAME, true);
+        } else {
+            wizard.setPageEnablement(LibraryListPage.NAME, false);
+        }
     }
 
     @Override
