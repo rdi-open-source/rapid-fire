@@ -147,22 +147,22 @@
          </action>
             
          <action
-               label="%command_Display_copy_status"
-               tooltip="%command_Display_copy_status_Description"
-               icon="icons/job_status.gif"
-               class="biz.rapidfire.rse.subsystem.actions.job.DisplayCopyStatusAction"
-               enablesFor="1"
-               id="biz.rapidfire.rse.subsystem.actions.job.DisplayCopyStatusAction"
-               menubarPath="status">
-         </action>
-            
-         <action
                label="%command_Display_Job_Error"
                tooltip="%command_Display_Job_Error_Description"
                icon="icons/display_error.gif"
                class="biz.rapidfire.rse.subsystem.actions.job.DisplayErrorAction"
                enablesFor="1"
                id="biz.rapidfire.rse.subsystem.actions.job.DisplayErrorAction"
+               menubarPath="status">
+         </action>
+            
+         <action
+               label="%command_Display_copy_status"
+               tooltip="%command_Display_copy_status_Description"
+               icon="icons/job_status.gif"
+               class="biz.rapidfire.rse.subsystem.actions.job.DisplayCopyStatusAction"
+               enablesFor="1"
+               id="biz.rapidfire.rse.subsystem.actions.job.DisplayCopyStatusAction"
                menubarPath="status">
          </action>
             
