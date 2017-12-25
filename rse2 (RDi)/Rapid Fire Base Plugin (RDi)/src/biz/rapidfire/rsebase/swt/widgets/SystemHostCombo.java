@@ -43,6 +43,7 @@ public class SystemHostCombo {
 
         this.connectionCombo.setConnections(SystemConnectionHelper.getHosts());
         this.connectionCombo.setItems(SystemConnectionHelper.getConnectionNames());
+        this.connectionCombo.setSelectionIndex(0);
     }
 
     public void addModifyListener(ModifyListener listener) {
@@ -90,7 +91,13 @@ public class SystemHostCombo {
     }
 
     public String getConnectionName() {
-        return connectionCombo.getHost().getAliasName();
+
+        IHost host = connectionCombo.getHost();
+        if (host == null) {
+            return null;
+        }
+
+        return host.getAliasName();
     }
 
     public String getHostName() {
