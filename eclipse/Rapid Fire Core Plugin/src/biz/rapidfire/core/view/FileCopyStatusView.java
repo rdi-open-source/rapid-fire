@@ -25,10 +25,11 @@ import org.eclipse.jface.action.MenuManager;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.util.IPropertyChangeListener;
 import org.eclipse.jface.util.PropertyChangeEvent;
+import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.IStructuredContentProvider;
-import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.ITableLabelProvider;
 import org.eclipse.jface.viewers.LabelProvider;
+import org.eclipse.jface.viewers.StructuredSelection;
 import org.eclipse.jface.viewers.TableViewer;
 import org.eclipse.jface.viewers.Viewer;
 import org.eclipse.swt.SWT;
@@ -37,6 +38,7 @@ import org.eclipse.swt.events.MenuAdapter;
 import org.eclipse.swt.events.MenuEvent;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.graphics.Image;
 import org.eclipse.swt.layout.FillLayout;
 import org.eclipse.swt.layout.GridData;
@@ -48,6 +50,7 @@ import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
+import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.ui.IActionBars;
 import org.eclipse.ui.IViewSite;
 import org.eclipse.ui.PartInitException;
@@ -61,10 +64,8 @@ import biz.rapidfire.core.dialogs.MessageDialogAsync;
 import biz.rapidfire.core.handlers.reapplychanges.ReapplyChangesHandler;
 import biz.rapidfire.core.helpers.ExceptionHelper;
 import biz.rapidfire.core.job.IJobFinishedListener;
-import biz.rapidfire.core.maintenance.reapplychanges.ReapplyChangesManager;
 import biz.rapidfire.core.model.IFileCopyStatus;
 import biz.rapidfire.core.model.IRapidFireJobResource;
-import biz.rapidfire.core.model.dao.JDBCConnectionManager;
 import biz.rapidfire.core.model.queries.FileCopyStatus;
 import biz.rapidfire.core.preferences.Preferences;
 import biz.rapidfire.core.subsystem.IRapidFireSubSystem;
@@ -98,12 +99,17 @@ public class FileCopyStatusView extends ViewPart implements IPropertyChangeListe
     private List<RefreshViewIntervalAction> refreshIntervalActions;
     private AutoRefreshJob autoRefreshJob;
 
+    private Action reapplyChangesAction;
+
+    private ReapplyChangesHandler handler;
+
     private int columnIds[];
 
     public FileCopyStatusView() {
 
         this.inputData = null;
         this.inputDataAvailable = false;
+        this.handler = new ReapplyChangesHandler();
     }
 
     @Override
@@ -136,7 +142,7 @@ public class FileCopyStatusView extends ViewPart implements IPropertyChangeListe
         jobStatusArea.setLayout(new FillLayout());
         jobStatusArea.setLayoutData(new GridData(GridData.FILL_BOTH));
 
-        tvJobStatuses = new TableViewer(jobStatusArea, SWT.BORDER | SWT.FULL_SELECTION);
+        tvJobStatuses = new TableViewer(jobStatusArea, SWT.BORDER | SWT.FULL_SELECTION | SWT.MULTI);
         final Table tblJobStatuses = tvJobStatuses.getTable();
 
         List<Integer> availableColumns = new LinkedList<Integer>();
@@ -165,6 +171,8 @@ public class FileCopyStatusView extends ViewPart implements IPropertyChangeListe
         tblJobStatuses.addListener(SWT.EraseItem, progressBarPainter);
         tblJobStatuses.addListener(SWT.PaintItem, progressBarPainter);
 
+        tblJobStatuses.addSelectionListener(new TableSelectionChangedListener());
+
         tvJobStatuses.setLabelProvider(new JobStatusesLabelProvider());
         tvJobStatuses.setContentProvider(new JobStatusesContentProvider());
     }
@@ -191,13 +199,14 @@ public class FileCopyStatusView extends ViewPart implements IPropertyChangeListe
 
     private void createActions() {
 
-        actionRefreshView = new Action("") { //$NON-NLS-1$
+        actionRefreshView = new Action() {
             @Override
             public void run() {
                 IFileCopyStatus[] fileCopyStatuses = loadInputData(inputData);
                 setInputInternally(fileCopyStatuses);
             }
         };
+        actionRefreshView.setText(Messages.ActionLabel_Refresh);
         actionRefreshView.setToolTipText(Messages.ActionTooltip_Refresh);
         actionRefreshView.setImageDescriptor(RapidFireCorePlugin.getDefault().getImageDescriptor(RapidFireCorePlugin.IMAGE_REFRESH));
         actionRefreshView.setEnabled(false);
@@ -209,6 +218,21 @@ public class FileCopyStatusView extends ViewPart implements IPropertyChangeListe
         refreshIntervalActions.add(new RefreshViewIntervalAction(this, 10));
         refreshIntervalActions.add(new RefreshViewIntervalAction(this, 30));
 
+        reapplyChangesAction = new Action() {
+            @Override
+            public void run() {
+                try {
+                    handler.executeWithSelection(tvJobStatuses.getSelection());
+                } catch (ExecutionException e1) {
+                    RapidFireCorePlugin.logError("*** Could not execute 'ReapplyChangesHandler'  ***", e1);
+                }
+            }
+        };
+        reapplyChangesAction.setText(Messages.ActionLabel_Reapply_changes);
+        reapplyChangesAction.setToolTipText(Messages.ActionTooltip_Reapply_changes);
+        reapplyChangesAction.setImageDescriptor(RapidFireCorePlugin.getDefault().getImageDescriptor(RapidFireCorePlugin.IMAGE_REAPPLY_CHANGES));
+        reapplyChangesAction.setEnabled(false);
+
         refreshActionsEnablement();
     }
 
@@ -218,13 +242,14 @@ public class FileCopyStatusView extends ViewPart implements IPropertyChangeListe
         IMenuManager viewMenu = actionBars.getMenuManager();
 
         viewMenu.add(createAuoRefreshSubMenu());
+        viewMenu.add(reapplyChangesAction);
     }
 
     private void initializeTableItemMenu() {
 
         final Table tblJobStatuses = tvJobStatuses.getTable();
         Menu jobStatusesPopupMenu = new Menu(tblJobStatuses);
-        jobStatusesPopupMenu.addMenuListener(new JobStatusItemPopupMenu());
+        jobStatusesPopupMenu.addMenuListener(new JobStatusItemPopupMenu(handler));
         tblJobStatuses.setMenu(jobStatusesPopupMenu);
 
     }
@@ -244,6 +269,7 @@ public class FileCopyStatusView extends ViewPart implements IPropertyChangeListe
     private void initializeToolBar() {
 
         IToolBarManager toolbarManager = getViewSite().getActionBars().getToolBarManager();
+        toolbarManager.add(reapplyChangesAction);
         toolbarManager.add(actionRefreshView);
     }
 
@@ -298,6 +324,8 @@ public class FileCopyStatusView extends ViewPart implements IPropertyChangeListe
 
     private void refreshActionsEnablement() {
 
+        handler.setEnabled(getSelectedTableItems(tvJobStatuses.getTable()));
+
         if (!isDataAvailable() || isAutoRefreshOn()) {
             actionRefreshView.setEnabled(false);
         } else {
@@ -325,6 +353,8 @@ public class FileCopyStatusView extends ViewPart implements IPropertyChangeListe
                 }
             }
         }
+
+        reapplyChangesAction.setEnabled(handler.isEnabled());
     }
 
     private boolean isAutoRefreshOn() {
@@ -339,66 +369,19 @@ public class FileCopyStatusView extends ViewPart implements IPropertyChangeListe
         return inputDataAvailable;
     }
 
-    private void performReapplyChanges() {
+    private ISelection getSelectedTableItems(Table table) {
 
-        ReapplyChangesHandler handler = new ReapplyChangesHandler();
-        handler.setEnabledWDSCi(tvJobStatuses.getSelection());
+        List<FileCopyStatus> selectedItems = new LinkedList<FileCopyStatus>();
 
-        // FileCopyStatus[] statusItems = retrieveSelectedTableItems();
-        // for (FileCopyStatus statusItem : statusItems) {
-        // if (!doPerformReapplyChanges(statusItem)) {
-        // break;
-        // }
-        // }
-    }
-
-    private boolean doPerformReapplyChanges(FileCopyStatus statusItem) {
-
-        String connectionName = inputData.getParentSubSystem().getConnectionName();
-        String libraryName = inputData.getDataLibrary();
-
-        ReapplyChangesManager manager = null;
-
-        try {
-
-            manager = new ReapplyChangesManager(JDBCConnectionManager.getInstance().getConnectionForUpdate(connectionName, libraryName));
-
-            manager.openFiles();
-
-            return true;
-
-        } catch (Throwable e) {
-            RapidFireCorePlugin.logError("*** Could no reapply changes to file " + statusItem.getFile() + " ***", e); //$NON-NLS-1$ //$NON-NLS-2$
-            MessageDialog.openError(getShell(), Messages.E_R_R_O_R, ExceptionHelper.getLocalizedMessage(e));
-            return false;
-        } finally {
-            if (manager != null) {
-                try {
-                    manager.closeFiles();
-                } catch (Exception e) {
-                    RapidFireCorePlugin.logError("*** Could no close files. ***", e); //$NON-NLS-1$
-                    MessageDialog.openError(getShell(), Messages.E_R_R_O_R, ExceptionHelper.getLocalizedMessage(e));
-                }
+        TableItem[] tableItems = table.getSelection();
+        for (TableItem tableItem : tableItems) {
+            if (tableItem.getData() instanceof FileCopyStatus) {
+                FileCopyStatus item = (FileCopyStatus)tableItem.getData();
+                selectedItems.add(item);
             }
         }
 
-    }
-
-    private FileCopyStatus[] retrieveSelectedTableItems() {
-
-        FileCopyStatus[] selectedItems;
-        if (tvJobStatuses.getSelection() instanceof IStructuredSelection) {
-            IStructuredSelection structuredSelection = (IStructuredSelection)tvJobStatuses.getSelection();
-            Object[] items = structuredSelection.toArray();
-            selectedItems = new FileCopyStatus[items.length];
-            for (int i = 0; i < items.length; i++) {
-                selectedItems[i] = (FileCopyStatus)items[i];
-            }
-        } else {
-            selectedItems = new FileCopyStatus[0];
-        }
-
-        return selectedItems;
+        return new StructuredSelection(selectedItems);
     }
 
     private Shell getShell() {
@@ -655,6 +638,17 @@ public class FileCopyStatusView extends ViewPart implements IPropertyChangeListe
 
     }
 
+    private class TableSelectionChangedListener implements SelectionListener {
+
+        public void widgetSelected(SelectionEvent event) {
+            refreshActionsEnablement();
+        }
+
+        public void widgetDefaultSelected(SelectionEvent event) {
+            widgetSelected(event);
+        }
+    }
+
     private class JobStatusItemPopupMenu extends MenuAdapter {
 
         private ReapplyChangesHandler handler;
@@ -662,10 +656,13 @@ public class FileCopyStatusView extends ViewPart implements IPropertyChangeListe
 
         private MenuItem menuItemReapplyChanges;
 
+        public JobStatusItemPopupMenu(ReapplyChangesHandler handler) {
+            this.handler = handler;
+        }
+
         @Override
         public void menuShown(MenuEvent event) {
 
-            this.handler = new ReapplyChangesHandler();
             this.menu = (Menu)event.getSource();
 
             destroyMenuItems();
@@ -692,14 +689,13 @@ public class FileCopyStatusView extends ViewPart implements IPropertyChangeListe
                 @Override
                 public void widgetSelected(SelectionEvent e) {
                     try {
-                        handler.executeWithSelection(tvJobStatuses.getSelection());
+                        JobStatusItemPopupMenu.this.handler.executeWithSelection(tvJobStatuses.getSelection());
                     } catch (ExecutionException e1) {
                         RapidFireCorePlugin.logError("*** Could not execute 'ReapplyChangesHandler'  ***", e1);
                     }
                 }
             });
 
-            handler.setEnabledWDSCi(tvJobStatuses.getSelection());
             menuItemReapplyChanges.setEnabled(handler.isEnabled());
         }
     }

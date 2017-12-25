@@ -1,6 +1,5 @@
 package biz.rapidfire.core.handlers.job;
 
-import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.commands.IHandler;
 import org.eclipse.jface.dialogs.Dialog;
 
@@ -26,19 +25,8 @@ public class MaintainActivitiesHandler extends AbstractJobMaintenanceHandler imp
     }
 
     @Override
-    protected Object executeWithResource(IRapidFireJobResource job) throws ExecutionException {
-
-        try {
-
-            if (canExecuteAction(job, jobAction)) {
-                performAction(job);
-            }
-
-        } catch (Throwable e) {
-            logError(e);
-        }
-
-        return null;
+    protected Result initialize(IRapidFireJobResource job) throws Exception {
+        return Result.createSuccessResult();
     }
 
     @Override
@@ -94,15 +82,5 @@ public class MaintainActivitiesHandler extends AbstractJobMaintenanceHandler imp
         }
 
         return false;
-    }
-
-    private void openDialog(ActivityMaintenanceDialog dialog, IRapidFireJobResource job, ActivityManager activityManager) throws Exception {
-
-        if (dialog.open() == Dialog.OK) {
-            if (activityManager != null) {
-                activityManager.book();
-            }
-            refreshUI(job);
-        }
     }
 }

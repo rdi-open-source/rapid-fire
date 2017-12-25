@@ -9,6 +9,7 @@
 package biz.rapidfire.core.handlers.reapplychanges;
 
 import org.eclipse.core.commands.IHandler;
+import org.eclipse.jface.dialogs.IDialogConstants;
 import org.eclipse.jface.dialogs.MessageDialog;
 
 import biz.rapidfire.core.Messages;
@@ -19,16 +20,42 @@ import biz.rapidfire.core.model.IFileCopyStatus;
 
 public class ReapplyChangesHandler extends AbstractReapplyChangesHandler implements IHandler {
 
+    private boolean isYesToAll;
+
     public ReapplyChangesHandler() {
         super(MaintenanceMode.CHANGE, ReapplyChangesAction.REAPYCHG);
     }
 
     @Override
+    protected void initializeHandler() {
+        super.initializeHandler();
+
+        isYesToAll = false;
+    }
+
+    @Override
     protected void performAction(IFileCopyStatus fileCopyStatus) throws Exception {
 
-        if (MessageDialog.openConfirm(getShell(), Messages.DialogTitle_Reapply_all_changes,
-            Messages.bindParameters(Messages.Question_Do_you_want_to_reapply_all_changes_to_file_B_of_copy_job_A, fileCopyStatus.getJob().getName(),
-                fileCopyStatus.getFile()))) {
+        final int YES = 0;
+        final int YES_TO_ALL = 1;
+        final int NO = 2;
+        final int CANCEL = 3;
+
+        int rc;
+        if (!isYesToAll) {
+            String title = Messages.DialogTitle_Reapply_all_changes;
+            String question = Messages.bindParameters(Messages.Question_Do_you_want_to_reapply_all_changes_to_file_B_of_copy_job_A, fileCopyStatus
+                .getJob().getName(), fileCopyStatus.getFile());
+            String[] buttonLabels = new String[] { IDialogConstants.YES_LABEL, IDialogConstants.YES_TO_ALL_LABEL, IDialogConstants.NO_LABEL,
+                IDialogConstants.CANCEL_LABEL };
+
+            MessageDialog dialog = new MessageDialog(getShell(), title, null, question, MessageDialog.QUESTION_WITH_CANCEL, buttonLabels, CANCEL);
+            rc = dialog.open();
+        } else {
+            rc = YES_TO_ALL;
+        }
+
+        if (rc == YES || rc == YES_TO_ALL) {
 
             ReapplyChangesValues values = new ReapplyChangesValues();
             values.setJob(fileCopyStatus.getJob().getName());
@@ -37,6 +64,13 @@ public class ReapplyChangesHandler extends AbstractReapplyChangesHandler impleme
 
             getManager().setValues(values);
             getManager().book();
+
+            if (rc == YES_TO_ALL) {
+                isYesToAll = true;
+            }
+
+        } else if (rc == CANCEL) {
+            cancel();
         }
     }
 }

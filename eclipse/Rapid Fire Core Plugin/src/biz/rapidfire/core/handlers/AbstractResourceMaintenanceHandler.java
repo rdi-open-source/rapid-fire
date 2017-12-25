@@ -40,6 +40,7 @@ public abstract class AbstractResourceMaintenanceHandler<R extends IRapidFireRes
     private String message;
     private MaintenanceMode mode;
     private boolean isEnabled;
+    private boolean isCanceled;
     private A action;
 
     public AbstractResourceMaintenanceHandler(MaintenanceMode mode, A action) {
@@ -96,13 +97,15 @@ public abstract class AbstractResourceMaintenanceHandler<R extends IRapidFireRes
      * Set the enabled state of the handler. When this method is called by the
      * Eclipse framework, the framework passes an
      * 'org.eclipse.core.expressions.EvaluationContext'. When the method is
-     * called one of the "NewResourceAction" classes of the RapidFireRSEPlugin,
-     * it gets a resource object.
+     * called by one of the "NewResourceAction" classes of the
+     * RapidFireRSEPlugin, it gets a resource object.
      */
     public void setEnabled(Object object) {
 
         if (isInstanceOf(object)) {
             setEnabledByResource((R)object);
+        } else if (object instanceof ISelection) {
+            selectionChanged((ISelection)object);
         } else {
             Object selection = ExpressionsHelper.getSelection(object);
             selectionChanged(selection);
@@ -111,7 +114,7 @@ public abstract class AbstractResourceMaintenanceHandler<R extends IRapidFireRes
 
     /**
      * Set the enabled state of the handler. It is called by the WDSCi version
-     * of the plugin.
+     * of the plug-in.
      */
     public void setEnabledWDSCi(ISelection selection) {
         selectionChanged(selection);
@@ -145,10 +148,12 @@ public abstract class AbstractResourceMaintenanceHandler<R extends IRapidFireRes
     @SuppressWarnings("unchecked")
     public Object executeWithSelection(ISelection selection) throws ExecutionException {
 
+        initializeHandler();
+
         if (selection instanceof IStructuredSelection) {
             IStructuredSelection structuredSelection = (IStructuredSelection)selection;
             Iterator<?> iterator = structuredSelection.iterator();
-            while (iterator.hasNext()) {
+            while (!isCanceled && iterator.hasNext()) {
                 setErrorMessage(null);
                 Object object = iterator.next();
                 if (isInstanceOf(object)) {
@@ -163,6 +168,14 @@ public abstract class AbstractResourceMaintenanceHandler<R extends IRapidFireRes
         return null;
     }
 
+    protected void initializeHandler() {
+        isCanceled = false;
+    }
+
+    public void cancel() {
+        isCanceled = true;
+    }
+
     protected Shell getShell() {
         return PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell();
     }
@@ -172,7 +185,7 @@ public abstract class AbstractResourceMaintenanceHandler<R extends IRapidFireRes
         return MaintenanceMode.DELETE.equals(mode);
     }
 
-    protected Object executeWithResource(R resource) throws ExecutionException {
+    private Object executeWithResource(R resource) throws ExecutionException {
 
         boolean isError = false;
 

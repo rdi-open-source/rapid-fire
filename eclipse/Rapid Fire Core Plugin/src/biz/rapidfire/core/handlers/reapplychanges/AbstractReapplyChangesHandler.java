@@ -92,9 +92,7 @@ public abstract class AbstractReapplyChangesHandler extends AbstractResourceMain
             MessageDialog.openError(getShell(), Messages.E_R_R_O_R, message);
         }
 
-        // TODO: remove debug code
-        return true;
-        // return false;
+        return false;
     }
 
     @Override

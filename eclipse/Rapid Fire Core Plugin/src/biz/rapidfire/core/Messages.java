@@ -203,6 +203,7 @@ public class Messages extends NLS {
     public static String Copy_program_successfully_generated;
 
     // Action labels
+    public static String ActionLabel_Refresh;
     public static String ActionLabel_Auto_refresh_menu_item;
     public static String ActionLabel_Auto_refresh_menu_item_stop;
     public static String ActionLabel_Auto_refresh_menu_item_every_A_seconds;
