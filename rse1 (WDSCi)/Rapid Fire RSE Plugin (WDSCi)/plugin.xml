@@ -45,6 +45,17 @@
          <description>%Wizard_job_description</description>
          <selection class="biz.rapidfire.core.maintenance.wizard.shared.IWizardSupporter"/>
       </wizard>
+      
+      <wizard
+        id = "biz.rapidfire.wizards.add.file"
+        name = "%Wizard_file_name"
+        class="biz.rapidfire.core.maintenance.file.wizard.NewFileWizard"
+        category="biz.rapidfire.wizards"
+        icon="icons/rapidfire_file.gif">
+         <description>%Wizard_file_description</description>
+         <selection class="biz.rapidfire.core.maintenance.wizard.shared.IWizardSupporter"/>
+      </wizard>
+
    </extension>
 
       	<!--
