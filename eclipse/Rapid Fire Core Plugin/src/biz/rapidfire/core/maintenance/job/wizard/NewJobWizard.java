@@ -56,29 +56,14 @@ public class NewJobWizard extends AbstractNewWizard {
         addPage(new LibraryListPage(libraryListValues));
     }
 
-    protected void setPageEnablement(String pageId, boolean enabled) {
-
-        if (enabled) {
-            showPage(pageId);
-        } else {
-            hidePage(pageId);
-        }
-    }
-
     @Override
     public boolean canFinish() {
 
         for (int i = 0; i < getPageCount(); i++) {
             AbstractWizardPage page = (AbstractWizardPage)getPages()[i];
-            // TODO: remove after testing
-            // if (LibraryListPage.NAME.equals(page.getName()) &&
-            // !page.isEnabled()) {
-            // // ignore library list page
-            // } else {
             if (!page.isPageComplete()) {
                 return false;
             }
-            // }
         }
 
         return true;

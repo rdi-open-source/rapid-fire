@@ -54,6 +54,16 @@ public class Messages extends NLS {
     public static String Wizard_Page_Library_List;
     public static String Wizard_Page_Library_List_description;
 
+    public static String Wizard_Title_New_File_wizard;
+    public static String Wizard_Page_File;
+    public static String Wizard_Page_File_description;
+    public static String Wizard_Page_Area;
+    public static String Wizard_Page_Area_description;
+    public static String Wizard_Page_Command;
+    public static String Wizard_Page_Command_description;
+    public static String Wizard_Page_Conversion;
+    public static String Wizard_Page_Conversion_description;
+
     // Dialog action titles
     public static String DialogMode_CREATE;
     public static String DialogMode_COPY;

@@ -8,9 +8,46 @@
 
 package biz.rapidfire.core.maintenance.file.wizard;
 
-import org.eclipse.jface.wizard.Wizard;
+import biz.rapidfire.core.Messages;
+import biz.rapidfire.core.maintenance.file.FileValues;
+import biz.rapidfire.core.maintenance.library.LibraryValues;
+import biz.rapidfire.core.maintenance.librarylist.LibraryListValues;
+import biz.rapidfire.core.maintenance.wizard.AbstractNewWizard;
+import biz.rapidfire.core.maintenance.wizard.AbstractWizardPage;
 
-public class NewFileWizard extends Wizard {
+public class NewFileWizard extends AbstractNewWizard {
+
+    public NewFileWizard() {
+        setWindowTitle(Messages.Wizard_Title_New_File_wizard);
+        setNeedsProgressMonitor(false);
+    }
+
+    @Override
+    public void addPages() {
+        super.addPages(); // Adds the data library page, if necessary
+
+        FileValues fileValues = FileValues.createInitialized();
+        LibraryValues libraryValues = LibraryValues.createInitialized();
+        LibraryListValues libraryListValues = LibraryListValues.createInitialized();
+
+        addPage(new FilePage(fileValues));
+        addPage(new AreaPage());
+        addPage(new CommandPage());
+        addPage(new ConversionPage());
+    }
+
+    @Override
+    public boolean canFinish() {
+
+        for (int i = 0; i < getPageCount(); i++) {
+            AbstractWizardPage page = (AbstractWizardPage)getPages()[i];
+            if (!page.isPageComplete()) {
+                return false;
+            }
+        }
+
+        return true;
+    }
 
     @Override
     public boolean performFinish() {

@@ -8,19 +8,70 @@
 
 package biz.rapidfire.core.maintenance.file.wizard;
 
-import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.widgets.Composite;
 
-public class ConversionPage extends WizardPage {
+import biz.rapidfire.core.Messages;
+import biz.rapidfire.core.maintenance.job.JobValues;
+import biz.rapidfire.core.maintenance.job.wizard.NewJobWizard;
+import biz.rapidfire.core.maintenance.wizard.AbstractWizardPage;
 
-    protected ConversionPage(String pageName) {
-        super(pageName);
-        // TODO Auto-generated constructor stub
+public class ConversionPage extends AbstractWizardPage {
+
+    public static final String NAME = "CONVERSION_PAGE"; //$NON-NLS-1$
+
+    public ConversionPage() {
+        super(NAME);
+
+        setTitle(Messages.Wizard_Page_Conversion);
+        setDescription(Messages.Wizard_Page_Conversion_description);
     }
 
-    public void createControl(Composite parent) {
+    @Override
+    public void setFocus() {
+
+    }
+
+    public JobValues getValues() {
+        return null;
+    }
+
+    public void createContent(Composite parent) {
         // TODO Auto-generated method stub
+    }
+
+    @Override
+    protected void setInputData() {
 
     }
 
+    @Override
+    protected void addControlListeners() {
+
+    }
+
+    @Override
+    protected void updatePageComplete(Object source) {
+
+    }
+
+    private void updateValues() {
+
+    }
+
+    private void updatePageEnablement() {
+
+        NewJobWizard wizard = (NewJobWizard)getWizard();
+        // if (nameValues.isCreateEnvironment()) {
+        // wizard.setPageEnablement(LibraryListPage.NAME, true);
+        // } else {
+        // wizard.setPageEnablement(LibraryListPage.NAME, false);
+        // }
+    }
+
+    @Override
+    protected void storePreferences() {
+
+        // getPreferences().setConnectionName(connectionName);
+        // getPreferences().setRapidFireLibrary(dataLibraryName);
+    }
 }

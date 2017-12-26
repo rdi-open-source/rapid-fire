@@ -24,7 +24,7 @@ public class JobPage extends AbstractWizardPage {
 
     public static final String NAME = "JOB_PAGE"; //$NON-NLS-1$
 
-    private JobValues nameValues;
+    private JobValues jobValues;
 
     private Validator nameValidator;
     private Validator libraryValidator;
@@ -34,7 +34,7 @@ public class JobPage extends AbstractWizardPage {
     public JobPage(JobValues jobValues) {
         super(NAME);
 
-        this.nameValues = jobValues;
+        this.jobValues = jobValues;
 
         this.nameValidator = Validator.getNameInstance();
         this.libraryValidator = Validator.getLibraryNameInstance(Validator.LIBRARY_LIBL, Validator.LIBRARY_CURLIB);
@@ -60,7 +60,7 @@ public class JobPage extends AbstractWizardPage {
     }
 
     public JobValues getValues() {
-        return nameValues;
+        return jobValues;
     }
 
     @Override
@@ -74,11 +74,11 @@ public class JobPage extends AbstractWizardPage {
     @Override
     protected void setInputData() {
 
-        jobMaintenanceControl.setJobName(nameValues.getKey().getJobName());
-        jobMaintenanceControl.setDescription(nameValues.getDescription());
-        jobMaintenanceControl.setCreateEnvironment(nameValues.isCreateEnvironment());
-        jobMaintenanceControl.setJobQueueName(nameValues.getJobQueueName());
-        jobMaintenanceControl.setJobQueueLibraryName(nameValues.getJobQueueLibraryName());
+        jobMaintenanceControl.setJobName(jobValues.getKey().getJobName());
+        jobMaintenanceControl.setDescription(jobValues.getDescription());
+        jobMaintenanceControl.setCreateEnvironment(jobValues.isCreateEnvironment());
+        jobMaintenanceControl.setJobQueueName(jobValues.getJobQueueName());
+        jobMaintenanceControl.setJobQueueLibraryName(jobValues.getJobQueueLibraryName());
 
         updatePageEnablement();
     }
@@ -122,11 +122,11 @@ public class JobPage extends AbstractWizardPage {
 
     private void updateValues() {
 
-        nameValues.getKey().setJobName(jobMaintenanceControl.getJobName());
-        nameValues.setDescription(jobMaintenanceControl.getDescription());
-        nameValues.setCreateEnvironment(jobMaintenanceControl.isCreateEnvironment());
-        nameValues.setJobQueueName(jobMaintenanceControl.getJobQueueName());
-        nameValues.setJobQueueLibraryName(jobMaintenanceControl.getJobQueueLibraryName());
+        jobValues.getKey().setJobName(jobMaintenanceControl.getJobName());
+        jobValues.setDescription(jobMaintenanceControl.getDescription());
+        jobValues.setCreateEnvironment(jobMaintenanceControl.isCreateEnvironment());
+        jobValues.setJobQueueName(jobMaintenanceControl.getJobQueueName());
+        jobValues.setJobQueueLibraryName(jobMaintenanceControl.getJobQueueLibraryName());
 
         updatePageEnablement();
     }
@@ -134,7 +134,7 @@ public class JobPage extends AbstractWizardPage {
     private void updatePageEnablement() {
 
         NewJobWizard wizard = (NewJobWizard)getWizard();
-        if (nameValues.isCreateEnvironment()) {
+        if (jobValues.isCreateEnvironment()) {
             wizard.setPageEnablement(LibraryListPage.NAME, true);
         } else {
             wizard.setPageEnablement(LibraryListPage.NAME, false);

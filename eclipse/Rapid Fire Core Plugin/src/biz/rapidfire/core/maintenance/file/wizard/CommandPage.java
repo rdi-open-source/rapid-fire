@@ -15,15 +15,15 @@ import biz.rapidfire.core.maintenance.job.JobValues;
 import biz.rapidfire.core.maintenance.job.wizard.NewJobWizard;
 import biz.rapidfire.core.maintenance.wizard.AbstractWizardPage;
 
-public class AreaPage extends AbstractWizardPage {
+public class CommandPage extends AbstractWizardPage {
 
-    public static final String NAME = "AREA_PAGE"; //$NON-NLS-1$
+    public static final String NAME = "COMMAND_PAGE"; //$NON-NLS-1$
 
-    public AreaPage() {
+    public CommandPage() {
         super(NAME);
 
-        setTitle(Messages.Wizard_Page_Area);
-        setDescription(Messages.Wizard_Page_Area_description);
+        setTitle(Messages.Wizard_Page_Command);
+        setDescription(Messages.Wizard_Page_Command_description);
     }
 
     @Override

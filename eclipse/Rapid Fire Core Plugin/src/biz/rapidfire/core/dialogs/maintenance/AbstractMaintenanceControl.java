@@ -13,11 +13,19 @@ import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridLayout;
+import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Text;
 
+import biz.rapidfire.core.helpers.StringHelper;
 import biz.rapidfire.core.maintenance.MaintenanceMode;
 
 public abstract class AbstractMaintenanceControl extends Composite implements ModifyListener, SelectionListener {
+
+    private static final String PREV_VALUE = "prev.value";
+    private static final String DFT_VALUE = "dft.value";
+    protected static final String EMPTY_STRING = "";
 
     private boolean isParentKeyFieldsVisible;
 
@@ -81,4 +89,73 @@ public abstract class AbstractMaintenanceControl extends Composite implements Mo
     public void modifyText(ModifyEvent arg0) {
     }
 
+    protected void setDefaultValue(Control control, String defaultValue) {
+        control.setData(DFT_VALUE, defaultValue);
+    }
+
+    private String getDefaultValue(Control control) {
+        String value = (String)control.getData(DFT_VALUE);
+        if (value != null) {
+            return value;
+        }
+        return EMPTY_STRING;
+    }
+
+    protected void setText(Text textControl, String text) {
+
+        if (StringHelper.isNullOrEmpty(text)) {
+            String defaultValue = getDefaultValue(textControl);
+            if (StringHelper.isNullOrEmpty(defaultValue)) {
+                textControl.setText(EMPTY_STRING);
+            } else {
+                textControl.setText(defaultValue);
+            }
+        } else {
+            textControl.setText(text);
+        }
+    }
+
+    protected void setText(Combo comboControl, String text) {
+
+        if (StringHelper.isNullOrEmpty(text)) {
+            String defaultValue = getDefaultValue(comboControl);
+            if (StringHelper.isNullOrEmpty(defaultValue)) {
+                comboControl.setText(EMPTY_STRING);
+            } else {
+                comboControl.setText(defaultValue);
+            }
+        } else {
+            comboControl.setText(text);
+        }
+    }
+
+    protected void saveCurrentValue(Text textControl) {
+        storeCurrentValue(textControl, textControl.getText());
+        textControl.setText(EMPTY_STRING);
+    }
+
+    protected void saveCurrentValue(Combo comboControl) {
+        storeCurrentValue(comboControl, comboControl.getText());
+        comboControl.setText(EMPTY_STRING);
+    }
+
+    protected void restorePreviousValue(Text control) {
+        setText(control, getPreviousValue(control));
+    }
+
+    protected void restorePreviousValue(Combo control) {
+        setText(control, getPreviousValue(control));
+    }
+
+    private void storeCurrentValue(Control control, String text) {
+        control.setData(PREV_VALUE, text);
+    }
+
+    private String getPreviousValue(Control control) {
+        String text = (String)control.getData(PREV_VALUE);
+        if (text == null) {
+            return EMPTY_STRING;
+        }
+        return text;
+    }
 }

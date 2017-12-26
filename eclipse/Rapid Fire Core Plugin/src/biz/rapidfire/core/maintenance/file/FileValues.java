@@ -15,8 +15,11 @@ import biz.rapidfire.core.maintenance.file.shared.ConversionProgram;
 import biz.rapidfire.core.maintenance.file.shared.CopyProgram;
 import biz.rapidfire.core.maintenance.file.shared.FileKey;
 import biz.rapidfire.core.maintenance.file.shared.FileType;
+import biz.rapidfire.core.maintenance.job.shared.JobKey;
 
 public class FileValues implements IResourceValues {
+
+    private static final String EMPTY = ""; //$NON-NLS-1$
 
     private FileKey key;
     private String fileName;
@@ -36,6 +39,20 @@ public class FileValues implements IResourceValues {
 
     public static String[] getConversionProgramSpecialValues() {
         return ConversionProgram.labels();
+    }
+
+    public static FileValues createInitialized() {
+
+        FileValues fileValues = new FileValues();
+        fileValues.setKey(new FileKey(new JobKey(EMPTY), 0));
+        fileValues.setFileName(EMPTY);
+        fileValues.setFileType(FileType.PHYSICAL.label());
+        fileValues.setCopyProgramName(CopyProgram.GEN.label());
+        fileValues.setCopyProgramLibraryName(EMPTY);
+        fileValues.setConversionProgramName(ConversionProgram.NONE.label());
+        fileValues.setConversionProgramLibraryName(EMPTY);
+
+        return fileValues;
     }
 
     public FileKey getKey() {

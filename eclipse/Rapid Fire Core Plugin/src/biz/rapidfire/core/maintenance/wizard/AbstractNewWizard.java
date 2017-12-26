@@ -41,6 +41,7 @@ public abstract class AbstractNewWizard extends Wizard implements INewWizard, IP
 
     private String connectionName;
     private String dataLibrary;
+
     private Map<String, Boolean> pagesVisibility;
 
     public AbstractNewWizard() {
@@ -219,7 +220,16 @@ public abstract class AbstractNewWizard extends Wizard implements INewWizard, IP
         return null;
     }
 
-    protected void hidePage(String name) {
+    public void setPageEnablement(String pageId, boolean enabled) {
+
+        if (enabled) {
+            showPage(pageId);
+        } else {
+            hidePage(pageId);
+        }
+    }
+
+    private void hidePage(String name) {
 
         pagesVisibility.put(name, Boolean.FALSE);
 
@@ -229,7 +239,7 @@ public abstract class AbstractNewWizard extends Wizard implements INewWizard, IP
         }
     }
 
-    protected void showPage(String name) {
+    private void showPage(String name) {
 
         pagesVisibility.put(name, Boolean.TRUE);
 
@@ -239,7 +249,7 @@ public abstract class AbstractNewWizard extends Wizard implements INewWizard, IP
         }
     }
 
-    protected void updatePagesVisibility() {
+    private void updatePagesVisibility() {
 
         Set<Entry<String, Boolean>> pages = pagesVisibility.entrySet();
         for (Entry<String, Boolean> entry : pages) {
