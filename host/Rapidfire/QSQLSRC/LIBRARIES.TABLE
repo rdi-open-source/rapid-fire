@@ -11,17 +11,8 @@
 -- * Libraries                                                              *
 -- *                                                                        *
 -- *------------------------------------------------------------------------*
--- * >>PRE-COMPILER<<                                                       *
--- *   >>CRTCMD<< RUNSQLSTM SRCFILE(&SL/&SF) SRCMBR(&SM) +                  *
--- *                        COMMIT(*NONE) NAMING(*SYS) DFTRDBCOL(&LI) +     *
--- *                        OPTION(*LIST) PROCESS(*RUN) USRPRF(*USER);      *
--- *   >>CURLIB<< &CL;                                                      *
--- *   >>LIBL<<   &LL;                                                      *
--- *   >>EXECUTE<<                                                          *
--- * >>END-PRE-COMPILER<<                                                   *
--- *------------------------------------------------------------------------*
 
-CREATE OR REPLACE TABLE LIBRARIES
+CREATE TABLE LIBRARIES
 (
  JOB FOR COLUMN X2JOB CHAR(10) NOT NULL WITH DEFAULT,
  LIBRARY FOR COLUMN X2LIB CHAR(10) NOT NULL WITH DEFAULT,

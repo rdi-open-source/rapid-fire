@@ -13,6 +13,17 @@
 //* Retrieve Function Key                                                                   *
 //*                                                                                         *
 //*-----------------------------------------------------------------------------------------*
+//*  >>PRE-COMPILER<<                                                                       *
+//*    >>CRTCMD<< CRTRPGMOD    MODULE(&LI/&OB) +                                            *
+//*                              SRCFILE(&SL/&SF) SRCMBR(&SM);                              *
+//*    >>IMPORTANT<<                                                                        *
+//*      >>PARM<<  DBGVIEW(*ALL);                                                           *
+//*      >>PARM<<  OPTION(*EVENTF);                                                         *
+//*      >>PARM<<  TGTRLS(&TR);                                                             *
+//*    >>END-IMPORTANT<<                                                                    *
+//*    >>EXECUTE<<                                                                          *
+//*  >>END-PRE-COMPILER<<                                                                   *
+//*-----------------------------------------------------------------------------------------*
 //*                                                                                         *
 //* Prozedurergebnis                                                                        *
 //* ================                                                                        *
@@ -56,17 +67,6 @@
 //*------------+--------+-------------------------------------------------------------------*
 //* 01.07.2014 I   FH   I Programm erstellt                                                 *
 //*------------+--------+-------------------------------------------------------------------*
-//* >>PRE-COMPILER<<                                                                        *
-//*    >>CRTCMD<< CRTRPGMOD    MODULE(&LI/&OB) SRCFILE(&SL/&SF) SRCMBR(&SM);                *
-//*    >>IMPORTANT<<                                                                        *
-//*      >>PARM<< DBGVIEW(&U1);                                                             *
-//*      >>PARM<< TGTRLS(&TR);                                                              *
-//*      >>PARM<< OPTION(*EVENTF);                                                          *
-//*      >>PARM<< TRUNCNBR(*NO);                                                            *
-//*    >>END-IMPORTANT<<                                                                    *
-//*    >>EXECUTE<<                                                                          *
-//*  >>END-PRE-COMPILER<<                                                                   *
-//*-----------------------------------------------------------------------------------------*
 
 CTL-OPT NoMain;
 CTL-OPT DatFmt(*Eur) TimFmt(*Eur) DecEdit('0,');

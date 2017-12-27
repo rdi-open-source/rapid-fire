@@ -11,17 +11,8 @@
 -- * Changes                                                                *
 -- *                                                                        *
 -- *------------------------------------------------------------------------*
--- * >>PRE-COMPILER<<                                                       *
--- *   >>CRTCMD<< RUNSQLSTM SRCFILE(&SL/&SF) SRCMBR(&SM) +                  *
--- *                        COMMIT(*NONE) NAMING(*SYS) DFTRDBCOL(&LI) +     *
--- *                        OPTION(*LIST) PROCESS(*RUN) USRPRF(*USER);      *
--- *   >>CURLIB<< &CL;                                                      *
--- *   >>LIBL<<   &LL;                                                      *
--- *   >>EXECUTE<<                                                          *
--- * >>END-PRE-COMPILER<<                                                   *
--- *------------------------------------------------------------------------*
 
-CREATE OR REPLACE TABLE CHANGES
+CREATE TABLE CHANGES
 (
  MEMBER FOR COLUMN X8MBR CHAR(10) NOT NULL WITH DEFAULT,
  SEQUENCE_NUMBER FOR COLUMN X8SEQ DECIMAL(10, 0) NOT NULL

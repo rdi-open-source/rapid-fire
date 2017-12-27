@@ -13,16 +13,19 @@
 //* SQL Status                                                                              *
 //*                                                                                         *
 //*-----------------------------------------------------------------------------------------*
-//* >>PRE-COMPILER<<                                                                        *
-//*   >>CRTCMD<<  CRTSQLRPGI SRCFILE(&SL/&SF) SRCMBR(&SM) OBJ(&LI/&OB) OBJTYPE(*MODULE);    *
-//*   >>IMPORTANT<<                                                                         *
-//*        >>PARM<<  CLOSQLCSR(*ENDMOD);                                                    *
-//*        >>PARM<<  OUTPUT(*PRINT);                                                        *
-//*        >>PARM<<  DBGVIEW(*SOURCE);                                                      *
-//*        >>PARM<<  GENLVL(0);                                                             *
-//*   >>END-IMPORTANT<<                                                                     *
-//*   >>EXECUTE<<                                                                           *
-//* >>END-PRE-COMPILER<<                                                                    *
+//*  >>PRE-COMPILER<<                                                                       *
+//*    >>CRTCMD<< CRTSQLRPGI   OBJ(&LI/&OB) +                                               *
+//*                              SRCFILE(&SL/&SF) SRCMBR(&SM) +                             *
+//*                              OBJTYPE(*MODULE);                                          *
+//*    >>IMPORTANT<<                                                                        *
+//*      >>PARM<<  OUTPUT(*PRINT);                                                          *
+//*      >>PARM<<  GENLVL(0);                                                               *
+//*      >>PARM<<  DBGVIEW(*SOURCE);                                                        *
+//*      >>PARM<<  OPTION(*EVENTF);                                                         *
+//*      >>PARM<<  TGTRLS(&TR);                                                             *
+//*    >>END-IMPORTANT<<                                                                    *
+//*    >>EXECUTE<<                                                                          *
+//*  >>END-PRE-COMPILER<<                                                                   *
 //*------------+--------+-------------------------------------------------------------------*
 //*   Datum    I Progr. I Beschreibung                                                      *
 //*------------+--------+-------------------------------------------------------------------*

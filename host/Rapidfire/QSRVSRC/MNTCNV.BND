@@ -17,9 +17,10 @@
      /*    >>IMPORTANT<<                                                                          */
      /*      >>PARM<<  MODULE(MNTCNV);                                                            */
      /*      >>PARM<<  TEXT('Maintain Conversions');                                              */
-     /*      >>PARM<<  BNDDIR(&LI/RAPIDFIRE);                                                     */
+     /*      >>PARM<<  BNDDIR(RAPIDFIRE);                                                         */
      /*      >>PARM<<  ACTGRP(RAPIDFIRE);                                                         */
      /*      >>PARM<<  DETAIL(*BASIC);                                                            */
+     /*      >>PARM<<  TGTRLS(&TR);                                                               */
      /*    >>END-IMPORTANT<<                                                                      */
      /*    >>EXECUTE<<                                                                            */
      /*  >>END-PRE-COMPILER<<                                                                     */

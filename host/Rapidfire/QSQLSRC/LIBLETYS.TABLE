@@ -11,17 +11,8 @@
 -- * Library list entries                                                   *
 -- *                                                                        *
 -- *------------------------------------------------------------------------*
--- * >>PRE-COMPILER<<                                                       *
--- *   >>CRTCMD<< RUNSQLSTM SRCFILE(&SL/&SF) SRCMBR(&SM) +                  *
--- *                        COMMIT(*NONE) NAMING(*SYS) DFTRDBCOL(&LI) +     *
--- *                        OPTION(*LIST) PROCESS(*RUN) USRPRF(*USER);      *
--- *   >>CURLIB<< &CL;                                                      *
--- *   >>LIBL<<   &LL;                                                      *
--- *   >>EXECUTE<<                                                          *
--- * >>END-PRE-COMPILER<<                                                   *
--- *------------------------------------------------------------------------*
 
-CREATE OR REPLACE TABLE LIBRARY_LIST_ENTRIES
+CREATE TABLE LIBRARY_LIST_ENTRIES
 FOR SYSTEM NAME LIBLETYS
 (
  JOB FOR COLUMN X5JOB CHAR(10) NOT NULL WITH DEFAULT,

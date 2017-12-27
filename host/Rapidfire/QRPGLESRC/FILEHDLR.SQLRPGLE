@@ -12,24 +12,25 @@
 //*                                                                                         *
 //* File Handler                                                                            *
 //*                                                                                         *
+//*-----------------------------------------------------------------------------------------*
+//*  >>PRE-COMPILER<<                                                                       *
+//*    >>CRTCMD<< CRTSQLRPGI   OBJ(&LI/&OB) +                                               *
+//*                              SRCFILE(&SL/&SF) SRCMBR(&SM) +                             *
+//*                              OBJTYPE(*PGM);                                             *
+//*    >>IMPORTANT<<                                                                        *
+//*      >>PARM<<  OUTPUT(*PRINT);                                                          *
+//*      >>PARM<<  GENLVL(0);                                                               *
+//*      >>PARM<<  DBGVIEW(*SOURCE);                                                        *
+//*      >>PARM<<  OPTION(*EVENTF);                                                         *
+//*      >>PARM<<  TGTRLS(&TR);                                                             *
+//*    >>END-IMPORTANT<<                                                                    *
+//*    >>EXECUTE<<                                                                          *
+//*  >>END-PRE-COMPILER<<                                                                   *
 //*------------+--------+-------------------------------------------------------------------*
 //*   Datum    I Progr. I Beschreibung                                                      *
 //*------------+--------+-------------------------------------------------------------------*
 //* 20.12.2016 I   FH   I STRPREPRC Header hinzugefügt.                                     *
 //*------------+--------+-------------------------------------------------------------------*
-//* >>PRE-COMPILER<<                                                                        *
-//*   >>CRTCMD<< CRTSQLRPGI OBJ(&LI/&OB) SRCFILE(&SL/&SF) SRCMBR(&SM) OBJTYPE(*PGM);        *
-//*   >>IMPORTANT<<                                                                         *
-//*     >>PARM<< CLOSQLCSR(*ENDMOD);                                                        *
-//*     >>PARM<< OUTPUT(*PRINT);                                                            *
-//*     >>PARM<< GENLVL(0);                                                                 *
-//*     >>PARM<< COMPILEOPT('DFTACTGRP(*NO) DBGVIEW(&U1) ACTGRP(&U2) TRUNCNBR(*NO)');       *
-//*     >>PARM<< TGTRLS(&TR);                                                               *
-//*     >>PARM<< OPTION(*EVENTF);                                                           *
-//*   >>END-IMPORTANT<<                                                                     *
-//*   >>EXECUTE<<                                                                           *
-//* >>END-PRE-COMPILER<<                                                                    *
-//*-----------------------------------------------------------------------------------------*
 
 // Control
 

@@ -11,17 +11,8 @@
 -- * SQL Trace                                                              *
 -- *                                                                        *
 -- *------------------------------------------------------------------------*
--- * >>PRE-COMPILER<<                                                       *
--- *   >>CRTCMD<< RUNSQLSTM SRCFILE(&SL/&SF) SRCMBR(&SM) +                  *
--- *                        COMMIT(*NONE) NAMING(*SYS) DFTRDBCOL(&LI) +     *
--- *                        OPTION(*LIST) PROCESS(*RUN) USRPRF(*USER);      *
--- *   >>CURLIB<< &CL;                                                      *
--- *   >>LIBL<<   &LL;                                                      *
--- *   >>EXECUTE<<                                                          *
--- * >>END-PRE-COMPILER<<                                                   *
--- *------------------------------------------------------------------------*
 
-create OR REPLACE table SQLTRACE
+create table SQLTRACE
 (
   id      integer generated always as identity (start with 1, increment by 1),
   caller    varchar(128)   not null with default,

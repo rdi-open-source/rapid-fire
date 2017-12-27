@@ -11,17 +11,8 @@
 -- * Changes log                                                            *
 -- *                                                                        *
 -- *------------------------------------------------------------------------*
--- * >>PRE-COMPILER<<                                                       *
--- *   >>CRTCMD<< RUNSQLSTM SRCFILE(&SL/&SF) SRCMBR(&SM) +                  *
--- *                        COMMIT(*NONE) NAMING(*SYS) DFTRDBCOL(&LI) +     *
--- *                        OPTION(*LIST) PROCESS(*RUN) USRPRF(*USER);      *
--- *   >>CURLIB<< &CL;                                                      *
--- *   >>LIBL<<   &LL;                                                      *
--- *   >>EXECUTE<<                                                          *
--- * >>END-PRE-COMPILER<<                                                   *
--- *------------------------------------------------------------------------*
 
-CREATE OR REPLACE TABLE CHANGESLOG
+CREATE TABLE CHANGESLOG
 (
  MEMBER FOR COLUMN XEMBR CHAR(10) NOT NULL WITH DEFAULT,
  RECORD_NUMBER FOR COLUMN XERCD DECIMAL(10, 0) NOT NULL WITH DEFAULT

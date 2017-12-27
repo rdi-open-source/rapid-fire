@@ -13,37 +13,37 @@
 //* Execute Command Line                                                                    *
 //*                                                                                         *
 //*-----------------------------------------------------------------------------------------*
-
-// Prozedurergebnis
-// ================
-
-// *EXCEPTION --> Die Prozedur wurde mit einer Ausnahmebedingung beendet.
-// *ERROR     --> Die Prozedur wurde mit Fehlerstatus normal beendet.
-// *PROCESS   --> Die Prozedur wurde mit Verarbeitungsstatus normal beendet.
-
-// Prozedurschnittstelle
-// =====================
-
-// PIMode     / *EXECUTE --> Der Befehl wird normal verarbeitet.
-//              *PROMPT  --> Der Befehl wird nach einer Bedienerführungsanzeige verarbeitet.
-//              *DSPHELP --> Es wird Online-Hilfetext zum Befehl angezeigt.
-
-//------------+--------+---------------------------------------------------------------------
-//   Datum    I Progr. I Beschreibung
-//------------+--------+---------------------------------------------------------------------
-// 01.07.2014 I   FH   I Programm erstellt
-//------------+--------+---------------------------------------------------------------------
-//* >>PRE-COMPILER<<                                                                        *
-//*    >>CRTCMD<< CRTRPGMOD    MODULE(&LI/&OB) SRCFILE(&SL/&SF) SRCMBR(&SM);                *
+//*  >>PRE-COMPILER<<                                                                       *
+//*    >>CRTCMD<< CRTRPGMOD    MODULE(&LI/&OB) +                                            *
+//*                              SRCFILE(&SL/&SF) SRCMBR(&SM);                              *
 //*    >>IMPORTANT<<                                                                        *
-//*      >>PARM<< DBGVIEW(&U1);                                                             *
-//*      >>PARM<< TGTRLS(&TR);                                                              *
-//*      >>PARM<< OPTION(*EVENTF);                                                          *
-//*      >>PARM<< TRUNCNBR(*NO);                                                            *
+//*      >>PARM<<  DBGVIEW(*ALL);                                                           *
+//*      >>PARM<<  OPTION(*EVENTF);                                                         *
+//*      >>PARM<<  TGTRLS(&TR);                                                             *
 //*    >>END-IMPORTANT<<                                                                    *
 //*    >>EXECUTE<<                                                                          *
 //*  >>END-PRE-COMPILER<<                                                                   *
 //*-----------------------------------------------------------------------------------------*
+//*                                                                                         *
+//* Prozedurergebnis                                                                        *
+//* ================                                                                        *
+//*                                                                                         *
+//* *EXCEPTION --> Die Prozedur wurde mit einer Ausnahmebedingung beendet.                  *
+//* *ERROR     --> Die Prozedur wurde mit Fehlerstatus normal beendet.                      *
+//* *PROCESS   --> Die Prozedur wurde mit Verarbeitungsstatus normal beendet.               *
+//*                                                                                         *
+//* Prozedurschnittstelle                                                                   *
+//* =====================                                                                   *
+//*                                                                                         *
+//* PIMode     / *EXECUTE --> Der Befehl wird normal verarbeitet.                           *
+//*              *PROMPT  --> Der Befehl wird nach einer Bedienerführungsanzeige verarbeitet*
+//*              *DSPHELP --> Es wird Online-Hilfetext zum Befehl angezeigt.                *
+//*                                                                                         *
+//*------------+--------+-------------------------------------------------------------------*
+//*   Datum    I Progr. I Beschreibung                                                      *
+//*------------+--------+-------------------------------------------------------------------*
+//* 01.07.2014 I   FH   I Programm erstellt                                                 *
+//*------------+--------+-------------------------------------------------------------------*
 
 CTL-OPT NoMain;
 CTL-OPT DatFmt(*Eur) TimFmt(*Eur) DecEdit('0,');

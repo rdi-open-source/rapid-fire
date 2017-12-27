@@ -10,22 +10,24 @@
      /*                                                                                           */
      /* Returncode of Exit Program for Command RCVJRNE                                            */
      /*                                                                                           */
+     /*-------------------------------------------------------------------------------------------*/
+     /*  >>PRE-COMPILER<<                                                                         */
+     /*    >>CRTCMD<< CRTSRVPGM    SRVPGM(&LI/&OB) EXPORT(*SRCFILE) +                             */
+     /*                              SRCFILE(&SL/&SF) SRCMBR(&SM);                                */
+     /*    >>IMPORTANT<<                                                                          */
+     /*      >>PARM<<  MODULE(JOURNALRTN);                                                        */
+     /*      >>PARM<<  TEXT('Returncode of Exit Program for Command RCVJRNE');                    */
+     /*      >>PARM<<  BNDDIR(RAPIDFIRE);                                                         */
+     /*      >>PARM<<  ACTGRP(RAPIDFIRE);                                                         */
+     /*      >>PARM<<  DETAIL(*BASIC);                                                            */
+     /*      >>PARM<<  TGTRLS(&TR);                                                               */
+     /*    >>END-IMPORTANT<<                                                                      */
+     /*    >>EXECUTE<<                                                                            */
+     /*  >>END-PRE-COMPILER<<                                                                     */
      /*------------+--------+---------------------------------------------------------------------*/
      /*   Datum    I Progr. I Beschreibung                                                        */
      /*------------+--------+---------------------------------------------------------------------*/
      /* 03.02.2016 I   TR   I STRPREPRC Header hinzugefügt.                                       */
-     /*------------+--------+---------------------------------------------------------------------*/
-     /*  >>PRE-COMPILER<<                                                                         */
-     /*    >>CRTCMD<< CRTSRVPGM    SRVPGM(&LI/&OB) EXPORT(*SRCFILE) SRCFILE(&SL/&SF) SRCMBR(&SM); */
-     /*    >>IMPORTANT<<                                                                          */
-     /*      >>PARM<< MODULE(&LI/JOURNALRTN);                                                     */
-     /*      >>PARM<< TEXT('Returncode of Exit Program for Command RCVJRNE');                     */
-     /*      >>PARM<< ACTGRP(&U2);                                                                */
-     /*      >>PARM<< TGTRLS(&TR);                                                                */
-     /*      >>PARM<< DETAIL(*BASIC);                                                             */
-     /*    >>END-IMPORTANT<<                                                                      */
-     /*    >>EXECUTE<<                                                                            */
-     /*  >>END-PRE-COMPILER<<                                                                     */
      /*-------------------------------------------------------------------------------------------*/
 
              STRPGMEXP

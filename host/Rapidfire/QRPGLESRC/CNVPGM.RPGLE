@@ -13,25 +13,34 @@
 //* Conversion program                                                                      *
 //*                                                                                         *
 //*-----------------------------------------------------------------------------------------*
+//*  >>PRE-COMPILER<<                                                                       *
+//*    >>CRTCMD<< CRTBNDRPG    PGM(&LI/&OB) +                                               *
+//*                              SRCFILE(&SL/&SF) SRCMBR(&SM);                              *
+//*    >>IMPORTANT<<                                                                        *
+//*      >>PARM<<  DBGVIEW(*ALL);                                                           *
+//*      >>PARM<<  OPTION(*EVENTF);                                                         *
+//*      >>PARM<<  TGTRLS(&TR);                                                             *
+//*    >>END-IMPORTANT<<                                                                    *
+//*    >>EXECUTE<<                                                                          *
+//*  >>END-PRE-COMPILER<<                                                                   *
+//*-----------------------------------------------------------------------------------------*
 //*                                                                                         *
 //* At least you have to modify the statements starting with ### in this template.          *
 //*                                                                                         *
+//*-----------------------------------------------------------------------------------------*
+//* >>PRE-COMPILER<<                                                                        *
+//*   >>CRTCMD<<  CRTBNDRPG SRCFILE(&SL/&SF) SRCMBR(&SM) +                                  *
+//*                 PGM(&LI/&OB);                                                           *
+//*   >>IMPORTANT<<                                                                         *
+//*     >>PARM<<  DFTACTGRP(*NO);                                                           *
+//*     >>PARM<<  ACTGRP(RAPIDFIRE);                                                        *
+//*   >>END-IMPORTANT<<                                                                     *
+//*   >>EXECUTE<<                                                                           *
+//* >>END-PRE-COMPILER<<                                                                    *
 //*------------+--------+-------------------------------------------------------------------*
 //*   Datum    I Progr. I Beschreibung                                                      *
 //*------------+--------+-------------------------------------------------------------------*
 //* 03.02.2016 I   TR   I STRPREPRC Header hinzugefügt.                                     *
-//*-----------------------------------------------------------------------------------------*
-//* >>PRE-COMPILER<<                                                                        *
-//*   >>CRTCMD<< CRTBNDRPG PGM(&LI/&OB) SRCFILE(&SL/&SF) SRCMBR(&SM);                       *
-//*   >>IMPORTANT<<                                                                         *
-//*     >>PARM<< DFTACTGRP(*NO);                                                            *
-//*     >>PARM<< DBGVIEW(&U1);                                                              *
-//*     >>PARM<< ACTGRP(&U2);                                                               *
-//*     >>PARM<< TGTRLS(&TR);                                                               *
-//*     >>PARM<< OPTION(*EVENTF);                                                           *
-//*   >>END-IMPORTANT<<                                                                     *
-//*   >>EXECUTE<<                                                                           *
-//* >>END-PRE-COMPILER<<                                                                    *
 //*-----------------------------------------------------------------------------------------*
 
 // Control

@@ -12,6 +12,20 @@
 //*                                                                                         *
 //* Maintain Activity Schedule                                                              *
 //*                                                                                         *
+//*-----------------------------------------------------------------------------------------*
+//*  >>PRE-COMPILER<<                                                                       *
+//*    >>CRTCMD<< CRTSQLRPGI   OBJ(&LI/&OB) +                                               *
+//*                              SRCFILE(&SL/&SF) SRCMBR(&SM) +                             *
+//*                              OBJTYPE(*MODULE);                                          *
+//*    >>IMPORTANT<<                                                                        *
+//*      >>PARM<<  OUTPUT(*PRINT);                                                          *
+//*      >>PARM<<  GENLVL(0);                                                               *
+//*      >>PARM<<  DBGVIEW(*SOURCE);                                                        *
+//*      >>PARM<<  OPTION(*EVENTF);                                                         *
+//*      >>PARM<<  TGTRLS(&TR);                                                             *
+//*    >>END-IMPORTANT<<                                                                    *
+//*    >>EXECUTE<<                                                                          *
+//*  >>END-PRE-COMPILER<<                                                                   *
 //*------------+--------+-------------------------------------------------------------------*
 //*   Datum    I Progr. I Beschreibung                                                      *
 //*------------+--------+-------------------------------------------------------------------*
@@ -29,6 +43,8 @@ CTL-OPT EXTBININT(*YES);
 /INCLUDE QCPYSRC,MNTJOB
 
 /INCLUDE QCPYSRC,MNTAS
+
+/INCLUDE QCPYSRC,RAPIDFIRE
 
 /INCLUDE QCPYSRC,SQLSTS
 
@@ -62,6 +78,10 @@ DCL-PROC MNTAS_setActivity EXPORT;
     Where Job = :p_JOB And Start_Time = :p_STR;
   setIgnoreWarnings();
   SqlCheckState(sqlState);
+
+  if RAPIDFIRE_getAutoCommit() = 'Y';
+    commit;
+  endif;
 
 END-PROC MNTAS_setActivity;
 

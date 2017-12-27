@@ -12,6 +12,17 @@
 //*                                                                                         *
 //* Maintain Subjects To Be Notified                                                        *
 //*                                                                                         *
+//*-----------------------------------------------------------------------------------------*
+//*  >>PRE-COMPILER<<                                                                       *
+//*    >>CRTCMD<< CRTRPGMOD    MODULE(&LI/&OB) +                                            *
+//*                              SRCFILE(&SL/&SF) SRCMBR(&SM);                              *
+//*    >>IMPORTANT<<                                                                        *
+//*      >>PARM<<  DBGVIEW(*ALL);                                                           *
+//*      >>PARM<<  OPTION(*EVENTF);                                                         *
+//*      >>PARM<<  TGTRLS(&TR);                                                             *
+//*    >>END-IMPORTANT<<                                                                    *
+//*    >>EXECUTE<<                                                                          *
+//*  >>END-PRE-COMPILER<<                                                                   *
 //*------------+--------+-------------------------------------------------------------------*
 //*   Datum    I Progr. I Beschreibung                                                      *
 //*------------+--------+-------------------------------------------------------------------*

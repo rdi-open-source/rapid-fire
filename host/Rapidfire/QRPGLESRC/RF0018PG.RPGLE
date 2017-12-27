@@ -13,6 +13,17 @@
 //* Generate Copy Program                                                                   *
 //*                                                                                         *
 //*-----------------------------------------------------------------------------------------*
+//*  >>PRE-COMPILER<<                                                                       *
+//*    >>CRTCMD<< CRTBNDRPG    PGM(&LI/&OB) +                                               *
+//*                              SRCFILE(&SL/&SF) SRCMBR(&SM);                              *
+//*    >>IMPORTANT<<                                                                        *
+//*      >>PARM<<  DBGVIEW(*ALL);                                                           *
+//*      >>PARM<<  OPTION(*EVENTF);                                                         *
+//*      >>PARM<<  TGTRLS(&TR);                                                             *
+//*    >>END-IMPORTANT<<                                                                    *
+//*    >>EXECUTE<<                                                                          *
+//*  >>END-PRE-COMPILER<<                                                                   *
+//*-----------------------------------------------------------------------------------------*
 //*                                                                                         *
 //* (01 - 49) Freie Bezugszahlen für sonstige Dinge                                         *
 //*                                                                                         *

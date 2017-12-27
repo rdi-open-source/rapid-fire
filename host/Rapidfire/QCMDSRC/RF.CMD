@@ -9,26 +9,24 @@
      /*-------------------------------------------------------------------------------------------*/
      /*                                                                                           */
      /* Rapid Fire                                                                                */
+     /*-------------------------------------------------------------------------------------------*/
+     /*  >>PRE-COMPILER<<                                                                         */
+     /*    >>CRTCMD<< CRTCMD    CMD(&LI/&OB) +                                                    */
+     /*                           SRCFILE(&SL/&SF) SRCMBR(&SM);                                   */
+     /*    >>IMPORTANT<<                                                                          */
+     /*      >>PARM<<  PGM(RF);                                                                   */
+     /*      >>PARM<<  HLPID(*CMD);                                                               */
+     /*      >>PARM<<  HLPPNLGRP(RF);                                                             */
+     /*      >>PARM<<  PMTFILE(RF);                                                               */
+     /*      >>PARM<<  PRDLIB(&LI);                                                               */
+     /*    >>END-IMPORTANT<<                                                                      */
+     /*    >>EXECUTE<<                                                                            */
+     /*  >>END-PRE-COMPILER<<                                                                     */
      /*                                                                                           */
      /*------------+--------+---------------------------------------------------------------------*/
      /*   Date     I Progr. I Description                                                         */
      /*------------+--------+---------------------------------------------------------------------*/
      /* 01.07.2014 I   FH   I Created                                                             */
-     /*------------+--------+---------------------------------------------------------------------*/
-     /* >>PRE-COMPILER<<                                                                          */
-     /*   >>CRTCMD<< CRTCMD       CMD(&LI/&OB) SRCFILE(&SL/&SF) SRCMBR(&SM);                      */
-     /*   >>IMPORTANT<<                                                                           */
-     /*     >>PARM<< PGM(*LIBL/RF);                                                               */
-     /*     >>PARM<< ALLOW(*IMOD *IREXX *IPGM *EXEC *INTERACT);                                   */
-     /*     >>PARM<< ALWLMTUSR(*NO);                                                              */
-     /*     >>PARM<< PMTFILE(*LIBL/RF *STATIC);                                                   */
-     /*     >>PARM<< HLPPNLGRP(*LIBL/RF);                                                         */
-     /*     >>PARM<< HLPID(RF);                                                                   */
-     /*     >>PARM<< CURLIB(*NOCHG);                                                              */
-     /*     >>PARM<< PRDLIB(&LI);                                                                 */
-     /*   >>END-IMPORTANT<<                                                                       */
-     /*   >>EXECUTE<<                                                                             */
-     /* >>END-PRE-COMPILER<<                                                                      */
      /*------------+--------+---------------------------------------------------------------------*/
 
              CMD        PROMPT(CON0001)

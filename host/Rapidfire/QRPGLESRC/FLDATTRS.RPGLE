@@ -12,6 +12,18 @@
 //*                                                                                         *
 //*  Field Attributes                                                                       *
 //*                                                                                         *
+//*-----------------------------------------------------------------------------------------*
+//*  >>PRE-COMPILER<<                                                                       *
+//*    >>CRTCMD<< CRTRPGMOD    MODULE(&LI/&OB) +                                            *
+//*                              SRCFILE(&SL/&SF) SRCMBR(&SM);                              *
+//*    >>IMPORTANT<<                                                                        *
+//*      >>PARM<<  TRUNCNBR(*NO);                                                           *
+//*      >>PARM<<  DBGVIEW(*ALL);                                                           *
+//*      >>PARM<<  OPTION(*EVENTF);                                                         *
+//*      >>PARM<<  TGTRLS(&TR);                                                             *
+//*    >>END-IMPORTANT<<                                                                    *
+//*    >>EXECUTE<<                                                                          *
+//*  >>END-PRE-COMPILER<<                                                                   *
 //*------------+--------+-------------------------------------------------------------------*
 //*   Datum    I Progr. I Beschreibung                                                      *
 //*------------+--------+-------------------------------------------------------------------*
@@ -53,17 +65,6 @@
 //*     timestamp_  :  x'20'        expected: x'21'   dft + null                            *
 //*     hex_        :  x'40'        expected: x'41'   dft + hex literal                     *
 //*     bool_       :  x'00'        expected: x'01'   dft                                   *
-//*-----------------------------------------------------------------------------------------*
-//* >>PRE-COMPILER<<                                                                        *
-//*    >>CRTCMD<< CRTRPGMOD    MODULE(&LI/&OB) SRCFILE(&SL/&SF) SRCMBR(&SM);                *
-//*    >>IMPORTANT<<                                                                        *
-//*      >>PARM<< DBGVIEW(&U1);                                                             *
-//*      >>PARM<< TGTRLS(&TR);                                                              *
-//*      >>PARM<< OPTION(*EVENTF);                                                          *
-//*      >>PARM<< TRUNCNBR(*NO);                                                            *
-//*    >>END-IMPORTANT<<                                                                    *
-//*    >>EXECUTE<<                                                                          *
-//*  >>END-PRE-COMPILER<<                                                                   *
 //*-----------------------------------------------------------------------------------------*
 
 // Control

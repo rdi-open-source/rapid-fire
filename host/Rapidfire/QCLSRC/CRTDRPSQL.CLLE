@@ -10,6 +10,17 @@
      /*                                                                                           */
      /* Create/Drop UD-Functions and Stored Procedures                                            */
      /*                                                                                           */
+     /*-------------------------------------------------------------------------------------------*/
+     /*  >>PRE-COMPILER<<                                                                         */
+     /*    >>CRTCMD<< CRTBNDCL     PGM(&LI/&OB) +                                                 */
+     /*                              SRCFILE(&SL/&SF) SRCMBR(&SM);                                */
+     /*    >>IMPORTANT<<                                                                          */
+     /*      >>PARM<<  DBGVIEW(*ALL);                                                             */
+     /*      >>PARM<<  OPTION(*EVENTF);                                                           */
+     /*      >>PARM<<  TGTRLS(&TR);                                                               */
+     /*    >>END-IMPORTANT<<                                                                      */
+     /*    >>EXECUTE<<                                                                            */
+     /*  >>END-PRE-COMPILER<<                                                                     */
      /*------------+--------+---------------------------------------------------------------------*/
      /*   Date     I Progr. I Description                                                         */
      /*------------+--------+---------------------------------------------------------------------*/

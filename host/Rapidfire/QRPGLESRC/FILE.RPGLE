@@ -12,18 +12,14 @@
 //*                                                                                         *
 //* File                                                                                    *
 //*                                                                                         *
-//------------+--------+---------------------------------------------------------------------
-//   Datum    I Progr. I Beschreibung
-//------------+--------+---------------------------------------------------------------------
-// 01.07.2014 I   FH   I Programm erstellt
-//------------+--------+---------------------------------------------------------------------
-//* >>PRE-COMPILER<<                                                                        *
-//*    >>CRTCMD<< CRTRPGMOD    MODULE(&LI/&OB) SRCFILE(&SL/&SF) SRCMBR(&SM);                *
+//*-----------------------------------------------------------------------------------------*
+//*  >>PRE-COMPILER<<                                                                       *
+//*    >>CRTCMD<< CRTRPGMOD    MODULE(&LI/&OB) +                                            *
+//*                              SRCFILE(&SL/&SF) SRCMBR(&SM);                              *
 //*    >>IMPORTANT<<                                                                        *
-//*      >>PARM<< DBGVIEW(&U1);                                                             *
-//*      >>PARM<< TGTRLS(&TR);                                                              *
-//*      >>PARM<< OPTION(*EVENTF);                                                          *
-//*      >>PARM<< TRUNCNBR(*NO);                                                            *
+//*      >>PARM<<  DBGVIEW(*ALL);                                                           *
+//*      >>PARM<<  OPTION(*EVENTF);                                                         *
+//*      >>PARM<<  TGTRLS(&TR);                                                             *
 //*    >>END-IMPORTANT<<                                                                    *
 //*    >>EXECUTE<<                                                                          *
 //*  >>END-PRE-COMPILER<<                                                                   *

@@ -8,7 +8,7 @@
      /*                                                                                           */
      /*-------------------------------------------------------------------------------------------*/
      /*                                                                                           */
-     /* Maintain Areas                                                                            */
+     /* Generate Copy Program                                                                     */
      /*                                                                                           */
      /*-------------------------------------------------------------------------------------------*/
      /*  >>PRE-COMPILER<<                                                                         */
@@ -16,10 +16,11 @@
      /*                              SRCFILE(&SL/&SF) SRCMBR(&SM);                                */
      /*    >>IMPORTANT<<                                                                          */
      /*      >>PARM<<  MODULE(GNRCPYPGM);                                                         */
-     /*      >>PARM<<  TEXT('Maintain Areas');                                                    */
-     /*      >>PARM<<  BNDDIR(&LI/RAPIDFIRE);                                                     */
+     /*      >>PARM<<  TEXT('Generate Copy Program');                                             */
+     /*      >>PARM<<  BNDDIR(RAPIDFIRE);                                                         */
      /*      >>PARM<<  ACTGRP(RAPIDFIRE);                                                         */
      /*      >>PARM<<  DETAIL(*BASIC);                                                            */
+     /*      >>PARM<<  TGTRLS(&TR);                                                               */
      /*    >>END-IMPORTANT<<                                                                      */
      /*    >>EXECUTE<<                                                                            */
      /*  >>END-PRE-COMPILER<<                                                                     */

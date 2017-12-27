@@ -10,22 +10,24 @@
      /*                                                                                           */
      /* Who Am I                                                                                  */
      /*                                                                                           */
+     /*-------------------------------------------------------------------------------------------*/
+     /*  >>PRE-COMPILER<<                                                                         */
+     /*    >>CRTCMD<< CRTSRVPGM    SRVPGM(&LI/&OB) EXPORT(*SRCFILE) +                             */
+     /*                              SRCFILE(&SL/&SF) SRCMBR(&SM);                                */
+     /*    >>IMPORTANT<<                                                                          */
+     /*      >>PARM<<  MODULE(WHOAMI1 WHOAMI2 WHOAMI3);                                           */
+     /*      >>PARM<<  TEXT('Who Am I');                                                          */
+     /*      >>PARM<<  BNDDIR(RAPIDFIRE);                                                         */
+     /*      >>PARM<<  ACTGRP(RAPIDFIRE);                                                         */
+     /*      >>PARM<<  DETAIL(*BASIC);                                                            */
+     /*      >>PARM<<  TGTRLS(&TR);                                                               */
+     /*    >>END-IMPORTANT<<                                                                      */
+     /*    >>EXECUTE<<                                                                            */
+     /*  >>END-PRE-COMPILER<<                                                                     */
      /*------------+--------+---------------------------------------------------------------------*/
      /*   Datum    I Progr. I Beschreibung                                                        */
      /*------------+--------+---------------------------------------------------------------------*/
      /* 18.03.2016 I   FH   I Creation                                                            */
-     /*-------------------------------------------------------------------------------------------*/
-     /*  >>PRE-COMPILER<<                                                                         */
-     /*    >>CRTCMD<< CRTSRVPGM    SRVPGM(&LI/&OB) EXPORT(*SRCFILE) SRCFILE(&SL/&SF) SRCMBR(&SM); */
-     /*    >>IMPORTANT<<                                                                          */
-     /*      >>PARM<< MODULE(WHOAMI1 WHOAMI2 WHOAMI3);                                            */
-     /*      >>PARM<< TEXT('Who Am I');                                                           */
-     /*      >>PARM<< ACTGRP(&U2);                                                                */
-     /*      >>PARM<< TGTRLS(&TR);                                                                */
-     /*      >>PARM<< DETAIL(*BASIC);                                                             */
-     /*    >>END-IMPORTANT<<                                                                      */
-     /*    >>EXECUTE<<                                                                            */
-     /*  >>END-PRE-COMPILER<<                                                                     */
      /*-------------------------------------------------------------------------------------------*/
 
              STRPGMEXP

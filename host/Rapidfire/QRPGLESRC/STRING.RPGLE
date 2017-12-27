@@ -13,20 +13,21 @@
 //*  String Operations                                                                      *
 //*                                                                                         *
 //*-----------------------------------------------------------------------------------------*
-//*   Datum    I Progr. I Beschreibung                                                      *
-//*------------+--------+-------------------------------------------------------------------*
-//* 04.02.2016 I   TR   I Serviceprogramm erstellt.                                         *
-//*-----------------------------------------------------------------------------------------*
-//* >>PRE-COMPILER<<                                                                        *
-//*    >>CRTCMD<< CRTRPGMOD    MODULE(&LI/&OB) SRCFILE(&SL/&SF) SRCMBR(&SM);                *
+//*  >>PRE-COMPILER<<                                                                       *
+//*    >>CRTCMD<< CRTRPGMOD    MODULE(&LI/&OB) +                                            *
+//*                              SRCFILE(&SL/&SF) SRCMBR(&SM);                              *
 //*    >>IMPORTANT<<                                                                        *
-//*      >>PARM<< DBGVIEW(&U1);                                                             *
-//*      >>PARM<< TGTRLS(&TR);                                                              *
-//*      >>PARM<< OPTION(*EVENTF);                                                          *
-//*      >>PARM<< TRUNCNBR(*NO);                                                            *
+//*      >>PARM<<  TRUNCNBR(*NO);                                                           *
+//*      >>PARM<<  DBGVIEW(*ALL);                                                           *
+//*      >>PARM<<  OPTION(*EVENTF);                                                         *
+//*      >>PARM<<  TGTRLS(&TR);                                                             *
 //*    >>END-IMPORTANT<<                                                                    *
 //*    >>EXECUTE<<                                                                          *
 //*  >>END-PRE-COMPILER<<                                                                   *
+//*------------+--------+-------------------------------------------------------------------*
+//*   Datum    I Progr. I Beschreibung                                                      *
+//*------------+--------+-------------------------------------------------------------------*
+//* 04.02.2016 I   TR   I Serviceprogramm erstellt.                                         *
 //*-----------------------------------------------------------------------------------------*
 
 // Control

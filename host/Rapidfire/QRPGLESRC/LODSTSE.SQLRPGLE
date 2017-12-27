@@ -13,19 +13,19 @@
 //* Load Status Entries                                                                     *
 //*                                                                                         *
 //*-----------------------------------------------------------------------------------------*
-//* >>PRE-COMPILER<<                                                                        *
-//*   >>CRTCMD<<  CRTSQLRPGI SRCFILE(&SL/&SF) SRCMBR(&SM) OBJ(&LI/&OB) OBJTYPE(*MODULE);    *
-//*   >>IMPORTANT<<                                                                         *
-//*        >>PARM<<  CLOSQLCSR(*ENDMOD);                                                    *
-//*        >>PARM<<  OUTPUT(*PRINT);                                                        *
-//*        >>PARM<<  DBGVIEW(*NONE);                                                        *
-//*        >>PARM<<  GENLVL(0);                                                             *
-//*        >>PARM<<  COMPILEOPT('DBGVIEW(&U1) TRUNCNBR(*NO)');                              *
-//*        >>PARM<<  TGTRLS(&TR);                                                           *
-//*        >>PARM<<  OPTION(*EVENTF);                                                       *
-//*   >>END-IMPORTANT<<                                                                     *
-//*   >>EXECUTE<<                                                                           *
-//* >>END-PRE-COMPILER<<                                                                    *
+//*  >>PRE-COMPILER<<                                                                       *
+//*    >>CRTCMD<< CRTSQLRPGI   OBJ(&LI/&OB) +                                               *
+//*                              SRCFILE(&SL/&SF) SRCMBR(&SM) +                             *
+//*                              OBJTYPE(*MODULE);                                          *
+//*    >>IMPORTANT<<                                                                        *
+//*      >>PARM<<  OUTPUT(*PRINT);                                                          *
+//*      >>PARM<<  GENLVL(0);                                                               *
+//*      >>PARM<<  DBGVIEW(*SOURCE);                                                        *
+//*      >>PARM<<  OPTION(*EVENTF);                                                         *
+//*      >>PARM<<  TGTRLS(&TR);                                                             *
+//*    >>END-IMPORTANT<<                                                                    *
+//*    >>EXECUTE<<                                                                          *
+//*  >>END-PRE-COMPILER<<                                                                   *
 //*------------+--------+-------------------------------------------------------------------*
 //*   Datum    I Progr. I Beschreibung                                                      *
 //*------------+--------+-------------------------------------------------------------------*
