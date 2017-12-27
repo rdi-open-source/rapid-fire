@@ -13,6 +13,20 @@
 //* Promoter                                                                                *
 //*                                                                                         *
 //*-----------------------------------------------------------------------------------------*
+//*  >>PRE-COMPILER<<                                                                       *
+//*    >>CRTCMD<< CRTSQLRPGI   OBJ(&LI/&OB) +                                               *
+//*                              SRCFILE(&SL/&SF) SRCMBR(&SM) +                             *
+//*                              OBJTYPE(*MODULE);                                          *
+//*    >>IMPORTANT<<                                                                        *
+//*      >>PARM<<  OUTPUT(*PRINT);                                                          *
+//*      >>PARM<<  GENLVL(0);                                                               *
+//*      >>PARM<<  DBGVIEW(*SOURCE);                                                        *
+//*      >>PARM<<  OPTION(*EVENTF);                                                         *
+//*      >>PARM<<  TGTRLS(&TR);                                                             *
+//*    >>END-IMPORTANT<<                                                                    *
+//*    >>EXECUTE<<                                                                          *
+//*  >>END-PRE-COMPILER<<                                                                   *
+//*-----------------------------------------------------------------------------------------*
 //*                                                                                         *
 //* IMPORTANT:                                                                              *
 //* ==========                                                                              *
