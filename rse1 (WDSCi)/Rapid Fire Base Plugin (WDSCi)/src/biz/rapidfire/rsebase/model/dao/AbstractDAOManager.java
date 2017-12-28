@@ -38,8 +38,4 @@ public abstract class AbstractDAOManager {
         return null;
 
     }
-
-    protected String getStringTrim(CallableStatement statement, int parameterIndex) throws SQLException {
-        return statement.getString(parameterIndex);
-    }
 }
