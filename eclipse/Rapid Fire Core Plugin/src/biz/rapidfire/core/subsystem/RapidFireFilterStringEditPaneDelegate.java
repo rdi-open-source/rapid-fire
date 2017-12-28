@@ -45,16 +45,20 @@ public class RapidFireFilterStringEditPaneDelegate {
         dataLibraryText = createUpperCaseText(parent, Messages.Label_Library_colon, 10, null);
         jobText = createUpperCaseText(parent, Messages.Label_Job_colon, 10, Messages.Label_Full_generic_string);
         statusCombo = createReadOnlyCombo(parent, Messages.Label_Status_colon, Status.values());
-        showLogicalFilesCheckbox = createCheckBox(parent, Messages.Label_Show_logical_files);
+        showLogicalFilesCheckbox = createCheckBox(parent, Messages.Label_Show_logical_files_colon);
 
         return parent;
     }
 
     private Button createCheckBox(Composite parent, String label) {
 
+        Label Label = new Label(parent, SWT.NONE);
+        Label.setText(label);
+
         Button checkbox = WidgetFactory.createCheckbox(parent);
-        checkbox.setLayoutData(createGridData(2));
-        checkbox.setText(label);
+        checkbox.setLayoutData(createGridData());
+
+        new Label(parent, SWT.NONE).setLayoutData(createGridData());
 
         return checkbox;
     }
@@ -73,6 +77,8 @@ public class RapidFireFilterStringEditPaneDelegate {
         Combo combo = WidgetFactory.createReadOnlyCombo(parent);
         combo.setLayoutData(createGridData());
         combo.setItems(items.toArray(new String[items.size()]));
+
+        new Label(parent, SWT.NONE).setLayoutData(createGridData());
 
         return combo;
     }
