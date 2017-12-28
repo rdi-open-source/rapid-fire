@@ -10,11 +10,10 @@ package biz.rapidfire.rse.subsystem.resources;
 
 import org.eclipse.rse.core.subsystems.AbstractResource;
 
-import biz.rapidfire.core.maintenance.wizard.shared.IWizardSupporter;
 import biz.rapidfire.core.model.IRapidFireJobResource;
 import biz.rapidfire.core.subsystem.IRapidFireSubSystem;
 
-public abstract class AbstractNodeResource extends AbstractResource implements IWizardSupporter {
+public abstract class AbstractNodeResource extends AbstractResource {
 
     private IRapidFireJobResource job;
     private String label;
@@ -29,7 +28,7 @@ public abstract class AbstractNodeResource extends AbstractResource implements I
         return label;
     }
 
-    public IRapidFireJobResource getJob() {
+    protected IRapidFireJobResource getJob() {
         return job;
     }
 

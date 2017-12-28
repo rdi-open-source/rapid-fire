@@ -68,6 +68,26 @@ public class FilePage extends AbstractWizardPage {
         }
     }
 
+    public String getJobName() {
+        return fileMaintenanceControl.getJobName();
+    }
+
+    public void setJobName(String jobName) {
+
+        if (jobName != null) {
+            fileMaintenanceControl.setJobName(jobName);
+        }
+    }
+
+    public void setJobNames(String[] jobNames) {
+
+        if (jobNames != null) {
+            String jobName = getJobName();
+            fileMaintenanceControl.setJobNames(jobNames);
+            setJobName(jobName);
+        }
+    }
+
     public FileValues getValues() {
         return fileValues;
     }
@@ -107,25 +127,25 @@ public class FilePage extends AbstractWizardPage {
         String message = null;
 
         if (!nameValidator.validate(fileMaintenanceControl.getJobName())) {
-            // fileMaintenanceControl.setFocusJobName();
+            fileMaintenanceControl.setFocusJobName();
             message = Messages.bindParameters(Messages.Job_name_A_is_not_valid, fileMaintenanceControl.getJobName());
         } else if (StringHelper.isNullOrEmpty(fileMaintenanceControl.getPosition())) {
-            // fileMaintenanceControl.setFocusDescription();
+            fileMaintenanceControl.setFocusPosition();
             message = Messages.bind(Messages.File_position_A_is_not_valid, fileMaintenanceControl.getPosition());
         } else if (!nameValidator.validate(fileMaintenanceControl.getFileName())) {
-            // fileMaintenanceControl.setFocusJobQueueName();
+            fileMaintenanceControl.setFocusFileName();
             message = Messages.bindParameters(Messages.File_name_A_is_not_valid, fileMaintenanceControl.getFileName());
         } else if (!nameValidator.validate(fileMaintenanceControl.getCopyProgramName())) {
-            // fileMaintenanceControl.setFocusJobQueueName();
+            fileMaintenanceControl.setFocusCopyProgramName();
             message = Messages.bindParameters(Messages.Copy_program_name_A_is_not_valid, fileMaintenanceControl.getCopyProgramName());
         } else if (!libraryValidator.validate(fileMaintenanceControl.getCopyProgramLibraryName())) {
-            // fileMaintenanceControl.setFocusJobQueueLibraryName();
+            fileMaintenanceControl.setFocusCopyProgramLibraryName();
             message = Messages.bind(Messages.Library_name_A_is_not_valid, fileMaintenanceControl.getCopyProgramLibraryName());
         } else if (!nameValidator.validate(fileMaintenanceControl.getConversionProgramName())) {
-            // fileMaintenanceControl.setFocusJobQueueName();
+            fileMaintenanceControl.setFocusConversionProgramName();
             message = Messages.bindParameters(Messages.Conversion_program_name_A_is_not_valid, fileMaintenanceControl.getConversionProgramName());
         } else if (!libraryValidator.validate(fileMaintenanceControl.getConversionProgramLibraryName())) {
-            // fileMaintenanceControl.setFocusJobQueueLibraryName();
+            fileMaintenanceControl.setFocusConversionProgramLibraryName();
             message = Messages.bind(Messages.Library_name_A_is_not_valid, fileMaintenanceControl.getConversionProgramLibraryName());
         }
 

@@ -20,6 +20,7 @@ public class DataLibraryPage extends AbstractWizardPage {
 
     private String connectionName;
     private String dataLibraryName;
+    private String jobName;
 
     private Validator libraryValidator;
 
@@ -51,6 +52,14 @@ public class DataLibraryPage extends AbstractWizardPage {
 
     public void setDataLibraryName(String dataLibraryName) {
         this.dataLibraryName = dataLibraryName;
+    }
+
+    public String getJobName() {
+        return jobName;
+    }
+
+    public void setJobName(String jobName) {
+        this.jobName = jobName;
     }
 
     @Override

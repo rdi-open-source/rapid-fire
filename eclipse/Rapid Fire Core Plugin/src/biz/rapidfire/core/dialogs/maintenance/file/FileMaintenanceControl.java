@@ -29,7 +29,7 @@ import biz.rapidfire.core.swt.widgets.WidgetFactory;
 
 public class FileMaintenanceControl extends AbstractMaintenanceControl {
 
-    private Text textJobName;
+    private Combo comboJobName;
     private Text textPosition;
     private Text textFileName;
     private Combo comboFileType;
@@ -47,7 +47,7 @@ public class FileMaintenanceControl extends AbstractMaintenanceControl {
     }
 
     public void setFocusJobName() {
-        textJobName.setFocus();
+        comboJobName.setFocus();
     }
 
     public void setFocusPosition() {
@@ -83,14 +83,7 @@ public class FileMaintenanceControl extends AbstractMaintenanceControl {
 
         super.setMode(mode);
 
-        textJobName.setEnabled(isParentKeyFieldsEnabled());
-        textPosition.setEnabled(isKeyFieldsEnabled());
-        textFileName.setEnabled(isFieldsEnabled());
-        comboFileType.setEnabled(isFieldsEnabled());
-        comboCopyProgramName.setEnabled(isFieldsEnabled());
-        textCopyProgramLibraryName.setEnabled(isFieldsEnabled());
-        comboConversionProgramName.setEnabled(isFieldsEnabled());
-        textConversionProgramLibraryName.setEnabled(isFieldsEnabled());
+        updateControlEnablement();
     }
 
     @Override
@@ -98,9 +91,9 @@ public class FileMaintenanceControl extends AbstractMaintenanceControl {
 
         WidgetFactory.createLabel(parent, Messages.Label_Job_colon, Messages.Tooltip_Job);
 
-        textJobName = WidgetFactory.createNameText(parent);
-        textJobName.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
-        textJobName.setToolTipText(Messages.Tooltip_Job);
+        comboJobName = WidgetFactory.createNameCombo(parent);
+        comboJobName.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+        comboJobName.setToolTipText(Messages.Tooltip_Job);
 
         WidgetFactory.createLabel(parent, Messages.Label_Position_colon, Messages.Tooltip_Position);
 
@@ -156,11 +149,16 @@ public class FileMaintenanceControl extends AbstractMaintenanceControl {
     }
 
     public String getJobName() {
-        return textJobName.getText();
+        return comboJobName.getText();
     }
 
     public void setJobName(String jobName) {
-        textJobName.setText(jobName);
+        comboJobName.setText(jobName);
+        updateControlEnablement();
+    }
+
+    public void setJobNames(String[] jobNames) {
+        comboJobName.setItems(jobNames);
     }
 
     public String getPosition() {
@@ -233,7 +231,7 @@ public class FileMaintenanceControl extends AbstractMaintenanceControl {
 
     public void addModifyListener(ModifyListener listener) {
 
-        textJobName.addModifyListener(listener);
+        comboJobName.addModifyListener(listener);
         textPosition.addModifyListener(listener);
         textFileName.addModifyListener(listener);
         textCopyProgramLibraryName.addModifyListener(listener);
@@ -242,7 +240,7 @@ public class FileMaintenanceControl extends AbstractMaintenanceControl {
 
     public void removeModifyListener(ModifyListener listener) {
 
-        textJobName.removeModifyListener(listener);
+        comboJobName.removeModifyListener(listener);
         textPosition.removeModifyListener(listener);
         textFileName.removeModifyListener(listener);
         textCopyProgramLibraryName.removeModifyListener(listener);
@@ -279,20 +277,30 @@ public class FileMaintenanceControl extends AbstractMaintenanceControl {
         public void widgetDefaultSelected(SelectionEvent event) {
             widgetSelected(event);
         }
+    }
 
-        private void updateControlEnablement() {
+    private void updateControlEnablement() {
 
-            if (comboFileType.getText().equals(FileType.LOGICAL.label())) {
-                comboCopyProgramName.setEnabled(false);
-                textCopyProgramLibraryName.setEnabled(false);
-                comboConversionProgramName.setEnabled(false);
-                textConversionProgramLibraryName.setEnabled(false);
-            } else {
-                comboCopyProgramName.setEnabled(true);
-                textCopyProgramLibraryName.setEnabled(true);
-                comboConversionProgramName.setEnabled(true);
-                textConversionProgramLibraryName.setEnabled(true);
-            }
+        if (StringHelper.isNullOrEmpty(comboJobName.getText())) {
+            comboJobName.setEnabled(true);
+        } else {
+            comboJobName.setEnabled(isParentKeyFieldsEnabled());
+        }
+
+        textPosition.setEnabled(isKeyFieldsEnabled());
+        textFileName.setEnabled(isFieldsEnabled());
+        comboFileType.setEnabled(isFieldsEnabled());
+
+        if (comboFileType.getText().equals(FileType.LOGICAL.label())) {
+            comboCopyProgramName.setEnabled(false);
+            textCopyProgramLibraryName.setEnabled(false);
+            comboConversionProgramName.setEnabled(false);
+            textConversionProgramLibraryName.setEnabled(false);
+        } else {
+            comboCopyProgramName.setEnabled(isFieldsEnabled());
+            textCopyProgramLibraryName.setEnabled(isFieldsEnabled());
+            comboConversionProgramName.setEnabled(isFieldsEnabled());
+            textConversionProgramLibraryName.setEnabled(isFieldsEnabled());
         }
     }
 

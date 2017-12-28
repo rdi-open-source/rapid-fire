@@ -59,7 +59,7 @@ public class CommandsNodeAdapter extends AbstractNodeAdapter<CommandsNode> {
         try {
 
             CommandsNode commandsNode = (CommandsNode)element;
-            IRapidFireFileResource fileResource = commandsNode.getFile();
+            IRapidFireFileResource fileResource = commandsNode.getParent();
 
             IRapidFireCommandResource[] commands = fileResource.getParentSubSystem().getCommands(fileResource, getShell());
 

@@ -31,16 +31,21 @@ import biz.rapidfire.core.helpers.RapidFireHelper;
 import biz.rapidfire.core.helpers.StringHelper;
 import biz.rapidfire.core.maintenance.Result;
 import biz.rapidfire.core.maintenance.Success;
+import biz.rapidfire.core.model.IRapidFireChildResource;
+import biz.rapidfire.core.model.IRapidFireJobResource;
 import biz.rapidfire.core.model.IRapidFireResource;
 import biz.rapidfire.core.model.dao.JDBCConnectionManager;
+import biz.rapidfire.core.subsystem.IRapidFireSubSystem;
 
 import com.ibm.as400.access.AS400;
 
 // Source: http://www.vogella.com/tutorials/EclipseWizards/article.html
 public abstract class AbstractNewWizard extends Wizard implements INewWizard, IPageChangedListener {
 
+    private IRapidFireSubSystem subSystem;
     private String connectionName;
     private String dataLibrary;
+    private String jobName;
 
     private Map<String, Boolean> pagesVisibility;
 
@@ -59,6 +64,22 @@ public abstract class AbstractNewWizard extends Wizard implements INewWizard, IP
             WizardDialog dialog = (WizardDialog)getContainer();
             dialog.addPageChangedListener(this);
         }
+    }
+
+    public IRapidFireSubSystem getSubSystem() {
+        return subSystem;
+    }
+
+    public String getConnectionName() {
+        return connectionName;
+    }
+
+    public String getDataLibrary() {
+        return dataLibrary;
+    }
+
+    public String getJobName() {
+        return jobName;
     }
 
     public void pageChanged(PageChangedEvent event) {
@@ -81,6 +102,9 @@ public abstract class AbstractNewWizard extends Wizard implements INewWizard, IP
         }
         if (!StringHelper.isNullOrEmpty(dataLibrary)) {
             page.setDataLibraryName(dataLibrary);
+        }
+        if (!StringHelper.isNullOrEmpty(jobName)) {
+            page.setJobName(jobName);
         }
     }
 
@@ -158,10 +182,26 @@ public abstract class AbstractNewWizard extends Wizard implements INewWizard, IP
             IStructuredSelection structuredSelection = selection;
             if (!structuredSelection.isEmpty()) {
                 Object element = structuredSelection.getFirstElement();
+                System.out.println("==> selection: " + element);
                 if (element instanceof IRapidFireResource) {
                     IRapidFireResource resource = (IRapidFireResource)element;
-                    connectionName = resource.getParentSubSystem().getConnectionName();
-                    dataLibrary = resource.getDataLibrary();
+                    this.subSystem = resource.getParentSubSystem();
+                    this.connectionName = resource.getParentSubSystem().getConnectionName();
+                    this.dataLibrary = resource.getDataLibrary();
+                    this.jobName = null;
+                } else if (element instanceof IRapidFireSubSystem) {
+                    IRapidFireSubSystem subSystem = (IRapidFireSubSystem)element;
+                    this.subSystem = subSystem;
+                    this.connectionName = subSystem.getConnectionName();
+                    this.jobName = null;
+                }
+
+                if (element instanceof IRapidFireChildResource) {
+                    IRapidFireChildResource<?> resource = (IRapidFireChildResource<?>)element;
+                    this.jobName = resource.getParentJob().getName();
+                } else if (element instanceof IRapidFireJobResource) {
+                    IRapidFireJobResource resource = (IRapidFireJobResource)element;
+                    this.jobName = resource.getName();
                 }
             }
         }

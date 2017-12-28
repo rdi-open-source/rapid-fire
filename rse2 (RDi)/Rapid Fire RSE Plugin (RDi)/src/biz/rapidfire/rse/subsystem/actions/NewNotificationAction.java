@@ -38,7 +38,7 @@ public class NewNotificationAction extends AbstractNewNodePopupMenuAction<Notifi
 
             Object element = getFirstSelection();
             NotificationsNode notificationNode = (NotificationsNode)element;
-            IRapidFireJobResource job = notificationNode.getJob();
+            IRapidFireJobResource job = notificationNode.getParent();
 
             RapidFireNotificationResource notification = RapidFireNotificationResource.createEmptyInstance(job);
             notification.setSubSystem((ISubSystem)job.getParentSubSystem());
@@ -54,7 +54,7 @@ public class NewNotificationAction extends AbstractNewNodePopupMenuAction<Notifi
 
     @Override
     protected IRapidFireNotificationResource createNewResource(NotificationsNode node) {
-        return RapidFireNotificationResource.createEmptyInstance(node.getJob());
+        return RapidFireNotificationResource.createEmptyInstance(node.getParent());
     }
 
     @Override

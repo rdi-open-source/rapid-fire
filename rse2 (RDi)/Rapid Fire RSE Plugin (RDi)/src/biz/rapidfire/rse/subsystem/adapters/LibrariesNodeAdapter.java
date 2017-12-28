@@ -59,7 +59,7 @@ public class LibrariesNodeAdapter extends AbstractNodeAdapter<LibrariesNode> {
         try {
 
             LibrariesNode librariesNode = (LibrariesNode)element;
-            IRapidFireJobResource jobResource = librariesNode.getJob();
+            IRapidFireJobResource jobResource = librariesNode.getParent();
 
             IRapidFireLibraryResource[] libraries = jobResource.getParentSubSystem().getLibraries(jobResource, getShell());
 

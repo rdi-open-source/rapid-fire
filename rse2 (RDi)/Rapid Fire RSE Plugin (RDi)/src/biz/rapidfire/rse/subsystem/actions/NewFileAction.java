@@ -38,7 +38,7 @@ public class NewFileAction extends AbstractNewNodePopupMenuAction<FilesNode, IRa
 
             Object element = getFirstSelection();
             FilesNode filesNode = (FilesNode)element;
-            IRapidFireJobResource job = filesNode.getJob();
+            IRapidFireJobResource job = filesNode.getParent();
 
             RapidFireFileResource file = RapidFireFileResource.createEmptyInstance(job);
             file.setSubSystem((ISubSystem)job.getParentSubSystem());
@@ -54,7 +54,7 @@ public class NewFileAction extends AbstractNewNodePopupMenuAction<FilesNode, IRa
 
     @Override
     protected IRapidFireFileResource createNewResource(FilesNode node) {
-        return RapidFireFileResource.createEmptyInstance(node.getJob());
+        return RapidFireFileResource.createEmptyInstance(node.getParent());
     }
 
     @Override

@@ -38,7 +38,7 @@ public class NewLibraryAction extends AbstractNewNodePopupMenuAction<LibrariesNo
 
             Object element = getFirstSelection();
             LibrariesNode librariesNode = (LibrariesNode)element;
-            IRapidFireJobResource job = librariesNode.getJob();
+            IRapidFireJobResource job = librariesNode.getParent();
 
             RapidFireLibraryResource library = RapidFireLibraryResource.createEmptyInstance(job);
             library.setSubSystem((ISubSystem)job.getParentSubSystem());
@@ -54,7 +54,7 @@ public class NewLibraryAction extends AbstractNewNodePopupMenuAction<LibrariesNo
 
     @Override
     protected IRapidFireLibraryResource createNewResource(LibrariesNode node) {
-        return RapidFireLibraryResource.createEmptyInstance(node.getJob());
+        return RapidFireLibraryResource.createEmptyInstance(node.getParent());
     }
 
     @Override

@@ -38,7 +38,7 @@ public class NewConversionAction extends AbstractNewNodePopupMenuAction<Conversi
 
             Object element = getFirstSelection();
             ConversionsNode conversionsNode = (ConversionsNode)element;
-            IRapidFireFileResource file = conversionsNode.getFile();
+            IRapidFireFileResource file = conversionsNode.getParent();
 
             RapidFireConversionResource conversion = RapidFireConversionResource.createEmptyInstance(file);
             conversion.setSubSystem((ISubSystem)file.getParentSubSystem());
@@ -54,7 +54,7 @@ public class NewConversionAction extends AbstractNewNodePopupMenuAction<Conversi
 
     @Override
     protected IRapidFireConversionResource createNewResource(ConversionsNode node) {
-        return RapidFireConversionResource.createEmptyInstance(node.getFile());
+        return RapidFireConversionResource.createEmptyInstance(node.getParent());
     }
 
     @Override
