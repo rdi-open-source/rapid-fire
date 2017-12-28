@@ -34,8 +34,8 @@ import biz.rapidfire.core.maintenance.Success;
 import biz.rapidfire.core.model.IRapidFireChildResource;
 import biz.rapidfire.core.model.IRapidFireJobResource;
 import biz.rapidfire.core.model.IRapidFireResource;
-import biz.rapidfire.core.model.dao.JDBCConnectionManager;
 import biz.rapidfire.core.subsystem.IRapidFireSubSystem;
+import biz.rapidfire.rsebase.helpers.SystemConnectionHelper;
 
 import com.ibm.as400.access.AS400;
 
@@ -131,7 +131,7 @@ public abstract class AbstractNewWizard extends Wizard implements INewWizard, IP
         Result result;
         StringBuilder errorMessage = new StringBuilder();
 
-        AS400 system = JDBCConnectionManager.getInstance().getSystem(connectionName);
+        AS400 system = SystemConnectionHelper.getSystem(connectionName);
         if (system == null) {
             result = new Result(Success.NO.label(), Messages.bindParameters(Messages.Could_not_connect_to_A, connectionName));
         } else if (!RapidFireHelper.checkLibrary(system, dataLibrary)) {

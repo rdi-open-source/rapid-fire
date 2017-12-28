@@ -16,7 +16,7 @@ import org.eclipse.swt.widgets.Shell;
 import biz.rapidfire.core.Messages;
 import biz.rapidfire.core.RapidFireCorePlugin;
 import biz.rapidfire.core.dialogs.MessageDialogAsync;
-import biz.rapidfire.rsebase.helpers.AbstractRapidFireHelper;
+import biz.rapidfire.rsebase.helpers.SystemConnectionHelper;
 
 import com.ibm.as400.access.AS400;
 import com.ibm.as400.access.AS400Message;
@@ -27,7 +27,7 @@ import com.ibm.as400.access.ErrorCompletingRequestException;
 import com.ibm.as400.access.IllegalObjectTypeException;
 import com.ibm.as400.access.ObjectDoesNotExistException;
 
-public class RapidFireHelper extends AbstractRapidFireHelper {
+public class RapidFireHelper {
 
     private static final String QSYS = "QSYS";
 
@@ -157,7 +157,7 @@ public class RapidFireHelper extends AbstractRapidFireHelper {
     }
 
     public static String removeMember(String connectionName, String libraryName, String fileName, String memberName) throws Exception {
-        return removeMember(getSystem(connectionName), libraryName, fileName, memberName);
+        return removeMember(SystemConnectionHelper.getSystem(connectionName), libraryName, fileName, memberName);
     }
 
     public static String removeMember(AS400 system, String libraryName, String fileName, String memberName) throws Exception {

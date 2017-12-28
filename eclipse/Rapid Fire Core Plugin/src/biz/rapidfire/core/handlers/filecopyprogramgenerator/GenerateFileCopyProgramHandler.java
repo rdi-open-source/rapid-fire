@@ -17,12 +17,12 @@ import biz.rapidfire.core.Messages;
 import biz.rapidfire.core.RapidFireCorePlugin;
 import biz.rapidfire.core.dialogs.maintenance.filecopyprogramgenerator.FileCopyProgramGeneratorMaintenanceDialog;
 import biz.rapidfire.core.helpers.ExceptionHelper;
-import biz.rapidfire.core.helpers.RapidFireHelper;
 import biz.rapidfire.core.maintenance.MaintenanceMode;
 import biz.rapidfire.core.maintenance.Result;
 import biz.rapidfire.core.maintenance.Success;
 import biz.rapidfire.core.maintenance.filecopyprogramgenerator.shared.FileCopyProgramGeneratorAction;
 import biz.rapidfire.core.model.IRapidFireFileResource;
+import biz.rapidfire.rsebase.helpers.SystemConnectionHelper;
 
 public class GenerateFileCopyProgramHandler extends AbstractProgramGeneratorHandler implements IHandler {
 
@@ -62,8 +62,8 @@ public class GenerateFileCopyProgramHandler extends AbstractProgramGeneratorHand
                 });
 
                 if (busyResult.isError()) {
-                    if (!MessageDialog
-                        .openQuestion(getShell(), Messages.E_R_R_O_R, Messages.Question_Could_not_generate_copy_program_Do_you_want_to_try_again)) {
+                    if (!MessageDialog.openQuestion(getShell(), Messages.E_R_R_O_R,
+                        Messages.Question_Could_not_generate_copy_program_Do_you_want_to_try_again)) {
                         rc = Dialog.CANCEL;
                     }
                 } else {
@@ -72,7 +72,7 @@ public class GenerateFileCopyProgramHandler extends AbstractProgramGeneratorHand
                         String sourceFile = dialog.getSourceFile();
                         String sourceFileLibrary = dialog.getSourceFileLibrary();
                         String sourceMember = dialog.getSourceMember();
-                        RapidFireHelper.openMember(connectionName, sourceFileLibrary, sourceFile, sourceMember);
+                        SystemConnectionHelper.openMember(connectionName, sourceFileLibrary, sourceFile, sourceMember);
                     }
                     MessageDialog.openInformation(getShell(), Messages.DialogFile_Copy_Program_Generator,
                         Messages.Copy_program_successfully_generated);

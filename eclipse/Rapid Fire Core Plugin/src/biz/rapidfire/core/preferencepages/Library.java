@@ -37,10 +37,10 @@ import biz.rapidfire.core.helpers.ExceptionHelper;
 import biz.rapidfire.core.helpers.IntHelper;
 import biz.rapidfire.core.helpers.RapidFireHelper;
 import biz.rapidfire.core.helpers.StringHelper;
-import biz.rapidfire.core.model.dao.JDBCConnectionManager;
 import biz.rapidfire.core.preferences.Preferences;
 import biz.rapidfire.core.swt.widgets.WidgetFactory;
 import biz.rapidfire.core.validators.Validator;
+import biz.rapidfire.rsebase.helpers.SystemConnectionHelper;
 import biz.rapidfire.rsebase.swt.widgets.SystemHostCombo;
 
 import com.ibm.as400.access.AS400;
@@ -270,7 +270,7 @@ public class Library extends PreferencePage implements IWorkbenchPreferencePage 
 
         try {
 
-            AS400 as400 = JDBCConnectionManager.getInstance().findSystem(hostName);
+            AS400 as400 = SystemConnectionHelper.findSystem(hostName);
             if (as400 == null) {
                 updateProductLibraryVersion = false;
                 return Messages.bind(Messages.Host_A_not_found_in_configured_RSE_connections, hostName);

@@ -39,6 +39,7 @@ import biz.rapidfire.core.model.IRapidFireLibraryResource;
 import biz.rapidfire.core.preferences.Preferences;
 import biz.rapidfire.core.swt.widgets.WidgetFactory;
 import biz.rapidfire.core.swt.widgets.viewers.stringlist.ItemSelectionDialog;
+import biz.rapidfire.rsebase.helpers.SystemConnectionHelper;
 import biz.rapidfire.rsebase.host.SystemFileType;
 import biz.rapidfire.rsebase.swt.widgets.SystemHostCombo;
 import biz.rapidfire.rsebase.swt.widgets.SystemMemberPrompt;
@@ -279,13 +280,12 @@ public class FileCopyProgramGeneratorMaintenanceDialog extends AbstractMaintenan
 
     private String validateLibrary(String connectionName, String library) {
 
-        AS400 system = RapidFireHelper.getSystem(connectionName);
-
         if (StringHelper.isNullOrEmpty(library)) {
             return Messages.Library_name_is_missing;
         }
 
-        if (!RapidFireHelper.checkLibrary(system, library)) {
+        AS400 system = SystemConnectionHelper.getSystemChecked(connectionName);
+        if (system != null && !RapidFireHelper.checkLibrary(system, library)) {
             return Messages.bindParameters(Messages.Library_A_not_found_on_system_B, library, connectionName);
         }
 
@@ -294,13 +294,12 @@ public class FileCopyProgramGeneratorMaintenanceDialog extends AbstractMaintenan
 
     private String validateFile(String connectionName, String library, String file) {
 
-        AS400 system = RapidFireHelper.getSystem(connectionName);
-
         if (StringHelper.isNullOrEmpty(file)) {
             return Messages.File_name_is_missing;
         }
 
-        if (!RapidFireHelper.checkFile(system, library, file)) {
+        AS400 system = SystemConnectionHelper.getSystemChecked(connectionName);
+        if (system != null && !RapidFireHelper.checkFile(system, library, file)) {
             return Messages.bindParameters(Messages.File_C_not_found_in_library_B_on_system_A, connectionName, library, file);
         }
 
@@ -309,13 +308,12 @@ public class FileCopyProgramGeneratorMaintenanceDialog extends AbstractMaintenan
 
     private String validateMember(String connectionName, String library, String file, String member) {
 
-        AS400 system = RapidFireHelper.getSystem(connectionName);
-
         if (StringHelper.isNullOrEmpty(member)) {
             return Messages.Member_name_is_missing;
         }
 
-        if (RapidFireHelper.checkMember(system, library, file, member)) {
+        AS400 system = SystemConnectionHelper.getSystemChecked(connectionName);
+        if (system != null && RapidFireHelper.checkMember(system, library, file, member)) {
             if (MessageDialog.openQuestion(getShell(), Messages.E_R_R_O_R,
                 Messages.bindParameters(Messages.Member_A_exists_Do_you_want_to_replace_the_member_A, member))) {
 

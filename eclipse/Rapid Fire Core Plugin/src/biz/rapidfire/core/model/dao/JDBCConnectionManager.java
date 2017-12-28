@@ -32,7 +32,7 @@ import biz.rapidfire.core.exceptions.RapidFireStopConnectionException;
 import biz.rapidfire.core.helpers.ExceptionHelper;
 import biz.rapidfire.core.maintenance.Success;
 import biz.rapidfire.core.model.AutoCommit;
-import biz.rapidfire.rsebase.model.dao.AbstractDAOManager;
+import biz.rapidfire.rsebase.helpers.SystemConnectionHelper;
 
 import com.ibm.as400.access.AS400;
 import com.ibm.as400.access.AS400JDBCDriver;
@@ -45,7 +45,7 @@ import com.ibm.as400.access.AS400JDBCDriver;
  * [connectionName], [library], [isCommitControl] and [isAutoCommit]. So there
  * is a maximum of 3 connection per RSE connection.
  */
-public class JDBCConnectionManager extends AbstractDAOManager {
+public class JDBCConnectionManager {
 
     private static final String ERROR_START_CONNECTION_001 = "001"; //$NON-NLS-1$
 
@@ -152,7 +152,7 @@ public class JDBCConnectionManager extends AbstractDAOManager {
         }
 
         String connectionName = jdbcConnection.getConnectionName();
-        AS400 system = getSystem(connectionName);
+        AS400 system = SystemConnectionHelper.getSystem(connectionName);
         String libraryName = jdbcConnection.getLibraryName();
         boolean isCommitControl = jdbcConnection.isCommitControl();
         boolean isAutoCommit = jdbcConnection.isAutoCommit();
@@ -216,7 +216,7 @@ public class JDBCConnectionManager extends AbstractDAOManager {
     private JDBCConnection produceJdbcConnection(String connectionName, String libraryName, boolean isCommitControl, boolean isAutoCommit)
         throws Exception {
 
-        AS400 system = getSystem(connectionName);
+        AS400 system = SystemConnectionHelper.getSystem(connectionName);
 
         Connection connection = produceConnection(system, libraryName, isCommitControl, isAutoCommit);
 
