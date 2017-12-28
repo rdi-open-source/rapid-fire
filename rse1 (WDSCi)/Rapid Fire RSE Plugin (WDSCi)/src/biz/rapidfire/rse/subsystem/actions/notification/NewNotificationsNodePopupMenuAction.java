@@ -40,7 +40,7 @@ public class NewNotificationsNodePopupMenuAction extends AbstractNewNodePopupMen
 
             if (element instanceof NotificationsNode) {
                 NotificationsNode notificationsNode = (NotificationsNode)element;
-                IRapidFireJobResource job = notificationsNode.getJob();
+                IRapidFireJobResource job = notificationsNode.getParent();
 
                 RapidFireNotificationResource notification = RapidFireNotificationResource.createEmptyInstance(job);
 
@@ -56,7 +56,7 @@ public class NewNotificationsNodePopupMenuAction extends AbstractNewNodePopupMen
 
     @Override
     protected IRapidFireNotificationResource createNewResource(NotificationsNode node) {
-        return RapidFireNotificationResource.createEmptyInstance(node.getJob());
+        return RapidFireNotificationResource.createEmptyInstance(node.getParent());
     }
 
     @Override

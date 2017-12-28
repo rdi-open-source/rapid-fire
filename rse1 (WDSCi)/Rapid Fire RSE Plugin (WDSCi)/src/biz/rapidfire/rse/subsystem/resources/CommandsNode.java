@@ -8,11 +8,12 @@
 
 package biz.rapidfire.rse.subsystem.resources;
 
-import biz.rapidfire.core.maintenance.wizard.shared.IWizardSupporter;
+import biz.rapidfire.core.model.IRapidFireChildResource;
 import biz.rapidfire.core.model.IRapidFireFileResource;
+import biz.rapidfire.core.model.IRapidFireJobResource;
 import biz.rapidfire.rse.Messages;
 
-public class CommandsNode extends AbstractNodeResource implements IWizardSupporter {
+public class CommandsNode extends AbstractNodeResource implements IRapidFireChildResource<IRapidFireFileResource> {
 
     private IRapidFireFileResource file;
 
@@ -22,7 +23,11 @@ public class CommandsNode extends AbstractNodeResource implements IWizardSupport
         this.file = file;
     }
 
-    public IRapidFireFileResource getFile() {
+    public IRapidFireJobResource getParentJob() {
+        return file.getParentJob();
+    }
+
+    public IRapidFireFileResource getParent() {
         return file;
     }
 }

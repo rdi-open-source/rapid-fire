@@ -40,7 +40,7 @@ public class NewAreasNodePopupMenuAction extends AbstractNewNodePopupMenuAction<
 
             if (element instanceof AreasNode) {
                 AreasNode areasNode = (AreasNode)element;
-                IRapidFireFileResource file = areasNode.getFile();
+                IRapidFireFileResource file = areasNode.getParent();
 
                 RapidFireAreaResource area = RapidFireAreaResource.createEmptyInstance(file);
 
@@ -56,7 +56,7 @@ public class NewAreasNodePopupMenuAction extends AbstractNewNodePopupMenuAction<
 
     @Override
     protected IRapidFireAreaResource createNewResource(AreasNode node) {
-        return RapidFireAreaResource.createEmptyInstance(node.getFile());
+        return RapidFireAreaResource.createEmptyInstance(node.getParent());
     }
 
     @Override

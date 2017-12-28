@@ -11,7 +11,6 @@ package biz.rapidfire.rse.subsystem.resources;
 import biz.rapidfire.core.exceptions.IllegalParameterException;
 import biz.rapidfire.core.maintenance.notification.shared.NotificationKey;
 import biz.rapidfire.core.maintenance.notification.shared.NotificationType;
-import biz.rapidfire.core.maintenance.wizard.shared.IWizardSupporter;
 import biz.rapidfire.core.model.IRapidFireJobResource;
 import biz.rapidfire.core.model.IRapidFireNotificationResource;
 import biz.rapidfire.core.subsystem.IRapidFireSubSystem;
@@ -20,7 +19,7 @@ import biz.rapidfire.core.subsystem.resources.RapidFireNotificationResourceDeleg
 import com.ibm.etools.systems.subsystems.SubSystem;
 import com.ibm.etools.systems.subsystems.impl.AbstractResource;
 
-public class RapidFireNotificationResource extends AbstractResource implements IWizardSupporter, IRapidFireNotificationResource,
+public class RapidFireNotificationResource extends AbstractResource implements IRapidFireNotificationResource,
     Comparable<IRapidFireNotificationResource> {
 
     private IRapidFireJobResource parentJob;

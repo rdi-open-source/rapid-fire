@@ -10,7 +10,6 @@ package biz.rapidfire.rse.subsystem.resources;
 
 import biz.rapidfire.core.exceptions.IllegalParameterException;
 import biz.rapidfire.core.maintenance.area.shared.AreaKey;
-import biz.rapidfire.core.maintenance.wizard.shared.IWizardSupporter;
 import biz.rapidfire.core.model.IRapidFireAreaResource;
 import biz.rapidfire.core.model.IRapidFireFileResource;
 import biz.rapidfire.core.model.IRapidFireJobResource;
@@ -20,7 +19,7 @@ import biz.rapidfire.core.subsystem.resources.RapidFireAreaResourceDelegate;
 import com.ibm.etools.systems.subsystems.SubSystem;
 import com.ibm.etools.systems.subsystems.impl.AbstractResource;
 
-public class RapidFireAreaResource extends AbstractResource implements IWizardSupporter, IRapidFireAreaResource, Comparable<IRapidFireAreaResource> {
+public class RapidFireAreaResource extends AbstractResource implements IRapidFireAreaResource, Comparable<IRapidFireAreaResource> {
 
     private IRapidFireJobResource parentJob;
     private IRapidFireFileResource parentFile;

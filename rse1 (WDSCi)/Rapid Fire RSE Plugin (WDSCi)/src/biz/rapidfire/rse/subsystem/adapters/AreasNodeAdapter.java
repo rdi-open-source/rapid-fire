@@ -58,7 +58,7 @@ public class AreasNodeAdapter extends AbstractNodeAdapter<AreasNode> {
         try {
 
             AreasNode areasNode = (AreasNode)element;
-            IRapidFireFileResource fileResource = areasNode.getFile();
+            IRapidFireFileResource fileResource = areasNode.getParent();
 
             IRapidFireAreaResource[] areas = fileResource.getParentSubSystem().getAreas(fileResource, getShell());
 

@@ -61,7 +61,7 @@ public class FilesNodeAdapter extends AbstractNodeAdapter<FilesNode> {
         try {
 
             FilesNode filesNode = (FilesNode)element;
-            IRapidFireJobResource jobResource = filesNode.getJob();
+            IRapidFireJobResource jobResource = filesNode.getParent();
 
             IRapidFireFileResource[] files = jobResource.getParentSubSystem().getFiles(jobResource, getShell());
 

@@ -43,7 +43,24 @@
         category="biz.rapidfire.wizards"
         icon="icons/rapidfire_job.gif">
          <description>%Wizard_job_description</description>
-         <selection class="biz.rapidfire.core.maintenance.wizard.shared.IWizardSupporter"/>
+         <selection class="biz.rapidfire.core.subsystem.IRapidFireSubSystem"/>
+         <selection class="org.eclipse.rse.core.filters.ISystemFilterPoolReference"/>
+         <selection class="org.eclipse.rse.core.filters.ISystemFilterReference"/>
+         <selection class="biz.rapidfire.rse.subsystem.resources.LibrariesNode"/>
+         <selection class="biz.rapidfire.rse.subsystem.resources.LibraryListsNode"/>
+         <selection class="biz.rapidfire.rse.subsystem.resources.FilesNode"/>
+         <selection class="biz.rapidfire.rse.subsystem.resources.NotificationsNode"/>
+         <selection class="biz.rapidfire.rse.subsystem.resources.AreasNode"/>
+         <selection class="biz.rapidfire.rse.subsystem.resources.ConversionsNode"/>
+         <selection class="biz.rapidfire.rse.subsystem.resources.CommandsNode"/>
+         <selection class="biz.rapidfire.core.model.IRapidFireJobResource"/>
+         <selection class="biz.rapidfire.core.model.IRapidFireLibraryResource"/>
+         <selection class="biz.rapidfire.core.model.IRapidFireLibraryListResource"/>
+         <selection class="biz.rapidfire.core.model.IRapidFireFileResource"/>
+         <selection class="biz.rapidfire.core.model.IRapidFireNotificationResource"/>
+         <selection class="biz.rapidfire.core.model.IRapidFireAreaResource"/>
+         <selection class="biz.rapidfire.core.model.IRapidFireConversionResource"/>
+         <selection class="biz.rapidfire.core.model.IRapidFireCommandResource"/>
       </wizard>
       
       <wizard
@@ -53,7 +70,24 @@
         category="biz.rapidfire.wizards"
         icon="icons/rapidfire_file.gif">
          <description>%Wizard_file_description</description>
-         <selection class="biz.rapidfire.core.maintenance.wizard.shared.IWizardSupporter"/>
+         <selection class="biz.rapidfire.core.subsystem.IRapidFireSubSystem"/>
+         <selection class="org.eclipse.rse.core.filters.ISystemFilterPoolReference"/>
+         <selection class="org.eclipse.rse.core.filters.ISystemFilterReference"/>
+         <selection class="biz.rapidfire.rse.subsystem.resources.LibrariesNode"/>
+         <selection class="biz.rapidfire.rse.subsystem.resources.LibraryListsNode"/>
+         <selection class="biz.rapidfire.rse.subsystem.resources.FilesNode"/>
+         <selection class="biz.rapidfire.rse.subsystem.resources.NotificationsNode"/>
+         <selection class="biz.rapidfire.rse.subsystem.resources.AreasNode"/>
+         <selection class="biz.rapidfire.rse.subsystem.resources.ConversionsNode"/>
+         <selection class="biz.rapidfire.rse.subsystem.resources.CommandsNode"/>
+         <selection class="biz.rapidfire.core.model.IRapidFireJobResource"/>
+         <selection class="biz.rapidfire.core.model.IRapidFireLibraryResource"/>
+         <selection class="biz.rapidfire.core.model.IRapidFireLibraryListResource"/>
+         <selection class="biz.rapidfire.core.model.IRapidFireFileResource"/>
+         <selection class="biz.rapidfire.core.model.IRapidFireNotificationResource"/>
+         <selection class="biz.rapidfire.core.model.IRapidFireAreaResource"/>
+         <selection class="biz.rapidfire.core.model.IRapidFireConversionResource"/>
+         <selection class="biz.rapidfire.core.model.IRapidFireCommandResource"/>
       </wizard>
 
    </extension>
