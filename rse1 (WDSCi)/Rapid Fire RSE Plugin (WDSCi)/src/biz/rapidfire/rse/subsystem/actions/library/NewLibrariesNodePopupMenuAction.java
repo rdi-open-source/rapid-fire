@@ -40,7 +40,7 @@ public class NewLibrariesNodePopupMenuAction extends AbstractNewNodePopupMenuAct
 
             if (element instanceof LibrariesNode) {
                 LibrariesNode librariesNode = (LibrariesNode)element;
-                IRapidFireJobResource job = librariesNode.getJob();
+                IRapidFireJobResource job = librariesNode.getParent();
 
                 RapidFireLibraryResource library = RapidFireLibraryResource.createEmptyInstance(job);
 
@@ -56,7 +56,7 @@ public class NewLibrariesNodePopupMenuAction extends AbstractNewNodePopupMenuAct
 
     @Override
     protected IRapidFireLibraryResource createNewResource(LibrariesNode node) {
-        return RapidFireLibraryResource.createEmptyInstance(node.getJob());
+        return RapidFireLibraryResource.createEmptyInstance(node.getParent());
     }
 
     @Override
