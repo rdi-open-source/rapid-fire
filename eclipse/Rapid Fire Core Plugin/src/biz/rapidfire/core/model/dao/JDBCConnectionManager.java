@@ -560,6 +560,10 @@ public class JDBCConnectionManager extends AbstractDAOManager {
         return Messages.bindParameters(Messages.EntityManager_Unknown_error_code_A, errorCode);
     }
 
+    protected String getStringTrim(CallableStatement statement, int parameterIndex) throws SQLException {
+        return statement.getString(parameterIndex);
+    }
+
     public void destroy() {
         closeAllConnection();
         instance = null;
