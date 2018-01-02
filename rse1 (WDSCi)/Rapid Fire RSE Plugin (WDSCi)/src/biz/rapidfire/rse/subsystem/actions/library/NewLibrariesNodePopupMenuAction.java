@@ -40,9 +40,10 @@ public class NewLibrariesNodePopupMenuAction extends AbstractNewNodePopupMenuAct
 
             if (element instanceof LibrariesNode) {
                 LibrariesNode librariesNode = (LibrariesNode)element;
-                IRapidFireJobResource job = librariesNode.getParent();
+                IRapidFireJobResource job = librariesNode.getParentResource();
 
                 RapidFireLibraryResource library = RapidFireLibraryResource.createEmptyInstance(job);
+                library.setParentNode(librariesNode);
 
                 IStructuredSelection selection = new StructuredSelection(library);
                 getHandler().executeWithSelection(selection);
@@ -56,7 +57,7 @@ public class NewLibrariesNodePopupMenuAction extends AbstractNewNodePopupMenuAct
 
     @Override
     protected IRapidFireLibraryResource createNewResource(LibrariesNode node) {
-        return RapidFireLibraryResource.createEmptyInstance(node.getParent());
+        return RapidFireLibraryResource.createEmptyInstance(node.getParentResource());
     }
 
     @Override

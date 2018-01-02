@@ -61,13 +61,14 @@ public class FilesNodeAdapter extends AbstractNodeAdapter<FilesNode> {
         try {
 
             FilesNode filesNode = (FilesNode)element;
-            IRapidFireJobResource jobResource = filesNode.getParent();
+            IRapidFireJobResource jobResource = filesNode.getParentResource();
 
             IRapidFireFileResource[] files = jobResource.getParentSubSystem().getFiles(jobResource, getShell());
 
             RapidFireFilter filter = jobResource.getFilter();
             Vector<IRapidFireResource> filteredFiles = new Vector<IRapidFireResource>();
             for (IRapidFireFileResource file : files) {
+                file.setParentNode(filesNode);
                 if (filter.isShowLogicalFiles() || file.isPhysicalFile()) {
                     filteredFiles.addElement(file);
                 }

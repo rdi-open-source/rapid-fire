@@ -8,12 +8,11 @@
 
 package biz.rapidfire.rse.subsystem.resources;
 
-import biz.rapidfire.core.model.IRapidFireChildResource;
 import biz.rapidfire.core.model.IRapidFireFileResource;
-import biz.rapidfire.core.model.IRapidFireJobResource;
+import biz.rapidfire.core.model.IRapidFireNodeResource;
 import biz.rapidfire.rse.Messages;
 
-public class ConversionsNode extends AbstractNodeResource implements IRapidFireChildResource<IRapidFireFileResource> {
+public class ConversionsNode extends AbstractNodeResource implements IRapidFireNodeResource {
 
     private IRapidFireFileResource file;
 
@@ -23,11 +22,11 @@ public class ConversionsNode extends AbstractNodeResource implements IRapidFireC
         this.file = file;
     }
 
-    public IRapidFireJobResource getParentJob() {
-        return file.getParentJob();
-    }
+    // public IRapidFireJobResource getParentJob() {
+    // return file.getParentJob();
+    // }
 
-    public IRapidFireFileResource getParent() {
+    public IRapidFireFileResource getParentResource() {
         return file;
     }
 }

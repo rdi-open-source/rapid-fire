@@ -40,9 +40,10 @@ public class NewCommandsNodePopupMenuAction extends AbstractNewNodePopupMenuActi
 
             if (element instanceof CommandsNode) {
                 CommandsNode commandsNode = (CommandsNode)element;
-                IRapidFireFileResource file = commandsNode.getParent();
+                IRapidFireFileResource file = commandsNode.getParentResource();
 
                 RapidFireCommandResource command = RapidFireCommandResource.createEmptyInstance(file);
+                command.setParentNode(commandsNode);
 
                 IStructuredSelection selection = new StructuredSelection(command);
                 getHandler().executeWithSelection(selection);
@@ -56,7 +57,7 @@ public class NewCommandsNodePopupMenuAction extends AbstractNewNodePopupMenuActi
 
     @Override
     protected IRapidFireCommandResource createNewResource(CommandsNode node) {
-        return RapidFireCommandResource.createEmptyInstance(node.getParent());
+        return RapidFireCommandResource.createEmptyInstance(node.getParentResource());
     }
 
     @Override

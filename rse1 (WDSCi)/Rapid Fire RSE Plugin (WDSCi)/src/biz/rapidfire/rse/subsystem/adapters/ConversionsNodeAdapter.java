@@ -58,9 +58,12 @@ public class ConversionsNodeAdapter extends AbstractNodeAdapter<ConversionsNode>
         try {
 
             ConversionsNode conversionsNode = (ConversionsNode)element;
-            IRapidFireFileResource fileResource = conversionsNode.getParent();
+            IRapidFireFileResource fileResource = conversionsNode.getParentResource();
 
             IRapidFireConversionResource[] conversions = fileResource.getParentSubSystem().getConversions(fileResource, getShell());
+            for (IRapidFireConversionResource conversion : conversions) {
+                conversion.setParentNode(conversionsNode);
+            }
 
             Arrays.sort(conversions);
 

@@ -19,7 +19,6 @@ import biz.rapidfire.core.model.IRapidFireLibraryListResource;
 import biz.rapidfire.rse.Messages;
 import biz.rapidfire.rse.RapidFireRSEPlugin;
 import biz.rapidfire.rse.subsystem.actions.AbstractNewNodePopupMenuAction;
-import biz.rapidfire.rse.subsystem.resources.LibrariesNode;
 import biz.rapidfire.rse.subsystem.resources.LibraryListsNode;
 import biz.rapidfire.rse.subsystem.resources.RapidFireLibraryListResource;
 
@@ -39,9 +38,9 @@ public class NewLibraryListsNodePopupMenuAction extends AbstractNewNodePopupMenu
 
             Object element = getFirstSelection();
 
-            if (element instanceof LibrariesNode) {
-                LibrariesNode librariesNode = (LibrariesNode)element;
-                IRapidFireJobResource job = librariesNode.getParent();
+            if (element instanceof LibraryListsNode) {
+                LibraryListsNode librariesNode = (LibraryListsNode)element;
+                IRapidFireJobResource job = librariesNode.getParentResource();
 
                 RapidFireLibraryListResource library = RapidFireLibraryListResource.createEmptyInstance(job);
 
@@ -57,7 +56,7 @@ public class NewLibraryListsNodePopupMenuAction extends AbstractNewNodePopupMenu
 
     @Override
     protected IRapidFireLibraryListResource createNewResource(LibraryListsNode node) {
-        return RapidFireLibraryListResource.createEmptyInstance(node.getParent());
+        return RapidFireLibraryListResource.createEmptyInstance(node.getParentResource());
     }
 
     @Override
