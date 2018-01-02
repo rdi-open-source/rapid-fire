@@ -14,6 +14,7 @@ import biz.rapidfire.core.exceptions.IllegalParameterException;
 import biz.rapidfire.core.maintenance.activity.shared.ActivityKey;
 import biz.rapidfire.core.model.IRapidFireActivityResource;
 import biz.rapidfire.core.model.IRapidFireJobResource;
+import biz.rapidfire.core.model.IRapidFireNodeResource;
 import biz.rapidfire.core.subsystem.IRapidFireSubSystem;
 import biz.rapidfire.core.subsystem.resources.RapidFireActivityResourceDelegate;
 
@@ -60,8 +61,16 @@ public class RapidFireActivityResource extends AbstractResource implements IRapi
         return this.parentJob;
     }
 
-    public IRapidFireJobResource getParent() {
+    public IRapidFireJobResource getParentResource() {
         return this.parentJob;
+    }
+
+    public IRapidFireNodeResource getParentNode() {
+        throw new IllegalAccessError("Method getParentNode() has not been implemented.");
+    }
+
+    public void setParentNode(IRapidFireNodeResource parentNode) {
+        throw new IllegalAccessError("Method getParentNode() has not been implemented.");
     }
 
     /*

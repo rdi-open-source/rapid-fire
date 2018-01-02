@@ -58,9 +58,12 @@ public class NotificationsNodeAdapter extends AbstractNodeAdapter<NotificationsN
         try {
 
             NotificationsNode notificationsNode = (NotificationsNode)element;
-            IRapidFireJobResource jobResource = notificationsNode.getParent();
+            IRapidFireJobResource jobResource = notificationsNode.getParentResource();
 
             IRapidFireNotificationResource[] notifications = jobResource.getParentSubSystem().getNotifications(jobResource, getShell());
+            for (IRapidFireNotificationResource notification : notifications) {
+                notification.setParentNode(notificationsNode);
+            }
 
             Arrays.sort(notifications);
 

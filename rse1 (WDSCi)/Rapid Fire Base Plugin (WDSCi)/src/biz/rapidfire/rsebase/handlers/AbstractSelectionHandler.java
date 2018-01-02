@@ -29,16 +29,16 @@ public abstract class AbstractSelectionHandler extends AbstractHandler {
         return (ISelection)object;
     }
 
-    protected void refreshUI(Object resource) {
-        if (resource != null) {
-            SystemRegistry sr = SystemPlugin.getDefault().getSystemRegistry();
-            if (isDeleteMode()) {
-                sr.fireRemoteResourceChangeEvent(ISystemRemoteChangeEvents.SYSTEM_REMOTE_RESOURCE_DELETED, resource, null, null, null, null);
-            } else {
-                sr.fireRemoteResourceChangeEvent(ISystemRemoteChangeEvents.SYSTEM_REMOTE_RESOURCE_CREATED, resource, null, null, null, null);
-            }
-        }
-    }
+//    protected void refreshUI(Object resource) {
+//        if (resource != null) {
+//            SystemRegistry sr = SystemPlugin.getDefault().getSystemRegistry();
+//            if (isDeleteMode()) {
+//                sr.fireRemoteResourceChangeEvent(ISystemRemoteChangeEvents.SYSTEM_REMOTE_RESOURCE_DELETED, resource, null, null, null, null);
+//            } else {
+//                sr.fireRemoteResourceChangeEvent(ISystemRemoteChangeEvents.SYSTEM_REMOTE_RESOURCE_CREATED, resource, null, null, null, null);
+//            }
+//        }
+//    }
 
     protected abstract boolean isDeleteMode();
 }

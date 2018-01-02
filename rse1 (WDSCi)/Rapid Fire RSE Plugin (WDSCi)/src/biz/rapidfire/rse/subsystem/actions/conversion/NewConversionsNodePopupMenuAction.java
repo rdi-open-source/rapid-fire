@@ -40,10 +40,11 @@ public class NewConversionsNodePopupMenuAction extends AbstractNewNodePopupMenuA
 
             if (element instanceof ConversionsNode) {
                 ConversionsNode conversionsNode = (ConversionsNode)element;
-                IRapidFireFileResource file = conversionsNode.getParent();
+                IRapidFireFileResource file = conversionsNode.getParentResource();
 
                 RapidFireConversionResource conversion = RapidFireConversionResource.createEmptyInstance(file);
-
+                conversion.setParentNode(conversionsNode);
+                
                 IStructuredSelection selection = new StructuredSelection(conversion);
                 getHandler().executeWithSelection(selection);
             }
@@ -56,7 +57,7 @@ public class NewConversionsNodePopupMenuAction extends AbstractNewNodePopupMenuA
 
     @Override
     protected IRapidFireConversionResource createNewResource(ConversionsNode node) {
-        return RapidFireConversionResource.createEmptyInstance(node.getParent());
+        return RapidFireConversionResource.createEmptyInstance(node.getParentResource());
     }
 
     @Override

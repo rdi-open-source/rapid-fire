@@ -8,11 +8,14 @@
 
 package biz.rapidfire.rse.subsystem.resources;
 
+import org.eclipse.swt.widgets.Shell;
+
 import biz.rapidfire.core.exceptions.IllegalParameterException;
 import biz.rapidfire.core.maintenance.area.shared.AreaKey;
 import biz.rapidfire.core.model.IRapidFireAreaResource;
 import biz.rapidfire.core.model.IRapidFireFileResource;
 import biz.rapidfire.core.model.IRapidFireJobResource;
+import biz.rapidfire.core.model.IRapidFireNodeResource;
 import biz.rapidfire.core.subsystem.IRapidFireSubSystem;
 import biz.rapidfire.core.subsystem.resources.RapidFireAreaResourceDelegate;
 
@@ -21,6 +24,7 @@ import com.ibm.etools.systems.subsystems.impl.AbstractResource;
 
 public class RapidFireAreaResource extends AbstractResource implements IRapidFireAreaResource, Comparable<IRapidFireAreaResource> {
 
+    private IRapidFireNodeResource parentNode;
     private IRapidFireJobResource parentJob;
     private IRapidFireFileResource parentFile;
     private RapidFireAreaResourceDelegate delegate;
@@ -61,8 +65,16 @@ public class RapidFireAreaResource extends AbstractResource implements IRapidFir
         return this.parentJob;
     }
 
-    public IRapidFireFileResource getParent() {
+    public IRapidFireFileResource getParentResource() {
         return parentFile;
+    }
+
+    public IRapidFireNodeResource getParentNode() {
+        return parentNode;
+    }
+
+    public void setParentNode(IRapidFireNodeResource parentNode) {
+        this.parentNode = parentNode;
     }
 
     /*
@@ -111,6 +123,15 @@ public class RapidFireAreaResource extends AbstractResource implements IRapidFir
 
     public void setCommandExtension(String commandExtension) {
         delegate.setCommandExtension(commandExtension);
+    }
+
+    public void reload(Shell shell) throws Exception {
+
+        IRapidFireAreaResource conversion = getParentSubSystem().getArea(getParentResource(), getName(), shell);
+
+        delegate.setLibrary(conversion.getLibrary());
+        delegate.setLibraryCcsid(conversion.getLibraryCcsid());
+        delegate.setCommandExtension(conversion.getCommandExtension());
     }
 
     public int compareTo(IRapidFireAreaResource resource) {

@@ -8,10 +8,13 @@
 
 package biz.rapidfire.rse.subsystem.resources;
 
+import org.eclipse.swt.widgets.Shell;
+
 import biz.rapidfire.core.exceptions.IllegalParameterException;
 import biz.rapidfire.core.maintenance.notification.shared.NotificationKey;
 import biz.rapidfire.core.maintenance.notification.shared.NotificationType;
 import biz.rapidfire.core.model.IRapidFireJobResource;
+import biz.rapidfire.core.model.IRapidFireNodeResource;
 import biz.rapidfire.core.model.IRapidFireNotificationResource;
 import biz.rapidfire.core.subsystem.IRapidFireSubSystem;
 import biz.rapidfire.core.subsystem.resources.RapidFireNotificationResourceDelegate;
@@ -22,6 +25,7 @@ import com.ibm.etools.systems.subsystems.impl.AbstractResource;
 public class RapidFireNotificationResource extends AbstractResource implements IRapidFireNotificationResource,
     Comparable<IRapidFireNotificationResource> {
 
+    private IRapidFireNodeResource parentNode;
     private IRapidFireJobResource parentJob;
     private RapidFireNotificationResourceDelegate delegate;
 
@@ -60,8 +64,16 @@ public class RapidFireNotificationResource extends AbstractResource implements I
         return this.parentJob;
     }
 
-    public IRapidFireJobResource getParent() {
+    public IRapidFireJobResource getParentResource() {
         return this.parentJob;
+    }
+
+    public IRapidFireNodeResource getParentNode() {
+        return parentNode;
+    }
+
+    public void setParentNode(IRapidFireNodeResource parentNode) {
+        this.parentNode = parentNode;
     }
 
     /*
@@ -106,6 +118,16 @@ public class RapidFireNotificationResource extends AbstractResource implements I
 
     public void setMessageQueueLibrary(String messageQueueLibrary) {
         delegate.setMessageQueueLibrary(messageQueueLibrary);
+    }
+
+    public void reload(Shell shell) throws Exception {
+
+        IRapidFireNotificationResource notification = getParentSubSystem().getNotification(getParentResource(), getPosition(), shell);
+
+        delegate.setNotificationType(notification.getNotificationType());
+        delegate.setUser(notification.getUser());
+        delegate.setMessageQueueName(notification.getMessageQueueName());
+        delegate.setMessageQueueLibrary(notification.getMessageQueueLibrary());
     }
 
     public int compareTo(IRapidFireNotificationResource resource) {
