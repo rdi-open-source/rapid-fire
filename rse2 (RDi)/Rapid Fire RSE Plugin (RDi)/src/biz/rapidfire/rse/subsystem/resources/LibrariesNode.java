@@ -18,10 +18,6 @@ public class LibrariesNode extends AbstractNodeResource implements IRapidFireNod
         super(job, Messages.NodeText_Libraries);
     }
 
-    // public IRapidFireJobResource getParentJob() {
-    // return super.getJob();
-    // }
-
     public IRapidFireJobResource getParentResource() {
         return super.getJob();
     }

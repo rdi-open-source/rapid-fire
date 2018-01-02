@@ -33,7 +33,8 @@ public class RapidFireJobResource extends AbstractResource implements IRapidFire
     private RapidFireJobResourceDelegate delegate;
 
     public static RapidFireJobResource createEmptyInstance(IRapidFireSubSystem subSystem, String dataLibrary) {
-        return new RapidFireJobResource(subSystem, dataLibrary, ""); //$NON-NLS-1$
+        RapidFireJobResource job = new RapidFireJobResource(subSystem, dataLibrary, ""); //$NON-NLS-1$
+        return job;
     }
 
     public RapidFireJobResource(IRapidFireSubSystem subSystem, String dataLibrary, String job) {
@@ -210,6 +211,7 @@ public class RapidFireJobResource extends AbstractResource implements IRapidFire
         delegate.setBatchJob(job.getBatchJob());
         delegate.setStopApplyChanges(job.isStopApplyChanges());
         delegate.setCmoneFormNumber(job.getCmoneFormNumber());
+        delegate.setFilter(getFilter());
     }
 
     public int compareTo(IRapidFireJobResource resource) {

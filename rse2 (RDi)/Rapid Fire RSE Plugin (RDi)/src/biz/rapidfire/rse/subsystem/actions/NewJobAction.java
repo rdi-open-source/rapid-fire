@@ -51,7 +51,7 @@ public class NewJobAction extends AbstractNewNodePopupMenuAction<ISystemFilterRe
 
                     ISubSystem subSystem = SubSystemHelpers.getParentSubSystem(filterReference.getParentSystemFilterReferencePool());
                     RapidFireJobResource job = RapidFireJobResource.createEmptyInstance((IRapidFireSubSystem)subSystem, filter.getDataLibrary());
-                    job.setSubSystem(subSystem);
+                    job.setFilter(filter);
 
                     NewJobHandler handler = new NewJobHandler();
                     IStructuredSelection selection = new StructuredSelection(job);

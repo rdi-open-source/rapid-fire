@@ -22,10 +22,6 @@ public class CommandsNode extends AbstractNodeResource implements IRapidFireNode
         this.file = file;
     }
 
-    // public IRapidFireJobResource getParentJob() {
-    // return file.getParentJob();
-    // }
-
     public IRapidFireFileResource getParentResource() {
         return file;
     }
