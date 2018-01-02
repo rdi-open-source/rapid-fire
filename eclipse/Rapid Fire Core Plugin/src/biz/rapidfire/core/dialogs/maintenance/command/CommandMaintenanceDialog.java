@@ -73,6 +73,10 @@ public class CommandMaintenanceDialog extends AbstractMaintenanceDialog {
         this.values = values;
     }
 
+    public CommandValues getValue() {
+        return values;
+    }
+
     private CommandMaintenanceDialog(Shell shell, MaintenanceMode mode, CommandManager manager) {
         super(shell, mode);
 

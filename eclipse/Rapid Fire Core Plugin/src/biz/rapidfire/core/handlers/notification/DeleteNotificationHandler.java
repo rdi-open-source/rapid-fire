@@ -16,6 +16,7 @@ import biz.rapidfire.core.maintenance.MaintenanceMode;
 import biz.rapidfire.core.maintenance.notification.NotificationValues;
 import biz.rapidfire.core.maintenance.notification.shared.NotificationAction;
 import biz.rapidfire.core.model.IRapidFireNotificationResource;
+import biz.rapidfire.rsebase.helpers.SystemConnectionHelper;
 
 public class DeleteNotificationHandler extends AbstractNotificationMaintenanceHandler implements IHandler {
 
@@ -33,7 +34,8 @@ public class DeleteNotificationHandler extends AbstractNotificationMaintenanceHa
 
         if (dialog.open() == Dialog.OK) {
             getManager().book();
-            refreshUI(notification);
+
+            SystemConnectionHelper.refreshUIDeleted(notification.getParentSubSystem(), notification, notification.getParentNode());
         }
     }
 }

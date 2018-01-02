@@ -87,6 +87,10 @@ public class AreaMaintenanceDialog extends AbstractMaintenanceDialog {
         this.values = values;
     }
 
+    public AreaValues getValue() {
+        return values;
+    }
+
     public void setLibraries(IRapidFireLibraryResource[] libraries) {
 
         this.libraries = libraries;

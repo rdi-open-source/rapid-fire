@@ -54,6 +54,10 @@ public class JobMaintenanceDialog extends AbstractMaintenanceDialog {
         this.values = values;
     }
 
+    public JobValues getValue() {
+        return values;
+    }
+
     private JobMaintenanceDialog(Shell shell, MaintenanceMode mode, JobManager manager) {
         super(shell, mode);
 

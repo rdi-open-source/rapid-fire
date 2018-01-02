@@ -15,7 +15,9 @@ import biz.rapidfire.core.dialogs.maintenance.command.CommandMaintenanceDialog;
 import biz.rapidfire.core.maintenance.MaintenanceMode;
 import biz.rapidfire.core.maintenance.command.CommandValues;
 import biz.rapidfire.core.maintenance.command.shared.CommandAction;
+import biz.rapidfire.core.maintenance.command.shared.CommandType;
 import biz.rapidfire.core.model.IRapidFireCommandResource;
+import biz.rapidfire.rsebase.helpers.SystemConnectionHelper;
 
 public class NewCommandHandler extends AbstractCommandMaintenanceHandler implements IHandler {
 
@@ -33,7 +35,15 @@ public class NewCommandHandler extends AbstractCommandMaintenanceHandler impleme
 
         if (dialog.open() == Dialog.OK) {
             getManager().book();
-            refreshUI(command);
+
+            values = dialog.getValue();
+            CommandType commandType = CommandType.find(values.getKey().getCommandType());
+            IRapidFireCommandResource newCommand = command.getParentSubSystem().getCommand(command.getParentResource(), commandType,
+                command.getSequence(), getShell());
+            newCommand.setParentNode(command.getParentNode());
+            if (newCommand != null) {
+                SystemConnectionHelper.refreshUICreated(newCommand.getParentSubSystem(), newCommand, newCommand.getParentNode());
+            }
         }
     }
 }

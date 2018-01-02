@@ -10,17 +10,20 @@ package biz.rapidfire.rse.subsystem.resources;
 
 import org.eclipse.rse.core.subsystems.AbstractResource;
 import org.eclipse.rse.core.subsystems.ISubSystem;
+import org.eclipse.swt.widgets.Shell;
 
 import biz.rapidfire.core.exceptions.IllegalParameterException;
 import biz.rapidfire.core.maintenance.file.shared.FileKey;
 import biz.rapidfire.core.maintenance.file.shared.FileType;
 import biz.rapidfire.core.model.IRapidFireFileResource;
 import biz.rapidfire.core.model.IRapidFireJobResource;
+import biz.rapidfire.core.model.IRapidFireNodeResource;
 import biz.rapidfire.core.subsystem.IRapidFireSubSystem;
 import biz.rapidfire.core.subsystem.resources.RapidFireFileResourceDelegate;
 
 public class RapidFireFileResource extends AbstractResource implements IRapidFireFileResource, Comparable<IRapidFireFileResource> {
 
+    private IRapidFireNodeResource parentNode;
     private IRapidFireJobResource parentJob;
     private RapidFireFileResourceDelegate delegate;
 
@@ -59,8 +62,16 @@ public class RapidFireFileResource extends AbstractResource implements IRapidFir
         return this.parentJob;
     }
 
-    public IRapidFireJobResource getParent() {
+    public IRapidFireJobResource getParentResource() {
         return this.parentJob;
+    }
+
+    public IRapidFireNodeResource getParentNode() {
+        return parentNode;
+    }
+
+    public void setParentNode(IRapidFireNodeResource parentNode) {
+        this.parentNode = parentNode;
     }
 
     /*
@@ -129,6 +140,18 @@ public class RapidFireFileResource extends AbstractResource implements IRapidFir
 
     public boolean isPhysicalFile() {
         return !delegate.isLogicalFile();
+    }
+
+    public void reload(Shell shell) throws Exception {
+
+        IRapidFireFileResource file = getParentSubSystem().getFile(getParentResource(), getPosition(), shell);
+
+        delegate.setName(file.getName());
+        delegate.setFileType(file.getFileType());
+        delegate.setCopyProgramName(file.getCopyProgramName());
+        delegate.setCopyProgramLibrary(file.getCopyProgramLibrary());
+        delegate.setConversionProgramName(file.getConversionProgramName());
+        delegate.setConversionProgramLibrary(file.getConversionProgramLibrary());
     }
 
     public int compareTo(IRapidFireFileResource resource) {

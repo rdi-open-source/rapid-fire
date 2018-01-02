@@ -8,21 +8,21 @@
 
 package biz.rapidfire.rse.subsystem.resources;
 
-import biz.rapidfire.core.model.IRapidFireChildResource;
 import biz.rapidfire.core.model.IRapidFireJobResource;
+import biz.rapidfire.core.model.IRapidFireNodeResource;
 import biz.rapidfire.rse.Messages;
 
-public class NotificationsNode extends AbstractNodeResource implements IRapidFireChildResource<IRapidFireJobResource> {
+public class NotificationsNode extends AbstractNodeResource implements IRapidFireNodeResource {
 
     public NotificationsNode(IRapidFireJobResource job) {
         super(job, Messages.NodeText_Files);
     }
 
-    public IRapidFireJobResource getParentJob() {
-        return super.getJob();
-    }
+    // public IRapidFireJobResource getParentJob() {
+    // return super.getJob();
+    // }
 
-    public IRapidFireJobResource getParent() {
+    public IRapidFireJobResource getParentResource() {
         return super.getJob();
     }
 }

@@ -18,4 +18,6 @@ import biz.rapidfire.core.model.IRapidFireFileResource;
 public interface IAreasDAO {
 
     public List<IRapidFireAreaResource> load(IRapidFireFileResource file, Shell shell) throws Exception;
+
+    public IRapidFireAreaResource load(IRapidFireFileResource file, String areaName, Shell shell) throws Exception;
 }

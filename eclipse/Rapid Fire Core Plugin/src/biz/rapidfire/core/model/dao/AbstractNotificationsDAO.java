@@ -68,6 +68,40 @@ public abstract class AbstractNotificationsDAO {
         return notifications;
     }
 
+    public IRapidFireNotificationResource load(IRapidFireJobResource job, int position, Shell shell) throws Exception {
+
+        IRapidFireNotificationResource notification = null;
+
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+
+        if (!dao.checkRapidFireLibrary(shell)) {
+            return notification;
+        }
+
+        try {
+
+            String sqlStatement = getSqlStatement();
+            sqlStatement = sqlStatement + " AND POSITION = ?";
+            preparedStatement = dao.prepareStatement(sqlStatement);
+            preparedStatement.setString(1, job.getName());
+            preparedStatement.setInt(2, position);
+            resultSet = preparedStatement.executeQuery();
+            resultSet.setFetchSize(50);
+
+            if (resultSet != null) {
+                while (resultSet.next()) {
+                    notification = produceNotification(resultSet, job);
+                }
+            }
+        } finally {
+            dao.closeStatement(preparedStatement);
+            dao.closeResultSet(resultSet);
+        }
+
+        return notification;
+    }
+
     private IRapidFireNotificationResource produceNotification(ResultSet resultSet, IRapidFireJobResource job) throws SQLException {
 
         // String job = resultSet.getString(JOB).trim();

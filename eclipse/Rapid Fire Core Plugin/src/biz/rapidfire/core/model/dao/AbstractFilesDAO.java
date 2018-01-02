@@ -70,6 +70,40 @@ public abstract class AbstractFilesDAO {
         return files;
     }
 
+    public IRapidFireFileResource load(IRapidFireJobResource job, int position, Shell shell) throws Exception {
+
+        IRapidFireFileResource file = null;
+
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+
+        if (!dao.checkRapidFireLibrary(shell)) {
+            return file;
+        }
+
+        try {
+
+            String sqlStatement = getSqlStatement();
+            sqlStatement = sqlStatement + " AND POSITION = ?";
+            preparedStatement = dao.prepareStatement(sqlStatement);
+            preparedStatement.setString(1, job.getName());
+            preparedStatement.setInt(2, position);
+            resultSet = preparedStatement.executeQuery();
+            resultSet.setFetchSize(50);
+
+            if (resultSet != null) {
+                while (resultSet.next()) {
+                    file = produceFile(resultSet, job);
+                }
+            }
+        } finally {
+            dao.closeStatement(preparedStatement);
+            dao.closeResultSet(resultSet);
+        }
+
+        return file;
+    }
+
     private IRapidFireFileResource produceFile(ResultSet resultSet, IRapidFireJobResource job) throws SQLException {
 
         // String job = resultSet.getString(JOB).trim();

@@ -16,6 +16,7 @@ import biz.rapidfire.core.maintenance.MaintenanceMode;
 import biz.rapidfire.core.maintenance.file.FileValues;
 import biz.rapidfire.core.maintenance.file.shared.FileAction;
 import biz.rapidfire.core.model.IRapidFireFileResource;
+import biz.rapidfire.rsebase.helpers.SystemConnectionHelper;
 
 public class DeleteFileHandler extends AbstractFileMaintenanceHandler implements IHandler {
 
@@ -33,7 +34,8 @@ public class DeleteFileHandler extends AbstractFileMaintenanceHandler implements
 
         if (dialog.open() == Dialog.OK) {
             getManager().book();
-            refreshUI(file);
+
+            SystemConnectionHelper.refreshUIDeleted(file.getParentSubSystem(), file, file.getParentNode());
         }
     }
 }

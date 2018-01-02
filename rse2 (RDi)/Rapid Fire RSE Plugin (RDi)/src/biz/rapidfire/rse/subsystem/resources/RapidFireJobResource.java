@@ -8,8 +8,14 @@
 
 package biz.rapidfire.rse.subsystem.resources;
 
+import java.util.LinkedList;
+import java.util.List;
+
+import org.eclipse.rse.core.filters.ISystemFilter;
+import org.eclipse.rse.core.filters.ISystemFilterReference;
 import org.eclipse.rse.core.subsystems.AbstractResource;
 import org.eclipse.rse.core.subsystems.ISubSystem;
+import org.eclipse.swt.widgets.Shell;
 
 import biz.rapidfire.core.exceptions.IllegalParameterException;
 import biz.rapidfire.core.helpers.StringHelper;
@@ -58,6 +64,27 @@ public class RapidFireJobResource extends AbstractResource implements IRapidFire
 
     public String getDataLibrary() {
         return delegate.getDataLibrary();
+    }
+
+    public Object[] getParentFilters() {
+
+        ISubSystem subSystem = (ISubSystem)getParentSubSystem();
+
+        ISystemFilterReference[] filterReferences = subSystem.getFilterPoolReferenceManager().getSystemFilterReferences(subSystem);
+
+        List<ISystemFilterReference> parentFilterReferences = new LinkedList<ISystemFilterReference>();
+        for (ISystemFilterReference filterReference : filterReferences) {
+            ISystemFilter filter = filterReference.getReferencedFilter();
+            String[] filterStrings = filter.getFilterStrings();
+            for (String filterStr : filterStrings) {
+                RapidFireFilter rfFilter = new RapidFireFilter(filterStr);
+                if (rfFilter.matches(this)) {
+                    parentFilterReferences.add(filterReference);
+                }
+            }
+        }
+
+        return parentFilterReferences.toArray(new ISystemFilterReference[parentFilterReferences.size()]);
     }
 
     public IRapidFireSubSystem getParentSubSystem() {
@@ -166,6 +193,23 @@ public class RapidFireJobResource extends AbstractResource implements IRapidFire
 
     public void setFilter(RapidFireFilter filter) {
         delegate.setFilter(filter);
+    }
+
+    public void reload(Shell shell) throws Exception {
+
+        IRapidFireJobResource job = getParentSubSystem().getJob(getDataLibrary(), getName(), shell);
+
+        delegate.setDescription(job.getDescription());
+        delegate.setDoCreateEnvironment(job.isDoCreateEnvironment());
+        delegate.setJobQueueName(job.getJobQueueName());
+        delegate.setJobQueueLibrary(job.getJobQueueLibrary());
+        delegate.setStatus(job.getStatus());
+        delegate.setPhase(job.getPhase());
+        delegate.setError(job.isError());
+        delegate.setErrorText(job.getErrorText());
+        delegate.setBatchJob(job.getBatchJob());
+        delegate.setStopApplyChanges(job.isStopApplyChanges());
+        delegate.setCmoneFormNumber(job.getCmoneFormNumber());
     }
 
     public int compareTo(IRapidFireJobResource resource) {

@@ -18,4 +18,6 @@ import biz.rapidfire.core.model.IRapidFireFileResource;
 public interface IConversionsDAO {
 
     public List<IRapidFireConversionResource> load(IRapidFireFileResource file, Shell shell) throws Exception;
+
+    public IRapidFireConversionResource load(IRapidFireFileResource file, String fieldToConvert, Shell shell) throws Exception;
 }

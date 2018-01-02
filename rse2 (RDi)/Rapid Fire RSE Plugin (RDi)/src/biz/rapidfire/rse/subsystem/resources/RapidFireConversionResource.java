@@ -10,17 +10,20 @@ package biz.rapidfire.rse.subsystem.resources;
 
 import org.eclipse.rse.core.subsystems.AbstractResource;
 import org.eclipse.rse.core.subsystems.ISubSystem;
+import org.eclipse.swt.widgets.Shell;
 
 import biz.rapidfire.core.exceptions.IllegalParameterException;
 import biz.rapidfire.core.maintenance.conversion.shared.ConversionKey;
 import biz.rapidfire.core.model.IRapidFireConversionResource;
 import biz.rapidfire.core.model.IRapidFireFileResource;
 import biz.rapidfire.core.model.IRapidFireJobResource;
+import biz.rapidfire.core.model.IRapidFireNodeResource;
 import biz.rapidfire.core.subsystem.IRapidFireSubSystem;
 import biz.rapidfire.core.subsystem.resources.RapidFireConversionResourceDelegate;
 
 public class RapidFireConversionResource extends AbstractResource implements IRapidFireConversionResource, Comparable<IRapidFireConversionResource> {
 
+    private IRapidFireNodeResource parentNode;
     private IRapidFireJobResource parentJob;
     private IRapidFireFileResource parentFile;
     private RapidFireConversionResourceDelegate delegate;
@@ -61,8 +64,16 @@ public class RapidFireConversionResource extends AbstractResource implements IRa
         return this.parentJob;
     }
 
-    public IRapidFireFileResource getParent() {
+    public IRapidFireFileResource getParentResource() {
         return parentFile;
+    }
+
+    public IRapidFireNodeResource getParentNode() {
+        return parentNode;
+    }
+
+    public void setParentNode(IRapidFireNodeResource parentNode) {
+        this.parentNode = parentNode;
     }
 
     /*
@@ -95,6 +106,14 @@ public class RapidFireConversionResource extends AbstractResource implements IRa
 
     public void setConversions(String[] conversions) {
         delegate.setConversions(conversions);
+    }
+
+    public void reload(Shell shell) throws Exception {
+
+        IRapidFireConversionResource conversion = getParentSubSystem().getConversion(getParentResource(), getFieldToConvert(), shell);
+
+        delegate.setNewFieldName(conversion.getNewFieldName());
+        delegate.setConversions(conversion.getConversions());
     }
 
     public int compareTo(IRapidFireConversionResource resource) {

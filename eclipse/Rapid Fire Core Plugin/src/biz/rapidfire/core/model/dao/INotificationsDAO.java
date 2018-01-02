@@ -18,4 +18,6 @@ import biz.rapidfire.core.model.IRapidFireNotificationResource;
 public interface INotificationsDAO {
 
     public List<IRapidFireNotificationResource> load(IRapidFireJobResource job, Shell shell) throws Exception;
+
+    public IRapidFireNotificationResource load(IRapidFireJobResource job, int position, Shell shell) throws Exception;
 }

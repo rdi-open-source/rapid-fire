@@ -12,6 +12,7 @@ import biz.rapidfire.core.dialogs.action.ConfirmActionDialog;
 import biz.rapidfire.core.maintenance.job.shared.DeleteShadowLibraries;
 import biz.rapidfire.core.maintenance.job.shared.JobAction;
 import biz.rapidfire.core.model.IRapidFireJobResource;
+import biz.rapidfire.rsebase.helpers.SystemConnectionHelper;
 
 public class ResetJobAfterAbortionHandler extends AbstractJobActionHandler {
 
@@ -30,7 +31,9 @@ public class ResetJobAfterAbortionHandler extends AbstractJobActionHandler {
             } else {
                 getManager().resetJobAfterAbortion(job.getKey(), DeleteShadowLibraries.NO);
             }
-            refreshUI(job);
+
+            job.reload(getShell());
+            SystemConnectionHelper.refreshUIChanged(job.getParentSubSystem(), job, job.getParentFilters());
         }
     }
 }

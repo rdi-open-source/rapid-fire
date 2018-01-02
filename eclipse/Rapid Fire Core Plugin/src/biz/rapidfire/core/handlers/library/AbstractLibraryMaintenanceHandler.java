@@ -71,7 +71,8 @@ public abstract class AbstractLibraryMaintenanceHandler extends AbstractResource
 
             Result result;
             if (libraryAction == LibraryAction.CREATE) {
-                result = getOrCreateManager(library.getParentJob()).checkAction(LibraryKey.createNew(library.getParent().getKey()), libraryAction);
+                result = getOrCreateManager(library.getParentJob()).checkAction(LibraryKey.createNew(library.getParentResource().getKey()),
+                    libraryAction);
             } else {
                 result = getOrCreateManager(library.getParentJob()).checkAction(library.getKey(), libraryAction);
             }

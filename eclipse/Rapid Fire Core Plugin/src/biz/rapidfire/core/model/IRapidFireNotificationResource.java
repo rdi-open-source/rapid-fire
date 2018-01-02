@@ -8,6 +8,8 @@
 
 package biz.rapidfire.core.model;
 
+import org.eclipse.swt.widgets.Shell;
+
 import biz.rapidfire.core.maintenance.notification.shared.NotificationKey;
 import biz.rapidfire.core.maintenance.notification.shared.NotificationType;
 
@@ -42,4 +44,6 @@ public interface IRapidFireNotificationResource extends IRapidFireChildResource<
     public String getMessageQueueLibrary();
 
     public void setMessageQueueLibrary(String messageQueueLibrary);
+
+    public void reload(Shell shell) throws Exception;
 }

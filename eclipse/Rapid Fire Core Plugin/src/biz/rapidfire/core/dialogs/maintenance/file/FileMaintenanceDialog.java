@@ -55,6 +55,10 @@ public class FileMaintenanceDialog extends AbstractMaintenanceDialog {
         this.values = values;
     }
 
+    public FileValues getValue() {
+        return values;
+    }
+
     private FileMaintenanceDialog(Shell shell, MaintenanceMode mode, FileManager manager) {
         super(shell, mode);
 

@@ -72,7 +72,7 @@ public abstract class AbstractAreaMaintenanceHandler extends AbstractResourceMai
 
             Result result;
             if (areaAction == AreaAction.CREATE) {
-                result = getOrCreateManager(area.getParentJob()).checkAction(AreaKey.createNew(area.getParent().getKey()), areaAction);
+                result = getOrCreateManager(area.getParentJob()).checkAction(AreaKey.createNew(area.getParentResource().getKey()), areaAction);
             } else {
                 result = getOrCreateManager(area.getParentJob()).checkAction(area.getKey(), areaAction);
             }

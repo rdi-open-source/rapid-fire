@@ -10,6 +10,7 @@ package biz.rapidfire.rse.subsystem.resources;
 
 import org.eclipse.rse.core.subsystems.AbstractResource;
 import org.eclipse.rse.core.subsystems.ISubSystem;
+import org.eclipse.swt.widgets.Shell;
 
 import biz.rapidfire.core.exceptions.IllegalParameterException;
 import biz.rapidfire.core.maintenance.command.shared.CommandKey;
@@ -17,11 +18,13 @@ import biz.rapidfire.core.maintenance.command.shared.CommandType;
 import biz.rapidfire.core.model.IRapidFireCommandResource;
 import biz.rapidfire.core.model.IRapidFireFileResource;
 import biz.rapidfire.core.model.IRapidFireJobResource;
+import biz.rapidfire.core.model.IRapidFireNodeResource;
 import biz.rapidfire.core.subsystem.IRapidFireSubSystem;
 import biz.rapidfire.core.subsystem.resources.RapidFireCommandResourceDelegate;
 
 public class RapidFireCommandResource extends AbstractResource implements IRapidFireCommandResource, Comparable<IRapidFireCommandResource> {
 
+    private IRapidFireNodeResource parentNode;
     private IRapidFireJobResource parentJob;
     private IRapidFireFileResource parentFile;
     private RapidFireCommandResourceDelegate delegate;
@@ -63,8 +66,16 @@ public class RapidFireCommandResource extends AbstractResource implements IRapid
         return this.parentJob;
     }
 
-    public IRapidFireFileResource getParent() {
+    public IRapidFireFileResource getParentResource() {
         return parentFile;
+    }
+
+    public IRapidFireNodeResource getParentNode() {
+        return parentNode;
+    }
+
+    public void setParentNode(IRapidFireNodeResource parentNode) {
+        this.parentNode = parentNode;
     }
 
     /*
@@ -93,6 +104,13 @@ public class RapidFireCommandResource extends AbstractResource implements IRapid
 
     public void setCommand(String command) {
         delegate.setCommand(command);
+    }
+
+    public void reload(Shell shell) throws Exception {
+
+        IRapidFireCommandResource command = getParentSubSystem().getCommand(getParentResource(), getCommandType(), getSequence(), shell);
+
+        delegate.setCommand(command.getCommand());
     }
 
     public int compareTo(IRapidFireCommandResource resource) {

@@ -77,6 +77,10 @@ public class NotificationMaintenanceDialog extends AbstractMaintenanceDialog {
         this.values = values;
     }
 
+    public NotificationValues getValue() {
+        return values;
+    }
+
     private NotificationMaintenanceDialog(Shell shell, MaintenanceMode mode, NotificationManager manager) {
         super(shell, mode);
 

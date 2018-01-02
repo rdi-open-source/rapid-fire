@@ -53,10 +53,6 @@ public class RapidFireAreaResourceDelegate implements Comparable<IRapidFireAreaR
         return area;
     }
 
-    public void setName(String area) {
-        this.area = area;
-    }
-
     public String getLibrary() {
         return library;
     }

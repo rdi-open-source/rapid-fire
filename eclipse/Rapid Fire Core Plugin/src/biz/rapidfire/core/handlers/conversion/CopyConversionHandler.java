@@ -16,6 +16,7 @@ import biz.rapidfire.core.maintenance.MaintenanceMode;
 import biz.rapidfire.core.maintenance.conversion.ConversionValues;
 import biz.rapidfire.core.maintenance.conversion.shared.ConversionAction;
 import biz.rapidfire.core.model.IRapidFireConversionResource;
+import biz.rapidfire.rsebase.helpers.SystemConnectionHelper;
 
 public class CopyConversionHandler extends AbstractConversionMaintenanceHandler implements IHandler {
 
@@ -33,7 +34,14 @@ public class CopyConversionHandler extends AbstractConversionMaintenanceHandler 
 
         if (dialog.open() == Dialog.OK) {
             getManager().book();
-            refreshUI(conversion);
+
+            values = dialog.getValue();
+            IRapidFireConversionResource newConversion = conversion.getParentSubSystem().getConversion(conversion.getParentResource(),
+                values.getKey().getFieldToConvert(), getShell());
+            newConversion.setParentNode(conversion.getParentNode());
+            if (newConversion != null) {
+                SystemConnectionHelper.refreshUICreated(newConversion.getParentSubSystem(), newConversion, newConversion.getParentNode());
+            }
         }
     }
 }

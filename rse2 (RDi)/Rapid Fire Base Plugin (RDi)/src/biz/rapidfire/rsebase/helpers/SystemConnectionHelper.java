@@ -13,7 +13,13 @@ import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.eclipse.rse.core.RSECorePlugin;
+import org.eclipse.rse.core.events.ISystemRemoteChangeEvents;
+import org.eclipse.rse.core.events.ISystemResourceChangeEvents;
+import org.eclipse.rse.core.events.SystemResourceChangeEvent;
 import org.eclipse.rse.core.model.IHost;
+import org.eclipse.rse.core.model.ISystemRegistry;
+import org.eclipse.rse.core.subsystems.ISubSystem;
 import org.eclipse.swt.widgets.Display;
 
 import com.ibm.as400.access.AS400;
@@ -22,6 +28,44 @@ import com.ibm.etools.iseries.services.qsys.api.IQSYSMember;
 import com.ibm.etools.iseries.subsystems.qsys.api.IBMiConnection;
 
 public class SystemConnectionHelper {
+
+    public static void refreshUICreated(Object subSystem, Object resource, Object... parents) {
+
+        if (resource != null) {
+            ISystemRegistry sr = RSECorePlugin.getTheSystemRegistry();
+            for (Object parent : parents) {
+                sr.fireEvent(new SystemResourceChangeEvent(resource, ISystemResourceChangeEvents.EVENT_ADD, parent));
+                sr.fireRemoteResourceChangeEvent(ISystemRemoteChangeEvents.SYSTEM_REMOTE_RESOURCE_CREATED, resource, parent, (ISubSystem)subSystem,
+                    null);
+                // sr.fireEvent(new SystemResourceChangeEvent(resource,
+                // ISystemResourceChangeEvents.EVENT_CHANGE_CHILDREN, parent));
+            }
+        }
+    }
+
+    public static void refreshUIChanged(Object subSystem, Object resource, Object... parents) {
+
+        if (resource != null) {
+            ISystemRegistry sr = RSECorePlugin.getTheSystemRegistry();
+            for (Object parent : parents) {
+                sr.fireEvent(new SystemResourceChangeEvent(resource, ISystemResourceChangeEvents.EVENT_REFRESH, parent));
+                sr.fireRemoteResourceChangeEvent(ISystemRemoteChangeEvents.SYSTEM_REMOTE_RESOURCE_CHANGED, resource, parent, (ISubSystem)subSystem,
+                    null);
+            }
+        }
+    }
+
+    public static void refreshUIDeleted(Object subSystem, Object resource, Object... parents) {
+
+        if (resource != null) {
+            ISystemRegistry sr = RSECorePlugin.getTheSystemRegistry();
+            for (Object parent : parents) {
+                sr.fireEvent(new SystemResourceChangeEvent(resource, ISystemResourceChangeEvents.EVENT_DELETE, parent));
+                sr.fireRemoteResourceChangeEvent(ISystemRemoteChangeEvents.SYSTEM_REMOTE_RESOURCE_DELETED, resource, parent, (ISubSystem)subSystem,
+                    null);
+            }
+        }
+    }
 
     /**
      * Open an editable source member.

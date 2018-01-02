@@ -16,6 +16,7 @@ import biz.rapidfire.core.maintenance.MaintenanceMode;
 import biz.rapidfire.core.maintenance.notification.NotificationValues;
 import biz.rapidfire.core.maintenance.notification.shared.NotificationAction;
 import biz.rapidfire.core.model.IRapidFireNotificationResource;
+import biz.rapidfire.rsebase.helpers.SystemConnectionHelper;
 
 public class CopyNotificationHandler extends AbstractNotificationMaintenanceHandler implements IHandler {
 
@@ -33,7 +34,14 @@ public class CopyNotificationHandler extends AbstractNotificationMaintenanceHand
 
         if (dialog.open() == Dialog.OK) {
             getManager().book();
-            refreshUI(notification);
+
+            values = dialog.getValue();
+            IRapidFireNotificationResource newNotification = notification.getParentSubSystem().getNotification(notification.getParentResource(),
+                values.getKey().getPosition(), getShell());
+            newNotification.setParentNode(notification.getParentNode());
+            if (newNotification != null) {
+                SystemConnectionHelper.refreshUICreated(newNotification.getParentSubSystem(), newNotification, newNotification.getParentNode());
+            }
         }
     }
 }

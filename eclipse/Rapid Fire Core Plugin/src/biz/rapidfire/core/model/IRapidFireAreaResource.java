@@ -8,6 +8,8 @@
 
 package biz.rapidfire.core.model;
 
+import org.eclipse.swt.widgets.Shell;
+
 import biz.rapidfire.core.maintenance.area.shared.AreaKey;
 import biz.rapidfire.core.swt.widgets.viewers.stringlist.IStringListItem;
 
@@ -44,4 +46,6 @@ public interface IRapidFireAreaResource extends IRapidFireChildResource<IRapidFi
     public String getCommandExtension();
 
     public void setCommandExtension(String commandExtension);
+
+    public void reload(Shell shell) throws Exception;
 }

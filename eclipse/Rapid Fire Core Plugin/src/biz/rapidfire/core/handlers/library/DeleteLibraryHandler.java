@@ -16,6 +16,7 @@ import biz.rapidfire.core.maintenance.MaintenanceMode;
 import biz.rapidfire.core.maintenance.library.LibraryValues;
 import biz.rapidfire.core.maintenance.library.shared.LibraryAction;
 import biz.rapidfire.core.model.IRapidFireLibraryResource;
+import biz.rapidfire.rsebase.helpers.SystemConnectionHelper;
 
 public class DeleteLibraryHandler extends AbstractLibraryMaintenanceHandler implements IHandler {
 
@@ -33,7 +34,8 @@ public class DeleteLibraryHandler extends AbstractLibraryMaintenanceHandler impl
 
         if (dialog.open() == Dialog.OK) {
             getManager().book();
-            refreshUI(library);
+
+            SystemConnectionHelper.refreshUIDeleted(library.getParentSubSystem(), library, library.getParentNode());
         }
     }
 }

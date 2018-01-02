@@ -8,6 +8,8 @@
 
 package biz.rapidfire.core.model;
 
+import org.eclipse.swt.widgets.Shell;
+
 import biz.rapidfire.core.maintenance.file.shared.FileKey;
 import biz.rapidfire.core.maintenance.file.shared.FileType;
 
@@ -54,4 +56,6 @@ public interface IRapidFireFileResource extends IRapidFireChildResource<IRapidFi
     public boolean isLogicalFile();
 
     public boolean isPhysicalFile();
+
+    public void reload(Shell shell) throws Exception;
 }

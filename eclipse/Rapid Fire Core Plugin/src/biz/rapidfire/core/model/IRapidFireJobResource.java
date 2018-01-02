@@ -8,12 +8,16 @@
 
 package biz.rapidfire.core.model;
 
+import org.eclipse.swt.widgets.Shell;
+
 import biz.rapidfire.core.maintenance.job.shared.JobKey;
 import biz.rapidfire.core.subsystem.RapidFireFilter;
 
 public interface IRapidFireJobResource extends IRapidFireResource {
 
     public static final int DESCRIPTION_MAX_LENGTH = 35;
+
+    public Object[] getParentFilters();
 
     /*
      * Key attributes
@@ -74,4 +78,6 @@ public interface IRapidFireJobResource extends IRapidFireResource {
     public RapidFireFilter getFilter();
 
     public JobName getBatchJob();
+
+    public void reload(Shell shell) throws Exception;
 }

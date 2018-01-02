@@ -8,6 +8,8 @@
 
 package biz.rapidfire.core.model;
 
+import org.eclipse.swt.widgets.Shell;
+
 import biz.rapidfire.core.maintenance.conversion.shared.ConversionKey;
 
 public interface IRapidFireConversionResource extends IRapidFireChildResource<IRapidFireFileResource> {
@@ -35,4 +37,6 @@ public interface IRapidFireConversionResource extends IRapidFireChildResource<IR
     public String[] getConversions();
 
     public void setConversions(String[] fieldName);
+
+    public void reload(Shell shell) throws Exception;
 }

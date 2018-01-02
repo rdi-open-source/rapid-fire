@@ -16,6 +16,7 @@ import biz.rapidfire.core.maintenance.MaintenanceMode;
 import biz.rapidfire.core.maintenance.library.LibraryValues;
 import biz.rapidfire.core.maintenance.library.shared.LibraryAction;
 import biz.rapidfire.core.model.IRapidFireLibraryResource;
+import biz.rapidfire.rsebase.helpers.SystemConnectionHelper;
 
 public class CopyLibraryHandler extends AbstractLibraryMaintenanceHandler implements IHandler {
 
@@ -33,7 +34,14 @@ public class CopyLibraryHandler extends AbstractLibraryMaintenanceHandler implem
 
         if (dialog.open() == Dialog.OK) {
             getManager().book();
-            refreshUI(library);
+
+            values = dialog.getValue();
+            IRapidFireLibraryResource newLibrary = library.getParentSubSystem().getLibrary(library.getParentResource(), values.getKey().getLibrary(),
+                getShell());
+            newLibrary.setParentNode(library.getParentNode());
+            if (newLibrary != null) {
+                SystemConnectionHelper.refreshUICreated(newLibrary.getParentSubSystem(), newLibrary, newLibrary.getParentNode());
+            }
         }
     }
 }

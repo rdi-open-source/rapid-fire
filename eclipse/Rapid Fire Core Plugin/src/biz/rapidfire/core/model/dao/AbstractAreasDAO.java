@@ -69,6 +69,41 @@ public abstract class AbstractAreasDAO {
         return areas;
     }
 
+    public IRapidFireAreaResource load(IRapidFireFileResource file, String areaName, Shell shell) throws Exception {
+
+        IRapidFireAreaResource area = null;
+
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+
+        if (!dao.checkRapidFireLibrary(shell)) {
+            return area;
+        }
+
+        try {
+
+            String sqlStatement = getSqlStatement();
+            sqlStatement = sqlStatement + " AND AREA = ?";
+            preparedStatement = dao.prepareStatement(sqlStatement);
+            preparedStatement.setString(1, file.getJob());
+            preparedStatement.setInt(2, file.getPosition());
+            preparedStatement.setString(3, areaName);
+            resultSet = preparedStatement.executeQuery();
+            resultSet.setFetchSize(50);
+
+            if (resultSet != null) {
+                while (resultSet.next()) {
+                    area = produceFile(resultSet, file);
+                }
+            }
+        } finally {
+            dao.closeStatement(preparedStatement);
+            dao.closeResultSet(resultSet);
+        }
+
+        return area;
+    }
+
     private IRapidFireAreaResource produceFile(ResultSet resultSet, IRapidFireFileResource file) throws SQLException {
 
         // String job = resultSet.getString(JOB).trim();

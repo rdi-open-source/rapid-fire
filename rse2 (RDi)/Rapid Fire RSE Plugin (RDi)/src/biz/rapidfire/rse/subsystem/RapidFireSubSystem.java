@@ -34,6 +34,7 @@ import org.eclipse.ui.progress.WorkbenchJob;
 import biz.rapidfire.core.RapidFireCorePlugin;
 import biz.rapidfire.core.dialogs.MessageDialogAsync;
 import biz.rapidfire.core.helpers.ExceptionHelper;
+import biz.rapidfire.core.maintenance.command.shared.CommandType;
 import biz.rapidfire.core.model.IFileCopyStatus;
 import biz.rapidfire.core.model.IRapidFireActivityResource;
 import biz.rapidfire.core.model.IRapidFireAreaResource;
@@ -53,6 +54,7 @@ import biz.rapidfire.core.model.dao.IFileCopyStatusDAO;
 import biz.rapidfire.core.model.dao.IFilesDAO;
 import biz.rapidfire.core.model.dao.IJobsDAO;
 import biz.rapidfire.core.model.dao.ILibrariesDAO;
+import biz.rapidfire.core.model.dao.ILibraryListsDAO;
 import biz.rapidfire.core.model.dao.INotificationsDAO;
 import biz.rapidfire.core.model.dao.JDBCConnectionManager;
 import biz.rapidfire.core.model.queries.FileCopyStatus;
@@ -178,6 +180,21 @@ public class RapidFireSubSystem extends SubSystem implements IISeriesSubSystem, 
         return jobs.toArray(new IRapidFireJobResource[jobs.size()]);
     }
 
+    public IRapidFireJobResource getJob(String libraryName, String jobName, Shell shell) throws Exception {
+
+        if (!successFullyLoaded()) {
+            return null;
+        }
+
+        IJobsDAO dao = new JobsDAO(getConnectionName(), libraryName);
+        IRapidFireJobResource job = dao.load(this, jobName, shell);
+        if (job == null) {
+            return null;
+        }
+
+        return job;
+    }
+
     public IRapidFireActivityResource[] getActivities(IRapidFireJobResource job, Shell shell) throws Exception {
 
         if (!successFullyLoaded()) {
@@ -212,6 +229,20 @@ public class RapidFireSubSystem extends SubSystem implements IISeriesSubSystem, 
         return files.toArray(new IRapidFireFileResource[files.size()]);
     }
 
+    public IRapidFireFileResource getFile(IRapidFireJobResource job, int position, Shell shell) throws Exception {
+
+        if (!successFullyLoaded()) {
+            return null;
+        }
+
+        String libraryName = job.getDataLibrary();
+
+        IFilesDAO dao = new FilesDAO(getConnectionName(), libraryName);
+        IRapidFireFileResource file = dao.load(job, position, shell);
+
+        return file;
+    }
+
     public IRapidFireLibraryListResource[] getLibraryLists(IRapidFireJobResource job, Shell shell) throws Exception {
 
         if (!successFullyLoaded()) {
@@ -227,6 +258,20 @@ public class RapidFireSubSystem extends SubSystem implements IISeriesSubSystem, 
         }
 
         return libraryLists.toArray(new IRapidFireLibraryListResource[libraryLists.size()]);
+    }
+
+    public IRapidFireLibraryListResource getLibraryList(IRapidFireJobResource job, String libraryListName, Shell shell) throws Exception {
+
+        if (!successFullyLoaded()) {
+            return null;
+        }
+
+        String dataLibraryName = job.getDataLibrary();
+
+        ILibraryListsDAO dao = new LibraryListsDAO(getConnectionName(), dataLibraryName);
+        IRapidFireLibraryListResource libraryList = dao.load(job, libraryListName, shell);
+
+        return libraryList;
     }
 
     public IRapidFireLibraryResource[] getLibraries(IRapidFireJobResource job, Shell shell) throws Exception {
@@ -277,6 +322,20 @@ public class RapidFireSubSystem extends SubSystem implements IISeriesSubSystem, 
         return notification.toArray(new IRapidFireNotificationResource[notification.size()]);
     }
 
+    public IRapidFireNotificationResource getNotification(IRapidFireJobResource job, int position, Shell shell) throws Exception {
+
+        if (!successFullyLoaded()) {
+            return null;
+        }
+
+        String libraryName = job.getDataLibrary();
+
+        INotificationsDAO dao = new NotificationsDAO(getConnectionName(), libraryName);
+        IRapidFireNotificationResource notification = dao.load(job, position, shell);
+
+        return notification;
+    }
+
     public IRapidFireAreaResource[] getAreas(IRapidFireFileResource file, Shell shell) throws Exception {
 
         if (!successFullyLoaded()) {
@@ -293,6 +352,21 @@ public class RapidFireSubSystem extends SubSystem implements IISeriesSubSystem, 
         }
 
         return areas.toArray(new IRapidFireAreaResource[areas.size()]);
+    }
+
+    public IRapidFireAreaResource getArea(IRapidFireFileResource file, String areaName, Shell shell) throws Exception {
+
+        if (!successFullyLoaded()) {
+            return null;
+        }
+
+        IRapidFireJobResource job = file.getParentJob();
+        String libraryName = job.getDataLibrary();
+
+        IAreasDAO dao = new AreasDAO(getConnectionName(), libraryName);
+        IRapidFireAreaResource area = dao.load(file, areaName, shell);
+
+        return area;
     }
 
     public IRapidFireConversionResource[] getConversions(IRapidFireFileResource file, Shell shell) throws Exception {
@@ -313,6 +387,21 @@ public class RapidFireSubSystem extends SubSystem implements IISeriesSubSystem, 
         return conversions.toArray(new IRapidFireConversionResource[conversions.size()]);
     }
 
+    public IRapidFireConversionResource getConversion(IRapidFireFileResource file, String fieldToConvert, Shell shell) throws Exception {
+
+        if (!successFullyLoaded()) {
+            return null;
+        }
+
+        IRapidFireJobResource job = file.getParentJob();
+        String libraryName = job.getDataLibrary();
+
+        IConversionsDAO dao = new ConversionsDAO(getConnectionName(), libraryName);
+        IRapidFireConversionResource conversion = dao.load(file, fieldToConvert, shell);
+
+        return conversion;
+    }
+
     public IRapidFireCommandResource[] getCommands(IRapidFireFileResource file, Shell shell) throws Exception {
 
         if (!successFullyLoaded()) {
@@ -329,6 +418,24 @@ public class RapidFireSubSystem extends SubSystem implements IISeriesSubSystem, 
         }
 
         return commands.toArray(new IRapidFireCommandResource[commands.size()]);
+    }
+
+    public IRapidFireCommandResource getCommand(IRapidFireFileResource file, CommandType commandType, int sequence, Shell shell) throws Exception {
+
+        if (!successFullyLoaded()) {
+            return null;
+        }
+
+        IRapidFireJobResource job = file.getParentJob();
+        String libraryName = job.getDataLibrary();
+
+        ICommandsDAO dao = new CommandsDAO(getConnectionName(), libraryName);
+        IRapidFireCommandResource command = dao.load(file, commandType, sequence, shell);
+        if (command == null) {
+            return null;
+        }
+
+        return command;
     }
 
     public IFileCopyStatus[] getFileCopyStatus(IRapidFireJobResource job, Shell shell) throws Exception {

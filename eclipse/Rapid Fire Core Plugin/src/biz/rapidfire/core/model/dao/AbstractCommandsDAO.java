@@ -68,6 +68,42 @@ public abstract class AbstractCommandsDAO {
         return conversions;
     }
 
+    public IRapidFireCommandResource load(IRapidFireFileResource file, CommandType commandType, int sequence, Shell shell) throws Exception {
+
+        IRapidFireCommandResource conversion = null;
+
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+
+        if (!dao.checkRapidFireLibrary(shell)) {
+            return conversion;
+        }
+
+        try {
+
+            String sqlStatement = getSqlStatement();
+            sqlStatement = sqlStatement + " AND POSITION = ? AND TYPE = ?";
+            preparedStatement = dao.prepareStatement(sqlStatement);
+            preparedStatement.setString(1, file.getJob());
+            preparedStatement.setInt(2, file.getPosition());
+            preparedStatement.setString(3, commandType.label());
+            preparedStatement.setInt(4, sequence);
+            resultSet = preparedStatement.executeQuery();
+            resultSet.setFetchSize(50);
+
+            if (resultSet != null) {
+                while (resultSet.next()) {
+                    conversion = produceCommand(resultSet, file);
+                }
+            }
+        } finally {
+            dao.closeStatement(preparedStatement);
+            dao.closeResultSet(resultSet);
+        }
+
+        return conversion;
+    }
+
     private IRapidFireCommandResource produceCommand(ResultSet resultSet, IRapidFireFileResource file) throws SQLException {
 
         // String job = resultSet.getString(JOB).trim();

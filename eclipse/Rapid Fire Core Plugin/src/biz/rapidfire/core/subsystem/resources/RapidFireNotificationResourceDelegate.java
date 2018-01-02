@@ -96,7 +96,13 @@ public class RapidFireNotificationResourceDelegate implements Comparable<IRapidF
             return result;
         }
 
-        return getUser().compareTo(resource.getUser());
+        if (getPosition() > resource.getPosition()) {
+            return 1;
+        } else if (getPosition() < resource.getPosition()) {
+            return -1;
+        } else {
+            return 0;
+        }
     }
 
     @Override

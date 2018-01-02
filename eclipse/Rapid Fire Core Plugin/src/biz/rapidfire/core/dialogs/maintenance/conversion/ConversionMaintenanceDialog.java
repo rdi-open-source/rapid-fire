@@ -81,6 +81,10 @@ public class ConversionMaintenanceDialog extends AbstractMaintenanceDialog {
         this.values = values;
     }
 
+    public ConversionValues getValue() {
+        return values;
+    }
+
     public void setFields(String[] fieldNames) {
 
         this.fieldNames = fieldNames;

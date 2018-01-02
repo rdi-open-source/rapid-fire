@@ -10,17 +10,20 @@ package biz.rapidfire.rse.subsystem.resources;
 
 import org.eclipse.rse.core.subsystems.AbstractResource;
 import org.eclipse.rse.core.subsystems.ISubSystem;
+import org.eclipse.swt.widgets.Shell;
 
 import biz.rapidfire.core.exceptions.IllegalParameterException;
 import biz.rapidfire.core.maintenance.librarylist.shared.LibraryListKey;
 import biz.rapidfire.core.model.IRapidFireJobResource;
 import biz.rapidfire.core.model.IRapidFireLibraryListResource;
+import biz.rapidfire.core.model.IRapidFireNodeResource;
 import biz.rapidfire.core.subsystem.IRapidFireSubSystem;
 import biz.rapidfire.core.subsystem.resources.RapidFireLibraryListResourceDelegate;
 
 public class RapidFireLibraryListResource extends AbstractResource implements IRapidFireLibraryListResource,
     Comparable<IRapidFireLibraryListResource> {
 
+    private IRapidFireNodeResource parentNode;
     private IRapidFireJobResource parentJob;
     private RapidFireLibraryListResourceDelegate delegate;
 
@@ -63,8 +66,16 @@ public class RapidFireLibraryListResource extends AbstractResource implements IR
         return this.parentJob;
     }
 
-    public IRapidFireJobResource getParent() {
+    public IRapidFireJobResource getParentResource() {
         return this.parentJob;
+    }
+
+    public IRapidFireNodeResource getParentNode() {
+        return parentNode;
+    }
+
+    public void setParentNode(IRapidFireNodeResource parentNode) {
+        this.parentNode = parentNode;
     }
 
     /*
@@ -85,6 +96,13 @@ public class RapidFireLibraryListResource extends AbstractResource implements IR
 
     public void setDescription(String description) {
         delegate.setDescription(description);
+    }
+
+    public void reload(Shell shell) throws Exception {
+
+        IRapidFireLibraryListResource libraryList = getParentSubSystem().getLibraryList(getParentResource(), getName(), shell);
+
+        delegate.setDescription(libraryList.getDescription());
     }
 
     public int compareTo(IRapidFireLibraryListResource resource) {

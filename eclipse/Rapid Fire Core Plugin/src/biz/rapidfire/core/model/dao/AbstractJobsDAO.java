@@ -76,6 +76,40 @@ public abstract class AbstractJobsDAO {
         return jobs;
     }
 
+    public IRapidFireJobResource load(IRapidFireSubSystem subSystem, String jobName, Shell shell) throws Exception {
+
+        IRapidFireJobResource job = null;
+
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+
+        if (!dao.checkRapidFireLibrary(shell)) {
+            return null;
+        }
+
+        try {
+
+            String sqlStatement = getSqlStatement();
+            sqlStatement = sqlStatement + " WHERE JOB = ?";
+            preparedStatement = dao.prepareStatement(sqlStatement);
+            preparedStatement.setString(1, jobName);
+            resultSet = preparedStatement.executeQuery();
+            resultSet.setFetchSize(2);
+
+            if (resultSet != null) {
+                while (resultSet.next()) {
+                    job = produceJob(subSystem, dao.getLibraryName(), resultSet);
+                }
+            }
+
+        } finally {
+            dao.closeStatement(preparedStatement);
+            dao.closeResultSet(resultSet);
+        }
+
+        return job;
+    }
+
     private IRapidFireJobResource produceJob(IRapidFireSubSystem subSystem, String dataLibrary, ResultSet resultSet) throws SQLException {
 
         String name = resultSet.getString(JOB).trim();

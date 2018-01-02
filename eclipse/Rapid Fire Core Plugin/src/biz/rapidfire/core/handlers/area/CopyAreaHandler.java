@@ -16,6 +16,7 @@ import biz.rapidfire.core.maintenance.MaintenanceMode;
 import biz.rapidfire.core.maintenance.area.AreaValues;
 import biz.rapidfire.core.maintenance.area.shared.AreaAction;
 import biz.rapidfire.core.model.IRapidFireAreaResource;
+import biz.rapidfire.rsebase.helpers.SystemConnectionHelper;
 
 public class CopyAreaHandler extends AbstractAreaMaintenanceHandler implements IHandler {
 
@@ -35,7 +36,13 @@ public class CopyAreaHandler extends AbstractAreaMaintenanceHandler implements I
 
         if (dialog.open() == Dialog.OK) {
             getManager().book();
-            refreshUI(area);
+
+            values = dialog.getValue();
+            IRapidFireAreaResource newArea = area.getParentSubSystem().getArea(area.getParentResource(), values.getKey().getArea(), getShell());
+            newArea.setParentNode(area.getParentNode());
+            if (newArea != null) {
+                SystemConnectionHelper.refreshUICreated(newArea.getParentSubSystem(), newArea, newArea.getParentNode());
+            }
         }
     }
 }

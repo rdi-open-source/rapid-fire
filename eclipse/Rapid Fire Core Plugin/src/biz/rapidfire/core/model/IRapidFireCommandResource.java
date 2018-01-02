@@ -8,6 +8,8 @@
 
 package biz.rapidfire.core.model;
 
+import org.eclipse.swt.widgets.Shell;
+
 import biz.rapidfire.core.maintenance.command.shared.CommandKey;
 import biz.rapidfire.core.maintenance.command.shared.CommandType;
 
@@ -34,4 +36,6 @@ public interface IRapidFireCommandResource extends IRapidFireChildResource<IRapi
     public String getCommand();
 
     public void setCommand(String command);
+
+    public void reload(Shell shell) throws Exception;
 }

@@ -59,6 +59,10 @@ public class LibraryListMaintenanceDialog extends AbstractMaintenanceDialog {
         this.values = values;
     }
 
+    public LibraryListValues getValue() {
+        return values;
+    }
+
     private LibraryListMaintenanceDialog(Shell shell, MaintenanceMode mode, LibraryListManager manager) {
         super(shell, mode);
 

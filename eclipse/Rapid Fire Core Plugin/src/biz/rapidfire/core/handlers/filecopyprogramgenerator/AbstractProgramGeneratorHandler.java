@@ -72,7 +72,7 @@ public abstract class AbstractProgramGeneratorHandler extends
 
             Result result;
             if (fileCopyProgramGeneratorAction == FileCopyProgramGeneratorAction.CREATE) {
-                result = getOrCreateManager(file.getParentJob()).checkAction(FileKey.createNew(file.getParent().getKey()),
+                result = getOrCreateManager(file.getParentJob()).checkAction(FileKey.createNew(file.getParentResource().getKey()),
                     fileCopyProgramGeneratorAction);
             } else {
                 result = getOrCreateManager(file.getParentJob()).checkAction(file.getKey(), fileCopyProgramGeneratorAction);

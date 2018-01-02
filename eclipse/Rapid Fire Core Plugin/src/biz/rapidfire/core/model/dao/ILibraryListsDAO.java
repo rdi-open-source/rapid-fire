@@ -18,4 +18,6 @@ import biz.rapidfire.core.model.IRapidFireLibraryListResource;
 public interface ILibraryListsDAO {
 
     public List<IRapidFireLibraryListResource> load(IRapidFireJobResource job, Shell shell) throws Exception;
+
+    public IRapidFireLibraryListResource load(IRapidFireJobResource job, String libraryListName, Shell shell) throws Exception;
 }

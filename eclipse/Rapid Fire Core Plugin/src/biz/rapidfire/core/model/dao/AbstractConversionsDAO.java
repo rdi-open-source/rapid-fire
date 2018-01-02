@@ -73,6 +73,41 @@ public abstract class AbstractConversionsDAO {
         return conversions;
     }
 
+    public IRapidFireConversionResource load(IRapidFireFileResource file, String fieldToConvert, Shell shell) throws Exception {
+
+        IRapidFireConversionResource conversion = null;
+
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+
+        if (!dao.checkRapidFireLibrary(shell)) {
+            return conversion;
+        }
+
+        try {
+
+            String sqlStatement = getSqlStatement();
+            sqlStatement = sqlStatement + " AND FIELD_TO_CONVERT = ?";
+            preparedStatement = dao.prepareStatement(sqlStatement);
+            preparedStatement.setString(1, file.getJob());
+            preparedStatement.setInt(2, file.getPosition());
+            preparedStatement.setString(3, fieldToConvert);
+            resultSet = preparedStatement.executeQuery();
+            resultSet.setFetchSize(50);
+
+            if (resultSet != null) {
+                while (resultSet.next()) {
+                    conversion = produceFile(resultSet, file);
+                }
+            }
+        } finally {
+            dao.closeStatement(preparedStatement);
+            dao.closeResultSet(resultSet);
+        }
+
+        return conversion;
+    }
+
     private IRapidFireConversionResource produceFile(ResultSet resultSet, IRapidFireFileResource file) throws SQLException {
 
         // String job = resultSet.getString(JOB).trim();

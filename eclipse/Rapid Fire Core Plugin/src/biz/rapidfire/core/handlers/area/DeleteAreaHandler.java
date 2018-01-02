@@ -16,6 +16,7 @@ import biz.rapidfire.core.maintenance.MaintenanceMode;
 import biz.rapidfire.core.maintenance.area.AreaValues;
 import biz.rapidfire.core.maintenance.area.shared.AreaAction;
 import biz.rapidfire.core.model.IRapidFireAreaResource;
+import biz.rapidfire.rsebase.helpers.SystemConnectionHelper;
 
 public class DeleteAreaHandler extends AbstractAreaMaintenanceHandler implements IHandler {
 
@@ -33,7 +34,8 @@ public class DeleteAreaHandler extends AbstractAreaMaintenanceHandler implements
 
         if (dialog.open() == Dialog.OK) {
             getManager().book();
-            refreshUI(area);
+
+            SystemConnectionHelper.refreshUIDeleted(area.getParentSubSystem(), area, area.getParentNode());
         }
     }
 }

@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2017-2017 Rapid Fire Project Team
+ * Copyright (c) 2017-2018 Rapid Fire Project Owners
  * All rights reserved. This program and the accompanying materials 
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
@@ -8,13 +8,8 @@
 
 package biz.rapidfire.core.model;
 
-public interface IRapidFireChildResource<P> extends IRapidFireResource {
+public interface IRapidFireNodeResource extends IRapidFireResource {
 
-    public IRapidFireJobResource getParentJob();
+    public IRapidFireResource getParentResource();
 
-    public P getParentResource();
-
-    public IRapidFireNodeResource getParentNode();
-
-    public void setParentNode(IRapidFireNodeResource parentNode);
 }

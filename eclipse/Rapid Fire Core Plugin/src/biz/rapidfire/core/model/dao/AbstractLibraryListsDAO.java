@@ -34,13 +34,13 @@ public abstract class AbstractLibraryListsDAO {
 
     public List<IRapidFireLibraryListResource> load(IRapidFireJobResource job, Shell shell) throws Exception {
 
-        final List<IRapidFireLibraryListResource> libraries = new ArrayList<IRapidFireLibraryListResource>();
+        final List<IRapidFireLibraryListResource> libraryLists = new ArrayList<IRapidFireLibraryListResource>();
 
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
 
         if (!dao.checkRapidFireLibrary(shell)) {
-            return libraries;
+            return libraryLists;
         }
 
         try {
@@ -53,7 +53,7 @@ public abstract class AbstractLibraryListsDAO {
 
             if (resultSet != null) {
                 while (resultSet.next()) {
-                    libraries.add(produceLibrary(resultSet, job));
+                    libraryLists.add(produceLibrary(resultSet, job));
                 }
             }
         } finally {
@@ -61,7 +61,41 @@ public abstract class AbstractLibraryListsDAO {
             dao.closeResultSet(resultSet);
         }
 
-        return libraries;
+        return libraryLists;
+    }
+
+    public IRapidFireLibraryListResource load(IRapidFireJobResource job, String libraryListName, Shell shell) throws Exception {
+
+        IRapidFireLibraryListResource libraryList = null;
+
+        PreparedStatement preparedStatement = null;
+        ResultSet resultSet = null;
+
+        if (!dao.checkRapidFireLibrary(shell)) {
+            return libraryList;
+        }
+
+        try {
+
+            String sqlStatement = getSqlStatement();
+            sqlStatement = sqlStatement + " AND LIBRARY_LIST = ?";
+            preparedStatement = dao.prepareStatement(sqlStatement);
+            preparedStatement.setString(1, job.getName());
+            preparedStatement.setString(2, libraryListName);
+            resultSet = preparedStatement.executeQuery();
+            resultSet.setFetchSize(50);
+
+            if (resultSet != null) {
+                while (resultSet.next()) {
+                    libraryList = produceLibrary(resultSet, job);
+                }
+            }
+        } finally {
+            dao.closeStatement(preparedStatement);
+            dao.closeResultSet(resultSet);
+        }
+
+        return libraryList;
     }
 
     private IRapidFireLibraryListResource produceLibrary(ResultSet resultSet, IRapidFireJobResource job) throws SQLException {

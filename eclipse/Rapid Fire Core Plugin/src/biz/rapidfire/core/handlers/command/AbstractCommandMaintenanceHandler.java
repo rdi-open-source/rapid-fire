@@ -72,7 +72,8 @@ public abstract class AbstractCommandMaintenanceHandler extends AbstractResource
 
             Result result;
             if (commandAction == CommandAction.CREATE) {
-                result = getOrCreateManager(command.getParentJob()).checkAction(CommandKey.createNew(command.getParent().getKey()), commandAction);
+                result = getOrCreateManager(command.getParentJob()).checkAction(CommandKey.createNew(command.getParentResource().getKey()),
+                    commandAction);
             } else {
                 result = getOrCreateManager(command.getParentJob()).checkAction(command.getKey(), commandAction);
             }

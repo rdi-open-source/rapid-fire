@@ -8,6 +8,8 @@
 
 package biz.rapidfire.core.model;
 
+import org.eclipse.swt.widgets.Shell;
+
 import biz.rapidfire.core.maintenance.library.shared.LibraryKey;
 
 public interface IRapidFireLibraryResource extends IRapidFireChildResource<IRapidFireJobResource> {
@@ -29,4 +31,6 @@ public interface IRapidFireLibraryResource extends IRapidFireChildResource<IRapi
     public String getShadowLibrary();
 
     public void setShadowLibrary(String shadowLibrary);
+
+    public void reload(Shell shell) throws Exception;
 }

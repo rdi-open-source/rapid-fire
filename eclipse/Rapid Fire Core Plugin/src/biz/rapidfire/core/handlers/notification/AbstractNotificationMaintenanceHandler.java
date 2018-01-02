@@ -72,8 +72,8 @@ public abstract class AbstractNotificationMaintenanceHandler extends
 
             Result result;
             if (notificationAction == NotificationAction.CREATE) {
-                result = getOrCreateManager(notification.getParentJob()).checkAction(NotificationKey.createNew(notification.getParent().getKey()),
-                    notificationAction);
+                result = getOrCreateManager(notification.getParentJob()).checkAction(
+                    NotificationKey.createNew(notification.getParentResource().getKey()), notificationAction);
             } else {
                 result = getOrCreateManager(notification.getParentJob()).checkAction(notification.getKey(), notificationAction);
             }

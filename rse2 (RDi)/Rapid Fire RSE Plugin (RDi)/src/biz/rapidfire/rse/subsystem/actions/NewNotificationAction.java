@@ -38,10 +38,10 @@ public class NewNotificationAction extends AbstractNewNodePopupMenuAction<Notifi
 
             Object element = getFirstSelection();
             NotificationsNode notificationNode = (NotificationsNode)element;
-            IRapidFireJobResource job = notificationNode.getParent();
+            IRapidFireJobResource job = notificationNode.getParentResource();
 
             RapidFireNotificationResource notification = RapidFireNotificationResource.createEmptyInstance(job);
-            notification.setSubSystem((ISubSystem)job.getParentSubSystem());
+            notification.setParentNode(notificationNode);
 
             IStructuredSelection selection = new StructuredSelection(notification);
             getHandler().executeWithSelection(selection);
@@ -54,7 +54,7 @@ public class NewNotificationAction extends AbstractNewNodePopupMenuAction<Notifi
 
     @Override
     protected IRapidFireNotificationResource createNewResource(NotificationsNode node) {
-        return RapidFireNotificationResource.createEmptyInstance(node.getParent());
+        return RapidFireNotificationResource.createEmptyInstance(node.getParentResource());
     }
 
     @Override

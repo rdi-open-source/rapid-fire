@@ -18,4 +18,6 @@ import biz.rapidfire.core.model.IRapidFireJobResource;
 public interface IFilesDAO {
 
     public List<IRapidFireFileResource> load(IRapidFireJobResource job, Shell shell) throws Exception;
+
+    public IRapidFireFileResource load(IRapidFireJobResource job, int position, Shell shell) throws Exception;
 }

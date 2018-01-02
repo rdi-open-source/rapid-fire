@@ -16,6 +16,7 @@ import biz.rapidfire.core.maintenance.MaintenanceMode;
 import biz.rapidfire.core.maintenance.librarylist.LibraryListValues;
 import biz.rapidfire.core.maintenance.librarylist.shared.LibraryListAction;
 import biz.rapidfire.core.model.IRapidFireLibraryListResource;
+import biz.rapidfire.rsebase.helpers.SystemConnectionHelper;
 
 public class DeleteLibraryListHandler extends AbstractLibraryListMaintenanceHandler implements IHandler {
 
@@ -24,7 +25,7 @@ public class DeleteLibraryListHandler extends AbstractLibraryListMaintenanceHand
     }
 
     @Override
-    protected void performAction(IRapidFireLibraryListResource library) throws Exception {
+    protected void performAction(IRapidFireLibraryListResource libraryList) throws Exception {
 
         LibraryListValues values = getManager().getValues();
 
@@ -33,7 +34,8 @@ public class DeleteLibraryListHandler extends AbstractLibraryListMaintenanceHand
 
         if (dialog.open() == Dialog.OK) {
             getManager().book();
-            refreshUI(library);
+
+            SystemConnectionHelper.refreshUIDeleted(libraryList.getParentSubSystem(), libraryList, libraryList.getParentNode());
         }
     }
 }

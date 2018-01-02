@@ -12,10 +12,13 @@ import java.util.List;
 
 import org.eclipse.swt.widgets.Shell;
 
+import biz.rapidfire.core.maintenance.command.shared.CommandType;
 import biz.rapidfire.core.model.IRapidFireCommandResource;
 import biz.rapidfire.core.model.IRapidFireFileResource;
 
 public interface ICommandsDAO {
 
     public List<IRapidFireCommandResource> load(IRapidFireFileResource file, Shell shell) throws Exception;
+
+    public IRapidFireCommandResource load(IRapidFireFileResource file, CommandType commandType, int sequence, Shell shell) throws Exception;
 }

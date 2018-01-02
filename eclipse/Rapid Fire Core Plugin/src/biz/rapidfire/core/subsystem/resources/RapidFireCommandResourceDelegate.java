@@ -57,18 +57,18 @@ public class RapidFireCommandResourceDelegate implements Comparable<IRapidFireCo
         return commandType;
     }
 
-    public void setCommandType(CommandType commandType) {
-        this.commandType = commandType;
-        updateCommandTypeSortSequence();
-    }
+    // public void setCommandType(CommandType commandType) {
+    // this.commandType = commandType;
+    // updateCommandTypeSortSequence();
+    // }
 
     public int getSequence() {
         return sequence;
     }
 
-    public void setSequence(int sequence) {
-        this.sequence = sequence;
-    }
+    // public void setSequence(int sequence) {
+    // this.sequence = sequence;
+    // }
 
     public String getCommand() {
         return command;

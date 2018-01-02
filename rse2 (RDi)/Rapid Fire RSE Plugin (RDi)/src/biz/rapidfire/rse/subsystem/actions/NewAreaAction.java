@@ -38,10 +38,10 @@ public class NewAreaAction extends AbstractNewNodePopupMenuAction<AreasNode, IRa
 
             Object element = getFirstSelection();
             AreasNode areasNode = (AreasNode)element;
-            IRapidFireFileResource file = areasNode.getParent();
+            IRapidFireFileResource file = areasNode.getParentResource();
 
             RapidFireAreaResource area = RapidFireAreaResource.createEmptyInstance(file);
-            area.setSubSystem((ISubSystem)file.getParentSubSystem());
+            area.setParentNode(areasNode);
 
             IStructuredSelection selection = new StructuredSelection(area);
             getHandler().executeWithSelection(selection);
@@ -54,7 +54,7 @@ public class NewAreaAction extends AbstractNewNodePopupMenuAction<AreasNode, IRa
 
     @Override
     protected IRapidFireAreaResource createNewResource(AreasNode node) {
-        return RapidFireAreaResource.createEmptyInstance(node.getParent());
+        return RapidFireAreaResource.createEmptyInstance(node.getParentResource());
     }
 
     @Override

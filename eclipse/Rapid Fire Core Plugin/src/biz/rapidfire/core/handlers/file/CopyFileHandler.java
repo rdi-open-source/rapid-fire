@@ -16,6 +16,7 @@ import biz.rapidfire.core.maintenance.MaintenanceMode;
 import biz.rapidfire.core.maintenance.file.FileValues;
 import biz.rapidfire.core.maintenance.file.shared.FileAction;
 import biz.rapidfire.core.model.IRapidFireFileResource;
+import biz.rapidfire.rsebase.helpers.SystemConnectionHelper;
 
 public class CopyFileHandler extends AbstractFileMaintenanceHandler implements IHandler {
 
@@ -33,7 +34,13 @@ public class CopyFileHandler extends AbstractFileMaintenanceHandler implements I
 
         if (dialog.open() == Dialog.OK) {
             getManager().book();
-            refreshUI(file);
+
+            values = dialog.getValue();
+            IRapidFireFileResource newFile = file.getParentSubSystem().getFile(file.getParentResource(), values.getKey().getPosition(), getShell());
+            newFile.setParentNode(file.getParentNode());
+            if (newFile != null) {
+                SystemConnectionHelper.refreshUICreated(newFile.getParentSubSystem(), newFile, newFile.getParentNode());
+            }
         }
     }
 }

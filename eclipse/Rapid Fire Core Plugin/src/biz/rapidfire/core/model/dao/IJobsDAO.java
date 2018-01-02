@@ -18,4 +18,6 @@ import biz.rapidfire.core.subsystem.IRapidFireSubSystem;
 public interface IJobsDAO {
 
     public List<IRapidFireJobResource> load(IRapidFireSubSystem subSystem, Shell shell) throws Exception;
+
+    public IRapidFireJobResource load(IRapidFireSubSystem subSystem, String jobName, Shell shell) throws Exception;
 }
