@@ -18,10 +18,6 @@ public class FilesNode extends AbstractNodeResource implements IRapidFireNodeRes
         super(job, Messages.NodeText_Files);
     }
 
-    // public IRapidFireJobResource getParentJob() {
-    // return super.getJob();
-    // }
-
     public IRapidFireJobResource getParentResource() {
         return super.getJob();
     }
