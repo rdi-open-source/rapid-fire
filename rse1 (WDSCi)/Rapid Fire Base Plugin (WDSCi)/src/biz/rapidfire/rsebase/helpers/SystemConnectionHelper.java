@@ -21,12 +21,10 @@ import com.ibm.etools.iseries.core.api.ISeriesConnection;
 import com.ibm.etools.iseries.core.api.ISeriesMember;
 import com.ibm.etools.iseries.core.resources.ISeriesEditableSrcPhysicalFileMember;
 import com.ibm.etools.systems.core.SystemPlugin;
-import com.ibm.etools.systems.model.ISystemRemoteChangeEvents;
 import com.ibm.etools.systems.model.ISystemResourceChangeEvents;
 import com.ibm.etools.systems.model.SystemConnection;
 import com.ibm.etools.systems.model.SystemRegistry;
 import com.ibm.etools.systems.model.impl.SystemResourceChangeEvent;
-import com.ibm.etools.systems.subsystems.SubSystem;
 
 public class SystemConnectionHelper {
 
@@ -36,8 +34,9 @@ public class SystemConnectionHelper {
             SystemRegistry sr = SystemPlugin.getTheSystemRegistry();
             for (Object parent : parents) {
                 sr.fireEvent(new SystemResourceChangeEvent(resource, ISystemResourceChangeEvents.EVENT_ADD, parent));
-                sr.fireRemoteResourceChangeEvent(ISystemRemoteChangeEvents.SYSTEM_REMOTE_RESOURCE_CREATED, resource, parent, (SubSystem)subSystem,
-                    null, null);
+                // sr.fireRemoteResourceChangeEvent(ISystemRemoteChangeEvents.SYSTEM_REMOTE_RESOURCE_CREATED,
+                // resource, parent, (SubSystem)subSystem,
+                // null, null);
                 // sr.fireEvent(new SystemResourceChangeEvent(resource,
                 // ISystemResourceChangeEvents.EVENT_CHANGE_CHILDREN, parent));
             }
@@ -50,8 +49,9 @@ public class SystemConnectionHelper {
             SystemRegistry sr = SystemPlugin.getTheSystemRegistry();
             for (Object parent : parents) {
                 sr.fireEvent(new SystemResourceChangeEvent(resource, ISystemResourceChangeEvents.EVENT_REFRESH, parent));
-                sr.fireRemoteResourceChangeEvent(ISystemRemoteChangeEvents.SYSTEM_REMOTE_RESOURCE_CHANGED, resource, parent, (SubSystem)subSystem,
-                    null, null);
+                // sr.fireRemoteResourceChangeEvent(ISystemRemoteChangeEvents.SYSTEM_REMOTE_RESOURCE_CHANGED,
+                // resource, parent, (SubSystem)subSystem,
+                // null, null);
             }
         }
     }
@@ -62,8 +62,9 @@ public class SystemConnectionHelper {
             SystemRegistry sr = SystemPlugin.getTheSystemRegistry();
             for (Object parent : parents) {
                 sr.fireEvent(new SystemResourceChangeEvent(resource, ISystemResourceChangeEvents.EVENT_DELETE, parent));
-                sr.fireRemoteResourceChangeEvent(ISystemRemoteChangeEvents.SYSTEM_REMOTE_RESOURCE_DELETED, resource, parent, (SubSystem)subSystem,
-                    null, null);
+                // sr.fireRemoteResourceChangeEvent(ISystemRemoteChangeEvents.SYSTEM_REMOTE_RESOURCE_DELETED,
+                // resource, parent, (SubSystem)subSystem,
+                // null, null);
             }
         }
     }

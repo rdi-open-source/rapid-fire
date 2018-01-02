@@ -22,10 +22,6 @@ public class AreasNode extends AbstractNodeResource implements IRapidFireNodeRes
         this.file = file;
     }
 
-    // public IRapidFireJobResource getParentJob() {
-    // return file.getParentJob();
-    // }
-
     public IRapidFireFileResource getParentResource() {
         return file;
     }

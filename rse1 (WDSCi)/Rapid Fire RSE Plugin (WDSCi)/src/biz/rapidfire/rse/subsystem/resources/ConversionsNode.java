@@ -22,10 +22,6 @@ public class ConversionsNode extends AbstractNodeResource implements IRapidFireN
         this.file = file;
     }
 
-    // public IRapidFireJobResource getParentJob() {
-    // return file.getParentJob();
-    // }
-
     public IRapidFireFileResource getParentResource() {
         return file;
     }
