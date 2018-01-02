@@ -37,6 +37,7 @@ public class NewJobHandler extends AbstractJobMaintenanceHandler implements IHan
 
             values = dialog.getValue();
             IRapidFireJobResource newJob = job.getParentSubSystem().getJob(job.getDataLibrary(), values.getKey().getJobName(), getShell());
+            newJob.setFilter(job.getFilter());
             if (job != null) {
                 SystemConnectionHelper.refreshUICreated(newJob.getParentSubSystem(), newJob, newJob.getParentFilters());
             }
