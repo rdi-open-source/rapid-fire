@@ -10,12 +10,12 @@ package biz.rapidfire.core.subsystem;
 
 import biz.rapidfire.core.helpers.StringHelper;
 import biz.rapidfire.core.model.IRapidFireJobResource;
+import biz.rapidfire.core.preferences.Preferences;
 
 public class RapidFireFilter {
 
     private static final String SLASH = "/"; //$NON-NLS-1$
     public static final String ASTERISK = "*"; //$NON-NLS-1$
-    public static final String RAPIDFIRE_LIBRARY = "RAPIDFIRE"; //$NON-NLS-1$
 
     private static final String BOOLEAN_TRUE = "1"; //$NON-NLS-1$
     private static final String BOOLEAN_FALSE = "0"; //$NON-NLS-1$
@@ -28,7 +28,7 @@ public class RapidFireFilter {
     public RapidFireFilter() {
         super();
 
-        setDataLibrary(RAPIDFIRE_LIBRARY);
+        setDataLibrary(Preferences.getInstance().getRapidFireLibrary());
         setJob(ASTERISK);
         setStatus(ASTERISK);
         setShowLogicalFiles(true);

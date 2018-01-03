@@ -25,6 +25,7 @@ import org.eclipse.swt.widgets.Text;
 import biz.rapidfire.core.Messages;
 import biz.rapidfire.core.helpers.StringHelper;
 import biz.rapidfire.core.model.Status;
+import biz.rapidfire.core.preferences.Preferences;
 import biz.rapidfire.core.swt.widgets.WidgetFactory;
 import biz.rapidfire.core.validators.Validator;
 
@@ -137,7 +138,7 @@ public class RapidFireFilterStringEditPaneDelegate {
 
     public void resetFields() {
 
-        dataLibraryText.setText(RapidFireFilter.RAPIDFIRE_LIBRARY);
+        dataLibraryText.setText(Preferences.getInstance().getRapidFireLibrary());
         jobText.setText(RapidFireFilter.ASTERISK);
         statusCombo.select(0);
         showLogicalFilesCheckbox.setSelection(true);
