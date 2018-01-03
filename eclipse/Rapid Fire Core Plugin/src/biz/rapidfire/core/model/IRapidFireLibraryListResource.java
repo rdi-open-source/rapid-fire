@@ -11,6 +11,7 @@ package biz.rapidfire.core.model;
 import org.eclipse.swt.widgets.Shell;
 
 import biz.rapidfire.core.maintenance.librarylist.shared.LibraryListKey;
+import biz.rapidfire.core.subsystem.resources.RapidFireLibraryListResourceDelegate.LibraryListEntry;
 
 public interface IRapidFireLibraryListResource extends IRapidFireChildResource<IRapidFireJobResource> {
 
@@ -37,4 +38,8 @@ public interface IRapidFireLibraryListResource extends IRapidFireChildResource<I
     public void setDescription(String description);
 
     public void reload(Shell shell) throws Exception;
+
+    public LibraryListEntry[] getLibraryListEntries();
+
+    public void addLibraryListEntry(int sequence, String libraryName);
 }

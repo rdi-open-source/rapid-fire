@@ -19,6 +19,7 @@ import biz.rapidfire.core.model.IRapidFireLibraryListResource;
 import biz.rapidfire.core.model.IRapidFireNodeResource;
 import biz.rapidfire.core.subsystem.IRapidFireSubSystem;
 import biz.rapidfire.core.subsystem.resources.RapidFireLibraryListResourceDelegate;
+import biz.rapidfire.core.subsystem.resources.RapidFireLibraryListResourceDelegate.LibraryListEntry;
 
 public class RapidFireLibraryListResource extends AbstractResource implements IRapidFireLibraryListResource,
     Comparable<IRapidFireLibraryListResource> {
@@ -98,11 +99,24 @@ public class RapidFireLibraryListResource extends AbstractResource implements IR
         delegate.setDescription(description);
     }
 
+    public LibraryListEntry[] getLibraryListEntries() {
+        return delegate.getLibraryListEntries();
+    }
+
+    public void addLibraryListEntry(int sequence, String libraryName) {
+        delegate.addLibraryListEntry(sequence, libraryName);
+    }
+
     public void reload(Shell shell) throws Exception {
 
         IRapidFireLibraryListResource libraryList = getParentSubSystem().getLibraryList(getParentResource(), getName(), shell);
 
         delegate.setDescription(libraryList.getDescription());
+        delegate.clearLibraryList();
+        LibraryListEntry[] libraryListEntries = libraryList.getLibraryListEntries();
+        for (LibraryListEntry libraryListEntry : libraryListEntries) {
+            delegate.addLibraryListEntry(libraryListEntry.getSequenceNumber(), libraryListEntry.getLibraryName());
+        }
     }
 
     public int compareTo(IRapidFireLibraryListResource resource) {

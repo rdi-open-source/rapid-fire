@@ -25,6 +25,9 @@ public abstract class AbstractLibraryListsDAO {
     public static final String LIBRARY_LIST = "LIBRARY_LIST"; //$NON-NLS-1$
     public static final String DESCRIPTION = "DESCRIPTION"; //$NON-NLS-1$
 
+    public static final String SEQUENCE = "SEQUENCE"; //$NON-NLS-1$
+    public static final String LIBRARY = "LIBRARY"; //$NON-NLS-1$
+
     private IJDBCConnection dao;
 
     public AbstractLibraryListsDAO(IJDBCConnection dao) {
@@ -38,6 +41,7 @@ public abstract class AbstractLibraryListsDAO {
 
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
+        PreparedStatement preparedStatementLibraryList = null;
 
         if (!dao.checkRapidFireLibrary(shell)) {
             return libraryLists;
@@ -51,14 +55,17 @@ public abstract class AbstractLibraryListsDAO {
             resultSet = preparedStatement.executeQuery();
             resultSet.setFetchSize(50);
 
+            preparedStatementLibraryList = prepareStatementLibraryList(getSqlStatementToLoadLibraries());
+
             if (resultSet != null) {
                 while (resultSet.next()) {
-                    libraryLists.add(produceLibrary(resultSet, job));
+                    libraryLists.add(produceLibraryList(resultSet, job, preparedStatementLibraryList));
                 }
             }
         } finally {
             dao.closeStatement(preparedStatement);
             dao.closeResultSet(resultSet);
+            dao.closeStatement(preparedStatementLibraryList);
         }
 
         return libraryLists;
@@ -70,6 +77,7 @@ public abstract class AbstractLibraryListsDAO {
 
         PreparedStatement preparedStatement = null;
         ResultSet resultSet = null;
+        PreparedStatement preparedStatementLibraryList = null;
 
         if (!dao.checkRapidFireLibrary(shell)) {
             return libraryList;
@@ -85,31 +93,64 @@ public abstract class AbstractLibraryListsDAO {
             resultSet = preparedStatement.executeQuery();
             resultSet.setFetchSize(50);
 
+            preparedStatementLibraryList = prepareStatementLibraryList(getSqlStatementToLoadLibraries());
+
             if (resultSet != null) {
                 while (resultSet.next()) {
-                    libraryList = produceLibrary(resultSet, job);
+                    libraryList = produceLibraryList(resultSet, job, preparedStatementLibraryList);
                 }
             }
         } finally {
             dao.closeStatement(preparedStatement);
             dao.closeResultSet(resultSet);
+            dao.closeStatement(preparedStatementLibraryList);
         }
 
         return libraryList;
     }
 
-    private IRapidFireLibraryListResource produceLibrary(ResultSet resultSet, IRapidFireJobResource job) throws SQLException {
+    private IRapidFireLibraryListResource produceLibraryList(ResultSet resultSet, IRapidFireJobResource job,
+        PreparedStatement preparedStatementLibraryList) throws SQLException {
 
         // String job = resultSet.getString(JOB).trim();
-        String library = resultSet.getString(LIBRARY_LIST).trim();
+        String libraryListName = resultSet.getString(LIBRARY_LIST).trim();
 
-        IRapidFireLibraryListResource libraryListsResource = createLibraryListInstance(job, library);
+        IRapidFireLibraryListResource libraryListsResource = createLibraryListInstance(job, libraryListName);
 
         String description = resultSet.getString(DESCRIPTION).trim();
 
         libraryListsResource.setDescription(description);
 
+        preparedStatementLibraryList.setString(1, job.getName());
+        preparedStatementLibraryList.setString(2, libraryListName);
+
+        ResultSet resultSetLibraryListEntries = null;
+
+        try {
+
+            resultSetLibraryListEntries = preparedStatementLibraryList.executeQuery();
+            if (resultSetLibraryListEntries != null) {
+                while (resultSetLibraryListEntries.next()) {
+                    int sequenceNumber = resultSetLibraryListEntries.getInt(SEQUENCE);
+                    String libraryName = resultSetLibraryListEntries.getString(LIBRARY);
+                    libraryListsResource.addLibraryListEntry(sequenceNumber, libraryName);
+                }
+            }
+
+        } finally {
+            if (resultSetLibraryListEntries != null) {
+                dao.closeResultSet(resultSetLibraryListEntries);
+            }
+        }
+
         return libraryListsResource;
+    }
+
+    private PreparedStatement prepareStatementLibraryList(String sqlStatement) throws Exception {
+
+        PreparedStatement preparedStatement = dao.prepareStatement(sqlStatement);
+
+        return preparedStatement;
     }
 
     protected abstract IRapidFireLibraryListResource createLibraryListInstance(IRapidFireJobResource job, String library);
@@ -124,9 +165,39 @@ public abstract class AbstractLibraryListsDAO {
             "DESCRIPTION " +
         "FROM " +
             IJDBCConnection.LIBRARY +
-            "LIBLS " +
+            "LIBRARY_LISTS " +
         "WHERE " +
             "JOB = ?";
+        // @formatter:on
+
+        return dao.insertLibraryQualifier(sqlStatement);
+    }
+
+    private String getSqlStatementToLoadLibraries() throws Exception {
+
+        // @formatter:off
+        String sqlStatement = 
+        "SELECT " +
+            "A.JOB, " +
+            "A.LIBRARY_LIST, " +
+            "B.SEQUENCE, " +
+            "B.LIBRARY " +
+        "FROM " +
+            IJDBCConnection.LIBRARY +
+            "LIBRARY_LISTS A " +
+        "LEFT JOIN " +
+            IJDBCConnection.LIBRARY +
+            "LIBRARY_LIST_ENTRIES B " +
+        "ON " +
+            "A.JOB = B.JOB AND " +
+            "A.LIBRARY_LIST = B.LIBRARY_LIST " +
+        "WHERE " +
+            "A.JOB = ? AND " +
+            "A.LIBRARY_LIST = ?" +
+        "ORDER BY " +
+            "B.JOB, " +
+            "B.LIBRARY_LIST, " +
+            "B.SEQUENCE";
         // @formatter:on
 
         return dao.insertLibraryQualifier(sqlStatement);
