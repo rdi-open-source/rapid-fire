@@ -41,7 +41,7 @@ public class NewCommandHandler extends AbstractCommandMaintenanceHandler impleme
             values = dialog.getValue();
             CommandType commandType = CommandType.find(values.getKey().getCommandType());
             IRapidFireCommandResource newCommand = command.getParentSubSystem().getCommand(command.getParentResource(), commandType,
-                command.getSequence(), getShell());
+                values.getKey().getSequence(), getShell());
             if (newCommand != null) {
                 newCommand.setParentNode(command.getParentNode());
                 SystemConnectionHelper.refreshUICreated(newCommand.getParentSubSystem(), newCommand, newCommand.getParentNode());
