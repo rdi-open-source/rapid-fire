@@ -190,7 +190,7 @@ public class FileMaintenanceControl extends AbstractMaintenanceControl {
     }
 
     public void setCopyProgramName(String copyProgramName) {
-        comboCopyProgramName.setText(copyProgramName);
+        setText(comboCopyProgramName, copyProgramName);
     }
 
     public String getCopyProgramLibraryName() {
@@ -206,7 +206,7 @@ public class FileMaintenanceControl extends AbstractMaintenanceControl {
     }
 
     public void setConversionProgramName(String conversionProgramName) {
-        comboConversionProgramName.setText(conversionProgramName);
+        setText(comboConversionProgramName, conversionProgramName);
     }
 
     public String getConversionProgramLibraryName() {
