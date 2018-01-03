@@ -29,7 +29,7 @@ Adding one or more files to a Rapid Fire job is easy when you follow these steps
 <a id="#add_file"></a>
 <h2>Add File</h2>
 <p>
-Expand a <i>Job</i> node and select <i>New -> File...</i> from the context menu of 
+Expand a <i>Job</i> node and select <i>New -&gt; File...</i> from the context menu of 
 the <i>Files</i> node. Then enter the following attributes:
 <p>
 <table>
@@ -61,7 +61,7 @@ the <i>Files</i> node. Then enter the following attributes:
 <a id="#add_area"></a>
 <h2>Add Area</h2>
 <p>
-Expand the created <i>File</i> node and select <i>New -> Area...</i> from the context menu of 
+Expand the created <i>File</i> node and select <i>New -&gt; Area...</i> from the context menu of 
 the <i>Areas</i> node. Then enter the following attributes:
 <p>
 <table>
@@ -84,7 +84,7 @@ the <i>Areas</i> node. Then enter the following attributes:
 <a id="#add_conversion"></a>
 <h2>Add Conversion</h2>
 <p>
-Expand the created <i>File</i> node and select <i>New -> Conversion...</i> from the context menu of 
+Expand the created <i>File</i> node and select <i>New -&gt; Conversion...</i> from the context menu of 
 the <i>Conversions</i> node. Then enter the following attributes:
 <p>
 <table>
@@ -93,7 +93,7 @@ the <i>Conversions</i> node. Then enter the following attributes:
 <a id="#add_command"></a>
 <h2>Add Command</h2>
 <p>
-Expand the created <i>File</i> node and select <i>New -> Command...</i> from the context menu of 
+Expand the created <i>File</i> node and select <i>New -&gt; Command...</i> from the context menu of 
 the <i>Commands</i> node. Then enter the following attributes:
 <p>
 <table>
@@ -112,13 +112,24 @@ the <i>Commands</i> node. Then enter the following attributes:
     <td>Enter the CL command that you want to execute. The following replacement variables are available:
     <br>
     <table>
-    <tr><td valign="top" nowrap width="70px"><i>&LIB</i></td><td valign="top">:</td><td>Variable that is replaced with the name of the library where the object will be stored.</td></tr>
-    <tr><td valign="top" nowrap width="70px"><i>&FILE</i></td><td valign="top">:</td><td>Variable that is replaced with the name of the object that is compiled.</td></tr>
+    <tr><td valign="top" nowrap width="70px"><i>&amp;LIB</i></td><td valign="top">:</td><td>Variable that is replaced with the name of the library where the object will be stored.</td></tr>
+    <tr><td valign="top" nowrap width="70px"><i>&amp;FILE</i></td><td valign="top">:</td><td>Variable that is replaced with the name of the object that is compiled.</td></tr>
     </table>
     Make sure to specify the replacement variables in upper case.
     </td></tr>
 </table>
 </div>
+<p>
+<h3>Sample Commands</h3>
+<p>
+<b><i>*PRERUN</i></b><p>
+<div class="codeIndent">CRTPF FILE(&amp;LIB/IMPORT) RCDLEN(250) MBR(*NONE)</div>
+<p>
+<b><i>*COMPILE</i></b><p>
+<div class="codeIndent">CRTPF FILE(&amp;LIB/&amp;FILE) SRCFILE(*LIBL/QSQLSRC) SRCMBR(&amp;FILE)</div>
+<p>
+<b><i>*POSTRUN</i></b><p>
+<div class="codeIndent">DLTF FILE(&amp;LIB/IMPORT)</div>
 <p>
 <iframe src="../copyright.html" width="100%" frameborder="0" marginheight="0" marginwidth="0"></iframe>
 </body>
