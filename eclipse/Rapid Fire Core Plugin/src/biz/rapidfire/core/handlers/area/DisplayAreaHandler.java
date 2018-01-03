@@ -28,6 +28,8 @@ public class DisplayAreaHandler extends AbstractAreaMaintenanceHandler implement
         AreaValues values = getManager().getValues();
 
         AreaMaintenanceDialog dialog = AreaMaintenanceDialog.getDisplayDialog(getShell(), getManager());
+        dialog.setLibraries(getManager().getLibraries(getShell(), area));
+        dialog.setLibraryLists(getManager().getLibraryLists(getShell(), area));
         dialog.setValue(values);
 
         dialog.open();

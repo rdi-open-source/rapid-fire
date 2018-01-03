@@ -30,6 +30,8 @@ public class DeleteAreaHandler extends AbstractAreaMaintenanceHandler implements
         AreaValues values = getManager().getValues();
 
         AreaMaintenanceDialog dialog = AreaMaintenanceDialog.getDeleteDialog(getShell(), getManager());
+        dialog.setLibraries(getManager().getLibraries(getShell(), area));
+        dialog.setLibraryLists(getManager().getLibraryLists(getShell(), area));
         dialog.setValue(values);
 
         if (dialog.open() == Dialog.OK) {
