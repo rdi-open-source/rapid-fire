@@ -57,13 +57,15 @@ public final class Preferences {
 
     private static final String DOMAIN = RapidFireCorePlugin.PLUGIN_ID + "."; //$NON-NLS-1$
 
-    public static final String PROGRESS_BAR_SIZE = DOMAIN + "PROGRESS_BAR_SIZE"; //$NON-NLS-1$
+    private static final String LIBRARY = DOMAIN + "LIBRARY.";
+    private static final String LIBRARY_HOST_NAME = LIBRARY + "HOST_NAME"; //$NON-NLS-1$
+    private static final String LIBRARY_FTP_PORT_NUMBER = LIBRARY + "FTP_PORT_NUMBER"; //$NON-NLS-1$
+    private static final String LIBRARY_RAPID_FIRE_LIBRARY = LIBRARY + "LIBRARY"; //$NON-NLS-1$
 
-    private static final String HOST_NAME = DOMAIN + "HOST_NAME"; //$NON-NLS-1$
-    private static final String FTP_PORT_NUMBER = DOMAIN + "FTP_PORT_NUMBER"; //$NON-NLS-1$
-    private static final String RAPID_FIRE_LIBRARY = DOMAIN + "LIBRARY"; //$NON-NLS-1$
-    private static final String APPEARANCE_DATE_FORMAT = DOMAIN + "DATE_FORMAT"; //$NON-NLS-1$
-    private static final String APPEARANCE_TIME_FORMAT = DOMAIN + "TIME_FORMAT"; //$NON-NLS-1$
+    private static final String APPEARANCE = DOMAIN + "APPEARANCE.";
+    public static final String APPEARANCE_PROGRESS_BAR_SIZE = APPEARANCE + "PROGRESS_BAR_SIZE"; //$NON-NLS-1$
+    private static final String APPEARANCE_DATE_FORMAT = APPEARANCE + "DATE_FORMAT"; //$NON-NLS-1$
+    private static final String APPEARANCE_TIME_FORMAT = APPEARANCE + "TIME_FORMAT"; //$NON-NLS-1$
 
     private static final String WIZARD = DOMAIN + "WIZARD.";
     private static final String WIZARD_CONNECTION = WIZARD + "CONNECTION"; //$NON-NLS-1$
@@ -71,6 +73,9 @@ public final class Preferences {
 
     private static final String GENERATOR = DOMAIN + "GENERATOR.";
     private static final String GENERATOR_OPEN_MEMBER = GENERATOR + "OPEN_MEMBER"; //$NON-NLS-1$
+
+    private static final String CONNECTION = DOMAIN + "CONNECTION.";
+    private static final String CONNECTION_IS_SLOW = CONNECTION + "IS_SLOW"; //$NON-NLS-1$
 
     private static final String DATE_FORMAT_LOCALE = "*LOCALE"; //$NON-NLS-1$
     private static final String TIME_FORMAT_LOCALE = "*LOCALE"; //$NON-NLS-1$
@@ -110,19 +115,19 @@ public final class Preferences {
      */
 
     public String getHostName() {
-        return preferenceStore.getString(HOST_NAME);
+        return preferenceStore.getString(LIBRARY_HOST_NAME);
     }
 
     public int getFtpPortNumber() {
-        return preferenceStore.getInt(FTP_PORT_NUMBER);
+        return preferenceStore.getInt(LIBRARY_FTP_PORT_NUMBER);
     }
 
     public String getRapidFireLibrary() {
-        return preferenceStore.getString(RAPID_FIRE_LIBRARY);
+        return preferenceStore.getString(LIBRARY_RAPID_FIRE_LIBRARY);
     }
 
     public boolean isLargeProgressBar() {
-        return preferenceStore.getBoolean(PROGRESS_BAR_SIZE);
+        return preferenceStore.getBoolean(APPEARANCE_PROGRESS_BAR_SIZE);
     }
 
     public String getDateFormatLabel() {
@@ -145,24 +150,28 @@ public final class Preferences {
         return preferenceStore.getBoolean(GENERATOR_OPEN_MEMBER);
     }
 
+    public boolean isSlowConnection() {
+        return preferenceStore.getBoolean(CONNECTION_IS_SLOW);
+    }
+
     /*
      * Preferences: SETTER
      */
 
     public void setConnectionName(String aHostName) {
-        preferenceStore.setValue(HOST_NAME, aHostName);
+        preferenceStore.setValue(LIBRARY_HOST_NAME, aHostName);
     }
 
     public void setFtpPortNumber(int aPortNumber) {
-        preferenceStore.setValue(FTP_PORT_NUMBER, aPortNumber);
+        preferenceStore.setValue(LIBRARY_FTP_PORT_NUMBER, aPortNumber);
     }
 
     public void setRapidFireLibrary(String aLibrary) {
-        preferenceStore.setValue(RAPID_FIRE_LIBRARY, aLibrary.trim());
+        preferenceStore.setValue(LIBRARY_RAPID_FIRE_LIBRARY, aLibrary.trim());
     }
 
     public void setLargeProgressBar(boolean isLarge) {
-        preferenceStore.setValue(PROGRESS_BAR_SIZE, isLarge);
+        preferenceStore.setValue(APPEARANCE_PROGRESS_BAR_SIZE, isLarge);
     }
 
     public void setDateFormatLabel(String dateFormatLabel) {
@@ -177,12 +186,16 @@ public final class Preferences {
         preferenceStore.setValue(WIZARD_CONNECTION, connectionName);
     }
 
+    public void setWizardRapidFireLibrary(String libraryName) {
+        preferenceStore.setValue(WIZARD_RAPID_FIRE_LIBRARY, libraryName);
+    }
+
     public void setOpenGeneratedCopyProgram(boolean openMember) {
         preferenceStore.setValue(GENERATOR_OPEN_MEMBER, openMember);
     }
 
-    public void setWizardRapidFireLibrary(String libraryName) {
-        preferenceStore.setValue(WIZARD_RAPID_FIRE_LIBRARY, libraryName);
+    public void setSlowConnection(boolean isSlow) {
+        preferenceStore.setValue(CONNECTION_IS_SLOW, isSlow);
     }
 
     /*
@@ -191,10 +204,10 @@ public final class Preferences {
 
     public void initializeDefaultPreferences() {
 
-        preferenceStore.setDefault(HOST_NAME, getDefaultHostName());
-        preferenceStore.setDefault(FTP_PORT_NUMBER, getDefaultFtpPortNumber());
-        preferenceStore.setDefault(RAPID_FIRE_LIBRARY, getDefaultRapidFireLibrary());
-        preferenceStore.setDefault(PROGRESS_BAR_SIZE, getDefaultIsLargeProgressBar());
+        preferenceStore.setDefault(LIBRARY_HOST_NAME, getDefaultHostName());
+        preferenceStore.setDefault(LIBRARY_FTP_PORT_NUMBER, getDefaultFtpPortNumber());
+        preferenceStore.setDefault(LIBRARY_RAPID_FIRE_LIBRARY, getDefaultRapidFireLibrary());
+        preferenceStore.setDefault(APPEARANCE_PROGRESS_BAR_SIZE, getDefaultIsLargeProgressBar());
         preferenceStore.setDefault(APPEARANCE_DATE_FORMAT, getDefaultDateFormatLabel());
         preferenceStore.setDefault(APPEARANCE_TIME_FORMAT, getDefaultTimeFormatLabel());
 
@@ -202,6 +215,8 @@ public final class Preferences {
         preferenceStore.setDefault(WIZARD_RAPID_FIRE_LIBRARY, getDefaultWizardRapidFireLibrary());
 
         preferenceStore.setDefault(GENERATOR_OPEN_MEMBER, getDefaultOpenGeneratedCopyProgram());
+
+        preferenceStore.setDefault(CONNECTION_IS_SLOW, getDefaultIsSlowConnection());
     }
 
     /*
@@ -236,7 +251,6 @@ public final class Preferences {
     }
 
     public boolean getDefaultIsLargeProgressBar() {
-
         return false;
     }
 
@@ -258,6 +272,10 @@ public final class Preferences {
 
     private boolean getDefaultOpenGeneratedCopyProgram() {
         return true;
+    }
+
+    public boolean getDefaultIsSlowConnection() {
+        return false;
     }
 
     public void registerPreferencesListener(IPropertyChangeListener listener) {

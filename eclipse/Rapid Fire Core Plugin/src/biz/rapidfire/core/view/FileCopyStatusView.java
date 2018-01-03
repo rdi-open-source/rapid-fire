@@ -465,7 +465,7 @@ public class FileCopyStatusView extends ViewPart implements IPropertyChangeListe
 
     public void propertyChange(PropertyChangeEvent event) {
 
-        if (Preferences.PROGRESS_BAR_SIZE.equals(event.getProperty())) {
+        if (Preferences.APPEARANCE_PROGRESS_BAR_SIZE.equals(event.getProperty())) {
             progressBarPainter.enableLargeProgressBar((Boolean)event.getNewValue());
             tvJobStatuses.getTable().redraw();
         }
