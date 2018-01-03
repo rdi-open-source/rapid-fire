@@ -96,8 +96,8 @@ DCL-S g_POS   PACKED(6 : 0); // Position
 DCL-S g_ARA   CHAR(10);      // Area
 DCL-S g_LIB   CHAR(10);      // Library
 DCL-S g_LIBL  CHAR(10);      // Library list
-DCL-S g_CCSID CHAR(1024);    // Coded character set ID
-DCL-S g_CEXT  CHAR(10);      // Command extension
+DCL-S g_CCSID CHAR(10);      // Coded character set ID
+DCL-S g_CEXT  CHAR(1024);    // Command extension
 DCL-S g_OPN   IND INZ(*OFF); // Open indicator
 
 //*=========================================================================================*
