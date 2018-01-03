@@ -143,7 +143,7 @@ public class FileCopyStatusView extends ViewPart implements IPropertyChangeListe
         jobStatusArea.setLayoutData(new GridData(GridData.FILL_BOTH));
 
         tvJobStatuses = new TableViewer(jobStatusArea, SWT.BORDER | SWT.FULL_SELECTION | SWT.MULTI);
-        final Table tblJobStatuses = tvJobStatuses.getTable();
+        Table tblJobStatuses = tvJobStatuses.getTable();
 
         List<Integer> availableColumns = new LinkedList<Integer>();
 
@@ -242,15 +242,18 @@ public class FileCopyStatusView extends ViewPart implements IPropertyChangeListe
         IMenuManager viewMenu = actionBars.getMenuManager();
 
         viewMenu.add(createAuoRefreshSubMenu());
-        viewMenu.add(reapplyChangesAction);
+        // TODO: decide whether or not to keep "Reapply Changes" action
+        // viewMenu.add(reapplyChangesAction);
     }
 
     private void initializeTableItemMenu() {
 
-        final Table tblJobStatuses = tvJobStatuses.getTable();
-        Menu jobStatusesPopupMenu = new Menu(tblJobStatuses);
-        jobStatusesPopupMenu.addMenuListener(new JobStatusItemPopupMenu(handler));
-        tblJobStatuses.setMenu(jobStatusesPopupMenu);
+        // TODO: decide whether or not to keep "Reapply Changes" action
+        // Table tblJobStatuses = tvJobStatuses.getTable();
+        // Menu jobStatusesPopupMenu = new Menu(tblJobStatuses);
+        // jobStatusesPopupMenu.addMenuListener(new
+        // JobStatusItemPopupMenu(handler));
+        // tblJobStatuses.setMenu(jobStatusesPopupMenu);
 
     }
 
@@ -269,7 +272,8 @@ public class FileCopyStatusView extends ViewPart implements IPropertyChangeListe
     private void initializeToolBar() {
 
         IToolBarManager toolbarManager = getViewSite().getActionBars().getToolBarManager();
-        toolbarManager.add(reapplyChangesAction);
+        // TODO: decide whether or not to keep "Reapply Changes" action
+        // toolbarManager.add(reapplyChangesAction);
         toolbarManager.add(actionRefreshView);
     }
 
