@@ -82,7 +82,7 @@ public abstract class AbstractCommandsDAO {
         try {
 
             String sqlStatement = getSqlStatement();
-            sqlStatement = sqlStatement + " AND POSITION = ? AND TYPE = ?";
+            sqlStatement = sqlStatement + " AND TYPE = ? AND SEQUENCE = ?";
             preparedStatement = dao.prepareStatement(sqlStatement);
             preparedStatement.setString(1, file.getJob());
             preparedStatement.setInt(2, file.getPosition());
