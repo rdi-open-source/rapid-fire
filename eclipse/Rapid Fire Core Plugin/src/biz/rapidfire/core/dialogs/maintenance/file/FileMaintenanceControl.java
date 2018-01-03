@@ -182,7 +182,7 @@ public class FileMaintenanceControl extends AbstractMaintenanceControl {
     }
 
     public void setFileType(String fileType) {
-        comboFileType.setText(fileType);
+        setText(comboFileType, fileType);
     }
 
     public String getCopyProgramName() {
