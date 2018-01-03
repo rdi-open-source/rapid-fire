@@ -19,7 +19,7 @@ public class CommandResourceDecorator extends AbstractResourceDecorator<IRapidFi
     @Override
     public void decorate(IRapidFireCommandResource resource, IDecoration decorationBuilder) {
 
-        decorationBuilder.addPrefix(Integer.toString(resource.getPosition()) + ": ");
+        decorationBuilder.addPrefix(Integer.toString(resource.getSequence()) + ": ");
         decorationBuilder.addSuffix(getParameters(resource.getCommand()));
 
         ImageDescriptor image;
