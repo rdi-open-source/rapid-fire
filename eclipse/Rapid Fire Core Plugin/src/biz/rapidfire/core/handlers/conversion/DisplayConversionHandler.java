@@ -28,6 +28,7 @@ public class DisplayConversionHandler extends AbstractConversionMaintenanceHandl
         ConversionValues values = getManager().getValues();
 
         ConversionMaintenanceDialog dialog = ConversionMaintenanceDialog.getDisplayDialog(getShell(), getManager());
+        dialog.setFields(new String[0]);
         dialog.setValue(values);
 
         dialog.open();

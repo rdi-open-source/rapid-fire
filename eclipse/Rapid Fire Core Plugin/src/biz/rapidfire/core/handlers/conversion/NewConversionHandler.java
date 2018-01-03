@@ -8,17 +8,12 @@
 
 package biz.rapidfire.core.handlers.conversion;
 
-import java.util.LinkedList;
-import java.util.List;
-
 import org.eclipse.core.commands.IHandler;
 import org.eclipse.jface.dialogs.Dialog;
 
 import biz.rapidfire.core.Messages;
 import biz.rapidfire.core.dialogs.MessageDialogAsync;
 import biz.rapidfire.core.dialogs.maintenance.conversion.ConversionMaintenanceDialog;
-import biz.rapidfire.core.exceptions.FieldsNotAvailableException;
-import biz.rapidfire.core.host.files.Field;
 import biz.rapidfire.core.maintenance.MaintenanceMode;
 import biz.rapidfire.core.maintenance.conversion.ConversionValues;
 import biz.rapidfire.core.maintenance.conversion.shared.ConversionAction;
@@ -53,29 +48,5 @@ public class NewConversionHandler extends AbstractConversionMaintenanceHandler i
                 MessageDialogAsync.displayError(Messages.Could_not_create_resource_Resource_not_found);
             }
         }
-    }
-
-    private String[] getFieldNames(IRapidFireConversionResource conversion) throws Exception {
-
-        List<String> fieldNames = new LinkedList<String>();
-
-        try {
-
-            Field[] fields = getManager().getFields(getShell(), conversion.getParentResource());
-            if (fields == null || fields.length == 0) {
-
-                String connectionName = conversion.getParentSubSystem().getConnectionName();
-                return new String[] { Messages.bindParameters(Messages.Field_list_not_available_Areas_have_not_yet_been_defined, connectionName) };
-            }
-
-            for (Field field : fields) {
-                fieldNames.add(field.getName());
-            }
-
-        } catch (FieldsNotAvailableException e) {
-            fieldNames.add(e.getLocalizedMessage());
-        }
-
-        return fieldNames.toArray(new String[fieldNames.size()]);
     }
 }

@@ -32,6 +32,7 @@ public class CopyConversionHandler extends AbstractConversionMaintenanceHandler 
         ConversionValues values = getManager().getValues();
 
         ConversionMaintenanceDialog dialog = ConversionMaintenanceDialog.getCopyDialog(getShell(), getManager());
+        dialog.setFields(getFieldNames(conversion));
         dialog.setValue(values);
 
         if (dialog.open() == Dialog.OK) {

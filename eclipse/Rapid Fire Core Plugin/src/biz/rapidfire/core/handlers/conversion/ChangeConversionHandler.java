@@ -30,6 +30,7 @@ public class ChangeConversionHandler extends AbstractConversionMaintenanceHandle
         ConversionValues values = getManager().getValues();
 
         ConversionMaintenanceDialog dialog = ConversionMaintenanceDialog.getChangeDialog(getShell(), getManager());
+        dialog.setFields(new String[0]);
         dialog.setValue(values);
 
         if (dialog.open() == Dialog.OK) {

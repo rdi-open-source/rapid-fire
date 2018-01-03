@@ -30,6 +30,7 @@ public class DeleteConversionHandler extends AbstractConversionMaintenanceHandle
         ConversionValues values = getManager().getValues();
 
         ConversionMaintenanceDialog dialog = ConversionMaintenanceDialog.getDeleteDialog(getShell(), getManager());
+        dialog.setFields(new String[0]);
         dialog.setValue(values);
 
         if (dialog.open() == Dialog.OK) {
