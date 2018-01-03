@@ -180,7 +180,7 @@ public class AreaMaintenanceDialog extends AbstractMaintenanceDialog {
 
         WidgetFactory.createLabel(parent, Messages.Label_Command_extension_colon, Messages.Tooltip_Command_extension);
 
-        textCommandExtension = WidgetFactory.createNameText(parent);
+        textCommandExtension = WidgetFactory.createText(parent);
         textCommandExtension.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
         textCommandExtension.setToolTipText(Messages.Tooltip_Command_extension);
         textCommandExtension.setEnabled(enableFields);
@@ -260,6 +260,7 @@ public class AreaMaintenanceDialog extends AbstractMaintenanceDialog {
         newValues.setLibrary(comboLibrary.getText());
         newValues.setLibraryList(comboLibraryList.getText());
         newValues.setLibraryCcsid(comboLibraryCcsid.getText());
+        newValues.setCommandExtension(textCommandExtension.getText());
 
         if (!isDisplayMode()) {
             try {
