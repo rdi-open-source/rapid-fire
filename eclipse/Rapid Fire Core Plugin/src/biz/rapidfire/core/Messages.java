@@ -326,6 +326,8 @@ public class Messages extends NLS {
     public static String Member_name_is_missing;
     public static String Could_not_initialize_file_copy_program_generator_manager_for_file_at_position_C_of_job_A_in_library_B;
     public static String Could_not_initialize_reapply_changes_manager_for_job_A_in_library_B;
+    public static String Could_not_create_resource_Resource_not_found;
+    public static String Could_not_copy_resource_Resource_not_found;
 
     // API error messages
     public static String EntityManager_Unknown_error_code_A;

@@ -15,6 +15,7 @@ import org.eclipse.core.commands.IHandler;
 import org.eclipse.jface.dialogs.Dialog;
 
 import biz.rapidfire.core.Messages;
+import biz.rapidfire.core.dialogs.MessageDialogAsync;
 import biz.rapidfire.core.dialogs.maintenance.conversion.ConversionMaintenanceDialog;
 import biz.rapidfire.core.exceptions.FieldsNotAvailableException;
 import biz.rapidfire.core.host.files.Field;
@@ -45,9 +46,11 @@ public class NewConversionHandler extends AbstractConversionMaintenanceHandler i
             values = dialog.getValue();
             IRapidFireConversionResource newConversion = conversion.getParentSubSystem().getConversion(conversion.getParentResource(),
                 values.getKey().getFieldToConvert(), getShell());
-            newConversion.setParentNode(conversion.getParentNode());
             if (newConversion != null) {
+                newConversion.setParentNode(conversion.getParentNode());
                 SystemConnectionHelper.refreshUICreated(newConversion.getParentSubSystem(), newConversion, newConversion.getParentNode());
+            } else {
+                MessageDialogAsync.displayError(Messages.Could_not_create_resource_Resource_not_found);
             }
         }
     }

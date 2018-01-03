@@ -11,6 +11,8 @@ package biz.rapidfire.core.handlers.file;
 import org.eclipse.core.commands.IHandler;
 import org.eclipse.jface.dialogs.Dialog;
 
+import biz.rapidfire.core.Messages;
+import biz.rapidfire.core.dialogs.MessageDialogAsync;
 import biz.rapidfire.core.dialogs.maintenance.file.FileMaintenanceDialog;
 import biz.rapidfire.core.maintenance.MaintenanceMode;
 import biz.rapidfire.core.maintenance.file.FileValues;
@@ -37,9 +39,11 @@ public class NewFileHandler extends AbstractFileMaintenanceHandler implements IH
 
             values = dialog.getValue();
             IRapidFireFileResource newFile = file.getParentSubSystem().getFile(file.getParentResource(), values.getKey().getPosition(), getShell());
-            newFile.setParentNode(file.getParentNode());
             if (newFile != null) {
+                newFile.setParentNode(file.getParentNode());
                 SystemConnectionHelper.refreshUICreated(newFile.getParentSubSystem(), newFile, newFile.getParentNode());
+            } else {
+                MessageDialogAsync.displayError(Messages.Could_not_create_resource_Resource_not_found);
             }
         }
     }

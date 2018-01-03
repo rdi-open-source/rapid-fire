@@ -11,6 +11,8 @@ package biz.rapidfire.core.handlers.librarylist;
 import org.eclipse.core.commands.IHandler;
 import org.eclipse.jface.dialogs.Dialog;
 
+import biz.rapidfire.core.Messages;
+import biz.rapidfire.core.dialogs.MessageDialogAsync;
 import biz.rapidfire.core.dialogs.maintenance.librarylist.LibraryListMaintenanceDialog;
 import biz.rapidfire.core.maintenance.MaintenanceMode;
 import biz.rapidfire.core.maintenance.librarylist.LibraryListValues;
@@ -38,9 +40,11 @@ public class CopyLibraryListHandler extends AbstractLibraryListMaintenanceHandle
             values = dialog.getValue();
             IRapidFireLibraryListResource newLibraryList = libraryList.getParentSubSystem().getLibraryList(libraryList.getParentJob(),
                 values.getKey().getLibraryList(), getShell());
-            newLibraryList.setParentNode(libraryList.getParentNode());
             if (newLibraryList != null) {
+                newLibraryList.setParentNode(libraryList.getParentNode());
                 SystemConnectionHelper.refreshUICreated(newLibraryList.getParentSubSystem(), newLibraryList, newLibraryList.getParentNode());
+            } else {
+                MessageDialogAsync.displayError(Messages.Could_not_copy_resource_Resource_not_found);
             }
         }
     }

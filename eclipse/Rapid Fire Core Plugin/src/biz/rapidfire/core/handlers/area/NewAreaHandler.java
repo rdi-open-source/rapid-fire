@@ -11,6 +11,8 @@ package biz.rapidfire.core.handlers.area;
 import org.eclipse.core.commands.IHandler;
 import org.eclipse.jface.dialogs.Dialog;
 
+import biz.rapidfire.core.Messages;
+import biz.rapidfire.core.dialogs.MessageDialogAsync;
 import biz.rapidfire.core.dialogs.maintenance.area.AreaMaintenanceDialog;
 import biz.rapidfire.core.maintenance.MaintenanceMode;
 import biz.rapidfire.core.maintenance.area.AreaValues;
@@ -39,9 +41,11 @@ public class NewAreaHandler extends AbstractAreaMaintenanceHandler implements IH
 
             values = dialog.getValue();
             IRapidFireAreaResource newArea = area.getParentSubSystem().getArea(area.getParentResource(), values.getKey().getArea(), getShell());
-            newArea.setParentNode(area.getParentNode());
             if (newArea != null) {
+                newArea.setParentNode(area.getParentNode());
                 SystemConnectionHelper.refreshUICreated(newArea.getParentSubSystem(), newArea, newArea.getParentNode());
+            } else {
+                MessageDialogAsync.displayError(Messages.Could_not_create_resource_Resource_not_found);
             }
         }
     }

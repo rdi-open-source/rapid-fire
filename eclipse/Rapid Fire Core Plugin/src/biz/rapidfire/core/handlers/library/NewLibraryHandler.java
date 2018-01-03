@@ -11,6 +11,8 @@ package biz.rapidfire.core.handlers.library;
 import org.eclipse.core.commands.IHandler;
 import org.eclipse.jface.dialogs.Dialog;
 
+import biz.rapidfire.core.Messages;
+import biz.rapidfire.core.dialogs.MessageDialogAsync;
 import biz.rapidfire.core.dialogs.maintenance.library.LibraryMaintenanceDialog;
 import biz.rapidfire.core.maintenance.MaintenanceMode;
 import biz.rapidfire.core.maintenance.library.LibraryValues;
@@ -38,9 +40,11 @@ public class NewLibraryHandler extends AbstractLibraryMaintenanceHandler impleme
             values = dialog.getValue();
             IRapidFireLibraryResource newLibrary = library.getParentSubSystem().getLibrary(library.getParentResource(), values.getKey().getLibrary(),
                 getShell());
-            newLibrary.setParentNode(library.getParentNode());
             if (newLibrary != null) {
+                newLibrary.setParentNode(library.getParentNode());
                 SystemConnectionHelper.refreshUICreated(newLibrary.getParentSubSystem(), newLibrary, newLibrary.getParentNode());
+            } else {
+                MessageDialogAsync.displayError(Messages.Could_not_create_resource_Resource_not_found);
             }
         }
     }

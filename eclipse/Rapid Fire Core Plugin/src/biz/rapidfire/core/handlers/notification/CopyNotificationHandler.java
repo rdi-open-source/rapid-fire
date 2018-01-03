@@ -11,6 +11,8 @@ package biz.rapidfire.core.handlers.notification;
 import org.eclipse.core.commands.IHandler;
 import org.eclipse.jface.dialogs.Dialog;
 
+import biz.rapidfire.core.Messages;
+import biz.rapidfire.core.dialogs.MessageDialogAsync;
 import biz.rapidfire.core.dialogs.maintenance.notification.NotificationMaintenanceDialog;
 import biz.rapidfire.core.maintenance.MaintenanceMode;
 import biz.rapidfire.core.maintenance.notification.NotificationValues;
@@ -38,9 +40,11 @@ public class CopyNotificationHandler extends AbstractNotificationMaintenanceHand
             values = dialog.getValue();
             IRapidFireNotificationResource newNotification = notification.getParentSubSystem().getNotification(notification.getParentResource(),
                 values.getKey().getPosition(), getShell());
-            newNotification.setParentNode(notification.getParentNode());
             if (newNotification != null) {
+                newNotification.setParentNode(notification.getParentNode());
                 SystemConnectionHelper.refreshUICreated(newNotification.getParentSubSystem(), newNotification, newNotification.getParentNode());
+            } else {
+                MessageDialogAsync.displayError(Messages.Could_not_copy_resource_Resource_not_found);
             }
         }
     }

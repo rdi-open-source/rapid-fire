@@ -11,6 +11,8 @@ package biz.rapidfire.core.handlers.job;
 import org.eclipse.core.commands.IHandler;
 import org.eclipse.jface.dialogs.Dialog;
 
+import biz.rapidfire.core.Messages;
+import biz.rapidfire.core.dialogs.MessageDialogAsync;
 import biz.rapidfire.core.dialogs.maintenance.job.JobMaintenanceDialog;
 import biz.rapidfire.core.maintenance.MaintenanceMode;
 import biz.rapidfire.core.maintenance.job.JobValues;
@@ -38,7 +40,10 @@ public class CopyJobHandler extends AbstractJobMaintenanceHandler implements IHa
             values = dialog.getValue();
             IRapidFireJobResource newJob = job.getParentSubSystem().getJob(job.getDataLibrary(), values.getKey().getJobName(), getShell());
             if (newJob != null) {
+                newJob.setFilter(job.getFilter());
                 SystemConnectionHelper.refreshUICreated(newJob.getParentSubSystem(), newJob, newJob.getParentFilters());
+            } else {
+                MessageDialogAsync.displayError(Messages.Could_not_copy_resource_Resource_not_found);
             }
         }
     }

@@ -11,6 +11,8 @@ package biz.rapidfire.core.handlers.command;
 import org.eclipse.core.commands.IHandler;
 import org.eclipse.jface.dialogs.Dialog;
 
+import biz.rapidfire.core.Messages;
+import biz.rapidfire.core.dialogs.MessageDialogAsync;
 import biz.rapidfire.core.dialogs.maintenance.command.CommandMaintenanceDialog;
 import biz.rapidfire.core.maintenance.MaintenanceMode;
 import biz.rapidfire.core.maintenance.command.CommandValues;
@@ -40,9 +42,11 @@ public class CopyCommandHandler extends AbstractCommandMaintenanceHandler implem
             CommandType commandType = CommandType.find(values.getKey().getCommandType());
             IRapidFireCommandResource newCommand = command.getParentSubSystem().getCommand(command.getParentResource(), commandType,
                 values.getKey().getSequence(), getShell());
-            newCommand.setParentNode(command.getParentNode());
             if (newCommand != null) {
+                newCommand.setParentNode(command.getParentNode());
                 SystemConnectionHelper.refreshUICreated(newCommand.getParentSubSystem(), newCommand, newCommand.getParentNode());
+            } else {
+                MessageDialogAsync.displayError(Messages.Could_not_copy_resource_Resource_not_found);
             }
         }
     }
