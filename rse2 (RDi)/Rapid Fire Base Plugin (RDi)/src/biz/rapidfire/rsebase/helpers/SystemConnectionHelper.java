@@ -33,6 +33,7 @@ public class SystemConnectionHelper {
             ISystemRegistry sr = RSECorePlugin.getTheSystemRegistry();
             for (Object parent : parents) {
                 sr.fireEvent(new SystemResourceChangeEvent(resource, ISystemResourceChangeEvents.EVENT_ADD, parent));
+                sr.fireEvent(new SystemResourceChangeEvent(resource, ISystemResourceChangeEvents.EVENT_CHANGE_CHILDREN, parent));
                 // sr.fireRemoteResourceChangeEvent(ISystemRemoteChangeEvents.SYSTEM_REMOTE_RESOURCE_CREATED,
                 // resource, parent, (ISubSystem)subSystem,
                 // null);
