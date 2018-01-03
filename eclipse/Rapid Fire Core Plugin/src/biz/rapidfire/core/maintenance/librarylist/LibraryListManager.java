@@ -124,7 +124,7 @@ public class LibraryListManager extends AbstractManager<IRapidFireLibraryListRes
         values.setDescription(statement.getString(ILibraryListGetValues.DESCRIPTION));
 
         String sequencenNumbers = statement.getString(ILibraryListGetValues.SEQUENCE_NUMBERS);
-        String libraries = statement.getString(ILibraryListGetValues.LIBRARY_LIST);
+        String libraries = statement.getString(ILibraryListGetValues.LIBRARIES);
         values.setLibraryList(sequencenNumbers, libraries);
 
         return values;
