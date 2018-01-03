@@ -204,8 +204,10 @@ public class Library extends PreferencePage implements IWorkbenchPreferencePage 
 
         rapidFireLibrary = Preferences.getInstance().getRapidFireLibrary();
         String connectionName = Preferences.getInstance().getHostName();
-        if (!comboConnection.selectConnection(connectionName)) {
-            setErrorMessage(Messages.bindParameters(Messages.Connection_A_not_found, connectionName));
+        if (!StringHelper.isNullOrEmpty(connectionName)) {
+            if (!comboConnection.selectConnection(connectionName)) {
+                setErrorMessage(Messages.bindParameters(Messages.Connection_A_not_found, connectionName));
+            }
         }
         textFtpPortNumber.setText(Integer.toString(Preferences.getInstance().getFtpPortNumber()));
 
