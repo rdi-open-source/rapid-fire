@@ -154,7 +154,7 @@ public class AreaMaintenanceDialog extends AbstractMaintenanceDialog {
 
         WidgetFactory.createLabel(parent, Messages.Label_Area_library_colon, Messages.Tooltip_Area_library);
 
-        comboLibrary = WidgetFactory.createNameCombo(parent);
+        comboLibrary = WidgetFactory.createReadOnlyCombo(parent);
         comboLibrary.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
         comboLibrary.setToolTipText(Messages.Tooltip_Area_library);
         comboLibrary.setEnabled(enableFields);
@@ -162,7 +162,7 @@ public class AreaMaintenanceDialog extends AbstractMaintenanceDialog {
 
         WidgetFactory.createLabel(parent, Messages.Label_Area_library_list_colon, Messages.Tooltip_Area_library_list);
 
-        comboLibraryList = WidgetFactory.createNameCombo(parent);
+        comboLibraryList = WidgetFactory.createReadOnlyCombo(parent);
         setDefaultValue(comboLibraryList, LibraryList.NONE.label());
         comboLibraryList.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
         comboLibraryList.setToolTipText(Messages.Tooltip_Area_library_list);
@@ -246,6 +246,10 @@ public class AreaMaintenanceDialog extends AbstractMaintenanceDialog {
         setText(comboLibraryList, values.getLibraryList());
         setText(comboLibraryCcsid, values.getLibraryCcsid());
         setText(textCommandExtension, values.getCommandExtension());
+
+        if (comboLibrary.getItemCount() > 0) {
+            comboLibrary.select(0);
+        }
     }
 
     @Override
