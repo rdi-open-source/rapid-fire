@@ -20,8 +20,11 @@ import biz.rapidfire.core.maintenance.library.LibraryValues;
 import biz.rapidfire.core.maintenance.librarylist.LibraryListValues;
 import biz.rapidfire.core.maintenance.wizard.AbstractNewWizard;
 import biz.rapidfire.core.maintenance.wizard.AbstractWizardPage;
+import biz.rapidfire.core.maintenance.wizard.DataLibraryPage;
 import biz.rapidfire.core.model.IRapidFireJobResource;
 import biz.rapidfire.core.model.Status;
+import biz.rapidfire.core.subsystem.IRapidFireSubSystem;
+import biz.rapidfire.rsebase.helpers.SystemConnectionHelper;
 
 public class NewFileWizard extends AbstractNewWizard {
 
@@ -50,11 +53,15 @@ public class NewFileWizard extends AbstractNewWizard {
         try {
 
             if (event.getSelectedPage() instanceof FilePage) {
-                FilePage page = (FilePage)event.getSelectedPage();
-                if (StringHelper.isNullOrEmpty(page.getJobName())) {
-                    page.setJobName(getJobName());
-                    if (getSubSystem() != null) {
-                        IRapidFireJobResource[] allJobs = getSubSystem().getJobs(getDataLibrary(), getShell());
+                FilePage filePage = (FilePage)event.getSelectedPage();
+                DataLibraryPage dataLibraryPage = (DataLibraryPage)getPage(DataLibraryPage.NAME);
+                if (StringHelper.isNullOrEmpty(filePage.getJobName())) {
+                    filePage.setJobName(getInitialJobName());
+                    String connectionName = dataLibraryPage.getConnectionName();
+                    IRapidFireSubSystem subSystem = (IRapidFireSubSystem)SystemConnectionHelper.getSubSystem(connectionName,
+                        IRapidFireSubSystem.class);
+                    if (subSystem != null) {
+                        IRapidFireJobResource[] allJobs = subSystem.getJobs(dataLibraryPage.getDataLibraryName(), getShell());
                         if (allJobs != null) {
                             Vector<String> jobNames = new Vector<String>();
                             for (IRapidFireJobResource job : allJobs) {
@@ -62,10 +69,11 @@ public class NewFileWizard extends AbstractNewWizard {
                                     jobNames.addElement(job.getName());
                                 }
                             }
-                            page.setJobNames(jobNames.toArray(new String[jobNames.size()]));
+                            filePage.setJobNames(jobNames.toArray(new String[jobNames.size()]));
                         }
                     }
                 }
+                filePage.setErrorMessage(null);
             }
 
         } catch (Exception e) {

@@ -15,18 +15,92 @@ import java.util.List;
 
 import org.eclipse.swt.widgets.Display;
 
+import sun.reflect.misc.ReflectUtil;
+
 import com.ibm.as400.access.AS400;
 import com.ibm.etools.iseries.comm.interfaces.IISeriesMember;
 import com.ibm.etools.iseries.core.api.ISeriesConnection;
 import com.ibm.etools.iseries.core.api.ISeriesMember;
 import com.ibm.etools.iseries.core.resources.ISeriesEditableSrcPhysicalFileMember;
 import com.ibm.etools.systems.core.SystemPlugin;
+import com.ibm.etools.systems.filters.SystemFilterReference;
 import com.ibm.etools.systems.model.ISystemResourceChangeEvents;
 import com.ibm.etools.systems.model.SystemConnection;
 import com.ibm.etools.systems.model.SystemRegistry;
 import com.ibm.etools.systems.model.impl.SystemResourceChangeEvent;
+import com.ibm.etools.systems.subsystems.SubSystem;
+import com.ibm.etools.systems.subsystems.SubSystemHelpers;
 
 public class SystemConnectionHelper {
+
+    /**
+     * Returns the subsystem that is identified by the provided connection name.
+     * 
+     * @param connectionName - name of the system connection whose subsystem is
+     *        returned
+     * @return subsystem that is identified by the provided connection name
+     */
+    public static Object getSubSystem(String connectionName, Class<?> clazz) {
+
+        ISeriesConnection connection = ISeriesConnection.getConnection(connectionName);
+        if (connection == null) {
+            return null;
+        }
+
+        SystemConnection sytemConnection = connection.getSystemConnection();
+        if (sytemConnection == null) {
+            return null;
+        }
+
+        SubSystem[] subSystems = sytemConnection.getSubSystems();
+        if (subSystems == null || subSystems.length == 0) {
+            return null;
+        }
+
+        for (SubSystem subSystem : subSystems) {
+            Class[] interfaces = subSystem.getClass().getInterfaces();
+            for (Class interfaze : interfaces) {
+                if (interfaze.equals(clazz)) {
+                    return subSystem;
+                }
+            }
+        }
+
+        return null;
+    }
+
+    /**
+     * Checks whether 'element' is a filter reference or not.
+     * 
+     * @param element - element that is tested for a filter reference
+     * @return <code>true</code> if 'element' is a filter reference, else
+     *         <code>false</code>
+     */
+    public static boolean isFilterReference(Object element) {
+
+        if (element instanceof SystemFilterReference) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Return the subsystem of a given filter reference
+     * 
+     * @param element - filter reference whose associated subsystem is returned
+     * @return subsystem of the supplied filter reference
+     */
+    public static Object getSubSystemOfFilterReference(Object element) {
+
+        if (element instanceof SystemFilterReference) {
+            SystemFilterReference filterReference = (SystemFilterReference)element;
+            SubSystem subSystem = SubSystemHelpers.getParentSubSystem(filterReference.getParentSystemFilterReferencePool());
+            return subSystem;
+        }
+
+        return null;
+    }
 
     public static void refreshUICreated(Object subSystem, Object resource, Object... parents) {
 

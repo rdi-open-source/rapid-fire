@@ -43,10 +43,9 @@ import com.ibm.as400.access.AS400;
 // Source: http://www.vogella.com/tutorials/EclipseWizards/article.html
 public abstract class AbstractNewWizard extends Wizard implements INewWizard, IPageChangedListener {
 
-    private IRapidFireSubSystem subSystem;
-    private String connectionName;
-    private String dataLibrary;
-    private String jobName;
+    private String initialConnectionName;
+    private String initialDataLibrary;
+    private String initialJobName;
 
     private Map<String, Boolean> pagesVisibility;
 
@@ -67,20 +66,8 @@ public abstract class AbstractNewWizard extends Wizard implements INewWizard, IP
         }
     }
 
-    public IRapidFireSubSystem getSubSystem() {
-        return subSystem;
-    }
-
-    public String getConnectionName() {
-        return connectionName;
-    }
-
-    public String getDataLibrary() {
-        return dataLibrary;
-    }
-
-    public String getJobName() {
-        return jobName;
+    public String getInitialJobName() {
+        return initialJobName;
     }
 
     public void pageChanged(PageChangedEvent event) {
@@ -98,14 +85,14 @@ public abstract class AbstractNewWizard extends Wizard implements INewWizard, IP
         DataLibraryPage page = new DataLibraryPage();
         addPage(page);
 
-        if (!StringHelper.isNullOrEmpty(connectionName)) {
-            page.setConnectionName(connectionName);
+        if (!StringHelper.isNullOrEmpty(initialConnectionName)) {
+            page.setConnectionName(initialConnectionName);
         }
-        if (!StringHelper.isNullOrEmpty(dataLibrary)) {
-            page.setDataLibraryName(dataLibrary);
+        if (!StringHelper.isNullOrEmpty(initialDataLibrary)) {
+            page.setDataLibraryName(initialDataLibrary);
         }
-        if (!StringHelper.isNullOrEmpty(jobName)) {
-            page.setJobName(jobName);
+        if (!StringHelper.isNullOrEmpty(initialJobName)) {
+            page.setJobName(initialJobName);
         }
     }
 
@@ -126,8 +113,8 @@ public abstract class AbstractNewWizard extends Wizard implements INewWizard, IP
     protected Result validateDataLibrary() throws Exception {
 
         DataLibraryPage dataLibraryPage = (DataLibraryPage)getPage(DataLibraryPage.NAME);
-        this.connectionName = dataLibraryPage.getConnectionName();
-        this.dataLibrary = dataLibraryPage.getDataLibraryName();
+        String connectionName = dataLibraryPage.getConnectionName();
+        String dataLibrary = dataLibraryPage.getDataLibraryName();
 
         Result result;
         StringBuilder errorMessage = new StringBuilder();
@@ -179,10 +166,9 @@ public abstract class AbstractNewWizard extends Wizard implements INewWizard, IP
 
     public void init(IWorkbench workbench, IStructuredSelection selection) {
 
-        this.subSystem = null;
-        this.connectionName = null;
-        this.dataLibrary = Preferences.getInstance().getRapidFireLibrary();
-        this.jobName = null;
+        this.initialConnectionName = null;
+        this.initialDataLibrary = Preferences.getInstance().getRapidFireLibrary();
+        this.initialJobName = null;
 
         if (selection instanceof IStructuredSelection) {
             IStructuredSelection structuredSelection = selection;
@@ -191,27 +177,24 @@ public abstract class AbstractNewWizard extends Wizard implements INewWizard, IP
                 System.out.println("==> selection: " + element);
                 if (element instanceof IRapidFireResource) {
                     IRapidFireResource resource = (IRapidFireResource)element;
-                    this.subSystem = resource.getParentSubSystem();
-                    this.connectionName = resource.getParentSubSystem().getConnectionName();
-                    this.dataLibrary = resource.getDataLibrary();
+                    this.initialConnectionName = resource.getParentSubSystem().getConnectionName();
+                    this.initialDataLibrary = resource.getDataLibrary();
                 } else if (element instanceof IRapidFireSubSystem) {
                     IRapidFireSubSystem subSystem = (IRapidFireSubSystem)element;
-                    this.subSystem = subSystem;
-                    this.connectionName = subSystem.getConnectionName();
+                    this.initialConnectionName = subSystem.getConnectionName();
                 } else if (SystemConnectionHelper.isFilterReference(element)) {
-                    Object subSystem = SystemConnectionHelper.getSubsystemOfFilterReference(element);
+                    Object subSystem = SystemConnectionHelper.getSubSystemOfFilterReference(element);
                     if (subSystem instanceof IRapidFireSubSystem) {
-                        this.subSystem = (IRapidFireSubSystem)subSystem;
-                        this.connectionName = ((IRapidFireSubSystem)subSystem).getConnectionName();
+                        this.initialConnectionName = ((IRapidFireSubSystem)subSystem).getConnectionName();
                     }
                 }
 
                 if (element instanceof IRapidFireChildResource) {
                     IRapidFireChildResource<?> resource = (IRapidFireChildResource<?>)element;
-                    this.jobName = resource.getParentJob().getName();
+                    this.initialJobName = resource.getParentJob().getName();
                 } else if (element instanceof IRapidFireJobResource) {
                     IRapidFireJobResource resource = (IRapidFireJobResource)element;
-                    this.jobName = resource.getName();
+                    this.initialJobName = resource.getName();
                 }
             }
         }
