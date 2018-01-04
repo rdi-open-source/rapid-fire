@@ -19,6 +19,8 @@ import org.eclipse.rse.core.events.SystemResourceChangeEvent;
 import org.eclipse.rse.core.filters.ISystemFilterReference;
 import org.eclipse.rse.core.model.IHost;
 import org.eclipse.rse.core.model.ISystemRegistry;
+import org.eclipse.rse.core.subsystems.ISubSystem;
+import org.eclipse.rse.core.subsystems.SubSystemHelpers;
 import org.eclipse.swt.widgets.Display;
 
 import com.ibm.as400.access.AS400;
@@ -27,6 +29,37 @@ import com.ibm.etools.iseries.services.qsys.api.IQSYSMember;
 import com.ibm.etools.iseries.subsystems.qsys.api.IBMiConnection;
 
 public class SystemConnectionHelper {
+
+    /**
+     * Returns the subsystem that is identified by the provided connection name.
+     * 
+     * @param connectionName - name of the system connection whose subsystem is
+     *        returned
+     * @return subsystem that is identified by the provided connection name
+     */
+    public static Object getSubSystem(String connectionName, Class<?> clazz) {
+
+        IBMiConnection connection = IBMiConnection.getConnection(connectionName);
+        if (connection == null) {
+            return null;
+        }
+
+        ISubSystem[] subSystems = connection.getSubSystems();
+        if (subSystems == null || subSystems.length == 0) {
+            return null;
+        }
+
+        for (ISubSystem subSystem : subSystems) {
+            Class<?>[] interfaces = subSystem.getClass().getInterfaces();
+            for (Class<?> interfaze : interfaces) {
+                if (interfaze.equals(clazz)) {
+                    return subSystem;
+                }
+            }
+        }
+
+        return null;
+    }
 
     /**
      * Checks whether 'element' is a filter reference or not.
@@ -50,11 +83,12 @@ public class SystemConnectionHelper {
      * @param element - filter reference whose associated subsystem is returned
      * @return subsystem of the supplied filter reference
      */
-    public static Object getSubsystemOfFilterReference(Object element) {
+    public static Object getSubSystemOfFilterReference(Object element) {
 
         if (element instanceof ISystemFilterReference) {
             ISystemFilterReference filterReference = (ISystemFilterReference)element;
-            return filterReference.getSubSystem();
+            ISubSystem subSystem = SubSystemHelpers.getParentSubSystem(filterReference.getParentSystemFilterReferencePool());
+            return subSystem;
         }
 
         return null;
