@@ -267,7 +267,7 @@ public final class Preferences {
     }
 
     public String getDefaultWizardRapidFireLibrary() {
-        return "RAPIDFIRE"; //$NON-NLS-1$
+        return getDefaultRapidFireLibrary();
     }
 
     private boolean getDefaultOpenGeneratedCopyProgram() {
