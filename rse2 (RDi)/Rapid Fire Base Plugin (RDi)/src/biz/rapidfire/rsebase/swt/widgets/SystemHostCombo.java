@@ -101,7 +101,13 @@ public class SystemHostCombo {
     }
 
     public String getHostName() {
-        return connectionCombo.getHost().getHostName();
+
+        IHost host = connectionCombo.getHost();
+        if (host == null) {
+            return null;
+        }
+
+        return host.getHostName();
     }
 
     public boolean selectConnection(String connectionName) {
