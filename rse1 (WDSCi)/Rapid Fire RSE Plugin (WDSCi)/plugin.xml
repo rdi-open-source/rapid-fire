@@ -44,8 +44,8 @@
         icon="icons/rapidfire_job.gif">
          <description>%Wizard_job_description</description>
          <selection class="biz.rapidfire.core.subsystem.IRapidFireSubSystem"/>
-         <selection class="org.eclipse.rse.core.filters.ISystemFilterPoolReference"/>
-         <selection class="org.eclipse.rse.core.filters.ISystemFilterReference"/>
+         <selection class="com.ibm.etools.systems.filters.SystemFilterPoolReference"/>
+         <selection class="com.ibm.etools.systems.filters.SystemFilterReference"/>
          <selection class="biz.rapidfire.rse.subsystem.resources.LibrariesNode"/>
          <selection class="biz.rapidfire.rse.subsystem.resources.LibraryListsNode"/>
          <selection class="biz.rapidfire.rse.subsystem.resources.FilesNode"/>
@@ -71,8 +71,8 @@
         icon="icons/rapidfire_file.gif">
          <description>%Wizard_file_description</description>
          <selection class="biz.rapidfire.core.subsystem.IRapidFireSubSystem"/>
-         <selection class="org.eclipse.rse.core.filters.ISystemFilterPoolReference"/>
-         <selection class="org.eclipse.rse.core.filters.ISystemFilterReference"/>
+         <selection class="com.ibm.etools.systems.filters.SystemFilterPoolReference"/>
+         <selection class="com.ibm.etools.systems.filters.SystemFilterReference"/>
          <selection class="biz.rapidfire.rse.subsystem.resources.LibrariesNode"/>
          <selection class="biz.rapidfire.rse.subsystem.resources.LibraryListsNode"/>
          <selection class="biz.rapidfire.rse.subsystem.resources.FilesNode"/>
