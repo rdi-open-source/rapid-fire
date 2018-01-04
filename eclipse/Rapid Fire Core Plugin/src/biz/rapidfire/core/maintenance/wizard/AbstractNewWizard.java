@@ -34,6 +34,7 @@ import biz.rapidfire.core.maintenance.Success;
 import biz.rapidfire.core.model.IRapidFireChildResource;
 import biz.rapidfire.core.model.IRapidFireJobResource;
 import biz.rapidfire.core.model.IRapidFireResource;
+import biz.rapidfire.core.preferences.Preferences;
 import biz.rapidfire.core.subsystem.IRapidFireSubSystem;
 import biz.rapidfire.rsebase.helpers.SystemConnectionHelper;
 
@@ -178,6 +179,11 @@ public abstract class AbstractNewWizard extends Wizard implements INewWizard, IP
 
     public void init(IWorkbench workbench, IStructuredSelection selection) {
 
+        this.subSystem = null;
+        this.connectionName = null;
+        this.dataLibrary = Preferences.getInstance().getRapidFireLibrary();
+        this.jobName = null;
+
         if (selection instanceof IStructuredSelection) {
             IStructuredSelection structuredSelection = selection;
             if (!structuredSelection.isEmpty()) {
@@ -188,12 +194,16 @@ public abstract class AbstractNewWizard extends Wizard implements INewWizard, IP
                     this.subSystem = resource.getParentSubSystem();
                     this.connectionName = resource.getParentSubSystem().getConnectionName();
                     this.dataLibrary = resource.getDataLibrary();
-                    this.jobName = null;
                 } else if (element instanceof IRapidFireSubSystem) {
                     IRapidFireSubSystem subSystem = (IRapidFireSubSystem)element;
                     this.subSystem = subSystem;
                     this.connectionName = subSystem.getConnectionName();
-                    this.jobName = null;
+                } else if (SystemConnectionHelper.isFilterReference(element)) {
+                    Object subSystem = SystemConnectionHelper.getSubsystemOfFilterReference(element);
+                    if (subSystem instanceof IRapidFireSubSystem) {
+                        this.subSystem = (IRapidFireSubSystem)subSystem;
+                        this.connectionName = ((IRapidFireSubSystem)subSystem).getConnectionName();
+                    }
                 }
 
                 if (element instanceof IRapidFireChildResource) {

@@ -16,6 +16,7 @@ import java.util.List;
 import org.eclipse.rse.core.RSECorePlugin;
 import org.eclipse.rse.core.events.ISystemResourceChangeEvents;
 import org.eclipse.rse.core.events.SystemResourceChangeEvent;
+import org.eclipse.rse.core.filters.ISystemFilterReference;
 import org.eclipse.rse.core.model.IHost;
 import org.eclipse.rse.core.model.ISystemRegistry;
 import org.eclipse.swt.widgets.Display;
@@ -26,6 +27,38 @@ import com.ibm.etools.iseries.services.qsys.api.IQSYSMember;
 import com.ibm.etools.iseries.subsystems.qsys.api.IBMiConnection;
 
 public class SystemConnectionHelper {
+
+    /**
+     * Checks whether 'element' is a filter reference or not.
+     * 
+     * @param element - element that is tested for a filter reference
+     * @return <code>true</code> if 'element' is a filter reference, else
+     *         <code>false</code>
+     */
+    public static boolean isFilterReference(Object element) {
+
+        if (element instanceof ISystemFilterReference) {
+            return true;
+        }
+
+        return false;
+    }
+
+    /**
+     * Return the subsystem of a given filter reference
+     * 
+     * @param element - filter reference whose associated subsystem is returned
+     * @return subsystem of the supplied filter reference
+     */
+    public static Object getSubsystemOfFilterReference(Object element) {
+
+        if (element instanceof ISystemFilterReference) {
+            ISystemFilterReference filterReference = (ISystemFilterReference)element;
+            return filterReference.getSubSystem();
+        }
+
+        return null;
+    }
 
     public static void refreshUICreated(Object subSystem, Object resource, Object... parents) {
 
