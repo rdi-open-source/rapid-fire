@@ -59,16 +59,18 @@ public class Validator {
         return validator;
     }
 
-    public static Validator getNameInstance() {
+    public static Validator getNameInstance(String... specialValues) {
         Validator validator = new Validator(TYPE_NAME);
         validator.setLength(10);
+        for (String specialValue : specialValues) {
+            validator.addSpecialValue(specialValue);
+        }
         return validator;
     }
 
     public static Validator getLibraryNameInstance(String... specialValues) {
         Validator validator = new Validator(TYPE_NAME);
         validator.setLength(10);
-        validator.setRestricted(false);
         for (String specialValue : specialValues) {
             validator.addSpecialValue(specialValue);
         }
@@ -175,6 +177,11 @@ public class Validator {
         this.mandatory = mandatory;
     }
 
+    /**
+     * Restricts the allowed values to the list of registered special values.
+     * 
+     * @param restricted - true|false
+     */
     public void setRestricted(boolean restricted) {
         this.restricted = restricted;
     }
@@ -206,10 +213,28 @@ public class Validator {
         longValue = -1;
         date = null;
         time = null;
-        if (type == null || length == -1 || (type.equals(TYPE_DEC) && precision == -1) || (!type.equals(TYPE_CHAR) && restricted)
-            || (!type.equals(TYPE_NAME) && generic)) {
+
+        // Type or length are missing ==> ERROR
+        if (type == null || length == -1) {
             return false;
         }
+
+        // Precision is missing for a decimal validator ==> ERROR
+        if (type.equals(TYPE_DEC) && precision == -1) {
+            return false;
+        }
+
+        // Attribute "restricted" is allowed for CHAR and NAME validators only
+        // ==> ERROR
+        if ((!type.equals(TYPE_CHAR) && !type.equals(TYPE_NAME)) && restricted) {
+            return false;
+        }
+
+        // Attribute "generic" is allowed for NAME validators only.
+        if (!type.equals(TYPE_NAME) && generic) {
+            return false;
+        }
+
         if (argument.equals("")) { //$NON-NLS-1$
             if (mandatory || restricted) {
                 return false;

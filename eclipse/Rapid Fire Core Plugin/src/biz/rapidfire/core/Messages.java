@@ -267,7 +267,9 @@ public class Messages extends NLS {
     public static String File_name_A_is_not_valid;
     public static String File_type_A_is_not_valid;
     public static String Copy_program_name_A_is_not_valid;
+    public static String Copy_program_library_name_A_is_not_valid;
     public static String Conversion_program_name_A_is_not_valid;
+    public static String Conversion_program_library_name_A_is_not_valid;
     public static String Could_not_initialize_library_manager_for_library_C_of_job_A_in_library_B;
     public static String Could_not_initialize_library_list_manager_for_library_list_C_of_job_A_in_library_B;
     public static String Could_not_start_a_Rapid_Fire_JDBC_connection;

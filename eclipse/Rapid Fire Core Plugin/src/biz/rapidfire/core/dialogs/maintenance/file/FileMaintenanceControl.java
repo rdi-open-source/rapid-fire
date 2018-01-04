@@ -46,6 +46,46 @@ public class FileMaintenanceControl extends AbstractMaintenanceControl {
         super(parent, style, parentKeyFieldsVisible);
     }
 
+    // private boolean matchesControl(Object object, Control control) {
+    //
+    // if (object == null) {
+    // return false;
+    // }
+    // return object.equals(control);
+    // }
+    //
+    // public boolean isJobNameControl(Object object) {
+    // return matchesControl(object, comboJobName);
+    // }
+    //
+    // public boolean isPositionControl(Object object) {
+    // return matchesControl(object, textPosition);
+    // }
+    //
+    // public boolean isFileNameControl(Object object) {
+    // return matchesControl(object, textFileName);
+    // }
+    //
+    // public boolean isFileTypeControl(Object object) {
+    // return matchesControl(object, comboFileType);
+    // }
+    //
+    // public boolean isCopyProgramNameControl(Object object) {
+    // return matchesControl(object, comboCopyProgramName);
+    // }
+    //
+    // public boolean isCopyProgramLibraryNameControl(Object object) {
+    // return matchesControl(object, textCopyProgramLibraryName);
+    // }
+    //
+    // public boolean isConversionProgramNameControl(Object object) {
+    // return matchesControl(object, comboConversionProgramName);
+    // }
+    //
+    // public boolean isConversionProgramLibraryNameControl(Object object) {
+    // return matchesControl(object, textConversionProgramLibraryName);
+    // }
+
     public void setFocusJobName() {
         comboJobName.setFocus();
     }
@@ -218,33 +258,45 @@ public class FileMaintenanceControl extends AbstractMaintenanceControl {
     }
 
     public void addSelectionListener(SelectionListener listener) {
-        comboFileType.addSelectionListener(listener);
-        comboCopyProgramName.addSelectionListener(listener);
+
         comboConversionProgramName.addSelectionListener(listener);
+        comboCopyProgramName.addSelectionListener(listener);
+        comboFileType.addSelectionListener(listener);
+        comboJobName.addSelectionListener(listener);
     }
 
     public void removeSelectionListener(SelectionListener listener) {
-        comboFileType.removeSelectionListener(listener);
-        comboCopyProgramName.removeSelectionListener(listener);
+
         comboConversionProgramName.removeSelectionListener(listener);
+        comboCopyProgramName.removeSelectionListener(listener);
+        comboFileType.removeSelectionListener(listener);
+        comboJobName.addSelectionListener(listener);
     }
 
     public void addModifyListener(ModifyListener listener) {
 
+        comboConversionProgramName.addModifyListener(listener);
+        comboCopyProgramName.addModifyListener(listener);
+        comboFileType.addModifyListener(listener);
         comboJobName.addModifyListener(listener);
-        textPosition.addModifyListener(listener);
-        textFileName.addModifyListener(listener);
-        textCopyProgramLibraryName.addModifyListener(listener);
+
         textConversionProgramLibraryName.addModifyListener(listener);
+        textCopyProgramLibraryName.addModifyListener(listener);
+        textFileName.addModifyListener(listener);
+        textPosition.addModifyListener(listener);
     }
 
     public void removeModifyListener(ModifyListener listener) {
 
+        comboConversionProgramName.removeModifyListener(listener);
+        comboCopyProgramName.removeModifyListener(listener);
+        comboFileType.removeModifyListener(listener);
         comboJobName.removeModifyListener(listener);
-        textPosition.removeModifyListener(listener);
-        textFileName.removeModifyListener(listener);
-        textCopyProgramLibraryName.removeModifyListener(listener);
+
         textConversionProgramLibraryName.removeModifyListener(listener);
+        textCopyProgramLibraryName.removeModifyListener(listener);
+        textFileName.removeModifyListener(listener);
+        textPosition.removeModifyListener(listener);
     }
 
     private class FileTypeChangedListener implements SelectionListener {

@@ -70,8 +70,5 @@ public class CommandPage extends AbstractWizardPage {
 
     @Override
     protected void storePreferences() {
-
-        // getPreferences().setConnectionName(connectionName);
-        // getPreferences().setRapidFireLibrary(dataLibraryName);
     }
 }

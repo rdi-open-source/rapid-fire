@@ -18,6 +18,8 @@ import biz.rapidfire.core.helpers.IntHelper;
 import biz.rapidfire.core.helpers.StringHelper;
 import biz.rapidfire.core.maintenance.MaintenanceMode;
 import biz.rapidfire.core.maintenance.file.FileValues;
+import biz.rapidfire.core.maintenance.file.shared.ConversionProgram;
+import biz.rapidfire.core.maintenance.file.shared.CopyProgram;
 import biz.rapidfire.core.maintenance.wizard.AbstractWizardPage;
 import biz.rapidfire.core.validators.Validator;
 
@@ -28,6 +30,8 @@ public class FilePage extends AbstractWizardPage {
     private FileValues fileValues;
 
     private Validator nameValidator;
+    private Validator copyProgramNameValidator;
+    private Validator conversionProgramNameValidator;
     private Validator libraryValidator;
 
     private FileMaintenanceControl fileMaintenanceControl;
@@ -38,6 +42,8 @@ public class FilePage extends AbstractWizardPage {
         this.fileValues = fileValues;
 
         this.nameValidator = Validator.getNameInstance();
+        this.copyProgramNameValidator = Validator.getNameInstance(CopyProgram.labels());
+        this.conversionProgramNameValidator = Validator.getNameInstance(ConversionProgram.labels());
         this.libraryValidator = Validator.getLibraryNameInstance(Validator.LIBRARY_LIBL, Validator.LIBRARY_CURLIB);
 
         setTitle(Messages.Wizard_Page_File);
@@ -49,7 +55,8 @@ public class FilePage extends AbstractWizardPage {
 
         if (StringHelper.isNullOrEmpty(fileMaintenanceControl.getJobName())) {
             fileMaintenanceControl.setFocusJobName();
-        } else if (StringHelper.isNullOrEmpty(fileMaintenanceControl.getPosition())) {
+        } else if (StringHelper.isNullOrEmpty(fileMaintenanceControl.getPosition())
+            || IntHelper.tryParseInt(fileMaintenanceControl.getPosition(), -1) <= 0) {
             fileMaintenanceControl.setFocusPosition();
         } else if (StringHelper.isNullOrEmpty(fileMaintenanceControl.getFileName())) {
             fileMaintenanceControl.setFocusFileName();
@@ -127,26 +134,36 @@ public class FilePage extends AbstractWizardPage {
         String message = null;
 
         if (!nameValidator.validate(fileMaintenanceControl.getJobName())) {
-            fileMaintenanceControl.setFocusJobName();
+
             message = Messages.bindParameters(Messages.Job_name_A_is_not_valid, fileMaintenanceControl.getJobName());
-        } else if (StringHelper.isNullOrEmpty(fileMaintenanceControl.getPosition())) {
-            fileMaintenanceControl.setFocusPosition();
+
+        } else if (StringHelper.isNullOrEmpty(fileMaintenanceControl.getPosition())
+            || IntHelper.tryParseInt(fileMaintenanceControl.getPosition(), -1) <= 0) {
+
             message = Messages.bind(Messages.File_position_A_is_not_valid, fileMaintenanceControl.getPosition());
+
         } else if (!nameValidator.validate(fileMaintenanceControl.getFileName())) {
-            fileMaintenanceControl.setFocusFileName();
+
             message = Messages.bindParameters(Messages.File_name_A_is_not_valid, fileMaintenanceControl.getFileName());
-        } else if (!nameValidator.validate(fileMaintenanceControl.getCopyProgramName())) {
-            fileMaintenanceControl.setFocusCopyProgramName();
+
+        } else if (!copyProgramNameValidator.validate(fileMaintenanceControl.getCopyProgramName())) {
+
             message = Messages.bindParameters(Messages.Copy_program_name_A_is_not_valid, fileMaintenanceControl.getCopyProgramName());
-        } else if (!libraryValidator.validate(fileMaintenanceControl.getCopyProgramLibraryName())) {
-            fileMaintenanceControl.setFocusCopyProgramLibraryName();
-            message = Messages.bind(Messages.Library_name_A_is_not_valid, fileMaintenanceControl.getCopyProgramLibraryName());
-        } else if (!nameValidator.validate(fileMaintenanceControl.getConversionProgramName())) {
-            fileMaintenanceControl.setFocusConversionProgramName();
+
+        } else if (!isSpecialValue(fileMaintenanceControl.getCopyProgramName(), CopyProgram.labels())
+            && !libraryValidator.validate(fileMaintenanceControl.getCopyProgramLibraryName())) {
+
+            message = Messages.bind(Messages.Copy_program_library_name_A_is_not_valid, fileMaintenanceControl.getCopyProgramLibraryName());
+
+        } else if (!conversionProgramNameValidator.validate(fileMaintenanceControl.getConversionProgramName())) {
+
             message = Messages.bindParameters(Messages.Conversion_program_name_A_is_not_valid, fileMaintenanceControl.getConversionProgramName());
-        } else if (!libraryValidator.validate(fileMaintenanceControl.getConversionProgramLibraryName())) {
-            fileMaintenanceControl.setFocusConversionProgramLibraryName();
-            message = Messages.bind(Messages.Library_name_A_is_not_valid, fileMaintenanceControl.getConversionProgramLibraryName());
+
+        } else if (!isSpecialValue(fileMaintenanceControl.getConversionProgramName(), ConversionProgram.labels())
+            && !libraryValidator.validate(fileMaintenanceControl.getConversionProgramLibraryName())) {
+
+            message = Messages
+                .bind(Messages.Conversion_program_library_name_A_is_not_valid, fileMaintenanceControl.getConversionProgramLibraryName());
         }
 
         updateValues();
@@ -158,6 +175,21 @@ public class FilePage extends AbstractWizardPage {
         }
 
         setErrorMessage(message);
+    }
+
+    private boolean isSpecialValue(String value, String[] specialValues) {
+
+        if (value == null) {
+            return false;
+        }
+
+        for (String specialValue : specialValues) {
+            if (value.equals(specialValue)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     private void updateValues() {
