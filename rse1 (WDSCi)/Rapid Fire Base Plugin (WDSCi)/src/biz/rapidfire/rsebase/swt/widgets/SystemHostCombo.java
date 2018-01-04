@@ -38,11 +38,12 @@ public class SystemHostCombo {
     }
 
     public SystemHostCombo(Composite parent, int style, boolean showNewButton, boolean showLabel) {
-        
+
         this.connectionCombo = new ISeriesConnectionCombo(parent, style, null, showNewButton, showLabel);
 
         this.connectionCombo.setConnections(SystemConnectionHelper.getHosts());
         this.connectionCombo.setItems(SystemConnectionHelper.getConnectionNames());
+        this.connectionCombo.setSelectionIndex(0);
     }
 
     public void addModifyListener(ModifyListener listener) {
@@ -90,11 +91,22 @@ public class SystemHostCombo {
     }
 
     public String getConnectionName() {
-        return connectionCombo.getSystemConnection().getAliasName();
+
+        SystemConnection host = connectionCombo.getSystemConnection();
+        if (host == null) {
+            return null;
+        }
+
+        return host.getAliasName();
     }
 
     public String getHostName() {
-        return connectionCombo.getSystemConnection().getHostName();
+
+        SystemConnection host = connectionCombo.getSystemConnection();
+        if (host == null) {
+            return null;
+        }
+        return host.getHostName();
     }
 
     public boolean selectConnection(String connectionName) {
