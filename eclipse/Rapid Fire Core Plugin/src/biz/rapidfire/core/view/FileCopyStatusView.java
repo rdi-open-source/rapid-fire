@@ -503,12 +503,23 @@ public class FileCopyStatusView extends ViewPart implements IPropertyChangeListe
         }
     }
 
-    public void jobFinished(Job job) {
+    public void jobFinished(final Job job) {
 
-        if (job == autoRefreshJob) {
-            autoRefreshJob = null;
-            refreshActionsEnablement();
+        if (job != autoRefreshJob) {
+            return;
         }
+
+        new UIJob("") {
+
+            @Override
+            public IStatus runInUIThread(IProgressMonitor monitor) {
+
+                autoRefreshJob = null;
+                refreshActionsEnablement();
+
+                return Status.OK_STATUS;
+            }
+        }.schedule();
     }
 
     @Override
