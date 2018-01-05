@@ -13,6 +13,9 @@ import java.util.Comparator;
 import java.util.LinkedList;
 import java.util.List;
 
+import org.eclipse.core.commands.ExecutionEvent;
+import org.eclipse.core.commands.ExecutionException;
+import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.rse.core.RSECorePlugin;
 import org.eclipse.rse.core.events.ISystemResourceChangeEvents;
 import org.eclipse.rse.core.events.SystemResourceChangeEvent;
@@ -22,6 +25,7 @@ import org.eclipse.rse.core.model.ISystemRegistry;
 import org.eclipse.rse.core.subsystems.ISubSystem;
 import org.eclipse.rse.core.subsystems.SubSystemHelpers;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.ui.handlers.HandlerUtil;
 
 import com.ibm.as400.access.AS400;
 import com.ibm.etools.iseries.rse.ui.resources.QSYSEditableRemoteSourceFileMember;
@@ -29,6 +33,18 @@ import com.ibm.etools.iseries.services.qsys.api.IQSYSMember;
 import com.ibm.etools.iseries.subsystems.qsys.api.IBMiConnection;
 
 public class SystemConnectionHelper {
+
+    /**
+     * Returns the currently selected items from an ExecutionEvent.
+     * 
+     * @param event - Execution event that is queried for the selected items
+     * @return selected items
+     * @throws ExecutionException
+     */
+    public static ISelection getCurrentSelection(ExecutionEvent event) throws ExecutionException {
+
+        return HandlerUtil.getCurrentSelection(event);
+    }
 
     /**
      * Returns the subsystem that is identified by the provided connection name.
@@ -101,11 +117,6 @@ public class SystemConnectionHelper {
             for (Object parent : parents) {
                 sr.fireEvent(new SystemResourceChangeEvent(resource, ISystemResourceChangeEvents.EVENT_ADD, parent));
                 sr.fireEvent(new SystemResourceChangeEvent(resource, ISystemResourceChangeEvents.EVENT_CHANGE_CHILDREN, parent));
-                // sr.fireRemoteResourceChangeEvent(ISystemRemoteChangeEvents.SYSTEM_REMOTE_RESOURCE_CREATED,
-                // resource, parent, (ISubSystem)subSystem,
-                // null);
-                // sr.fireEvent(new SystemResourceChangeEvent(resource,
-                // ISystemResourceChangeEvents.EVENT_CHANGE_CHILDREN, parent));
             }
         }
     }
@@ -116,9 +127,6 @@ public class SystemConnectionHelper {
             ISystemRegistry sr = RSECorePlugin.getTheSystemRegistry();
             for (Object parent : parents) {
                 sr.fireEvent(new SystemResourceChangeEvent(resource, ISystemResourceChangeEvents.EVENT_REFRESH, parent));
-                // sr.fireRemoteResourceChangeEvent(ISystemRemoteChangeEvents.SYSTEM_REMOTE_RESOURCE_CHANGED,
-                // resource, parent, (ISubSystem)subSystem,
-                // null);
             }
         }
     }
@@ -129,9 +137,6 @@ public class SystemConnectionHelper {
             ISystemRegistry sr = RSECorePlugin.getTheSystemRegistry();
             for (Object parent : parents) {
                 sr.fireEvent(new SystemResourceChangeEvent(resource, ISystemResourceChangeEvents.EVENT_DELETE, parent));
-                // sr.fireRemoteResourceChangeEvent(ISystemRemoteChangeEvents.SYSTEM_REMOTE_RESOURCE_DELETED,
-                // resource, parent, (ISubSystem)subSystem,
-                // null);
             }
         }
     }

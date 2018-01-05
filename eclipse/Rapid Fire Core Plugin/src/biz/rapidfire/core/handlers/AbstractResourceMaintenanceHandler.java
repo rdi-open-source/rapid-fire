@@ -10,6 +10,7 @@ package biz.rapidfire.core.handlers;
 
 import java.util.Iterator;
 
+import org.eclipse.core.commands.AbstractHandler;
 import org.eclipse.core.commands.ExecutionEvent;
 import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.jface.dialogs.MessageDialog;
@@ -31,11 +32,11 @@ import biz.rapidfire.core.maintenance.shared.IResourceAction;
 import biz.rapidfire.core.model.IRapidFireResource;
 import biz.rapidfire.core.model.dao.IJDBCConnection;
 import biz.rapidfire.core.model.dao.JDBCConnectionManager;
-import biz.rapidfire.rsebase.handlers.AbstractSelectionHandler;
 import biz.rapidfire.rsebase.helpers.ExpressionsHelper;
+import biz.rapidfire.rsebase.helpers.SystemConnectionHelper;
 
-public abstract class AbstractResourceMaintenanceHandler<R extends IRapidFireResource, A extends IResourceAction> extends AbstractSelectionHandler
-    implements IMaintenanceHandler {
+public abstract class AbstractResourceMaintenanceHandler<R extends IRapidFireResource, A extends IResourceAction> extends AbstractHandler implements
+    IMaintenanceHandler {
 
     private String message;
     private MaintenanceMode mode;
@@ -136,7 +137,7 @@ public abstract class AbstractResourceMaintenanceHandler<R extends IRapidFireRes
 
     public Object execute(ExecutionEvent event) throws ExecutionException {
 
-        ISelection selection = getCurrentSelection(event);
+        ISelection selection = SystemConnectionHelper.getCurrentSelection(event);
 
         return executeWithSelection(selection);
     }
@@ -178,11 +179,6 @@ public abstract class AbstractResourceMaintenanceHandler<R extends IRapidFireRes
 
     protected Shell getShell() {
         return PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell();
-    }
-
-    @Override
-    protected boolean isDeleteMode() {
-        return MaintenanceMode.DELETE.equals(mode);
     }
 
     private Object executeWithResource(R resource) throws ExecutionException {
