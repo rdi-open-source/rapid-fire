@@ -72,6 +72,7 @@ public class FileCopyProgramGeneratorMaintenanceDialog extends AbstractMaintenan
     private String conversionProgram;
     private String conversionProgramLibrary;
 
+    private Preferences preferences;
     private boolean isOpenMember;
 
     public static FileCopyProgramGeneratorMaintenanceDialog getCreateDialog(Shell shell, FileCopyProgramGeneratorManager manager) {
@@ -103,7 +104,9 @@ public class FileCopyProgramGeneratorMaintenanceDialog extends AbstractMaintenan
 
         this.manager = manager;
 
-        this.isOpenMember = Preferences.getInstance().isOpenGeneratedCopyProgram();
+        this.preferences = Preferences.getInstance();
+
+        this.isOpenMember = preferences.isOpenGeneratedCopyProgram();
         this.sourceFile = null;
         this.sourceFileLibrary = null;
         this.sourceMember = null;
@@ -191,10 +194,10 @@ public class FileCopyProgramGeneratorMaintenanceDialog extends AbstractMaintenan
             systemHostCombo.selectConnection(connectionName);
         }
 
-        setText(textLibrary, "");
-        setText(textShadowLibrary, "");
-        setText(textConversionProgram, "");
-        setText(textConversionProgramLibrary, "");
+        setText(textLibrary, preferences.getGeneratorLibrary());
+        setText(textShadowLibrary, preferences.getGeneratorShadowLibrary());
+        setText(textConversionProgram, preferences.getGeneratorConversionProgram());
+        setText(textConversionProgramLibrary, preferences.getGeneratorConversionProgramLibrary());
     }
 
     @Override
@@ -202,7 +205,11 @@ public class FileCopyProgramGeneratorMaintenanceDialog extends AbstractMaintenan
 
         memberPrompt.updateHistory();
 
-        Preferences.getInstance().setOpenGeneratedCopyProgram(checkboxOpenMember.getSelection());
+        preferences.setOpenGeneratedCopyProgram(checkboxOpenMember.getSelection());
+        preferences.setGeneratorLibrary(textLibrary.getText());
+        preferences.setGeneratorShadowLibrary(textShadowLibrary.getText());
+        preferences.setGeneratorConversionProgram(textConversionProgram.getText());
+        preferences.setGeneratorConversionProgramLibrary(textConversionProgramLibrary.getText());
 
         connectionName = systemHostCombo.getConnectionName();
         sourceFileLibrary = memberPrompt.getLibraryName();

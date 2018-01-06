@@ -73,12 +73,18 @@ public final class Preferences {
 
     private static final String GENERATOR = DOMAIN + "GENERATOR.";
     private static final String GENERATOR_OPEN_MEMBER = GENERATOR + "OPEN_MEMBER"; //$NON-NLS-1$
+    private static final String GENERATOR_LIBRARY = GENERATOR + "LIBRARY"; //$NON-NLS-1$
+    private static final String GENERATOR_SHADOW_LIBRARY = GENERATOR + "SHADOW_LIBRARY"; //$NON-NLS-1$
+    private static final String GENERATOR_CONVERSION_PROGRAM = GENERATOR + "CONVERSION_PROGRAM"; //$NON-NLS-1$
+    private static final String GENERATOR_CONVERSION_PROGRAM_LIBRARY = GENERATOR + "CONVERSION_PROGRAM_LIBRARY"; //$NON-NLS-1$
 
     private static final String CONNECTION = DOMAIN + "CONNECTION.";
     private static final String CONNECTION_IS_SLOW = CONNECTION + "IS_SLOW"; //$NON-NLS-1$
 
     private static final String DATE_FORMAT_LOCALE = "*LOCALE"; //$NON-NLS-1$
     private static final String TIME_FORMAT_LOCALE = "*LOCALE"; //$NON-NLS-1$
+
+    private static final String EMPTY_STRING = ""; //$NON-NLS-1$
 
     /**
      * Private constructor to ensure the Singleton pattern.
@@ -150,6 +156,22 @@ public final class Preferences {
         return preferenceStore.getBoolean(GENERATOR_OPEN_MEMBER);
     }
 
+    public String getGeneratorLibrary() {
+        return preferenceStore.getString(GENERATOR_LIBRARY);
+    }
+
+    public String getGeneratorShadowLibrary() {
+        return preferenceStore.getString(GENERATOR_SHADOW_LIBRARY);
+    }
+
+    public String getGeneratorConversionProgram() {
+        return preferenceStore.getString(GENERATOR_CONVERSION_PROGRAM);
+    }
+
+    public String getGeneratorConversionProgramLibrary() {
+        return preferenceStore.getString(GENERATOR_CONVERSION_PROGRAM_LIBRARY);
+    }
+
     public boolean isSlowConnection() {
         return preferenceStore.getBoolean(CONNECTION_IS_SLOW);
     }
@@ -194,6 +216,22 @@ public final class Preferences {
         preferenceStore.setValue(GENERATOR_OPEN_MEMBER, openMember);
     }
 
+    public void setGeneratorLibrary(String library) {
+        preferenceStore.setValue(GENERATOR_LIBRARY, library);
+    }
+
+    public void setGeneratorShadowLibrary(String shadowLibrary) {
+        preferenceStore.setValue(GENERATOR_SHADOW_LIBRARY, shadowLibrary);
+    }
+
+    public void setGeneratorConversionProgram(String conversionProgram) {
+        preferenceStore.setValue(GENERATOR_CONVERSION_PROGRAM, conversionProgram);
+    }
+
+    public void setGeneratorConversionProgramLibrary(String conversionProgramLibrary) {
+        preferenceStore.setValue(GENERATOR_CONVERSION_PROGRAM_LIBRARY, conversionProgramLibrary);
+    }
+
     public void setSlowConnection(boolean isSlow) {
         preferenceStore.setValue(CONNECTION_IS_SLOW, isSlow);
     }
@@ -215,6 +253,10 @@ public final class Preferences {
         preferenceStore.setDefault(WIZARD_RAPID_FIRE_LIBRARY, getDefaultWizardRapidFireLibrary());
 
         preferenceStore.setDefault(GENERATOR_OPEN_MEMBER, getDefaultOpenGeneratedCopyProgram());
+        preferenceStore.setDefault(GENERATOR_LIBRARY, getDefaultGeneratorLibrary());
+        preferenceStore.setDefault(GENERATOR_SHADOW_LIBRARY, getDefaultGeneratorShadowLibrary());
+        preferenceStore.setDefault(GENERATOR_CONVERSION_PROGRAM, getDefaultGeneratorConversionProgram());
+        preferenceStore.setDefault(GENERATOR_CONVERSION_PROGRAM_LIBRARY, getDefaultGeneratorConversionProgramLibrary());
 
         preferenceStore.setDefault(CONNECTION_IS_SLOW, getDefaultIsSlowConnection());
     }
@@ -272,6 +314,22 @@ public final class Preferences {
 
     private boolean getDefaultOpenGeneratedCopyProgram() {
         return true;
+    }
+
+    private String getDefaultGeneratorLibrary() {
+        return EMPTY_STRING;
+    }
+
+    private String getDefaultGeneratorShadowLibrary() {
+        return EMPTY_STRING;
+    }
+
+    private String getDefaultGeneratorConversionProgram() {
+        return EMPTY_STRING;
+    }
+
+    private String getDefaultGeneratorConversionProgramLibrary() {
+        return EMPTY_STRING;
     }
 
     public boolean getDefaultIsSlowConnection() {
