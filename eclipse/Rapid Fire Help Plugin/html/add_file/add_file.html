@@ -88,19 +88,38 @@ Expand the created <i>File</i> node and select <i>New -&gt; Conversion...</i> fr
 the <i>Conversions</i> node. Then enter the following attributes:
 <p>
 <table>
-<tr><td valign="top" nowrap>Area</td><td valign="top"> - </td>
-    <td>Enter a name for this area. The name must follow the rules for host object names.</td></tr>
-<tr><td valign="top" nowrap>Library</td><td valign="top"> - </td>
-    <td>Select one of the library entries that you have created at job level. The library 
-        entry that you associated to the area defines the production and the shadow library.</td></tr>
-<tr><td valign="top" nowrap>Library list</td><td valign="top"> - </td>
-    <td>Select one of library lists that you have defined at job level. Only <i>*NONE</i> is valid 
-        when <i>Create environment</i> is not selected for the job.</td></tr>
-<tr><td valign="top" nowrap>Library CCSID</td><td valign="top"> - </td>
-    <td>Specify the CCSID that is applied to the job when compiling the objects.</td></tr>
-<tr><td valign="top" nowrap>Command extension</td><td valign="top"> - </td>
-    <td>Specify additional parameters that are added to the compile command when compiling the object.</td></tr>
+<tr><td valign="top" nowrap>Field to convert</td><td valign="top"> - </td>
+    <td>Enter the name of the field the conversion rules apply to.</td></tr>
+<tr><td valign="top" nowrap>Rename field in old file to</td><td valign="top"> - </td>
+    <td>Enter a new name if you need to rename a field in the old file, because you
+        need to access the old value in a conversion statement. It is up to you, to
+        fill a renamed field in the target record format.<br>
+        Select <i>*NONE</i> if renaming is not required.</td></tr>
+<tr><td valign="top" nowrap>Conversions</td><td valign="top"> - </td>
+    <td>Enter one or more conversion statements for example if you need to convert a
+        numeric field to a date field. Each statement must be a valid RPG statement.</td></tr>
 </table>
+<p>
+<h3>Sample copy programs</h3>
+<p>
+Generated copy program where the record format IDs of the old and new file did not change. Simple
+conversion statement that assigns a fix value to the existing field <i>X1ERR</i>. The field names 
+of the source and target file are the same.
+<p>
+<img src="./assets/sample_copy_pgm_1.png"/>
+<p>
+Generated copy program where the record format IDs of the old and new file did not change. IF/ELSE
+conversion statements converting field <i>X1ERR</i> from alpha-numeric to numeric. The field names 
+of the source and target file are the same.
+<p>
+<img src="./assets/sample_copy_pgm_2.png"/>
+<p>
+Generated copy program where the new record format has the new field <i>X1NEWCOL</i>. Simple
+conversion statement that assigns a fix value to the existing field <i>X1ERR</i>. The field names
+of the source and target file are prefixed with <i>S_</i> and <i>T_</i> since the record format has
+changed.
+<p>
+<img src="./assets/sample_copy_pgm_3.png"/>
 <p>
 <a id="#add_command"></a>
 <h2>Add Command</h2>
