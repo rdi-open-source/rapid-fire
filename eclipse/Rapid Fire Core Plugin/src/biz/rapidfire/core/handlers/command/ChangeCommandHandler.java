@@ -16,7 +16,6 @@ import biz.rapidfire.core.maintenance.MaintenanceMode;
 import biz.rapidfire.core.maintenance.command.CommandValues;
 import biz.rapidfire.core.maintenance.command.shared.CommandAction;
 import biz.rapidfire.core.model.IRapidFireCommandResource;
-import biz.rapidfire.rsebase.helpers.SystemConnectionHelper;
 
 public class ChangeCommandHandler extends AbstractCommandMaintenanceHandler implements IHandler {
 
@@ -36,7 +35,7 @@ public class ChangeCommandHandler extends AbstractCommandMaintenanceHandler impl
             getManager().book();
 
             command.reload(getShell());
-            SystemConnectionHelper.refreshUIChanged(command.getParentSubSystem(), command, command.getParentNode());
+            refreshUIChanged(command.getParentSubSystem(), command, command.getParentNode());
         }
     }
 }

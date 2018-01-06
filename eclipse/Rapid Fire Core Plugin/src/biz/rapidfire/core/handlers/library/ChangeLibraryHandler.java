@@ -16,7 +16,6 @@ import biz.rapidfire.core.maintenance.MaintenanceMode;
 import biz.rapidfire.core.maintenance.library.LibraryValues;
 import biz.rapidfire.core.maintenance.library.shared.LibraryAction;
 import biz.rapidfire.core.model.IRapidFireLibraryResource;
-import biz.rapidfire.rsebase.helpers.SystemConnectionHelper;
 
 public class ChangeLibraryHandler extends AbstractLibraryMaintenanceHandler implements IHandler {
 
@@ -36,7 +35,7 @@ public class ChangeLibraryHandler extends AbstractLibraryMaintenanceHandler impl
             getManager().book();
 
             library.reload(getShell());
-            SystemConnectionHelper.refreshUIChanged(library.getParentSubSystem(), library, library.getParentNode());
+            refreshUIChanged(library.getParentSubSystem(), library, library.getParentNode());
         }
     }
 }

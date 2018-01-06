@@ -18,7 +18,6 @@ import biz.rapidfire.core.maintenance.MaintenanceMode;
 import biz.rapidfire.core.maintenance.area.AreaValues;
 import biz.rapidfire.core.maintenance.area.shared.AreaAction;
 import biz.rapidfire.core.model.IRapidFireAreaResource;
-import biz.rapidfire.rsebase.helpers.SystemConnectionHelper;
 
 public class NewAreaHandler extends AbstractAreaMaintenanceHandler implements IHandler {
 
@@ -43,7 +42,7 @@ public class NewAreaHandler extends AbstractAreaMaintenanceHandler implements IH
             IRapidFireAreaResource newArea = area.getParentSubSystem().getArea(area.getParentResource(), values.getKey().getArea(), getShell());
             if (newArea != null) {
                 newArea.setParentNode(area.getParentNode());
-                SystemConnectionHelper.refreshUICreated(newArea.getParentSubSystem(), newArea, newArea.getParentNode());
+                refreshUICreated(newArea.getParentSubSystem(), newArea, newArea.getParentNode());
             } else {
                 MessageDialogAsync.displayError(Messages.Could_not_create_resource_Resource_not_found);
             }

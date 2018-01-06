@@ -18,7 +18,6 @@ import biz.rapidfire.core.maintenance.MaintenanceMode;
 import biz.rapidfire.core.maintenance.conversion.ConversionValues;
 import biz.rapidfire.core.maintenance.conversion.shared.ConversionAction;
 import biz.rapidfire.core.model.IRapidFireConversionResource;
-import biz.rapidfire.rsebase.helpers.SystemConnectionHelper;
 
 public class NewConversionHandler extends AbstractConversionMaintenanceHandler implements IHandler {
 
@@ -43,7 +42,7 @@ public class NewConversionHandler extends AbstractConversionMaintenanceHandler i
                 values.getKey().getFieldToConvert(), getShell());
             if (newConversion != null) {
                 newConversion.setParentNode(conversion.getParentNode());
-                SystemConnectionHelper.refreshUICreated(newConversion.getParentSubSystem(), newConversion, newConversion.getParentNode());
+                refreshUICreated(newConversion.getParentSubSystem(), newConversion, newConversion.getParentNode());
             } else {
                 MessageDialogAsync.displayError(Messages.Could_not_create_resource_Resource_not_found);
             }

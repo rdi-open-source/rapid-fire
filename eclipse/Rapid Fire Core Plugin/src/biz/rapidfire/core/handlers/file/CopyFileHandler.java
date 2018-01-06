@@ -18,7 +18,6 @@ import biz.rapidfire.core.maintenance.MaintenanceMode;
 import biz.rapidfire.core.maintenance.file.FileValues;
 import biz.rapidfire.core.maintenance.file.shared.FileAction;
 import biz.rapidfire.core.model.IRapidFireFileResource;
-import biz.rapidfire.rsebase.helpers.SystemConnectionHelper;
 
 public class CopyFileHandler extends AbstractFileMaintenanceHandler implements IHandler {
 
@@ -41,7 +40,7 @@ public class CopyFileHandler extends AbstractFileMaintenanceHandler implements I
             IRapidFireFileResource newFile = file.getParentSubSystem().getFile(file.getParentResource(), values.getKey().getPosition(), getShell());
             if (newFile != null) {
                 newFile.setParentNode(file.getParentNode());
-                SystemConnectionHelper.refreshUICreated(newFile.getParentSubSystem(), newFile, newFile.getParentNode());
+                refreshUICreated(newFile.getParentSubSystem(), newFile, newFile.getParentNode());
             } else {
                 MessageDialogAsync.displayError(Messages.Could_not_copy_resource_Resource_not_found);
             }

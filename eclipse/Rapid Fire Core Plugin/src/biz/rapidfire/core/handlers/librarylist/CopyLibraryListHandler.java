@@ -18,7 +18,6 @@ import biz.rapidfire.core.maintenance.MaintenanceMode;
 import biz.rapidfire.core.maintenance.librarylist.LibraryListValues;
 import biz.rapidfire.core.maintenance.librarylist.shared.LibraryListAction;
 import biz.rapidfire.core.model.IRapidFireLibraryListResource;
-import biz.rapidfire.rsebase.helpers.SystemConnectionHelper;
 
 public class CopyLibraryListHandler extends AbstractLibraryListMaintenanceHandler implements IHandler {
 
@@ -42,7 +41,7 @@ public class CopyLibraryListHandler extends AbstractLibraryListMaintenanceHandle
                 values.getKey().getLibraryList(), getShell());
             if (newLibraryList != null) {
                 newLibraryList.setParentNode(libraryList.getParentNode());
-                SystemConnectionHelper.refreshUICreated(newLibraryList.getParentSubSystem(), newLibraryList, newLibraryList.getParentNode());
+                refreshUICreated(newLibraryList.getParentSubSystem(), newLibraryList, newLibraryList.getParentNode());
             } else {
                 MessageDialogAsync.displayError(Messages.Could_not_copy_resource_Resource_not_found);
             }

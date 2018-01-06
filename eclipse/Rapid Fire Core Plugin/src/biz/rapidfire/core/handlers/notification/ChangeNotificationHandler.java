@@ -16,7 +16,6 @@ import biz.rapidfire.core.maintenance.MaintenanceMode;
 import biz.rapidfire.core.maintenance.notification.NotificationValues;
 import biz.rapidfire.core.maintenance.notification.shared.NotificationAction;
 import biz.rapidfire.core.model.IRapidFireNotificationResource;
-import biz.rapidfire.rsebase.helpers.SystemConnectionHelper;
 
 public class ChangeNotificationHandler extends AbstractNotificationMaintenanceHandler implements IHandler {
 
@@ -36,7 +35,7 @@ public class ChangeNotificationHandler extends AbstractNotificationMaintenanceHa
             getManager().book();
 
             notification.reload(getShell());
-            SystemConnectionHelper.refreshUIChanged(notification.getParentSubSystem(), notification, notification.getParentNode());
+            refreshUIChanged(notification.getParentSubSystem(), notification, notification.getParentNode());
         }
     }
 }

@@ -16,7 +16,6 @@ import biz.rapidfire.core.maintenance.MaintenanceMode;
 import biz.rapidfire.core.maintenance.conversion.ConversionValues;
 import biz.rapidfire.core.maintenance.conversion.shared.ConversionAction;
 import biz.rapidfire.core.model.IRapidFireConversionResource;
-import biz.rapidfire.rsebase.helpers.SystemConnectionHelper;
 
 public class DeleteConversionHandler extends AbstractConversionMaintenanceHandler implements IHandler {
 
@@ -36,7 +35,7 @@ public class DeleteConversionHandler extends AbstractConversionMaintenanceHandle
         if (dialog.open() == Dialog.OK) {
             getManager().book();
 
-            SystemConnectionHelper.refreshUIDeleted(conversion.getParentSubSystem(), conversion, conversion.getParentNode());
+            refreshUIDeleted(conversion.getParentSubSystem(), conversion, conversion.getParentNode());
         }
     }
 }

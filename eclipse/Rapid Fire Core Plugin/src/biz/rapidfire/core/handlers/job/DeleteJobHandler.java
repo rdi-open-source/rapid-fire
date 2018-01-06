@@ -16,7 +16,6 @@ import biz.rapidfire.core.maintenance.MaintenanceMode;
 import biz.rapidfire.core.maintenance.job.JobValues;
 import biz.rapidfire.core.maintenance.job.shared.JobAction;
 import biz.rapidfire.core.model.IRapidFireJobResource;
-import biz.rapidfire.rsebase.helpers.SystemConnectionHelper;
 
 public class DeleteJobHandler extends AbstractJobMaintenanceHandler implements IHandler {
 
@@ -35,7 +34,7 @@ public class DeleteJobHandler extends AbstractJobMaintenanceHandler implements I
         if (dialog.open() == Dialog.OK) {
             getManager().book();
 
-            SystemConnectionHelper.refreshUIDeleted(job.getParentSubSystem(), job, job.getParentFilters());
+            refreshUIDeleted(job.getParentSubSystem(), job, job.getParentFilters());
         }
     }
 }

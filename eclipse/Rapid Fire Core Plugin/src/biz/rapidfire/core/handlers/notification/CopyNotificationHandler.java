@@ -18,7 +18,6 @@ import biz.rapidfire.core.maintenance.MaintenanceMode;
 import biz.rapidfire.core.maintenance.notification.NotificationValues;
 import biz.rapidfire.core.maintenance.notification.shared.NotificationAction;
 import biz.rapidfire.core.model.IRapidFireNotificationResource;
-import biz.rapidfire.rsebase.helpers.SystemConnectionHelper;
 
 public class CopyNotificationHandler extends AbstractNotificationMaintenanceHandler implements IHandler {
 
@@ -42,7 +41,7 @@ public class CopyNotificationHandler extends AbstractNotificationMaintenanceHand
                 values.getKey().getPosition(), getShell());
             if (newNotification != null) {
                 newNotification.setParentNode(notification.getParentNode());
-                SystemConnectionHelper.refreshUICreated(newNotification.getParentSubSystem(), newNotification, newNotification.getParentNode());
+                refreshUICreated(newNotification.getParentSubSystem(), newNotification, newNotification.getParentNode());
             } else {
                 MessageDialogAsync.displayError(Messages.Could_not_copy_resource_Resource_not_found);
             }

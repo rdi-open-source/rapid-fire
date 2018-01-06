@@ -18,7 +18,6 @@ import biz.rapidfire.core.maintenance.MaintenanceMode;
 import biz.rapidfire.core.maintenance.library.LibraryValues;
 import biz.rapidfire.core.maintenance.library.shared.LibraryAction;
 import biz.rapidfire.core.model.IRapidFireLibraryResource;
-import biz.rapidfire.rsebase.helpers.SystemConnectionHelper;
 
 public class CopyLibraryHandler extends AbstractLibraryMaintenanceHandler implements IHandler {
 
@@ -42,7 +41,7 @@ public class CopyLibraryHandler extends AbstractLibraryMaintenanceHandler implem
                 getShell());
             if (newLibrary != null) {
                 newLibrary.setParentNode(library.getParentNode());
-                SystemConnectionHelper.refreshUICreated(newLibrary.getParentSubSystem(), newLibrary, newLibrary.getParentNode());
+                refreshUICreated(newLibrary.getParentSubSystem(), newLibrary, newLibrary.getParentNode());
             } else {
                 MessageDialogAsync.displayError(Messages.Could_not_copy_resource_Resource_not_found);
             }

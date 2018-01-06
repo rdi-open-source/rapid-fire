@@ -32,6 +32,7 @@ import biz.rapidfire.core.maintenance.shared.IResourceAction;
 import biz.rapidfire.core.model.IRapidFireResource;
 import biz.rapidfire.core.model.dao.IJDBCConnection;
 import biz.rapidfire.core.model.dao.JDBCConnectionManager;
+import biz.rapidfire.core.preferences.Preferences;
 import biz.rapidfire.rsebase.helpers.ExpressionsHelper;
 import biz.rapidfire.rsebase.helpers.SystemConnectionHelper;
 
@@ -266,5 +267,24 @@ public abstract class AbstractResourceMaintenanceHandler<R extends IRapidFireRes
             MessageDialogAsync.displayError(getShell(), message);
             message = null;
         }
+    }
+
+    public void refreshUICreated(Object subSystem, Object resource, Object... parents) {
+
+        SystemConnectionHelper.refreshUICreated(isSlowConnection(), subSystem, resource, parents);
+    }
+
+    public void refreshUIChanged(Object subSystem, Object resource, Object... parents) {
+
+        SystemConnectionHelper.refreshUIChanged(isSlowConnection(), subSystem, resource, parents);
+    }
+
+    public void refreshUIDeleted(Object subSystem, Object resource, Object... parents) {
+
+        SystemConnectionHelper.refreshUIDeleted(isSlowConnection(), subSystem, resource, parents);
+    }
+
+    private boolean isSlowConnection() {
+        return Preferences.getInstance().isSlowConnection();
     }
 }

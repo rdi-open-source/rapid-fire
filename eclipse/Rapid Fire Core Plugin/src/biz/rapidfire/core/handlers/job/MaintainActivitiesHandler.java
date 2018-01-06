@@ -13,7 +13,6 @@ import biz.rapidfire.core.maintenance.job.shared.JobAction;
 import biz.rapidfire.core.model.IRapidFireJobResource;
 import biz.rapidfire.core.model.dao.IJDBCConnection;
 import biz.rapidfire.core.model.dao.JDBCConnectionManager;
-import biz.rapidfire.rsebase.helpers.SystemConnectionHelper;
 
 public class MaintainActivitiesHandler extends AbstractJobMaintenanceHandler implements IHandler {
 
@@ -55,7 +54,7 @@ public class MaintainActivitiesHandler extends AbstractJobMaintenanceHandler imp
             }
 
             job.reload(getShell());
-            SystemConnectionHelper.refreshUIChanged(job.getParentSubSystem(), job, job.getParentFilters());
+            refreshUIChanged(job.getParentSubSystem(), job, job.getParentFilters());
 
         } else {
 

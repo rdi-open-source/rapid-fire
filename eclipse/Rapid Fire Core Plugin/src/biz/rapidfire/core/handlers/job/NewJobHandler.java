@@ -18,7 +18,6 @@ import biz.rapidfire.core.maintenance.MaintenanceMode;
 import biz.rapidfire.core.maintenance.job.JobValues;
 import biz.rapidfire.core.maintenance.job.shared.JobAction;
 import biz.rapidfire.core.model.IRapidFireJobResource;
-import biz.rapidfire.rsebase.helpers.SystemConnectionHelper;
 
 public class NewJobHandler extends AbstractJobMaintenanceHandler implements IHandler {
 
@@ -39,9 +38,9 @@ public class NewJobHandler extends AbstractJobMaintenanceHandler implements IHan
 
             values = dialog.getValue();
             IRapidFireJobResource newJob = job.getParentSubSystem().getJob(job.getDataLibrary(), values.getKey().getJobName(), getShell());
-            if (job != null) {
+            if (newJob != null) {
                 newJob.setFilter(job.getFilter());
-                SystemConnectionHelper.refreshUICreated(newJob.getParentSubSystem(), newJob, newJob.getParentFilters());
+                refreshUICreated(newJob.getParentSubSystem(), newJob, newJob.getParentFilters());
             } else {
                 MessageDialogAsync.displayError(Messages.Could_not_create_resource_Resource_not_found);
             }

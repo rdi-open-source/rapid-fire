@@ -141,6 +141,8 @@ public class Messages extends NLS {
     public static String Label_Time_colon;
     public static String Label_Job_status_view;
     public static String Label_Open_member_colon;
+    public static String Remote_Connection_settings;
+    public static String Label_Is_slow_connection;
 
     public static String Tooltip_Library;
     public static String Tooltip_Job;
@@ -184,6 +186,7 @@ public class Messages extends NLS {
     public static String Tooltip_Specifies_the_format_for_displaying_time_values;
     public static String Tooltip_Open_member;
     public static String Tooltip_Select_libraries_by_area;
+    public static String Tooltip_Is_slow_connection;
 
     // Questions
     public static String Question_Do_you_want_to_delete_library_A;

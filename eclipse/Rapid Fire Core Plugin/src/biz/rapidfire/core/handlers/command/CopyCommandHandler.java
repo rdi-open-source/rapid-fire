@@ -19,7 +19,6 @@ import biz.rapidfire.core.maintenance.command.CommandValues;
 import biz.rapidfire.core.maintenance.command.shared.CommandAction;
 import biz.rapidfire.core.maintenance.command.shared.CommandType;
 import biz.rapidfire.core.model.IRapidFireCommandResource;
-import biz.rapidfire.rsebase.helpers.SystemConnectionHelper;
 
 public class CopyCommandHandler extends AbstractCommandMaintenanceHandler implements IHandler {
 
@@ -44,7 +43,7 @@ public class CopyCommandHandler extends AbstractCommandMaintenanceHandler implem
                 values.getKey().getSequence(), getShell());
             if (newCommand != null) {
                 newCommand.setParentNode(command.getParentNode());
-                SystemConnectionHelper.refreshUICreated(newCommand.getParentSubSystem(), newCommand, newCommand.getParentNode());
+                refreshUICreated(newCommand.getParentSubSystem(), newCommand, newCommand.getParentNode());
             } else {
                 MessageDialogAsync.displayError(Messages.Could_not_copy_resource_Resource_not_found);
             }

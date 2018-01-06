@@ -16,7 +16,6 @@ import biz.rapidfire.core.maintenance.MaintenanceMode;
 import biz.rapidfire.core.maintenance.area.AreaValues;
 import biz.rapidfire.core.maintenance.area.shared.AreaAction;
 import biz.rapidfire.core.model.IRapidFireAreaResource;
-import biz.rapidfire.rsebase.helpers.SystemConnectionHelper;
 
 public class ChangeAreaHandler extends AbstractAreaMaintenanceHandler implements IHandler {
 
@@ -38,7 +37,7 @@ public class ChangeAreaHandler extends AbstractAreaMaintenanceHandler implements
             getManager().book();
 
             area.reload(getShell());
-            SystemConnectionHelper.refreshUIChanged(area.getParentSubSystem(), area, area.getParentNode());
+            refreshUIChanged(area.getParentSubSystem(), area, area.getParentNode());
         }
     }
 }

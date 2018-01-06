@@ -18,7 +18,6 @@ import biz.rapidfire.core.maintenance.MaintenanceMode;
 import biz.rapidfire.core.maintenance.job.JobValues;
 import biz.rapidfire.core.maintenance.job.shared.JobAction;
 import biz.rapidfire.core.model.IRapidFireJobResource;
-import biz.rapidfire.rsebase.helpers.SystemConnectionHelper;
 
 public class CopyJobHandler extends AbstractJobMaintenanceHandler implements IHandler {
 
@@ -41,7 +40,7 @@ public class CopyJobHandler extends AbstractJobMaintenanceHandler implements IHa
             IRapidFireJobResource newJob = job.getParentSubSystem().getJob(job.getDataLibrary(), values.getKey().getJobName(), getShell());
             if (newJob != null) {
                 newJob.setFilter(job.getFilter());
-                SystemConnectionHelper.refreshUICreated(newJob.getParentSubSystem(), newJob, newJob.getParentFilters());
+                refreshUICreated(newJob.getParentSubSystem(), newJob, newJob.getParentFilters());
             } else {
                 MessageDialogAsync.displayError(Messages.Could_not_copy_resource_Resource_not_found);
             }

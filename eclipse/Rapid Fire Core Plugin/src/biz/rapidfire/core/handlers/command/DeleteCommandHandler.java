@@ -16,7 +16,6 @@ import biz.rapidfire.core.maintenance.MaintenanceMode;
 import biz.rapidfire.core.maintenance.command.CommandValues;
 import biz.rapidfire.core.maintenance.command.shared.CommandAction;
 import biz.rapidfire.core.model.IRapidFireCommandResource;
-import biz.rapidfire.rsebase.helpers.SystemConnectionHelper;
 
 public class DeleteCommandHandler extends AbstractCommandMaintenanceHandler implements IHandler {
 
@@ -35,7 +34,7 @@ public class DeleteCommandHandler extends AbstractCommandMaintenanceHandler impl
         if (dialog.open() == Dialog.OK) {
             getManager().book();
 
-            SystemConnectionHelper.refreshUIDeleted(command.getParentSubSystem(), command, command.getParentNode());
+            refreshUIDeleted(command.getParentSubSystem(), command, command.getParentNode());
         }
     }
 }

@@ -16,7 +16,6 @@ import biz.rapidfire.core.maintenance.MaintenanceMode;
 import biz.rapidfire.core.maintenance.job.JobValues;
 import biz.rapidfire.core.maintenance.job.shared.JobAction;
 import biz.rapidfire.core.model.IRapidFireJobResource;
-import biz.rapidfire.rsebase.helpers.SystemConnectionHelper;
 
 public class ChangeJobHandler extends AbstractJobMaintenanceHandler implements IHandler {
 
@@ -36,7 +35,7 @@ public class ChangeJobHandler extends AbstractJobMaintenanceHandler implements I
             getManager().book();
 
             job.reload(getShell());
-            SystemConnectionHelper.refreshUIChanged(job.getParentSubSystem(), job, job.getParentFilters());
+            refreshUIChanged(job.getParentSubSystem(), job, job.getParentFilters());
         }
     }
 }
