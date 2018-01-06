@@ -117,18 +117,20 @@ public class SystemConnectionHelper {
         return null;
     }
 
-    public static void refreshUICreated(Object subSystem, Object resource, Object... parents) {
+    public static void refreshUICreated(boolean isSlowConnection, Object subSystem, Object resource, Object... parents) {
 
         if (resource != null) {
             SystemRegistry sr = SystemPlugin.getTheSystemRegistry();
             for (Object parent : parents) {
                 sr.fireEvent(new SystemResourceChangeEvent(resource, ISystemResourceChangeEvents.EVENT_ADD, parent));
-                sr.fireEvent(new SystemResourceChangeEvent(resource, ISystemResourceChangeEvents.EVENT_CHANGE_CHILDREN, parent));
+                if (!isSlowConnection) {
+                    sr.fireEvent(new SystemResourceChangeEvent(resource, ISystemResourceChangeEvents.EVENT_CHANGE_CHILDREN, parent));
+                }
             }
         }
     }
 
-    public static void refreshUIChanged(Object subSystem, Object resource, Object... parents) {
+    public static void refreshUIChanged(boolean isSlowConnection, Object subSystem, Object resource, Object... parents) {
 
         if (resource != null) {
             SystemRegistry sr = SystemPlugin.getTheSystemRegistry();
@@ -138,7 +140,7 @@ public class SystemConnectionHelper {
         }
     }
 
-    public static void refreshUIDeleted(Object subSystem, Object resource, Object... parents) {
+    public static void refreshUIDeleted(boolean isSlowConnection, Object subSystem, Object resource, Object... parents) {
 
         if (resource != null) {
             SystemRegistry sr = SystemPlugin.getTheSystemRegistry();
