@@ -38,19 +38,27 @@ import biz.rapidfire.core.jface.dialogs.XDialog;
 
 public class ItemSelectionDialog<M extends IStringListItem> extends XDialog implements SelectionListener {
 
+    private static final int DEFAULT_COLUMN_WIDTH = 100;
+
     private Table itemsTable;
     private TableViewer itemsViewer;
 
     private String title;
     private String columnHeading;
+    private int columnWidth;
     private M[] items;
     private M selectedItem;
 
     public ItemSelectionDialog(Shell parentShell, String title, String columnHeading) {
+        this(parentShell, title, columnHeading, DEFAULT_COLUMN_WIDTH);
+    }
+
+    public ItemSelectionDialog(Shell parentShell, String title, String columnHeading, int columnWidth) {
         super(parentShell);
 
         this.title = title;
         this.columnHeading = columnHeading;
+        this.columnWidth = columnWidth;
 
         this.items = null;
     }
@@ -104,7 +112,7 @@ public class ItemSelectionDialog<M extends IStringListItem> extends XDialog impl
 
         TableColumn itemColumn = new TableColumn(itemsTable, 0);
         itemColumn.setText(columnHeading);
-        itemColumn.setWidth(100);
+        itemColumn.setWidth(columnWidth);
 
         itemsViewer = new TableViewer(itemsTable);
         StringListContentProvider cp = new StringListContentProvider();

@@ -47,6 +47,7 @@ public class RapidFireCorePlugin extends AbstractExtendedUIPlugin {
     public static final String IMAGE_REFRESH = "refresh.gif"; //$NON-NLS-1$
     public static final String IMAGE_AUTO_REFRESH_OFF = "auto_refresh_off.gif"; //$NON-NLS-1$
     public static final String IMAGE_LIBRARY = "library.gif"; //$NON-NLS-1$
+    public static final String IMAGE_PROGRAM = "program.gif"; //$NON-NLS-1$
 
     public static final String IMAGE_DISABLED = "disabled.gif"; //$NON-NLS-1$
     public static final String IMAGE_ENABLED = "enabled.gif"; //$NON-NLS-1$
@@ -149,6 +150,7 @@ public class RapidFireCorePlugin extends AbstractExtendedUIPlugin {
         reg.put(IMAGE_REFRESH, getImageDescriptor(IMAGE_REFRESH));
         reg.put(IMAGE_AUTO_REFRESH_OFF, getImageDescriptor(IMAGE_AUTO_REFRESH_OFF));
         reg.put(IMAGE_LIBRARY, getImageDescriptor(IMAGE_LIBRARY));
+        reg.put(IMAGE_PROGRAM, getImageDescriptor(IMAGE_PROGRAM));
         reg.put(IMAGE_ENABLED, getImageDescriptor(IMAGE_ENABLED));
         reg.put(IMAGE_DISABLED, getImageDescriptor(IMAGE_DISABLED));
         reg.put(IMAGE_TRANSFER_LIBRARY, getImageDescriptor(IMAGE_TRANSFER_LIBRARY));

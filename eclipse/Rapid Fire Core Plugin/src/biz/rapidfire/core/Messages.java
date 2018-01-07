@@ -43,6 +43,7 @@ public class Messages extends NLS {
     public static String DialogFile_Copy_Program_Generator;
     public static String DialogTitle_Select_area;
     public static String DialogTitle_Reapply_all_changes;
+    public static String DialogTitle_Select_conversion_program;
 
     public static String Wizard_Title_New_Job_wizard;
     public static String Wizard_Page_Data_Library;
@@ -86,6 +87,7 @@ public class Messages extends NLS {
     public static String ColumnLabel_Start_time;
     public static String ColumnLabel_End_time;
     public static String ColumnLabel_Area;
+    public static String ColumnLabel_Conversion_program;
 
     // Dialog labels
     public static String Label_E_Mail_colon;
@@ -187,6 +189,7 @@ public class Messages extends NLS {
     public static String Tooltip_Open_member;
     public static String Tooltip_Select_libraries_by_area;
     public static String Tooltip_Is_slow_connection;
+    public static String Tooltip_Select_conversion_program_of_file;
 
     // Questions
     public static String Question_Do_you_want_to_delete_library_A;

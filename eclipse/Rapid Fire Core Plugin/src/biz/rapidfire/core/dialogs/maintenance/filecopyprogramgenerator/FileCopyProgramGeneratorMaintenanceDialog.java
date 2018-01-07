@@ -38,6 +38,7 @@ import biz.rapidfire.core.model.IRapidFireAreaResource;
 import biz.rapidfire.core.model.IRapidFireLibraryResource;
 import biz.rapidfire.core.preferences.Preferences;
 import biz.rapidfire.core.swt.widgets.WidgetFactory;
+import biz.rapidfire.core.swt.widgets.viewers.stringlist.IStringListItem;
 import biz.rapidfire.core.swt.widgets.viewers.stringlist.ItemSelectionDialog;
 import biz.rapidfire.rsebase.helpers.SystemConnectionHelper;
 import biz.rapidfire.rsebase.host.SystemFileType;
@@ -57,12 +58,14 @@ public class FileCopyProgramGeneratorMaintenanceDialog extends AbstractMaintenan
     private Button buttonSelectArea;
     private Text textLibrary;
     private Text textShadowLibrary;
+    private Button buttonSelectConversionProgram;
     private Text textConversionProgram;
     private Text textConversionProgramLibrary;
     private Button checkboxOpenMember;
 
     private String connectionName;
     private IRapidFireAreaResource[] areaItems;
+    private QualifiedProgramName[] conversionProgramItems;
 
     private String sourceFile;
     private String sourceFileLibrary;
@@ -125,6 +128,10 @@ public class FileCopyProgramGeneratorMaintenanceDialog extends AbstractMaintenan
         this.areaItems = areas;
     }
 
+    public void setConversionProgramName(String library, String name) {
+        this.conversionProgramItems = new QualifiedProgramName[] { new QualifiedProgramName(library, name) };
+    }
+
     @Override
     protected int getNumColumns() {
         return NUM_COLUMNS;
@@ -165,7 +172,10 @@ public class FileCopyProgramGeneratorMaintenanceDialog extends AbstractMaintenan
         textConversionProgram.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
         setDefaultValue(textConversionProgram, ConversionProgram.NONE.label());
 
-        WidgetFactory.createLabel(parent, null, null).setVisible(false); // filler
+        buttonSelectConversionProgram = WidgetFactory.createPushButton(parent,
+            RapidFireCorePlugin.getDefault().getImage(RapidFireCorePlugin.IMAGE_PROGRAM));
+        buttonSelectConversionProgram.setToolTipText(Messages.Tooltip_Select_conversion_program_of_file);
+        buttonSelectConversionProgram.addSelectionListener(this);
 
         WidgetFactory.createLabel(parent, Messages.Label_Conversion_program_library_name_colon, Messages.Tooltip_Conversion_program_library_name);
 
@@ -358,6 +368,15 @@ public class FileCopyProgramGeneratorMaintenanceDialog extends AbstractMaintenan
                 setLibraries(selectedArea);
                 return;
             }
+        } else if (event.getSource() == buttonSelectConversionProgram) {
+            ItemSelectionDialog<QualifiedProgramName> dialog = new ItemSelectionDialog<QualifiedProgramName>(getShell(),
+                Messages.DialogTitle_Select_conversion_program, Messages.ColumnLabel_Conversion_program, 200);
+            dialog.setInputData(conversionProgramItems);
+            if (dialog.open() == Dialog.OK) {
+                QualifiedProgramName selectedArea = dialog.getSelectedItem();
+                setConversionProgram(selectedArea);
+                return;
+            }
         }
     }
 
@@ -379,6 +398,12 @@ public class FileCopyProgramGeneratorMaintenanceDialog extends AbstractMaintenan
             RapidFireCorePlugin.logError("*** Could not read libraries of area: " + area.getName() + " ***", e); //$NON-NLS-1$ //$NON-NLS-2$
         }
 
+    }
+
+    private void setConversionProgram(QualifiedProgramName qualifiedProgram) {
+
+        textConversionProgram.setText(qualifiedProgram.getName());
+        textConversionProgramLibrary.setText(qualifiedProgram.getLibrary());
     }
 
     /**
@@ -404,5 +429,29 @@ public class FileCopyProgramGeneratorMaintenanceDialog extends AbstractMaintenan
     @Override
     protected IDialogSettings getDialogBoundsSettings() {
         return super.getDialogBoundsSettings(RapidFireCorePlugin.getDefault().getDialogSettings());
+    }
+
+    private class QualifiedProgramName implements IStringListItem {
+
+        private String name;
+        private String library;
+
+        public QualifiedProgramName(String library, String name) {
+            this.library = library;
+            this.name = name;
+        }
+
+        public String getName() {
+            return name;
+        }
+
+        public String getLibrary() {
+            return library;
+        }
+
+        public String getLabel() {
+            return getLibrary() + "/" + getName(); //$NON-NLS-1$
+        }
+
     }
 }

@@ -42,6 +42,7 @@ public class GenerateFileCopyProgramHandler extends AbstractProgramGeneratorHand
             FileCopyProgramGeneratorMaintenanceDialog dialog = FileCopyProgramGeneratorMaintenanceDialog.getCreateDialog(getShell(), getManager());
             dialog.setConnectionName(file.getParentSubSystem().getConnectionName());
             dialog.setAreas(file.getParentSubSystem().getAreas(file, getShell()));
+            dialog.setConversionProgramName(file.getConversionProgramLibrary(), file.getConversionProgramName());
 
             rc = dialog.open();
             if (rc == Dialog.OK) {
