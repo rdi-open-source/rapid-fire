@@ -61,7 +61,7 @@ public class NewJobWizard extends AbstractNewWizard {
 
         for (int i = 0; i < getPageCount(); i++) {
             AbstractWizardPage page = (AbstractWizardPage)getPages()[i];
-            if (!page.isPageComplete()) {
+            if (page.isEnabled() && !page.isPageComplete()) {
                 return false;
             }
         }
