@@ -2194,7 +2194,7 @@ DCL-PROC PROMOTER_generate_Copy_Program EXPORT;
           Statement =
             '%NullInd(' + l_tgt_Pfx + %trim(l_tgtField.name) + ') = *OFF;';
         EndIf;
-        generate_Statement(QTARGET: Statement: 1);                                                                      
+        generate_Statement(QTARGET: Statement: 1);
       EndIf;
 
     EndDo;
@@ -2225,8 +2225,8 @@ DCL-PROC PROMOTER_generate_Copy_Program EXPORT;
     // Parameter: program
     Statement = 'Cnv_Pgm(';
     If l_Mode = '*CNV';
-      generate_Statement(QTARGET                                                                                        
-                         : '// Call user defined conversion program': 1);                                               
+      generate_Statement(QTARGET
+                         : '// Call user defined conversion program': 1);
       generate_Statement(QTARGET: Statement: 1);
     Else;
       generate_Statement(QTARGET: Statement: 0);
