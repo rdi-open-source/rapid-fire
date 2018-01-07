@@ -1,0 +1,19 @@
+If you are using Rapid Fire for SQL tables with GENERATED ALWAYS AS columns
+the values of the GENERATED ALWAYS AS columns for each row in the table will
+be regenerated. Don`t use Rapid Fire for SQL tables with GENERATED ALWAYS AS
+columns if this causes problems in your application.
+
+Important informations for the usage of Rapid Fire together with high
+availability solutions like MIMIX and BUS/400, which are using journals for
+the replication to a backup system.
+
+Rapid Fire is using so called shadow libraries for a Rapid Fire job. You can
+create this shadow libraries on your own, or you can let Rapid Fire create
+this shadow libraries. In every case you have to take care that this shadow
+libraries are excluded from the replication to the backup system by your
+HA-Solution.
+
+Rapid Fire is receiving the changes made to a file from a journal. Therefore
+you have to take care that detached journal receivers will not be deleted for
+at least one day. If you are using a HA-Solution you have to set up this in
+your HA-Solution.

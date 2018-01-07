@@ -8,7 +8,7 @@
 
 package biz.rapidfire.core.handlers.job;
 
-import biz.rapidfire.core.dialogs.action.ConfirmActionDialog;
+import biz.rapidfire.core.dialogs.action.ConfirmStartJobActionDialog;
 import biz.rapidfire.core.maintenance.job.shared.JobAction;
 import biz.rapidfire.core.model.IRapidFireJobResource;
 
@@ -21,9 +21,10 @@ public class StartJobHandler extends AbstractJobActionHandler {
     @Override
     protected void performAction(IRapidFireJobResource job) throws Exception {
 
-        ConfirmActionDialog dialog = ConfirmActionDialog.open(getShell(), getJobAction(), job.getName());
+        ConfirmStartJobActionDialog dialog = new ConfirmStartJobActionDialog(getShell(), job.getName());
+        dialog.open();
         if (dialog.isConfirmed()) {
-            getManager().testJob(job.getKey());
+            getManager().startJob(job.getKey());
 
             job.reload(getShell());
             refreshUIChanged(job.getParentSubSystem(), job, job.getParentFilters());
