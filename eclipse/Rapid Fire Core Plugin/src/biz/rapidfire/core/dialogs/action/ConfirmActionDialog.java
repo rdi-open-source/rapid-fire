@@ -22,7 +22,13 @@ public class ConfirmActionDialog {
     private boolean isDeleteShadowLibraries;
 
     private ConfirmActionDialog(boolean isConfirmed) {
-        this(IDialogConstants.OK_ID, false);
+
+        if (isConfirmed) {
+            this.returnCode = IDialogConstants.OK_ID;
+        } else {
+            this.returnCode = IDialogConstants.CANCEL_ID;
+        }
+        this.isDeleteShadowLibraries = false;
     }
 
     private ConfirmActionDialog(int returnCode, boolean deleteShadowLibraries) {
