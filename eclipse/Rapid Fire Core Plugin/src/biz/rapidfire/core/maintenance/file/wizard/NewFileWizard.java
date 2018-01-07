@@ -15,9 +15,8 @@ import org.eclipse.jface.dialogs.PageChangedEvent;
 import biz.rapidfire.core.Messages;
 import biz.rapidfire.core.RapidFireCorePlugin;
 import biz.rapidfire.core.helpers.StringHelper;
+import biz.rapidfire.core.maintenance.area.AreaValues;
 import biz.rapidfire.core.maintenance.file.FileValues;
-import biz.rapidfire.core.maintenance.library.LibraryValues;
-import biz.rapidfire.core.maintenance.librarylist.LibraryListValues;
 import biz.rapidfire.core.maintenance.wizard.AbstractNewWizard;
 import biz.rapidfire.core.maintenance.wizard.AbstractWizardPage;
 import biz.rapidfire.core.maintenance.wizard.DataLibraryPage;
@@ -38,11 +37,10 @@ public class NewFileWizard extends AbstractNewWizard {
         super.addPages(); // Adds the data library page, if necessary
 
         FileValues fileValues = FileValues.createInitialized();
-        LibraryValues libraryValues = LibraryValues.createInitialized();
-        LibraryListValues libraryListValues = LibraryListValues.createInitialized();
+        AreaValues areaValues = AreaValues.createInitialized();
 
         addPage(new FilePage(fileValues));
-        addPage(new AreaPage());
+        addPage(new AreaPage(areaValues));
         addPage(new CommandPage());
         addPage(new ConversionPage());
     }
@@ -88,7 +86,7 @@ public class NewFileWizard extends AbstractNewWizard {
 
         for (int i = 0; i < getPageCount(); i++) {
             AbstractWizardPage page = (AbstractWizardPage)getPages()[i];
-            if (!page.isPageComplete()) {
+            if (page.isEnabled() && !page.isPageComplete()) {
                 return false;
             }
         }

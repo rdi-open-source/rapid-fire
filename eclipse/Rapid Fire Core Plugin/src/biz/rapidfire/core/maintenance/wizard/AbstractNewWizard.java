@@ -32,6 +32,7 @@ import biz.rapidfire.core.helpers.StringHelper;
 import biz.rapidfire.core.maintenance.Result;
 import biz.rapidfire.core.maintenance.Success;
 import biz.rapidfire.core.model.IRapidFireChildResource;
+import biz.rapidfire.core.model.IRapidFireFileResource;
 import biz.rapidfire.core.model.IRapidFireJobResource;
 import biz.rapidfire.core.model.IRapidFireResource;
 import biz.rapidfire.core.preferences.Preferences;
@@ -46,6 +47,7 @@ public abstract class AbstractNewWizard extends Wizard implements INewWizard, IP
     private String initialConnectionName;
     private String initialDataLibrary;
     private String initialJobName;
+    private int initialPosition;
 
     private Map<String, Boolean> pagesVisibility;
 
@@ -68,6 +70,10 @@ public abstract class AbstractNewWizard extends Wizard implements INewWizard, IP
 
     public String getInitialJobName() {
         return initialJobName;
+    }
+
+    public int getInitialPosition() {
+        return initialPosition;
     }
 
     public void pageChanged(PageChangedEvent event) {
@@ -169,6 +175,7 @@ public abstract class AbstractNewWizard extends Wizard implements INewWizard, IP
         this.initialConnectionName = null;
         this.initialDataLibrary = Preferences.getInstance().getRapidFireLibrary();
         this.initialJobName = null;
+        this.initialPosition = 0;
 
         if (selection instanceof IStructuredSelection) {
             IStructuredSelection structuredSelection = selection;
@@ -195,6 +202,10 @@ public abstract class AbstractNewWizard extends Wizard implements INewWizard, IP
                 } else if (element instanceof IRapidFireJobResource) {
                     IRapidFireJobResource resource = (IRapidFireJobResource)element;
                     this.initialJobName = resource.getName();
+                } else if (element instanceof IRapidFireFileResource) {
+                    IRapidFireFileResource resource = (IRapidFireFileResource)element;
+                    this.initialJobName = resource.getName();
+                    this.initialPosition = resource.getPosition();
                 }
             }
         }

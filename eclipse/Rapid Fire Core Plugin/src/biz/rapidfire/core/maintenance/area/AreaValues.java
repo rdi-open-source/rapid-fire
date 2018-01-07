@@ -15,8 +15,12 @@ import biz.rapidfire.core.maintenance.area.shared.Area;
 import biz.rapidfire.core.maintenance.area.shared.AreaKey;
 import biz.rapidfire.core.maintenance.area.shared.Ccsid;
 import biz.rapidfire.core.maintenance.area.shared.LibraryList;
+import biz.rapidfire.core.maintenance.file.shared.FileKey;
+import biz.rapidfire.core.maintenance.job.shared.JobKey;
 
 public class AreaValues implements IResourceValues {
+
+    private static final String EMPTY = ""; //$NON-NLS-1$
 
     private AreaKey key;
     private String library;
@@ -34,6 +38,18 @@ public class AreaValues implements IResourceValues {
 
     public static String[] getCcsidSpecialValues() {
         return Ccsid.labels();
+    }
+
+    public static AreaValues createInitialized() {
+
+        AreaValues areaValues = new AreaValues();
+        areaValues.setKey(new AreaKey(new FileKey(new JobKey(EMPTY), 0), EMPTY));
+        areaValues.setLibrary(EMPTY);
+        areaValues.setLibraryList(EMPTY);
+        areaValues.setLibraryCcsid(EMPTY);
+        areaValues.setCommandExtension(EMPTY);
+
+        return areaValues;
     }
 
     public AreaKey getKey() {
