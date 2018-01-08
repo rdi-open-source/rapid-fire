@@ -199,7 +199,9 @@ public class AreaMaintenanceControl extends AbstractMaintenanceControl {
     }
 
     public void setLibraryNames(String[] libraryNames) {
+        String libraryName = comboLibrary.getText();
         comboLibrary.setItems(libraryNames);
+        comboLibrary.setText(libraryName);
     }
 
     public String getLibraryListName() {
@@ -211,7 +213,9 @@ public class AreaMaintenanceControl extends AbstractMaintenanceControl {
     }
 
     public void setLibraryListNames(String[] libraryListNames) {
+        String libraryListName = comboLibraryList.getText();
         comboLibraryList.setItems(libraryListNames);
+        comboLibraryList.setText(libraryListName);
     }
 
     public String getLibraryCcsid() {
