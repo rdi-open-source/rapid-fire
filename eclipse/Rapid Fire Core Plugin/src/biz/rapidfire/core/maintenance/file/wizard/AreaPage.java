@@ -18,6 +18,7 @@ import biz.rapidfire.core.helpers.IntHelper;
 import biz.rapidfire.core.helpers.StringHelper;
 import biz.rapidfire.core.maintenance.MaintenanceMode;
 import biz.rapidfire.core.maintenance.area.AreaValues;
+import biz.rapidfire.core.maintenance.area.shared.Area;
 import biz.rapidfire.core.maintenance.area.shared.Ccsid;
 import biz.rapidfire.core.maintenance.wizard.AbstractWizardPage;
 import biz.rapidfire.core.validators.Validator;
@@ -28,6 +29,7 @@ public class AreaPage extends AbstractWizardPage {
 
     private AreaValues areaValues;
 
+    private Validator areaNameValidator;
     private Validator nameValidator;
 
     private AreaMaintenanceControl areaMaintenanceControl;
@@ -37,6 +39,7 @@ public class AreaPage extends AbstractWizardPage {
 
         this.areaValues = areaValues;
 
+        this.areaNameValidator = Validator.getNameInstance(Area.labels());
         this.nameValidator = Validator.getNameInstance();
 
         setTitle(Messages.Wizard_Page_Area);
@@ -57,7 +60,7 @@ public class AreaPage extends AbstractWizardPage {
         } else if (StringHelper.isNullOrEmpty(areaMaintenanceControl.getCommandExtension())) {
             areaMaintenanceControl.setFocusCommandExtension();
         } else {
-            areaMaintenanceControl.setFocusJobName();
+            areaMaintenanceControl.setFocusArea();
         }
     }
 
@@ -100,7 +103,7 @@ public class AreaPage extends AbstractWizardPage {
 
         String message = null;
 
-        if (!nameValidator.validate(areaMaintenanceControl.getAreaName())) {
+        if (!areaNameValidator.validate(areaMaintenanceControl.getAreaName())) {
 
             message = Messages.bindParameters(Messages.Area_name_A_is_not_valid, areaMaintenanceControl.getAreaName());
 

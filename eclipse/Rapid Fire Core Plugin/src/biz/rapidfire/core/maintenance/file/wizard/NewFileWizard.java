@@ -103,6 +103,8 @@ public class NewFileWizard extends AbstractNewWizard {
                         }
                     }
 
+                    areaPage.setErrorMessage(null);
+
                 } catch (Throwable e) {
 
                 }
