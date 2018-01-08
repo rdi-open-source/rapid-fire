@@ -25,8 +25,6 @@ public class LibraryMaintenanceControl extends AbstractMaintenanceControl {
     private Text textLibrary;
     private Text textShadowLibrary;
 
-    private boolean isParentKeyFieldsVisible;
-
     public LibraryMaintenanceControl(Composite parent, int style) {
         super(parent, SWT.NONE, true);
     }
@@ -52,7 +50,7 @@ public class LibraryMaintenanceControl extends AbstractMaintenanceControl {
 
         super.setMode(mode);
 
-        if (isParentKeyFieldsVisible) {
+        if (isParentKeyFieldsVisible()) {
             textJobName.setEnabled(isParentKeyFieldsEnabled());
         }
 
@@ -63,7 +61,7 @@ public class LibraryMaintenanceControl extends AbstractMaintenanceControl {
     @Override
     protected void createContent(Composite parent) {
 
-        if (isParentKeyFieldsVisible) {
+        if (isParentKeyFieldsVisible()) {
 
             WidgetFactory.createLabel(parent, Messages.Label_Job_colon, Messages.Tooltip_Job);
 
@@ -91,7 +89,7 @@ public class LibraryMaintenanceControl extends AbstractMaintenanceControl {
 
     public void setJobName(String jobName) {
 
-        if (isParentKeyFieldsVisible) {
+        if (isParentKeyFieldsVisible()) {
             textJobName.setText(jobName);
         }
     }
@@ -114,7 +112,7 @@ public class LibraryMaintenanceControl extends AbstractMaintenanceControl {
 
     public void addModifyListener(ModifyListener listener) {
 
-        if (isParentKeyFieldsVisible) {
+        if (isParentKeyFieldsVisible()) {
             textJobName.addModifyListener(listener);
         }
 
@@ -124,7 +122,7 @@ public class LibraryMaintenanceControl extends AbstractMaintenanceControl {
 
     public void removeModifyListener(ModifyListener listener) {
 
-        if (isParentKeyFieldsVisible) {
+        if (isParentKeyFieldsVisible()) {
             textJobName.removeModifyListener(listener);
         }
 

@@ -18,11 +18,8 @@ import org.eclipse.swt.widgets.Text;
 
 import biz.rapidfire.core.Messages;
 import biz.rapidfire.core.dialogs.maintenance.AbstractMaintenanceControl;
-import biz.rapidfire.core.helpers.IntHelper;
-import biz.rapidfire.core.helpers.StringHelper;
 import biz.rapidfire.core.maintenance.MaintenanceMode;
 import biz.rapidfire.core.maintenance.area.AreaValues;
-import biz.rapidfire.core.maintenance.area.shared.Area;
 import biz.rapidfire.core.maintenance.area.shared.Ccsid;
 import biz.rapidfire.core.swt.widgets.WidgetFactory;
 
@@ -82,31 +79,44 @@ public class AreaMaintenanceControl extends AbstractMaintenanceControl {
 
         super.setMode(mode);
 
-        updateControlEnablement();
+        if (isParentKeyFieldsVisible()) {
+            textJobName.setEnabled(isParentKeyFieldsEnabled());
+            textPosition.setEnabled(isParentKeyFieldsEnabled());
+        }
+
+        comboArea.setEnabled(isKeyFieldsEnabled());
+
+        comboLibrary.setEnabled(isFieldsEnabled());
+        comboLibraryList.setEnabled(isFieldsEnabled());
+        comboLibraryCcsid.setEnabled(isFieldsEnabled());
+        textCommandExtension.setEnabled(isFieldsEnabled());
     }
 
     @Override
     protected void createContent(Composite parent) {
 
-        WidgetFactory.createLabel(parent, Messages.Label_Job_colon, Messages.Tooltip_Job);
+        if (isParentKeyFieldsVisible()) {
 
-        textJobName = WidgetFactory.createNameText(parent);
-        textJobName.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
-        textJobName.setToolTipText(Messages.Tooltip_Job);
-        textJobName.setEnabled(enableParentKeyFields);
+            WidgetFactory.createLabel(parent, Messages.Label_Job_colon, Messages.Tooltip_Job);
 
-        WidgetFactory.createLabel(parent, Messages.Label_Position_colon, Messages.Tooltip_Position);
+            textJobName = WidgetFactory.createNameText(parent);
+            textJobName.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+            textJobName.setToolTipText(Messages.Tooltip_Job);
+            textJobName.setEnabled(enableParentKeyFields);
 
-        textPosition = WidgetFactory.createIntegerText(parent);
-        textPosition.setTextLimit(6);
-        textPosition.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
-        textPosition.setToolTipText(Messages.Tooltip_Position);
-        textPosition.setEnabled(enableParentKeyFields);
+            WidgetFactory.createLabel(parent, Messages.Label_Position_colon, Messages.Tooltip_Position);
+
+            textPosition = WidgetFactory.createIntegerText(parent);
+            textPosition.setTextLimit(6);
+            textPosition.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+            textPosition.setToolTipText(Messages.Tooltip_Position);
+            textPosition.setEnabled(enableParentKeyFields);
+        }
 
         WidgetFactory.createLabel(parent, Messages.Label_Area_colon, Messages.Tooltip_Area);
 
         comboArea = WidgetFactory.createNameCombo(parent);
-        setDefaultValue(comboArea, Area.NONE.label());
+        // setDefaultValue(comboArea, Area.NONE.label());
         comboArea.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
         comboArea.setToolTipText(Messages.Tooltip_Area);
         comboArea.setEnabled(enableKeyFields);
@@ -151,8 +161,10 @@ public class AreaMaintenanceControl extends AbstractMaintenanceControl {
     }
 
     public void setJobName(String jobName) {
-        setText(textJobName, jobName);
-        updateControlEnablement();
+
+        if (isParentKeyFieldsVisible()) {
+            setText(textJobName, jobName);
+        }
     }
 
     public String getPosition() {
@@ -160,44 +172,45 @@ public class AreaMaintenanceControl extends AbstractMaintenanceControl {
     }
 
     public void setPosition(int position) {
-        setText(textPosition, Integer.toString(position));
-        updateControlEnablement();
+
+        if (isParentKeyFieldsVisible()) {
+            setText(textPosition, Integer.toString(position));
+        }
     }
 
-    public String getArea() {
+    public String getAreaName() {
         return comboArea.getText();
     }
 
-    public void setArea(String areaName) {
+    public void setAreaName(String areaName) {
         setText(comboArea, areaName);
-        updateControlEnablement();
     }
 
-    public void setAreas(String[] areaNames) {
+    public void setAreaNames(String[] areaNames) {
         comboArea.setItems(areaNames);
     }
 
-    public String getLibrary() {
+    public String getLibraryName() {
         return comboLibrary.getText();
     }
 
-    public void setLibrary(String libraryName) {
+    public void setLibraryName(String libraryName) {
         setText(comboLibrary, libraryName);
     }
 
-    public void setLibrarys(String[] libraryNames) {
+    public void setLibraryNames(String[] libraryNames) {
         comboLibrary.setItems(libraryNames);
     }
 
-    public String getLibraryList() {
+    public String getLibraryListName() {
         return comboLibraryList.getText();
     }
 
-    public void setLibraryList(String libraryListName) {
+    public void setLibraryListName(String libraryListName) {
         setText(comboLibraryList, libraryListName);
     }
 
-    public void setLibraryLists(String[] libraryListNames) {
+    public void setLibraryListNames(String[] libraryListNames) {
         comboLibraryList.setItems(libraryListNames);
     }
 
@@ -235,55 +248,31 @@ public class AreaMaintenanceControl extends AbstractMaintenanceControl {
 
     public void addModifyListener(ModifyListener listener) {
 
+        if (isParentKeyFieldsVisible()) {
+            textJobName.addModifyListener(listener);
+            textPosition.addModifyListener(listener);
+        }
+
         comboArea.addModifyListener(listener);
         comboLibrary.addModifyListener(listener);
         comboLibraryCcsid.addModifyListener(listener);
         comboLibraryList.addModifyListener(listener);
 
-        textJobName.addModifyListener(listener);
-        textPosition.addModifyListener(listener);
         textCommandExtension.addModifyListener(listener);
-        textJobName.addModifyListener(listener);
-        textPosition.addModifyListener(listener);
     }
 
     public void removeModifyListener(ModifyListener listener) {
+
+        if (isParentKeyFieldsVisible()) {
+            textJobName.removeModifyListener(listener);
+            textPosition.removeModifyListener(listener);
+        }
 
         comboArea.removeModifyListener(listener);
         comboLibrary.removeModifyListener(listener);
         comboLibraryCcsid.removeModifyListener(listener);
         comboLibraryList.removeModifyListener(listener);
 
-        textJobName.removeModifyListener(listener);
-        textPosition.removeModifyListener(listener);
         textCommandExtension.removeModifyListener(listener);
-        textJobName.removeModifyListener(listener);
-        textPosition.removeModifyListener(listener);
-    }
-
-    private void updateControlEnablement() {
-
-        if (StringHelper.isNullOrEmpty(textJobName.getText())) {
-            textJobName.setEnabled(true);
-        } else {
-            textJobName.setEnabled(isParentKeyFieldsEnabled());
-        }
-
-        if (StringHelper.isNullOrEmpty(textPosition.getText()) || IntHelper.tryParseInt(textPosition.getText(), -1) <= 0) {
-            textPosition.setEnabled(true);
-        } else {
-            textPosition.setEnabled(isParentKeyFieldsEnabled());
-        }
-
-        if (StringHelper.isNullOrEmpty(comboArea.getText())) {
-            comboArea.setEnabled(true);
-        } else {
-            comboArea.setEnabled(isKeyFieldsEnabled());
-        }
-
-        comboLibrary.setEnabled(isFieldsEnabled());
-        comboLibraryList.setEnabled(isFieldsEnabled());
-        comboLibraryCcsid.setEnabled(isFieldsEnabled());
-        textCommandExtension.setEnabled(isFieldsEnabled());
     }
 }

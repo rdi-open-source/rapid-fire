@@ -8,6 +8,9 @@
 
 package biz.rapidfire.core.maintenance.file.wizard;
 
+import java.util.Arrays;
+import java.util.LinkedList;
+import java.util.List;
 import java.util.Vector;
 
 import org.eclipse.jface.dialogs.PageChangedEvent;
@@ -21,6 +24,8 @@ import biz.rapidfire.core.maintenance.wizard.AbstractNewWizard;
 import biz.rapidfire.core.maintenance.wizard.AbstractWizardPage;
 import biz.rapidfire.core.maintenance.wizard.DataLibraryPage;
 import biz.rapidfire.core.model.IRapidFireJobResource;
+import biz.rapidfire.core.model.IRapidFireLibraryListResource;
+import biz.rapidfire.core.model.IRapidFireLibraryResource;
 import biz.rapidfire.core.model.Status;
 import biz.rapidfire.core.subsystem.IRapidFireSubSystem;
 import biz.rapidfire.rsebase.helpers.SystemConnectionHelper;
@@ -50,16 +55,19 @@ public class NewFileWizard extends AbstractNewWizard {
 
         try {
 
+            DataLibraryPage dataLibraryPage = (DataLibraryPage)getPage(DataLibraryPage.NAME);
+            String connectionName = dataLibraryPage.getConnectionName();
+            String dataLibraryName = dataLibraryPage.getDataLibraryName();
+
             if (event.getSelectedPage() instanceof FilePage) {
+
                 FilePage filePage = (FilePage)event.getSelectedPage();
-                DataLibraryPage dataLibraryPage = (DataLibraryPage)getPage(DataLibraryPage.NAME);
                 if (StringHelper.isNullOrEmpty(filePage.getJobName())) {
                     filePage.setJobName(getInitialJobName());
-                    String connectionName = dataLibraryPage.getConnectionName();
                     IRapidFireSubSystem subSystem = (IRapidFireSubSystem)SystemConnectionHelper.getSubSystem(connectionName,
                         IRapidFireSubSystem.class);
                     if (subSystem != null) {
-                        IRapidFireJobResource[] allJobs = subSystem.getJobs(dataLibraryPage.getDataLibraryName(), getShell());
+                        IRapidFireJobResource[] allJobs = subSystem.getJobs(dataLibraryName, getShell());
                         if (allJobs != null) {
                             Vector<String> jobNames = new Vector<String>();
                             for (IRapidFireJobResource job : allJobs) {
@@ -71,7 +79,34 @@ public class NewFileWizard extends AbstractNewWizard {
                         }
                     }
                 }
+
                 filePage.setErrorMessage(null);
+
+            } else if (event.getSelectedPage() instanceof AreaPage) {
+
+                AreaPage areaPage = (AreaPage)event.getSelectedPage();
+
+                try {
+
+                    FilePage filePage = (FilePage)getPage(FilePage.NAME);
+                    String jobName = filePage.getJobName();
+
+                    IRapidFireSubSystem subSystem = (IRapidFireSubSystem)SystemConnectionHelper.getSubSystem(connectionName,
+                        IRapidFireSubSystem.class);
+                    if (subSystem != null) {
+                        IRapidFireJobResource job = subSystem.getJob(dataLibraryName, jobName, getShell());
+                        if (job != null) {
+                            IRapidFireLibraryResource[] libraries = subSystem.getLibraries(job, getShell());
+                            areaPage.setLibraryNames(getLibraryNames(libraries));
+                            IRapidFireLibraryListResource[] libraryLists = subSystem.getLibraryLists(job, getShell());
+                            areaPage.setLibraryListNames(getLibraryListNames(libraryLists));
+                        }
+                    }
+
+                } catch (Throwable e) {
+
+                }
+
             }
 
         } catch (Exception e) {
@@ -79,6 +114,32 @@ public class NewFileWizard extends AbstractNewWizard {
         }
 
         super.pageChanged(event);
+    }
+
+    private String[] getLibraryNames(IRapidFireLibraryResource[] libraries) {
+
+        List<String> namesList = new LinkedList<String>();
+        for (IRapidFireLibraryResource library : libraries) {
+            namesList.add(library.getName());
+        }
+
+        String[] names = namesList.toArray(new String[namesList.size()]);
+        Arrays.sort(names);
+
+        return names;
+    }
+
+    private String[] getLibraryListNames(IRapidFireLibraryListResource[] libraryLists) {
+
+        List<String> namesList = new LinkedList<String>();
+        for (IRapidFireLibraryListResource libraryList : libraryLists) {
+            namesList.add(libraryList.getName());
+        }
+
+        String[] names = namesList.toArray(new String[namesList.size()]);
+        Arrays.sort(names);
+
+        return names;
     }
 
     @Override

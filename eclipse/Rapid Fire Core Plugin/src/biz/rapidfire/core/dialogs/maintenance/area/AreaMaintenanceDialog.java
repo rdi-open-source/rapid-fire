@@ -200,9 +200,9 @@ public class AreaMaintenanceDialog extends AbstractMaintenanceDialog {
         areaMaintenanceControl.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
         areaMaintenanceControl.setMode(getMode());
 
-        areaMaintenanceControl.setAreas(AreaValues.getAreaLabels());
-        areaMaintenanceControl.setLibrarys(getLibraries());
-        areaMaintenanceControl.setLibraryLists(getLibraryLists(AreaValues.getLibraryListSpecialValues()));
+        areaMaintenanceControl.setAreaNames(AreaValues.getAreaLabels());
+        areaMaintenanceControl.setLibraryNames(getLibraries());
+        areaMaintenanceControl.setLibraryListNames(getLibraryLists(AreaValues.getLibraryListSpecialValues()));
     }
 
     private String[] getLibraries(String... librarySpecialValues) {
@@ -260,9 +260,9 @@ public class AreaMaintenanceDialog extends AbstractMaintenanceDialog {
         areaMaintenanceControl.setJobName(values.getKey().getJobName());
         areaMaintenanceControl.setPosition(values.getKey().getPosition());
 
-        areaMaintenanceControl.setArea(values.getKey().getArea());
-        areaMaintenanceControl.setLibrary(values.getLibrary());
-        areaMaintenanceControl.setLibraryList(values.getLibraryList());
+        areaMaintenanceControl.setAreaName(values.getKey().getArea());
+        areaMaintenanceControl.setLibraryName(values.getLibrary());
+        areaMaintenanceControl.setLibraryListName(values.getLibraryList());
         areaMaintenanceControl.setLibraryCcsid(values.getLibraryCcsid());
         areaMaintenanceControl.setCommandExtension(values.getCommandExtension());
     }
@@ -271,9 +271,9 @@ public class AreaMaintenanceDialog extends AbstractMaintenanceDialog {
     protected void okPressed() {
 
         AreaValues newValues = values.clone();
-        newValues.getKey().setArea(areaMaintenanceControl.getArea());
-        newValues.setLibrary(areaMaintenanceControl.getLibrary());
-        newValues.setLibraryList(areaMaintenanceControl.getLibraryList());
+        newValues.getKey().setArea(areaMaintenanceControl.getAreaName());
+        newValues.setLibrary(areaMaintenanceControl.getLibraryName());
+        newValues.setLibraryList(areaMaintenanceControl.getLibraryListName());
         newValues.setLibraryCcsid(areaMaintenanceControl.getLibraryCcsid());
         newValues.setCommandExtension(areaMaintenanceControl.getCommandExtension());
 
@@ -303,13 +303,13 @@ public class AreaMaintenanceDialog extends AbstractMaintenanceDialog {
 
         if (IAreaCheck.FIELD_AREA.equals(fieldName)) {
             areaMaintenanceControl.setFocusArea();
-            message = Messages.bind(Messages.Area_name_A_is_not_valid, areaMaintenanceControl.getArea());
+            message = Messages.bind(Messages.Area_name_A_is_not_valid, areaMaintenanceControl.getAreaName());
         } else if (IAreaCheck.FIELD_LIBRARY.equals(fieldName)) {
             areaMaintenanceControl.setFocusLibrary();
-            message = Messages.bind(Messages.Library_name_A_is_not_valid, areaMaintenanceControl.getLibrary());
+            message = Messages.bind(Messages.Library_name_A_is_not_valid, areaMaintenanceControl.getLibraryName());
         } else if (IAreaCheck.FIELD_LIBRARY_LIST.equals(fieldName)) {
             areaMaintenanceControl.setFocusLibraryList();
-            message = Messages.bind(Messages.Library_list_name_A_is_not_valid, areaMaintenanceControl.getLibraryList());
+            message = Messages.bind(Messages.Library_list_name_A_is_not_valid, areaMaintenanceControl.getLibraryListName());
         } else if (IAreaCheck.FIELD_LIBRARY_CCSID.equals(fieldName)) {
             areaMaintenanceControl.setFocusLibraryCcsid();
             message = Messages.bind(Messages.Ccsid_A_is_not_valid, areaMaintenanceControl.getLibraryCcsid());

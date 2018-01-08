@@ -46,16 +46,11 @@ public class AreaPage extends AbstractWizardPage {
     @Override
     public void setFocus() {
 
-        if (StringHelper.isNullOrEmpty(areaMaintenanceControl.getJobName())) {
-            areaMaintenanceControl.setFocusJobName();
-        } else if (StringHelper.isNullOrEmpty(areaMaintenanceControl.getPosition())
-            || IntHelper.tryParseInt(areaMaintenanceControl.getPosition(), -1) <= 0) {
-            areaMaintenanceControl.setFocusPosition();
-        } else if (StringHelper.isNullOrEmpty(areaMaintenanceControl.getArea())) {
+        if (StringHelper.isNullOrEmpty(areaMaintenanceControl.getAreaName())) {
             areaMaintenanceControl.setFocusArea();
-        } else if (StringHelper.isNullOrEmpty(areaMaintenanceControl.getLibrary())) {
+        } else if (StringHelper.isNullOrEmpty(areaMaintenanceControl.getLibraryName())) {
             areaMaintenanceControl.setFocusLibrary();
-        } else if (StringHelper.isNullOrEmpty(areaMaintenanceControl.getLibraryList())) {
+        } else if (StringHelper.isNullOrEmpty(areaMaintenanceControl.getLibraryListName())) {
             areaMaintenanceControl.setFocusLibraryList();
         } else if (StringHelper.isNullOrEmpty(areaMaintenanceControl.getLibraryCcsid())) {
             areaMaintenanceControl.setFocusLibraryCcsid();
@@ -76,15 +71,21 @@ public class AreaPage extends AbstractWizardPage {
     @Override
     protected void setInputData() {
 
-        areaMaintenanceControl.setJobName(areaValues.getKey().getJobName());
-        areaMaintenanceControl.setPosition(areaValues.getKey().getPosition());
-        areaMaintenanceControl.setArea(areaValues.getKey().getArea());
-        areaMaintenanceControl.setLibrary(areaValues.getLibrary());
-        areaMaintenanceControl.setLibraryList(areaValues.getLibraryList());
+        areaMaintenanceControl.setAreaName(areaValues.getKey().getArea());
+        areaMaintenanceControl.setLibraryName(areaValues.getLibrary());
+        areaMaintenanceControl.setLibraryListName(areaValues.getLibraryList());
         areaMaintenanceControl.setLibraryCcsid(areaValues.getLibraryCcsid());
         areaMaintenanceControl.setCommandExtension(areaValues.getCommandExtension());
 
         updatePageEnablement();
+    }
+
+    public void setLibraryNames(String[] libraryNames) {
+        areaMaintenanceControl.setLibraryNames(libraryNames);
+    }
+
+    public void setLibraryListNames(String[] libraryListNames) {
+        areaMaintenanceControl.setLibraryListNames(libraryListNames);
     }
 
     @Override
@@ -99,26 +100,17 @@ public class AreaPage extends AbstractWizardPage {
 
         String message = null;
 
-        if (!nameValidator.validate(areaMaintenanceControl.getJobName())) {
+        if (!nameValidator.validate(areaMaintenanceControl.getAreaName())) {
 
-            message = Messages.bindParameters(Messages.Job_name_A_is_not_valid, areaMaintenanceControl.getJobName());
+            message = Messages.bindParameters(Messages.Area_name_A_is_not_valid, areaMaintenanceControl.getAreaName());
 
-        } else if (StringHelper.isNullOrEmpty(areaMaintenanceControl.getPosition())
-            || IntHelper.tryParseInt(areaMaintenanceControl.getPosition(), -1) <= 0) {
+        } else if (!nameValidator.validate(areaMaintenanceControl.getLibraryName())) {
 
-            message = Messages.bind(Messages.File_position_A_is_not_valid, areaMaintenanceControl.getPosition());
+            message = Messages.bindParameters(Messages.Library_name_A_is_not_valid, areaMaintenanceControl.getLibraryName());
 
-        } else if (!nameValidator.validate(areaMaintenanceControl.getArea())) {
+        } else if (StringHelper.isNullOrEmpty(areaMaintenanceControl.getLibraryListName())) {
 
-            message = Messages.bindParameters(Messages.Area_name_A_is_not_valid, areaMaintenanceControl.getArea());
-
-        } else if (!nameValidator.validate(areaMaintenanceControl.getLibrary())) {
-
-            message = Messages.bindParameters(Messages.Library_name_A_is_not_valid, areaMaintenanceControl.getLibrary());
-
-        } else if (!StringHelper.isNullOrEmpty(areaMaintenanceControl.getLibraryList())) {
-
-            message = Messages.bindParameters(Messages.Library_list_name_A_is_not_valid, areaMaintenanceControl.getLibraryList());
+            message = Messages.bindParameters(Messages.Library_list_name_A_is_not_valid, areaMaintenanceControl.getLibraryListName());
 
         } else if (!isSpecialValue(areaMaintenanceControl.getLibraryCcsid(), Ccsid.labels())
             && IntHelper.tryParseInt(areaMaintenanceControl.getLibraryCcsid(), -1) <= 0) {
@@ -154,9 +146,9 @@ public class AreaPage extends AbstractWizardPage {
 
     private void updateValues() {
 
-        areaValues.getKey().setArea(areaMaintenanceControl.getArea());
-        areaValues.setLibrary(areaMaintenanceControl.getLibrary());
-        areaValues.setLibraryList(areaMaintenanceControl.getLibraryList());
+        areaValues.getKey().setArea(areaMaintenanceControl.getAreaName());
+        areaValues.setLibrary(areaMaintenanceControl.getLibraryName());
+        areaValues.setLibraryList(areaMaintenanceControl.getLibraryListName());
         areaValues.setLibraryCcsid(areaMaintenanceControl.getLibraryCcsid());
         areaValues.setCommandExtension(areaMaintenanceControl.getCommandExtension());
 
