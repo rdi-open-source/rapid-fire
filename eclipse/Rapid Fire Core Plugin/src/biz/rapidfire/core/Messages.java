@@ -30,6 +30,7 @@ public class Messages extends NLS {
     public static String DialogTitle_Library_List;
     public static String DialogTitle_Notification;
     public static String DialogTitle_Area;
+    public static String DialogTitle_Command;
     public static String DialogTitle_Activity_Schedule;
     public static String DialogTitle_Transfer_Rapid_Fire_library;
     public static String DialogTitle_Delete_Object;
@@ -336,6 +337,7 @@ public class Messages extends NLS {
     public static String Could_not_initialize_reapply_changes_manager_for_job_A_in_library_B;
     public static String Could_not_create_resource_Resource_not_found;
     public static String Could_not_copy_resource_Resource_not_found;
+    public static String Object_compile_command_is_missing;
 
     // API error messages
     public static String EntityManager_Unknown_error_code_A;

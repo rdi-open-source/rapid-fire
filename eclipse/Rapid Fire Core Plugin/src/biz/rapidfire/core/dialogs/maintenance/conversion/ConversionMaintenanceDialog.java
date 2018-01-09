@@ -15,10 +15,8 @@ import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridData;
-import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
-import org.eclipse.swt.widgets.Text;
 
 import biz.rapidfire.core.Messages;
 import biz.rapidfire.core.RapidFireCorePlugin;
@@ -31,29 +29,13 @@ import biz.rapidfire.core.maintenance.Result;
 import biz.rapidfire.core.maintenance.conversion.ConversionManager;
 import biz.rapidfire.core.maintenance.conversion.ConversionValues;
 import biz.rapidfire.core.maintenance.conversion.IConversionCheck;
-import biz.rapidfire.core.maintenance.conversion.shared.NewFieldName;
-import biz.rapidfire.core.swt.widgets.WidgetFactory;
 
 public class ConversionMaintenanceDialog extends AbstractMaintenanceDialog {
 
     private ConversionManager manager;
 
     private ConversionValues values;
-
-    private Text textJobName;
-    private Text textPosition;
-    private Combo comboFieldToConvert;
-    private Combo comboNewFieldName;
-    private Text textStatement1;
-    private Text textStatement2;
-    private Text textStatement3;
-    private Text textStatement4;
-    private Text textStatement5;
-    private Text textStatement6;
-
-    private boolean enableParentKeyFields;
-    private boolean enableKeyFields;
-    private boolean enableFields;
+    private ConversionMaintenanceControl conversionMaintenanceControl;
 
     private String[] fieldNames;
 
@@ -90,82 +72,26 @@ public class ConversionMaintenanceDialog extends AbstractMaintenanceDialog {
         this.fieldNames = fieldNames;
 
         Arrays.sort(fieldNames);
+
+        if (conversionMaintenanceControl != null) {
+            conversionMaintenanceControl.setFieldNames(this.fieldNames);
+        }
     }
 
     private ConversionMaintenanceDialog(Shell shell, MaintenanceMode mode, ConversionManager manager) {
         super(shell, mode);
 
         this.manager = manager;
-
-        if (MaintenanceMode.CREATE.equals(mode) || MaintenanceMode.COPY.equals(mode)) {
-            enableParentKeyFields = false;
-            enableKeyFields = true;
-            enableFields = true;
-        } else if (MaintenanceMode.CHANGE.equals(mode)) {
-            enableParentKeyFields = false;
-            enableKeyFields = false;
-            enableFields = true;
-        } else {
-            enableParentKeyFields = false;
-            enableKeyFields = false;
-            enableFields = false;
-        }
     }
 
     @Override
     protected void createEditorAreaContent(Composite parent) {
 
-        WidgetFactory.createLabel(parent, Messages.Label_Job_colon, Messages.Tooltip_Job);
+        conversionMaintenanceControl = new ConversionMaintenanceControl(parent, SWT.NONE);
+        conversionMaintenanceControl.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+        conversionMaintenanceControl.setMode(getMode());
 
-        textJobName = WidgetFactory.createNameText(parent);
-        textJobName.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
-        textJobName.setToolTipText(Messages.Tooltip_Job);
-        textJobName.setEnabled(enableParentKeyFields);
-
-        WidgetFactory.createLabel(parent, Messages.Label_Position_colon, Messages.Tooltip_Position);
-
-        textPosition = WidgetFactory.createIntegerText(parent);
-        textPosition.setTextLimit(6);
-        textPosition.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
-        textPosition.setToolTipText(Messages.Tooltip_Position);
-        textPosition.setEnabled(enableParentKeyFields);
-
-        WidgetFactory.createLabel(parent, Messages.Label_Field_to_convert_colon, Messages.Tooltip_Field_to_convert);
-
-        comboFieldToConvert = WidgetFactory.createNameCombo(parent);
-        comboFieldToConvert.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
-        comboFieldToConvert.setToolTipText(Messages.Tooltip_Field_to_convert);
-        comboFieldToConvert.setEnabled(enableKeyFields);
-        comboFieldToConvert.setItems(fieldNames);
-
-        WidgetFactory.createLabel(parent, Messages.Label_Rename_field_in_old_file_to_colon, Messages.Tooltip_Rename_field_in_old_file_to);
-
-        comboNewFieldName = WidgetFactory.createNameCombo(parent);
-        setDefaultValue(comboNewFieldName, NewFieldName.NONE.label());
-        comboNewFieldName.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
-        comboNewFieldName.setToolTipText(Messages.Tooltip_Rename_field_in_old_file_to);
-        comboNewFieldName.setEnabled(enableFields);
-        comboNewFieldName.setItems(ConversionValues.getNewFieldNameSpecialValues());
-
-        WidgetFactory.createLabel(parent, Messages.Label_Conversions_colon, Messages.Tooltip_Conversions);
-
-        textStatement1 = createConversionStatement(parent);
-        new Composite(parent, SWT.NONE).setLayoutData(new GridData(SWT.RIGHT, SWT.BEGINNING, false, false, 1, 5));
-        textStatement2 = createConversionStatement(parent);
-        textStatement3 = createConversionStatement(parent);
-        textStatement4 = createConversionStatement(parent);
-        textStatement5 = createConversionStatement(parent);
-        textStatement6 = createConversionStatement(parent);
-    }
-
-    private Text createConversionStatement(Composite parent) {
-
-        Text textStatement = WidgetFactory.createText(parent);
-        textStatement.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 1, 1));
-        textStatement.setToolTipText(Messages.Tooltip_Conversions);
-        textStatement.setEnabled(enableFields);
-
-        return textStatement;
+        setFields(fieldNames);
     }
 
     @Override
@@ -176,37 +102,22 @@ public class ConversionMaintenanceDialog extends AbstractMaintenanceDialog {
     @Override
     protected void setScreenValues() {
 
-        setText(textJobName, values.getKey().getJobName());
-        setText(textPosition, Integer.toString(values.getKey().getPosition()));
-        setText(comboFieldToConvert, values.getKey().getFieldToConvert());
+        conversionMaintenanceControl.setJobName(values.getKey().getJobName());
+        conversionMaintenanceControl.setPosition(values.getKey().getPosition());
+        conversionMaintenanceControl.setFieldToConvert(values.getKey().getFieldToConvert());
 
-        setText(comboNewFieldName, values.getNewFieldName());
+        conversionMaintenanceControl.setNewFieldName(values.getNewFieldName());
 
-        String[] conversions = values.getConversions();
-        setText(textStatement1, conversions[0]);
-        setText(textStatement2, conversions[1]);
-        setText(textStatement3, conversions[2]);
-        setText(textStatement4, conversions[3]);
-        setText(textStatement5, conversions[4]);
-        setText(textStatement6, conversions[5]);
+        conversionMaintenanceControl.setStatements(values.getConversions());
     }
 
     @Override
     protected void okPressed() {
 
         ConversionValues newValues = values.clone();
-        newValues.getKey().setFieldToConvert(comboFieldToConvert.getText());
-        newValues.setNewFieldName(comboNewFieldName.getText());
-
-        String[] conversions = new String[6];
-        conversions[0] = textStatement1.getText();
-        conversions[1] = textStatement2.getText();
-        conversions[2] = textStatement3.getText();
-        conversions[3] = textStatement4.getText();
-        conversions[4] = textStatement5.getText();
-        conversions[5] = textStatement6.getText();
-
-        newValues.setConversions(conversions);
+        newValues.getKey().setFieldToConvert(conversionMaintenanceControl.getFieldToConvert());
+        newValues.setNewFieldName(conversionMaintenanceControl.getNewFieldName());
+        newValues.setConversions(conversionMaintenanceControl.getStatements());
 
         if (!isDisplayMode()) {
             try {
@@ -233,16 +144,16 @@ public class ConversionMaintenanceDialog extends AbstractMaintenanceDialog {
         String message = null;
 
         if (IConversionCheck.FIELD_FIELD_TO_CONVERT.equals(fieldName)) {
-            comboFieldToConvert.setFocus();
-            message = Messages.bindParameters(Messages.Field_name_A_is_not_valid, comboFieldToConvert.getText());
+            conversionMaintenanceControl.setFocusFieldToConvert();
+            message = Messages.bindParameters(Messages.Field_name_A_is_not_valid, conversionMaintenanceControl.getFieldToConvert());
         } else if (IConversionCheck.FIELD_NEW_FIELD_NAME.equals(fieldName)) {
-            comboNewFieldName.setFocus();
-            message = Messages.bindParameters(Messages.Field_name_A_is_not_valid, comboNewFieldName.getText());
+            conversionMaintenanceControl.setFocusNewFieldName();
+            message = Messages.bindParameters(Messages.Field_name_A_is_not_valid, conversionMaintenanceControl.getNewFieldName());
         } else if (IConversionCheck.FIELD_SAME_FIELD_NAMES.equals(fieldName)) {
-            comboNewFieldName.setFocus();
+            conversionMaintenanceControl.setFocusNewFieldName();
             message = Messages.Field_names_must_not_match;
         } else if (IConversionCheck.FIELD_STATEMENT.equals(fieldName)) {
-            textStatement1.setFocus();
+            conversionMaintenanceControl.setFocusStatements();
             message = Messages.Conversion_statement_is_missing;
         }
 
