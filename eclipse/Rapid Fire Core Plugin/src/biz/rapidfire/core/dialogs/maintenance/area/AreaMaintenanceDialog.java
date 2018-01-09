@@ -40,20 +40,7 @@ public class AreaMaintenanceDialog extends AbstractMaintenanceDialog {
     private AreaManager manager;
 
     private AreaValues values;
-
-    // private Text textJobName;
-    // private Text textPosition;
-    // private Combo comboArea;
-    // private Combo comboLibrary;
-    // private Combo comboLibraryList;
-    // private Combo comboLibraryCcsid;
-    // private Text textCommandExtension;
-
     private AreaMaintenanceControl areaMaintenanceControl;
-
-    private boolean enableParentKeyFields;
-    private boolean enableKeyFields;
-    private boolean enableFields;
 
     private IRapidFireLibraryResource[] libraries;
     private IRapidFireLibraryListResource[] libraryLists;
@@ -104,97 +91,10 @@ public class AreaMaintenanceDialog extends AbstractMaintenanceDialog {
         super(shell, mode);
 
         this.manager = manager;
-
-        if (MaintenanceMode.CREATE.equals(mode) || MaintenanceMode.COPY.equals(mode)) {
-            enableParentKeyFields = false;
-            enableKeyFields = true;
-            enableFields = true;
-        } else if (MaintenanceMode.CHANGE.equals(mode)) {
-            enableParentKeyFields = false;
-            enableKeyFields = false;
-            enableFields = true;
-        } else {
-            enableParentKeyFields = false;
-            enableKeyFields = false;
-            enableFields = false;
-        }
     }
 
     @Override
     protected void createEditorAreaContent(Composite parent) {
-
-        // WidgetFactory.createLabel(parent, Messages.Label_Job_colon,
-        // Messages.Tooltip_Job);
-        //
-        // textJobName = WidgetFactory.createNameText(parent);
-        // textJobName.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true,
-        // false));
-        // textJobName.setToolTipText(Messages.Tooltip_Job);
-        // textJobName.setEnabled(enableParentKeyFields);
-        //
-        // WidgetFactory.createLabel(parent, Messages.Label_Position_colon,
-        // Messages.Tooltip_Position);
-        //
-        // textPosition = WidgetFactory.createIntegerText(parent);
-        // textPosition.setTextLimit(6);
-        // textPosition.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true,
-        // false));
-        // textPosition.setToolTipText(Messages.Tooltip_Position);
-        // textPosition.setEnabled(enableParentKeyFields);
-        //
-        // WidgetFactory.createLabel(parent, Messages.Label_Area_colon,
-        // Messages.Tooltip_Area);
-        //
-        // comboArea = WidgetFactory.createNameCombo(parent);
-        // setDefaultValue(comboArea, Area.NONE.label());
-        // comboArea.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true,
-        // false));
-        // comboArea.setToolTipText(Messages.Tooltip_Area);
-        // comboArea.setEnabled(enableKeyFields);
-        // comboArea.setItems(AreaValues.getAreaLabels());
-        //
-        // WidgetFactory.createLabel(parent, Messages.Label_Area_library_colon,
-        // Messages.Tooltip_Area_library);
-        //
-        // comboLibrary = WidgetFactory.createReadOnlyCombo(parent);
-        // comboLibrary.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true,
-        // false));
-        // comboLibrary.setToolTipText(Messages.Tooltip_Area_library);
-        // comboLibrary.setEnabled(enableFields);
-        // comboLibrary.setItems(getLibraries());
-        //
-        // WidgetFactory.createLabel(parent,
-        // Messages.Label_Area_library_list_colon,
-        // Messages.Tooltip_Area_library_list);
-        //
-        // comboLibraryList = WidgetFactory.createReadOnlyCombo(parent);
-        // setDefaultValue(comboLibraryList, LibraryList.NONE.label());
-        // comboLibraryList.setLayoutData(new GridData(SWT.FILL, SWT.CENTER,
-        // true, false));
-        // comboLibraryList.setToolTipText(Messages.Tooltip_Area_library_list);
-        // comboLibraryList.setEnabled(enableFields);
-        // comboLibraryList.setItems(getLibraryLists(AreaValues.getLibraryListSpecialValues()));
-        //
-        // WidgetFactory.createLabel(parent, Messages.Label_Area_library_ccsid,
-        // Messages.Tooltip_Area_library_ccsid);
-        //
-        // comboLibraryCcsid = WidgetFactory.createCombo(parent);
-        // setDefaultValue(comboLibraryCcsid, Ccsid.JOB.label());
-        // comboLibraryCcsid.setLayoutData(new GridData(SWT.FILL, SWT.CENTER,
-        // true, false));
-        // comboLibraryCcsid.setToolTipText(Messages.Tooltip_Area_library_ccsid);
-        // comboLibraryCcsid.setEnabled(enableFields);
-        // comboLibraryCcsid.setItems(AreaValues.getCcsidSpecialValues());
-        //
-        // WidgetFactory.createLabel(parent,
-        // Messages.Label_Command_extension_colon,
-        // Messages.Tooltip_Command_extension);
-        //
-        // textCommandExtension = WidgetFactory.createText(parent);
-        // textCommandExtension.setLayoutData(new GridData(SWT.FILL, SWT.CENTER,
-        // true, false));
-        // textCommandExtension.setToolTipText(Messages.Tooltip_Command_extension);
-        // textCommandExtension.setEnabled(enableFields);
 
         areaMaintenanceControl = new AreaMaintenanceControl(parent, SWT.NONE);
         areaMaintenanceControl.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));

@@ -47,11 +47,17 @@ public class AreaMaintenanceControl extends AbstractMaintenanceControl {
     }
 
     public void setFocusJobName() {
-        textJobName.setFocus();
+
+        if (isParentKeyFieldsVisible()) {
+            textJobName.setFocus();
+        }
     }
 
     public void setFocusPosition() {
-        textPosition.setFocus();
+
+        if (isParentKeyFieldsVisible()) {
+            textPosition.setFocus();
+        }
     }
 
     public void setFocusArea() {
@@ -116,7 +122,6 @@ public class AreaMaintenanceControl extends AbstractMaintenanceControl {
         WidgetFactory.createLabel(parent, Messages.Label_Area_colon, Messages.Tooltip_Area);
 
         comboArea = WidgetFactory.createNameCombo(parent);
-        // setDefaultValue(comboArea, Area.NONE.label());
         comboArea.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
         comboArea.setToolTipText(Messages.Tooltip_Area);
         comboArea.setEnabled(enableKeyFields);
@@ -128,16 +133,13 @@ public class AreaMaintenanceControl extends AbstractMaintenanceControl {
         comboLibrary.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
         comboLibrary.setToolTipText(Messages.Tooltip_Area_library);
         comboLibrary.setEnabled(enableFields);
-        // comboLibrary.setItems(getLibraries());
 
         WidgetFactory.createLabel(parent, Messages.Label_Area_library_list_colon, Messages.Tooltip_Area_library_list);
 
         comboLibraryList = WidgetFactory.createReadOnlyCombo(parent);
-        // setDefaultValue(comboLibraryList, LibraryList.NONE.label());
         comboLibraryList.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
         comboLibraryList.setToolTipText(Messages.Tooltip_Area_library_list);
         comboLibraryList.setEnabled(enableFields);
-        // comboLibraryList.setItems(getLibraryLists(AreaValues.getLibraryListSpecialValues()));
 
         WidgetFactory.createLabel(parent, Messages.Label_Area_library_ccsid, Messages.Tooltip_Area_library_ccsid);
 
@@ -157,7 +159,12 @@ public class AreaMaintenanceControl extends AbstractMaintenanceControl {
     }
 
     public String getJobName() {
-        return textJobName.getText();
+
+        if (isParentKeyFieldsVisible()) {
+            return textJobName.getText();
+        } else {
+            return null;
+        }
     }
 
     public void setJobName(String jobName) {
@@ -168,7 +175,12 @@ public class AreaMaintenanceControl extends AbstractMaintenanceControl {
     }
 
     public String getPosition() {
-        return textPosition.getText();
+
+        if (isParentKeyFieldsVisible()) {
+            return textPosition.getText();
+        } else {
+            return null;
+        }
     }
 
     public void setPosition(int position) {
