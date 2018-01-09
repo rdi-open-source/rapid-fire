@@ -19,6 +19,7 @@ import biz.rapidfire.core.Messages;
 import biz.rapidfire.core.RapidFireCorePlugin;
 import biz.rapidfire.core.helpers.StringHelper;
 import biz.rapidfire.core.maintenance.area.AreaValues;
+import biz.rapidfire.core.maintenance.command.CommandValues;
 import biz.rapidfire.core.maintenance.file.FileValues;
 import biz.rapidfire.core.maintenance.wizard.AbstractNewWizard;
 import biz.rapidfire.core.maintenance.wizard.AbstractWizardPage;
@@ -43,10 +44,11 @@ public class NewFileWizard extends AbstractNewWizard {
 
         FileValues fileValues = FileValues.createInitialized();
         AreaValues areaValues = AreaValues.createInitialized();
+        CommandValues commandValues = CommandValues.createInitialized();
 
         addPage(new FilePage(fileValues));
         addPage(new AreaPage(areaValues));
-        addPage(new CommandPage());
+        addPage(new CommandPage(commandValues));
         addPage(new ConversionPage());
     }
 

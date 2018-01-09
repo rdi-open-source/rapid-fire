@@ -10,6 +10,7 @@ package biz.rapidfire.core.dialogs.maintenance.command;
 
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyListener;
+import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Combo;
@@ -23,6 +24,8 @@ import biz.rapidfire.core.maintenance.command.shared.CommandType;
 import biz.rapidfire.core.swt.widgets.WidgetFactory;
 
 public class CommandMaintenanceControl extends AbstractMaintenanceControl {
+
+    private static int COMPILE_SEQUENCE = 5;
 
     private Text textJobName;
     private Text textPosition;
@@ -114,6 +117,15 @@ public class CommandMaintenanceControl extends AbstractMaintenanceControl {
         comboCommandType.setToolTipText(Messages.Tooltip_Command_type);
         comboCommandType.setEnabled(enableKeyFields);
         comboCommandType.setItems(CommandType.labels());
+        comboCommandType.addSelectionListener(new SelectionListener() {
+            public void widgetSelected(SelectionEvent event) {
+                updateSequenceValueAndEnablement();
+            }
+
+            public void widgetDefaultSelected(SelectionEvent event) {
+                widgetSelected(event);
+            }
+        });
 
         WidgetFactory.createLabel(parent, Messages.Label_Command_sequence_colon, Messages.Tooltip_Command_sequence);
 
@@ -128,6 +140,20 @@ public class CommandMaintenanceControl extends AbstractMaintenanceControl {
         textCommand.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
         textCommand.setToolTipText(Messages.Tooltip_Command_command);
         textCommand.setEnabled(enableFields);
+    }
+
+    private void updateSequenceValueAndEnablement() {
+
+        if (isCompileCommandType()) {
+            textSequence.setText(Integer.toString(COMPILE_SEQUENCE));
+            textSequence.setEnabled(false);
+        } else {
+            textSequence.setEnabled(isKeyFieldsEnabled());
+        }
+    }
+
+    private boolean isCompileCommandType() {
+        return CommandType.COMPILE.label().equals(comboCommandType.getText());
     }
 
     public String getJobName() {
@@ -168,6 +194,7 @@ public class CommandMaintenanceControl extends AbstractMaintenanceControl {
 
     public void setCommandType(String commandType) {
         setText(comboCommandType, commandType);
+        updateSequenceValueAndEnablement();
     }
 
     public String getSequence() {
@@ -176,6 +203,7 @@ public class CommandMaintenanceControl extends AbstractMaintenanceControl {
 
     public void setSequence(String sequence) {
         setText(textSequence, sequence);
+        updateSequenceValueAndEnablement();
     }
 
     public String getCommand() {

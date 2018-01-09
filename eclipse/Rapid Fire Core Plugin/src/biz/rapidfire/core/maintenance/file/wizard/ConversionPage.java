@@ -12,7 +12,6 @@ import org.eclipse.swt.widgets.Composite;
 
 import biz.rapidfire.core.Messages;
 import biz.rapidfire.core.maintenance.job.JobValues;
-import biz.rapidfire.core.maintenance.job.wizard.NewJobWizard;
 import biz.rapidfire.core.maintenance.wizard.AbstractWizardPage;
 
 public class ConversionPage extends AbstractWizardPage {
@@ -56,16 +55,6 @@ public class ConversionPage extends AbstractWizardPage {
 
     private void updateValues() {
 
-    }
-
-    private void updatePageEnablement() {
-
-        NewJobWizard wizard = (NewJobWizard)getWizard();
-        // if (nameValues.isCreateEnvironment()) {
-        // wizard.setPageEnablement(LibraryListPage.NAME, true);
-        // } else {
-        // wizard.setPageEnablement(LibraryListPage.NAME, false);
-        // }
     }
 
     @Override

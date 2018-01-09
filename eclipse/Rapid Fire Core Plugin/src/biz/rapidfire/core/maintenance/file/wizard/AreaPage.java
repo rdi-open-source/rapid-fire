@@ -79,8 +79,6 @@ public class AreaPage extends AbstractWizardPage {
         areaMaintenanceControl.setLibraryListName(areaValues.getLibraryList());
         areaMaintenanceControl.setLibraryCcsid(areaValues.getLibraryCcsid());
         areaMaintenanceControl.setCommandExtension(areaValues.getCommandExtension());
-
-        updatePageEnablement();
     }
 
     public void setLibraryNames(String[] libraryNames) {
@@ -154,11 +152,6 @@ public class AreaPage extends AbstractWizardPage {
         areaValues.setLibraryList(areaMaintenanceControl.getLibraryListName());
         areaValues.setLibraryCcsid(areaMaintenanceControl.getLibraryCcsid());
         areaValues.setCommandExtension(areaMaintenanceControl.getCommandExtension());
-
-        updatePageEnablement();
-    }
-
-    private void updatePageEnablement() {
     }
 
     @Override

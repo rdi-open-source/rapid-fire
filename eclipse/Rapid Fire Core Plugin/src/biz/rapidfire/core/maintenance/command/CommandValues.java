@@ -12,15 +12,29 @@ import biz.rapidfire.core.RapidFireCorePlugin;
 import biz.rapidfire.core.helpers.ExceptionHelper;
 import biz.rapidfire.core.maintenance.IResourceValues;
 import biz.rapidfire.core.maintenance.command.shared.CommandKey;
+import biz.rapidfire.core.maintenance.command.shared.CommandType;
 import biz.rapidfire.core.maintenance.conversion.shared.NewFieldName;
+import biz.rapidfire.core.maintenance.file.shared.FileKey;
+import biz.rapidfire.core.maintenance.job.shared.JobKey;
 
 public class CommandValues implements IResourceValues {
+
+    private static final String EMPTY = ""; //$NON-NLS-1$
 
     private CommandKey key;
     private String command;
 
     public static String[] getNewFieldNameSpecialValues() {
         return NewFieldName.labels();
+    }
+
+    public static CommandValues createInitialized() {
+
+        CommandValues commandValues = new CommandValues();
+        commandValues.setKey(new CommandKey(new FileKey(new JobKey(EMPTY), 0), CommandType.COMPILE, 0));
+        commandValues.setCommand(EMPTY);
+
+        return commandValues;
     }
 
     public CommandKey getKey() {

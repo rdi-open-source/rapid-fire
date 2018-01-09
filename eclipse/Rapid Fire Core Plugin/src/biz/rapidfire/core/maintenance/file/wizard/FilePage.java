@@ -117,8 +117,6 @@ public class FilePage extends AbstractWizardPage {
         fileMaintenanceControl.setCopyProgramLibraryName(fileValues.getCopyProgramLibraryName());
         fileMaintenanceControl.setConversionProgramName(fileValues.getConversionProgramName());
         fileMaintenanceControl.setConversionProgramLibraryName(fileValues.getConversionProgramLibraryName());
-
-        updatePageEnablement();
     }
 
     @Override
@@ -201,11 +199,6 @@ public class FilePage extends AbstractWizardPage {
         fileValues.setCopyProgramLibraryName(fileMaintenanceControl.getCopyProgramLibraryName());
         fileValues.setConversionProgramName(fileMaintenanceControl.getConversionProgramName());
         fileValues.setConversionProgramLibraryName(fileMaintenanceControl.getConversionProgramLibraryName());
-
-        updatePageEnablement();
-    }
-
-    private void updatePageEnablement() {
     }
 
     @Override
