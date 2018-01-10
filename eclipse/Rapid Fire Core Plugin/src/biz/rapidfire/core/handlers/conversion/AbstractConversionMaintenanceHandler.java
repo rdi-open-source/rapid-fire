@@ -131,7 +131,7 @@ public abstract class AbstractConversionMaintenanceHandler extends AbstractResou
 
         try {
 
-            Field[] fields = getManager().getFields(getShell(), conversion.getParentResource());
+            Field[] fields = getManager().getFieldsOfFirstArea(getShell(), conversion.getParentResource());
             if (fields == null || fields.length == 0) {
 
                 String connectionName = conversion.getParentSubSystem().getConnectionName();

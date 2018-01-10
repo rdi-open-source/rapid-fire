@@ -18,8 +18,11 @@ import org.eclipse.jface.dialogs.PageChangedEvent;
 import biz.rapidfire.core.Messages;
 import biz.rapidfire.core.RapidFireCorePlugin;
 import biz.rapidfire.core.helpers.StringHelper;
+import biz.rapidfire.core.host.files.Field;
+import biz.rapidfire.core.host.files.FieldList;
 import biz.rapidfire.core.maintenance.area.AreaValues;
 import biz.rapidfire.core.maintenance.command.CommandValues;
+import biz.rapidfire.core.maintenance.conversion.ConversionValues;
 import biz.rapidfire.core.maintenance.file.FileValues;
 import biz.rapidfire.core.maintenance.wizard.AbstractNewWizard;
 import biz.rapidfire.core.maintenance.wizard.AbstractWizardPage;
@@ -45,11 +48,12 @@ public class NewFileWizard extends AbstractNewWizard {
         FileValues fileValues = FileValues.createInitialized();
         AreaValues areaValues = AreaValues.createInitialized();
         CommandValues commandValues = CommandValues.createInitialized();
+        ConversionValues conversionValues = ConversionValues.createInitialized();
 
         addPage(new FilePage(fileValues));
         addPage(new AreaPage(areaValues));
         addPage(new CommandPage(commandValues));
-        addPage(new ConversionPage());
+        addPage(new ConversionPage(conversionValues));
     }
 
     @Override
@@ -88,28 +92,42 @@ public class NewFileWizard extends AbstractNewWizard {
 
                 AreaPage areaPage = (AreaPage)event.getSelectedPage();
 
-                try {
+                FilePage filePage = (FilePage)getPage(FilePage.NAME);
+                String jobName = filePage.getJobName();
 
-                    FilePage filePage = (FilePage)getPage(FilePage.NAME);
-                    String jobName = filePage.getJobName();
-
-                    IRapidFireSubSystem subSystem = (IRapidFireSubSystem)SystemConnectionHelper.getSubSystem(connectionName,
-                        IRapidFireSubSystem.class);
-                    if (subSystem != null) {
-                        IRapidFireJobResource job = subSystem.getJob(dataLibraryName, jobName, getShell());
-                        if (job != null) {
-                            IRapidFireLibraryResource[] libraries = subSystem.getLibraries(job, getShell());
-                            areaPage.setLibraryNames(getLibraryNames(libraries));
-                            IRapidFireLibraryListResource[] libraryLists = subSystem.getLibraryLists(job, getShell());
-                            areaPage.setLibraryListNames(getLibraryListNames(libraryLists));
-                        }
+                IRapidFireSubSystem subSystem = (IRapidFireSubSystem)SystemConnectionHelper.getSubSystem(connectionName, IRapidFireSubSystem.class);
+                if (subSystem != null) {
+                    IRapidFireJobResource job = subSystem.getJob(dataLibraryName, jobName, getShell());
+                    if (job != null) {
+                        IRapidFireLibraryResource[] libraries = subSystem.getLibraries(job, getShell());
+                        areaPage.setLibraryNames(getLibraryNames(libraries));
+                        IRapidFireLibraryListResource[] libraryLists = subSystem.getLibraryLists(job, getShell());
+                        areaPage.setLibraryListNames(getLibraryListNames(libraryLists));
                     }
-
-                    areaPage.setErrorMessage(null);
-
-                } catch (Throwable e) {
-
                 }
+
+                areaPage.setErrorMessage(null);
+
+            } else if (event.getSelectedPage() instanceof ConversionPage) {
+
+                ConversionPage conversionPage = (ConversionPage)event.getSelectedPage();
+
+                FilePage filePage = (FilePage)getPage(FilePage.NAME);
+                AreaPage areaPage = (AreaPage)getPage(AreaPage.NAME);
+
+                String jobName = filePage.getJobName();
+                String fileName = filePage.getValues().getFileName();
+                String libraryResourceName = areaPage.getValues().getLibrary();
+
+                IRapidFireSubSystem subSystem = (IRapidFireSubSystem)SystemConnectionHelper.getSubSystem(connectionName, IRapidFireSubSystem.class);
+                IRapidFireJobResource jobResource = subSystem.getJob(dataLibraryName, jobName, getShell());
+                IRapidFireLibraryResource libraryResource = subSystem.getLibrary(jobResource, libraryResourceName, getShell());
+
+                FieldList fieldList = new FieldList(connectionName, fileName, libraryResource.getKey().getLibrary());
+
+                conversionPage.setFieldsToConvert(getFieldNames(fieldList.getFields()));
+
+                filePage.setErrorMessage(null);
 
             }
 
@@ -141,6 +159,19 @@ public class NewFileWizard extends AbstractNewWizard {
         }
 
         String[] names = namesList.toArray(new String[namesList.size()]);
+        Arrays.sort(names);
+
+        return names;
+    }
+
+    private String[] getFieldNames(Field[] fields) {
+
+        List<String> fieldNames = new LinkedList<String>();
+        for (Field field : fields) {
+            fieldNames.add(field.getName());
+        }
+
+        String[] names = fieldNames.toArray(new String[fieldNames.size()]);
         Arrays.sort(names);
 
         return names;

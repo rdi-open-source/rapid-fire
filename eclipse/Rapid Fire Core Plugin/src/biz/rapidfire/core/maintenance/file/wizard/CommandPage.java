@@ -18,7 +18,6 @@ import biz.rapidfire.core.helpers.IntHelper;
 import biz.rapidfire.core.helpers.StringHelper;
 import biz.rapidfire.core.maintenance.MaintenanceMode;
 import biz.rapidfire.core.maintenance.command.CommandValues;
-import biz.rapidfire.core.maintenance.job.JobValues;
 import biz.rapidfire.core.maintenance.wizard.AbstractWizardPage;
 
 public class CommandPage extends AbstractWizardPage {
@@ -48,12 +47,9 @@ public class CommandPage extends AbstractWizardPage {
             commandMaintenanceControl.setFocusSequence();
         } else if (StringHelper.isNullOrEmpty(commandMaintenanceControl.getCommand())) {
             commandMaintenanceControl.setFocusCommand();
+        } else {
             commandMaintenanceControl.setFocusCommandType();
         }
-    }
-
-    public JobValues getValues() {
-        return null;
     }
 
     public void createContent(Composite parent) {

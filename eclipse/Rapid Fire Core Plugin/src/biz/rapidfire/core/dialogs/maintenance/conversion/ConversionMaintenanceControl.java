@@ -188,6 +188,12 @@ public class ConversionMaintenanceControl extends AbstractMaintenanceControl {
         setText(comboFieldToConvert, commandType);
     }
 
+    public void setFieldsToConvert(String[] fieldNames) {
+        String fieldToCOnvert = comboFieldToConvert.getText();
+        comboFieldToConvert.setItems(fieldNames);
+        comboFieldToConvert.setText(fieldToCOnvert);
+    }
+
     public void setFieldNames(String[] fieldNames) {
         comboFieldToConvert.setItems(fieldNames);
     }
@@ -200,7 +206,7 @@ public class ConversionMaintenanceControl extends AbstractMaintenanceControl {
         setText(comboNewFieldName, newFieldName);
     }
 
-    public String[] getStatements() {
+    public String[] getConversions() {
 
         String[] statements = new String[textStatements.length];
         for (int i = 0; i < statements.length; i++) {
@@ -210,7 +216,7 @@ public class ConversionMaintenanceControl extends AbstractMaintenanceControl {
         return statements;
     }
 
-    public void setStatements(String[] statements) {
+    public void setConversions(String[] statements) {
 
         for (int i = 0; i < statements.length; i++) {
             setText(textStatements[i], statements[i]);

@@ -13,8 +13,12 @@ import biz.rapidfire.core.helpers.ExceptionHelper;
 import biz.rapidfire.core.maintenance.IResourceValues;
 import biz.rapidfire.core.maintenance.conversion.shared.ConversionKey;
 import biz.rapidfire.core.maintenance.conversion.shared.NewFieldName;
+import biz.rapidfire.core.maintenance.file.shared.FileKey;
+import biz.rapidfire.core.maintenance.job.shared.JobKey;
 
 public class ConversionValues implements IResourceValues {
+
+    private static final String EMPTY = ""; //$NON-NLS-1$
 
     private ConversionKey key;
     private String newFieldName;
@@ -22,6 +26,16 @@ public class ConversionValues implements IResourceValues {
 
     public static String[] getNewFieldNameSpecialValues() {
         return NewFieldName.labels();
+    }
+
+    public static ConversionValues createInitialized() {
+
+        ConversionValues conversionValues = new ConversionValues();
+        conversionValues.setKey(new ConversionKey(new FileKey(new JobKey(EMPTY), 0), EMPTY));
+        conversionValues.setNewFieldName(EMPTY);
+        conversionValues.setConversions(new String[] { EMPTY, EMPTY, EMPTY, EMPTY, EMPTY, EMPTY });
+
+        return conversionValues;
     }
 
     public ConversionKey getKey() {

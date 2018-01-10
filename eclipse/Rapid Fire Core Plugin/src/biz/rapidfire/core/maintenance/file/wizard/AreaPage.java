@@ -64,6 +64,10 @@ public class AreaPage extends AbstractWizardPage {
         }
     }
 
+    public AreaValues getValues() {
+        return areaValues;
+    }
+
     public void createContent(Composite parent) {
 
         areaMaintenanceControl = new AreaMaintenanceControl(parent, false, SWT.NONE);

@@ -338,6 +338,7 @@ public class Messages extends NLS {
     public static String Could_not_create_resource_Resource_not_found;
     public static String Could_not_copy_resource_Resource_not_found;
     public static String Object_compile_command_is_missing;
+    public static String Field_to_convert_is_missing;
 
     // API error messages
     public static String EntityManager_Unknown_error_code_A;

@@ -296,7 +296,7 @@ public class ConversionManager extends AbstractManager<IRapidFireConversionResou
         JDBCConnectionManager.getInstance().close(dao);
     }
 
-    public Field[] getFields(Shell shell, IRapidFireFileResource file) throws Exception {
+    public Field[] getFieldsOfFirstArea(Shell shell, IRapidFireFileResource file) throws Exception {
 
         String connectionName = file.getParentSubSystem().getConnectionName();
         String libraryName = null;

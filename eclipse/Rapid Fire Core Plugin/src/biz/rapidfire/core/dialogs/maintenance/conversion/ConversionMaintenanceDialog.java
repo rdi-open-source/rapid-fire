@@ -108,7 +108,7 @@ public class ConversionMaintenanceDialog extends AbstractMaintenanceDialog {
 
         conversionMaintenanceControl.setNewFieldName(values.getNewFieldName());
 
-        conversionMaintenanceControl.setStatements(values.getConversions());
+        conversionMaintenanceControl.setConversions(values.getConversions());
     }
 
     @Override
@@ -117,7 +117,7 @@ public class ConversionMaintenanceDialog extends AbstractMaintenanceDialog {
         ConversionValues newValues = values.clone();
         newValues.getKey().setFieldToConvert(conversionMaintenanceControl.getFieldToConvert());
         newValues.setNewFieldName(conversionMaintenanceControl.getNewFieldName());
-        newValues.setConversions(conversionMaintenanceControl.getStatements());
+        newValues.setConversions(conversionMaintenanceControl.getConversions());
 
         if (!isDisplayMode()) {
             try {
