@@ -17,9 +17,9 @@ import biz.rapidfire.core.dialogs.maintenance.area.AreaMaintenanceControl;
 import biz.rapidfire.core.helpers.IntHelper;
 import biz.rapidfire.core.helpers.StringHelper;
 import biz.rapidfire.core.maintenance.MaintenanceMode;
-import biz.rapidfire.core.maintenance.area.AreaValues;
 import biz.rapidfire.core.maintenance.area.shared.Area;
 import biz.rapidfire.core.maintenance.area.shared.Ccsid;
+import biz.rapidfire.core.maintenance.file.wizard.model.FileWizardDataModel;
 import biz.rapidfire.core.maintenance.wizard.AbstractWizardPage;
 import biz.rapidfire.core.validators.Validator;
 
@@ -27,23 +27,34 @@ public class AreaPage extends AbstractWizardPage {
 
     public static final String NAME = "AREA_PAGE"; //$NON-NLS-1$
 
-    private AreaValues areaValues;
+    private FileWizardDataModel model;
 
     private Validator areaNameValidator;
     private Validator nameValidator;
 
     private AreaMaintenanceControl areaMaintenanceControl;
 
-    public AreaPage(AreaValues areaValues) {
+    public AreaPage(FileWizardDataModel model) {
         super(NAME);
 
-        this.areaValues = areaValues;
+        this.model = model;
 
         this.areaNameValidator = Validator.getNameInstance(Area.labels());
         this.nameValidator = Validator.getNameInstance();
 
         setTitle(Messages.Wizard_Page_Area);
+
+        updateMode();
+    }
+
+    @Override
+    public void updateMode() {
+
         setDescription(Messages.Wizard_Page_Area_description);
+
+        if (areaMaintenanceControl != null) {
+            areaMaintenanceControl.setMode(MaintenanceMode.CREATE);
+        }
     }
 
     @Override
@@ -64,25 +75,22 @@ public class AreaPage extends AbstractWizardPage {
         }
     }
 
-    public AreaValues getValues() {
-        return areaValues;
-    }
-
     public void createContent(Composite parent) {
 
         areaMaintenanceControl = new AreaMaintenanceControl(parent, false, SWT.NONE);
-        areaMaintenanceControl.setMode(MaintenanceMode.CREATE);
         areaMaintenanceControl.setLayoutData(new GridData(SWT.FILL, SWT.BEGINNING, true, false, 2, 1));
+
+        updateMode();
     }
 
     @Override
     protected void setInputData() {
 
-        areaMaintenanceControl.setAreaName(areaValues.getKey().getArea());
-        areaMaintenanceControl.setLibraryName(areaValues.getLibrary());
-        areaMaintenanceControl.setLibraryListName(areaValues.getLibraryList());
-        areaMaintenanceControl.setLibraryCcsid(areaValues.getLibraryCcsid());
-        areaMaintenanceControl.setCommandExtension(areaValues.getCommandExtension());
+        areaMaintenanceControl.setAreaName(model.getAreaName());
+        areaMaintenanceControl.setLibraryName(model.getLibraryName());
+        areaMaintenanceControl.setLibraryListName(model.getLibraryListName());
+        areaMaintenanceControl.setLibraryCcsid(model.getLibraryCcsid());
+        areaMaintenanceControl.setCommandExtension(model.getCommandExtension());
     }
 
     public void setLibraryNames(String[] libraryNames) {
@@ -151,11 +159,11 @@ public class AreaPage extends AbstractWizardPage {
 
     private void updateValues() {
 
-        areaValues.getKey().setArea(areaMaintenanceControl.getAreaName());
-        areaValues.setLibrary(areaMaintenanceControl.getLibraryName());
-        areaValues.setLibraryList(areaMaintenanceControl.getLibraryListName());
-        areaValues.setLibraryCcsid(areaMaintenanceControl.getLibraryCcsid());
-        areaValues.setCommandExtension(areaMaintenanceControl.getCommandExtension());
+        model.setAreaName(areaMaintenanceControl.getAreaName());
+        model.setLibraryName(areaMaintenanceControl.getLibraryName());
+        model.setLibraryListName(areaMaintenanceControl.getLibraryListName());
+        model.setLibraryCcsid(areaMaintenanceControl.getLibraryCcsid());
+        model.setCommandExtension(areaMaintenanceControl.getCommandExtension());
     }
 
     @Override

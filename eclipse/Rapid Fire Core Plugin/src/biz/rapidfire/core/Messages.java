@@ -144,8 +144,10 @@ public class Messages extends NLS {
     public static String Label_Time_colon;
     public static String Label_Job_status_view;
     public static String Label_Open_member_colon;
-    public static String Remote_Connection_settings;
+    public static String Label_Remote_Connection_settings;
     public static String Label_Is_slow_connection;
+    public static String Label_Wizard_settings;
+    public static String Label_Skip_disabled_pages;
 
     public static String Tooltip_Library;
     public static String Tooltip_Job;
@@ -191,6 +193,7 @@ public class Messages extends NLS {
     public static String Tooltip_Select_libraries_by_area;
     public static String Tooltip_Is_slow_connection;
     public static String Tooltip_Select_conversion_program_of_file;
+    public static String Tooltip_Skip_disabled_pages;
 
     // Questions
     public static String Question_Do_you_want_to_delete_library_A;
@@ -217,6 +220,7 @@ public class Messages extends NLS {
     public static String Library_A_successfull_transfered;
     public static String No_errors;
     public static String NewJobWizard_Rapid_Fire_job_A_created;
+    public static String NewFileWizard_File_A_created;
     public static String Copy_program_successfully_generated;
 
     // Action labels

@@ -36,6 +36,7 @@ public class AppearancePage extends PreferencePage implements IWorkbenchPreferen
     private Combo textDateFormat;
     private Combo textTimeFormat;
     private Button btnIsSlowConnection;
+    private Button btnSkipDisabledPages;
 
     public AppearancePage() {
         super();
@@ -64,6 +65,9 @@ public class AppearancePage extends PreferencePage implements IWorkbenchPreferen
         WidgetFactory.createLineFiller(container, SWT.DEFAULT);
 
         createSectionConnection(container);
+        WidgetFactory.createLineFiller(container, SWT.DEFAULT);
+
+        createSectionWizard(container);
 
         setScreenToValues();
 
@@ -143,7 +147,7 @@ public class AppearancePage extends PreferencePage implements IWorkbenchPreferen
         Group groupDateAndTimeFormats = new Group(parent, SWT.NONE);
         groupDateAndTimeFormats.setLayout(new GridLayout(3, false));
         groupDateAndTimeFormats.setLayoutData(new GridData(SWT.FILL, SWT.BEGINNING, true, false, 2, 1));
-        groupDateAndTimeFormats.setText(Messages.Remote_Connection_settings);
+        groupDateAndTimeFormats.setText(Messages.Label_Remote_Connection_settings);
 
         btnIsSlowConnection = WidgetFactory.createCheckbox(groupDateAndTimeFormats);
         btnIsSlowConnection.setText(Messages.Label_Is_slow_connection);
@@ -152,7 +156,33 @@ public class AppearancePage extends PreferencePage implements IWorkbenchPreferen
         btnIsSlowConnection.addSelectionListener(new SelectionListener() {
 
             public void widgetSelected(SelectionEvent event) {
-                if (validateLargeProgressBar()) {
+                if (validateSlowConnection()) {
+                    checkAllValues();
+                }
+            }
+
+            public void widgetDefaultSelected(SelectionEvent event) {
+                widgetSelected(event);
+            }
+        });
+    }
+
+    private void createSectionWizard(Composite parent) {
+
+        // Wizard settings
+        Group groupWizardSettings = new Group(parent, SWT.NONE);
+        groupWizardSettings.setLayout(new GridLayout(3, false));
+        groupWizardSettings.setLayoutData(new GridData(SWT.FILL, SWT.BEGINNING, true, false, 2, 1));
+        groupWizardSettings.setText(Messages.Label_Wizard_settings);
+
+        btnSkipDisabledPages = WidgetFactory.createCheckbox(groupWizardSettings);
+        btnSkipDisabledPages.setText(Messages.Label_Skip_disabled_pages);
+        btnSkipDisabledPages.setToolTipText(Messages.Tooltip_Skip_disabled_pages);
+        btnSkipDisabledPages.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+        btnSkipDisabledPages.addSelectionListener(new SelectionListener() {
+
+            public void widgetSelected(SelectionEvent event) {
+                if (validateSkipDisabledPages()) {
                     checkAllValues();
                 }
             }
@@ -190,6 +220,7 @@ public class AppearancePage extends PreferencePage implements IWorkbenchPreferen
         preferences.setDateFormatLabel(textDateFormat.getText());
         preferences.setTimeFormatLabel(textTimeFormat.getText());
         preferences.setSlowConnection(btnIsSlowConnection.getSelection());
+        preferences.setSkipDisabledWizardPages(btnSkipDisabledPages.getSelection());
     }
 
     protected void setScreenToValues() {
@@ -200,6 +231,7 @@ public class AppearancePage extends PreferencePage implements IWorkbenchPreferen
         textDateFormat.setText(preferences.getDateFormatLabel());
         textTimeFormat.setText(preferences.getTimeFormatLabel());
         btnIsSlowConnection.setSelection(preferences.isSlowConnection());
+        btnSkipDisabledPages.setSelection(preferences.skipDisabledWizardPages());
 
         checkAllValues();
         setControlsEnablement();
@@ -213,12 +245,23 @@ public class AppearancePage extends PreferencePage implements IWorkbenchPreferen
         textDateFormat.setText(preferences.getDefaultDateFormatLabel());
         textTimeFormat.setText(preferences.getDefaultTimeFormatLabel());
         btnIsSlowConnection.setSelection(preferences.getDefaultIsSlowConnection());
+        btnSkipDisabledPages.setSelection(preferences.getDefaultSkipDisabledWizardPages());
 
         checkAllValues();
         setControlsEnablement();
     }
 
     private boolean validateLargeProgressBar() {
+
+        return true;
+    }
+
+    private boolean validateSlowConnection() {
+
+        return true;
+    }
+
+    private boolean validateSkipDisabledPages() {
 
         return true;
     }

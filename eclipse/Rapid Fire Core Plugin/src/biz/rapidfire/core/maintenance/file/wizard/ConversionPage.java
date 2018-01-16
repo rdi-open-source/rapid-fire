@@ -16,24 +16,35 @@ import biz.rapidfire.core.Messages;
 import biz.rapidfire.core.dialogs.maintenance.conversion.ConversionMaintenanceControl;
 import biz.rapidfire.core.helpers.StringHelper;
 import biz.rapidfire.core.maintenance.MaintenanceMode;
-import biz.rapidfire.core.maintenance.conversion.ConversionValues;
+import biz.rapidfire.core.maintenance.file.wizard.model.FileWizardDataModel;
 import biz.rapidfire.core.maintenance.wizard.AbstractWizardPage;
 
 public class ConversionPage extends AbstractWizardPage {
 
     public static final String NAME = "CONVERSION_PAGE"; //$NON-NLS-1$
 
-    private ConversionValues conversionValues;
+    private FileWizardDataModel model;
 
     private ConversionMaintenanceControl conversionMaintenanceControl;
 
-    public ConversionPage(ConversionValues conversionValues) {
+    public ConversionPage(FileWizardDataModel model) {
         super(NAME);
 
-        this.conversionValues = conversionValues;
+        this.model = model;
 
         setTitle(Messages.Wizard_Page_Conversion);
+
+        updateMode();
+    }
+
+    @Override
+    public void updateMode() {
+
         setDescription(Messages.Wizard_Page_Conversion_description);
+
+        if (conversionMaintenanceControl != null) {
+            conversionMaintenanceControl.setMode(MaintenanceMode.CREATE);
+        }
     }
 
     @Override
@@ -64,16 +75,17 @@ public class ConversionPage extends AbstractWizardPage {
     public void createContent(Composite parent) {
 
         conversionMaintenanceControl = new ConversionMaintenanceControl(parent, false, SWT.NONE);
-        conversionMaintenanceControl.setMode(MaintenanceMode.CREATE);
         conversionMaintenanceControl.setLayoutData(new GridData(SWT.FILL, SWT.BEGINNING, true, false, 2, 1));
+
+        updateMode();
     }
 
     @Override
     protected void setInputData() {
 
-        conversionMaintenanceControl.setFieldToConvert(conversionValues.getKey().getFieldToConvert());
-        conversionMaintenanceControl.setNewFieldName(conversionValues.getNewFieldName());
-        conversionMaintenanceControl.setConversions(conversionValues.getConversions());
+        conversionMaintenanceControl.setFieldToConvert(model.getFieldToConvertName());
+        conversionMaintenanceControl.setNewFieldName(model.getNewFieldName());
+        conversionMaintenanceControl.setConversions(model.getConversionsForUI());
     }
 
     public void setFieldsToConvert(String[] fieldNames) {
@@ -115,9 +127,9 @@ public class ConversionPage extends AbstractWizardPage {
 
     private void updateValues() {
 
-        conversionValues.getKey().setFieldToConvert(conversionMaintenanceControl.getFieldToConvert());
-        conversionValues.setNewFieldName(conversionMaintenanceControl.getNewFieldName());
-        conversionValues.setConversions(conversionMaintenanceControl.getConversions());
+        model.setFieldToConvertName(conversionMaintenanceControl.getFieldToConvert());
+        model.setNewFieldName(conversionMaintenanceControl.getNewFieldName());
+        model.setConversionsFromUI(conversionMaintenanceControl.getConversions());
     }
 
     @Override

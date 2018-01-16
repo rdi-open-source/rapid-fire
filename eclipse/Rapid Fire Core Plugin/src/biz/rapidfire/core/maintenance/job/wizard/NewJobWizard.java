@@ -14,12 +14,12 @@ import biz.rapidfire.core.Messages;
 import biz.rapidfire.core.RapidFireCorePlugin;
 import biz.rapidfire.core.dialogs.MessageDialogAsync;
 import biz.rapidfire.core.helpers.ExceptionHelper;
-import biz.rapidfire.core.maintenance.AbstractManager;
 import biz.rapidfire.core.maintenance.MaintenanceMode;
 import biz.rapidfire.core.maintenance.Result;
 import biz.rapidfire.core.maintenance.job.JobManager;
 import biz.rapidfire.core.maintenance.job.JobValues;
 import biz.rapidfire.core.maintenance.job.shared.JobKey;
+import biz.rapidfire.core.maintenance.job.wizard.model.JobWizardDataModel;
 import biz.rapidfire.core.maintenance.library.LibraryManager;
 import biz.rapidfire.core.maintenance.library.LibraryValues;
 import biz.rapidfire.core.maintenance.library.shared.LibraryKey;
@@ -29,16 +29,18 @@ import biz.rapidfire.core.maintenance.librarylist.shared.LibraryListKey;
 import biz.rapidfire.core.maintenance.wizard.AbstractNewWizard;
 import biz.rapidfire.core.maintenance.wizard.AbstractWizardPage;
 import biz.rapidfire.core.maintenance.wizard.DataLibraryPage;
+import biz.rapidfire.core.model.IRapidFireJobResource;
 import biz.rapidfire.core.model.dao.IJDBCConnection;
 import biz.rapidfire.core.model.dao.JDBCConnectionManager;
+import biz.rapidfire.core.preferences.Preferences;
+import biz.rapidfire.core.subsystem.IRapidFireSubSystem;
+import biz.rapidfire.rsebase.helpers.SystemConnectionHelper;
 
-public class NewJobWizard extends AbstractNewWizard {
-
-    JobPage jobPage;
-    LibraryPage librariesPage;
-    LibraryListPage librarylistPage;
+public class NewJobWizard extends AbstractNewWizard<JobWizardDataModel> {
 
     public NewJobWizard() {
+        super(JobWizardDataModel.createInitialized());
+
         setWindowTitle(Messages.Wizard_Title_New_Job_wizard);
         setNeedsProgressMonitor(false);
     }
@@ -47,13 +49,18 @@ public class NewJobWizard extends AbstractNewWizard {
     public void addPages() {
         super.addPages(); // Adds the data library page, if necessary
 
-        JobValues jobValues = JobValues.createInitialized();
-        LibraryValues libraryValues = LibraryValues.createInitialized();
-        LibraryListValues libraryListValues = LibraryListValues.createInitialized();
+        addPage(new JobPage(model));
+        addPage(new LibraryPage(model));
+        addPage(new LibraryListPage(model));
+    }
 
-        addPage(new JobPage(jobValues));
-        addPage(new LibraryPage(libraryValues));
-        addPage(new LibraryListPage(libraryListValues));
+    protected void updatePageEnablement(AbstractWizardPage page) {
+
+        if (model.isCreateEnvironment()) {
+            setPageEnablement(LibraryListPage.NAME, true);
+        } else {
+            setPageEnablement(LibraryListPage.NAME, false);
+        }
     }
 
     @Override
@@ -91,10 +98,8 @@ public class NewJobWizard extends AbstractNewWizard {
                 return false;
             }
 
-            DataLibraryPage dataLibraryPage = (DataLibraryPage)getPage(DataLibraryPage.NAME);
-
-            String connectionName = dataLibraryPage.getConnectionName();
-            String dataLibrary = dataLibraryPage.getDataLibraryName();
+            String connectionName = model.getConnectionName();
+            String dataLibrary = model.getDataLibraryName();
 
             /*
              * Get JDBC connection with manual commit control (auto commit
@@ -103,7 +108,6 @@ public class NewJobWizard extends AbstractNewWizard {
             connection = JDBCConnectionManager.getInstance().getConnectionForUpdateNoAutoCommit(connectionName, dataLibrary);
 
             jobManager = new JobManager(connection);
-
             libraryManager = new LibraryManager(connection);
 
             AbstractWizardPage libraryListPage = getLibraryListPage();
@@ -144,8 +148,21 @@ public class NewJobWizard extends AbstractNewWizard {
 
             JDBCConnectionManager.getInstance().commit(connection);
 
+            IRapidFireSubSystem subSystem = (IRapidFireSubSystem)SystemConnectionHelper.getSubSystem(connection.getConnectionName(),
+                IRapidFireSubSystem.class);
+            if (subSystem != null) {
+                IRapidFireJobResource newJob = subSystem.getJob(dataLibrary, model.getJobName(), getShell());
+                if (newJob != null) {
+                    if (newJob.getParentFilters() != null) {
+                        boolean isSlowConnection = Preferences.getInstance().isSlowConnection();
+                        // TODO: try to figure out why that does not work
+                        SystemConnectionHelper.refreshUICreated(isSlowConnection, subSystem, newJob, newJob.getParentFilters());
+                    }
+                }
+            }
+
             MessageDialog.openInformation(getShell(), Messages.Wizard_Title_New_Job_wizard,
-                Messages.bindParameters(Messages.NewJobWizard_Rapid_Fire_job_A_created, getJobValues().getKey().getJobName()));
+                Messages.bindParameters(Messages.NewJobWizard_Rapid_Fire_job_A_created, model.getJobName()));
 
             return true;
 
@@ -172,17 +189,6 @@ public class NewJobWizard extends AbstractNewWizard {
         return false;
     }
 
-    private void closeFilesOfManager(AbstractManager<?, ?, ?, ?> manager) {
-
-        if (manager != null) {
-            try {
-                manager.closeFiles();
-            } catch (Exception e) {
-                RapidFireCorePlugin.logError("*** Could not terminate manager '" + manager.getClass().getSimpleName() + "' ***", e); //$NON-NLS-1$ //$NON-NLS-2$
-            }
-        }
-    }
-
     private JobPage getJobPage() {
 
         JobPage jobPage = (JobPage)getPage(JobPage.NAME);
@@ -206,8 +212,12 @@ public class NewJobWizard extends AbstractNewWizard {
 
     private JobValues getJobValues() {
 
-        JobPage jobPage = getJobPage();
-        JobValues jobValues = jobPage.getValues();
+        JobValues jobValues = JobValues.createInitialized();
+        jobValues.setKey(new JobKey(model.getJobName()));
+        jobValues.setDescription(model.getJobDescription());
+        jobValues.setCreateEnvironment(model.isCreateEnvironment());
+        jobValues.setJobQueueName(model.getJobQueueName());
+        jobValues.setJobQueueLibraryName(model.getJobQueueLibraryName());
 
         return jobValues;
     }
@@ -216,9 +226,9 @@ public class NewJobWizard extends AbstractNewWizard {
 
         JobValues jobValues = getJobValues();
 
-        LibraryPage libraryPage = getLibraryPage();
-        LibraryValues libraryValues = libraryPage.getValues();
-        libraryValues.setKey(new LibraryKey(jobValues.getKey(), libraryValues.getKey().getLibrary()));
+        LibraryValues libraryValues = LibraryValues.createInitialized();
+        libraryValues.setKey(new LibraryKey(jobValues.getKey(), model.getLibraryName()));
+        libraryValues.setShadowLibrary(model.getShadowLibraryName());
 
         return libraryValues;
     }
@@ -227,9 +237,10 @@ public class NewJobWizard extends AbstractNewWizard {
 
         JobValues jobValues = getJobValues();
 
-        LibraryListPage libraryListPage = getLibraryListPage();
-        LibraryListValues libraryListValues = libraryListPage.getValues();
-        libraryListValues.setKey(new LibraryListKey(jobValues.getKey(), libraryListValues.getKey().getLibraryList()));
+        LibraryListValues libraryListValues = LibraryListValues.createInitialized();
+        libraryListValues.setKey(new LibraryListKey(jobValues.getKey(), model.getLibraryListName()));
+        libraryListValues.setDescription(model.getLibraryListDescription());
+        libraryListValues.setLibraryList(model.getLibraryListEntriesForUI());
 
         return libraryListValues;
     }

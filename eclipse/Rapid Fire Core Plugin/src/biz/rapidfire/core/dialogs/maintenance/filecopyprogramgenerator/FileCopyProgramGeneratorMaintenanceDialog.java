@@ -36,9 +36,9 @@ import biz.rapidfire.core.maintenance.filecopyprogramgenerator.FileCopyProgramGe
 import biz.rapidfire.core.maintenance.filecopyprogramgenerator.FileCopyProgramGeneratorValues;
 import biz.rapidfire.core.model.IRapidFireAreaResource;
 import biz.rapidfire.core.model.IRapidFireLibraryResource;
+import biz.rapidfire.core.model.QualifiedProgramName;
 import biz.rapidfire.core.preferences.Preferences;
 import biz.rapidfire.core.swt.widgets.WidgetFactory;
-import biz.rapidfire.core.swt.widgets.viewers.stringlist.IStringListItem;
 import biz.rapidfire.core.swt.widgets.viewers.stringlist.ItemSelectionDialog;
 import biz.rapidfire.rsebase.helpers.SystemConnectionHelper;
 import biz.rapidfire.rsebase.host.SystemFileType;
@@ -429,29 +429,5 @@ public class FileCopyProgramGeneratorMaintenanceDialog extends AbstractMaintenan
     @Override
     protected IDialogSettings getDialogBoundsSettings() {
         return super.getDialogBoundsSettings(RapidFireCorePlugin.getDefault().getDialogSettings());
-    }
-
-    private class QualifiedProgramName implements IStringListItem {
-
-        private String name;
-        private String library;
-
-        public QualifiedProgramName(String library, String name) {
-            this.library = library;
-            this.name = name;
-        }
-
-        public String getName() {
-            return name;
-        }
-
-        public String getLibrary() {
-            return library;
-        }
-
-        public String getLabel() {
-            return getLibrary() + "/" + getName(); //$NON-NLS-1$
-        }
-
     }
 }

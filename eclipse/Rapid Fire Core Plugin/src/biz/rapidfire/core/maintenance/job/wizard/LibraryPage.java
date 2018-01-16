@@ -16,24 +16,35 @@ import biz.rapidfire.core.Messages;
 import biz.rapidfire.core.dialogs.maintenance.library.LibraryMaintenanceControl;
 import biz.rapidfire.core.helpers.StringHelper;
 import biz.rapidfire.core.maintenance.MaintenanceMode;
-import biz.rapidfire.core.maintenance.library.LibraryValues;
+import biz.rapidfire.core.maintenance.job.wizard.model.JobWizardDataModel;
 import biz.rapidfire.core.maintenance.wizard.AbstractWizardPage;
 
 public class LibraryPage extends AbstractWizardPage {
 
     public static final String NAME = "LIBRARY_PAGE"; //$NON-NLS-1$
 
-    private LibraryValues libraryValues;
+    private JobWizardDataModel model;
 
     private LibraryMaintenanceControl libraryMaintenanceControl;
 
-    protected LibraryPage(LibraryValues libraryValues) {
+    protected LibraryPage(JobWizardDataModel model) {
         super(NAME);
 
-        this.libraryValues = libraryValues;
+        this.model = model;
 
         setTitle(Messages.Wizard_Page_Libraries);
+
+        updateMode();
+    }
+
+    @Override
+    public void updateMode() {
+
         setDescription(Messages.Wizard_Page_Libraries_description);
+
+        if (libraryMaintenanceControl != null) {
+            libraryMaintenanceControl.setMode(MaintenanceMode.CREATE);
+        }
     }
 
     @Override
@@ -48,24 +59,20 @@ public class LibraryPage extends AbstractWizardPage {
         }
     }
 
-    public LibraryValues getValues() {
-        return libraryValues;
-    }
-
     @Override
     public void createContent(Composite parent) {
 
         libraryMaintenanceControl = new LibraryMaintenanceControl(parent, false, SWT.NONE);
-        libraryMaintenanceControl.setMode(MaintenanceMode.CREATE);
         libraryMaintenanceControl.setLayoutData(new GridData(SWT.FILL, SWT.BEGINNING, true, false, 2, 1));
+
+        updateMode();
     }
 
     @Override
     protected void setInputData() {
 
-        libraryMaintenanceControl.setJobName(libraryValues.getKey().getJobName());
-        libraryMaintenanceControl.setLibraryName(libraryValues.getKey().getLibrary());
-        libraryMaintenanceControl.setShadowLibraryName(libraryValues.getShadowLibrary());
+        libraryMaintenanceControl.setLibraryName(model.getLibraryName());
+        libraryMaintenanceControl.setShadowLibraryName(model.getShadowLibraryName());
     }
 
     @Override
@@ -100,8 +107,8 @@ public class LibraryPage extends AbstractWizardPage {
 
     private void updateValues() {
 
-        libraryValues.getKey().setLibrary(libraryMaintenanceControl.getLibraryName());
-        libraryValues.setShadowLibrary(libraryMaintenanceControl.getShadowLibraryName());
+        model.setLibraryName(libraryMaintenanceControl.getLibraryName());
+        model.setShadowLibraryName(libraryMaintenanceControl.getShadowLibraryName());
     }
 
     @Override

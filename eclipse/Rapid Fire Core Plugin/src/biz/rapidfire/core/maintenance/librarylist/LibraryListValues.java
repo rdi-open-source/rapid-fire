@@ -8,8 +8,8 @@
 
 package biz.rapidfire.core.maintenance.librarylist;
 
+import java.util.ArrayList;
 import java.util.Arrays;
-import java.util.LinkedList;
 import java.util.List;
 
 import biz.rapidfire.core.RapidFireCorePlugin;
@@ -27,7 +27,7 @@ public class LibraryListValues implements IResourceValues {
 
     private LibraryListKey key;
     private String description;
-    private List<LibraryListEntry> libraryList;
+    private LibraryListEntries libraryListEntries;
 
     private String libraryListString;
     private String sequenceNumbersString;
@@ -43,7 +43,7 @@ public class LibraryListValues implements IResourceValues {
 
     public LibraryListValues() {
 
-        this.libraryList = createLibraryList(null);
+        this.libraryListEntries = new LibraryListEntries();
 
         setLibraryList(new LibraryListEntry[0]);
     }
@@ -67,7 +67,7 @@ public class LibraryListValues implements IResourceValues {
     }
 
     public LibraryListEntry[] getLibraryList() {
-        return libraryList.toArray(new LibraryListEntry[libraryList.size()]);
+        return libraryListEntries.getLibraryListEntries();
     }
 
     public String getLibraryListAsString() {
@@ -81,7 +81,7 @@ public class LibraryListValues implements IResourceValues {
     }
 
     public void setLibraryList(LibraryListEntry[] libraryList) {
-        this.libraryList = createLibraryList(libraryList);
+        this.libraryListEntries.setLibraryListEntries(libraryList);
 
         StringBuilder libraries = new StringBuilder();
         StringBuilder sequenceNumbers = new StringBuilder();
@@ -99,13 +99,20 @@ public class LibraryListValues implements IResourceValues {
         this.libraryListString = libraries.trim();
         this.sequenceNumbersString = sequenceNumbers.trim();
 
-        libraryList.clear();
+        LibraryListEntry[] libraryListEntries = produceLibraryList();
+
+        this.libraryListEntries.setLibraryListEntries(libraryListEntries);
+    }
+
+    public LibraryListEntry[] produceLibraryList() {
 
         int libOffs = 0;
         int seqNbrOffs = 0;
         String sequenceNumberStr;
         int sequenceNumber;
         String library;
+
+        List<LibraryListEntry> libraryList = new ArrayList<LibraryListEntry>();
 
         while (seqNbrOffs < sequenceNumbersString.length() && libOffs < libraryListString.length()) {
 
@@ -129,13 +136,9 @@ public class LibraryListValues implements IResourceValues {
             libOffs += LibraryListEntry.LENGTH_LIBRARY;
         }
 
-        LibraryListEntry[] tempArray = libraryList.toArray(new LibraryListEntry[libraryList.size()]);
-        Arrays.sort(tempArray);
+        LibraryListEntry[] libraryListEntries = libraryList.toArray(new LibraryListEntry[libraryList.size()]);
 
-        libraryList.clear();
-        for (LibraryListEntry entry : tempArray) {
-            libraryList.add(entry);
-        }
+        return libraryListEntries;
     }
 
     public void clear() {
@@ -147,19 +150,6 @@ public class LibraryListValues implements IResourceValues {
         if (key == null) {
             key = new LibraryListKey(null, null);
         }
-    }
-
-    private List<LibraryListEntry> createLibraryList(LibraryListEntry[] libraries) {
-
-        List<LibraryListEntry> libraryList = new LinkedList<LibraryListEntry>();
-
-        if (libraries != null) {
-            for (LibraryListEntry library : libraries) {
-                libraryList.add(library);
-            }
-        }
-
-        return libraryList;
     }
 
     @Override

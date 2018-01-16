@@ -19,8 +19,8 @@ import biz.rapidfire.core.Messages;
 import biz.rapidfire.core.dialogs.maintenance.librarylist.LibraryListMaintenanceControl;
 import biz.rapidfire.core.helpers.StringHelper;
 import biz.rapidfire.core.maintenance.MaintenanceMode;
+import biz.rapidfire.core.maintenance.job.wizard.model.JobWizardDataModel;
 import biz.rapidfire.core.maintenance.librarylist.LibraryListEntry;
-import biz.rapidfire.core.maintenance.librarylist.LibraryListValues;
 import biz.rapidfire.core.maintenance.wizard.AbstractWizardPage;
 import biz.rapidfire.core.swt.widgets.listeditors.librarylist.LibraryListItem;
 
@@ -28,17 +28,39 @@ public class LibraryListPage extends AbstractWizardPage {
 
     public static final String NAME = "LIBRARY_LIST_PAGE"; //$NON-NLS-1$
 
-    private LibraryListValues libraryListValues;
+    private JobWizardDataModel model;
+    private boolean editable;
 
     private LibraryListMaintenanceControl libraryListMaintenanceControl;
 
-    protected LibraryListPage(LibraryListValues libraryListValues) {
+    protected LibraryListPage(JobWizardDataModel model) {
         super(NAME);
 
-        this.libraryListValues = libraryListValues;
+        this.model = model;
 
         setTitle(Messages.Wizard_Page_Library_List);
-        setDescription(Messages.Wizard_Page_Library_List_description);
+
+        updateMode();
+    }
+
+    @Override
+    public void updateMode() {
+
+        if (model.isCreateEnvironment()) {
+            setDescription(Messages.Wizard_Page_Library_List_description);
+            this.editable = true;
+        } else {
+            setDescription("Not applicable for jobs that do not create a shadow environment.");
+            this.editable = false;
+        }
+
+        if (libraryListMaintenanceControl != null) {
+            if (editable) {
+                libraryListMaintenanceControl.setMode(MaintenanceMode.CREATE);
+            } else {
+                libraryListMaintenanceControl.setMode(MaintenanceMode.DISPLAY);
+            }
+        }
     }
 
     @Override
@@ -55,26 +77,22 @@ public class LibraryListPage extends AbstractWizardPage {
         }
     }
 
-    public LibraryListValues getValues() {
-        return libraryListValues;
-    }
-
     @Override
     public void createContent(Composite parent) {
 
         libraryListMaintenanceControl = new LibraryListMaintenanceControl(parent, false, SWT.NONE);
-        libraryListMaintenanceControl.setParentKeyFieldsVisible(false);
-        libraryListMaintenanceControl.setMode(MaintenanceMode.CREATE);
         libraryListMaintenanceControl.setLayoutData(new GridData(SWT.FILL, SWT.BEGINNING, true, false, 2, 1));
+        libraryListMaintenanceControl.setParentKeyFieldsVisible(false);
+
+        updateMode();
     }
 
     @Override
     protected void setInputData() {
 
-        libraryListMaintenanceControl.setJobName(libraryListValues.getKey().getJobName());
-        libraryListMaintenanceControl.setLibraryListName(libraryListValues.getKey().getLibraryList());
-        libraryListMaintenanceControl.setDescription(libraryListValues.getDescription());
-        setLibraryList(libraryListValues.getLibraryList());
+        libraryListMaintenanceControl.setLibraryListName(model.getLibraryListName());
+        libraryListMaintenanceControl.setDescription(model.getLibraryListDescription());
+        setLibraryList(model.getLibraryListEntriesForUI());
     }
 
     @Override
@@ -113,9 +131,9 @@ public class LibraryListPage extends AbstractWizardPage {
 
     private void updateValues() {
 
-        libraryListValues.getKey().setLibraryList(libraryListMaintenanceControl.getLibraryListName());
-        libraryListValues.setDescription(libraryListMaintenanceControl.getDescription());
-        libraryListValues.setLibraryList(getLibraryList(libraryListMaintenanceControl.getLibraries()));
+        model.setLibraryListName(libraryListMaintenanceControl.getLibraryListName());
+        model.setLibraryListDescription(libraryListMaintenanceControl.getDescription());
+        model.setLibraryListEntriesFromUI(getLibraryList(libraryListMaintenanceControl.getLibraries()));
     }
 
     private LibraryListEntry[] getLibraryList(LibraryListItem[] libraries) {

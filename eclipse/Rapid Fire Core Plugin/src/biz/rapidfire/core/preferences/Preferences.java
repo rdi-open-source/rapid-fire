@@ -70,6 +70,7 @@ public final class Preferences {
     private static final String WIZARD = DOMAIN + "WIZARD.";
     private static final String WIZARD_CONNECTION = WIZARD + "CONNECTION"; //$NON-NLS-1$
     private static final String WIZARD_RAPID_FIRE_LIBRARY = WIZARD + "RAPID_FIRE_LIBRARY"; //$NON-NLS-1$
+    private static final String WIZARD_SKIP_DISABLED_PAGES = WIZARD + "SKIP_DISABLED_PAGES"; //$NON-NLS-1$
 
     private static final String GENERATOR = DOMAIN + "GENERATOR.";
     private static final String GENERATOR_OPEN_MEMBER = GENERATOR + "OPEN_MEMBER"; //$NON-NLS-1$
@@ -152,6 +153,10 @@ public final class Preferences {
         return preferenceStore.getString(WIZARD_RAPID_FIRE_LIBRARY);
     }
 
+    public boolean skipDisabledWizardPages() {
+        return preferenceStore.getBoolean(WIZARD_SKIP_DISABLED_PAGES);
+    }
+
     public boolean isOpenGeneratedCopyProgram() {
         return preferenceStore.getBoolean(GENERATOR_OPEN_MEMBER);
     }
@@ -212,6 +217,10 @@ public final class Preferences {
         preferenceStore.setValue(WIZARD_RAPID_FIRE_LIBRARY, libraryName);
     }
 
+    public void setSkipDisabledWizardPages(boolean skip) {
+        preferenceStore.setValue(WIZARD_SKIP_DISABLED_PAGES, skip);
+    }
+
     public void setOpenGeneratedCopyProgram(boolean openMember) {
         preferenceStore.setValue(GENERATOR_OPEN_MEMBER, openMember);
     }
@@ -251,6 +260,7 @@ public final class Preferences {
 
         preferenceStore.setDefault(WIZARD_CONNECTION, getDefaultWizardConnection());
         preferenceStore.setDefault(WIZARD_RAPID_FIRE_LIBRARY, getDefaultWizardRapidFireLibrary());
+        preferenceStore.setDefault(WIZARD_SKIP_DISABLED_PAGES, getDefaultSkipDisabledWizardPages());
 
         preferenceStore.setDefault(GENERATOR_OPEN_MEMBER, getDefaultOpenGeneratedCopyProgram());
         preferenceStore.setDefault(GENERATOR_LIBRARY, getDefaultGeneratorLibrary());
@@ -310,6 +320,10 @@ public final class Preferences {
 
     public String getDefaultWizardRapidFireLibrary() {
         return getDefaultRapidFireLibrary();
+    }
+
+    public boolean getDefaultSkipDisabledWizardPages() {
+        return false;
     }
 
     private boolean getDefaultOpenGeneratedCopyProgram() {

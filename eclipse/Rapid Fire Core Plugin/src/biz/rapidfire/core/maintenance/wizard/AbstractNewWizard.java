@@ -8,7 +8,10 @@
 
 package biz.rapidfire.core.maintenance.wizard;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
@@ -27,13 +30,18 @@ import org.eclipse.ui.INewWizard;
 import org.eclipse.ui.IWorkbench;
 
 import biz.rapidfire.core.Messages;
+import biz.rapidfire.core.RapidFireCorePlugin;
 import biz.rapidfire.core.helpers.RapidFireHelper;
-import biz.rapidfire.core.helpers.StringHelper;
+import biz.rapidfire.core.maintenance.AbstractManager;
 import biz.rapidfire.core.maintenance.Result;
 import biz.rapidfire.core.maintenance.Success;
+import biz.rapidfire.core.maintenance.file.wizard.model.FileWizardDataModel;
+import biz.rapidfire.core.maintenance.wizard.model.WizardDataModel;
 import biz.rapidfire.core.model.IRapidFireChildResource;
 import biz.rapidfire.core.model.IRapidFireFileResource;
 import biz.rapidfire.core.model.IRapidFireJobResource;
+import biz.rapidfire.core.model.IRapidFireLibraryListResource;
+import biz.rapidfire.core.model.IRapidFireLibraryResource;
 import biz.rapidfire.core.model.IRapidFireResource;
 import biz.rapidfire.core.preferences.Preferences;
 import biz.rapidfire.core.subsystem.IRapidFireSubSystem;
@@ -42,17 +50,15 @@ import biz.rapidfire.rsebase.helpers.SystemConnectionHelper;
 import com.ibm.as400.access.AS400;
 
 // Source: http://www.vogella.com/tutorials/EclipseWizards/article.html
-public abstract class AbstractNewWizard extends Wizard implements INewWizard, IPageChangedListener {
+public abstract class AbstractNewWizard<M extends WizardDataModel> extends Wizard implements INewWizard, IPageChangedListener {
 
-    private String initialConnectionName;
-    private String initialDataLibrary;
-    private String initialJobName;
-    private int initialPosition;
+    protected M model;
 
     private Map<String, Boolean> pagesVisibility;
 
-    public AbstractNewWizard() {
+    public AbstractNewWizard(M model) {
 
+        this.model = model;
         this.pagesVisibility = new HashMap<String, Boolean>();
 
         setHelpAvailable(false);
@@ -68,45 +74,32 @@ public abstract class AbstractNewWizard extends Wizard implements INewWizard, IP
         }
     }
 
-    public String getInitialJobName() {
-        return initialJobName;
-    }
-
-    public int getInitialPosition() {
-        return initialPosition;
-    }
-
     public void pageChanged(PageChangedEvent event) {
 
         Object page = event.getSelectedPage();
         if (page instanceof AbstractWizardPage) {
             AbstractWizardPage abstractWizardPage = (AbstractWizardPage)page;
+
             abstractWizardPage.setFocus();
+
+            updatePageMode(abstractWizardPage);
+
+            updatePageEnablement(abstractWizardPage);
         }
     }
 
     @Override
     public void addPages() {
 
-        DataLibraryPage page = new DataLibraryPage();
+        DataLibraryPage page = new DataLibraryPage(model);
         addPage(page);
-
-        if (!StringHelper.isNullOrEmpty(initialConnectionName)) {
-            page.setConnectionName(initialConnectionName);
-        }
-        if (!StringHelper.isNullOrEmpty(initialDataLibrary)) {
-            page.setDataLibraryName(initialDataLibrary);
-        }
-        if (!StringHelper.isNullOrEmpty(initialJobName)) {
-            page.setJobName(initialJobName);
-        }
     }
 
     @Override
     public void addPage(IWizardPage page) {
         super.addPage(page);
 
-        showPage(page.getName());
+        enablePage(page.getName());
     }
 
     @Override
@@ -116,11 +109,96 @@ public abstract class AbstractNewWizard extends Wizard implements INewWizard, IP
         updatePagesVisibility();
     }
 
-    protected Result validateDataLibrary() throws Exception {
+    public void init(IWorkbench workbench, IStructuredSelection selection) {
+
+        if (selection instanceof IStructuredSelection) {
+            IStructuredSelection structuredSelection = selection;
+            if (!structuredSelection.isEmpty()) {
+                Object element = structuredSelection.getFirstElement();
+                if (element instanceof IRapidFireResource) {
+                    IRapidFireResource resource = (IRapidFireResource)element;
+                    model.setConnectionName(resource.getParentSubSystem().getConnectionName());
+                    model.setDataLibraryName(resource.getDataLibrary());
+                } else if (element instanceof IRapidFireSubSystem) {
+                    IRapidFireSubSystem subSystem = (IRapidFireSubSystem)element;
+                    model.setConnectionName(subSystem.getConnectionName());
+                } else if (SystemConnectionHelper.isFilterReference(element)) {
+                    Object subSystem = SystemConnectionHelper.getSubSystemOfFilterReference(element);
+                    if (subSystem instanceof IRapidFireSubSystem) {
+                        model.setConnectionName(((IRapidFireSubSystem)subSystem).getConnectionName());
+                    }
+                }
+
+                if (element instanceof IRapidFireChildResource) {
+                    IRapidFireChildResource<?> resource = (IRapidFireChildResource<?>)element;
+                    model.setJobName(resource.getParentJob().getName());
+                } else if (element instanceof IRapidFireJobResource) {
+                    IRapidFireJobResource resource = (IRapidFireJobResource)element;
+                    model.setJobName(resource.getName());
+                } else if (element instanceof IRapidFireFileResource) {
+                    IRapidFireFileResource resource = (IRapidFireFileResource)element;
+                    model.setJobName(resource.getName());
+                    if (model instanceof FileWizardDataModel) {
+                        FileWizardDataModel fileWizardModel = (FileWizardDataModel)model;
+                        fileWizardModel.setPosition(resource.getPosition());
+                    }
+                }
+            }
+        }
+
+        return;
+    }
+
+    @Override
+    public IWizardPage getNextPage(IWizardPage page) {
+
+        IWizardPage nextPage = super.getNextPage(page);
+        if (nextPage == null) {
+            return null;
+        }
+
+        if (isPageVisible(nextPage.getName())) {
+            return nextPage;
+        } else {
+            return getNextPage(nextPage);
+        }
+    }
+
+    @Override
+    public IWizardPage getPreviousPage(IWizardPage page) {
+
+        IWizardPage previousPage = super.getPreviousPage(page);
+        if (previousPage == null) {
+            return null;
+        }
+
+        if (isPageVisible(previousPage.getName())) {
+            return previousPage;
+        } else {
+            return getPreviousPage(previousPage);
+        }
+    }
+
+    protected void updatePageEnablement(AbstractWizardPage page) {
+    }
+
+    protected void setActivePage(IWizardPage page) {
+
+        WizardDialog dialog = (WizardDialog)getContainer();
+        dialog.showPage(page);
+    }
+
+    protected DataLibraryPage getDataLibraryPage() {
 
         DataLibraryPage dataLibraryPage = (DataLibraryPage)getPage(DataLibraryPage.NAME);
-        String connectionName = dataLibraryPage.getConnectionName();
-        String dataLibrary = dataLibraryPage.getDataLibraryName();
+
+        return dataLibraryPage;
+    }
+
+    protected Result validateDataLibrary() throws Exception {
+
+        String connectionName = model.getConnectionName();
+        String dataLibrary = model.getDataLibraryName();
 
         Result result;
         StringBuilder errorMessage = new StringBuilder();
@@ -139,19 +217,6 @@ public abstract class AbstractNewWizard extends Wizard implements INewWizard, IP
         return result;
     }
 
-    protected void setActivePage(IWizardPage page) {
-
-        WizardDialog dialog = (WizardDialog)getContainer();
-        dialog.showPage(page);
-    }
-
-    protected DataLibraryPage getDataLibraryPage() {
-
-        DataLibraryPage dataLibraryPage = (DataLibraryPage)getPage(DataLibraryPage.NAME);
-
-        return dataLibraryPage;
-    }
-
     protected void displayError(Result result, String name) {
 
         IWizardPage page = getPage(name);
@@ -163,54 +228,68 @@ public abstract class AbstractNewWizard extends Wizard implements INewWizard, IP
         }
     }
 
-    protected boolean isDataLibraryPageEnabled() {
+    protected void setPageEnablement(String pageId, boolean enabled) {
 
-        AbstractWizardPage dataLibraryPage = (AbstractWizardPage)getPage(DataLibraryPage.NAME);
-
-        return dataLibraryPage.isEnabled();
-    }
-
-    public void init(IWorkbench workbench, IStructuredSelection selection) {
-
-        this.initialConnectionName = null;
-        this.initialDataLibrary = Preferences.getInstance().getRapidFireLibrary();
-        this.initialJobName = null;
-        this.initialPosition = 0;
-
-        if (selection instanceof IStructuredSelection) {
-            IStructuredSelection structuredSelection = selection;
-            if (!structuredSelection.isEmpty()) {
-                Object element = structuredSelection.getFirstElement();
-                System.out.println("==> selection: " + element);
-                if (element instanceof IRapidFireResource) {
-                    IRapidFireResource resource = (IRapidFireResource)element;
-                    this.initialConnectionName = resource.getParentSubSystem().getConnectionName();
-                    this.initialDataLibrary = resource.getDataLibrary();
-                } else if (element instanceof IRapidFireSubSystem) {
-                    IRapidFireSubSystem subSystem = (IRapidFireSubSystem)element;
-                    this.initialConnectionName = subSystem.getConnectionName();
-                } else if (SystemConnectionHelper.isFilterReference(element)) {
-                    Object subSystem = SystemConnectionHelper.getSubSystemOfFilterReference(element);
-                    if (subSystem instanceof IRapidFireSubSystem) {
-                        this.initialConnectionName = ((IRapidFireSubSystem)subSystem).getConnectionName();
-                    }
-                }
-
-                if (element instanceof IRapidFireChildResource) {
-                    IRapidFireChildResource<?> resource = (IRapidFireChildResource<?>)element;
-                    this.initialJobName = resource.getParentJob().getName();
-                } else if (element instanceof IRapidFireJobResource) {
-                    IRapidFireJobResource resource = (IRapidFireJobResource)element;
-                    this.initialJobName = resource.getName();
-                } else if (element instanceof IRapidFireFileResource) {
-                    IRapidFireFileResource resource = (IRapidFireFileResource)element;
-                    this.initialJobName = resource.getName();
-                    this.initialPosition = resource.getPosition();
-                }
-            }
+        if (enabled) {
+            enablePage(pageId);
+        } else {
+            disablePage(pageId);
         }
 
-        return;
+        updatePageMode(getPage(pageId));
+    }
+
+    protected void updatePageMode(IWizardPage page) {
+
+        if (page instanceof AbstractWizardPage) {
+            AbstractWizardPage wizardPage = (AbstractWizardPage)page;
+            wizardPage.updateMode();
+        }
+    }
+
+    protected String[] getJobNames(IRapidFireJobResource[] jobs) {
+
+        List<String> names = new ArrayList<String>();
+
+        for (IRapidFireJobResource job : jobs) {
+            names.add(job.getName());
+        }
+
+        String[] sortedNames = names.toArray(new String[names.size()]);
+
+        Arrays.sort(sortedNames);
+
+        return sortedNames;
+    }
+
+    protected String[] getLibraryNames(IRapidFireLibraryResource[] libraries) {
+
+        List<String> names = new ArrayList<String>();
+
+        for (IRapidFireLibraryResource library : libraries) {
+            names.add(library.getName());
+        }
+
+        String[] sortedNames = names.toArray(new String[names.size()]);
+
+        Arrays.sort(sortedNames);
+
+        return sortedNames;
+    }
+
+    protected String[] getLibraryListNames(IRapidFireLibraryListResource[] libraryLists) {
+
+        List<String> names = new ArrayList<String>();
+
+        for (IRapidFireLibraryListResource libraryList : libraryLists) {
+            names.add(libraryList.getName());
+        }
+
+        String[] sortedNames = names.toArray(new String[names.size()]);
+
+        Arrays.sort(sortedNames);
+
+        return sortedNames;
     }
 
     protected void storePreferences() {
@@ -224,58 +303,35 @@ public abstract class AbstractNewWizard extends Wizard implements INewWizard, IP
         }
     }
 
-    @Override
-    public IWizardPage getNextPage(IWizardPage page) {
+    protected void closeFilesOfManager(AbstractManager<?, ?, ?, ?> manager) {
 
-        IWizardPage nextPage = super.getNextPage(page);
-        if (nextPage == null) {
-            return null;
-        }
-
-        if (nextPage instanceof AbstractWizardPage) {
-            AbstractWizardPage nextAbstractWizardPage = (AbstractWizardPage)nextPage;
-            if (nextAbstractWizardPage.isEnabled()) {
-                return nextAbstractWizardPage;
-            } else {
-                return getNextPage(nextAbstractWizardPage);
+        if (manager != null) {
+            try {
+                manager.closeFiles();
+            } catch (Exception e) {
+                RapidFireCorePlugin.logError("*** Could not terminate manager '" + manager.getClass().getSimpleName() + "' ***", e); //$NON-NLS-1$ //$NON-NLS-2$
             }
         }
-
-        return null;
     }
 
-    @Override
-    public IWizardPage getPreviousPage(IWizardPage page) {
+    private boolean isPageVisible(String name) {
 
-        IWizardPage previousPage = super.getPreviousPage(page);
-        if (previousPage == null) {
-            return null;
+        Boolean isVisible = pagesVisibility.get(name);
+
+        if (isVisible != null) {
+            return isVisible.booleanValue();
         }
 
-        if (previousPage instanceof AbstractWizardPage) {
-            AbstractWizardPage previousAbstractWizardPage = (AbstractWizardPage)previousPage;
-            if (!previousAbstractWizardPage.isEnabled()) {
-                return previousAbstractWizardPage;
-            } else {
-                return getPreviousPage(previousAbstractWizardPage);
-            }
-        }
-
-        return null;
+        return true;
     }
 
-    public void setPageEnablement(String pageId, boolean enabled) {
+    private void disablePage(String name) {
 
-        if (enabled) {
-            showPage(pageId);
+        if (Preferences.getInstance().skipDisabledWizardPages()) {
+            pagesVisibility.put(name, Boolean.FALSE);
         } else {
-            hidePage(pageId);
+            pagesVisibility.put(name, Boolean.TRUE);
         }
-    }
-
-    private void hidePage(String name) {
-
-        pagesVisibility.put(name, Boolean.FALSE);
 
         IWizardPage page = getPage(name);
         if (isPageCompletelyInitialized(page)) {
@@ -283,7 +339,7 @@ public abstract class AbstractNewWizard extends Wizard implements INewWizard, IP
         }
     }
 
-    private void showPage(String name) {
+    private void enablePage(String name) {
 
         pagesVisibility.put(name, Boolean.TRUE);
 
@@ -298,9 +354,9 @@ public abstract class AbstractNewWizard extends Wizard implements INewWizard, IP
         Set<Entry<String, Boolean>> pages = pagesVisibility.entrySet();
         for (Entry<String, Boolean> entry : pages) {
             if (entry.getValue()) {
-                showPage(entry.getKey());
+                enablePage(entry.getKey());
             } else {
-                hidePage(entry.getKey());
+                disablePage(entry.getKey());
             }
         }
 

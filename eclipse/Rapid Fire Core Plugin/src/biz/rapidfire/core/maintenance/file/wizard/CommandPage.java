@@ -17,24 +17,35 @@ import biz.rapidfire.core.dialogs.maintenance.command.CommandMaintenanceControl;
 import biz.rapidfire.core.helpers.IntHelper;
 import biz.rapidfire.core.helpers.StringHelper;
 import biz.rapidfire.core.maintenance.MaintenanceMode;
-import biz.rapidfire.core.maintenance.command.CommandValues;
+import biz.rapidfire.core.maintenance.file.wizard.model.FileWizardDataModel;
 import biz.rapidfire.core.maintenance.wizard.AbstractWizardPage;
 
 public class CommandPage extends AbstractWizardPage {
 
     public static final String NAME = "COMMAND_PAGE"; //$NON-NLS-1$
 
-    private CommandValues commandValues;
+    private FileWizardDataModel model;
 
     private CommandMaintenanceControl commandMaintenanceControl;
 
-    public CommandPage(CommandValues commandValues) {
+    public CommandPage(FileWizardDataModel model) {
         super(NAME);
 
-        this.commandValues = commandValues;
+        this.model = model;
 
         setTitle(Messages.Wizard_Page_Command);
+
+        updateMode();
+    }
+
+    @Override
+    public void updateMode() {
+
         setDescription(Messages.Wizard_Page_Command_description);
+
+        if (commandMaintenanceControl != null) {
+            commandMaintenanceControl.setMode(MaintenanceMode.CREATE);
+        }
     }
 
     @Override
@@ -55,16 +66,17 @@ public class CommandPage extends AbstractWizardPage {
     public void createContent(Composite parent) {
 
         commandMaintenanceControl = new CommandMaintenanceControl(parent, false, SWT.NONE);
-        commandMaintenanceControl.setMode(MaintenanceMode.CREATE);
         commandMaintenanceControl.setLayoutData(new GridData(SWT.FILL, SWT.BEGINNING, true, false, 2, 1));
+
+        updateMode();
     }
 
     @Override
     protected void setInputData() {
 
-        commandMaintenanceControl.setCommandType(commandValues.getKey().getCommandType());
-        commandMaintenanceControl.setSequence(Integer.toString(commandValues.getKey().getSequence()));
-        commandMaintenanceControl.setCommand(commandValues.getCommand());
+        commandMaintenanceControl.setCommandType(model.getCommandTypeForUI());
+        commandMaintenanceControl.setSequence(Integer.toString(model.getSequence()));
+        commandMaintenanceControl.setCommand(model.getCommand());
     }
 
     @Override
@@ -102,9 +114,9 @@ public class CommandPage extends AbstractWizardPage {
 
     private void updateValues() {
 
-        commandValues.getKey().setCommandType(commandMaintenanceControl.getCommandType());
-        commandValues.getKey().setSequence(IntHelper.tryParseInt(commandMaintenanceControl.getSequence(), 0));
-        commandValues.setCommand(commandMaintenanceControl.getCommand());
+        model.setCommandTypeFromUI(commandMaintenanceControl.getCommandType());
+        model.setSequence(IntHelper.tryParseInt(commandMaintenanceControl.getSequence(), 0));
+        model.setCommand(commandMaintenanceControl.getCommand());
     }
 
     @Override

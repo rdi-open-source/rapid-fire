@@ -22,10 +22,14 @@ public class ConversionValues implements IResourceValues {
 
     private ConversionKey key;
     private String newFieldName;
-    private String[] conversions;
+    private FieldConversions conversions;
 
     public static String[] getNewFieldNameSpecialValues() {
         return NewFieldName.labels();
+    }
+
+    public ConversionValues() {
+        this.conversions = new FieldConversions();
     }
 
     public static ConversionValues createInitialized() {
@@ -57,11 +61,11 @@ public class ConversionValues implements IResourceValues {
     }
 
     public String[] getConversions() {
-        return conversions;
+        return conversions.getConversions();
     }
 
     public void setConversions(String[] conversions) {
-        this.conversions = conversions;
+        this.conversions.setConversions(conversions);
     }
 
     public void clear() {

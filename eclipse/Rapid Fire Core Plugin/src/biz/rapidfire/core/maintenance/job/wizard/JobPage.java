@@ -16,7 +16,7 @@ import biz.rapidfire.core.Messages;
 import biz.rapidfire.core.dialogs.maintenance.job.JobMaintenanceControl;
 import biz.rapidfire.core.helpers.StringHelper;
 import biz.rapidfire.core.maintenance.MaintenanceMode;
-import biz.rapidfire.core.maintenance.job.JobValues;
+import biz.rapidfire.core.maintenance.job.wizard.model.JobWizardDataModel;
 import biz.rapidfire.core.maintenance.wizard.AbstractWizardPage;
 import biz.rapidfire.core.validators.Validator;
 
@@ -24,23 +24,34 @@ public class JobPage extends AbstractWizardPage {
 
     public static final String NAME = "JOB_PAGE"; //$NON-NLS-1$
 
-    private JobValues jobValues;
+    private JobWizardDataModel model;
 
     private Validator nameValidator;
     private Validator libraryValidator;
 
     private JobMaintenanceControl jobMaintenanceControl;
 
-    public JobPage(JobValues jobValues) {
+    public JobPage(JobWizardDataModel model) {
         super(NAME);
 
-        this.jobValues = jobValues;
+        this.model = model;
 
         this.nameValidator = Validator.getNameInstance();
         this.libraryValidator = Validator.getLibraryNameInstance(Validator.LIBRARY_LIBL, Validator.LIBRARY_CURLIB);
 
         setTitle(Messages.Wizard_Page_Job);
+
+        updateMode();
+    }
+
+    @Override
+    public void updateMode() {
+
         setDescription(Messages.Wizard_Page_Job_description);
+
+        if (jobMaintenanceControl != null) {
+            jobMaintenanceControl.setMode(MaintenanceMode.CREATE);
+        }
     }
 
     @Override
@@ -59,28 +70,23 @@ public class JobPage extends AbstractWizardPage {
         }
     }
 
-    public JobValues getValues() {
-        return jobValues;
-    }
-
     @Override
     public void createContent(Composite parent) {
 
         jobMaintenanceControl = new JobMaintenanceControl(parent, SWT.NONE);
-        jobMaintenanceControl.setMode(MaintenanceMode.CREATE);
         jobMaintenanceControl.setLayoutData(new GridData(SWT.FILL, SWT.BEGINNING, true, false, 2, 1));
+
+        updateMode();
     }
 
     @Override
     protected void setInputData() {
 
-        jobMaintenanceControl.setJobName(jobValues.getKey().getJobName());
-        jobMaintenanceControl.setDescription(jobValues.getDescription());
-        jobMaintenanceControl.setCreateEnvironment(jobValues.isCreateEnvironment());
-        jobMaintenanceControl.setJobQueueName(jobValues.getJobQueueName());
-        jobMaintenanceControl.setJobQueueLibraryName(jobValues.getJobQueueLibraryName());
-
-        updatePageEnablement();
+        jobMaintenanceControl.setJobName(model.getJobName());
+        jobMaintenanceControl.setDescription(model.getJobDescription());
+        jobMaintenanceControl.setCreateEnvironment(model.isCreateEnvironment());
+        jobMaintenanceControl.setJobQueueName(model.getJobQueueName());
+        jobMaintenanceControl.setJobQueueLibraryName(model.getJobQueueLibraryName());
     }
 
     @Override
@@ -122,23 +128,11 @@ public class JobPage extends AbstractWizardPage {
 
     private void updateValues() {
 
-        jobValues.getKey().setJobName(jobMaintenanceControl.getJobName());
-        jobValues.setDescription(jobMaintenanceControl.getDescription());
-        jobValues.setCreateEnvironment(jobMaintenanceControl.isCreateEnvironment());
-        jobValues.setJobQueueName(jobMaintenanceControl.getJobQueueName());
-        jobValues.setJobQueueLibraryName(jobMaintenanceControl.getJobQueueLibraryName());
-
-        updatePageEnablement();
-    }
-
-    private void updatePageEnablement() {
-
-        NewJobWizard wizard = (NewJobWizard)getWizard();
-        if (jobValues.isCreateEnvironment()) {
-            wizard.setPageEnablement(LibraryListPage.NAME, true);
-        } else {
-            wizard.setPageEnablement(LibraryListPage.NAME, false);
-        }
+        model.setJobName(jobMaintenanceControl.getJobName());
+        model.setJobDescription(jobMaintenanceControl.getDescription());
+        model.setCreateEnvironment(jobMaintenanceControl.isCreateEnvironment());
+        model.setJobQueueName(jobMaintenanceControl.getJobQueueName());
+        model.setJobQueueLibraryName(jobMaintenanceControl.getJobQueueLibraryName());
     }
 
     @Override

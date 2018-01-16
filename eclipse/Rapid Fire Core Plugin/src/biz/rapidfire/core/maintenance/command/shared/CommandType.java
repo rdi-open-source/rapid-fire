@@ -12,11 +12,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 public enum CommandType {
-    PRERUN ("*PRERUN"), //$NON-NLS-1$
-    COMPILE ("*COMPILE"), //$NON-NLS-1$
-    POSTRUN ("*POSTRUN"); //$NON-NLS-1$
+    PRERUN ("*PRERUN", 10), //$NON-NLS-1$
+    COMPILE ("*COMPILE", 5), //$NON-NLS-1$
+    POSTRUN ("*POSTRUN", 10); //$NON-NLS-1$
 
     private String label;
+    private int sequence;
 
     private static Map<String, CommandType> commandTypes;
 
@@ -27,12 +28,17 @@ public enum CommandType {
         }
     }
 
-    private CommandType(String label) {
+    private CommandType(String label, int sequence) {
         this.label = label;
+        this.sequence = sequence;
     }
 
     public String label() {
         return label;
+    }
+
+    public int defaultSequence() {
+        return sequence;
     }
 
     public static String[] labels() {

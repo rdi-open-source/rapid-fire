@@ -6,10 +6,16 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Text;
 
 import biz.rapidfire.core.Messages;
+import biz.rapidfire.core.helpers.RapidFireHelper;
 import biz.rapidfire.core.helpers.StringHelper;
+import biz.rapidfire.core.maintenance.wizard.model.WizardDataModel;
+import biz.rapidfire.core.preferences.Preferences;
 import biz.rapidfire.core.swt.widgets.WidgetFactory;
 import biz.rapidfire.core.validators.Validator;
+import biz.rapidfire.rsebase.helpers.SystemConnectionHelper;
 import biz.rapidfire.rsebase.swt.widgets.SystemHostCombo;
+
+import com.ibm.as400.access.AS400;
 
 public class DataLibraryPage extends AbstractWizardPage {
 
@@ -18,15 +24,14 @@ public class DataLibraryPage extends AbstractWizardPage {
     private SystemHostCombo comboConnection;
     private Text textDataLibrary;
 
-    private String connectionName;
-    private String dataLibraryName;
-    private String jobName;
+    private WizardDataModel model;
 
     private Validator libraryValidator;
 
-    public DataLibraryPage() {
+    public DataLibraryPage(WizardDataModel model) {
         super(NAME);
 
+        this.model = model;
         this.libraryValidator = Validator.getLibraryNameInstance();
 
         setTitle(Messages.Wizard_Page_Data_Library);
@@ -36,30 +41,6 @@ public class DataLibraryPage extends AbstractWizardPage {
     @Override
     public void setFocus() {
         textDataLibrary.setFocus();
-    }
-
-    public String getConnectionName() {
-        return connectionName;
-    }
-
-    public void setConnectionName(String connectionName) {
-        this.connectionName = connectionName;
-    }
-
-    public String getDataLibraryName() {
-        return dataLibraryName;
-    }
-
-    public void setDataLibraryName(String dataLibraryName) {
-        this.dataLibraryName = dataLibraryName;
-    }
-
-    public String getJobName() {
-        return jobName;
-    }
-
-    public void setJobName(String jobName) {
-        this.jobName = jobName;
     }
 
     @Override
@@ -80,14 +61,14 @@ public class DataLibraryPage extends AbstractWizardPage {
     @Override
     protected void setInputData() {
 
-        if (connectionName != null) {
-            comboConnection.selectConnection(connectionName);
+        if (!StringHelper.isNullOrEmpty(model.getConnectionName())) {
+            comboConnection.selectConnection(model.getConnectionName());
         } else {
             comboConnection.selectConnection(getPreferences().getWizardConnection());
         }
 
-        if (dataLibraryName != null) {
-            textDataLibrary.setText(dataLibraryName);
+        if (!StringHelper.isNullOrEmpty(model.getDataLibraryName())) {
+            textDataLibrary.setText(model.getDataLibraryName());
         } else {
             textDataLibrary.setText(getPreferences().getWizardRapidFireLibrary());
         }
@@ -106,13 +87,19 @@ public class DataLibraryPage extends AbstractWizardPage {
         String message = null;
 
         if (StringHelper.isNullOrEmpty(comboConnection.getConnectionName())) {
-            // comboConnection.getCombo().setFocus();
+
             message = Messages.Connection_is_missing;
         } else if (StringHelper.isNullOrEmpty(textDataLibrary.getText())) {
-            // textDataLibrary.setFocus();
+
             message = Messages.The_Rapid_Fire_product_library_name_is_missing;
         } else if (!libraryValidator.validate(textDataLibrary.getText())) {
+
             message = Messages.bindParameters(Messages.Library_name_A_is_not_valid, textDataLibrary.getText());
+        } else {
+
+            if (!Preferences.getInstance().isSlowConnection()) {
+                message = validateRapidFireLibrary();
+            }
         }
 
         updateValues();
@@ -126,16 +113,52 @@ public class DataLibraryPage extends AbstractWizardPage {
         setErrorMessage(message);
     }
 
+    @Override
+    public void setErrorMessage(String newMessage) {
+        super.setErrorMessage(newMessage);
+    }
+
+    @Override
+    public boolean canFlipToNextPage() {
+
+        if (!super.canFlipToNextPage()) {
+            return false;
+        }
+
+        String message = validateRapidFireLibrary();
+        if (message != null) {
+            setErrorMessage(message);
+            return false;
+        }
+
+        return true;
+    }
+
+    private String validateRapidFireLibrary() {
+
+        StringBuilder errorMessage = new StringBuilder();
+
+        if (!RapidFireHelper.checkRapidFireLibrary(getShell(), getSystem(), textDataLibrary.getText(), errorMessage)) {
+            return errorMessage.toString();
+        }
+
+        return null;
+    }
+
+    private AS400 getSystem() {
+        return SystemConnectionHelper.getSystemChecked(model.getConnectionName());
+    }
+
     private void updateValues() {
 
-        this.connectionName = comboConnection.getConnectionName();
-        this.dataLibraryName = textDataLibrary.getText();
+        model.setConnectionName(comboConnection.getConnectionName());
+        model.setDataLibraryName(textDataLibrary.getText());
     }
 
     @Override
     protected void storePreferences() {
 
-        getPreferences().setConnectionName(connectionName);
-        getPreferences().setRapidFireLibrary(dataLibraryName);
+        getPreferences().setConnectionName(model.getConnectionName());
+        getPreferences().setRapidFireLibrary(model.getDataLibraryName());
     }
 }

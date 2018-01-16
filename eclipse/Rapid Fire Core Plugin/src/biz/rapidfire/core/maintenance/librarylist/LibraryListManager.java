@@ -243,13 +243,13 @@ public class LibraryListManager extends AbstractManager<IRapidFireLibraryListRes
     @Override
     public boolean isValidAction(IRapidFireLibraryListResource libraryList, LibraryListAction action) throws Exception {
 
-        KeyLibraryListActionCache fileActionsKey = new KeyLibraryListActionCache(libraryList);
+        KeyLibraryListActionCache libraryListActionsKey = new KeyLibraryListActionCache(libraryList);
 
-        Set<LibraryListAction> actionsSet = LibraryListActionCache.getInstance().getActions(fileActionsKey);
+        Set<LibraryListAction> actionsSet = LibraryListActionCache.getInstance().getActions(libraryListActionsKey);
         if (actionsSet == null) {
             LibraryListAction[] fileActions = getValidActions(libraryList.getKey());
-            LibraryListActionCache.getInstance().putActions(fileActionsKey, fileActions);
-            actionsSet = LibraryListActionCache.getInstance().getActions(fileActionsKey);
+            LibraryListActionCache.getInstance().putActions(libraryListActionsKey, fileActions);
+            actionsSet = LibraryListActionCache.getInstance().getActions(libraryListActionsKey);
         }
 
         return actionsSet.contains(action);

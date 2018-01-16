@@ -56,6 +56,9 @@ public abstract class AbstractWizardPage extends WizardPage implements ModifyLis
         this.isEnabled = visible;
     }
 
+    public void updateMode() {
+    }
+
     public void modifyText(ModifyEvent event) {
         updatePageComplete(event.getSource());
     }

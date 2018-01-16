@@ -8,35 +8,50 @@
 
 package biz.rapidfire.core.maintenance.file.wizard;
 
-import java.util.Arrays;
-import java.util.LinkedList;
-import java.util.List;
-import java.util.Vector;
-
+import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.dialogs.PageChangedEvent;
 
 import biz.rapidfire.core.Messages;
 import biz.rapidfire.core.RapidFireCorePlugin;
-import biz.rapidfire.core.helpers.StringHelper;
-import biz.rapidfire.core.host.files.Field;
-import biz.rapidfire.core.host.files.FieldList;
+import biz.rapidfire.core.dialogs.MessageDialogAsync;
+import biz.rapidfire.core.helpers.ExceptionHelper;
+import biz.rapidfire.core.helpers.RapidFireHelper;
+import biz.rapidfire.core.maintenance.MaintenanceMode;
+import biz.rapidfire.core.maintenance.Result;
+import biz.rapidfire.core.maintenance.area.AreaManager;
 import biz.rapidfire.core.maintenance.area.AreaValues;
+import biz.rapidfire.core.maintenance.area.shared.AreaKey;
+import biz.rapidfire.core.maintenance.command.CommandManager;
 import biz.rapidfire.core.maintenance.command.CommandValues;
+import biz.rapidfire.core.maintenance.command.shared.CommandKey;
+import biz.rapidfire.core.maintenance.conversion.ConversionManager;
 import biz.rapidfire.core.maintenance.conversion.ConversionValues;
+import biz.rapidfire.core.maintenance.conversion.shared.ConversionKey;
+import biz.rapidfire.core.maintenance.file.FileManager;
 import biz.rapidfire.core.maintenance.file.FileValues;
+import biz.rapidfire.core.maintenance.file.shared.FileKey;
+import biz.rapidfire.core.maintenance.file.wizard.model.FileWizardDataModel;
+import biz.rapidfire.core.maintenance.job.shared.JobKey;
+import biz.rapidfire.core.maintenance.job.wizard.JobPage;
+import biz.rapidfire.core.maintenance.job.wizard.LibraryPage;
 import biz.rapidfire.core.maintenance.wizard.AbstractNewWizard;
 import biz.rapidfire.core.maintenance.wizard.AbstractWizardPage;
 import biz.rapidfire.core.maintenance.wizard.DataLibraryPage;
+import biz.rapidfire.core.model.IRapidFireFileResource;
 import biz.rapidfire.core.model.IRapidFireJobResource;
-import biz.rapidfire.core.model.IRapidFireLibraryListResource;
-import biz.rapidfire.core.model.IRapidFireLibraryResource;
-import biz.rapidfire.core.model.Status;
+import biz.rapidfire.core.model.dao.IJDBCConnection;
+import biz.rapidfire.core.model.dao.JDBCConnectionManager;
+import biz.rapidfire.core.preferences.Preferences;
 import biz.rapidfire.core.subsystem.IRapidFireSubSystem;
 import biz.rapidfire.rsebase.helpers.SystemConnectionHelper;
 
-public class NewFileWizard extends AbstractNewWizard {
+import com.ibm.as400.access.AS400;
+
+public class NewFileWizard extends AbstractNewWizard<FileWizardDataModel> {
 
     public NewFileWizard() {
+        super(FileWizardDataModel.createInitialized());
+
         setWindowTitle(Messages.Wizard_Title_New_File_wizard);
         setNeedsProgressMonitor(false);
     }
@@ -45,136 +60,42 @@ public class NewFileWizard extends AbstractNewWizard {
     public void addPages() {
         super.addPages(); // Adds the data library page, if necessary
 
-        FileValues fileValues = FileValues.createInitialized();
-        AreaValues areaValues = AreaValues.createInitialized();
-        CommandValues commandValues = CommandValues.createInitialized();
-        ConversionValues conversionValues = ConversionValues.createInitialized();
-
-        addPage(new FilePage(fileValues));
-        addPage(new AreaPage(areaValues));
-        addPage(new CommandPage(commandValues));
-        addPage(new ConversionPage(conversionValues));
+        addPage(new FilePage(model));
+        addPage(new AreaPage(model));
+        addPage(new CommandPage(model));
+        addPage(new ConversionPage(model));
     }
 
     @Override
     public void pageChanged(PageChangedEvent event) {
-
-        try {
-
-            DataLibraryPage dataLibraryPage = (DataLibraryPage)getPage(DataLibraryPage.NAME);
-            String connectionName = dataLibraryPage.getConnectionName();
-            String dataLibraryName = dataLibraryPage.getDataLibraryName();
-
-            if (event.getSelectedPage() instanceof FilePage) {
-
-                FilePage filePage = (FilePage)event.getSelectedPage();
-                if (StringHelper.isNullOrEmpty(filePage.getJobName())) {
-                    filePage.setJobName(getInitialJobName());
-                    IRapidFireSubSystem subSystem = (IRapidFireSubSystem)SystemConnectionHelper.getSubSystem(connectionName,
-                        IRapidFireSubSystem.class);
-                    if (subSystem != null) {
-                        IRapidFireJobResource[] allJobs = subSystem.getJobs(dataLibraryName, getShell());
-                        if (allJobs != null) {
-                            Vector<String> jobNames = new Vector<String>();
-                            for (IRapidFireJobResource job : allJobs) {
-                                if (Status.RDY.equals(job.getStatus())) {
-                                    jobNames.addElement(job.getName());
-                                }
-                            }
-                            filePage.setJobNames(jobNames.toArray(new String[jobNames.size()]));
-                        }
-                    }
-                }
-
-                filePage.setErrorMessage(null);
-
-            } else if (event.getSelectedPage() instanceof AreaPage) {
-
-                AreaPage areaPage = (AreaPage)event.getSelectedPage();
-
-                FilePage filePage = (FilePage)getPage(FilePage.NAME);
-                String jobName = filePage.getJobName();
-
-                IRapidFireSubSystem subSystem = (IRapidFireSubSystem)SystemConnectionHelper.getSubSystem(connectionName, IRapidFireSubSystem.class);
-                if (subSystem != null) {
-                    IRapidFireJobResource job = subSystem.getJob(dataLibraryName, jobName, getShell());
-                    if (job != null) {
-                        IRapidFireLibraryResource[] libraries = subSystem.getLibraries(job, getShell());
-                        areaPage.setLibraryNames(getLibraryNames(libraries));
-                        IRapidFireLibraryListResource[] libraryLists = subSystem.getLibraryLists(job, getShell());
-                        areaPage.setLibraryListNames(getLibraryListNames(libraryLists));
-                    }
-                }
-
-                areaPage.setErrorMessage(null);
-
-            } else if (event.getSelectedPage() instanceof ConversionPage) {
-
-                ConversionPage conversionPage = (ConversionPage)event.getSelectedPage();
-
-                FilePage filePage = (FilePage)getPage(FilePage.NAME);
-                AreaPage areaPage = (AreaPage)getPage(AreaPage.NAME);
-
-                String jobName = filePage.getJobName();
-                String fileName = filePage.getValues().getFileName();
-                String libraryResourceName = areaPage.getValues().getLibrary();
-
-                IRapidFireSubSystem subSystem = (IRapidFireSubSystem)SystemConnectionHelper.getSubSystem(connectionName, IRapidFireSubSystem.class);
-                IRapidFireJobResource jobResource = subSystem.getJob(dataLibraryName, jobName, getShell());
-                IRapidFireLibraryResource libraryResource = subSystem.getLibrary(jobResource, libraryResourceName, getShell());
-
-                FieldList fieldList = new FieldList(connectionName, fileName, libraryResource.getKey().getLibrary());
-
-                conversionPage.setFieldsToConvert(getFieldNames(fieldList.getFields()));
-
-                filePage.setErrorMessage(null);
-
-            }
-
-        } catch (Exception e) {
-            RapidFireCorePlugin.logError("*** Could not set page values of 'FilePage' ***", e); //$NON-NLS-1$
-        }
-
         super.pageChanged(event);
+
+        if (event.getSelectedPage() instanceof FilePage) {
+            FilePage filePage = (FilePage)event.getSelectedPage();
+            filePage.setJobNames(getJobNames(model.getJobs()));
+        } else if (event.getSelectedPage() instanceof AreaPage) {
+            AreaPage areaPage = (AreaPage)event.getSelectedPage();
+            areaPage.setLibraryNames(getLibraryNames(model.getLibraries()));
+            areaPage.setLibraryListNames(getLibraryListNames(model.getLibraryLists()));
+        }
     }
 
-    private String[] getLibraryNames(IRapidFireLibraryResource[] libraries) {
+    protected void updatePageEnablement(AbstractWizardPage page) {
 
-        List<String> namesList = new LinkedList<String>();
-        for (IRapidFireLibraryResource library : libraries) {
-            namesList.add(library.getName());
+        IRapidFireJobResource job = null;
+        AS400 as400 = SystemConnectionHelper.getSystemChecked(model.getConnectionName());
+        if (as400 != null) {
+            StringBuilder errorMessage = new StringBuilder();
+            if (RapidFireHelper.checkRapidFireLibrary(getShell(), as400, model.getDataLibraryName(), errorMessage)) {
+                job = model.getJob();
+            }
         }
 
-        String[] names = namesList.toArray(new String[namesList.size()]);
-        Arrays.sort(names);
-
-        return names;
-    }
-
-    private String[] getLibraryListNames(IRapidFireLibraryListResource[] libraryLists) {
-
-        List<String> namesList = new LinkedList<String>();
-        for (IRapidFireLibraryListResource libraryList : libraryLists) {
-            namesList.add(libraryList.getName());
+        if (job != null && job.isDoCreateEnvironment()) {
+            setPageEnablement(CommandPage.NAME, false);
+        } else {
+            setPageEnablement(CommandPage.NAME, true);
         }
-
-        String[] names = namesList.toArray(new String[namesList.size()]);
-        Arrays.sort(names);
-
-        return names;
-    }
-
-    private String[] getFieldNames(Field[] fields) {
-
-        List<String> fieldNames = new LinkedList<String>();
-        for (Field field : fields) {
-            fieldNames.add(field.getName());
-        }
-
-        String[] names = fieldNames.toArray(new String[fieldNames.size()]);
-        Arrays.sort(names);
-
-        return names;
     }
 
     @Override
@@ -192,8 +113,258 @@ public class NewFileWizard extends AbstractNewWizard {
 
     @Override
     public boolean performFinish() {
-        // TODO Auto-generated method stub
-        return false;
+
+        FileManager fileManager = null;
+        AreaManager areaManager = null;
+        CommandManager commandManager = null;
+        ConversionManager conversionManager = null;
+
+        IJDBCConnection connection = null;
+
+        try {
+
+            storePreferences();
+
+            Result result;
+
+            result = validateDataLibrary();
+            if (result.isError()) {
+                setActivePage(getDataLibraryPage());
+                displayError(result, DataLibraryPage.NAME);
+                return false;
+            }
+
+            String connectionName = model.getConnectionName();
+            String dataLibrary = model.getDataLibraryName();
+
+            /*
+             * Get JDBC connection with manual commit control (auto commit
+             * disabled).
+             */
+            connection = JDBCConnectionManager.getInstance().getConnectionForUpdateNoAutoCommit(connectionName, dataLibrary);
+
+            fileManager = new FileManager(connection);
+            areaManager = new AreaManager(connection);
+
+            if (model.hasConversions()) {
+                conversionManager = new ConversionManager(connection);
+            }
+
+            if (model.hasCommand()) {
+                commandManager = new CommandManager(connection);
+            }
+
+            result = validateFile(fileManager);
+            if (result.isError()) {
+                setActivePage(getFilePage());
+                displayError(result, JobPage.NAME);
+                return false;
+            }
+
+            result = validateArea(areaManager);
+            if (result.isError()) {
+                setActivePage(getAreaPage());
+                displayError(result, LibraryPage.NAME);
+                return false;
+            }
+
+            if (commandManager != null) {
+                result = validateCommand(commandManager);
+                if (result.isError()) {
+                    setActivePage(getCommandPage());
+                    displayError(result, LibraryPage.NAME);
+                    return false;
+                }
+            }
+
+            if (conversionManager != null) {
+                result = validateConversions(conversionManager);
+                if (result.isError()) {
+                    setActivePage(getConversionPage());
+                    displayError(result, LibraryPage.NAME);
+                    return false;
+                }
+            }
+
+            fileManager.book();
+            areaManager.book();
+
+            if (commandManager != null) {
+                commandManager.book();
+            }
+
+            if (conversionManager != null) {
+                conversionManager.book();
+            }
+
+            JDBCConnectionManager.getInstance().commit(connection);
+
+            IRapidFireSubSystem subSystem = (IRapidFireSubSystem)SystemConnectionHelper.getSubSystem(connection.getConnectionName(),
+                IRapidFireSubSystem.class);
+            if (subSystem != null) {
+                IRapidFireJobResource job = model.getJob();
+                if (job != null) {
+                    IRapidFireFileResource newFile = subSystem.getFile(job, model.getPosition(), getShell());
+                    if (newFile != null) {
+                        if (newFile.getParentNode() != null) {
+                            boolean isSlowConnection = Preferences.getInstance().isSlowConnection();
+                            // TODO: figure out how to get the damned parent
+                            // node
+                            // SystemConnectionHelper.refreshUICreated(isSlowConnection,
+                            // subSystem, newFile, newFile.getParentNode());
+                        }
+                    }
+                }
+            }
+
+            MessageDialog.openInformation(getShell(), Messages.Wizard_Title_New_File_wizard,
+                Messages.bindParameters(Messages.NewFileWizard_File_A_created, model.getJobName(), model.getFileName()));
+
+            return true;
+
+        } catch (Exception e) {
+
+            if (connection != null) {
+                try {
+                    JDBCConnectionManager.getInstance().rollback(connection);
+                } catch (Exception e2) {
+                    RapidFireCorePlugin.logError("*** Could not rollback connection '" + connection.getConnectionName() + "' ***", e); //$NON-NLS-1$ //$NON-NLS-2$                
+                }
+            }
+
+            RapidFireCorePlugin.logError("*** Failed to execute Job wizard ***", e); //$NON-NLS-1$
+            MessageDialogAsync.displayError(getShell(), ExceptionHelper.getLocalizedMessage(e));
+
+        } finally {
+
+            closeFilesOfManager(fileManager);
+            closeFilesOfManager(areaManager);
+            closeFilesOfManager(commandManager);
+        }
+
+        return true;
+    }
+
+    private FilePage getFilePage() {
+
+        FilePage filePage = (FilePage)getPage(FilePage.NAME);
+
+        return filePage;
+    }
+
+    private AreaPage getAreaPage() {
+
+        AreaPage areaPage = (AreaPage)getPage(AreaPage.NAME);
+
+        return areaPage;
+    }
+
+    private CommandPage getCommandPage() {
+
+        CommandPage commandPage = (CommandPage)getPage(CommandPage.NAME);
+
+        return commandPage;
+    }
+
+    private ConversionPage getConversionPage() {
+
+        ConversionPage conversionPage = (ConversionPage)getPage(ConversionPage.NAME);
+
+        return conversionPage;
+    }
+
+    private FileValues getFileValues() {
+
+        FileValues fileValues = FileValues.createInitialized();
+        fileValues.setKey(new FileKey(new JobKey(model.getJobName()), model.getPosition()));
+        fileValues.setFileName(model.getFileName());
+        fileValues.setFileType(model.getFileType().label());
+        fileValues.setCopyProgramName(model.getCopyProgramName());
+        fileValues.setCopyProgramLibraryName(model.getCopyProgramLibraryName());
+        fileValues.setConversionProgramName(model.getConversionProgramName());
+        fileValues.setConversionProgramLibraryName(model.getConversionProgramLibraryName());
+
+        return fileValues;
+    }
+
+    private AreaValues getAreaValues() {
+
+        AreaValues areaValues = AreaValues.createInitialized();
+        areaValues.setKey(new AreaKey(new FileKey(new JobKey(model.getJobName()), model.getPosition()), model.getAreaName()));
+        areaValues.setLibrary(model.getLibraryName());
+        areaValues.setLibraryList(model.getLibraryListName());
+        areaValues.setLibraryCcsid(model.getLibraryCcsid());
+        areaValues.setCommandExtension(model.getCommandExtension());
+
+        return areaValues;
+    }
+
+    private CommandValues getCommandValues() {
+
+        CommandValues commandValues = CommandValues.createInitialized();
+        commandValues.setKey(new CommandKey(new FileKey(new JobKey(model.getJobName()), model.getPosition()), model.getCommandType(), model
+            .getSequence()));
+        commandValues.setCommand(model.getCommand());
+
+        return commandValues;
+    }
+
+    private ConversionValues getConversionValues() {
+
+        ConversionValues conversionValues = ConversionValues.createInitialized();
+        conversionValues.setKey(new ConversionKey(new FileKey(new JobKey(model.getJobName()), model.getPosition()), model.getFieldToConvertName()));
+        conversionValues.setNewFieldName(model.getNewFieldName());
+        conversionValues.setConversions(model.getConversions().getConversions());
+
+        return conversionValues;
+    }
+
+    private Result validateFile(FileManager fileManager) throws Exception {
+
+        FileValues fileValues = getFileValues();
+
+        fileManager.openFiles();
+        fileManager.initialize(MaintenanceMode.CREATE, fileValues.getKey());
+        fileManager.setValues(fileValues);
+        Result result = fileManager.check();
+
+        return result;
+    }
+
+    private Result validateArea(AreaManager areaManager) throws Exception {
+
+        AreaValues areaValues = getAreaValues();
+
+        areaManager.openFiles();
+        areaManager.initialize(MaintenanceMode.CREATE, areaValues.getKey());
+        areaManager.setValues(areaValues);
+        Result result = areaManager.check();
+
+        return result;
+    }
+
+    private Result validateCommand(CommandManager commandManager) throws Exception {
+
+        CommandValues commandValues = getCommandValues();
+
+        commandManager.openFiles();
+        commandManager.initialize(MaintenanceMode.CREATE, commandValues.getKey());
+        commandManager.setValues(commandValues);
+        Result result = commandManager.check();
+
+        return result;
+    }
+
+    private Result validateConversions(ConversionManager conversionManager) throws Exception {
+
+        ConversionValues conversionValues = getConversionValues();
+
+        conversionManager.openFiles();
+        conversionManager.initialize(MaintenanceMode.CREATE, conversionValues.getKey());
+        conversionManager.setValues(conversionValues);
+        Result result = conversionManager.check();
+
+        return result;
     }
 
 }

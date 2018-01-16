@@ -71,6 +71,11 @@ public class RapidFireHelper {
             return false;
         }
 
+        if (!checkLibrary(as400, library)) {
+            setErrorMessage(errorMessage, Messages.bindParameters(Messages.Library_A_not_found_on_system_B, library, as400.getSystemName()));
+            return false;
+        }
+
         RapidFireDataArea dataAreaRapidFireContent = readRapidFireDataArea(shell, as400, library);
         if (dataAreaRapidFireContent == null) {
             return false;
@@ -100,7 +105,7 @@ public class RapidFireHelper {
         if (message != null) {
 
             if (errorMessage != null) {
-                errorMessage.replace(0, errorMessage.length(), message);
+                setErrorMessage(errorMessage, message);
             } else {
                 MessageDialogAsync.displayError(shell, message);
             }
@@ -109,6 +114,17 @@ public class RapidFireHelper {
         }
 
         return true;
+    }
+
+    private static String setErrorMessage(StringBuilder errorMessage, String message) {
+
+        if (errorMessage == null) {
+            return message;
+        }
+
+        errorMessage.replace(0, errorMessage.length(), message);
+
+        return errorMessage.toString();
     }
 
     public static boolean checkLibrary(AS400 system, String library) {

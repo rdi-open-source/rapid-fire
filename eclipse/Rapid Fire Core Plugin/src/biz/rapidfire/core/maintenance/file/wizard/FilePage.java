@@ -17,9 +17,9 @@ import biz.rapidfire.core.dialogs.maintenance.file.FileMaintenanceControl;
 import biz.rapidfire.core.helpers.IntHelper;
 import biz.rapidfire.core.helpers.StringHelper;
 import biz.rapidfire.core.maintenance.MaintenanceMode;
-import biz.rapidfire.core.maintenance.file.FileValues;
 import biz.rapidfire.core.maintenance.file.shared.ConversionProgram;
 import biz.rapidfire.core.maintenance.file.shared.CopyProgram;
+import biz.rapidfire.core.maintenance.file.wizard.model.FileWizardDataModel;
 import biz.rapidfire.core.maintenance.wizard.AbstractWizardPage;
 import biz.rapidfire.core.validators.Validator;
 
@@ -27,7 +27,7 @@ public class FilePage extends AbstractWizardPage {
 
     public static final String NAME = "FILE_PAGE"; //$NON-NLS-1$
 
-    private FileValues fileValues;
+    private FileWizardDataModel model;
 
     private Validator nameValidator;
     private Validator copyProgramNameValidator;
@@ -36,10 +36,10 @@ public class FilePage extends AbstractWizardPage {
 
     private FileMaintenanceControl fileMaintenanceControl;
 
-    public FilePage(FileValues fileValues) {
+    public FilePage(FileWizardDataModel model) {
         super(NAME);
 
-        this.fileValues = fileValues;
+        this.model = model;
 
         this.nameValidator = Validator.getNameInstance();
         this.copyProgramNameValidator = Validator.getNameInstance(CopyProgram.labels());
@@ -47,7 +47,16 @@ public class FilePage extends AbstractWizardPage {
         this.libraryValidator = Validator.getLibraryNameInstance(Validator.LIBRARY_LIBL, Validator.LIBRARY_CURLIB);
 
         setTitle(Messages.Wizard_Page_File);
+    }
+
+    @Override
+    public void updateMode() {
+
         setDescription(Messages.Wizard_Page_File_description);
+
+        if (fileMaintenanceControl != null) {
+            fileMaintenanceControl.setMode(MaintenanceMode.CREATE);
+        }
     }
 
     @Override
@@ -75,11 +84,11 @@ public class FilePage extends AbstractWizardPage {
         }
     }
 
-    public String getJobName() {
+    private String getJobName() {
         return fileMaintenanceControl.getJobName();
     }
 
-    public void setJobName(String jobName) {
+    private void setJobName(String jobName) {
 
         if (jobName != null) {
             fileMaintenanceControl.setJobName(jobName);
@@ -95,28 +104,25 @@ public class FilePage extends AbstractWizardPage {
         }
     }
 
-    public FileValues getValues() {
-        return fileValues;
-    }
-
     public void createContent(Composite parent) {
 
         fileMaintenanceControl = new FileMaintenanceControl(parent, SWT.NONE);
-        fileMaintenanceControl.setMode(MaintenanceMode.CREATE);
         fileMaintenanceControl.setLayoutData(new GridData(SWT.FILL, SWT.BEGINNING, true, false, 2, 1));
+
+        updateMode();
     }
 
     @Override
     protected void setInputData() {
 
-        fileMaintenanceControl.setJobName(fileValues.getKey().getJobName());
-        fileMaintenanceControl.setPosition(fileValues.getKey().getPosition());
-        fileMaintenanceControl.setFileName(fileValues.getFileName());
-        fileMaintenanceControl.setFileType(fileValues.getFileType());
-        fileMaintenanceControl.setCopyProgramName(fileValues.getCopyProgramName());
-        fileMaintenanceControl.setCopyProgramLibraryName(fileValues.getCopyProgramLibraryName());
-        fileMaintenanceControl.setConversionProgramName(fileValues.getConversionProgramName());
-        fileMaintenanceControl.setConversionProgramLibraryName(fileValues.getConversionProgramLibraryName());
+        fileMaintenanceControl.setJobName(model.getJobName());
+        fileMaintenanceControl.setPosition(model.getPosition());
+        fileMaintenanceControl.setFileName(model.getFileName());
+        fileMaintenanceControl.setFileType(model.getFileTypeForUI());
+        fileMaintenanceControl.setCopyProgramName(model.getQualifiedCopyProgramName().getName());
+        fileMaintenanceControl.setCopyProgramLibraryName(model.getCopyProgramLibraryName());
+        fileMaintenanceControl.setConversionProgramName(model.getConversionProgramName());
+        fileMaintenanceControl.setConversionProgramLibraryName(model.getConversionProgramLibraryName());
     }
 
     @Override
@@ -192,13 +198,14 @@ public class FilePage extends AbstractWizardPage {
 
     private void updateValues() {
 
-        fileValues.getKey().setPosition(IntHelper.tryParseInt(fileMaintenanceControl.getPosition(), -1));
-        fileValues.setFileName(fileMaintenanceControl.getFileName());
-        fileValues.setFileType(fileMaintenanceControl.getFileType());
-        fileValues.setCopyProgramName(fileMaintenanceControl.getCopyProgramName());
-        fileValues.setCopyProgramLibraryName(fileMaintenanceControl.getCopyProgramLibraryName());
-        fileValues.setConversionProgramName(fileMaintenanceControl.getConversionProgramName());
-        fileValues.setConversionProgramLibraryName(fileMaintenanceControl.getConversionProgramLibraryName());
+        model.setJobName(fileMaintenanceControl.getJobName());
+        model.setPosition(IntHelper.tryParseInt(fileMaintenanceControl.getPosition(), -1));
+        model.setFileName(fileMaintenanceControl.getFileName());
+        model.setFileTypeFromUI(fileMaintenanceControl.getFileType());
+        model.setCopyProgramName(fileMaintenanceControl.getCopyProgramName());
+        model.setCopyProgramLibraryName(fileMaintenanceControl.getCopyProgramLibraryName());
+        model.setConversionProgramName(fileMaintenanceControl.getConversionProgramName());
+        model.setConversionProgramLibraryName(fileMaintenanceControl.getConversionProgramLibraryName());
     }
 
     @Override
