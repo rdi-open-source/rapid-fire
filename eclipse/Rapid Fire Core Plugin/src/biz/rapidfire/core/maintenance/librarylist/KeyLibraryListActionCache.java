@@ -15,13 +15,14 @@ import biz.rapidfire.core.model.IRapidFireLibraryListResource;
  * This class produces the key value for the LibraryListActionCache.
  * 
  * <pre>
- * Form of the key:    [dataLibrary], [jobName], [jobStatus], [libraryListName_isEmpty]
- * Example key value:  RFPRI, CUSTUPD, RDY, IS_EMPTY
+ * Form of the key:    [dataLibrary], [jobName], [jobStatus], [createEnvironment], [libraryListName_isEmpty]
+ * Example key value:  RFPRI, CUSTUPD, RDY, true, IS_EMPTY
  * </pre>
  */
 public class KeyLibraryListActionCache extends AbstractKeyResourceActionCache {
 
     public KeyLibraryListActionCache(IRapidFireLibraryListResource libraryList) {
-        super(libraryList.getParentJob(), isStringValueEmpty(libraryList.getName()));
+        super(libraryList.getParentJob(), Boolean.toString(libraryList.getParentJob().isDoCreateEnvironment()), isStringValueEmpty(libraryList
+            .getName()));
     }
 }
