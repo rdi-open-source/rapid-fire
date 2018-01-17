@@ -1,22 +1,33 @@
-     /*-----------------------------------------------------------------------*/
-     /* STRPREPRC Compile Options:                                            */
-     /* >>PRE-COMPILER<<                                                      */
-     /*   >>CRTCMD<<  CALL       PGM(QTEMP/&OB) PARM(&LI &OB);                */
-     /*   >>CMD<<     CRTCLPGM   PGM(QTEMP/&OB) +                             */
-     /*                          SRCFILE(&SL/&SF) SRCMBR(&SM) +               */
-     /*               TEXT('Rapid Fire Home Library');                        */
-     /*   >>EXECUTE<<                                                         */
-     /*   >>CMD<<     DLTPGM PGM(QTEMP/&OB);                                  */
-     /* >>END-PRE-COMPILER<<                                                  */
-     /*-----------------------------------------------------------------------*/
+     /*-------------------------------------------------------------------------------------------*/
+     /*                                                                                           */
+     /* Copyright (c) 2014 Task Force IT-Consulting GmbH, Waltrop (Germany)                       */
+     /* This software and the accompanying materials are made available                           */
+     /* under the terms of the GNU General Public License version 2.0 (GPLv2)                     */
+     /* which accompanies this distribution and is available at                                   */
+     /* http://www.gnu.org/licenses/gpl-2.0.html                                                  */
+     /*                                                                                           */
+     /*-------------------------------------------------------------------------------------------*/
+     /*                                                                                           */
+     /* Create data area 'HOME', which contains the name of the Rapid Fire product library.       */
+     /*                                                                                           */
+     /*-------------------------------------------------------------------------------------------*/
+     /* STRPREPRC Compile Options:                                                                */
+     /* >>PRE-COMPILER<<                                                                          */
+     /*   >>CRTCMD<<  CALL       PGM(QTEMP/&OB) PARM(&LI &OB);                                    */
+     /*   >>CMD<<     CRTCLPGM   PGM(QTEMP/&OB) +                                                 */
+     /*                          SRCFILE(&SL/&SF) SRCMBR(&SM) +                                   */
+     /*               TEXT('Rapid Fire Home Library');                                            */
+     /*   >>EXECUTE<<                                                                             */
+     /*   >>CMD<<     DLTPGM PGM(QTEMP/&OB);                                                      */
+     /* >>END-PRE-COMPILER<<                                                                      */
+     /*-------------------------------------------------------------------------------------------*/
              PGM        PARM(&LIB &OBJ)
 
              DCL        VAR(&LIB ) TYPE(*CHAR) LEN(10)
              DCL        VAR(&OBJ ) TYPE(*CHAR) LEN(10)
 
              DCL        VAR(&HOME     ) TYPE(*CHAR) LEN(10)
-               DCL        VAR(&RF_HOME) TYPE(*CHAR) STG(*DEFINED) LEN(10) DEFVAR(&HOME  1)
-
+             DCL        VAR(&RF_HOME) TYPE(*CHAR) STG(*DEFINED) LEN(10) DEFVAR(&HOME  1)
 
 
              /* ------------------------- Error handler ------------------------- */
@@ -25,8 +36,7 @@
              DCL        VAR(&ERRNUMTYPE) TYPE(*CHAR) LEN( 4) VALUE(x'00000001')
              DCL        VAR(&ERRSTKE   ) TYPE(*CHAR) LEN(10) VALUE('*PGMBDY')
              DCL        VAR(&ERRSTKCNT ) TYPE(*CHAR) LEN( 4) VALUE(x'00000001')
-             DCL        VAR(&ERRCODE   ) TYPE(*CHAR) LEN( 8) +
-                          VALUE(x'0000000000000000')
+             DCL        VAR(&ERRCODE   ) TYPE(*CHAR) LEN( 8) VALUE(x'0000000000000000')
 
              MONMSG     MSGID(CPF0000) EXEC(GOTO ERRHDLR)
              /* ----------------------------------------------------------------- */
@@ -47,8 +57,7 @@
              /* --------------------------------------------------- */
              /*   Error Handler                                     */
              /* --------------------------------------------------- */
- ERRHDLR:    CALL       PGM(QMHMOVPM) PARM(&ERRMSGKEY &ERRMSGTYPE &ERRNUMTYPE +
-                          &ERRSTKE &ERRSTKCNT &ERRCODE    )
+ ERRHDLR:    CALL       PGM(QMHMOVPM) PARM(&ERRMSGKEY &ERRMSGTYPE &ERRNUMTYPE &ERRSTKE &ERRSTKCNT &E
              MONMSG     MSGID(CPF0000)
 
              CALL       PGM(QMHRSNEM) PARM(&ERRMSGKEY &ERRCODE    )

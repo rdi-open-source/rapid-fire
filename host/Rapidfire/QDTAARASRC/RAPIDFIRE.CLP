@@ -1,33 +1,46 @@
-     /*-----------------------------------------------------------------------*/
-     /* STRPREPRC Compile Options:                                            */
-     /* >>PRE-COMPILER<<                                                      */
-     /*   >>CRTCMD<<  CALL       PGM(QTEMP/&OB) PARM(&LI &OB);                */
-     /*   >>CMD<<     CRTCLPGM   PGM(QTEMP/&OB) +                             */
-     /*                          SRCFILE(&SL/&SF) SRCMBR(&SM) +               */
-     /*               TEXT('Rapid Fire');                                     */
-     /*   >>EXECUTE<<                                                         */
-     /*   >>CMD<<     DLTPGM PGM(QTEMP/&OB);                                  */
-     /* >>END-PRE-COMPILER<<                                                  */
-     /*-----------------------------------------------------------------------*/
+     /*-------------------------------------------------------------------------------------------*/
+     /*                                                                                           */
+     /* Copyright (c) 2014 Task Force IT-Consulting GmbH, Waltrop (Germany)                       */
+     /* This software and the accompanying materials are made available                           */
+     /* under the terms of the GNU General Public License version 2.0 (GPLv2)                     */
+     /* which accompanies this distribution and is available at                                   */
+     /* http://www.gnu.org/licenses/gpl-2.0.html                                                  */
+     /*                                                                                           */
+     /*-------------------------------------------------------------------------------------------*/
+     /*                                                                                           */
+     /* Create data area 'RAPIDFIRE', which contains Rapid Fire version information.              */
+     /*                                                                                           */
+     /*-------------------------------------------------------------------------------------------*/
+     /* STRPREPRC Compile Options:                                                                */
+     /* >>PRE-COMPILER<<                                                                          */
+     /*   >>CRTCMD<<  CALL       PGM(QTEMP/&OB) PARM(&LI &OB);                                    */
+     /*   >>CMD<<     CRTCLPGM   PGM(QTEMP/&OB) +                                                 */
+     /*                          SRCFILE(&SL/&SF) SRCMBR(&SM) +                                   */
+     /*               TEXT('Rapid Fire Version Information');                                     */
+     /*   >>EXECUTE<<                                                                             */
+     /*   >>CMD<<     DLTPGM PGM(QTEMP/&OB);                                                      */
+     /* >>END-PRE-COMPILER<<                                                                      */
+     /*-------------------------------------------------------------------------------------------*/
              PGM        PARM(&LIB &OBJ)
 
              DCL        VAR(&LIB ) TYPE(*CHAR) LEN(10)
              DCL        VAR(&OBJ ) TYPE(*CHAR) LEN(10)
 
              DCL        VAR(&RAPIDFIRE) TYPE(*CHAR) LEN(256)
-               DCL        VAR(&RF_VER ) TYPE(*CHAR) STG(*DEFINED) LEN( 2) DEFVAR(&RAPIDFIRE  1)
-               DCL        VAR(&RF_RLS ) TYPE(*CHAR) STG(*DEFINED) LEN( 2) DEFVAR(&RAPIDFIRE  3)
-               DCL        VAR(&RF_MDN ) TYPE(*CHAR) STG(*DEFINED) LEN( 2) DEFVAR(&RAPIDFIRE  5)
-               DCL        VAR(&CM_VER ) TYPE(*CHAR) STG(*DEFINED) LEN( 2) DEFVAR(&RAPIDFIRE  7)
-               DCL        VAR(&CM_RLS ) TYPE(*CHAR) STG(*DEFINED) LEN( 2) DEFVAR(&RAPIDFIRE  9)
-               DCL        VAR(&CM_MDN ) TYPE(*CHAR) STG(*DEFINED) LEN( 2) DEFVAR(&RAPIDFIRE 11)
-               DCL        VAR(&CM_PTF ) TYPE(*CHAR) STG(*DEFINED) LEN(10) DEFVAR(&RAPIDFIRE 13)
-               DCL        VAR(&BD_DATE) TYPE(*CHAR) STG(*DEFINED) LEN(10) DEFVAR(&RAPIDFIRE 23)
-               DCL        VAR(&CL_VER ) TYPE(*CHAR) STG(*DEFINED) LEN( 2) DEFVAR(&RAPIDFIRE 33)
-               DCL        VAR(&CL_RLS ) TYPE(*CHAR) STG(*DEFINED) LEN( 2) DEFVAR(&RAPIDFIRE 35)
-               DCL        VAR(&CL_MDN ) TYPE(*CHAR) STG(*DEFINED) LEN( 2) DEFVAR(&RAPIDFIRE 37)
+             DCL        VAR(&RF_VER ) TYPE(*CHAR) STG(*DEFINED) LEN( 2) DEFVAR(&RAPIDFIRE  1)
+             DCL        VAR(&RF_RLS ) TYPE(*CHAR) STG(*DEFINED) LEN( 2) DEFVAR(&RAPIDFIRE  3)
+             DCL        VAR(&RF_MDN ) TYPE(*CHAR) STG(*DEFINED) LEN( 2) DEFVAR(&RAPIDFIRE  5)
+             DCL        VAR(&CM_VER ) TYPE(*CHAR) STG(*DEFINED) LEN( 2) DEFVAR(&RAPIDFIRE  7)
+             DCL        VAR(&CM_RLS ) TYPE(*CHAR) STG(*DEFINED) LEN( 2) DEFVAR(&RAPIDFIRE  9)
+             DCL        VAR(&CM_MDN ) TYPE(*CHAR) STG(*DEFINED) LEN( 2) DEFVAR(&RAPIDFIRE 11)
+             DCL        VAR(&CM_PTF ) TYPE(*CHAR) STG(*DEFINED) LEN(10) DEFVAR(&RAPIDFIRE 13)
+             DCL        VAR(&BD_DATE) TYPE(*CHAR) STG(*DEFINED) LEN(10) DEFVAR(&RAPIDFIRE 23)
+             DCL        VAR(&CL_VER ) TYPE(*CHAR) STG(*DEFINED) LEN( 2) DEFVAR(&RAPIDFIRE 33)
+             DCL        VAR(&CL_RLS ) TYPE(*CHAR) STG(*DEFINED) LEN( 2) DEFVAR(&RAPIDFIRE 35)
+             DCL        VAR(&CL_MDN ) TYPE(*CHAR) STG(*DEFINED) LEN( 2) DEFVAR(&RAPIDFIRE 37)
 
-
+             DCL        VAR(&SYSDATE) TYPE(*CHAR) LEN( 6)
+             DCL        VAR(&DATEISO) TYPE(*CHAR) LEN(10)
 
              /* ------------------------- Error handler ------------------------- */
              DCL        VAR(&ERRMSGKEY ) TYPE(*CHAR) LEN( 4)
@@ -35,14 +48,16 @@
              DCL        VAR(&ERRNUMTYPE) TYPE(*CHAR) LEN( 4) VALUE(x'00000001')
              DCL        VAR(&ERRSTKE   ) TYPE(*CHAR) LEN(10) VALUE('*PGMBDY')
              DCL        VAR(&ERRSTKCNT ) TYPE(*CHAR) LEN( 4) VALUE(x'00000001')
-             DCL        VAR(&ERRCODE   ) TYPE(*CHAR) LEN( 8) +
-                          VALUE(x'0000000000000000')
+             DCL        VAR(&ERRCODE   ) TYPE(*CHAR) LEN( 8) VALUE(x'0000000000000000')
 
              MONMSG     MSGID(CPF0000) EXEC(GOTO ERRHDLR)
              /* ----------------------------------------------------------------- */
 
+             RTVSYSVAL  SYSVAL(QDATE) RTNVAR(&SYSDATE)
+             CVTDAT     DATE(&SYSDATE) TOVAR(&DATEISO) FROMFMT(*JOB) TOFMT(*ISO)
+
              CHGVAR     VAR(&RF_VER ) VALUE('04')
-             CHGVAR     VAR(&RF_RLS ) VALUE('05')
+             CHGVAR     VAR(&RF_RLS ) VALUE('06')
              CHGVAR     VAR(&RF_MDN ) VALUE('00')
 
              CHGVAR     VAR(&CM_VER ) VALUE('04')
@@ -50,7 +65,7 @@
              CHGVAR     VAR(&CM_MDN ) VALUE('00')
              CHGVAR     VAR(&CM_PTF ) VALUE('C410000032')
 
-             CHGVAR     VAR(&BD_DATE) VALUE('2017-11-09')
+             CHGVAR     VAR(&BD_DATE) VALUE(&DATEISO)
 
              CHGVAR     VAR(&CL_VER ) VALUE('01')
              CHGVAR     VAR(&CL_RLS ) VALUE('00')
@@ -70,8 +85,7 @@
              /* --------------------------------------------------- */
              /*   Error Handler                                     */
              /* --------------------------------------------------- */
- ERRHDLR:    CALL       PGM(QMHMOVPM) PARM(&ERRMSGKEY &ERRMSGTYPE &ERRNUMTYPE +
-                          &ERRSTKE &ERRSTKCNT &ERRCODE    )
+ ERRHDLR:    CALL       PGM(QMHMOVPM) PARM(&ERRMSGKEY &ERRMSGTYPE &ERRNUMTYPE &ERRSTKE &ERRSTKCNT &E
              MONMSG     MSGID(CPF0000)
 
              CALL       PGM(QMHRSNEM) PARM(&ERRMSGKEY &ERRCODE    )
