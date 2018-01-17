@@ -147,6 +147,29 @@ public abstract class AbstractMaintenanceControl extends Composite implements Mo
         setText(control, getPreviousValue(control));
     }
 
+    protected void setSelectedItem(Combo control, String item) {
+
+        int i = findItem(control.getItems(), item);
+        if (i >= 0) {
+            control.select(i);
+        } else {
+            control.select(-1);
+        }
+    }
+
+    protected int findItem(String[] items, String item) {
+
+        if (items != null) {
+            for (int i = 0; i < items.length; i++) {
+                if (items[i].equals(item)) {
+                    return i;
+                }
+            }
+        }
+
+        return -1;
+    }
+
     private void storeCurrentValue(Control control, String text) {
         control.setData(PREV_VALUE, text);
     }

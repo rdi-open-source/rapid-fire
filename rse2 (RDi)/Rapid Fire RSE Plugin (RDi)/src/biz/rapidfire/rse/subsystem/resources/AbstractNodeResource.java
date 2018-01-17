@@ -28,7 +28,7 @@ public abstract class AbstractNodeResource extends AbstractResource {
         return label;
     }
 
-    protected IRapidFireJobResource getJob() {
+    public IRapidFireJobResource getJob() {
         return job;
     }
 

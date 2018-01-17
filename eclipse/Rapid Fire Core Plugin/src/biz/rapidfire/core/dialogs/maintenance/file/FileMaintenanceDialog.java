@@ -81,7 +81,8 @@ public class FileMaintenanceDialog extends AbstractMaintenanceDialog {
     @Override
     protected void setScreenValues() {
 
-        fileMaintenanceControl.setJobName(values.getKey().getJobName());
+        fileMaintenanceControl.setJobNames(new String[] { values.getKey().getJobName() });
+        fileMaintenanceControl.selectJob(values.getKey().getJobName());
 
         fileMaintenanceControl.setPosition(values.getKey().getPosition());
         fileMaintenanceControl.setFileName(values.getFileName());

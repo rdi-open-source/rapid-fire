@@ -46,46 +46,6 @@ public class FileMaintenanceControl extends AbstractMaintenanceControl {
         super(parent, style, parentKeyFieldsVisible);
     }
 
-    // private boolean matchesControl(Object object, Control control) {
-    //
-    // if (object == null) {
-    // return false;
-    // }
-    // return object.equals(control);
-    // }
-    //
-    // public boolean isJobNameControl(Object object) {
-    // return matchesControl(object, comboJobName);
-    // }
-    //
-    // public boolean isPositionControl(Object object) {
-    // return matchesControl(object, textPosition);
-    // }
-    //
-    // public boolean isFileNameControl(Object object) {
-    // return matchesControl(object, textFileName);
-    // }
-    //
-    // public boolean isFileTypeControl(Object object) {
-    // return matchesControl(object, comboFileType);
-    // }
-    //
-    // public boolean isCopyProgramNameControl(Object object) {
-    // return matchesControl(object, comboCopyProgramName);
-    // }
-    //
-    // public boolean isCopyProgramLibraryNameControl(Object object) {
-    // return matchesControl(object, textCopyProgramLibraryName);
-    // }
-    //
-    // public boolean isConversionProgramNameControl(Object object) {
-    // return matchesControl(object, comboConversionProgramName);
-    // }
-    //
-    // public boolean isConversionProgramLibraryNameControl(Object object) {
-    // return matchesControl(object, textConversionProgramLibraryName);
-    // }
-
     public void setFocusJobName() {
         comboJobName.setFocus();
     }
@@ -131,7 +91,7 @@ public class FileMaintenanceControl extends AbstractMaintenanceControl {
 
         WidgetFactory.createLabel(parent, Messages.Label_Job_colon, Messages.Tooltip_Job);
 
-        comboJobName = WidgetFactory.createNameCombo(parent);
+        comboJobName = WidgetFactory.createReadOnlyCombo(parent);
         comboJobName.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
         comboJobName.setToolTipText(Messages.Tooltip_Job);
 
@@ -192,13 +152,15 @@ public class FileMaintenanceControl extends AbstractMaintenanceControl {
         return comboJobName.getText();
     }
 
-    public void setJobName(String jobName) {
-        comboJobName.setText(jobName);
+    public void setJobNames(String[] jobNames) {
+
+        comboJobName.setItems(jobNames);
+
         updateControlEnablement();
     }
 
-    public void setJobNames(String[] jobNames) {
-        comboJobName.setItems(jobNames);
+    public void selectJob(String jobName) {
+        setSelectedItem(comboJobName, jobName);
     }
 
     public String getPosition() {
@@ -333,7 +295,7 @@ public class FileMaintenanceControl extends AbstractMaintenanceControl {
 
     private void updateControlEnablement() {
 
-        if (StringHelper.isNullOrEmpty(comboJobName.getText())) {
+        if (comboJobName.getItemCount() > 0) {
             comboJobName.setEnabled(true);
         } else {
             comboJobName.setEnabled(isParentKeyFieldsEnabled());

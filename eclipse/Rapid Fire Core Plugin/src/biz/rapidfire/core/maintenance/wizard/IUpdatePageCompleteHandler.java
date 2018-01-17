@@ -6,12 +6,11 @@
  * http://www.eclipse.org/legal/cpl-v10.html
  *******************************************************************************/
 
-package biz.rapidfire.core.model;
+package biz.rapidfire.core.maintenance.wizard;
 
-public interface IRapidFireNodeResource extends IRapidFireResource {
+public interface IUpdatePageCompleteHandler {
 
-    public IRapidFireJobResource getJob();
+    public String performUpdatePageComplete(Object source);
 
-    public IRapidFireResource getParentResource();
-
+    public void performUpdatePageCompleteFinished(Object source, String errorMessage);
 }

@@ -17,7 +17,7 @@ import biz.rapidfire.rsebase.swt.widgets.SystemHostCombo;
 
 import com.ibm.as400.access.AS400;
 
-public class DataLibraryPage extends AbstractWizardPage {
+public class DataLibraryPage extends AbstractWizardPage implements IUpdatePageCompleteHandler {
 
     public static final String NAME = "DATA_LIBRARY_PAGE"; //$NON-NLS-1$
 
@@ -84,25 +84,44 @@ public class DataLibraryPage extends AbstractWizardPage {
     @Override
     protected void updatePageComplete(Object source) {
 
+        updateValues();
+
+        // Schedule the actual work, to reduce calls to the host.
+        scheduleUpdatePageComplete(this, source);
+    }
+
+    /**
+     * Implementation of the IUpdatePageCompleteHandler interface. Indirectly
+     * called by scheduleUpdatePageComplete().
+     */
+    public String performUpdatePageComplete(Object source) {
+
         String message = null;
 
-        if (StringHelper.isNullOrEmpty(comboConnection.getConnectionName())) {
+        if (StringHelper.isNullOrEmpty(model.getConnectionName())) {
 
             message = Messages.Connection_is_missing;
-        } else if (StringHelper.isNullOrEmpty(textDataLibrary.getText())) {
+        } else if (StringHelper.isNullOrEmpty(model.getConnectionName())) {
 
             message = Messages.The_Rapid_Fire_product_library_name_is_missing;
-        } else if (!libraryValidator.validate(textDataLibrary.getText())) {
+        } else if (!libraryValidator.validate(model.getDataLibraryName())) {
 
-            message = Messages.bindParameters(Messages.Library_name_A_is_not_valid, textDataLibrary.getText());
+            message = Messages.bindParameters(Messages.Library_name_A_is_not_valid, model.getDataLibraryName());
         } else {
 
             if (!Preferences.getInstance().isSlowConnection()) {
-                message = validateRapidFireLibrary();
+                message = validateRapidFireLibrary(model.getDataLibraryName());
             }
         }
 
-        updateValues();
+        return message;
+    }
+
+    /**
+     * Implementation of the IUpdatePageCompleteHandler interface. Indirectly
+     * called by scheduleUpdatePageComplete().
+     */
+    public void performUpdatePageCompleteFinished(Object source, String message) {
 
         if (message == null) {
             setPageComplete(true);
@@ -125,7 +144,7 @@ public class DataLibraryPage extends AbstractWizardPage {
             return false;
         }
 
-        String message = validateRapidFireLibrary();
+        String message = validateRapidFireLibrary(textDataLibrary.getText());
         if (message != null) {
             setErrorMessage(message);
             return false;
@@ -134,11 +153,11 @@ public class DataLibraryPage extends AbstractWizardPage {
         return true;
     }
 
-    private String validateRapidFireLibrary() {
+    private String validateRapidFireLibrary(String dataLibraryName) {
 
         StringBuilder errorMessage = new StringBuilder();
 
-        if (!RapidFireHelper.checkRapidFireLibrary(getShell(), getSystem(), textDataLibrary.getText(), errorMessage)) {
+        if (!RapidFireHelper.checkRapidFireLibrary(getShell(), getSystem(), dataLibraryName, errorMessage)) {
             return errorMessage.toString();
         }
 
@@ -158,7 +177,7 @@ public class DataLibraryPage extends AbstractWizardPage {
     @Override
     protected void storePreferences() {
 
-        getPreferences().setConnectionName(model.getConnectionName());
-        getPreferences().setRapidFireLibrary(model.getDataLibraryName());
+        getPreferences().setWizardConnection(model.getConnectionName());
+        getPreferences().setWizardRapidFireLibrary(model.getDataLibraryName());
     }
 }

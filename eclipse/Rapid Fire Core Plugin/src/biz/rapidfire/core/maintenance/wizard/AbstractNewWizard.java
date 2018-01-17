@@ -16,6 +16,10 @@ import java.util.Map;
 import java.util.Map.Entry;
 import java.util.Set;
 
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.jobs.Job;
 import org.eclipse.jface.dialogs.IPageChangedListener;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.jface.dialogs.PageChangedEvent;
@@ -28,6 +32,7 @@ import org.eclipse.jface.wizard.WizardPage;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.ui.INewWizard;
 import org.eclipse.ui.IWorkbench;
+import org.eclipse.ui.progress.UIJob;
 
 import biz.rapidfire.core.Messages;
 import biz.rapidfire.core.RapidFireCorePlugin;
@@ -42,6 +47,7 @@ import biz.rapidfire.core.model.IRapidFireFileResource;
 import biz.rapidfire.core.model.IRapidFireJobResource;
 import biz.rapidfire.core.model.IRapidFireLibraryListResource;
 import biz.rapidfire.core.model.IRapidFireLibraryResource;
+import biz.rapidfire.core.model.IRapidFireNodeResource;
 import biz.rapidfire.core.model.IRapidFireResource;
 import biz.rapidfire.core.preferences.Preferences;
 import biz.rapidfire.core.subsystem.IRapidFireSubSystem;
@@ -55,6 +61,8 @@ public abstract class AbstractNewWizard<M extends WizardDataModel> extends Wizar
     protected M model;
 
     private Map<String, Boolean> pagesVisibility;
+
+    private Job delayedJob;
 
     public AbstractNewWizard(M model) {
 
@@ -129,7 +137,10 @@ public abstract class AbstractNewWizard<M extends WizardDataModel> extends Wizar
                     }
                 }
 
-                if (element instanceof IRapidFireChildResource) {
+                if (element instanceof IRapidFireNodeResource) {
+                    IRapidFireNodeResource resource = (IRapidFireNodeResource)element;
+                    model.setJobName(resource.getJob().getName());
+                } else if (element instanceof IRapidFireChildResource) {
                     IRapidFireChildResource<?> resource = (IRapidFireChildResource<?>)element;
                     model.setJobName(resource.getParentJob().getName());
                 } else if (element instanceof IRapidFireJobResource) {
@@ -364,5 +375,65 @@ public abstract class AbstractNewWizard<M extends WizardDataModel> extends Wizar
 
     private boolean isPageCompletelyInitialized(IWizardPage page) {
         return page != null && page.getControl() != null;
+    }
+
+    protected void scheduleUpdatePageComplete(IUpdatePageCompleteHandler handler, Object source) {
+
+        if (delayedJob != null) {
+            delayedJob.cancel();
+        }
+
+        delayedJob = new UpdatePageCompleteJob(handler, source);
+        delayedJob.schedule(400);
+
+    }
+
+    private class UpdatePageCompleteJob extends Job {
+
+        private IUpdatePageCompleteHandler handler;
+        private Object source;
+
+        public UpdatePageCompleteJob(IUpdatePageCompleteHandler handler, Object source) {
+            super(""); //$NON-NLS-1$
+
+            this.handler = handler;
+            this.source = source;
+        }
+
+        @Override
+        protected IStatus run(IProgressMonitor progressMonitor) {
+
+            String message = this.handler.performUpdatePageComplete(source);
+
+            UIJob updateUI = new UpdatePageCompleteFinishedJob(handler, source, message);
+            updateUI.schedule();
+
+            delayedJob = null;
+
+            return Status.OK_STATUS;
+        }
+    }
+
+    private class UpdatePageCompleteFinishedJob extends UIJob {
+
+        private IUpdatePageCompleteHandler handler;
+        private Object source;
+        private String message;
+
+        public UpdatePageCompleteFinishedJob(IUpdatePageCompleteHandler handler, Object source, String message) {
+            super(""); //$NON-NLS-1$
+
+            this.handler = handler;
+            this.source = source;
+            this.message = message;
+        }
+
+        @Override
+        public IStatus runInUIThread(IProgressMonitor arg0) {
+
+            handler.performUpdatePageCompleteFinished(source, message);
+
+            return Status.OK_STATUS;
+        }
     }
 }

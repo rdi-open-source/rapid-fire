@@ -84,23 +84,12 @@ public class FilePage extends AbstractWizardPage {
         }
     }
 
-    private String getJobName() {
-        return fileMaintenanceControl.getJobName();
-    }
-
-    private void setJobName(String jobName) {
-
-        if (jobName != null) {
-            fileMaintenanceControl.setJobName(jobName);
-        }
-    }
-
     public void setJobNames(String[] jobNames) {
 
         if (jobNames != null) {
-            String jobName = getJobName();
+            String jobName = model.getJobName();
             fileMaintenanceControl.setJobNames(jobNames);
-            setJobName(jobName);
+            fileMaintenanceControl.selectJob(jobName);
         }
     }
 
@@ -115,7 +104,8 @@ public class FilePage extends AbstractWizardPage {
     @Override
     protected void setInputData() {
 
-        fileMaintenanceControl.setJobName(model.getJobName());
+        fileMaintenanceControl.setJobNames(new String[] { model.getJobName() });
+        fileMaintenanceControl.selectJob(model.getJobName());
         fileMaintenanceControl.setPosition(model.getPosition());
         fileMaintenanceControl.setFileName(model.getFileName());
         fileMaintenanceControl.setFileType(model.getFileTypeForUI());

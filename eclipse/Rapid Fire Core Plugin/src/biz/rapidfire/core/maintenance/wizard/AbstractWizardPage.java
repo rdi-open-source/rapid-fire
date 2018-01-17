@@ -71,6 +71,14 @@ public abstract class AbstractWizardPage extends WizardPage implements ModifyLis
         updatePageComplete(event.getSource());
     }
 
+    public AbstractNewWizard<?> getWizard() {
+        return (AbstractNewWizard<?>)super.getWizard();
+    }
+
+    protected void scheduleUpdatePageComplete(IUpdatePageCompleteHandler handler, Object source) {
+        getWizard().scheduleUpdatePageComplete(handler, source);
+    }
+
     protected void setInputData() {
     }
 
