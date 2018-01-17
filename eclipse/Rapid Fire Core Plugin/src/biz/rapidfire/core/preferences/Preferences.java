@@ -417,6 +417,7 @@ public final class Preferences {
         dateFormats.put(getDefaultDateFormatLabel(), null);
         dateFormats.put("de (dd.mm.yyyy)", "dd.MM.yyyy");
         dateFormats.put("us (mm/dd/yyyy)", "MM/dd/yyyy");
+        dateFormats.put("iso (yyyy.mm.dd)", "yyyy.MM.dd");
 
         return dateFormats;
     }
@@ -432,6 +433,7 @@ public final class Preferences {
         timeFormats.put(getDefaultDateFormatLabel(), null);
         timeFormats.put("de (hh:mm:ss)", "HH:mm:ss"); //$NON-NLS-1$
         timeFormats.put("us (hh:mm:ss AM/PM)", "KK:mm:ss a"); //$NON-NLS-1$
+        timeFormats.put("iso (hh.mm.ss)", "HH.mm.ss");
 
         return timeFormats;
     }
