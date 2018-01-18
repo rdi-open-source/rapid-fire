@@ -11,6 +11,7 @@ package biz.rapidfire.core.maintenance.file.wizard;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Text;
 
 import biz.rapidfire.core.Messages;
 import biz.rapidfire.core.dialogs.maintenance.conversion.ConversionMaintenanceControl;
@@ -18,6 +19,7 @@ import biz.rapidfire.core.helpers.StringHelper;
 import biz.rapidfire.core.maintenance.MaintenanceMode;
 import biz.rapidfire.core.maintenance.file.wizard.model.FileWizardDataModel;
 import biz.rapidfire.core.maintenance.wizard.AbstractWizardPage;
+import biz.rapidfire.core.swt.widgets.WidgetFactory;
 
 public class ConversionPage extends AbstractWizardPage {
 
@@ -26,6 +28,7 @@ public class ConversionPage extends AbstractWizardPage {
     private FileWizardDataModel model;
 
     private ConversionMaintenanceControl conversionMaintenanceControl;
+    private Text infoBox;
 
     public ConversionPage(FileWizardDataModel model) {
         super(NAME);
@@ -77,7 +80,25 @@ public class ConversionPage extends AbstractWizardPage {
         conversionMaintenanceControl = new ConversionMaintenanceControl(parent, false, SWT.NONE);
         conversionMaintenanceControl.setLayoutData(new GridData(SWT.FILL, SWT.BEGINNING, true, false, 2, 1));
 
+        infoBox = WidgetFactory.createMultilineLabel(parent);
+        infoBox.setLayoutData(new GridData(GridData.FILL_BOTH));
+
         updateMode();
+    }
+
+    /**
+     * Sets the bulk text of the infoBox control. If the text is set in
+     * createContent(), the wizard page is rendered ugly.
+     */
+    @Override
+    public void prepareForDisplay() {
+
+        StringBuilder buffer = new StringBuilder();
+        buffer.append(Messages.Wizard_Conversion_page_info_box_1);
+        buffer.append("\n"); //$NON-NLS-1$
+        buffer.append(Messages.Wizard_Conversion_page_info_box_2);
+
+        infoBox.setText(buffer.toString());
     }
 
     @Override
@@ -88,7 +109,16 @@ public class ConversionPage extends AbstractWizardPage {
         conversionMaintenanceControl.setConversions(model.getConversionsForUI());
     }
 
+    public void setLibraryListNames(String[] fieldNames) {
+        conversionMaintenanceControl.setFieldNames(fieldNames);
+    }
+
     public void setFieldsToConvert(String[] fieldNames) {
+
+        if (fieldNames == null) {
+            return;
+        }
+
         conversionMaintenanceControl.setFieldsToConvert(fieldNames);
     }
 

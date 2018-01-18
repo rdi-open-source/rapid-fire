@@ -77,6 +77,9 @@ public class NewFileWizard extends AbstractNewWizard<FileWizardDataModel> {
             AreaPage areaPage = (AreaPage)event.getSelectedPage();
             areaPage.setLibraryNames(getLibraryNames(model.getLibraries()));
             areaPage.setLibraryListNames(getLibraryListNames(model.getLibraryLists()));
+        } else if (event.getSelectedPage() instanceof ConversionPage) {
+            ConversionPage conversionPage = (ConversionPage)event.getSelectedPage();
+            conversionPage.setFieldsToConvert(getFieldNames(model.getFields()));
         }
     }
 
@@ -92,10 +95,15 @@ public class NewFileWizard extends AbstractNewWizard<FileWizardDataModel> {
         }
 
         if (job != null && job.isDoCreateEnvironment()) {
-            setPageEnablement(CommandPage.NAME, false);
-        } else {
             setPageEnablement(CommandPage.NAME, true);
+        } else {
+            setPageEnablement(CommandPage.NAME, false);
         }
+    }
+
+    protected void prepareForDisplay(AbstractWizardPage page) {
+
+        page.prepareForDisplay();
     }
 
     @Override

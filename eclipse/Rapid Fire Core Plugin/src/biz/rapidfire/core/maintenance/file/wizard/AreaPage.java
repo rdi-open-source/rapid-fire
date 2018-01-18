@@ -11,6 +11,7 @@ package biz.rapidfire.core.maintenance.file.wizard;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Text;
 
 import biz.rapidfire.core.Messages;
 import biz.rapidfire.core.dialogs.maintenance.area.AreaMaintenanceControl;
@@ -21,6 +22,7 @@ import biz.rapidfire.core.maintenance.area.shared.Area;
 import biz.rapidfire.core.maintenance.area.shared.Ccsid;
 import biz.rapidfire.core.maintenance.file.wizard.model.FileWizardDataModel;
 import biz.rapidfire.core.maintenance.wizard.AbstractWizardPage;
+import biz.rapidfire.core.swt.widgets.WidgetFactory;
 import biz.rapidfire.core.validators.Validator;
 
 public class AreaPage extends AbstractWizardPage {
@@ -33,6 +35,7 @@ public class AreaPage extends AbstractWizardPage {
     private Validator nameValidator;
 
     private AreaMaintenanceControl areaMaintenanceControl;
+    private Text infoBox;
 
     public AreaPage(FileWizardDataModel model) {
         super(NAME);
@@ -80,7 +83,20 @@ public class AreaPage extends AbstractWizardPage {
         areaMaintenanceControl = new AreaMaintenanceControl(parent, false, SWT.NONE);
         areaMaintenanceControl.setLayoutData(new GridData(SWT.FILL, SWT.BEGINNING, true, false, 2, 1));
 
+        infoBox = WidgetFactory.createMultilineLabel(parent);
+        infoBox.setLayoutData(new GridData(GridData.FILL_BOTH));
+
         updateMode();
+    }
+
+    /**
+     * Sets the bulk text of the infoBox control. If the text is set in
+     * createContent(), the wizard page is rendered ugly.
+     */
+    @Override
+    public void prepareForDisplay() {
+
+        infoBox.setText(Messages.Wizard_Area_page_info_box);
     }
 
     @Override

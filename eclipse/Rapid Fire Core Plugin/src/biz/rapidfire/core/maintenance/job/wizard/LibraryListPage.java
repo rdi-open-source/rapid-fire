@@ -29,9 +29,10 @@ public class LibraryListPage extends AbstractWizardPage {
     public static final String NAME = "LIBRARY_LIST_PAGE"; //$NON-NLS-1$
 
     private JobWizardDataModel model;
-    private boolean editable;
 
     private LibraryListMaintenanceControl libraryListMaintenanceControl;
+
+    private boolean editable;
 
     protected LibraryListPage(JobWizardDataModel model) {
         super(NAME);
@@ -48,10 +49,10 @@ public class LibraryListPage extends AbstractWizardPage {
 
         if (model.isCreateEnvironment()) {
             setDescription(Messages.Wizard_Page_Library_List_description);
-            this.editable = true;
+            editable = true;
         } else {
-            setDescription("Not applicable for jobs that do not create a shadow environment.");
-            this.editable = false;
+            setDescription(Messages.Wizard_Not_applicable_for_jobs_that_do_not_create_a_shadow_environment);
+            editable = false;
         }
 
         if (libraryListMaintenanceControl != null) {
@@ -107,18 +108,20 @@ public class LibraryListPage extends AbstractWizardPage {
 
         String message = null;
 
-        if (StringHelper.isNullOrEmpty(libraryListMaintenanceControl.getLibraryListName())) {
-            // libraryListMaintenanceControl.setFocusLibraryListName();
-            message = Messages.bind(Messages.Library_list_name_A_is_not_valid, libraryListMaintenanceControl.getLibraryListName());
-        } else if (StringHelper.isNullOrEmpty(libraryListMaintenanceControl.getDescription())) {
-            // libraryListMaintenanceControl.setFocusDescription();
-            message = Messages.bind(Messages.Library_list_description_A_is_not_valid, libraryListMaintenanceControl.getDescription());
-        } else if (libraryListMaintenanceControl.getLibrariesCount() <= 0) {
-            // libraryListMaintenanceControl.setFocusLibraryListEditor();
-            message = Messages.Library_list_entries_are_missing;
-        }
+        if (editable) {
+            if (StringHelper.isNullOrEmpty(libraryListMaintenanceControl.getLibraryListName())) {
+                // libraryListMaintenanceControl.setFocusLibraryListName();
+                message = Messages.bind(Messages.Library_list_name_A_is_not_valid, libraryListMaintenanceControl.getLibraryListName());
+            } else if (StringHelper.isNullOrEmpty(libraryListMaintenanceControl.getDescription())) {
+                // libraryListMaintenanceControl.setFocusDescription();
+                message = Messages.bind(Messages.Library_list_description_A_is_not_valid, libraryListMaintenanceControl.getDescription());
+            } else if (libraryListMaintenanceControl.getLibrariesCount() <= 0) {
+                // libraryListMaintenanceControl.setFocusLibraryListEditor();
+                message = Messages.Library_list_entries_are_missing;
+            }
 
-        updateValues();
+            updateValues();
+        }
 
         if (message == null) {
             setPageComplete(true);

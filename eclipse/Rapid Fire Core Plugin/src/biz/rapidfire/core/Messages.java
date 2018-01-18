@@ -259,6 +259,14 @@ public class Messages extends NLS {
     // Job labels
     public static String JobLabel_Refreshing_file_copy_statuses;
 
+    // Information labels
+    public static String Wizard_Not_applicable_for_jobs_that_do_not_create_a_shadow_environment;
+    public static String Wizard_File_page_info_box;
+    public static String Wizard_Area_page_info_box;
+    public static String Wizard_Command_page_info_box;
+    public static String Wizard_Conversion_page_info_box_1;
+    public static String Wizard_Conversion_page_info_box_2;
+
     // Error messages
     public static String Job_name_A_is_not_valid;
     public static String Description_A_is_not_valid;

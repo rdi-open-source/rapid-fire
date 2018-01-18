@@ -11,6 +11,7 @@ package biz.rapidfire.core.maintenance.file.wizard;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Text;
 
 import biz.rapidfire.core.Messages;
 import biz.rapidfire.core.dialogs.maintenance.file.FileMaintenanceControl;
@@ -21,6 +22,7 @@ import biz.rapidfire.core.maintenance.file.shared.ConversionProgram;
 import biz.rapidfire.core.maintenance.file.shared.CopyProgram;
 import biz.rapidfire.core.maintenance.file.wizard.model.FileWizardDataModel;
 import biz.rapidfire.core.maintenance.wizard.AbstractWizardPage;
+import biz.rapidfire.core.swt.widgets.WidgetFactory;
 import biz.rapidfire.core.validators.Validator;
 
 public class FilePage extends AbstractWizardPage {
@@ -35,6 +37,7 @@ public class FilePage extends AbstractWizardPage {
     private Validator libraryValidator;
 
     private FileMaintenanceControl fileMaintenanceControl;
+    private Text infoBox;
 
     public FilePage(FileWizardDataModel model) {
         super(NAME);
@@ -98,7 +101,20 @@ public class FilePage extends AbstractWizardPage {
         fileMaintenanceControl = new FileMaintenanceControl(parent, SWT.NONE);
         fileMaintenanceControl.setLayoutData(new GridData(SWT.FILL, SWT.BEGINNING, true, false, 2, 1));
 
+        infoBox = WidgetFactory.createMultilineLabel(parent);
+        infoBox.setLayoutData(new GridData(GridData.FILL_BOTH));
+
         updateMode();
+    }
+
+    /**
+     * Sets the bulk text of the infoBox control. If the text is set in
+     * createContent(), the wizard page is rendered ugly.
+     */
+    @Override
+    public void prepareForDisplay() {
+
+        infoBox.setText(Messages.Wizard_File_page_info_box);
     }
 
     @Override

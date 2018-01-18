@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2017-2017 Rapid Fire Project Owners
+ * Copyright (c) 2017-2018 Rapid Fire Project Owners
  * All rights reserved. This program and the accompanying materials 
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
@@ -11,6 +11,7 @@ package biz.rapidfire.core.maintenance.file.wizard;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Text;
 
 import biz.rapidfire.core.Messages;
 import biz.rapidfire.core.dialogs.maintenance.command.CommandMaintenanceControl;
@@ -19,6 +20,7 @@ import biz.rapidfire.core.helpers.StringHelper;
 import biz.rapidfire.core.maintenance.MaintenanceMode;
 import biz.rapidfire.core.maintenance.file.wizard.model.FileWizardDataModel;
 import biz.rapidfire.core.maintenance.wizard.AbstractWizardPage;
+import biz.rapidfire.core.swt.widgets.WidgetFactory;
 
 public class CommandPage extends AbstractWizardPage {
 
@@ -27,6 +29,9 @@ public class CommandPage extends AbstractWizardPage {
     private FileWizardDataModel model;
 
     private CommandMaintenanceControl commandMaintenanceControl;
+    private Text infoBox;
+
+    private boolean editable;
 
     public CommandPage(FileWizardDataModel model) {
         super(NAME);
@@ -41,10 +46,20 @@ public class CommandPage extends AbstractWizardPage {
     @Override
     public void updateMode() {
 
-        setDescription(Messages.Wizard_Page_Command_description);
+        if (model.getJob().isDoCreateEnvironment()) {
+            setDescription(Messages.Wizard_Page_Command_description);
+            editable = true;
+        } else {
+            setDescription(Messages.Wizard_Not_applicable_for_jobs_that_do_not_create_a_shadow_environment);
+            editable = false;
+        }
 
         if (commandMaintenanceControl != null) {
-            commandMaintenanceControl.setMode(MaintenanceMode.CREATE);
+            if (editable) {
+                commandMaintenanceControl.setMode(MaintenanceMode.CREATE);
+            } else {
+                commandMaintenanceControl.setMode(MaintenanceMode.DISPLAY);
+            }
         }
     }
 
@@ -68,7 +83,20 @@ public class CommandPage extends AbstractWizardPage {
         commandMaintenanceControl = new CommandMaintenanceControl(parent, false, SWT.NONE);
         commandMaintenanceControl.setLayoutData(new GridData(SWT.FILL, SWT.BEGINNING, true, false, 2, 1));
 
+        infoBox = WidgetFactory.createMultilineLabel(parent);
+        infoBox.setLayoutData(new GridData(GridData.FILL_BOTH));
+
         updateMode();
+    }
+
+    /**
+     * Sets the bulk text of the infoBox control. If the text is set in
+     * createContent(), the wizard page is rendered ugly.
+     */
+    @Override
+    public void prepareForDisplay() {
+
+        infoBox.setText(Messages.Wizard_Command_page_info_box);
     }
 
     @Override
@@ -91,17 +119,19 @@ public class CommandPage extends AbstractWizardPage {
 
         String message = null;
 
-        if (StringHelper.isNullOrEmpty(commandMaintenanceControl.getSequence())
-            || IntHelper.tryParseInt(commandMaintenanceControl.getSequence(), -1) <= 0) {
+        if (editable) {
+            if (StringHelper.isNullOrEmpty(commandMaintenanceControl.getSequence())
+                || IntHelper.tryParseInt(commandMaintenanceControl.getSequence(), -1) <= 0) {
 
-            message = Messages.bindParameters(Messages.Invalid_sequence_number_A, commandMaintenanceControl.getSequence());
+                message = Messages.bindParameters(Messages.Invalid_sequence_number_A, commandMaintenanceControl.getSequence());
 
-        } else if (StringHelper.isNullOrEmpty(commandMaintenanceControl.getCommand())) {
+            } else if (StringHelper.isNullOrEmpty(commandMaintenanceControl.getCommand())) {
 
-            message = Messages.Object_compile_command_is_missing;
+                message = Messages.Object_compile_command_is_missing;
+            }
+
+            updateValues();
         }
-
-        updateValues();
 
         if (message == null) {
             setPageComplete(true);

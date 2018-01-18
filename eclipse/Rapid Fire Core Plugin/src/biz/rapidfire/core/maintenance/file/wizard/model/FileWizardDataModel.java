@@ -8,14 +8,25 @@
 
 package biz.rapidfire.core.maintenance.file.wizard.model;
 
+import org.eclipse.jface.dialogs.MessageDialog;
+import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Shell;
+
+import biz.rapidfire.core.Messages;
+import biz.rapidfire.core.helpers.ExceptionHelper;
 import biz.rapidfire.core.helpers.StringHelper;
+import biz.rapidfire.core.host.files.Field;
+import biz.rapidfire.core.host.files.FieldList;
 import biz.rapidfire.core.maintenance.area.shared.Ccsid;
 import biz.rapidfire.core.maintenance.command.shared.CommandType;
 import biz.rapidfire.core.maintenance.conversion.FieldConversions;
 import biz.rapidfire.core.maintenance.conversion.shared.NewFieldName;
 import biz.rapidfire.core.maintenance.file.shared.FileType;
 import biz.rapidfire.core.maintenance.wizard.model.WizardDataModel;
+import biz.rapidfire.core.model.IRapidFireLibraryResource;
 import biz.rapidfire.core.model.QualifiedProgramName;
+import biz.rapidfire.core.subsystem.IRapidFireSubSystem;
+import biz.rapidfire.rsebase.helpers.SystemConnectionHelper;
 
 public class FileWizardDataModel extends WizardDataModel {
 
@@ -42,6 +53,9 @@ public class FileWizardDataModel extends WizardDataModel {
     private String fieldToConvertName;
     private String newFieldName;
     private FieldConversions conversions;
+
+    // File dependent resources
+    private Field[] fields;
 
     public static FileWizardDataModel createInitialized() {
 
@@ -94,7 +108,14 @@ public class FileWizardDataModel extends WizardDataModel {
     }
 
     public void setFileName(String fileName) {
+
+        if (!hasFileChanged(fileName)) {
+            return;
+        }
+
         this.fileName = fileName;
+
+        clearFileDependantResources();
     }
 
     public FileType getFileType() {
@@ -106,11 +127,25 @@ public class FileWizardDataModel extends WizardDataModel {
     }
 
     public void setFileType(FileType fileType) {
+
+        if (!hasFileTypeChanged(fileType)) {
+            return;
+        }
+
         this.fileType = fileType;
+
+        clearFileDependantResources();
     }
 
     public void setFileTypeFromUI(String fileType) {
+
+        if (!hasFileTypeChanged(FileType.find(fileType))) {
+            return;
+        }
+
         this.fileType = FileType.find(fileType);
+
+        clearFileDependantResources();
     }
 
     public QualifiedProgramName getQualifiedCopyProgramName() {
@@ -273,5 +308,61 @@ public class FileWizardDataModel extends WizardDataModel {
         }
 
         return true;
+    }
+
+    public Field[] getFields() {
+
+        if (fields == null) {
+            fields = loadFields();
+        }
+
+        return fields;
+    }
+
+    private boolean hasFileChanged(String newFileName) {
+
+        if (this.fileName == null || !this.fileName.equals(newFileName)) {
+            return true;
+        }
+
+        return false;
+    }
+
+    private boolean hasFileTypeChanged(FileType newFileType) {
+
+        if (this.fileType == null || !this.fileType.equals(newFileType)) {
+            return true;
+        }
+
+        return false;
+    }
+
+    private void clearFileDependantResources() {
+
+        this.fields = null;
+    }
+
+    private Field[] loadFields() {
+
+        IRapidFireSubSystem subSystem = (IRapidFireSubSystem)SystemConnectionHelper.getSubSystem(getConnectionName(), IRapidFireSubSystem.class);
+        if (subSystem == null) {
+            return null;
+        }
+
+        Shell shell = Display.getCurrent().getActiveShell();
+
+        try {
+
+            IRapidFireLibraryResource libraryResource = getLibrary(libraryName);
+
+            FieldList fieldList = new FieldList(getConnectionName(), fileName, libraryResource.getName()); //$NON-NLS-1$
+
+            return fieldList.getFields();
+
+        } catch (Throwable e) {
+            MessageDialog.openError(shell, Messages.E_R_R_O_R, ExceptionHelper.getLocalizedMessage(e));
+        }
+
+        return null;
     }
 }

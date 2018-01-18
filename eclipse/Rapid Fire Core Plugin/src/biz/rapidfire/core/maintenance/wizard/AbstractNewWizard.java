@@ -37,6 +37,7 @@ import org.eclipse.ui.progress.UIJob;
 import biz.rapidfire.core.Messages;
 import biz.rapidfire.core.RapidFireCorePlugin;
 import biz.rapidfire.core.helpers.RapidFireHelper;
+import biz.rapidfire.core.host.files.Field;
 import biz.rapidfire.core.maintenance.AbstractManager;
 import biz.rapidfire.core.maintenance.Result;
 import biz.rapidfire.core.maintenance.Success;
@@ -93,6 +94,8 @@ public abstract class AbstractNewWizard<M extends WizardDataModel> extends Wizar
             updatePageMode(abstractWizardPage);
 
             updatePageEnablement(abstractWizardPage);
+
+            prepareForDisplay(abstractWizardPage);
         }
     }
 
@@ -190,9 +193,6 @@ public abstract class AbstractNewWizard<M extends WizardDataModel> extends Wizar
         }
     }
 
-    protected void updatePageEnablement(AbstractWizardPage page) {
-    }
-
     protected void setActivePage(IWizardPage page) {
 
         WizardDialog dialog = (WizardDialog)getContainer();
@@ -258,6 +258,12 @@ public abstract class AbstractNewWizard<M extends WizardDataModel> extends Wizar
         }
     }
 
+    protected void updatePageEnablement(AbstractWizardPage page) {
+    }
+
+    protected void prepareForDisplay(AbstractWizardPage page) {
+    }
+
     protected String[] getJobNames(IRapidFireJobResource[] jobs) {
 
         List<String> names = new ArrayList<String>();
@@ -294,6 +300,21 @@ public abstract class AbstractNewWizard<M extends WizardDataModel> extends Wizar
 
         for (IRapidFireLibraryListResource libraryList : libraryLists) {
             names.add(libraryList.getName());
+        }
+
+        String[] sortedNames = names.toArray(new String[names.size()]);
+
+        Arrays.sort(sortedNames);
+
+        return sortedNames;
+    }
+
+    protected String[] getFieldNames(Field[] fields) {
+
+        List<String> names = new ArrayList<String>();
+
+        for (Field field : fields) {
+            names.add(field.getName());
         }
 
         String[] sortedNames = names.toArray(new String[names.size()]);

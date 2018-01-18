@@ -75,6 +75,9 @@ public abstract class AbstractWizardPage extends WizardPage implements ModifyLis
         return (AbstractNewWizard<?>)super.getWizard();
     }
 
+    public void prepareForDisplay() {
+    }
+
     protected void scheduleUpdatePageComplete(IUpdatePageCompleteHandler handler, Object source) {
         getWizard().scheduleUpdatePageComplete(handler, source);
     }

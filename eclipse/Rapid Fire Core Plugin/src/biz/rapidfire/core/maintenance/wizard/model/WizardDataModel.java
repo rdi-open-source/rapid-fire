@@ -17,6 +17,7 @@ import org.eclipse.swt.widgets.Shell;
 
 import biz.rapidfire.core.Messages;
 import biz.rapidfire.core.helpers.ExceptionHelper;
+import biz.rapidfire.core.helpers.StringHelper;
 import biz.rapidfire.core.model.IRapidFireJobResource;
 import biz.rapidfire.core.model.IRapidFireLibraryListResource;
 import biz.rapidfire.core.model.IRapidFireLibraryResource;
@@ -123,6 +124,20 @@ public abstract class WizardDataModel {
         }
 
         return libraryResources;
+    }
+
+    public IRapidFireLibraryResource getLibrary(String libraryName) {
+
+        if (!StringHelper.isNullOrEmpty(libraryName)) {
+            IRapidFireLibraryResource[] libraryResources = getLibraries();
+            for (IRapidFireLibraryResource libraryResource : libraryResources) {
+                if (libraryResource.getName().equals(libraryName)) {
+                    return libraryResource;
+                }
+            }
+        }
+
+        return null;
     }
 
     public IRapidFireLibraryListResource[] getLibraryLists() {
