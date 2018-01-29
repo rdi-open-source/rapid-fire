@@ -20,6 +20,7 @@ import org.eclipse.swt.widgets.Shell;
 
 import biz.rapidfire.core.RapidFireCorePlugin;
 import biz.rapidfire.core.dialogs.MessageDialogAsync;
+import biz.rapidfire.core.exceptions.AutoReconnectErrorException;
 import biz.rapidfire.core.model.IRapidFireFileResource;
 import biz.rapidfire.core.model.IRapidFireJobResource;
 import biz.rapidfire.core.model.IRapidFireResource;
@@ -81,6 +82,8 @@ public class FilesNodeAdapter extends AbstractNodeAdapter<FilesNode> {
 
             return files;
 
+        } catch (AutoReconnectErrorException e) {
+            MessageDialogAsync.displayError(e.getLocalizedMessage());
         } catch (Exception e) {
             RapidFireCorePlugin.logError("*** Could resolve filter string and load files ***", e); //$NON-NLS-1$
             MessageDialogAsync.displayError(e.getLocalizedMessage());

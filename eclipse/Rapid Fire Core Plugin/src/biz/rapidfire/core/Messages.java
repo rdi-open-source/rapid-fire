@@ -352,6 +352,9 @@ public class Messages extends NLS {
     public static String Object_compile_command_is_missing;
     public static String Field_to_convert_is_missing;
 
+    // Exception
+    public static String AutoReconnectErrorException_Connection_broken_Could_not_reconnect_to_system_A;
+
     // API error messages
     public static String EntityManager_Unknown_error_code_A;
 

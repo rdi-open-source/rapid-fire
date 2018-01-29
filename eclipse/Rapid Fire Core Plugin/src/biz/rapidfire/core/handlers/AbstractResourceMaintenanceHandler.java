@@ -24,6 +24,7 @@ import org.eclipse.ui.PlatformUI;
 import biz.rapidfire.core.Messages;
 import biz.rapidfire.core.RapidFireCorePlugin;
 import biz.rapidfire.core.dialogs.MessageDialogAsync;
+import biz.rapidfire.core.exceptions.AutoReconnectErrorException;
 import biz.rapidfire.core.handlers.shared.IMaintenanceHandler;
 import biz.rapidfire.core.helpers.ExceptionHelper;
 import biz.rapidfire.core.maintenance.MaintenanceMode;
@@ -182,7 +183,7 @@ public abstract class AbstractResourceMaintenanceHandler<R extends IRapidFireRes
         return PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell();
     }
 
-    private Object executeWithResource(R resource) throws ExecutionException {
+    private Object executeWithResource(R resource) {
 
         boolean isError = false;
 
@@ -197,6 +198,8 @@ public abstract class AbstractResourceMaintenanceHandler<R extends IRapidFireRes
                 }
             }
 
+        } catch (AutoReconnectErrorException e) {
+            MessageDialogAsync.displayError(e.getLocalizedMessage());
         } catch (Throwable e) {
             logError(e);
             isError = true;

@@ -14,12 +14,8 @@ import java.sql.DriverManager;
 import java.sql.SQLException;
 import java.sql.Types;
 import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Map;
-import java.util.Map.Entry;
 import java.util.Properties;
-import java.util.Set;
 
 import biz.rapidfire.core.Messages;
 import biz.rapidfire.core.RapidFireCorePlugin;
@@ -73,28 +69,45 @@ public class JDBCConnectionManager {
     private static final String JDBC_FALSE = "false";
     private static final String JDBC_TRUE = "true";
 
+    private static final boolean isDebugMode = false;
+
     /**
      * The instance of this Singleton class.
      */
     private static JDBCConnectionManager instance;
 
+    /**
+     * The JDBC driver used for creating JDBC connections.
+     */
     private AS400JDBCDriver as400JDBCDriver;
 
-    private Map<String, Map<String, JDBCConnection>> cachedConnections;
+    /**
+     * Map, that contains another map for storing JDBC connection per
+     * "Remote Connection".
+     */
+    private Map<String, Map<String, JDBCConnection>> cachedHosts;
 
     /**
      * Private constructor to ensure the Singleton pattern.
      */
     private JDBCConnectionManager() {
 
-        this.cachedConnections = new HashMap<String, Map<String, JDBCConnection>>();
+        this.cachedHosts = new HashMap<String, Map<String, JDBCConnection>>();
 
         try {
 
-            as400JDBCDriver = new AS400JDBCDriver();
-            DriverManager.registerDriver(as400JDBCDriver);
+            try {
 
-        } catch (SQLException e) {
+                as400JDBCDriver = (AS400JDBCDriver)DriverManager.getDriver("jdbc:as400");
+
+            } catch (SQLException e) {
+
+                as400JDBCDriver = new AS400JDBCDriver();
+                DriverManager.registerDriver(as400JDBCDriver);
+
+            }
+
+        } catch (Throwable e) {
             MessageDialogAsync.displayError("Could not register the AS400 JDBC Driver. The reported error is:\n\n" //$NON-NLS-1$
                 + ExceptionHelper.getLocalizedMessage(e) + "\n\nRefer to the Eclipse error log for details."); //$NON-NLS-1$
             RapidFireCorePlugin.logError("*** Could not register the AS400 JDBC Driver ***", e); //$NON-NLS-1$
@@ -111,18 +124,50 @@ public class JDBCConnectionManager {
         return instance;
     }
 
+    /**
+     * Returns a JDBC connection for "Read".
+     * 
+     * @param connectionName - name of the RSE host connection
+     * @param libraryName - name of the default library of the JDBC connection
+     * @return jdbc connection
+     * @throws Exception
+     */
     public IJDBCConnection getConnectionForRead(String connectionName, String libraryName) throws Exception {
         return getConnection(connectionName, libraryName, false, false);
     }
 
+    /**
+     * Returns a JDBC connection for "Update".
+     * 
+     * @param connectionName - name of the RSE host connection
+     * @param libraryName - name of the default library of the JDBC connection
+     * @return jdbc connection
+     * @throws Exception
+     */
     public IJDBCConnection getConnectionForUpdate(String connectionName, String libraryName) throws Exception {
         return getConnection(connectionName, libraryName, true, true);
     }
 
+    /**
+     * Returns a JDBC connection for "Update", no auto-commit.
+     * 
+     * @param connectionName - name of the RSE host connection
+     * @param libraryName - name of the default library of the JDBC connection
+     * @return jdbc connection
+     * @throws Exception
+     */
     public IJDBCConnection getConnectionForUpdateNoAutoCommit(String connectionName, String libraryName) throws Exception {
         return getConnection(connectionName, libraryName, true, false);
     }
 
+    /**
+     * @param connectionName - name of the RSE host connection
+     * @param libraryName - name of the default library of the JDBC connection
+     * @param isCommitControl - specifies whether commit control is enabled
+     * @param isAutoCommit - specifies whether auto-commit is enabled
+     * @return jdbc connection
+     * @throws Exception
+     */
     private synchronized IJDBCConnection getConnection(String connectionName, String libraryName, boolean isCommitControl, boolean isAutoCommit)
         throws Exception {
 
@@ -133,12 +178,20 @@ public class JDBCConnectionManager {
         JDBCConnection jdbcConnection = findJdbcConnection(connectionName, libraryName, isCommitControl, isAutoCommit);
         if (jdbcConnection == null) {
             jdbcConnection = produceJdbcConnection(connectionName, libraryName, isCommitControl, isAutoCommit);
-            storeJdbcConnection(connectionName, libraryName, isCommitControl, isAutoCommit, jdbcConnection);
+            findHost(connectionName).put(jdbcConnection.getKey(), jdbcConnection);
+            logDebugMessage("Added JDBC connection " + jdbcConnection.hashCode() + " to host " + jdbcConnection.getConnectionName());
         }
 
         return jdbcConnection;
     }
 
+    /**
+     * Reconnects a given JDBC connection.
+     * 
+     * @param jdbcConnection - jdbc connection that is reconnected
+     * @return <i>true</i>, if the connection has been successfully reconnected
+     * @throws Exception
+     */
     public boolean reconnect(IJDBCConnection jdbcConnection) throws Exception {
 
         JDBCConnection jdbcConnectionImpl = (JDBCConnection)jdbcConnection;
@@ -164,53 +217,75 @@ public class JDBCConnectionManager {
         return true;
     }
 
+    /**
+     * This method closes a given JDBC connection.
+     * 
+     * @param jdbcConnection that is closed
+     */
     public void close(IJDBCConnection jdbcConnection) {
 
-        closeConnection((JDBCConnection)jdbcConnection);
+        Map<String, JDBCConnection> cachedJdbcConnections = findHost(jdbcConnection.getConnectionName());
 
-        cachedConnections.remove(jdbcConnection.getConnectionName());
+        closeJdbcConnection(cachedJdbcConnections, jdbcConnection.getKey());
     }
 
+    /**
+     * This method is called, when the communication state of given RSE host
+     * changes to "connected".
+     * 
+     * @param connectionName - Name of the RSE host connection
+     */
     public void connected(String connectionName) {
         // There is nothing to do here. Connections are created on request.
     }
 
+    /**
+     * Disconnects all JDBC connections associated to a given RSE host
+     * connection. This method is called, when the communication state of given
+     * RSE host changes to "disconnected".
+     * 
+     * @param connectionName - Name of the RSE host connection
+     */
     public void disconnected(String connectionName) {
-
-        Map<String, JDBCConnection> cachedHostConnections = cachedConnections.get(connectionName);
-        if (cachedHostConnections != null) {
-            closeHostConnections(cachedHostConnections);
-        }
+        closeHost(connectionName);
     }
 
+    /**
+     * Returns the JDBC connection that are associated to a given RSE host
+     * connection.
+     * 
+     * @param connectionName - Name of the RSE host connection
+     * @return map of JDBC connections that are associated to the host
+     */
+    private Map<String, JDBCConnection> findHost(String connectionName) {
+
+        Map<String, JDBCConnection> cachedJdbcConnections = cachedHosts.get(connectionName);
+        if (cachedJdbcConnections == null) {
+            cachedJdbcConnections = new HashMap<String, JDBCConnection>();
+            cachedHosts.put(connectionName, cachedJdbcConnections);
+            logDebugMessage("Added host " + connectionName);
+        }
+
+        return cachedJdbcConnections;
+    }
+
+    /**
+     * Return the JDBC connection that is identified by the given connection
+     * properties.
+     * 
+     * @param connectionName - name of the RSE host connection
+     * @param libraryName - name of the default library
+     * @param isCommitControl - specifies whether commitment control is enabled
+     * @param isAutoCommit - specifies whether auto-commit is enabled
+     * @return
+     */
     private JDBCConnection findJdbcConnection(String connectionName, String libraryName, boolean isCommitControl, boolean isAutoCommit) {
 
-        Map<String, JDBCConnection> cachedHostConnections = findHostConnections(connectionName);
-
-        String key = createKey(connectionName, libraryName, isCommitControl, isAutoCommit);
-        JDBCConnection jdbcConnection = cachedHostConnections.get(key);
+        Map<String, JDBCConnection> cachedHostConnections = findHost(connectionName);
+        JDBCConnection jdbcConnection = cachedHostConnections.get(JDBCConnection
+            .createKey(connectionName, libraryName, isCommitControl, isAutoCommit));
 
         return jdbcConnection;
-    }
-
-    private Map<String, JDBCConnection> findHostConnections(String connectionName) {
-
-        Map<String, JDBCConnection> cachedHostConnections = cachedConnections.get(connectionName);
-        if (cachedHostConnections == null) {
-            cachedHostConnections = new HashMap<String, JDBCConnection>();
-            cachedConnections.put(connectionName, cachedHostConnections);
-        }
-
-        return cachedHostConnections;
-    }
-
-    private void storeJdbcConnection(String connectionName, String libraryName, boolean isCommitControl, boolean isAutoCommit,
-        JDBCConnection jdbcConnection) {
-
-        Map<String, JDBCConnection> cachedHostConnections = findHostConnections(connectionName);
-
-        String key = createKey(connectionName, libraryName, isCommitControl, isAutoCommit);
-        cachedHostConnections.put(key, jdbcConnection);
     }
 
     private JDBCConnection produceJdbcConnection(String connectionName, String libraryName, boolean isCommitControl, boolean isAutoCommit)
@@ -247,47 +322,64 @@ public class JDBCConnectionManager {
 
         Connection connection = as400JDBCDriver.connect(system, jdbcProperties, libraryName, true);
 
+        if (!isCommitControl) {
+            connection.setReadOnly(true);
+        }
+
         return connection;
     }
 
-    private String createKey(String connectionName, String libraryName, boolean isCommitControl, boolean isAutoCommit) {
+    /**
+     * Closes all JDBC connections of all registered RSE connections.
+     */
+    private void closeAllHosts() {
 
-        String key = connectionName + ":" + libraryName + ":commit=" + isCommitControl + ":autocommit=" + isAutoCommit; //$NON-NLS-1$ //$NON-NLS-2$ //$NON-NLS-3$
+        String[] connectionNames = cachedHosts.keySet().toArray(new String[cachedHosts.size()]);
 
-        return key;
-    }
-
-    private void closeAllConnection() {
-
-        List<String> closedHostKeys = new LinkedList<String>();
-
-        Set<Entry<String, Map<String, JDBCConnection>>> cachedHostEntries = cachedConnections.entrySet();
-        for (Entry<String, Map<String, JDBCConnection>> cachedHost : cachedHostEntries) {
-            closeHostConnections(cachedHost.getValue());
-            closedHostKeys.add(cachedHost.getKey());
+        for (String connectionName : connectionNames) {
+            closeHost(connectionName);
         }
 
-        for (String closedHost : closedHostKeys) {
-            cachedConnections.remove(closedHost);
+        if (cachedHosts.size() != 0) {
+            throwRuntimeException("#Cached RSE host connections must be 0.");
         }
     }
 
-    private void closeHostConnections(Map<String, JDBCConnection> cachedConnections) {
+    /**
+     * Closes all JDBC connections of a given RSE connection.
+     * 
+     * @param cachedHostConnections - JDBC connections associated to a RSE
+     *        connection
+     */
+    private void closeHost(String connectionName) {
 
-        List<String> closedConnectionKeys = new LinkedList<String>();
+        Map<String, JDBCConnection> cachedHost = findHost(connectionName);
 
-        Set<Entry<String, JDBCConnection>> cachedJdbcConnectionEntries = cachedConnections.entrySet();
-        for (Entry<String, JDBCConnection> jdbcConnection : cachedJdbcConnectionEntries) {
-            closeConnection(jdbcConnection.getValue());
-            closedConnectionKeys.add(jdbcConnection.getKey());
+        JDBCConnection[] cachedJdbcConnections = cachedHost.values().toArray(new JDBCConnection[cachedHost.size()]);
+
+        for (JDBCConnection cachedJdbcConnection : cachedJdbcConnections) {
+            closeJdbcConnection(cachedHost, cachedJdbcConnection.getKey());
         }
 
-        for (String closedConnection : closedConnectionKeys) {
-            cachedConnections.remove(closedConnection);
+        cachedHosts.remove(connectionName);
+        logDebugMessage("Removed host " + connectionName);
+
+        if (cachedHosts.size() != 0) {
+            throwRuntimeException("#Cached JDBC host connections must be 0.");
         }
     }
 
-    private void closeConnection(JDBCConnection jdbcConnection) {
+    /**
+     * Closes a given JDBC connection.
+     * 
+     * @param jdbcConnection - JDBC connection that is closed
+     */
+    private void closeJdbcConnection(Map<String, JDBCConnection> cachedHost, String jdbcConnectionKey) {
+
+        JDBCConnection jdbcConnection = cachedHost.get(jdbcConnectionKey);
+        if (jdbcConnection == null) {
+            throwRuntimeException("JDBC connection must not be [null].");
+        }
 
         try {
 
@@ -306,6 +398,9 @@ public class JDBCConnectionManager {
         } catch (Exception e) {
             RapidFireCorePlugin.logError("*** Could not close JDBC connection '" + jdbcConnection.getConnectionName() + "' ***", e); //$NON-NLS-1$ //$NON-NLS-2$
             MessageDialogAsync.displayError(ExceptionHelper.getLocalizedMessage(e));
+        } finally {
+            cachedHost.remove(jdbcConnection);
+            logDebugMessage("Removed JDBC connection " + jdbcConnection.hashCode() + " of host " + jdbcConnection.getConnectionName());
         }
     }
 
@@ -565,7 +660,24 @@ public class JDBCConnectionManager {
     }
 
     public void destroy() {
-        closeAllConnection();
+
+        closeAllHosts();
         instance = null;
+    }
+
+    private void throwRuntimeException(String message) {
+
+        if (isDebugMode) {
+            throw new RuntimeException(message);
+        } else {
+            RapidFireCorePlugin.logError(message, null);
+        }
+    }
+
+    private void logDebugMessage(String message) {
+
+        if (isDebugMode) {
+            System.out.println(message);
+        }
     }
 }

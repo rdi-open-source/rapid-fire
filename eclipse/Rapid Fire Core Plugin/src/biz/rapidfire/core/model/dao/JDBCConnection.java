@@ -18,6 +18,7 @@ import org.eclipse.swt.widgets.Shell;
 
 import biz.rapidfire.core.RapidFireCorePlugin;
 import biz.rapidfire.core.dialogs.MessageDialogAsync;
+import biz.rapidfire.core.exceptions.AutoReconnectErrorException;
 import biz.rapidfire.core.exceptions.IllegalParameterException;
 import biz.rapidfire.core.helpers.RapidFireHelper;
 
@@ -25,6 +26,7 @@ import com.ibm.as400.access.AS400;
 
 class JDBCConnection implements IJDBCConnection {
 
+    private static final int MAX_RETRY_COUNT = 1;
     private static final String BOOLEAN_Y = "Y"; //$NON-NLS-1$
     private static final String BOOLEAN_N = "N"; //$NON-NLS-1$
     private static final String BOOLEAN_YES = "*YES"; //$NON-NLS-1$
@@ -89,6 +91,7 @@ class JDBCConnection implements IJDBCConnection {
         sqlStatement = insertLibraryQualifier(sqlStatement);
 
         boolean isRetry = false;
+        int retryCount = MAX_RETRY_COUNT;
 
         do {
 
@@ -97,12 +100,16 @@ class JDBCConnection implements IJDBCConnection {
                 return connection.prepareStatement(sqlStatement);
 
             } catch (SQLException e) {
-                if ("08003".equals(e.getSQLState())) {
+                if (SqlState._08003.matches(e)) {
                     // TODO: ask user for reconnection?
-                    if (!JDBCConnectionManager.getInstance().reconnect(this)) {
+                    if (retryCount <= 0) {
+                        AutoReconnectErrorException exception = new AutoReconnectErrorException(connectionName);
+                        throw exception;
+                    } else if (!JDBCConnectionManager.getInstance().reconnect(this)) {
                         throw e;
                     } else {
                         isRetry = true;
+                        retryCount--;
                     }
                 } else {
                     throw e;
@@ -132,6 +139,7 @@ class JDBCConnection implements IJDBCConnection {
         sqlStatement = insertLibraryQualifier(sqlStatement);
 
         boolean isRetry = false;
+        int retryCount = MAX_RETRY_COUNT;
 
         do {
 
@@ -140,12 +148,16 @@ class JDBCConnection implements IJDBCConnection {
                 return connection.prepareCall(sqlStatement);
 
             } catch (SQLException e) {
-                if ("08003".equals(e.getSQLState())) {
+                if (SqlState._08003.matches(e)) {
                     // TODO: ask user for reconnection?
-                    if (!JDBCConnectionManager.getInstance().reconnect(this)) {
+                    if (retryCount <= 0) {
+                        AutoReconnectErrorException exception = new AutoReconnectErrorException(connectionName);
+                        throw exception;
+                    } else if (!JDBCConnectionManager.getInstance().reconnect(this)) {
                         throw e;
                     } else {
                         isRetry = true;
+                        retryCount--;
                     }
                 } else {
                     throw e;
@@ -216,6 +228,25 @@ class JDBCConnection implements IJDBCConnection {
 
     public boolean isAutoCommit() {
         return isAutoCommit;
+    }
+
+    public String getKey() {
+        return createKey(getConnectionName(), getLibraryName(), isCommitControl(), isAutoCommit());
+    }
+
+    public static String createKey(String connectionName, String libraryName, boolean isCommitControl, boolean isAutoCommit) {
+
+        StringBuilder buffer = new StringBuilder();
+
+        buffer.append(connectionName);
+        buffer.append(":"); //$NON-NLS-1$
+        buffer.append(libraryName);
+        buffer.append(":commit="); //$NON-NLS-1$
+        buffer.append(isCommitControl);
+        buffer.append(":autocommit="); //$NON-NLS-1$
+        buffer.append(isAutoCommit);
+
+        return buffer.toString();
     }
 
     @Override

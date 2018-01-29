@@ -16,6 +16,8 @@ import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 
 import biz.rapidfire.core.Messages;
+import biz.rapidfire.core.dialogs.MessageDialogAsync;
+import biz.rapidfire.core.exceptions.AutoReconnectErrorException;
 import biz.rapidfire.core.helpers.ExceptionHelper;
 import biz.rapidfire.core.helpers.StringHelper;
 import biz.rapidfire.core.model.IRapidFireJobResource;
@@ -238,6 +240,8 @@ public abstract class WizardDataModel {
 
             jobResources = filteredJobs.toArray(new IRapidFireJobResource[filteredJobs.size()]);
 
+        } catch (AutoReconnectErrorException e) {
+            MessageDialogAsync.displayError(e.getLocalizedMessage());
         } catch (Exception e) {
             MessageDialog.openError(shell, Messages.E_R_R_O_R, ExceptionHelper.getLocalizedMessage(e));
         }

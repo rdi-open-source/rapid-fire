@@ -61,6 +61,7 @@ import biz.rapidfire.core.Messages;
 import biz.rapidfire.core.RapidFireCorePlugin;
 import biz.rapidfire.core.action.RefreshViewIntervalAction;
 import biz.rapidfire.core.dialogs.MessageDialogAsync;
+import biz.rapidfire.core.exceptions.AutoReconnectErrorException;
 import biz.rapidfire.core.handlers.reapplychanges.ReapplyChangesHandler;
 import biz.rapidfire.core.helpers.ExceptionHelper;
 import biz.rapidfire.core.job.IJobFinishedListener;
@@ -320,6 +321,9 @@ public class FileCopyStatusView extends ViewPart implements IPropertyChangeListe
 
             return fileCopyStatuses;
 
+        } catch (AutoReconnectErrorException e) {
+            MessageDialogAsync.displayError(e.getLocalizedMessage());
+            return null;
         } catch (Exception e) {
             MessageDialog.openError(getShell(), Messages.E_R_R_O_R, ExceptionHelper.getLocalizedMessage(e));
             return null;

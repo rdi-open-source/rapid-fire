@@ -33,6 +33,7 @@ import org.eclipse.ui.progress.WorkbenchJob;
 
 import biz.rapidfire.core.RapidFireCorePlugin;
 import biz.rapidfire.core.dialogs.MessageDialogAsync;
+import biz.rapidfire.core.exceptions.AutoReconnectErrorException;
 import biz.rapidfire.core.helpers.ExceptionHelper;
 import biz.rapidfire.core.maintenance.command.shared.CommandType;
 import biz.rapidfire.core.model.IFileCopyStatus;
@@ -157,6 +158,8 @@ public class RapidFireSubSystem extends SubSystem implements IISeriesSubSystem, 
 
             return filteredJobs.toArray();
 
+        } catch (AutoReconnectErrorException e) {
+            MessageDialogAsync.displayError(e.getLocalizedMessage());
         } catch (Exception e) {
             RapidFireCorePlugin.logError("*** Could resolve filter string and load jobs ***", e); //$NON-NLS-1$
             MessageDialogAsync.displayError(ExceptionHelper.getLocalizedMessage(e));
