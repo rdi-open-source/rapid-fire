@@ -1,0 +1,100 @@
+.*-------------------------------------------------------------------------------------------*
+.*                                                                                           *
+.* Copyright (c) 2014 Task Force IT-Consulting GmbH, Waltrop (Germany)                       *
+.* This software and the accompanying materials are made available                           *
+.* under the terms of the GNU General Public License version 2.0 (GPLv2)                     *
+.* which accompanies this distribution and is available at                                   *
+.* http://www.gnu.org/licenses/gpl-2.0.html                                                  *
+.*                                                                                           *
+.*-------------------------------------------------------------------------------------------*
+.*                                                                                           *
+.* Library lists                                                                             *
+.*                                                                                           *
+.*-------------------------------------------------------------------------------------------*
+.*  >>PRE-COMPILER<<                                                                         *
+.*    >>CRTCMD<< CRTPNLGRP    PNLGRP(&LI/&OB) +                                              *
+.*                              SRCFILE(&SL/&SF) SRCMBR(&SM);                                *
+.*    >>IMPORTANT<<                                                                          *
+.*      >>PARM<<  OPTION(*EVENTF);                                                           *
+.*    >>END-IMPORTANT<<                                                                      *
+.*    >>EXECUTE<<                                                                            *
+.*  >>END-PRE-COMPILER<<                                                                     *
+.*------------+--------+---------------------------------------------------------------------*
+.*   Date     I Progr. I Description                                                         *
+.*------------+--------+---------------------------------------------------------------------*
+.* 17.10.2014 I   FH   I Created                                                             *
+.*------------+--------+---------------------------------------------------------------------*
+
+.*-------------------------------------------------------------------------------------------*
+.* Begin of panelgroup                                                                       *
+.*-------------------------------------------------------------------------------------------*
+
+:PnlGrp.
+
+.*-------------------------------------------------------------------------------------------*
+.* Help - General                                                                            *
+.*-------------------------------------------------------------------------------------------*
+
+:Help Name='GNR'.
+Library lists - Help
+:P.
+Library lists are needed when automatically creation of the environment has choosen for
+the job. Every time a file will be created by Rapid Fire, the library list will be set
+to the library list specified for the file. The library list of the production environment
+has to be specified.
+:EHelp.
+
+.*-------------------------------------------------------------------------------------------*
+.* Help - Library list                                                                       *
+.*-------------------------------------------------------------------------------------------*
+
+:Help Name='LIBL'.
+Library list - Help
+:XH3.
+Library list
+:P.
+Specifies the name of the library list.
+:EHelp.
+
+.*-------------------------------------------------------------------------------------------*
+.* Help - Description                                                                        *
+.*-------------------------------------------------------------------------------------------*
+
+:Help Name='DSCR'.
+Description - Help
+:XH3.
+Description
+:P.
+Specifies the description of the library list.
+:EHelp.
+
+.*-------------------------------------------------------------------------------------------*
+.* Help - Sequence                                                                           *
+.*-------------------------------------------------------------------------------------------*
+
+:Help Name='SEQ'.
+Sequence - Help
+:XH3.
+Sequence
+:P.
+The order in which the libraries will be searched for an object.
+You can change the search order by changing the sequence.
+:EHelp.
+
+.*-------------------------------------------------------------------------------------------*
+.* Help - Library                                                                            *
+.*-------------------------------------------------------------------------------------------*
+
+:Help Name='LIB'.
+Library - Help
+:XH3.
+Library
+:P.
+Specifies the library that is used to search for an object.
+:EHelp.
+
+.*-------------------------------------------------------------------------------------------*
+.* End of panelgroup                                                                         *
+.*-------------------------------------------------------------------------------------------*
+
+:EPnlGrp.

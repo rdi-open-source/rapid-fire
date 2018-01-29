@@ -1,0 +1,218 @@
+.*-------------------------------------------------------------------------------------------*
+.*                                                                                           *
+.* Copyright (c) 2016 Task Force IT-Consulting GmbH, Waltrop (Germany)                       *
+.* This software and the accompanying materials are made available                           *
+.* under the terms of the GNU General Public License version 2.0 (GPLv2)                     *
+.* which accompanies this distribution and is available at                                   *
+.* http://www.gnu.org/licenses/gpl-2.0.html                                                  *
+.*                                                                                           *
+.*-------------------------------------------------------------------------------------------*
+.*                                                                                           *
+.* Update Rapid Fire                                                                         *
+.*                                                                                           *
+.*------------+--------+---------------------------------------------------------------------*
+.*   Date     I Progr. I Description                                                         *
+.*------------+--------+---------------------------------------------------------------------*
+.* 22.03.2016 I   TR   I Created                                                             *
+.*------------+--------+---------------------------------------------------------------------*
+.* >>PRE-COMPILER<<                                                                          *
+.*   >>CRTCMD<< CRTPNLGRP    PNLGRP(&LI/&OB) SRCFILE(&SL/&SF) SRCMBR(&SM);                   *
+.*   >>EXECUTE<<                                                                             *
+.* >>END-PRE-COMPILER<<                                                                      *
+.*-------------------------------------------------------------------------------------------*
+
+.*-------------------------------------------------------------------------------------------*
+.* Begin of panelgroup                                                                       *
+.*-------------------------------------------------------------------------------------------*
+
+:PnlGrp.
+
+.*-------------------------------------------------------------------------------------------*
+.* Helptext - Extended helptext                                                              *
+.*-------------------------------------------------------------------------------------------*
+
+:Help Name='UPDRF'.
+Update rapid Fire (UPDRF) - Help
+:P.
+The UPDRF command updates a given Rapid Fire library to a new version. The
+old library is renamed to 'RF.' + version_number and the new library is
+restored from the specified save file.
+.*
+:EHelp.
+
+.*--------------------------------------------------------------------
+.* Helptext - Keyword SAVF
+.*--------------------------------------------------------------------
+:Help name='UPDRF/SAVF'.
+Save file - Help
+:XH3.Save file (SAVF)
+:P.
+Specifies the name of the save file that contains the new Rapid Fire
+library.
+.*
+:IMHELP name='COM/REQPARM'.
+.*
+:PARML.
+:PT.:PV.save-file-name:EPV.
+:PD.Name of the save file.
+:EPARML.
+:P.
+The possible library values are:
+:P.
+:PARML.
+:PT.:PK DEF.*LIBL:EPK.
+:PD.All libraries in the job's library list are searched
+until the first match is found.
+:PT.:PV.*CURLIB:EPV.
+:PD.The current library for the thread is searched to find
+the objects to be duplicated. If no library is
+specified as the current library for the thread, the
+QGPL library is used.
+:PT.:PV.library-name:EPV.
+:PD.Specify the name of the library to be searched.
+:EPARML.
+
+:EHELP.
+
+.*--------------------------------------------------------------------
+.* Helptext - Keyword LIB
+.*--------------------------------------------------------------------
+:Help name='UPDRF/LIB'.
+Library - Help
+:XH3.Library (LIB)
+:P.
+Specifies the name of the existing Rapid Fire library.
+.*
+:IMHELP name='COM/OPTPARM'.
+.*
+:PARML.
+:PT.:PV.library-name:EPV.
+:PD.Name of the existing Rapid Fire library.
+:EPARML.
+
+:EHELP.
+
+.*--------------------------------------------------------------------
+.* Helptext - Keyword RNMOLDLIB
+.*--------------------------------------------------------------------
+:Help name='UPDRF/RNMOLDLIB'.
+Rename old library to - Help
+:XH3.Rename old library to (RNMOLDLIB)
+:P.
+Specifies the name the existing Rapid Fire library is renamed to.
+.*
+:IMHELP name='COM/OPTPARM'.
+.*
+:PARML.
+:PT.:PK DEF.*VERSION:EPK.
+:PD.An existing library is renamed to 'RF.' + version_number.
+:PT.:PV.library-name:EPV.
+:PD.Name for renaming an existing Rapid Fire library.
+:EPARML.
+
+:EHELP.
+
+.*--------------------------------------------------------------------
+.* Helptext - Keyword CLROLDLIB
+.*--------------------------------------------------------------------
+:Help name='UPDRF/CLROLDLIB'.
+Clear old library - Help
+:XH3.Clear old library (CLROLDLIB)
+:P.
+Specifies whether to clear the renamed library after it has been
+saved to the save file.
+.*
+:IMHELP name='COM/OPTPARM'.
+.*
+:PARML.
+:PT.:PK DEF.*NO:EPK.
+:PD.The old library is not cleared.
+:PT.:PV.*YES:EPV.
+:PD.The old library is cleared after has been saved to the save file.
+:EPARML.
+
+:EHELP.
+
+.*--------------------------------------------------------------------
+.* Helptext - Keyword JRNDLTOPT
+.*--------------------------------------------------------------------
+:Help name='UPDRF/JRNDLTOPT'.
+Journal receiver delete opt. - Help
+:XH3.Journal receiver delete opt. (JRNDLTOPT)
+:P.
+Specifies whether additional checking should not be done
+before a journal receiver is deleted. The parameter values
+of this parameter are forwarded to the DLTJRNRCV command.
+.*
+:IMHELP name='COM/OPTPARM'.
+.*
+:PARML.
+:PT.:PK DEF.*NONE:EPK.
+:PD.The journal receiver delete is attempted without
+ignoring any of the protective checks which are done
+before a journal receiver is deleted.
+:PT.:PV.*IGNTGTRCV:EPV.
+:PD.The system does not verify that all remote journals
+associated with this journal that are immediately
+downstream on a target system have full copies of this
+journal receiver.  The delete operation continues even
+if any of those remote journals does not have a full
+copy.  This protection on a journal receiver only
+applies beginning when the remote journal was added
+using the Add Remote Journal (QjoAddRemoteJournal)
+API, until it is removed using the Remove Remote
+Journal (QjoRemoveRemoteJournal) API, or until the
+journal is deleted.  For more information about APIs,
+see the APIs topic collection in the Programming
+category in the IBM i Information Center at
+http://www.ibm.com/systems/i/infocenter/.
+:PT.:PV.*IGNINQMSG:EPV.
+:PD.Ignore inquiry message.  Inquiry message CPA7025 is
+not presented to the user, even if this receiver has
+not been fully saved (for example, a save after the
+receiver was detached).  Also, inquiry message CPA705E
+is not presented to the user even if the receiver is
+attached to a remote journal.  The delete operation
+continues.
+:PT.:PV.*IGNEXITPGM:EPV.
+:PD.Ignore user exit programs.  Any user exit programs
+registered for exit point QIBM_QJO_DLT_JRNRCV are not
+called and not included in the decision as to whether
+this journal receiver can be deleted.
+:EPARML.
+
+:EHELP.
+
+.*=====================================
+.*  Required parameter
+.*=====================================
+:HELP NAME='COM/REQPARM'.
+:P.
+This is a required parameter.
+:P.
+:IMHELP name='COM/VALUES'.
+:EHELP.
+
+.*=====================================
+.*  Optional parameter
+.*=====================================
+:HELP NAME='COM/OPTPARM'.
+:P.
+This is an optional parameter.
+:P.
+:IMHELP name='COM/VALUES'.
+:EHELP.
+
+.*=====================================
+.*  Possible values
+.*=====================================
+:HELP NAME='COM/VALUES'.
+:P.
+The possible values are:
+:EHELP.
+
+.*-------------------------------------------------------------------------------------------*
+.* End of panelgroup                                                                         *
+.*-------------------------------------------------------------------------------------------*
+
+:EPnlGrp.

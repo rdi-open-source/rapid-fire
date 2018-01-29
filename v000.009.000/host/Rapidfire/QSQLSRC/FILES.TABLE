@@ -1,0 +1,56 @@
+-- *------------------------------------------------------------------------*
+-- *                                                                        *
+-- * Copyright (c) 2014 Task Force IT-Consulting GmbH, Waltrop (Germany)    *
+-- * This software and the accompanying materials are made available        *
+-- * under the terms of the GNU General Public License version 2.0 (GPLv2)  *
+-- * which accompanies this distribution and is available at                *
+-- * http://www.gnu.org/licenses/gpl-2.0.html                               *
+-- *                                                                        *
+-- *------------------------------------------------------------------------*
+-- *                                                                        *
+-- * Files                                                                  *
+-- *                                                                        *
+-- *------------------------------------------------------------------------*
+
+CREATE TABLE FILES
+(
+ JOB FOR COLUMN X3JOB CHAR(10) NOT NULL WITH DEFAULT,
+ POSITION FOR COLUMN X3POS DECIMAL(6, 0) NOT NULL WITH DEFAULT,
+ FILE FOR COLUMN X3FILE CHAR(10) NOT NULL WITH DEFAULT,
+ TYPE FOR COLUMN X3TYPE CHAR(10) NOT NULL WITH DEFAULT,
+ COPY_PROGRAM_LIBRARY FOR COLUMN X3CPL CHAR(10) NOT NULL WITH DEFAULT,
+ COPY_PROGRAM FOR COLUMN X3CP CHAR(10) NOT NULL WITH DEFAULT,
+ CONVERSION_PROGRAM_LIBRARY FOR COLUMN X3VPL CHAR(10) NOT NULL WITH DEFAULT,
+ CONVERSION_PROGRAM FOR COLUMN X3VP CHAR(10) NOT NULL WITH DEFAULT
+);
+
+LABEL ON TABLE FILES
+ IS 'Files';
+
+LABEL ON COLUMN FILES
+(
+ JOB IS 'Job',
+ POSITION IS 'Position',
+ FILE IS 'File',
+ TYPE IS 'Type',
+ COPY_PROGRAM_LIBRARY IS 'Copy program (Library)',
+ COPY_PROGRAM IS 'Copy program',
+ CONVERSION_PROGRAM_LIBRARY IS 'Conversion program (Library)',
+ CONVERSION_PROGRAM IS 'Conversion program'
+);
+
+LABEL ON COLUMN FILES
+(
+ JOB TEXT IS 'Job',
+ POSITION TEXT IS 'Position',
+ FILE TEXT IS 'File',
+ TYPE TEXT IS 'Type',
+ COPY_PROGRAM_LIBRARY TEXT IS 'Copy program (Library)',
+ COPY_PROGRAM TEXT IS 'Copy program',
+ CONVERSION_PROGRAM_LIBRARY TEXT IS 'Conversion program (Library)',
+ CONVERSION_PROGRAM TEXT IS 'Conversion program'
+);
+
+ALTER TABLE FILES
+ADD CONSTRAINT FILES_PRIMARY_KEY
+PRIMARY KEY (JOB, POSITION);

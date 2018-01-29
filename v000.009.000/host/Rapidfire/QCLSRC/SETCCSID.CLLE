@@ -1,0 +1,69 @@
+     /*-------------------------------------------------------------------------------------------*/
+     /*                                                                                           */
+     /* Copyright (c) 2014 Task Force IT-Consulting GmbH, Waltrop (Germany)                       */
+     /* This software and the accompanying materials are made available                           */
+     /* under the terms of the GNU General Public License version 2.0 (GPLv2)                     */
+     /* which accompanies this distribution and is available at                                   */
+     /* http://www.gnu.org/licenses/gpl-2.0.html                                                  */
+     /*                                                                                           */
+     /*-------------------------------------------------------------------------------------------*/
+     /*                                                                                           */
+     /* Set Job-CCSID                                                                             */
+     /*                                                                                           */
+     /*-------------------------------------------------------------------------------------------*/
+     /*  >>PRE-COMPILER<<                                                                         */
+     /*    >>CRTCMD<< CRTBNDCL     PGM(&LI/&OB) +                                                 */
+     /*                              SRCFILE(&SL/&SF) SRCMBR(&SM);                                */
+     /*    >>IMPORTANT<<                                                                          */
+     /*      >>PARM<<  DBGVIEW(*ALL);                                                             */
+     /*      >>PARM<<  OPTION(*EVENTF);                                                           */
+     /*      >>PARM<<  TGTRLS(&TR);                                                               */
+     /*    >>END-IMPORTANT<<                                                                      */
+     /*    >>EXECUTE<<                                                                            */
+     /*  >>END-PRE-COMPILER<<                                                                     */
+     /*------------+--------+---------------------------------------------------------------------*/
+     /*   Date     I Progr. I Description                                                         */
+     /*------------+--------+---------------------------------------------------------------------*/
+     /* 29.08.2016 I   FH   I Program created                                                     */
+     /*------------+--------+---------------------------------------------------------------------*/
+
+     /* Start */
+             PGM        PARM(&CCSID)
+
+     /* Declare compile options */
+             DCLPRCOPT  DFTACTGRP(*NO) ACTGRP(RAPIDFIRE) +
+                          BNDDIR(RAPIDFIRE)
+
+     /* Declare variables */
+             DCL        VAR(&CCSID) TYPE(*DEC) LEN(5 0)
+             DCL        VAR(&JOBCCSID) TYPE(*DEC) LEN(5 0)
+             DCL        VAR(&EXIST) TYPE(*CHAR) LEN(10)
+
+             IF         COND(&CCSID *NE -1) THEN(DO)
+     /* Save CCSID */
+             CHKOBJ     OBJ(QTEMP/JOBCCSID) OBJTYPE(*DTAARA)
+             MONMSG     MSGID(CPF9801) EXEC(DO)
+             RTVJOBA    CCSID(&JOBCCSID)
+             CRTDTAARA  DTAARA(QTEMP/JOBCCSID) TYPE(*DEC) LEN(5 0) +
+                          VALUE(&JOBCCSID)
+             ENDDO
+     /* Set CCSID */
+             CHGJOB     CCSID(&CCSID)
+             MONMSG     MSGID(CPF0000)
+             ENDDO
+
+     /* Reset CCSID */
+             IF         COND(&CCSID *EQ -1) THEN(DO)
+             CHGVAR     VAR(&EXIST) VALUE('*YES')
+             CHKOBJ     OBJ(QTEMP/JOBCCSID) OBJTYPE(*DTAARA)
+             MONMSG     MSGID(CPF9801) EXEC(CHGVAR VAR(&EXIST) +
+                          VALUE('*NO'))
+             IF         COND(&EXIST *EQ '*YES') THEN(DO)
+             RTVDTAARA  DTAARA(QTEMP/JOBCCSID) RTNVAR(&JOBCCSID)
+             CHGJOB     CCSID(&JOBCCSID)
+             MONMSG     MSGID(CPF0000)
+             ENDDO
+             ENDDO
+
+     /* End */
+ STEP999:    ENDPGM

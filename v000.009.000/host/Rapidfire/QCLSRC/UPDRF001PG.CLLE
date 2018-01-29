@@ -1,0 +1,213 @@
+     /*-------------------------------------------------------------------------------------------*/
+     /*                                                                                           */
+     /* Copyright (c) 2016 Task Force IT-Consulting GmbH, Waltrop (Germany)                       */
+     /* This software and the accompanying materials are made available                           */
+     /* under the terms of the GNU General Public License version 2.0 (GPLv2)                     */
+     /* which accompanies this distribution and is available at                                   */
+     /* http://www.gnu.org/licenses/gpl-2.0.html                                                  */
+     /*                                                                                           */
+     /*-------------------------------------------------------------------------------------------*/
+     /*                                                                                           */
+     /* Update Rapid Fire                                                                         */
+     /*                                                                                           */
+     /*------------+--------+---------------------------------------------------------------------*/
+     /*   Datum    I Progr. I Beschreibung                                                        */
+     /*------------+--------+---------------------------------------------------------------------*/
+     /* 22.03.2016 I   TR   I Created                                                             */
+     /*------------+--------+---------------------------------------------------------------------*/
+     /* >>PRE-COMPILER<<                                                                          */
+     /*   >>CRTCMD<< CRTBNDCL     PGM(&LI/&OB) SRCFILE(&SL/&SF) SRCMBR(&SM);                      */
+     /*   >>IMPORTANT<<                                                                           */
+     /*     >>PARM<< DBGVIEW(&U1);                                                                */
+     /*     >>PARM<< TGTRLS(&TR);                                                                 */
+     /*     >>PARM<< OPTION(*EVENTF);                                                             */
+     /*   >>END-IMPORTANT<<                                                                       */
+     /*   >>EXECUTE<<                                                                             */
+     /* >>END-PRE-COMPILER<<                                                                      */
+     /*-------------------------------------------------------------------------------------------*/
+             PGM        PARM(&QSAVF &LIB &RNMOLDLIB &CLROLDLIB &JRNDLTOPT)
+
+             DCL        VAR(&QSAVF     ) TYPE(*CHAR) LEN(20)
+             DCL        VAR(&LIB       ) TYPE(*CHAR) LEN(10)
+             DCL        VAR(&RNMOLDLIB ) TYPE(*CHAR) LEN(10)
+             DCL        VAR(&CLROLDLIB ) TYPE(*CHAR) LEN(10)
+             DCL        VAR(&JRNDLTOPT ) TYPE(*CHAR) LEN(35)
+
+             DCL        VAR(&SAVF_NAME ) TYPE(*CHAR) LEN(10)
+             DCL        VAR(&SAVF_LIB  ) TYPE(*CHAR) LEN(10)
+             DCL        VAR(&SAVF_ATTR ) TYPE(*CHAR) LEN(10)
+
+             DCL        VAR(&OLD_VERS  ) TYPE(*CHAR) LEN(6)
+             DCL        VAR(&NEW_VERS  ) TYPE(*CHAR) LEN(6)
+             DCL        VAR(&TEXT      ) TYPE(*CHAR) LEN(50)
+
+             DCL        VAR(&NUMDLTOPT ) TYPE(*INT ) LEN(4)
+             DCL        VAR(&DLTOPT1   ) TYPE(*CHAR) LEN(11)
+             DCL        VAR(&DLTOPT2   ) TYPE(*CHAR) LEN(11)
+             DCL        VAR(&DLTOPT3   ) TYPE(*CHAR) LEN(11)
+
+             DCL        VAR(&CMD       ) TYPE(*CHAR) LEN(250)
+             DCL        VAR(&CMDLEN    ) TYPE(*DEC ) LEN(15 5) VALUE(250)
+
+             CHGVAR     VAR(&SAVF_NAME ) VALUE(%SST(&QSAVF  1 10))
+             CHGVAR     VAR(&SAVF_LIB  ) VALUE(%SST(&QSAVF 11 10))
+
+             CHGVAR     VAR(&NUMDLTOPT ) VALUE(%BIN(&JRNDLTOPT 1 2))
+
+             IF         COND(&NUMDLTOPT *GE 1) +
+                        THEN(CHGVAR VAR(&DLTOPT1) +
+                             VALUE(%SST(&JRNDLTOPT  3 11)))
+
+             IF         COND(&NUMDLTOPT *GE 2) +
+                        THEN(CHGVAR VAR(&DLTOPT2) +
+                             VALUE(%SST(&JRNDLTOPT 14 11)))
+
+             IF         COND(&NUMDLTOPT *GE 3) +
+                        THEN(CHGVAR VAR(&DLTOPT3) +
+                             VALUE(%SST(&JRNDLTOPT 25 11)))
+
+    /* --------------------------------------------------------- */
+    /*   Preparation.                                            */
+    /* --------------------------------------------------------- */
+             IF         COND(&RNMOLDLIB *EQ '*VERSION') THEN(DO)
+               RTVDTAARA  DTAARA(&LIB/RAPIDFIRE (1 6)) +
+                            RTNVAR(&OLD_VERS)
+               CHGVAR     VAR(&RNMOLDLIB) VALUE('RF.' *TCAT &OLD_VERS)
+             ENDDO
+
+    /* --------------------------------------------------------- */
+    /*   Pre-checks.                                             */
+    /* --------------------------------------------------------- */
+             CHKOBJ     OBJ(&SAVF_LIB) OBJTYPE(*LIB)
+             MONMSG     MSGID(CPF9801) EXEC(DO)
+               SNDPGMMSG  MSGID(CPF9898) MSGF(*LIBL/QCPFMSG) +
+                            MSGDTA('Save file library' *BCAT +
+                                   &SAVF_LIB *BCAT 'not found') +
+                            TOPGMQ(*PRV (*PGMBDY)) +
+                            MSGTYPE(*ESCAPE)
+             ENDDO
+
+             CHKOBJ     OBJ(&SAVF_LIB/&SAVF_NAME) OBJTYPE(*FILE)
+             MONMSG     MSGID(CPF9801) EXEC(DO)
+               SNDPGMMSG  MSGID(CPF9898) MSGF(*LIBL/QCPFMSG) +
+                            MSGDTA('Save file' *BCAT +
+                                   &SAVF_LIB *TCAT '/' *CAT +
+                                   &SAVF_NAME *BCAT 'not found') +
+                            TOPGMQ(*PRV (*PGMBDY)) +
+                            MSGTYPE(*ESCAPE)
+             ENDDO
+
+             RTVOBJD    OBJ(&SAVF_LIB/&SAVF_NAME) OBJTYPE(*FILE) +
+                          OBJATR(&SAVF_ATTR)
+             IF         COND(&SAVF_ATTR *NE 'SAVF') THEN(DO)
+               SNDPGMMSG  MSGID(CPF9898) MSGF(*LIBL/QCPFMSG) +
+                            MSGDTA('File' *BCAT +
+                                   &SAVF_LIB *TCAT '/' *CAT +
+                                   &SAVF_NAME *BCAT 'is not a save file') +
+                            TOPGMQ(*PRV (*PGMBDY)) +
+                            MSGTYPE(*ESCAPE)
+             ENDDO
+
+             CHKOBJ     OBJ(&LIB) OBJTYPE(*LIB)
+             MONMSG     MSGID(CPF9801) EXEC(DO)
+               SNDPGMMSG  MSGID(CPF9898) MSGF(*LIBL/QCPFMSG) +
+                            MSGDTA('Rapid Fire library' *BCAT +
+                                   &LIB *BCAT 'not found') +
+                            TOPGMQ(*PRV (*PGMBDY)) +
+                            MSGTYPE(*ESCAPE)
+             ENDDO
+
+             CHKOBJ     OBJ(&RNMOLDLIB) OBJTYPE(*LIB)
+             MONMSG     MSGID(CPF9801) EXEC(DO)
+               RMVMSG     PGMQ(*SAME (*)) CLEAR(*ALL)
+               GOTO       CMDLBL(PRESAVLIB)
+             ENDDO
+
+             SNDPGMMSG  MSGID(CPF9898) MSGF(*LIBL/QCPFMSG) +
+                          MSGDTA('Library' *BCAT +
+                                 &RNMOLDLIB *BCAT 'already exists') +
+                          TOPGMQ(*PRV (*PGMBDY)) +
+                          MSGTYPE(*ESCAPE)
+
+    /* --------------------------------------------------------- */
+    /*   Save existing library.                                  */
+    /* --------------------------------------------------------- */
+PRESAVLIB:
+             CHKOBJ     OBJ(QTEMP/&RNMOLDLIB) OBJTYPE(*FILE)
+             MONMSG     MSGID(CPF9801) EXEC(DO)
+               RMVMSG     PGMQ(*SAME (*)) CLEAR(*ALL)
+               GOTO       CMDLBL(SAVLIB)
+             ENDDO
+
+             DLTF       FILE(QTEMP/&RNMOLDLIB)
+
+SAVLIB:
+             CRTSAVF    FILE(QTEMP/&RNMOLDLIB)
+             SAVLIB     LIB(&LIB) DEV(*SAVF) +
+                          SAVF(QTEMP/&RNMOLDLIB)
+
+    /* --------------------------------------------------------- */
+    /*   End journaling.                                         */
+    /* --------------------------------------------------------- */
+             ENDJRNLIB  LIB(*ALL) JRN(&LIB/RAPIDFIRE)
+             ENDJRNPF   FILE(*ALL) JRN(&LIB/RAPIDFIRE)
+
+             DLTJRN     JRN(&LIB/RAPIDFIRE)
+             CHGVAR     VAR(&CMD) VALUE('DLTJRNRCV  +
+                          JRNRCV(' *CAT &LIB *TCAT '/RAPIDF*) +
+                          DLTOPT(' *CAT  &DLTOPT1 +
+                                   *BCAT &DLTOPT2 +
+                                   *BCAT &DLTOPT3 *TCAT ')')
+             CALL       PGM(QCMDEXC) PARM(&CMD &CMDLEN)
+
+    /* --------------------------------------------------------- */
+    /*   Clear old library.                                      */
+    /* --------------------------------------------------------- */
+
+             IF         COND(&CLROLDLIB *EQ '*YES') THEN(DO)
+                CLRLIB     LIB(&LIB)
+             ENDDO
+
+    /* --------------------------------------------------------- */
+    /*   Rename old library and move save file to old library.   */
+    /* --------------------------------------------------------- */
+             RNMOBJ     OBJ(&LIB) OBJTYPE(*LIB) +
+                          NEWOBJ(&RNMOLDLIB)
+
+             MOVOBJ     OBJ(QTEMP/&RNMOLDLIB) OBJTYPE(*FILE) +
+                          TOLIB(&RNMOLDLIB)
+
+    /* --------------------------------------------------------- */
+    /*   Restore new version from save file.                     */
+    /* --------------------------------------------------------- */
+             RSTLIB     SAVLIB(RAPIDFIRE) DEV(*SAVF) +
+                          SAVF(&SAVF_LIB/&SAVF_NAME) +
+                          RSTLIB(&LIB)
+
+             RTVDTAARA  DTAARA(&LIB/RAPIDFIRE (1 6)) +
+                          RTNVAR(&NEW_VERS)
+             CHGVAR     VAR(&TEXT) VALUE( +
+                            'Rapid Fire' *BCAT +
+                            %SST(&NEW_VERS 1 2) *TCAT '.' *TCAT +
+                            %SST(&NEW_VERS 3 2) *TCAT '.' *TCAT +
+                            %SST(&NEW_VERS 5 2))
+             CHGOBJD    OBJ(RAPIDFIRE) OBJTYPE(*LIB) TEXT(&TEXT)
+
+             CHGVAR     VAR(&TEXT) VALUE( +
+                            'Updated Rapid Fire from ' *BCAT +
+                            %SST(&OLD_VERS 1 2) *TCAT '.' *TCAT +
+                            %SST(&OLD_VERS 3 2) *TCAT '.' *TCAT +
+                            %SST(&OLD_VERS 5 2) *BCAT +
+                            'to' *BCAT +
+                            %SST(&NEW_VERS 1 2) *TCAT '.' *TCAT +
+                            %SST(&NEW_VERS 3 2) *TCAT '.' *TCAT +
+                            %SST(&NEW_VERS 5 2))
+
+    /* --------------------------------------------------------- */
+    /*   Done.                                                   */
+    /* --------------------------------------------------------- */
+             SNDPGMMSG  MSGID(CPF9897) MSGF(*LIBL/QCPFMSG) +
+                          MSGDTA(&TEXT) TOPGMQ(*PRV (*PGMBDY)) +
+                          MSGTYPE(*INFO)
+
+             ENDPGM

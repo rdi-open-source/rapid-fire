@@ -1,0 +1,117 @@
+.*-------------------------------------------------------------------------------------------*
+.*                                                                                           *
+.* Copyright (c) 2016 Task Force IT-Consulting GmbH, Waltrop (Germany)                       *
+.* This software and the accompanying materials are made available                           *
+.* under the terms of the GNU General Public License version 2.0 (GPLv2)                     *
+.* which accompanies this distribution and is available at                                   *
+.* http://www.gnu.org/licenses/gpl-2.0.html                                                  *
+.*                                                                                           *
+.*-------------------------------------------------------------------------------------------*
+.*                                                                                           *
+.* Copy Program                                                                              *
+.*                                                                                           *
+.*-------------------------------------------------------------------------------------------*
+.*  >>PRE-COMPILER<<                                                                         *
+.*    >>CRTCMD<< CRTPNLGRP    PNLGRP(&LI/&OB) +                                              *
+.*                              SRCFILE(&SL/&SF) SRCMBR(&SM);                                *
+.*    >>IMPORTANT<<                                                                          *
+.*      >>PARM<<  OPTION(*EVENTF);                                                           *
+.*    >>END-IMPORTANT<<                                                                      *
+.*    >>EXECUTE<<                                                                            *
+.*  >>END-PRE-COMPILER<<                                                                     *
+.*------------+--------+---------------------------------------------------------------------*
+.*   Date     I Progr. I Description                                                         *
+.*------------+--------+---------------------------------------------------------------------*
+.* 24.03.2016 I   TR   I Created                                                             *
+.*------------+--------+---------------------------------------------------------------------*
+
+.*-------------------------------------------------------------------------------------------*
+.* Begin of panelgroup                                                                       *
+.*-------------------------------------------------------------------------------------------*
+
+:PnlGrp.
+
+.*-------------------------------------------------------------------------------------------*
+.* Help - General                                                                            *
+.*-------------------------------------------------------------------------------------------*
+
+:Help Name='GNR'.
+Generate Copy Program - Help
+:P.
+The copy program is the program, that actually copies the records from the file
+in the production library to
+the file in the shadow library. It also applies the changes that are retrieved
+from the journal to the file in the shadow library.
+With this feature you can generate the default copy program. For example you can
+do this if you want to customize the default copy program.
+:P.
+You can compile the customized copy programm with the following command.
+:LINES.
+CRTSQLRPGI
+OBJ(MYOBJLIB/MYCPYPGM)
+SRCFILE(MYSRCLIB/MYSRCF)
+SRCMBR(MYCPYPGM)
+OBJTYPE(*PGM)
+OUTPUT(*PRINT)
+GENLVL(0)
+DBGVIEW(*SOURCE)
+TGTRLS(*CURRENT)
+CLOSQLCSR(*ENDMOD)
+TEXT('* * *   R A P I D   F I R E   * * *')
+:ELINES.
+:EHelp.
+
+.*-------------------------------------------------------------------------------------------*
+.* Help - Source File                                                                        *
+.*-------------------------------------------------------------------------------------------*
+
+:Help Name='SRCFILE'.
+Source File - Help
+:XH3.
+Source File
+:P.
+Specifies the source file that contains the source member of the copy program.
+:EHelp.
+
+.*-------------------------------------------------------------------------------------------*
+.* Help - Library                                                                            *
+.*-------------------------------------------------------------------------------------------*
+
+:Help Name='SRCLIB'.
+Library - Help
+:XH3.
+Library
+:P.
+Specifies the name of the library that contains the source file and member of the
+copy program.
+:EHelp.
+
+.*-------------------------------------------------------------------------------------------*
+.* Help - Source Member                                                                      *
+.*-------------------------------------------------------------------------------------------*
+
+:Help Name='SRCMBR'.
+Source Member - Help
+:XH3.
+Source Member
+:P.
+Specifies the name of the source member that contains the source code of the copy program.
+:EHelp.
+
+.*-------------------------------------------------------------------------------------------*
+.* Help - Replace                                                                            *
+.*-------------------------------------------------------------------------------------------*
+
+:Help Name='REPLACE'.
+Replace - Help
+:XH3.
+Replace
+:P.
+Specifies whether or not to replace an existing source member.
+:EHelp.
+
+.*-------------------------------------------------------------------------------------------*
+.* End of panelgroup                                                                         *
+.*-------------------------------------------------------------------------------------------*
+
+:EPnlGrp.

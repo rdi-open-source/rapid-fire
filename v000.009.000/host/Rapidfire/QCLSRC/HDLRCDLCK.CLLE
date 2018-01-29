@@ -1,0 +1,163 @@
+     /*-------------------------------------------------------------------------------------------*/
+     /*                                                                                           */
+     /* Copyright (c) 2014 Task Force IT-Consulting GmbH, Waltrop (Germany)                       */
+     /* This software and the accompanying materials are made available                           */
+     /* under the terms of the GNU General Public License version 2.0 (GPLv2)                     */
+     /* which accompanies this distribution and is available at                                   */
+     /* http://www.gnu.org/licenses/gpl-2.0.html                                                  */
+     /*                                                                                           */
+     /*-------------------------------------------------------------------------------------------*/
+     /*                                                                                           */
+     /* Handle Record Lock                                                                        */
+     /*                                                                                           */
+     /*-------------------------------------------------------------------------------------------*/
+     /*  >>PRE-COMPILER<<                                                                         */
+     /*    >>CRTCMD<< CRTCLMOD    MODULE(&LI/&OB) +                                               */
+     /*                             SRCFILE(&SL/&SF) SRCMBR(&SM);                                 */
+     /*    >>IMPORTANT<<                                                                          */
+     /*      >>PARM<<  DBGVIEW(*ALL);                                                             */
+     /*      >>PARM<<  OPTION(*EVENTF);                                                           */
+     /*      >>PARM<<  TGTRLS(&TR);                                                               */
+     /*    >>END-IMPORTANT<<                                                                      */
+     /*    >>EXECUTE<<                                                                            */
+     /*  >>END-PRE-COMPILER<<                                                                     */
+     /*------------+--------+---------------------------------------------------------------------*/
+     /*   Datum    I Progr. I Beschreibung                                                        */
+     /*------------+--------+---------------------------------------------------------------------*/
+     /* 01.07.2014 I   FH   I Programm erstellt                                                   */
+     /*------------+--------+---------------------------------------------------------------------*/
+
+             PGM        PARM(&PGMSTS)
+
+     /* Bildschirmdatei deklarieren */
+             DCLF       FILE(HDLRCDLCK)
+
+     /* Variable deklarieren für API 'QUSRJOBI' */
+             DCL        VAR(&RCVVAR) TYPE(*CHAR) LEN(86) /* Receiver +
+                          variable */
+             DCL        VAR(&LNGRCV) TYPE(*CHAR) LEN(4) /* Length of +
+                          reveiver variable */
+             DCL        VAR(&FMT) TYPE(*CHAR) LEN(8) /* Format name */
+             DCL        VAR(&QJOB) TYPE(*CHAR) LEN(26) /* Qualified +
+                          job name */
+             DCL        VAR(&IJOB) TYPE(*CHAR) LEN(16) /* Internal +
+                          job identifier */
+             DCL        VAR(&ERRCODE) TYPE(*CHAR) LEN(144) /* Error +
+                          code */
+
+     /* Variable deklarieren für Arbeitsfelder */
+             DCL        VAR(&PGMSTS) TYPE(*CHAR) LEN(429) /* +
+                          Programmstatusdatenstruktur */
+             DCL        VAR(&MSG) TYPE(*CHAR) LEN(512) /* +
+                          Nachricht */
+             DCL        VAR(&MSGID) TYPE(*CHAR) LEN(7) /* +
+                          Nachrichten-Id. */
+             DCL        VAR(&MSGDTA) TYPE(*CHAR) LEN(128) /* +
+                          Nachrichtendaten */
+             DCL        VAR(&KEYVAR) TYPE(*CHAR) LEN(4) /* +
+                          Nachrichtenreferenzschlüssel */
+             DCL        VAR(&EXCRSN) TYPE(*CHAR) LEN(5) /* +
+                          Exception reason */
+             DCL        VAR(&JOB1) TYPE(*CHAR) LEN(10) /* Job */
+             DCL        VAR(&JOB2) TYPE(*CHAR) LEN(10) /* Job */
+             DCL        VAR(&USER1) TYPE(*CHAR) LEN(10) /* Benutzer */
+             DCL        VAR(&USER2) TYPE(*CHAR) LEN(10) /* Benutzer */
+             DCL        VAR(&NBR1) TYPE(*CHAR) LEN(6) /* Nummer */
+             DCL        VAR(&NBR2) TYPE(*CHAR) LEN(6) /* Nummer */
+             DCL        VAR(&JOBTYP1) TYPE(*CHAR) LEN(1) /* Job type */
+             DCL        VAR(&JOBTYP2) TYPE(*CHAR) LEN(1) /* Job type */
+             DCL        VAR(&CHAR) TYPE(*CHAR) LEN(1) /* Zeichen */
+             DCL        VAR(&FLD) TYPE(*DEC) LEN(1 0) /* Feld */
+             DCL        VAR(&POS1) TYPE(*DEC) LEN(3 0) /* Position */
+             DCL        VAR(&POS2) TYPE(*DEC) LEN(3 0) /* Position */
+
+     /* Wenn die Dateiausnahmebedingung etwas anderes als Datensatzsperre anzeigt, dann den Job beenden */
+             CHGVAR     VAR(&EXCRSN) VALUE(%SST(&PGMSTS 209 5))
+             IF         COND(&EXCRSN *NE '01218') THEN(DO)
+             SNDPGMMSG  MSGID(CPF9897) MSGF(QCPFMSG) +
+                          MSGDTA(%SST(&PGMSTS 91 80)) MSGTYPE(*ESCAPE)
+             GOTO       CMDLBL(STEP999)
+             ENDDO
+
+     /* Job ermitteln, der den Datensatz sperrt */
+             RCVMSG     PGMQ(*PRV) MSGQ(*PGMQ) MSGTYPE(*LAST) +
+                          RMV(*NO) KEYVAR(&KEYVAR)
+             RCVMSG     PGMQ(*PRV) MSGQ(*PGMQ) MSGTYPE(*PRV) +
+                          MSGKEY(&KEYVAR) RMV(*NO) MSGDTA(&MSGDTA) +
+                          MSGID(&MSGID)
+             CHGVAR     VAR(&JOB1) VALUE(' ')
+             CHGVAR     VAR(&USER1) VALUE(' ')
+             CHGVAR     VAR(&NBR1) VALUE(' ')
+             CHGVAR     VAR(&POS1) VALUE(80)
+             CHGVAR     VAR(&FLD) VALUE(0)
+ STEP010:    CHGVAR     VAR(&FLD) VALUE(&FLD + 1)
+             CHGVAR     VAR(&POS2) VALUE(0)
+ STEP020:    CHGVAR     VAR(&POS2) VALUE(&POS2 + 1)
+             CHGVAR     VAR(&POS1) VALUE(&POS1 + 1)
+             IF         COND(&POS1 *GT 108) THEN(GOTO CMDLBL(STEP030))
+             CHGVAR     VAR(&CHAR) VALUE(%SST(&MSGDTA &POS1 1))
+             IF         COND(&CHAR *EQ ' ') THEN(GOTO CMDLBL(STEP030))
+             IF         COND(&CHAR *EQ '/') THEN(GOTO CMDLBL(STEP010))
+             IF         COND(&FLD *EQ 1) THEN(CHGVAR VAR(%SST(&NBR1 +
+                          &POS2 1)) VALUE(&CHAR))
+             IF         COND(&FLD *EQ 2) THEN(CHGVAR VAR(%SST(&USER1 +
+                          &POS2 1)) VALUE(&CHAR))
+             IF         COND(&FLD *EQ 3) THEN(CHGVAR VAR(%SST(&JOB1 +
+                          &POS2 1)) VALUE(&CHAR))
+             GOTO       CMDLBL(STEP020)
+
+ STEP030:
+
+     /* Aktuellen Job ermitteln */
+             RTVJOBA    JOB(&JOB2) USER(&USER2) NBR(&NBR2)
+
+     /* Jobtyp des Jobs ermitteln, der den Datensatz sperrt */
+             CHGVAR     VAR(&RCVVAR) VALUE(' ')
+             CHGVAR     VAR(&LNGRCV) VALUE(X'00000056')
+             CHGVAR     VAR(&FMT) VALUE('JOBI0100')
+             CHGVAR     VAR(&QJOB) VALUE(&JOB1 *CAT &USER1 *CAT &NBR1)
+             CHGVAR     VAR(&IJOB) VALUE(' ')
+             CHGVAR     VAR(&ERRCODE) VALUE(X'00000080')
+             CALL       PGM(QUSRJOBI) PARM(&RCVVAR &LNGRCV &FMT +
+                          &QJOB &IJOB &ERRCODE)
+             CHGVAR     VAR(&MSGID) VALUE(%SST(&ERRCODE 9 7))
+             IF         COND(&MSGID *NE ' ') THEN(CHGVAR +
+                          VAR(&JOBTYP1) VALUE(' '))
+             ELSE       CMD(CHGVAR VAR(&JOBTYP1) VALUE(%SST(&RCVVAR +
+                          61 1)))
+
+     /* Jobtyp des aktuellen Jobs ermitteln */
+             CHGVAR     VAR(&RCVVAR) VALUE(' ')
+             CHGVAR     VAR(&LNGRCV) VALUE(X'00000056')
+             CHGVAR     VAR(&FMT) VALUE('JOBI0100')
+             CHGVAR     VAR(&QJOB) VALUE(&JOB2 *CAT &USER2 *CAT &NBR2)
+             CHGVAR     VAR(&IJOB) VALUE(' ')
+             CHGVAR     VAR(&ERRCODE) VALUE(X'00000080')
+             CALL       PGM(QUSRJOBI) PARM(&RCVVAR &LNGRCV &FMT +
+                          &QJOB &IJOB &ERRCODE)
+             CHGVAR     VAR(&MSGID) VALUE(%SST(&ERRCODE 9 7))
+             IF         COND(&MSGID *NE ' ') THEN(CHGVAR +
+                          VAR(&JOBTYP2) VALUE(' '))
+             ELSE       CMD(CHGVAR VAR(&JOBTYP2) VALUE(%SST(&RCVVAR +
+                          61 1)))
+
+     /* Meldung an den Job, der den Datensatz sperrt ausgeben */
+             IF         COND(&JOBTYP1 *EQ 'I') THEN(DO)
+             RTVMSG     MSGID(CON0009) MSGF(HDLRCDLCK) MSGDTA(&USER2) +
+                          SECLVL(&MSG)
+             SNDBRKMSG  MSG(&MSG) TOMSGQ(&JOB1)
+             ENDDO
+
+     /* Meldung an den aktuellen Job ausgeben */
+             IF         COND(&JOBTYP2 *EQ 'I') THEN(DO)
+             CHGVAR     VAR(&DFUSER) VALUE(&USER1)
+             SNDRCVF    RCDFMT(DSPF010W)
+             ENDDO
+
+     /* Wenn der aktuelle Job kein interaktiver Job ist, dann ins Delay gehen */
+             IF         COND(&JOBTYP2 *NE 'I') THEN(DO)
+             DLYJOB     DLY(30)
+             ENDDO
+
+     /* Programmende */
+ STEP999:    ENDPGM

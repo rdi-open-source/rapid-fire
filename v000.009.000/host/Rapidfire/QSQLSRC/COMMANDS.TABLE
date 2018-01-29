@@ -1,0 +1,47 @@
+-- *------------------------------------------------------------------------*
+-- *                                                                        *
+-- * Copyright (c) 2014 Task Force IT-Consulting GmbH, Waltrop (Germany)    *
+-- * This software and the accompanying materials are made available        *
+-- * under the terms of the GNU General Public License version 2.0 (GPLv2)  *
+-- * which accompanies this distribution and is available at                *
+-- * http://www.gnu.org/licenses/gpl-2.0.html                               *
+-- *                                                                        *
+-- *------------------------------------------------------------------------*
+-- *                                                                        *
+-- * Commands                                                               *
+-- *                                                                        *
+-- *------------------------------------------------------------------------*
+
+CREATE TABLE COMMANDS
+(
+ JOB FOR COLUMN X6JOB CHAR(10) NOT NULL WITH DEFAULT,
+ POSITION FOR COLUMN X6POS DECIMAL(6, 0) NOT NULL WITH DEFAULT,
+ TYPE FOR COLUMN X6TYPE CHAR(10) NOT NULL WITH DEFAULT,
+ SEQUENCE FOR COLUMN X6SEQ DECIMAL(3, 0) NOT NULL WITH DEFAULT,
+ COMMAND FOR COLUMN X6CMD VARCHAR(1024) NOT NULL WITH DEFAULT
+);
+
+LABEL ON TABLE COMMANDS
+ IS 'Commands';
+
+LABEL ON COLUMN COMMANDS
+(
+ JOB IS 'Job',
+ POSITION IS 'Position',
+ TYPE IS 'Type',
+ SEQUENCE IS 'Sequence',
+ COMMAND IS 'Command'
+);
+
+LABEL ON COLUMN COMMANDS
+(
+ JOB TEXT IS 'Job',
+ POSITION TEXT IS 'Position',
+ TYPE TEXT IS 'Type',
+ SEQUENCE TEXT IS 'Sequence',
+ COMMAND TEXT IS 'Command'
+);
+
+ALTER TABLE COMMANDS
+ADD CONSTRAINT COMMANDS_PRIMARY_KEY
+PRIMARY KEY (JOB, POSITION, TYPE, SEQUENCE);

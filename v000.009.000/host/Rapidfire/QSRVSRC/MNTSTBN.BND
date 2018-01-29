@@ -1,0 +1,54 @@
+     /*-------------------------------------------------------------------------------------------*/
+     /*                                                                                           */
+     /* Copyright (c) 2014 Task Force IT-Consulting GmbH, Waltrop (Germany)                       */
+     /* This software and the accompanying materials are made available                           */
+     /* under the terms of the GNU General Public License version 2.0 (GPLv2)                     */
+     /* which accompanies this distribution and is available at                                   */
+     /* http://www.gnu.org/licenses/gpl-2.0.html                                                  */
+     /*                                                                                           */
+     /*-------------------------------------------------------------------------------------------*/
+     /*                                                                                           */
+     /* Maintain Subjects To Be Notified                                                          */
+     /*                                                                                           */
+     /*-------------------------------------------------------------------------------------------*/
+     /*  >>PRE-COMPILER<<                                                                         */
+     /*    >>CRTCMD<< CRTSRVPGM    SRVPGM(&LI/&OB) EXPORT(*SRCFILE) +                             */
+     /*                              SRCFILE(&SL/&SF) SRCMBR(&SM);                                */
+     /*    >>IMPORTANT<<                                                                          */
+     /*      >>PARM<<  MODULE(MNTSTBN);                                                           */
+     /*      >>PARM<<  TEXT('Maintain Subjects To Be Notified');                                  */
+     /*      >>PARM<<  BNDDIR(RAPIDFIRE);                                                         */
+     /*      >>PARM<<  ACTGRP(RAPIDFIRE);                                                         */
+     /*      >>PARM<<  DETAIL(*BASIC);                                                            */
+     /*      >>PARM<<  TGTRLS(&TR);                                                               */
+     /*    >>END-IMPORTANT<<                                                                      */
+     /*    >>EXECUTE<<                                                                            */
+     /*  >>END-PRE-COMPILER<<                                                                     */
+     /*------------+--------+---------------------------------------------------------------------*/
+     /*   Datum    I Progr. I Beschreibung                                                        */
+     /*------------+--------+---------------------------------------------------------------------*/
+     /* 26.10.2017 I   FH   I Creation                                                            */
+     /*-------------------------------------------------------------------------------------------*/
+
+             STRPGMEXP
+
+                EXPORT     SYMBOL('MNTSTBN_openFiles')
+
+                EXPORT     SYMBOL('MNTSTBN_closeFiles')
+
+                EXPORT     SYMBOL('MNTSTBN_initialize')
+
+                EXPORT     SYMBOL('MNTSTBN_getValues')
+
+                EXPORT     SYMBOL('MNTSTBN_setValues')
+
+                EXPORT     SYMBOL('MNTSTBN_check')
+
+                EXPORT     SYMBOL('MNTSTBN_book')
+
+                EXPORT     SYMBOL('MNTSTBN_checkAction')
+
+                EXPORT     SYMBOL('MNTSTBN_getValidActions')
+
+             ENDPGMEXP
+

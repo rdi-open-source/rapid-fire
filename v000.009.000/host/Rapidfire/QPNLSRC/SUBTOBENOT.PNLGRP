@@ -1,0 +1,140 @@
+.*-------------------------------------------------------------------------------------------*
+.*                                                                                           *
+.* Copyright (c) 2014 Task Force IT-Consulting GmbH, Waltrop (Germany)                       *
+.* This software and the accompanying materials are made available                           *
+.* under the terms of the GNU General Public License version 2.0 (GPLv2)                     *
+.* which accompanies this distribution and is available at                                   *
+.* http://www.gnu.org/licenses/gpl-2.0.html                                                  *
+.*                                                                                           *
+.*-------------------------------------------------------------------------------------------*
+.*                                                                                           *
+.* Subjects to be notified                                                                   *
+.*                                                                                           *
+.*-------------------------------------------------------------------------------------------*
+.*  >>PRE-COMPILER<<                                                                         *
+.*    >>CRTCMD<< CRTPNLGRP    PNLGRP(&LI/&OB) +                                              *
+.*                              SRCFILE(&SL/&SF) SRCMBR(&SM);                                *
+.*    >>IMPORTANT<<                                                                          *
+.*      >>PARM<<  OPTION(*EVENTF);                                                           *
+.*    >>END-IMPORTANT<<                                                                      *
+.*    >>EXECUTE<<                                                                            *
+.*  >>END-PRE-COMPILER<<                                                                     *
+.*------------+--------+---------------------------------------------------------------------*
+.*   Date     I Progr. I Description                                                         *
+.*------------+--------+---------------------------------------------------------------------*
+.* 22.05.2015 I   FH   I Created                                                             *
+.*------------+--------+---------------------------------------------------------------------*
+
+.*-------------------------------------------------------------------------------------------*
+.* Begin of panelgroup                                                                       *
+.*-------------------------------------------------------------------------------------------*
+
+:PnlGrp.
+
+.*-------------------------------------------------------------------------------------------*
+.* Help - General                                                                            *
+.*-------------------------------------------------------------------------------------------*
+
+:Help Name='GNR'.
+Subjects to be notified - Help
+:P.
+If a special event occurs while the Rapid Fire job is running, e.G. all records have copied
+by a Rapid Fire job and the Rapid Fire job is ready for installation, you can specify here
+the subjects to be notified of this event.
+:EHelp.
+
+.*-------------------------------------------------------------------------------------------*
+.* Help - Position                                                                           *
+.*-------------------------------------------------------------------------------------------*
+
+:Help Name='POS'.
+Position - Help
+:XH3.
+Position
+:P.
+Specifies the position number.
+:EHelp.
+
+.*-------------------------------------------------------------------------------------------*
+.* Help - Type                                                                               *
+.*-------------------------------------------------------------------------------------------*
+
+:Help Name='TYPE'.
+Type - Help
+:XH3.
+Type
+:P.
+Specifies the type of subject.
+:PARML.
+:PT.
+*USR
+:PD.
+The subject is a user.
+:PT.
+*MSGQ
+:PD.
+The subject is a message queue.
+:EPARML.
+:EHelp.
+
+.*-------------------------------------------------------------------------------------------*
+.* Help - User                                                                               *
+.*-------------------------------------------------------------------------------------------*
+
+:Help Name='USR'.
+User - Help
+:XH3.
+User
+:P.
+Specifies the name of the user profile.
+:PARML.
+:PT.
+*SYSOPR
+:PD.
+The message is sent to the system operator message queue,
+QSYS/QSYSOPR.
+:EPARML.
+:EHelp.
+
+.*-------------------------------------------------------------------------------------------*
+.* Help - Message queue                                                                      *
+.*-------------------------------------------------------------------------------------------*
+
+:Help Name='MSGQ'.
+Message queue - Help
+:XH3.
+Message queue
+:P.
+Specifies the name of the message queue.
+:EHelp.
+
+.*-------------------------------------------------------------------------------------------*
+.* Help - Library of message queue                                                           *
+.*-------------------------------------------------------------------------------------------*
+
+:Help Name='MSGQL'.
+Library of message queue - Help
+:XH3.
+Library of message queue
+:P.
+Specifies the name of the library the message queue is residing.
+:PARML.
+:PT.
+*LIBL
+:PD.
+All libraries in the library list for the current thread are
+searched until the first match is found.
+:PT.
+*CURLIB
+:PD.
+The current library for the job is used to locate the message queue.
+If no current library entry exists in the library list, QGPL is
+used.
+:EPARML.
+:EHelp.
+
+.*-------------------------------------------------------------------------------------------*
+.* End of panelgroup                                                                         *
+.*-------------------------------------------------------------------------------------------*
+
+:EPnlGrp.

@@ -1,0 +1,169 @@
+.*-------------------------------------------------------------------------------------------*
+.*                                                                                           *
+.* Copyright (c) 2014 Task Force IT-Consulting GmbH, Waltrop (Germany)                       *
+.* This software and the accompanying materials are made available                           *
+.* under the terms of the GNU General Public License version 2.0 (GPLv2)                     *
+.* which accompanies this distribution and is available at                                   *
+.* http://www.gnu.org/licenses/gpl-2.0.html                                                  *
+.*                                                                                           *
+.*-------------------------------------------------------------------------------------------*
+.*                                                                                           *
+.* Files                                                                                     *
+.*                                                                                           *
+.*-------------------------------------------------------------------------------------------*
+.*  >>PRE-COMPILER<<                                                                         *
+.*    >>CRTCMD<< CRTPNLGRP    PNLGRP(&LI/&OB) +                                              *
+.*                              SRCFILE(&SL/&SF) SRCMBR(&SM);                                *
+.*    >>IMPORTANT<<                                                                          *
+.*      >>PARM<<  OPTION(*EVENTF);                                                           *
+.*    >>END-IMPORTANT<<                                                                      *
+.*    >>EXECUTE<<                                                                            *
+.*  >>END-PRE-COMPILER<<                                                                     *
+.*------------+--------+---------------------------------------------------------------------*
+.*   Date     I Progr. I Description                                                         *
+.*------------+--------+---------------------------------------------------------------------*
+.* 20.10.2014 I   FH   I Created                                                             *
+.*------------+--------+---------------------------------------------------------------------*
+
+.*-------------------------------------------------------------------------------------------*
+.* Begin of panelgroup                                                                       *
+.*-------------------------------------------------------------------------------------------*
+
+:PnlGrp.
+
+.*-------------------------------------------------------------------------------------------*
+.* Help - General                                                                            *
+.*-------------------------------------------------------------------------------------------*
+
+:Help Name='GNR'.
+Files - Help
+:P.
+Here you can maintain all the physical and logical files which have to be converted
+by Rapid Fire.
+:EHelp.
+
+.*-------------------------------------------------------------------------------------------*
+.* Help - Position                                                                           *
+.*-------------------------------------------------------------------------------------------*
+
+:Help Name='POS'.
+Position - Help
+:XH3.
+Position
+:P.
+Specifies the position number. The files will be handled in order of the position number.
+A logical file must have a higher position number than the physical file the logical file
+is based on.
+:EHelp.
+
+.*-------------------------------------------------------------------------------------------*
+.* Help - File                                                                               *
+.*-------------------------------------------------------------------------------------------*
+
+:Help Name='FILE'.
+File - Help
+:XH3.
+File
+:P.
+Specifies the name of the file.
+:EHelp.
+
+.*-------------------------------------------------------------------------------------------*
+.* Help - Type                                                                               *
+.*-------------------------------------------------------------------------------------------*
+
+:Help Name='TYPE'.
+Type - Help
+:XH3.
+Type
+:P.
+Specifies the type of the file.
+:PARML.
+:PT.
+*PHYSICAL
+:PD.
+The file is a physical file.
+:PT.
+*LOGICAL
+:PD.
+The file is a logical file.
+:EPARML.
+:EHelp.
+
+.*-------------------------------------------------------------------------------------------*
+.* Help - Copy program                                                                       *
+.*-------------------------------------------------------------------------------------------*
+
+:Help Name='CP'.
+Copy program - Help
+:XH3.
+Copy program
+:P.
+Specifies the program which copies the records from the production library to the shadow
+library.
+:PARML.
+:PT.
+*GEN
+:PD.
+The copy program will be generated by Rapid Fire. This means that
+the RPG Compiler and the SQL Development Kit have to be installed on the system. This value
+is only valid for physical files.
+:PT.
+*NONE
+:PD.
+This value is only valid for logical files. It has to be choosen for logical files.
+:PT.
+Name
+:PD.
+The name of the copy program. You will set the name of the copy program only if you haven`t
+installed the RPG Compiler and the SQL Development Kit on the system. In this case you can
+generate the copy program on a system with these license programs. After this you can send
+the generated copy program manually to the target system and enter the name of the copy
+program here.
+:EPARML.
+:EHelp.
+
+.*-------------------------------------------------------------------------------------------*
+.* Help - Library of copy program                                                            *
+.*-------------------------------------------------------------------------------------------*
+
+:Help Name='CPL'.
+Library of copy program - Help
+:XH3.
+Library of copy program
+:P.
+Specifies the name of the library the copy program is residing.
+:EHelp.
+
+.*-------------------------------------------------------------------------------------------*
+.* Help - Conversion program                                                                 *
+.*-------------------------------------------------------------------------------------------*
+
+:Help Name='VP'.
+Conversion program - Help
+:XH3.
+Conversion program
+:P.
+If you have the need to convert the data of a field during Rapid Fire copies the records
+from the production library to the shadow library and the native conversion capabilities of
+Rapid Fire are insufficient you can specify your own conversion program here. You can find
+a template of a conversion program in member CNVPGM of source file QRPGLESRC.
+:EHelp.
+
+.*-------------------------------------------------------------------------------------------*
+.* Help - Library of conversion program                                                      *
+.*-------------------------------------------------------------------------------------------*
+
+:Help Name='VPL'.
+Library of conversion program - Help
+:XH3.
+Library of conversion program
+:P.
+Specifies the name of the library the conversion program is residing.
+:EHelp.
+
+.*-------------------------------------------------------------------------------------------*
+.* End of panelgroup                                                                         *
+.*-------------------------------------------------------------------------------------------*
+
+:EPnlGrp.

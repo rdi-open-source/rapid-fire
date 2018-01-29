@@ -1,0 +1,60 @@
+-- *------------------------------------------------------------------------*
+-- *                                                                        *
+-- * Copyright (c) 2014 Task Force IT-Consulting GmbH, Waltrop (Germany)    *
+-- * This software and the accompanying materials are made available        *
+-- * under the terms of the GNU General Public License version 2.0 (GPLv2)  *
+-- * which accompanies this distribution and is available at                *
+-- * http://www.gnu.org/licenses/gpl-2.0.html                               *
+-- *                                                                        *
+-- *------------------------------------------------------------------------*
+-- *                                                                        *
+-- * SQL Log                                                                *
+-- *                                                                        *
+-- *------------------------------------------------------------------------*
+
+Create Table SQLLOG
+(
+  SqId     Integer Generated Always As Identity (Start With 1, Increment by 1),
+  SqUser    Char(10)       Not Null With Default,
+  SqCaller  VarChar(128)   Not Null With Default,
+  SqCmdFct  VarChar(128)   Not Null With Default,
+  SqDynFct  VarChar(128)   Not Null With Default,
+  SqCode    Integer        Not Null With Default,
+  SqState   Char(5)        Not Null With Default,
+  SqStamp   TimeStamp      Not Null With Default,
+  SqText    VarChar(512)   Not Null With Default,
+  SqStmt    varchar(30000) allocate(128) not null
+);
+
+Alter Table SQLLOG
+  Add Primary Key ( SqId );
+
+Label On Table SQLLOG Is 'SQL Log';
+
+Label On Column SQLLOG
+  (
+   SqId      Is 'Identity',
+   SqUser    Is 'User',
+   SqCaller  Is 'Caller',
+   SqCmdFct  Is 'Command function',
+   SqDynFct  Is 'Dynamic function',
+   SqCode    Is 'SQL Code',
+   SqState   Is 'SQL State',
+   SqStamp   Is 'Timestamp',
+   SqText    Is 'Error text',
+   SqStmt    is 'Executed statement'
+  );
+
+Label On Column SQLLOG
+  (
+   SqId      Text Is 'Identity',
+   SqUser    Text Is 'User',
+   SqCaller  Text Is 'Caller',
+   SqCmdFct  Text Is 'Command function',
+   SqDynFct  Text Is 'Dynamic function',
+   SqCode    Text Is 'SQL Code',
+   SqState   Text Is 'SQL State',
+   SqStamp   Text Is 'Timestamp',
+   SqText    Text Is 'Error text',
+   SqStmt    Text is 'Executed statement'
+  );

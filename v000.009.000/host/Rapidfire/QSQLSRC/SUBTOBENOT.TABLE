@@ -1,0 +1,51 @@
+-- *------------------------------------------------------------------------*
+-- *                                                                        *
+-- * Copyright (c) 2014 Task Force IT-Consulting GmbH, Waltrop (Germany)    *
+-- * This software and the accompanying materials are made available        *
+-- * under the terms of the GNU General Public License version 2.0 (GPLv2)  *
+-- * which accompanies this distribution and is available at                *
+-- * http://www.gnu.org/licenses/gpl-2.0.html                               *
+-- *                                                                        *
+-- *------------------------------------------------------------------------*
+-- *                                                                        *
+-- * Subjects to be notified                                                *
+-- *                                                                        *
+-- *------------------------------------------------------------------------*
+
+CREATE TABLE SUBJECTS_TO_BE_NOTIFIED
+FOR SYSTEM NAME SUBTOBENOT
+(
+ JOB FOR COLUMN XCJOB CHAR(10) NOT NULL WITH DEFAULT,
+ POSITION FOR COLUMN XCPOS DECIMAL(3, 0) NOT NULL WITH DEFAULT,
+ TYPE FOR COLUMN XCTYPE CHAR(10) NOT NULL WITH DEFAULT,
+ USER FOR COLUMN XCUSR CHAR(10) NOT NULL WITH DEFAULT,
+ MESSAGE_QUEUE_LIBRARY FOR COLUMN XCMSGQL CHAR(10) NOT NULL WITH DEFAULT,
+ MESSAGE_QUEUE FOR COLUMN XCMSGQ CHAR(10) NOT NULL WITH DEFAULT
+);
+
+LABEL ON TABLE SUBJECTS_TO_BE_NOTIFIED
+ IS 'Subjects to be notified';
+
+LABEL ON COLUMN SUBJECTS_TO_BE_NOTIFIED
+(
+ JOB IS 'Job',
+ POSITION IS 'Position',
+ TYPE IS 'Type',
+ USER IS 'User',
+ MESSAGE_QUEUE_LIBRARY IS 'Message queue (Library)',
+ MESSAGE_QUEUE IS 'Message Queue'
+);
+
+LABEL ON COLUMN SUBJECTS_TO_BE_NOTIFIED
+(
+ JOB TEXT IS 'Job',
+ POSITION TEXT IS 'Position',
+ TYPE TEXT IS 'Type',
+ USER TEXT IS 'User',
+ MESSAGE_QUEUE_LIBRARY TEXT IS 'Message queue (Library)',
+ MESSAGE_QUEUE TEXT IS 'Message queue'
+);
+
+ALTER TABLE SUBJECTS_TO_BE_NOTIFIED
+ADD CONSTRAINT SUBJECTS_TO_BE_NOTIFIED_PRIMARY_KEY
+PRIMARY KEY (JOB, POSITION);

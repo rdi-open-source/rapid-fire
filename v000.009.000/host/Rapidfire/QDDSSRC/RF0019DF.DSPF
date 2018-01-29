@@ -1,0 +1,77 @@
+     A*%%TS  SD  20171220  154614  HILDEBRAND  REL-V7R3M0  5770-WDS
+     A*------------------------------------------------------------------------*
+     A*                                                                        *
+     A* COPYRIGHT (C) 2014 TASK FORCE IT-CONSULTING GMBH, WALTROP (GERMANY)    *
+     A* This software and the accompanying materials are made available        *
+     A* under the terms of the GNU General Public License version 2.0 (GPLv2)  *
+     A* which accompanies this distribution and is available at                *
+     A* http://www.gnu.org/licenses/gpl-2.0.html                               *
+     A*                                                                        *
+     A*------------------------------------------------------------------------*
+     A*  >>PRE-COMPILER<<                                                      *
+     A*    >>CRTCMD<< CRTDSPF    FILE(&LI/&OB) +                               *
+     A*                            SRCFILE(&SL/&SF) SRCMBR(&SM);               *
+     A*    >>IMPORTANT<<                                                       *
+     A*      >>PARM<<  OPTION(*EVENTF);                                        *
+     A*    >>END-IMPORTANT<<                                                   *
+     A*    >>EXECUTE<<                                                         *
+     A*  >>END-PRE-COMPILER<<                                                  *
+     A*------------------------------------------------------------------------*
+     A*
+     A*%%EC
+     A                                      DSPSIZ(24 80 *DS3)
+     A                                      CHGINPDFT
+     A                                      PRINT
+     A          R DSPF010
+     A*%%TS  SD  20160420  103252  HILDEBRAND  REL-V7R1M0  5770-WDS
+     A                                      CA03
+     A                                      CA12
+     A                                      CF10
+     A                                      RTNCSRLOC(*RECNAME &DFRCD010 &DFFLD-
+     A                                      010 &DFPOS010)
+     A                                      RTNCSRLOC(*MOUSE &DFROW010 &DFCOL01-
+     A                                      0)
+     A  90 91                               CSRLOC(DFROW010   DFCOL010)
+     A                                      OVERLAY
+     A            DFPOS010       4S 0H
+     A            DFFLD010      10A  H
+     A            DFRCD010      10A  H
+     A            DFROW010       3S 0H
+     A            DFCOL010       3S 0H
+     A                                  1  2DATE
+     A                                      EDTCDE(Y)
+     A                                      DSPATR(HI)
+     A                                  1 11MSGCON(060 CON0001 *LIBL/RF0019MF)
+     A                                      DSPATR(HI)
+     A                                  1 72'RF0019PG'
+     A                                      DSPATR(HI)
+     A                                  3  2MSGCON(020 CON0002 *LIBL/RF0019MF)
+     A            DFJOB     R        O  3 23REFFLD(AREAS/XDJOB *LIBL/AREAS)
+     A                                  5  2MSGCON(020 CON0003 *LIBL/RF0019MF)
+     A            DFFILE    R        O  5 23REFFLD(AREAS/XDFILE *LIBL/AREAS)
+     A                                  7  2MSGCON(020 CON0004 *LIBL/RF0019MF)
+     A            DFLIB     R        O  7 23REFFLD(AREAS/XDLIB *LIBL/AREAS)
+     A                                  9  2MSGCON(078 CON0010 *LIBL/RF0019MF)
+     A                                 10  2MSGCON(078 CON0011 *LIBL/RF0019MF)
+     A                                 11  2MSGCON(078 CON0012 *LIBL/RF0019MF)
+     A                                 12  2MSGCON(078 CON0013 *LIBL/RF0019MF)
+     A                                 13  2MSGCON(078 CON0014 *LIBL/RF0019MF)
+     A                                 14  2MSGCON(078 CON0015 *LIBL/RF0019MF)
+     A                                 15  2MSGCON(078 CON0016 *LIBL/RF0019MF)
+     A                                 16  2MSGCON(078 CON0017 *LIBL/RF0019MF)
+     A                                 23  2MSGCON(078 CON0005 *LIBL/RF0019MF)
+     A                                      COLOR(BLU)
+     A          R DSPF999S                  SFL
+     A*%%TS  SD  20010425  174353  EXT01       REL-V4R4M0  5769-PW1
+     A                                      SFLMSGRCD(24)
+     A            DFMSGK                    SFLMSGKEY
+     A            DFPGMQ                    SFLPGMQ(276)
+     A          R DSPF999C                  SFLCTL(DSPF999S)
+     A*%%TS  SD  20010430  173405  EXT01       REL-V4R4M0  5769-PW1
+     A                                      SFLDSP
+     A                                      SFLDSPCTL
+     A                                      SFLINZ
+     A  50                                  SFLEND
+     A                                      SFLSIZ(0100)
+     A                                      SFLPAG(0001)
+     A            DFPGMQ                    SFLPGMQ(276)

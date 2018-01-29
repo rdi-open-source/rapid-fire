@@ -1,0 +1,64 @@
+     /*-------------------------------------------------------------------------------------------*/
+     /*                                                                                           */
+     /* Copyright (c) 2014 Task Force IT-Consulting GmbH, Waltrop (Germany)                       */
+     /* This software and the accompanying materials are made available                           */
+     /* under the terms of the GNU General Public License version 2.0 (GPLv2)                     */
+     /* which accompanies this distribution and is available at                                   */
+     /* http://www.gnu.org/licenses/gpl-2.0.html                                                  */
+     /*                                                                                           */
+     /*-------------------------------------------------------------------------------------------*/
+     /*                                                                                           */
+     /* Test Maintain SP via Stored Procedures                                                    */
+     /*                                                                                           */
+     /*-------------------------------------------------------------------------------------------*/
+     /*  >>PRE-COMPILER<<                                                                         */
+     /*    >>CRTCMD<< CRTBNDCL     PGM(&LI/&OB) +                                                 */
+     /*                              SRCFILE(&SL/&SF) SRCMBR(&SM);                                */
+     /*    >>IMPORTANT<<                                                                          */
+     /*      >>PARM<<  DBGVIEW(*ALL);                                                             */
+     /*      >>PARM<<  OPTION(*EVENTF);                                                           */
+     /*      >>PARM<<  TGTRLS(&TR);                                                               */
+     /*    >>END-IMPORTANT<<                                                                      */
+     /*    >>EXECUTE<<                                                                            */
+     /*  >>END-PRE-COMPILER<<                                                                     */
+     /*------------+--------+---------------------------------------------------------------------*/
+     /*   Date     I Progr. I Description                                                         */
+     /*------------+--------+---------------------------------------------------------------------*/
+     /* 24.11.2017 I   FH   I Program created                                                     */
+     /*------------+--------+---------------------------------------------------------------------*/
+
+     /* Start */
+             PGM        PARM(&LIB)
+
+     /* Declare Compile Options */
+             DCLPRCOPT  DFTACTGRP(*NO) ACTGRP(RAPIDFIRE) +
+                          BNDDIR(RAPIDFIRE)
+
+     /* Declare Variables */
+             DCL        VAR(&LIB) TYPE(*CHAR) LEN(10)
+
+     /* Set Current Library */
+             CHGCURLIB  CURLIB(&LIB)
+
+     /* Delete Job MYJOB */
+             RUNSQL     SQL('DELETE FROM JOBS WHERE JOB = +
+                          ''MYJOB''') COMMIT(*NONE) NAMING(*SYS) +
+                          DFTRDBCOL(&LIB)
+             MONMSG     MSGID(CPF0000)
+
+     /* Call Maintain Service Programs */
+             CALL       PGM(MNTJOBTST)
+             CALL       PGM(MNTLIBTST)
+             CALL       PGM(MNTLIBLTST)
+             CALL       PGM(MNTSTBNTST)
+             CALL       PGM(MNTFILETST)
+             CALL       PGM(MNTAREATST)
+             CALL       PGM(MNTCMDTST)
+             CALL       PGM(MNTCNVTST)
+             CALL       PGM(MNTASTST)
+
+     /* Reset Current Library */
+             CHGCURLIB  CURLIB(*CRTDFT)
+
+     /* End */
+ STEP999:    ENDPGM

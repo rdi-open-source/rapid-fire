@@ -1,0 +1,48 @@
+-- *------------------------------------------------------------------------*
+-- *                                                                        *
+-- * Copyright (c) 2014 Task Force IT-Consulting GmbH, Waltrop (Germany)    *
+-- * This software and the accompanying materials are made available        *
+-- * under the terms of the GNU General Public License version 2.0 (GPLv2)  *
+-- * which accompanies this distribution and is available at                *
+-- * http://www.gnu.org/licenses/gpl-2.0.html                               *
+-- *                                                                        *
+-- *------------------------------------------------------------------------*
+-- *                                                                        *
+-- * SQL Trace                                                              *
+-- *                                                                        *
+-- *------------------------------------------------------------------------*
+
+create table SQLTRACE
+(
+  id      integer generated always as identity (start with 1, increment by 1),
+  caller    varchar(128)   not null with default,
+  user      varchar(128)   not null with default,
+  stamp     timestamp      not null with default,
+  stmt      varchar(28672) not null with default,
+  nbrrows   dec(31, 0)     not null with default
+);
+
+alter table SQLTRACE
+  add primary key ( id );
+
+label on table SQLTRACE is 'SQL Trace';
+
+label on column SQLTRACE
+  (
+   id       is 'Identity',
+   caller   is 'Caller',
+   user     is 'User',
+   stamp    is 'Timestamp',
+   stmt     is 'Statement',
+   nbrrows  is 'Rows affected'
+  );
+
+label on column SQLTRACE
+  (
+   id       text is 'Identity',
+   caller   text is 'Caller',
+   user     text is 'User',
+   stamp    text is 'Timestamp',
+   stmt     text is 'Statement',
+   nbrrows  text is 'Rows affected'
+  );

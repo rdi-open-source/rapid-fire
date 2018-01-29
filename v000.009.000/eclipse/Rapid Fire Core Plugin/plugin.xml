@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?eclipse version="3.2"?>
+<plugin>
+      	
+      	<!--
+      	  ==========================================
+      	    Views
+      	  ==========================================
+      	-->
+
+   <extension
+         point="org.eclipse.ui.views">
+      <category
+            name="Rapid Fire"
+            id="biz.rapidfire.core.views.categories"/>	
+      <view
+            icon="icons/job_status.gif"
+            category="biz.rapidfire.core.views.categories"
+            class="biz.rapidfire.core.view.FileCopyStatusView"
+            id="biz.rapidfire.core.view.FileCopyStatusView"
+            name="%Rapid_Fire_Job_Status" />
+            
+   </extension>
+      	
+      	<!--
+      	  ==========================================
+      	    Preference Pages
+      	  ==========================================
+      	-->
+   
+   <extension
+         point="org.eclipse.core.runtime.preferences">
+      <initializer
+            class="biz.rapidfire.core.preferences.PreferencesInitializer">
+      </initializer>
+   </extension>
+
+   <extension
+         point="org.eclipse.ui.preferencePages">
+      <page
+            class="biz.rapidfire.core.preferencepages.General"
+            name="%PrefencePage_General"
+            id="biz.rapidfire.core.preferencepages.General"/>
+      <page
+            class="biz.rapidfire.core.preferencepages.Library"
+            category="biz.rapidfire.core.preferencepages.General"
+            name="%PrefencePage_Library"
+            id="biz.rapidfire.core.preferencepages.Library"/>
+      <page
+            class="biz.rapidfire.core.preferencepages.AppearancePage"
+            category="biz.rapidfire.core.preferencepages.General"
+            name="%PrefencePage_Appearance"
+            id="biz.rapidfire.core.preferencepages.AppearancePage"/>
+      <page
+            class="biz.rapidfire.core.preferencepages.Contributors"
+            category="biz.rapidfire.core.preferencepages.General"
+            name="%PrefencePage_Contributors"
+            id="biz.rapidfire.core.preferencepages.Contributors"/>
+   </extension>
+
+</plugin>

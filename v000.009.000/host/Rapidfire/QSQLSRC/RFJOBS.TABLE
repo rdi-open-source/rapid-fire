@@ -1,0 +1,59 @@
+-- *------------------------------------------------------------------------*
+-- *                                                                        *
+-- * Copyright (c) 2014 Task Force IT-Consulting GmbH, Waltrop (Germany)    *
+-- * This software and the accompanying materials are made available        *
+-- * under the terms of the GNU General Public License version 2.0 (GPLv2)  *
+-- * which accompanies this distribution and is available at                *
+-- * http://www.gnu.org/licenses/gpl-2.0.html                               *
+-- *                                                                        *
+-- *------------------------------------------------------------------------*
+-- *                                                                        *
+-- * Rapid Fire Jobs                                                        *
+-- *                                                                        *
+-- *------------------------------------------------------------------------*
+
+CREATE TABLE RFJOBS
+(
+ JOB FOR COLUMN XAJOB CHAR(10) NOT NULL WITH DEFAULT,
+ BATCH_JOB FOR COLUMN XABJOB CHAR(10) NOT NULL WITH DEFAULT,
+ BATCH_USER FOR COLUMN XABUSR CHAR(10) NOT NULL WITH DEFAULT,
+ BATCH_NUMBER FOR COLUMN XABNBR CHAR(6) NOT NULL WITH DEFAULT,
+ TYPE FOR COLUMN XATYPE CHAR(10) NOT NULL WITH DEFAULT,
+ STATUS FOR COLUMN XASTS CHAR(10) NOT NULL WITH DEFAULT,
+ PHASE FOR COLUMN XAPHS CHAR(10) NOT NULL WITH DEFAULT,
+ STOP_APPLY_CHANGES FOR COLUMN XASAC CHAR(1) NOT NULL WITH DEFAULT,
+ RECEIVE_JOURNAL_ENTRIES FOR COLUMN XARJE CHAR(1) NOT NULL WITH DEFAULT
+);
+
+LABEL ON TABLE RFJOBS
+ IS 'Rapid Fire Jobs';
+
+LABEL ON COLUMN RFJOBS
+(
+ JOB IS 'Job',
+ BATCH_JOB IS 'Batch job',
+ BATCH_USER IS 'Batch user',
+ BATCH_NUMBER IS 'Batch number',
+ TYPE IS 'Type',
+ STATUS IS 'Status',
+ PHASE IS 'Phase',
+ STOP_APPLY_CHANGES IS 'Stop apply changes',
+ RECEIVE_JOURNAL_ENTRIES IS 'Receive journal entries'
+);
+
+LABEL ON COLUMN RFJOBS
+(
+ JOB TEXT IS 'Job',
+ BATCH_JOB TEXT IS 'Batch job',
+ BATCH_USER TEXT IS 'Batch user',
+ BATCH_NUMBER TEXT IS 'Batch number',
+ TYPE TEXT IS 'Type',
+ STATUS TEXT IS 'Status',
+ PHASE TEXT IS 'Phase',
+ STOP_APPLY_CHANGES TEXT IS 'Stop apply changes',
+ RECEIVE_JOURNAL_ENTRIES TEXT IS 'Receive journal entries'
+);
+
+ALTER TABLE RFJOBS
+ADD CONSTRAINT RFJOBS_PRIMARY_KEY
+PRIMARY KEY (JOB, BATCH_JOB, BATCH_USER, BATCH_NUMBER)

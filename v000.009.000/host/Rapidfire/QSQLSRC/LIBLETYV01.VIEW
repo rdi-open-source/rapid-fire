@@ -1,0 +1,23 @@
+-- *------------------------------------------------------------------------*
+-- *                                                                        *
+-- * Copyright (c) 2014 Task Force IT-Consulting GmbH, Waltrop (Germany)    *
+-- * This software and the accompanying materials are made available        *
+-- * under the terms of the GNU General Public License version 2.0 (GPLv2)  *
+-- * which accompanies this distribution and is available at                *
+-- * http://www.gnu.org/licenses/gpl-2.0.html                               *
+-- *                                                                        *
+-- *------------------------------------------------------------------------*
+-- *                                                                        *
+-- * Library list entries                                                   *
+-- *                                                                        *
+-- *------------------------------------------------------------------------*
+
+CREATE VIEW LIBRARY_LIST_ENTRIES_WITH_SHADOW_LIBRARY
+FOR SYSTEM NAME LIBLETYV01 AS
+(
+ SELECT A.*, SHADOW_LIBRARY
+ FROM LIBRARY_LIST_ENTRIES A LEFT OUTER JOIN LIBRARIES B
+ ON A.JOB = B.JOB AND A.LIBRARY = B.LIBRARY
+);
+
+CL: CHGOBJD OBJ(LIBLETYV01) OBJTYPE(*FILE) TEXT('Library list entries');

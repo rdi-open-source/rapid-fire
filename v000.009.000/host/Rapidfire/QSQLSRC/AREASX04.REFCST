@@ -1,0 +1,20 @@
+-- *------------------------------------------------------------------------*
+-- *                                                                        *
+-- * Copyright (c) 2014 Task Force IT-Consulting GmbH, Waltrop (Germany)    *
+-- * This software and the accompanying materials are made available        *
+-- * under the terms of the GNU General Public License version 2.0 (GPLv2)  *
+-- * which accompanies this distribution and is available at                *
+-- * http://www.gnu.org/licenses/gpl-2.0.html                               *
+-- *                                                                        *
+-- *------------------------------------------------------------------------*
+-- *                                                                        *
+-- * Areas                                                                  *
+-- *                                                                        *
+-- *------------------------------------------------------------------------*
+
+ALTER TABLE AREAS
+ADD CONSTRAINT AREAS___LIBRARY_LISTS
+FOREIGN KEY (JOB, LIBRARY_LIST)
+REFERENCES LIBRARY_LISTS (JOB, LIBRARY_LIST)
+ON DELETE CASCADE
+ON UPDATE NO ACTION

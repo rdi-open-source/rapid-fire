@@ -1,0 +1,17 @@
+/*******************************************************************************
+ * Copyright (c) 2017-2017 Rapid Fire Project Owners
+ * All rights reserved. This program and the accompanying materials 
+ * are made available under the terms of the Common Public License v1.0
+ * which accompanies this distribution, and is available at
+ * http://www.eclipse.org/legal/cpl-v10.html
+ *******************************************************************************/
+
+package biz.rapidfire.core.maintenance.librarylist;
+
+public interface ILibraryListSetValues {
+
+    public static final int LIBRARY_LIST = 1;
+    public static final int DESCRIPTION = 2;
+    public static final int SEQUENCE_NUMBERS = 3;
+    public static final int LIBRARIES = 4;
+}

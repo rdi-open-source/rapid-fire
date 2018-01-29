@@ -1,0 +1,64 @@
+-- *------------------------------------------------------------------------*
+-- *                                                                        *
+-- * Copyright (c) 2014 Task Force IT-Consulting GmbH, Waltrop (Germany)    *
+-- * This software and the accompanying materials are made available        *
+-- * under the terms of the GNU General Public License version 2.0 (GPLv2)  *
+-- * which accompanies this distribution and is available at                *
+-- * http://www.gnu.org/licenses/gpl-2.0.html                               *
+-- *                                                                        *
+-- *------------------------------------------------------------------------*
+-- *                                                                        *
+-- * Conversions                                                            *
+-- *                                                                        *
+-- *------------------------------------------------------------------------*
+
+CREATE TABLE CONVERSIONS
+FOR SYSTEM NAME CNVS
+(
+ JOB FOR COLUMN XBJOB CHAR(10) NOT NULL WITH DEFAULT,
+ POSITION FOR COLUMN XBPOS DECIMAL(6, 0) NOT NULL WITH DEFAULT,
+ FIELD_TO_CONVERT FOR COLUMN XBFTC CHAR(10) NOT NULL WITH DEFAULT,
+ RENAME_FIELD_IN_OLD_FILE_TO FOR COLUMN XBRFT
+   CHAR(10) NOT NULL WITH DEFAULT,
+ STATEMENT_1 FOR COLUMN XBSTM1 CHAR(60) NOT NULL WITH DEFAULT,
+ STATEMENT_2 FOR COLUMN XBSTM2 CHAR(60) NOT NULL WITH DEFAULT,
+ STATEMENT_3 FOR COLUMN XBSTM3 CHAR(60) NOT NULL WITH DEFAULT,
+ STATEMENT_4 FOR COLUMN XBSTM4 CHAR(60) NOT NULL WITH DEFAULT,
+ STATEMENT_5 FOR COLUMN XBSTM5 CHAR(60) NOT NULL WITH DEFAULT,
+ STATEMENT_6 FOR COLUMN XBSTM6 CHAR(60) NOT NULL WITH DEFAULT
+);
+
+LABEL ON TABLE CONVERSIONS
+ IS 'Conversions';
+
+LABEL ON COLUMN CONVERSIONS
+(
+ JOB IS 'Job',
+ POSITION IS 'Position',
+ FIELD_TO_CONVERT IS 'Field to convert',
+ RENAME_FIELD_IN_OLD_FILE_TO IS 'Rename field in old file to',
+ STATEMENT_1 IS 'Statement 1',
+ STATEMENT_2 IS 'Statement 2',
+ STATEMENT_3 IS 'Statement 3',
+ STATEMENT_4 IS 'Statement 4',
+ STATEMENT_5 IS 'Statement 5',
+ STATEMENT_6 IS 'Statement 6'
+);
+
+LABEL ON COLUMN CONVERSIONS
+(
+ JOB TEXT IS 'Job',
+ POSITION TEXT IS 'Position',
+ FIELD_TO_CONVERT TEXT IS 'Field to convert',
+ RENAME_FIELD_IN_OLD_FILE_TO TEXT IS 'Rename field in old file to',
+ STATEMENT_1 TEXT IS 'Statement 1',
+ STATEMENT_2 TEXT IS 'Statement 2',
+ STATEMENT_3 TEXT IS 'Statement 3',
+ STATEMENT_4 TEXT IS 'Statement 4',
+ STATEMENT_5 TEXT IS 'Statement 5',
+ STATEMENT_6 TEXT IS 'Statement 6'
+);
+
+ALTER TABLE CONVERSIONS
+ADD CONSTRAINT CONVERSIONS_PRIMARY_KEY
+PRIMARY KEY (JOB, POSITION, FIELD_TO_CONVERT);

@@ -1,0 +1,42 @@
+     /*-------------------------------------------------------------------------------------------*/
+     /*                                                                                           */
+     /* Copyright (c) 2014 Task Force IT-Consulting GmbH, Waltrop (Germany)                       */
+     /* This software and the accompanying materials are made available                           */
+     /* under the terms of the GNU General Public License version 2.0 (GPLv2)                     */
+     /* which accompanies this distribution and is available at                                   */
+     /* http://www.gnu.org/licenses/gpl-2.0.html                                                  */
+     /*                                                                                           */
+     /*-------------------------------------------------------------------------------------------*/
+     /*                                                                                           */
+     /* Complete Status Entry                                                                     */
+     /*                                                                                           */
+     /*-------------------------------------------------------------------------------------------*/
+     /*  >>PRE-COMPILER<<                                                                         */
+     /*    >>CRTCMD<< CRTSRVPGM    SRVPGM(&LI/&OB) EXPORT(*SRCFILE) +                             */
+     /*                              SRCFILE(&SL/&SF) SRCMBR(&SM);                                */
+     /*    >>IMPORTANT<<                                                                          */
+     /*      >>PARM<<  MODULE(CPLSTSE);                                                           */
+     /*      >>PARM<<  TEXT('Complete Status Entry');                                             */
+     /*      >>PARM<<  BNDDIR(RAPIDFIRE);                                                         */
+     /*      >>PARM<<  ACTGRP(RAPIDFIRE);                                                         */
+     /*      >>PARM<<  DETAIL(*BASIC);                                                            */
+     /*      >>PARM<<  TGTRLS(&TR);                                                               */
+     /*    >>END-IMPORTANT<<                                                                      */
+     /*    >>EXECUTE<<                                                                            */
+     /*  >>END-PRE-COMPILER<<                                                                     */
+     /*------------+--------+---------------------------------------------------------------------*/
+     /*   Datum    I Progr. I Beschreibung                                                        */
+     /*------------+--------+---------------------------------------------------------------------*/
+     /* 26.10.2017 I   FH   I Creation                                                            */
+     /*-------------------------------------------------------------------------------------------*/
+
+             STRPGMEXP
+
+                EXPORT     SYMBOL('CPLSTSE_open')
+
+                EXPORT     SYMBOL('CPLSTSE_close')
+
+                EXPORT     SYMBOL('CPLSTSE_completeStatusEntry')
+
+             ENDPGMEXP
+

@@ -1,0 +1,75 @@
+     A*%%TS  SD  20171220  154614  HILDEBRAND  REL-V7R3M0  5770-WDS
+     A*------------------------------------------------------------------------*
+     A*                                                                        *
+     A* COPYRIGHT (C) 2014 TASK FORCE IT-CONSULTING GMBH, WALTROP (GERMANY)    *
+     A* This software and the accompanying materials are made available        *
+     A* under the terms of the GNU General Public License version 2.0 (GPLv2)  *
+     A* which accompanies this distribution and is available at                *
+     A* http://www.gnu.org/licenses/gpl-2.0.html                               *
+     A*                                                                        *
+     A*------------------------------------------------------------------------*
+     A*  >>PRE-COMPILER<<                                                      *
+     A*    >>CRTCMD<< CRTDSPF    FILE(&LI/&OB) +                               *
+     A*                            SRCFILE(&SL/&SF) SRCMBR(&SM);               *
+     A*    >>IMPORTANT<<                                                       *
+     A*      >>PARM<<  OPTION(*EVENTF);                                        *
+     A*    >>END-IMPORTANT<<                                                   *
+     A*    >>EXECUTE<<                                                         *
+     A*  >>END-PRE-COMPILER<<                                                  *
+     A*------------------------------------------------------------------------*
+     A*
+     A*%%EC
+     A                                      DSPSIZ(24 80 *DS3)
+     A          R DSPF010
+     A*%%TS  SD  20160411  140202  HILDEBRAND  REL-V7R1M0  5770-WDS
+     A                                  2 13'RRRRRRR      AAAAAA     PPPPPPP   -
+     A                                        IIIIIIII    DDDDDDD '
+     A                                      COLOR(RED)
+     A                                  3 13'RR    RR    AA    AA    PP    PP  -
+     A                                           II       DD    DD'
+     A                                      COLOR(RED)
+     A                                  4 13'RRRRRRRR    AAAAAAAA    PPPPPPPP  -
+     A                                           II       DD    DD'
+     A                                      COLOR(RED)
+     A                                  5 13'RR  RR      AA    AA    PP        -
+     A                                           II       DD    DD'
+     A                                      COLOR(RED)
+     A                                  6 13'RR   RR     AA    AA    PP        -
+     A                                           II       DD    DD'
+     A                                      COLOR(RED)
+     A                                  7 13'RR    RR    AA    AA    PP        -
+     A                                        IIIIIIII    DDDDDDD '
+     A                                      COLOR(RED)
+     A                                  9 19'FFFFFFFF    IIIIIIII    RRRRRRR   -
+     A                                        EEEEEEEE'
+     A                                      COLOR(RED)
+     A                                 10 19'FF             II       RR    RR  -
+     A                                        EE      '
+     A                                      COLOR(RED)
+     A                                 11 19'FFFFFF         II       RRRRRRRR  -
+     A                                        EEEEEE  '
+     A                                      COLOR(RED)
+     A                                 12 19'FF             II       RR  RR    -
+     A                                        EE      '
+     A                                      COLOR(RED)
+     A                                 13 19'FF             II       RR   RR   -
+     A                                        EE      '
+     A                                      COLOR(RED)
+     A                                 14 19'FF          IIIIIIII    RR    RR  -
+     A                                        EEEEEEEE'
+     A                                      COLOR(RED)
+     A                                 16 32'Brought To You By'
+     A                                 18 17'Task Force IT-Consulting GmbH, Wal-
+     A                                      trop (Germany)'
+     A                                      COLOR(WHT)
+     A                                 19 28'Tools/400, Thomas Raddatz'
+     A                                      COLOR(WHT)
+     A                                 21  2'This  software  and the accompanyi-
+     A                                      ng  materials are made available  u-
+     A                                      nder  the'
+     A                                 22  2'terms of the GNU General Public Li-
+     A                                      cense version 2.0 (GPLv2)  which ac-
+     A                                      companies'
+     A                                 23  2'this distribution and is available-
+     A                                       at http://www.gnu.org/licenses/gpl-
+     A                                      -2.0.html'

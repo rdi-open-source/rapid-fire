@@ -1,0 +1,105 @@
+.*-------------------------------------------------------------------------------------------*
+.*                                                                                           *
+.* Copyright (c) 2014 Task Force IT-Consulting GmbH, Waltrop (Germany)                       *
+.* This software and the accompanying materials are made available                           *
+.* under the terms of the GNU General Public License version 2.0 (GPLv2)                     *
+.* which accompanies this distribution and is available at                                   *
+.* http://www.gnu.org/licenses/gpl-2.0.html                                                  *
+.*                                                                                           *
+.*-------------------------------------------------------------------------------------------*
+.*                                                                                           *
+.* Commands                                                                                  *
+.*                                                                                           *
+.*-------------------------------------------------------------------------------------------*
+.*  >>PRE-COMPILER<<                                                                         *
+.*    >>CRTCMD<< CRTPNLGRP    PNLGRP(&LI/&OB) +                                              *
+.*                              SRCFILE(&SL/&SF) SRCMBR(&SM);                                *
+.*    >>IMPORTANT<<                                                                          *
+.*      >>PARM<<  OPTION(*EVENTF);                                                           *
+.*    >>END-IMPORTANT<<                                                                      *
+.*    >>EXECUTE<<                                                                            *
+.*  >>END-PRE-COMPILER<<                                                                     *
+.*------------+--------+---------------------------------------------------------------------*
+.*   Date     I Progr. I Description                                                         *
+.*------------+--------+---------------------------------------------------------------------*
+.* 27.10.2014 I   FH   I Created                                                             *
+.*------------+--------+---------------------------------------------------------------------*
+
+.*-------------------------------------------------------------------------------------------*
+.* Begin of panelgroup                                                                       *
+.*-------------------------------------------------------------------------------------------*
+
+:PnlGrp.
+
+.*-------------------------------------------------------------------------------------------*
+.* Help - General                                                                            *
+.*-------------------------------------------------------------------------------------------*
+
+:Help Name='GNR'.
+Commands - Help
+:P.
+If you have specified automatically creation of the environment at the level of the job you
+have to specify the creation commands for each file at this point.
+:EHelp.
+
+.*-------------------------------------------------------------------------------------------*
+.* Help - Type                                                                               *
+.*-------------------------------------------------------------------------------------------*
+
+:Help Name='TYPE'.
+Type - Help
+:XH3.
+Type
+:P.
+Specifies the type of the command.
+:PARML.
+:PT.
+*PRERUN
+:PD.
+The command is a prerun command and runs prior to the compile command.
+The file shouldn`t be created by this command.
+:PT.
+*COMPILE
+:PD.
+The command is the compile command which creates the file.
+:PT.
+*POSTRUN
+:PD.
+The command is a postrun command and runs after the compile command.
+The file shouldn`t be created by this command.
+:EPARML.
+:EHelp.
+
+.*-------------------------------------------------------------------------------------------*
+.* Help - Sequence                                                                           *
+.*-------------------------------------------------------------------------------------------*
+
+:Help Name='SEQ'.
+Sequence - Help
+:XH3.
+Sequence
+:P.
+Specifies the sequence number for the command. For the compile command the sequence has to be
+set to 5. For prerun and postrun commands you can specify the order the commands have to be
+executed if you specify multiple prerun and/or postrun commands.
+:EHelp.
+
+.*-------------------------------------------------------------------------------------------*
+.* Help - Command                                                                            *
+.*-------------------------------------------------------------------------------------------*
+
+:Help Name='CMD'.
+Command - Help
+:XH3.
+Command
+:P.
+Specifies the command to be executed. Instead of hard coding the file name and the library
+name within the command you should use the substitution variables &FILE and &LIB. Otherwise
+unpredictable errors will occur.
+:EHelp.
+
+.*-------------------------------------------------------------------------------------------*
+.* End of panelgroup                                                                         *
+.*-------------------------------------------------------------------------------------------*
+
+:EPnlGrp.

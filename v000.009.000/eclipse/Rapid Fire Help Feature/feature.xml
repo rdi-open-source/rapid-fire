@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<feature
+      id="biz.rapidfire.help"
+      label="Rapid Fire Help Plugin (optional)"
+      version="1.0.0.b001"
+      provider-name="Rapid Fire Project Team">
+
+   <description url="https://sourceforge.net/projects/rapid-fire/">
+      Rapid Fire help pages.
+   </description>
+
+   <copyright url="https://sourceforge.net/projects/rapid-fire/">
+      Copyright (c) 2017-2017 Rapid Fire Project Team. All rights reserved.
+   </copyright>
+
+   <license url="http://www.eclipse.org/legal/cpl-v10.html">
+      This program and the accompanying materials are made available
+under the terms of the Common Public License v1.0 which accompanies
+this distribution, and is available at http://www.eclipse.org/legal/cpl-v10.html.
+   </license>
+
+   <url>
+      <discovery label="Rapid Fire Project Home" url="https://sourceforge.net/projects/rapid-fire/"/>
+      <discovery label="Tools/400" url="http://www.tools400.de"/>
+      <discovery label="Task Force IT-Consulting GmbH" url="http://www.taskforce-it.de/"/>
+   </url>
+
+   <requires>
+      <import feature="biz.rapidfire.core" version="1.0.0.b001"/>
+   </requires>
+
+   <plugin
+         id="biz.rapidfire.help"
+         download-size="0"
+         install-size="0"
+         version="0.0.0"/>
+
+</feature>

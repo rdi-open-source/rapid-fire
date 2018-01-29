@@ -1,0 +1,76 @@
+.*-------------------------------------------------------------------------------------------*
+.*                                                                                           *
+.* Copyright (c) 2014 Task Force IT-Consulting GmbH, Waltrop (Germany)                       *
+.* This software and the accompanying materials are made available                           *
+.* under the terms of the GNU General Public License version 2.0 (GPLv2)                     *
+.* which accompanies this distribution and is available at                                   *
+.* http://www.gnu.org/licenses/gpl-2.0.html                                                  *
+.*                                                                                           *
+.*-------------------------------------------------------------------------------------------*
+.*                                                                                           *
+.* Libraries                                                                                 *
+.*                                                                                           *
+.*-------------------------------------------------------------------------------------------*
+.*  >>PRE-COMPILER<<                                                                         *
+.*    >>CRTCMD<< CRTPNLGRP    PNLGRP(&LI/&OB) +                                              *
+.*                              SRCFILE(&SL/&SF) SRCMBR(&SM);                                *
+.*    >>IMPORTANT<<                                                                          *
+.*      >>PARM<<  OPTION(*EVENTF);                                                           *
+.*    >>END-IMPORTANT<<                                                                      *
+.*    >>EXECUTE<<                                                                            *
+.*  >>END-PRE-COMPILER<<                                                                     *
+.*------------+--------+---------------------------------------------------------------------*
+.*   Date     I Progr. I Description                                                         *
+.*------------+--------+---------------------------------------------------------------------*
+.* 01.07.2014 I   FH   I Created                                                             *
+.*------------+--------+---------------------------------------------------------------------*
+
+.*-------------------------------------------------------------------------------------------*
+.* Begin of panelgroup                                                                       *
+.*-------------------------------------------------------------------------------------------*
+
+:PnlGrp.
+
+.*-------------------------------------------------------------------------------------------*
+.* Help - General                                                                            *
+.*-------------------------------------------------------------------------------------------*
+
+:Help Name='GNR'.
+Libraries - Help
+:P.
+Specifies the production libraries and the associated shadow libraries with the physical
+and logical files. Records will be copied from the files in the production library
+to the files in the shadow library.
+:EHelp.
+
+.*-------------------------------------------------------------------------------------------*
+.* Help - Library                                                                            *
+.*-------------------------------------------------------------------------------------------*
+
+:Help Name='LIB'.
+Library - Help
+:XH3.
+Library
+:P.
+Specifies the production library. The production library contains the physical and
+logical files in the old format.
+:EHelp.
+
+.*-------------------------------------------------------------------------------------------*
+.* Help - Shadow library                                                                     *
+.*-------------------------------------------------------------------------------------------*
+
+:Help Name='SLIB'.
+Shadow library - Help
+:XH3.
+Shadow library
+:P.
+Specifies the production library associated shadow library. The shadow library contains
+the physical and logical files in the new format.
+:EHelp.
+
+.*-------------------------------------------------------------------------------------------*
+.* End of panelgroup                                                                         *
+.*-------------------------------------------------------------------------------------------*
+
+:EPnlGrp.

@@ -1,0 +1,45 @@
+-- *------------------------------------------------------------------------*
+-- *                                                                        *
+-- * Copyright (c) 2014 Task Force IT-Consulting GmbH, Waltrop (Germany)    *
+-- * This software and the accompanying materials are made available        *
+-- * under the terms of the GNU General Public License version 2.0 (GPLv2)  *
+-- * which accompanies this distribution and is available at                *
+-- * http://www.gnu.org/licenses/gpl-2.0.html                               *
+-- *                                                                        *
+-- *------------------------------------------------------------------------*
+-- *                                                                        *
+-- * Activity schedule                                                      *
+-- *                                                                        *
+-- *------------------------------------------------------------------------*
+
+CREATE TABLE ACTIVITY_SCHEDULE
+FOR SYSTEM NAME ACTSCHD
+(
+ JOB FOR COLUMN XFJOB CHAR(10) NOT NULL WITH DEFAULT,
+ START_TIME FOR COLUMN XFSTR TIME NOT NULL WITH DEFAULT,
+ END_TIME FOR COLUMN XFEND TIME NOT NULL WITH DEFAULT,
+ ACTIVITY FOR COLUMN XFACT CHAR(1) NOT NULL WITH DEFAULT
+);
+
+LABEL ON TABLE ACTIVITY_SCHEDULE
+ IS 'Activity schedule';
+
+LABEL ON COLUMN ACTIVITY_SCHEDULE
+(
+ JOB IS 'Job',
+ START_TIME IS 'Start time',
+ END_TIME IS 'End time',
+ ACTIVITY IS 'Activity'
+);
+
+LABEL ON COLUMN ACTIVITY_SCHEDULE
+(
+ JOB TEXT IS 'Job',
+ START_TIME TEXT IS 'Start time',
+ END_TIME TEXT IS 'End time',
+ ACTIVITY TEXT IS 'Activity'
+);
+
+ALTER TABLE ACTIVITY_SCHEDULE
+ADD CONSTRAINT ACTIVITY_SCHEDULE_PRIMARY_KEY
+PRIMARY KEY (JOB, START_TIME);
