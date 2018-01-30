@@ -69,7 +69,7 @@ public class JDBCConnectionManager {
     private static final String JDBC_FALSE = "false";
     private static final String JDBC_TRUE = "true";
 
-    private static final boolean isDebugMode = false;
+    private static final boolean isDebugMode = true;
 
     /**
      * The instance of this Singleton class.
@@ -133,7 +133,7 @@ public class JDBCConnectionManager {
      * @throws Exception
      */
     public IJDBCConnection getConnectionForRead(String connectionName, String libraryName) throws Exception {
-        return getConnection(connectionName, libraryName, false, false);
+        return getConnection(connectionName, libraryName, false);
     }
 
     /**
@@ -145,7 +145,7 @@ public class JDBCConnectionManager {
      * @throws Exception
      */
     public IJDBCConnection getConnectionForUpdate(String connectionName, String libraryName) throws Exception {
-        return getConnection(connectionName, libraryName, true, true);
+        return getConnection(connectionName, libraryName, true);
     }
 
     /**
@@ -157,7 +157,7 @@ public class JDBCConnectionManager {
      * @throws Exception
      */
     public IJDBCConnection getConnectionForUpdateNoAutoCommit(String connectionName, String libraryName) throws Exception {
-        return getConnection(connectionName, libraryName, true, false);
+        return getConnection(connectionName, libraryName, false);
     }
 
     /**
@@ -168,18 +168,17 @@ public class JDBCConnectionManager {
      * @return jdbc connection
      * @throws Exception
      */
-    private synchronized IJDBCConnection getConnection(String connectionName, String libraryName, boolean isCommitControl, boolean isAutoCommit)
-        throws Exception {
+    private synchronized IJDBCConnection getConnection(String connectionName, String libraryName, boolean isAutoCommit) throws Exception {
 
-        if (!isCommitControl) {
-            isAutoCommit = false;
-        }
-
-        JDBCConnection jdbcConnection = findJdbcConnection(connectionName, libraryName, isCommitControl, isAutoCommit);
+        JDBCConnection jdbcConnection = findJdbcConnection(connectionName, libraryName, isAutoCommit);
         if (jdbcConnection == null) {
-            jdbcConnection = produceJdbcConnection(connectionName, libraryName, isCommitControl, isAutoCommit);
+            jdbcConnection = produceJdbcConnection(connectionName, libraryName, isAutoCommit);
             findHost(connectionName).put(jdbcConnection.getKey(), jdbcConnection);
-            logDebugMessage("Added JDBC connection " + jdbcConnection.hashCode() + " to host " + jdbcConnection.getConnectionName());
+            logDebugMessage("Added JDBC connection " + jdbcConnection.hashCode() + " (auto commit=" + jdbcConnection.isAutoCommit() + ") to host "
+                + jdbcConnection.getConnectionName());
+        } else {
+            logDebugMessage("Found JDBC connection " + jdbcConnection.hashCode() + " (auto commit=" + jdbcConnection.isAutoCommit() + ") of host "
+                + jdbcConnection.getConnectionName());
         }
 
         return jdbcConnection;
@@ -207,10 +206,9 @@ public class JDBCConnectionManager {
         String connectionName = jdbcConnection.getConnectionName();
         AS400 system = SystemConnectionHelper.getSystem(connectionName);
         String libraryName = jdbcConnection.getLibraryName();
-        boolean isCommitControl = jdbcConnection.isCommitControl();
         boolean isAutoCommit = jdbcConnection.isAutoCommit();
 
-        jdbcConnectionImpl.setConnection(produceConnection(system, libraryName, isCommitControl, isAutoCommit));
+        jdbcConnectionImpl.setConnection(produceConnection(system, libraryName, isAutoCommit));
 
         startConnection(jdbcConnectionImpl);
 
@@ -279,30 +277,28 @@ public class JDBCConnectionManager {
      * @param isAutoCommit - specifies whether auto-commit is enabled
      * @return
      */
-    private JDBCConnection findJdbcConnection(String connectionName, String libraryName, boolean isCommitControl, boolean isAutoCommit) {
+    private JDBCConnection findJdbcConnection(String connectionName, String libraryName, boolean isAutoCommit) {
 
         Map<String, JDBCConnection> cachedHostConnections = findHost(connectionName);
-        JDBCConnection jdbcConnection = cachedHostConnections.get(JDBCConnection
-            .createKey(connectionName, libraryName, isCommitControl, isAutoCommit));
+        JDBCConnection jdbcConnection = cachedHostConnections.get(JDBCConnection.createKey(connectionName, libraryName, isAutoCommit));
 
         return jdbcConnection;
     }
 
-    private JDBCConnection produceJdbcConnection(String connectionName, String libraryName, boolean isCommitControl, boolean isAutoCommit)
-        throws Exception {
+    private JDBCConnection produceJdbcConnection(String connectionName, String libraryName, boolean isAutoCommit) throws Exception {
 
         AS400 system = SystemConnectionHelper.getSystem(connectionName);
 
-        Connection connection = produceConnection(system, libraryName, isCommitControl, isAutoCommit);
+        Connection connection = produceConnection(system, libraryName, isAutoCommit);
 
-        JDBCConnection jdbcConnection = new JDBCConnection(connectionName, system, connection, libraryName, isCommitControl, isAutoCommit);
+        JDBCConnection jdbcConnection = new JDBCConnection(connectionName, system, connection, libraryName, isAutoCommit);
 
         startConnection(jdbcConnection);
 
         return jdbcConnection;
     }
 
-    private Connection produceConnection(AS400 system, String libraryName, boolean isCommitControl, boolean isAutoCommit) throws SQLException {
+    private Connection produceConnection(AS400 system, String libraryName, boolean isAutoCommit) throws SQLException {
 
         // Properties of ToolboxConnectorService
         Properties jdbcProperties = new Properties();
@@ -313,18 +309,7 @@ public class JDBCConnectionManager {
         // add schema and library list
         jdbcProperties.put(PROPERTIES_LIBRARIES, libraryName + ",*LIBL"); //$NON-NLS-1$
 
-        // add isolation level
-        if (isCommitControl) {
-            jdbcProperties.put(PROPERTY_TRANSACTION_ISOLATION, JDBC_TRANSACTION_ISOLATION_READ_UNCOMMITED);
-        } else {
-            jdbcProperties.put(PROPERTY_TRANSACTION_ISOLATION, JDBC_TRANSACTION_ISOLATION_NONE);
-        }
-
         Connection connection = as400JDBCDriver.connect(system, jdbcProperties, libraryName, true);
-
-        if (!isCommitControl) {
-            connection.setReadOnly(true);
-        }
 
         return connection;
     }
@@ -400,7 +385,8 @@ public class JDBCConnectionManager {
             MessageDialogAsync.displayError(ExceptionHelper.getLocalizedMessage(e));
         } finally {
             cachedHost.remove(jdbcConnection);
-            logDebugMessage("Removed JDBC connection " + jdbcConnection.hashCode() + " of host " + jdbcConnection.getConnectionName());
+            logDebugMessage("Removed JDBC connection " + jdbcConnection.hashCode() + " (auto commit=" + jdbcConnection.isAutoCommit() + ") of host "
+                + jdbcConnection.getConnectionName());
         }
     }
 
@@ -461,6 +447,9 @@ public class JDBCConnectionManager {
             String success = getStringTrim(statement, IRapidFireCommit.SUCCESS);
             String errorCode = getStringTrim(statement, IRapidFireCommit.ERROR_CODE);
 
+            logDebugMessage("-> COMMITTED JDBC connection " + jdbcConnection.hashCode() + " (auto commit=" + jdbcConnection.isAutoCommit()
+                + ") to host " + jdbcConnection.getConnectionName());
+
             if (!Success.YES.label().equals(success)) {
                 String message = Messages.bindParameters(Messages.Could_not_commit_transaction_of_connection_A, jdbcConnection.getConnectionName(),
                     getCommitErrorMessage(errorCode));
@@ -492,6 +481,9 @@ public class JDBCConnectionManager {
 
             String success = getStringTrim(statement, IRapidFireRollback.SUCCESS);
             String errorCode = getStringTrim(statement, IRapidFireRollback.ERROR_CODE);
+
+            logDebugMessage("-> ROLLED-BACK JDBC connection " + jdbcConnection.hashCode() + " (auto commit=" + jdbcConnection.isAutoCommit()
+                + ") to host " + jdbcConnection.getConnectionName());
 
             if (!Success.YES.label().equals(success)) {
                 String message = Messages.bindParameters(Messages.Could_not_rollback_transaction_of_connection_A, jdbcConnection.getConnectionName(),

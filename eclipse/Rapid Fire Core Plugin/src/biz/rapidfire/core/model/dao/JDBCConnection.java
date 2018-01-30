@@ -36,18 +36,15 @@ class JDBCConnection implements IJDBCConnection {
     private AS400 system;
     private Connection connection;
     private String libraryName;
-    private boolean isCommitControl;
     private boolean isAutoCommit;
     private String catalogSeparator;
 
-    public JDBCConnection(String connectionName, AS400 system, Connection jdbcConnection, String libraryName, boolean isCommitControl,
-        boolean isAutoCommit) throws Exception {
+    public JDBCConnection(String connectionName, AS400 system, Connection jdbcConnection, String libraryName, boolean isAutoCommit) throws Exception {
 
         this.connectionName = connectionName;
         this.system = system;
         this.connection = jdbcConnection;
         this.libraryName = libraryName;
-        this.isCommitControl = isCommitControl;
         this.isAutoCommit = isAutoCommit;
         this.catalogSeparator = connection.getMetaData().getCatalogSeparator();
     }
@@ -222,27 +219,21 @@ class JDBCConnection implements IJDBCConnection {
         return catalogSeparator;
     }
 
-    public boolean isCommitControl() {
-        return isCommitControl;
-    }
-
     public boolean isAutoCommit() {
         return isAutoCommit;
     }
 
     public String getKey() {
-        return createKey(getConnectionName(), getLibraryName(), isCommitControl(), isAutoCommit());
+        return createKey(getConnectionName(), getLibraryName(), isAutoCommit());
     }
 
-    public static String createKey(String connectionName, String libraryName, boolean isCommitControl, boolean isAutoCommit) {
+    public static String createKey(String connectionName, String libraryName, boolean isAutoCommit) {
 
         StringBuilder buffer = new StringBuilder();
 
         buffer.append(connectionName);
         buffer.append(":"); //$NON-NLS-1$
         buffer.append(libraryName);
-        buffer.append(":commit="); //$NON-NLS-1$
-        buffer.append(isCommitControl);
         buffer.append(":autocommit="); //$NON-NLS-1$
         buffer.append(isAutoCommit);
 
@@ -255,13 +246,9 @@ class JDBCConnection implements IJDBCConnection {
         StringBuilder buffer = new StringBuilder();
 
         buffer.append(getConnectionName());
-        buffer.append(":");
+        buffer.append(":"); //$NON-NLS-1$
         buffer.append(getLibraryName());
-        buffer.append(":");
-        buffer.append("Commit=");
-        buffer.append(isCommitControl());
-        buffer.append(":");
-        buffer.append("AutoCommit=");
+        buffer.append(":autocommit="); //$NON-NLS-1$
         buffer.append(isAutoCommit());
 
         return buffer.toString();

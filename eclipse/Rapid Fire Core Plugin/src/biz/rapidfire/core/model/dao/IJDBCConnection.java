@@ -41,8 +41,6 @@ public interface IJDBCConnection {
 
     public boolean convertYesNo(String yesNoValue);
 
-    public boolean isCommitControl();
-
     public boolean isAutoCommit();
 
     public String getKey();
