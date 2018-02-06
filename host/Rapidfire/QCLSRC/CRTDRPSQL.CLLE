@@ -21,6 +21,19 @@
      /*    >>END-IMPORTANT<<                                                                      */
      /*    >>EXECUTE<<                                                                            */
      /*  >>END-PRE-COMPILER<<                                                                     */
+     /*-------------------------------------------------------------------------------------------*/
+     /*  SQL for checking the procedures and functions                                            */
+     /*  select 'PROCEDURE' TYPE,                                                                 */
+     /*         substr(SPECIFIC_SCHEMA, 1, 20) SPECIFIC_SCHEMA,                                   */
+     /*         substr(ROUTINE_NAME, 1, 30) ROUTINE_NAME                                          */
+     /*  from qsys2.sysprocs                                                                      */
+     /*  where specific_schema = 'RFPRI'                                                          */
+     /*  union                                                                                    */
+     /*  select 'FUNCTION' TYPE,                                                                  */
+     /*         substr(SPECIFIC_SCHEMA, 1, 20) SPECIFIC_SCHEMA,                                   */
+     /*         substr(ROUTINE_NAME, 1, 30) ROUTINE_NAME                                          */
+     /*  from qsys2.sysfuncs                                                                      */
+     /*  where specific_schema = 'RFPRI'                                                          */
      /*------------+--------+---------------------------------------------------------------------*/
      /*   Date     I Progr. I Description                                                         */
      /*------------+--------+---------------------------------------------------------------------*/
@@ -39,7 +52,13 @@
              DCL        VAR(&LIB) TYPE(*CHAR) LEN(10)
              DCL        VAR(&TYPE) TYPE(*CHAR) LEN(10)
              DCL        VAR(&NAME) TYPE(*CHAR) LEN(10)
-             DCL        VAR(&SQL) TYPE(*CHAR) LEN(128)
+             DCL        VAR(&SQL) TYPE(*CHAR) LEN(4096)
+
+             DCL        VAR(&QSQLSRC) TYPE(*CHAR) LEN(10) VALUE('QSQLSRC')
+
+             DCL        VAR(&MSG_DS) TYPE(*CHAR) LEN(1026)
+             DCL        VAR(&MSG_LEN) TYPE(*INT) STG(*DEFINED) LEN(2) DEFVAR(&MSG_DS)
+             DCL        VAR(&MSG_TXT) TYPE(*CHAR) STG(*DEFINED) LEN(1024) DEFVAR(&MSG_DS 3)
 
      /* Create/Drop UD-Functions and Stored Procedures */
              IF         COND(&CMD *EQ '*CREATE' *OR &CMD *EQ +
@@ -264,21 +283,40 @@
 
              ENDDO
 
+             SNDPGMMSG  MSGID(CPF9897) MSGF(*LIBL/QCPFMSG) +
+                          MSGDTA('Reclaim activation group RAPIDFIRE before executing the program again.') +
+                          TOPGMQ(*PRV (*PGMBDY *NONE *NONE))
+
+     /* Exit the program */
+             RETURN
+
      /* Execute Command */
              SUBR       SUBR(EXECUTE)
 
              SELECT
              WHEN       COND(&CMD *EQ '*CREATE') THEN(DO)
-             RUNSQLSTM  SRCFILE(&LIB/QSQLSRC) SRCMBR(&NAME) +
-                          COMMIT(*NONE) NAMING(*SYS) DFTRDBCOL(&LIB)
-             MONMSG     MSGID(CPF0000)
+         /*  RUNSQLSTM  SRCFILE(&LIB/QSQLSRC) SRCMBR(&NAME) +         */
+         /*               COMMIT(*NONE) NAMING(*SYS) DFTRDBCOL(&LIB)  */
+         /*  MONMSG     MSGID(CPF0000)                                */
+             CALLPRC    PRC(EXCSQL_execute_Script) PARM((&LIB *BYREF) (&QSQLSRC *BYREF) (&NAME *BYREF) (&LIB *BYREF))
+             CALLPRC    PRC(EXCSQL_get_Message) RTNVAL(&MSG_DS)
+             IF         COND(&MSG_LEN *NE 0) THEN(DO)
+                SNDPGMMSG  MSGID(CPF9898) MSGF(*LIBL/QCPFMSG) MSGDTA(%SST(&MSG_TXT 1 &MSG_LEN)) +
+                             TOPGMQ(*PRV (*PGMBDY *NONE *NONE))
+             ENDDO
              ENDDO
              WHEN       COND(&CMD *EQ '*DROP') THEN(DO)
              CHGVAR     VAR(&SQL) VALUE('DROP SPECIFIC' *BCAT &TYPE +
                           *BCAT &NAME)
-             RUNSQL     SQL(&SQL) COMMIT(*NONE) NAMING(*SYS) +
-                          DFTRDBCOL(&LIB)
-             MONMSG     MSGID(CPF0000)
+         /*  RUNSQL     SQL(&SQL) COMMIT(*NONE) NAMING(*SYS) +        */
+         /*               DFTRDBCOL(&LIB)                             */
+         /*  MONMSG     MSGID(CPF0000)                                */
+             CALLPRC    PRC(EXCSQL_execute_Stmt) PARM((&SQL *BYREF) (&LIB *BYREF))
+             CALLPRC    PRC(EXCSQL_get_Message) RTNVAL(&MSG_DS)
+             IF         COND(&MSG_LEN *NE 0) THEN(DO)
+                SNDPGMMSG  MSGID(CPF9898) MSGF(*LIBL/QCPFMSG) MSGDTA(%SST(&MSG_TXT 1 &MSG_LEN)) +
+                             TOPGMQ(*PRV (*PGMBDY *NONE *NONE))
+             ENDDO
              ENDDO
              ENDSELECT
 

@@ -1,6 +1,6 @@
      /*-------------------------------------------------------------------------------------------*/
      /*                                                                                           */
-     /* Copyright (c) 2014 Task Force IT-Consulting GmbH, Waltrop (Germany)                       */
+     /* Copyright (c) 2018 Task Force IT-Consulting GmbH, Waltrop (Germany)                       */
      /* This software and the accompanying materials are made available                           */
      /* under the terms of the GNU General Public License version 2.0 (GPLv2)                     */
      /* which accompanies this distribution and is available at                                   */
@@ -8,15 +8,15 @@
      /*                                                                                           */
      /*-------------------------------------------------------------------------------------------*/
      /*                                                                                           */
-     /* SQL Status                                                                                */
+     /* Execute Command                                                                           */
      /*                                                                                           */
      /*-------------------------------------------------------------------------------------------*/
      /*  >>PRE-COMPILER<<                                                                         */
      /*    >>CRTCMD<< CRTSRVPGM    SRVPGM(&LI/&OB) EXPORT(*SRCFILE) +                             */
      /*                              SRCFILE(&SL/&SF) SRCMBR(&SM);                                */
      /*    >>IMPORTANT<<                                                                          */
-     /*      >>PARM<<  MODULE(SQLSTS);                                                            */
-     /*      >>PARM<<  TEXT('SQL Status');                                                        */
+     /*      >>PARM<<  MODULE(EXCSQL);                                                            */
+     /*      >>PARM<<  TEXT('Execute SQL');                                                       */
      /*      >>PARM<<  BNDDIR(RAPIDFIRE);                                                         */
      /*      >>PARM<<  ACTGRP(RAPIDFIRE);                                                         */
      /*      >>PARM<<  DETAIL(*BASIC);                                                            */
@@ -27,24 +27,15 @@
      /*------------+--------+---------------------------------------------------------------------*/
      /*   Datum    I Progr. I Beschreibung                                                        */
      /*------------+--------+---------------------------------------------------------------------*/
-     /* 18.03.2016 I   FH   I Creation                                                            */
+     /* 04.02.2018 I   TR   I Creation                                                            */
      /*-------------------------------------------------------------------------------------------*/
 
              STRPGMEXP
 
-                EXPORT     SYMBOL('SQLCHECKSTATE')
-                EXPORT     SYMBOL('SETIGNOREDUPRCD')
-                EXPORT     SYMBOL('SETIGNORENODATA')
-                EXPORT     SYMBOL('SETIGNOREROWLOCK')
-                EXPORT     SYMBOL('SETIGNORECSTVIOLATION')
-                EXPORT     SYMBOL('SETLOGSTATEMENT')
-                EXPORT     SYMBOL('SETNOLOGSTATEMENT')
-                EXPORT     SYMBOL('SETIGNOREMORETHANONEROW')
-                EXPORT     SYMBOL('SETIGNORECHARACTERCONVERSIONERROR')
-                EXPORT     SYMBOL('SETIGNOREWARNINGS')
-                EXPORT     SYMBOL('SQLTRACE')
-                EXPORT     SYMBOL('SQLLASTSTATEMENT')
-                EXPORT     SYMBOL('SQLGETLASTERRORMESSAGE')
+                EXPORT     SYMBOL('EXCSQL_EXECUTE_STMT')
+                EXPORT     SYMBOL('EXCSQL_EXECUTE_SCRIPT')
+                EXPORT     SYMBOL('EXCSQL_GET_MESSAGE')
+                EXPORT     SYMBOL('EXCSQL_MESSAGE')
 
              ENDPGMEXP
 

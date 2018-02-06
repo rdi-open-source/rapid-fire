@@ -15,6 +15,9 @@ Dcl-Pr SqlCheckState Ind;
 
 End-Pr;
 
+Dcl-Pr SqlGetLastErrorMessage VARCHAR(1024);
+End-Pr;
+
 Dcl-Pr SqlHandleRowLock Ind;
 End-Pr;
 
@@ -27,7 +30,7 @@ End-Pr;
 Dcl-Pr SqlHandleCstViolation Ind;
 End-Pr;
 
-Dcl-Pr SqlProblem;
+Dcl-Pr SqlProblem VARCHAR(1024);
 End-Pr;
 
 // Dcl-Pr SqlGetLogMsg Char(1024);

@@ -90,6 +90,7 @@ Dcl-S Errd6 Int(10);
 Dcl-S Ret_SqlCode Int(10);
 Dcl-S Ret_State Char(5);
 Dcl-S Auth_Id Varchar(128);
+Dcl-S LastErrorMessage Varchar(1024);
    //********************************************************************
    // Interne Prototypes
    //********************************************************************
@@ -140,6 +141,7 @@ Dcl-Pi SqlCheckState Ind;
   pi_State CHAR(5) Const;
 End-Pi;
 
+LastErrorMessage = '';
 
    //----------------------------------------------------
    // Letztes Statement loggen
@@ -496,13 +498,13 @@ When pi_State = '02000';
 When pi_State = '02001';
      //Keine weiteren Ergebnismengen zurückgegeben.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '02505';
      //GET DESCRIPTOR VALUE ist größer als COUNT.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 
@@ -511,13 +513,13 @@ When pi_State = '07001';
      //Die Anzahl Hostvariablen ist für die Anzahl Parametermarken
      //nicht korrekt.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '07002';
      //Die Aufrufparameterliste oder der Steuerblock ist ungültig.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '07003';
@@ -525,14 +527,14 @@ When pi_State = '07003';
      //Auswahlanweisung, oder sie befindet sich nicht in
      //einem vorbereiteten Status.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '07004';
      //Die Klausel USING oder die Klausel INTO ist für dynamische
      //Parameter erforderlich.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '07005';
@@ -540,7 +542,7 @@ When pi_State = '07005';
      //Anweisung an, die keinem Cursor zugeordnet werden
      //kann.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '07006';
@@ -548,19 +550,19 @@ When pi_State = '07006';
      //Parametermarke kann aufgrund ihres Datentyps nicht
      //verwendet werden.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '07008';
      //Die Deskriptoranzahl ist ungültig.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '07009';
      //Der Deskriptorindex ist ungültig.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 
@@ -569,26 +571,26 @@ When pi_State = '08001';
      //Der Anwendungsrequester kann die Verbindung nicht
      //herstellen.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '08002';
      //Die Verbindung ist bereits vorhanden.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '08003';
      //Die Verbindung ist nicht vorhanden.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '08004';
      //Der Anwendungsserver hat das Herstellen der Verbindung
      //zurückgewiesen.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '08501';
@@ -596,7 +598,7 @@ When pi_State = '08501';
      //Verbindung einen mit LI6.2 geschützten Dialog
      //verwendet.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 
@@ -604,7 +606,7 @@ When pi_State = '08501';
 When pi_State = '09000';
      //Eine ausgelöste SQL-Anweisung ist fehlgeschlagen.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 
@@ -613,7 +615,7 @@ When pi_State = '0A001';
      //Die Anweisung CONNECT ist ungültig, da sich der Prozess
      //nicht in einem verbindungsfähigen Status befindet.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 
@@ -622,7 +624,7 @@ When pi_State = '0E000';
      //Die Schemanamensliste in einer Anweisung SET PATH ist
      //ungültig.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 
@@ -630,7 +632,7 @@ When pi_State = '0E000';
 When pi_State = '0F001';
      //Der Querverweiswert stellt momentan keinen Wert dar.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 
@@ -640,7 +642,7 @@ When pi_State = '0K000';
      //Eine Anweisung RESIGNAL wurde ausgegeben, es ist aber kein
      //Handler aktiv.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 
@@ -648,7 +650,7 @@ When pi_State = '0K000';
 When pi_State = '0W000';
      //Die Anweisung ist in einem Auslöser nicht zulässig.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 
@@ -656,13 +658,13 @@ When pi_State = '0W000';
 When pi_State = '0Z001';
      //Maximale Anzahl Diagnosebereiche im Stack überschritten.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '0Z002';
      //Zugriff auf Diagnose im Stack erfolgte ohne aktiven Handler.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 
@@ -672,7 +674,7 @@ When pi_State = '20000';
      //Die Angabe für Groß-/Kleinschreibung wurde für die
      //Anweisung CASE nicht gefunden.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 
@@ -686,7 +688,7 @@ When pi_State = '21000';
     return *on;
   endIf;
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 
@@ -701,7 +703,7 @@ When pi_State = '22001';
      //Hostvariablen nicht zugeordnet werden, da sie zu
      //klein ist.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '22002';
@@ -710,31 +712,31 @@ When pi_State = '22002';
      //keiner Hostvariablen zugeordnet werden, da keine
      //Bezugszahlvariable angegeben ist.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '22003';
      //Ein numerischer Wert liegt außerhalb des gültigen Bereichs.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '22004';
      //Ein Nullwert ist nicht zulässig.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '22005';
      //Bei der Zuordnung ist ein Fehler aufgetreten.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '22006';
      //Die FETCH-Ausrichtung ist ungültig.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '22007';
@@ -743,7 +745,7 @@ When pi_State = '22007';
      //Zeichenfolgedarstellung oder ein ungültiger Wert
      //angegeben.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '22008';
@@ -752,7 +754,7 @@ When pi_State = '22008';
      //Zeitmarke ein Ergebnis zur Folge, das nicht innerhalb
      //des gültigen Bereichs für Datumsangaben liegt.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '22011';
@@ -760,26 +762,26 @@ When pi_State = '22011';
      //liegt ein Argument von SUBSTR außerhalb des gültigen
      //Bereichs.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '22012';
      //Division durch Null ist ungültig.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '22018';
      //Der Zeichenwert für die Skalarfunktion CAST, DECIMAL, FLOAT
      //oder INTEGER ist ungültig.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '22019';
      //Das Prädikat LIKE enthält ein ungültiges Escapezeichen.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '22021';
@@ -787,46 +789,46 @@ When pi_State = '22021';
      //Zeichensatz, oder die Konvertierung wird nicht
      //unterstützt.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '22023';
      //Ein Parameterwert oder ein Hostvariablenwert ist ungültig.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '22024';
      //Eine auf NUL endende Eingabehostvariable oder ein auf NUL
      //endender Parameter enthielt nicht NUL.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '22025';
      //Das Zeichenfolgemuster des Prädikats LIKE enthält ein
      //ungültiges Vorkommen eines Escapezeichens.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '22501';
      //Die Länge des Steuerfelds einer Zeichenfolge variabler
      //Länge ist negativ oder größer als der Maximalwert.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '22503';
      //Die Zeichenfolgedarstellung eines Namens ist ungültig.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '22504';
      //Ein gemischter Datenwert ist ungültig.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '22511';
@@ -834,7 +836,7 @@ When pi_State = '22511';
      //eine Zeilenkennungs- (ROWID) oder Referenzspalte ist
      //ungültig.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '22522';
@@ -842,27 +844,27 @@ When pi_State = '22522';
      //Datentyp oder Subtyp ungültig oder für das Schema für
      //Codeumsetzung ungültig.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '22524';
      //Zeichenkonvertierung hatte das Abschneiden von Daten zur
      //Folge.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '22525';
      //Wert für Partitionierungsschlüssel ist ungültig.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '22527';
      //Ungültige Eingabedaten für das Einfügen mehrerer Zeilen
      //gefunden.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 
@@ -933,7 +935,7 @@ When pi_State = '23522';
      //Der Wertebereich für die Identitätsspalte oder Reihenfolge
      //wurde vollständig ausgeschöpft.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 
@@ -941,14 +943,14 @@ When pi_State = '23522';
 When pi_State = '24501';
      //Der angegebene Cursor ist nicht geöffnet.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '24502';
      //Der in einer Anweisung OPEN angegebene Cursor ist bereits
      //geöffnet.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '24504';
@@ -956,14 +958,14 @@ When pi_State = '24504';
      //angegebene Cursor ist nicht in einer Zeile
      //positioniert.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '24506';
      //Die in PREPARE angegebene Anweisung ist die Anweisung für
      //einen geöffneten Cursor.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '24507';
@@ -971,21 +973,21 @@ When pi_State = '24507';
      //jedoch gelöscht, oder ein Wert einer ORDER BY-Spalte
      //der aktuellen Zeile wurde geändert.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '24513';
      //FETCH NEXT, PRIOR, CURRENT oder RELATIVE ist nicht
      //zulässig, da die Cursorposition nicht bekannt ist.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '24514';
      //Dieser Cursor wurde durch einen vorhergehenden Fehler
      //inaktiviert.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 
@@ -994,21 +996,21 @@ When pi_State = '25000';
      //Eine Aktualisierungsoperation ist für die
      //Anwendungsausführungsumgebung ungültig.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '25006';
      //Eine Aktualisierungsoperation ist ungültig, da die
      //Transaktion schreibgeschützt ist.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '25501';
      //Die Anweisung ist nur als erste Anweisung in einer
      //Arbeitseinheit zulässig.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 
@@ -1016,14 +1018,14 @@ When pi_State = '25501';
 When pi_State = '26501';
      //Die angegebene Anweisung ist nicht vorhanden.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '26510';
      //Dem in einer Anweisung DECLARE CURSOR angegebenen
      //Anweisungsnamen ist bereits ein Cursor zugeordnet.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 
@@ -1033,7 +1035,7 @@ When pi_State = '27000';
      //durch eine Integritätsbedingung oder einen Auslöser
      //zu ändern.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 
@@ -1041,7 +1043,7 @@ When pi_State = '27000';
 When pi_State = '28000';
      //Berechtigungsname ist ungültig.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 
@@ -1050,21 +1052,21 @@ When pi_State = '2D522';
      //COMMIT und ROLLBACK sind in einer zusammengesetzten
      //Anweisung ATOMIC nicht zulässig.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '2D528';
      //Dynamische Prozedur COMMIT oder COMMIT ON RETURN ist für
      //die Anwendungsausführungsumgebung ungültig.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '2D529';
      //Dynamisches ROLLBACK ist für die
      //Anwendungsausführungsumgebung ungültig.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 
@@ -1072,7 +1074,7 @@ When pi_State = '2D529';
 When pi_State = '2E000';
      //Verbindungsname ist ungültig.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 
@@ -1082,27 +1084,27 @@ When pi_State = '2F002';
      //Funktion war jedoch nicht als MODIFIES SQL DATA
      //definiert.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '2F003';
      //Die Anweisung ist in einer Funktion oder Prozedur nicht
      //zulässig.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '2F004';
      //Die SQL-Funktion hat versucht, Daten zu lesen, die Funktion
      //war jedoch nicht als READS SQL DATA definiert.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '2F005';
      //Die Funktion hat keine Anweisung RETURN ausgeführt.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 
@@ -1110,7 +1112,7 @@ When pi_State = '2F005';
 When pi_State = '33000';
      //Der SQL-Deskriptorname ist ungültig.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 
@@ -1118,7 +1120,7 @@ When pi_State = '33000';
 When pi_State = '34000';
      //Cursorname ist ungültig.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 
@@ -1126,7 +1128,7 @@ When pi_State = '34000';
 When pi_State = '35000';
      //Bedingungszahl ist ungültig.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 
@@ -1135,7 +1137,7 @@ When pi_State = '36001';
      //Ein mit SENSITIVE definierter Cursor kann nicht für die
      //angegebene Auswahlanweisung definiert werden.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 
@@ -1144,14 +1146,14 @@ When %Subst(pi_State:1:2) = '38';
      //Gültige pi_State-Werte für einen Fehler von externer
      //Routine oder Auslöser zurückgegeben.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '38001';
      //Die externe Routine ist nicht zum Ausführen von
      //SQL-Anweisungen berechtigt.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '38002';
@@ -1159,20 +1161,20 @@ When pi_State = '38002';
      //Routine war jedoch nicht als MODIFIES SQL DATA
      //definiert.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '38003';
      //Die Anweisung ist in einer Routine nicht zulässig.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '38004';
      //Die externe Routine hat versucht, Daten zu lesen, die
      //Routine war jedoch nicht als READS SQL DATA definiert.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '38501';
@@ -1181,7 +1183,7 @@ When pi_State = '38501';
      //Verwendung der Aufrufkonvention SIMPLE CALL oder
      //SIMPLE CALL WITH NULLS) ist ein Fehler aufgetreten.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 
@@ -1192,7 +1194,7 @@ When pi_State = '39004';
      //Argument verwendet wird, das ein
      //Java-Primitive-Datentyp ist.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 
@@ -1200,19 +1202,19 @@ When pi_State = '39004';
 When pi_State = '3B001';
      //Der Sicherungspunkt ist ungültig.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '3B002';
      //Die maximale Anzahl Sicherungspunkte wurde erreicht.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '3B501';
      //Ein doppelter Sicherungspunktname wurde gefunden.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '3B502';
@@ -1220,7 +1222,7 @@ When pi_State = '3B502';
      //angegeben, es ist jedoch kein Sicherungspunkt
      //vorhanden.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 
@@ -1228,7 +1230,7 @@ When pi_State = '3B502';
 When pi_State = '3C000';
      //Der Cursorname ist mehrdeutig.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 
@@ -1236,7 +1238,7 @@ When pi_State = '3C000';
 When pi_State = '3F000';
      //Der Schemaname (Datensammlungsname) ist ungültig.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 
@@ -1245,195 +1247,195 @@ When pi_State = '42501';
      //Die Berechtigungs-ID hat nicht die Berechtigung, die
      //Operation für das angegebene Objekt auszuführen.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '42502';
      //Die Berechtigungs-ID hat nicht die Berechtigung, die
      //Operation wie angegeben auszuführen.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '42506';
      //Eignerberechtigungsfehler aufgetreten.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '42601';
      //Ein Zeichen, ein Token oder eine Klausel ist ungültig oder
      //fehlt.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '42602';
      //In einem Namen wurde ein ungültiges Zeichen gefunden.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '42603';
      //Es wurde eine nicht beendete Zeichenfolgekonstante gefunden.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '42604';
      //Es wurde eine ungültige numerische Konstante oder
      //Zeichenfolgekonstante gefunden.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '42605';
      //Die für eine Skalarfunktion angegebene Anzahl Argumente ist
      //ungültig.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '42606';
      //Es wurde eine ungültige Hexadezimalkonstante gefunden.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '42607';
      //Ein Operand einer Spaltenfunktion oder eines Operators für
      //CONCAT ist ungültig.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '42609';
      //Alle Operanden eines Operators oder Prädikats sind
      //Parametermarken.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '42610';
      //Eine Parametermarke ist nicht zulässig.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '42611';
      //Die Definition einer Spalte oder eines Arguments ist
      //ungültig.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '42612';
      //Die Anweisungszeichenfolge ist eine SQL-Anweisung, die in
      //dem verwendeten Kontext nicht gültig ist.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '42613';
      //Klauseln schließen sich gegenseitig aus.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '42614';
      //Ein doppeltes Schlüsselwort oder eine doppelte Klausel ist
      //ungültig.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '42615';
      //Eine ungültige Alternative wurde gefunden.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '42616';
      //Ungültige Optionen angegeben.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '42617';
      //Die Anweisungszeichenfolge besteht aus Leerzeichen oder ist
      //leer.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '42618';
      //Eine Hostvariable ist nicht zulässig.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '42620';
      //Schreibgeschütztes SCROLL wurde mit der Klausel UPDATE
      //angegeben.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '42621';
      //Der durch die Prüfung auf Integritätsbedingung generierte
      //Spaltenausdruck ist ungültig.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '42622';
      //Ein Name oder ein Kennsatz ist zu lang.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '42623';
      //Eine Klausel DEFAULT kann nicht angegeben werden.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '42625';
      //Ein Ausdruck CASE ist ungültig.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '42629';
      //Für SQL-Routinen müssen Parameternamen angegeben werden.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '42631';
      //In einer Anweisung RETURN in einer SQL-Funktion muss ein
      //Ausdruck angegeben werden.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '42633';
      //Eine Klausel AS ist für ein Argument XMLATTRIBUTES oder
      //XMLFOREST erforderlich.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '42634';
      //Der XML-Name ist ungültig.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '42635';
      //Das XML-Namensbereichspräfix ist ungültig.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '42701';
@@ -1441,62 +1443,62 @@ When pi_State = '42701';
      //Übergangsvariablen SET wurde ein doppelter
      //Spaltenname gefunden.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '42702';
      //Ein Spaltenbezug ist aufgrund von doppelten Namen
      //mehrdeutig.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '42703';
      //Ein nicht definierter Spalten- oder Parametername wurde
      //gefunden.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '42704';
      //Ein nicht definierter Objekt- oder
      //Integritätsbedingungsname wurde gefunden.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '42705';
      //Ein nicht definierter Servername wurde gefunden.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '42707';
      //Ein Spaltenname in ORDER BY gibt keine Spalte der
      //Ergebnistabelle an.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '42709';
      //In einer Schlüsselspaltenliste wurde ein doppelter
      //Spaltenname angegeben.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '42710';
      //Ein doppelter Objekt- oder Integritätsbedingungsname wurde
      //gefunden.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '42711';
      //In der Objektdefinition oder der Anweisung ALTER TABLE
      //wurde ein doppelter Spaltenname gefunden.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '42712';
@@ -1504,7 +1506,7 @@ When pi_State = '42712';
      //Anweisung CREATE TRIGGER wurde eine doppelte
      //Tabellenbezeichnung gefunden.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '42713';
@@ -1512,20 +1514,20 @@ When pi_State = '42713';
      //das Objekt stimmt mit einem vorhandenen Objekt
      //überein.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '42718';
      //Der Name für den lokalen Server ist nicht definiert.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '42723';
      //Eine Funktion mit derselben Kennung ist bereits in dem
      //Schema vorhanden.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '42724';
@@ -1533,7 +1535,7 @@ When pi_State = '42724';
      //benutzerdefinierte Funktion oder eine Prozedur
      //verwendet wird, ist nicht möglich.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '42725';
@@ -1542,20 +1544,20 @@ When pi_State = '42725';
      //Instanznamen), es gibt jedoch mehr als eine
      //spezifische Instanz dieser Routine oder Methode.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '42726';
      //Doppelte Namen für allgemeine Tabellenausdrücke gefunden.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '42732';
      //In der Anweisung SET CURRENT PATH wurde ein doppelter
      //Schemaname gefunden.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '42733';
@@ -1565,7 +1567,7 @@ When pi_State = '42733';
      //eine Prozedur mit demselben Namen in dem Schema
      //vorhanden ist.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '42734';
@@ -1573,20 +1575,20 @@ When pi_State = '42734';
      //SQL-Variablennamen, eine doppelte Bezeichnung oder
      //ein doppelter Bedingungsname wurde gefunden.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '42736';
      //Die in der Anweisung GOTO, ITERATE oder LEAVE angegebene
      //Marke wurde nicht gefunden oder ist ungültig.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '42737';
      //Die angegebene Bedingung ist nicht definiert.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '42738';
@@ -1594,21 +1596,21 @@ When pi_State = '42738';
      //wurde in der Anweisung DECLARE CURSOR einer Anweisung
      //FOR angegeben.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '42747';
      //Dasselbe Deskriptorelement wurde in der Anweisung SET
      //DESCRIPTOR mehrmals angegeben.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '42802';
      //Die Anzahl Einfüge- oder Aktualisierungswerte stimmt nicht
      //mit der Anzahl Spalten überein.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '42803';
@@ -1617,91 +1619,91 @@ When pi_State = '42803';
      //handelt; oder ein Spaltenbezug in der Klausel GROUP
      //BY ist ungültig.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '42804';
      //Die Ergebnisausdrücke in einem Ausdruck CASE sind nicht
      //kompatibel.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '42805';
      //Eine ganze Zahl in der Klausel ORDER BY gibt keine Spalte
      //in der Ergebnistabelle an.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '42806';
      //Ein Wert konnte einer Hostvariablen nicht zugeordnet
      //werden, da die Datentypen nicht kompatibel sind.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '42807';
      //INSERT, UPDATE oder DELETE ist für dieses Objekt nicht
      //zulässig.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '42808';
      //Eine in der Operation INSERT oder UPDATE angegebene Spalte
      //kann nicht aktualisiert werden.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '42809';
      //Das angegebene Objekt hat nicht den Objekttyp, für den die
      //Anweisung gilt.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '42810';
      //In einer Klausel FOREIGN KEY ist keine Basistabelle
      //angegeben.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '42811';
      //Die angegebene Anzahl Spalten stimmt nicht mit der Anzahl
      //Spalten in der Klausel SELECT überein.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '42813';
      //WITH CHECK OPTION kann für die angegebene Sicht nicht
      //verwendet werden.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '42814';
      //Die Spalte kann nicht gelöscht werden, da sie die einzige
      //Spalte in der Tabelle ist.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '42815';
      //Der Datentyp, die Länge, die Anzahl der Kommastellen, der
      //Wert oder die CCSID ist ungültig.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '42816';
      //Ein Wert für Datum und Uhrzeit oder die Dauer in einem
      //Ausdruck ist ungültig.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '42817';
@@ -1710,21 +1712,21 @@ When pi_State = '42817';
      //Integritätsbedingung von der Spalte abhängig ist oder
      //die Spalte Teil des Partitionierungsschlüssels ist.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '42818';
      //Die Operanden eines Operators oder einer Funktion sind
      //nicht kompatibel.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '42819';
      //Ein Operand einer Rechenoperation oder ein Operand einer
      //Funktion, die eine Zahl erfordert, ist keine Zahl.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '42820';
@@ -1732,49 +1734,49 @@ When pi_State = '42820';
      //einen Wert, der nicht innerhalb des zulässigen
      //Bereichs für den Datentyp liegt.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '42821';
      //Ein Datentyp für eine Zuordnung zu einer Spalte oder
      //Variable ist nicht mit dem Datentyp kompatibel.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '42822';
      //Ein Ausdruck in der Klausel ORDER BY oder GROUP BY ist
      //ungültig.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '42823';
      //Von einer Unterabfrage, für die nur eine einzige Spalte
      //zulässig ist, werden mehrere Spalten zurückgegeben.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '42824';
      //Ein Operand von LIKE ist keine Zeichenfolge, oder der erste
      //Operand ist keine Spalte.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '42825';
      //Die Zeilen von UNION, INTERSECT, EXCEPT oder VALUES haben
      //keine kompatiblen Spalten.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '42826';
      //Die Zeilen von UNION, INTERSECT, EXCEPT oder VALUES
      //enthalten nicht dieselbe Anzahl Spalten.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '42827';
@@ -1782,7 +1784,7 @@ When pi_State = '42827';
      //stimmt nicht mit der vom Cursor bezeichneten Tabelle
      //überein.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '42828';
@@ -1790,7 +1792,7 @@ When pi_State = '42828';
      //bezeichnete Tabelle kann nicht geändert werden, oder
      //der Cursor ist schreibgeschützt.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '42829';
@@ -1798,27 +1800,27 @@ When pi_State = '42829';
      //bezeichnete Ergebnistabelle nicht geändert werden
      //kann.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '42830';
      //Der Fremdschlüssel entspricht nicht der Beschreibung des
      //übergeordneten Schlüssels.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '42832';
      //Die Operation ist für Systemobjekte nicht zulässig.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '42833';
      //Der qualifizierte Objektname entspricht nicht der
      //Benennungsoption.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '42834';
@@ -1826,21 +1828,21 @@ When pi_State = '42834';
      //keiner Spalte des Fremdschlüssels zugeordnet werden
      //kann.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '42835';
      //Zyklische Verweise können zwischen benannten abgeleiteten
      //Tabellen nicht angegeben werden.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '42836';
      //Die Angabe einer rekursiven benannten abgeleiteten Tabelle
      //ist ungültig.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '42837';
@@ -1848,14 +1850,14 @@ When pi_State = '42837';
      //mit den Attributen der aktuellen Spalte nicht
      //kompatibel sind.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '42841';
      //Eine Parametermarke darf kein benutzerdefinierter Datentyp
      //oder Verweistyp sein.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '42842';
@@ -1863,20 +1865,20 @@ When pi_State = '42842';
      //eine angegebene Option nicht der Spaltenbeschreibung
      //entspricht.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '42845';
      //Eine ungültige Verwendung der Funktion NOT DETERMINISTIC
      //oder EXTERNAL ACTION wurde gefunden.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '42846';
      //Umsetzung des Quellentyps in Zieltyp wird nicht unterstützt.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '42847';
@@ -1884,26 +1886,26 @@ When pi_State = '42847';
      //auf die verwiesen wird, einer der Parameter ist
      //jedoch für SQL nicht gültig.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '42848';
      //Isolationsstufe CS WITH KEEP LOCKS ist nicht zulässig.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '42850';
      //Eine logische Datei in CREATE VIEW ist ungültig.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '42851';
      //Eine Datei, auf die verwiesen wird, ist keine Tabelle,
      //Sicht oder physische Datei.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '42852';
@@ -1911,7 +1913,7 @@ When pi_State = '42852';
      //ungültig oder nicht konsistent. (Beispiel: GRANT
      //ALTER in einer Sicht.)
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '42854';
@@ -1919,7 +1921,7 @@ When pi_State = '42854';
      //mit dem definierten Typ in einer typisierten Sicht
      //oder einer MQT-Definition nicht kompatibel.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '42855';
@@ -1929,20 +1931,20 @@ When pi_State = '42855';
      //diesen Cursor muss eine Querverweisvariable oder eine
      //LOB-Variable sein.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '42857';
      //Eine Datei, auf die verwiesen wird, hat mehr als ein Format.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '42858';
      //Operation kann auf das angegebene Objekt nicht angewendet
      //werden.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '42860';
@@ -1950,20 +1952,20 @@ When pi_State = '42860';
      //einen Primärschlüssel oder eine Zeilenkennung (ROWID)
      //umsetzt.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '42862';
      //Eine erweiterte dynamische Anweisung kann nicht für ein
      //nicht erweitertes dynamisches Paket ausgeführt werden.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '42863';
      //In REXX wurde eine nicht definierte Hostvariable gefunden.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '42866';
@@ -1973,14 +1975,14 @@ When pi_State = '42866';
      //Anweisung RETURN im Funktionsrumpf zurückgegebenen
      //wird, nicht geeignet.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '42872';
      //Klauseln der Anweisung FETCH sind mit der Cursordefinition
      //nicht kompatibel.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '42873';
@@ -1988,7 +1990,7 @@ When pi_State = '42873';
      //Anweisung INSERT für mehrere Zeilen wurde eine
      //ungültige Anzahl Zeilen angegeben.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '42874';
@@ -1996,34 +1998,34 @@ When pi_State = '42874';
      //erforderlich, um die Auswahlanweisung zu
      //implementieren.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '42875';
      //Der Teil mit dem Schemanamen in einem qualifizierten Namen
      //muss mit dem Schemanamen übereinstimmen.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '42876';
      //Unterschiedliche CCSIDs für Schlüssel in CREATE INDEX sind
      //nur bei Angabe von *HEX für die Sortierfolge zulässig.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '42877';
      //Der Spaltenname kann nicht qualifiziert werden.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '42878';
      //Ein ungültiger Funktions- oder Prozedurname wurde zusammen
      //mit dem Schlüsselwort EXTERNAL verwendet.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '42879';
@@ -2031,7 +2033,7 @@ When pi_State = '42879';
      //Anweisung CREATE/FUNCTION ist für den entsprechenden
      //Datentyp in der Quellenfunktion nicht geeignet.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '42880';
@@ -2039,13 +2041,13 @@ When pi_State = '42880';
      //kompatibel oder hätten immer das Abschneiden einer
      //Zeichenfolge fester Länge zur Folge.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '42881';
      //Ungültige Verwendung einer Funktion.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '42882';
@@ -2053,21 +2055,21 @@ When pi_State = '42882';
      //stimmt nicht mit dem Qualifikationsmerkmal für den
      //Funktionsnamen überein.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '42883';
      //Es wurde keine Funktion oder Methode mit übereinstimmender
      //Kennung gefunden.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '42884';
      //Es wurde keine Routine mit dem angegebenen Namen und
      //kompatiblen Argumenten gefunden.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '42885';
@@ -2076,33 +2078,33 @@ When pi_State = '42885';
      //Anzahl überein, die durch die in der Klausel SOURCE
      //angegebene Funktion bereitgestellt wird.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '42886';
      //Die Attribute des Parameters IN, OUT oder INOUT stimmen
      //nicht überein.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '42887';
      //Die Funktion ist in dem Kontext, in dem sie auftritt, nicht
      //gültig.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '42888';
      //Die Tabelle hat keinen Primärschlüssel.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '42889';
      //Die Tabelle hat bereits einen Primärschlüssel.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '42890';
@@ -2111,14 +2113,14 @@ When pi_State = '42890';
      //verfügt jedoch über keine eindeutige
      //Integritätsbedingung mit den angegebenen Spaltennamen.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '42891';
      //Eine zweite identische Integritätsbedingung UNIQUE ist
      //bereits vorhanden.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '42892';
@@ -2126,7 +2128,7 @@ When pi_State = '42892';
      //sind nicht zulässig, da die Löschregel (DELETE) und
      //das Auslöseereignis nicht kompatibel sind.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '42893';
@@ -2135,14 +2137,14 @@ When pi_State = '42893';
      //entzogen werden, da andere Objekte davon abhängig
      //sind.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '42894';
      //Der Wert einer Spalte oder eines Reihenfolgeattributs ist
      //ungültig.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '42895';
@@ -2151,20 +2153,20 @@ When pi_State = '42895';
      //einer Prozedur oder benutzerdefinierten Funktion
      //nicht kompatibel ist.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '42896';
      //Die ASP-Nummer ist ungültig.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '42898';
      //Ein ungültiger Korrelationsbezug oder eine ungültige
      //Übergangstabelle wurde in einem Auslöser gefunden.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '42899';
@@ -2172,7 +2174,7 @@ When pi_State = '42899';
      //Aktionen mit der Klausel FOR EACH STATEMENT nicht
      //zulässig.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '428A1';
@@ -2180,33 +2182,33 @@ When pi_State = '428A1';
      //Dateireferenzvariable verwiesen wird, ist nicht
      //möglich.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '428B3';
      //Es wurde ein ungültiger pi_State-Wert angegeben.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '428B7';
      //Eine in einer SQL-Anweisung angegebene Zahl liegt außerhalb
      //des gültigen Bereichs.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '428B8';
      //Der in einer Umbenennung angegebene Name ist nicht gültig.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '428BA';
      //Mit WITHOUT RETURN definierte Cursor dürfen nicht in SET
      //RESULT SETS angegeben werden.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '428C1';
@@ -2214,21 +2216,21 @@ When pi_State = '428C1';
      //(ROWID) oder Identitätsspalte (IDENTITY) angegeben
      //werden.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '428C4';
      //Die Anzahl Elemente auf jeder Seite des Prädikatoperators
      //stimmt nicht überein.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '428C7';
      //Eine Angabe für eine Zeilenkennungs- (ROWID) oder
      //Referenzspalte ist ungültig.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '428C9';
@@ -2236,21 +2238,21 @@ When pi_State = '428C9';
      //(IDENTITY) kann nicht als Zielspalte einer Anweisung
      //INSERT oder UPDATE angegeben werden.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '428D1';
      //Zugriff auf eine Datei, auf die durch einen DATALINK-Wert
      //verwiesen wird, ist nicht möglich.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '428D2';
      //AS LOCATOR kann nicht für einen Parameter angegeben werden,
      //der kein LOB (großes Objekt) ist.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '428D4';
@@ -2258,46 +2260,46 @@ When pi_State = '428D4';
      //nicht in einer Anweisung OPEN, CLOSE oder FETCH
      //verwiesen werden.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '428D5';
      //Die Endmarke entspricht nicht der Startmarke.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '428D6';
      //UNDO ist für zusammengesetzte Anweisungen NOT ATOMIC nicht
      //zulässig.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '428D7';
      //Der Bedingungswert ist nicht zulässig.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '428D8';
      //Die Deklaration der Variablen SQLCODE oder pi_State ist
      //ungültig.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '428DE';
      //Der Wert für PAGESIZE wird nicht unterstützt.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '428EC';
      //Der für die MQT (Materialized Query Table) angegebene
      //Fullselect ist ungültig.	
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '428EK';
@@ -2306,47 +2308,47 @@ When pi_State = '428EK';
      //einer deklarierten globalen temporären Tabelle muss
      //SESSION lauten.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '428EW';
      //Die Tabelle kann nicht in eine MQT (Materialized Query
      //Table) oder aus einer MQT konvertiert werden.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '428F1';
      //Eine SQL-Funktion TABLE muss ein Tabellenergebnis
      //zurückgeben.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '428F2';
      //In einer Anweisung RETURN in einer SQL-Prozedur muss ein
      //ganzzahliger Ausdruck angegeben werden.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '428F9';
      //Ein Sequenzausdruck darf in diesem Kontext nicht angegeben
      //werden.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '428FA';
      //Die Anzahl der Kommastellen der Dezimalzahl muss null sein.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '428FC';
      //Die Länge des Verschlüsselungskennworts ist ungültig.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '428FD';
@@ -2354,13 +2356,13 @@ When pi_State = '428FD';
      //nicht mit dem für die Verschlüsselung der Daten
      //verwendeten Kennwort überein.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '428FE';
      //Die Daten sind nicht das Ergebnis der Funktion ENCRYPT.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '428FI';
@@ -2368,14 +2370,14 @@ When pi_State = '428FI';
      //Tabelle, auf die verwiesen wird, ist jedoch nicht
      //sortiert.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '428FP';
      //Für jede Art von Operation in einer Sicht ist nur ein
      //einziger INSTEAD OF-Auslöser zulässig.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '428FQ';
@@ -2386,55 +2388,55 @@ When pi_State = '428FQ';
      //in einer Sicht verschachtelt ist, die mit der Klausel
      //WITH ROW MOVEMENT definiert ist.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '428FR';
      //Eine Spalte kann nicht wie angegeben geändert werden.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '428FT';
      //Die Tabelle ist mit der angegebenen
      //Datenpartitionierungsoperation nicht kompatibel.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '428FY';
      //In einer MQT (Materialized Query Table) kann keine Spalte
      //hinzugefügt, gelöscht oder geändert werden.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '428G0';
      //Eine logische Datei verhindert das Ändern der
      //Partitionsattribute.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '428G2';
      //Die letzte Datenpartition kann nicht aus der Tabelle
      //gelöscht werden.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '42903';
      //Ungültige Verwendung einer Aggregatfunktion oder einer
      //OLAP-Funktion.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '42904';
      //Die SQL-Prozedur wurde aufgrund eines Kompilierungsfehlers
      //nicht erstellt.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '42906';
@@ -2442,33 +2444,33 @@ When pi_State = '42906';
      //HAVING umfasst einen Ausdruck, der einen Operator auf
      //einen Korrelationsbezug anwendet.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '42907';
      //Die Zeichenfolge ist zu lang.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '42908';
      //Die Anweisung umfasst nicht eine erforderliche Spaltenliste.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '42910';
      //Die Anweisung ist in einer zusammengesetzten Anweisung
      //nicht zulässig.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '42911';
      //Eine Division durch eine Dezimalzahl ist ungültig, da das
      //Ergebnis eine negative Anzahl Kommastellen hätte.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '42912';
@@ -2476,7 +2478,7 @@ When pi_State = '42912';
      //der Klausel UPDATE der Auswahlanweisung des Curors
      //angegeben ist.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '42914';
@@ -2484,14 +2486,14 @@ When pi_State = '42914';
      //Unterabfrage verwiesen wird, von der Operation
      //betroffen sein kann.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '42917';
      //Das Objekt kann nicht explizit gelöscht oder geändert
      //werden.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '42918';
@@ -2499,81 +2501,81 @@ When pi_State = '42918';
      //systemdefinierten Datentypnamen (z. B. INTEGER)
      //erstellt werden.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '42919';
      //Verschachtelte zusammengesetzte Anweisungen sind nicht
      //zulässig.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '42922';
      //DROP SCHEMA kann unter COMMIT-Steuerung nicht ausgeführt
      //werden.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '42923';
      //Programm oder Paket muss erneut erstellt werden, um auf
      //einen Aliasnamen zu verweisen.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '42924';
      //Ein Aliasname wird statt in eine Tabelle oder Sicht an dem
      //fernen Standort in einen anderen Aliasnamen aufgelöst.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '42925';
      //Rekursive benannte abgeleitete Tabellen können SELECT
      //DISTINCT nicht angeben und müssen UNION ALL angeben.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '42926';
      //Querverweise sind mit COMMIT(*NONE) nicht zulässig.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '42928';
      //WITH EMPTY TABLE kann nicht angegeben werden.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '42929';
      //FOR ALL PARTITIONS ist für einen verschlüsselten
      //Vektorindex nicht zulässig.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '42930';
      //Dieselbe Spalte wurde in FOR UPDATE OF und ORDER BY
      //angegeben.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '42932';
      //Die Voraussetzungen für die Programmerstellung sind nicht
      //korrekt.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '42937';
      //Die Parameter dürfen keinen gemischten Subtyp haben.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '42939';
@@ -2581,21 +2583,21 @@ When pi_State = '42939';
      //Kennung für die Verwendung durch das System
      //reserviert ist.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '42944';
      //Die Berechtigungs-ID kann nicht sowohl Eigner als auch
      //Primärgruppe/Eigner sein.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '42961';
      //Der angegebene Servername stimmt nicht mit dem aktuellen
      //Server überein.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '42962';
@@ -2604,7 +2606,7 @@ When pi_State = '42962';
      //kann nicht in einem Index, einem Schlüssel oder einer
      //Integritätsbedingung verwendet werden.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '42969';
@@ -2613,14 +2615,14 @@ When pi_State = '42969';
      //Einschränkungen vorliegen oder eine Abschnittsnummer
      //ungültig ist.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '42970';
      //COMMIT HOLD oder ROLLBACK HOLD ist nur für einen DB2 UDB
      //für iSeries-Anwendungsserver zulässig.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '42971';
@@ -2628,7 +2630,7 @@ When pi_State = '42971';
      //ausgeführt werden, da die COMMIT-Steuerung bereits
      //für eine andere relationale Datenbank aktiv ist.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '42972';
@@ -2636,28 +2638,28 @@ When pi_State = '42972';
      //einer Anweisung MERGE verweist auf Spalten in
      //mehreren Operandentabellen.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '42977';
      //Die Berechtigungs-ID kann nicht geändert werden, wenn die
      //Verbindung zum lokalen Server hergestellt wird.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '42978';
      //Eine Bezugszahlvariable ist keine ganze Zahl ohne
      //erweiterte Genauigkeit.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '42981';
      //CREATE SCHEMA ist nicht zulässig, wenn in der
      //Arbeitseinheit Änderungen anstehen.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '42984';
@@ -2667,19 +2669,19 @@ When pi_State = '42984';
      //die Berechtigung *ALLOBJ oder die angegebene
      //Berechtigung für die abhängige Tabelle oder Sicht hat.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '42985';
      //Die Anweisung ist in einer Routine nicht zulässig.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '42987';
      //Die Anweisung ist in einem Auslöser nicht zulässig.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '42990';
@@ -2688,21 +2690,21 @@ When pi_State = '42990';
      //Schlüsselspalten keine Obermenge der
      //Partitionierungsschlüsselspalten sind.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '42995';
      //Die aufgeforderte Funktion gilt nicht für globale temporäre
      //Tabellen.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '42996';
      //Der Partitionierungsschlüssel kann keine Spalte für Datum
      //und Uhrzeit und keine Spalte mit Gleitbereich sein.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '42998';
@@ -2712,14 +2714,14 @@ When pi_State = '42998';
      //Knotengruppe nicht mit der übergeordneten Tabelle
      //übereinstimmt.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '42999';
      //Die Abfrage ist in einer verteilten Tabelle oder Sicht
      //nicht zulässig.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '429B6';
@@ -2727,7 +2729,7 @@ When pi_State = '429B6';
      //werden, da die Tabelle eine Datenverknüpfungsspalte
      //mit FILE LINK CONTROL enthält.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '429B7';
@@ -2736,7 +2738,7 @@ When pi_State = '429B7';
      //mit einer Datenverknüpfungsspalte mit FILE LINK
      //CONTROL nicht zulässig.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '429BD';
@@ -2744,21 +2746,21 @@ When pi_State = '429BD';
      //zusammengesetzten Anweisung in einer SQL-Zeilen- oder
      //-Tabellenfunktion sein.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '429BH';
      //Eine partitionierte Tabelle kann keine Identitätsspalte
      //enthalten.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '429BM';
      //Die ICU-Sortierfolge kann in diesem Kontext nicht verwendet
      //werden.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 
@@ -2767,7 +2769,7 @@ When pi_State = '44000';
      //INSERT oder UPDATE ist nicht zulässig, da die Ergebniszeile
      //nicht der Sichtdefinition entspricht.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 
@@ -2776,35 +2778,35 @@ When pi_State = '46001';
      //Die beim Installieren oder Ersetzen einer JAR-Prozedur
      //angegebene URL gab keine gültige JAR-Datei an.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '46002';
      //Der beim Installieren, Ersetzen oder Entfernen einer
      //Java-Prozedur angegebene JAR-Name ist ungültig.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '46003';
      //Die JAR-Datei kann nicht entfernt werden, da eine Klasse
      //gerade von einer Prozedur verwendet wird.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '46007';
      //Eine Java-Funktion hat eine Java-Methode mit einem
      //ungültigen Funktionstyp.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '46008';
      //Eine Java-Funktion kann keiner einzelnen Java-Methode
      //zugeordnet werden.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '46501';
@@ -2812,7 +2814,7 @@ When pi_State = '46501';
      //"<JAR-ID>" wurde die Verwendung eines
      //Deploymentdeskriptors angegeben.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 
@@ -2821,33 +2823,33 @@ When pi_State = '51002';
      //Das Paket für die Anforderung zur Ausführung einer
      //SQL-Anweisung wurde nicht gefunden.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '51003';
      //Konsistenztoken stimmen nicht überein.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '51004';
      //Eine Adresse im SQL-Deskriptorbereich (SQLDA) ist ungültig.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '51009';
      //COMMIT oder ROLLBACK ist nicht zulässig, da die
      //COMMIT-Steuerung nicht gestartet wurde.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '51015';
      //Es wurde versucht, einen Abschnitt auszuführen, für den zur
      //Bindezeit ein Fehler festgestellt wurde.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '51021';
@@ -2855,7 +2857,7 @@ When pi_State = '51021';
      //Anwendungsprozess eine Operation ROLLBACK ausgeführt
      //hat.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '51035';
@@ -2863,7 +2865,7 @@ When pi_State = '51035';
      //dieser Sitzung für die Reihenfolge noch kein Wert
      //generiert wurde.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '51036';
@@ -2871,20 +2873,20 @@ When pi_State = '51036';
      //Server ist nicht zulässig, da ein Sicherungspunkt
      //aussteht.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '51037';
      //Die Operation ist nicht zulässig, da ein Auslöser als
      //funktionsunfähig markiert wurde.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '51039';
      //Der Wert für ENCRYPTION PASSWORD ist nicht definiert.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 
@@ -2894,21 +2896,21 @@ When pi_State = '53038';
      //Die Anzahl Schlüsselgrenzwerte ist null oder größer als die
      //Anzahl Spalten in dem Schlüssel.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '53039';
      //Die Klausel PART der Anweisung ALTER fehlt oder ist
      //ungültig.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '53045';
      //Der Datentyp der Konstante für den Schlüsselgrenzwert
      //stimmt nicht mit dem Datentyp der Spalte überein.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 
@@ -2916,66 +2918,66 @@ When pi_State = '53045';
 When pi_State = '54001';
      //Die Anweisung ist zu lang oder zu komplex.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '54002';
      //Eine Zeichenfolgekonstante ist zu lang.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '54004';
      //Die Anweisung enthält zu viele Tabellennamen oder zu viele
      //Einträge in einer SELECT- oder INSERT-Liste.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '54005';
      //Der Sortierschlüssel ist zu lang oder enthält zu viele
      //Spalten.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '54006';
      //Das Ergebnis der Verknüpfung ist zu lang.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '54008';
      //Der Schlüssel ist zu lang, eine Spalte des Schlüssels ist
      //zu lang, oder der Schlüssel enthält zu viele Spalten.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '54009';
      //In einer Anweisung GRANT oder REVOKE wurden zu viele
      //Benutzer angegeben.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '54010';
      //Die Satzlänge der Tabelle ist zu groß.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '54011';
      //Für eine Tabelle, Sicht oder Tabellenfunktion wurden zu
      //viele Spalten angegeben.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '54018';
      //Die Zeile ist zu lang.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '54019';
@@ -2983,48 +2985,48 @@ When pi_State = '54019';
      //überschritten; wahrscheinlich wurden zu viele
      //unterschiedliche CCSIDs verwendet.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '54021';
      //Zu viele Integritätsbedingungen oder die
      //Integritätsbedingung ist zu groß.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '54023';
      //Der Grenzwert für die Anzahl Parameter oder Argumente für
      //eine Funktion oder Prozedur wurde überschritten.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '54028';
      //Die maximale Anzahl gleichzeitiger Handles für große
      //Objekte (LOBs) wurde erreicht.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '54035';
      //Ein interner Objektgrenzwert wurde überschritten.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '54038';
      //Die maximale Verschachtelungstiefe verschachtelter Routinen
      //oder Auslöser wurde überschritten.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '54044';
      //Eine Mehrbyte-(UCS-)Sortierfolgetabelle kann nicht in DRDA
      //unterstützt werden, da sie zu groß ist.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '54054';
@@ -3032,14 +3034,14 @@ When pi_State = '54054';
      //und der zugehörigen Länge des
      //Partitionierungsbegrenzungsschlüssels ist zu groß.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '54057';
      //Ein XML-Elementname, ein Attributname, ein
      //Namensbereichspräfix oder eine URL ist zu lang.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 
@@ -3048,41 +3050,41 @@ When pi_State = '55005';
      //Die Rekursion wird nur für einen DB2 UDB für
      //iSeries-Anwendungsserver unterstützt.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '55006';
      //Das Objekt kann nicht gelöscht werden, da es momentan von
      //demselben Anwendungsprozess verwendet wird.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '55007';
      //Das Objekt kann nicht geändert werden, da es momentan von
      //demselben Anwendungsprozess verwendet wird.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '55018';
      //Das Schema kann nicht gelöscht werden, da es sich in der
      //Bibliotheksliste befindet.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '55019';
      //Der Status des Objekts ist für die Operation ungültig.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '55029';
      //Das lokale Programm hat versucht, die Verbindung zu einer
      //fernen Datenbank herzustellen.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '55042';
@@ -3090,20 +3092,20 @@ When pi_State = '55042';
      //Teildatei einer Datei angibt, die mehrere Teildateien
      //enthält.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '55048';
      //Verschlüsselte Daten können nicht verschlüsselt werden.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '55050';
      //Ein Objekt kann nicht in einem geschützten Schema erstellt
      //werden.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '55058';
@@ -3111,7 +3113,7 @@ When pi_State = '55058';
      //DISABLE DEBUG MODE erstellt wurde, nicht geändert
      //werden.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 
@@ -3119,33 +3121,33 @@ When pi_State = '55058';
 When pi_State = '56016';
      //Die für Datenpartitionen angegebenen Bereiche sind ungültig.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '56084';
      //Ein nicht unterstützter SQLTYPE wurde in einer Auswahlliste
      //oder Eingabeliste gefunden.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '56095';
      //Eine Bindeoption ist ungültig.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '560BF';
      //Die Verschlüsselungs- und Entschlüsselungsfunktion wurde
      //nicht installiert.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '560C4';
      //Die Option ist für die ARD-Schnittstelle nicht gültig.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 
@@ -3156,28 +3158,28 @@ When pi_State = '57005';
      //Zeitlimit für ein Dienstprogramm oder den Governor
      //überschritten wurde.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '57006';
      //Das Objekt kann nicht erstellt werden, da eine Operation
      //DROP oder CREATE ansteht.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '57007';
      //Das Objekt kann nicht verwendet werden, da eine Operation
      //ansteht.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '57011';
      //Virtuelle Speicher- oder Datenbankressource ist nicht
      //verfügbar.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '57012';
@@ -3185,7 +3187,7 @@ When pi_State = '57012';
      //verfügbar. Dies hat keine Auswirkungen auf die
      //erfolgreiche Ausführung nachfolgender Anweisungen.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '57013';
@@ -3193,19 +3195,19 @@ When pi_State = '57013';
      //verfügbar. Dies hat Auswirkungen auf die erfolgreiche
      //Ausführung nachfolgender Anweisungen.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '57014';
      //Die Verarbeitung wurde wie angefordert abgebrochen.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '57017';
      //Zeichenkonvertierung ist nicht definiert.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '57033';
@@ -3217,20 +3219,20 @@ When pi_State = '57033';
 When pi_State = '57042';
      //DDM-Rekursion ist aufgetreten.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '57043';
      //Ein lokales SQL-Anwendungsprogramm kann auf einem
      //Anwendungsserver nicht ausgeführt werden.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '57050';
      //Der Dateiserver ist momentan nicht verfügbar.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 
@@ -3239,13 +3241,13 @@ When pi_State = '58002';
      //Ein Exit hat einen Fehler oder ungültige Daten
      //zurückgegeben.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '58003';
      //Es wurde eine ungültige Abschnittsnummer gefunden.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '58004';
@@ -3253,7 +3255,7 @@ When pi_State = '58004';
      //erfolgreiche Ausführung nachfolgender SQL-Anweisungen
      //verhindert) ist aufgetreten.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '58008';
@@ -3262,7 +3264,7 @@ When pi_State = '58008';
      //erfolgreiche Ausführung nachfolgender DDM-Befehle
      //oder SQL-Anweisungen hat.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '58009';
@@ -3270,7 +3272,7 @@ When pi_State = '58009';
      //fehlgeschlagen, der die Freigabe des Datenaustauschs
      //zur Folge hatte.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '58010';
@@ -3279,51 +3281,51 @@ When pi_State = '58010';
      //Ausführung nachfolgender DDM-Befehle oder
      //SQL-Anweisungen hat.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '58011';
      //Der DDM-Befehl ist ungültig, während der Bindeprozess aktiv
      //ist.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '58012';
      //Der Bindeprozess mit dem angegebenen Paketnamen und dem
      //angegebenen Konsistenztoken ist nicht aktiv.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '58014';
      //Der DDM-Befehl wird nicht unterstützt.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '58015';
      //Das DDM-Objekt wird nicht unterstützt.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '58016';
      //Der DDM-Parameter wird nicht unterstützt.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '58017';
      //Der DDM-Parameterwert wird nicht unterstützt.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '58018';
      //Die DDM-Antwortnachricht wird nicht unterstützt.	
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '58028';
@@ -3331,20 +3333,20 @@ When pi_State = '58028';
      //Ressource in der Arbeitseinheit ihre Ressourcen nicht
      //festschreiben konnte.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 When pi_State = '58033';
      //Bei dem Versuch, auf einen Clienttreiber zuzugreifen, ist
      //ein unerwarteter Fehler aufgetreten.
 
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 
 other;
      // Unerwarteter Fehler
-  SqlProblem();
+  LastErrorMessage = SqlProblem();
   return *off;
 
 Endsl;
@@ -3480,7 +3482,7 @@ End-Proc SqlHandleCstViolation;
    // SqlProblem           | Unbehandeltes Problem
    //************************************************************************
 Dcl-Proc SqlProblem Export;
-Dcl-Pi SqlProblem;
+Dcl-Pi SqlProblem VARCHAR(1024);
 End-Pi;
 
 
@@ -3496,7 +3498,7 @@ Exec Sql
 SqlLogState();
 
 
-return;
+return Msg_Text;
 
 
 End-Proc SqlProblem;
@@ -3832,4 +3834,14 @@ return *off;
 
 
 End-Proc SqlHandleIgnoreWarnings;
+
+   //************************************************************************
+   // GetLastErrorMessage
+   //************************************************************************
+Dcl-Proc SqlGetLastErrorMessage export;
+Dcl-Pi SqlGetLastErrorMessage VARCHAR(1024);
+End-Pi;
+Return %trimR(LastErrorMessage);
+
+End-Proc SqlGetLastErrorMessage;
 
