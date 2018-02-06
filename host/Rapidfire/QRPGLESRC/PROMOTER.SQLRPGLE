@@ -184,6 +184,25 @@ DCL-C COMMAND_TYPE_POSTRUN
 DCL-C USRSPC_PROMOTER
       'PROMOTER  QTEMP     ';
 
+// Field Prefixes
+
+DCL-C SOURCE_PREFIX
+      'S_';
+DCL-C TARGET_PREFIX
+      'T_';
+
+// Generation Levels
+
+//  Copy record format, used when the
+//  record format level IDs are the same
+DCL-C GEN_LVL_RECORD_COPY
+      1;
+
+//  Copy field by field, used when the
+//  record formats are different
+DCL-C GEN_LVL_FIELD_COPY
+      2;
+
 // Global field declarations
 
 DCL-S g_Loop
@@ -1464,22 +1483,8 @@ DCL-PROC PROMOTER_generate_Copy_Program EXPORT;
   DCL-S l_tmpDftValue VARCHAR(2048) Inz;
   DCL-S l_logErrJob Like(p_job);
 
-  // Field Prefixes
-
-  DCL-C SOURCE_PREFIX 'S_';
-  DCL-C TARGET_PREFIX 'T_';
-
-  // Generation Levels
-
-  //  Copy record format, used when the
-  //  record format level IDs are the same
-  DCL-C GEN_LVL_RECORD_COPY
-        1;
-
-  //  Copy field by field, used when the
-  //  record formats are different
-  DCL-C GEN_LVL_FIELD_COPY
-        2;
+  DCL-S l_srcFormatLevelId Char(13);
+  DCL-S l_tgtFormatLevelId Char(13);
 
   l_hSrcFields = *null;
   l_hTgtFields = *null;
@@ -1555,22 +1560,29 @@ DCL-PROC PROMOTER_generate_Copy_Program EXPORT;
 
       If Not RAPIDFIRE_is_Error(l_logErrJob);
 
-        If p_Conversion_Program <> '*NONE' or
-           FieldAttributes_getFormatLevelId(l_hSrcFields) <>
-           FieldAttributes_getFormatLevelId(l_hTgtFields);
+        // If p_Conversion_Program <> '*NONE' or
+        //    FieldAttributes_getFormatLevelId(l_hSrcFields) <>
+        //    FieldAttributes_getFormatLevelId(l_hTgtFields);
+        //
+        //   // Use 'field copy mode' when the record formats are different
+        //   // or when a copy program is used.
+        //   l_gen_Level = GEN_LVL_FIELD_COPY;
+        //   l_src_Pfx = SOURCE_PREFIX;
+        //   l_tgt_Pfx = TARGET_PREFIX;
+        // Else;
+        //
+        //   // Else use the faster 'record copy mode'
+        //   l_gen_Level = GEN_LVL_RECORD_COPY;
+        //   l_src_Pfx = '''''';
+        //   l_tgt_Pfx = l_src_Pfx;
+        // Endif;
 
-          // Use 'field copy mode' when the record formats are different
-          // or when a copy program is used.
-          l_gen_Level = GEN_LVL_FIELD_COPY;
-          l_src_Pfx = SOURCE_PREFIX;
-          l_tgt_Pfx = TARGET_PREFIX;
-        Else;
+        l_srcFormatLevelId = FieldAttributes_getFormatLevelId(l_hSrcFields);
+        l_tgtFormatLevelId = FieldAttributes_getFormatLevelId(l_hTgtFields);
 
-          // Else use the faster 'record copy mode'
-          l_gen_Level = GEN_LVL_RECORD_COPY;
-          l_src_Pfx = '''''';
-          l_tgt_Pfx = l_src_Pfx;
-        Endif;
+        l_gen_Level = getFieldCopyMode(p_Conversion_Program: l_srcFormatLevelId: l_tgtFormatLevelId);
+        l_src_Pfx = getSourceFieldPrefix(l_gen_Level);
+        l_tgt_Pfx = getTargetFieldPrefix(l_gen_Level);
 
         // Create source physical file in library QTEMP
         EXCCMD_execute_Command(
@@ -3949,3 +3961,66 @@ DCL-PROC quote;
   Return DOUBLE_QUOTES + p_token + DOUBLE_QUOTES;
 
 END-PROC;
+
+//*=========================================================================================*
+//* Returns the "field copy mode"                                                           *
+//*=========================================================================================*
+
+DCL-PROC getFieldCopyMode;
+
+  DCL-PI *N INT(10);
+    p_conversion_Program
+    CHAR(10) Const;
+    p_srcFormatLevelId
+    CHAR(13) Const;
+    p_tgtFormatLevelId
+    CHAR(13) Const;
+  END-PI;
+
+  If p_Conversion_Program <> '*NONE' or
+     p_srcFormatLevelId <> p_tgtFormatLevelId;
+    Return GEN_LVL_FIELD_COPY;
+  Else;
+    Return GEN_LVL_RECORD_COPY;
+  Endif;
+
+END-PROC;
+
+//*=========================================================================================*
+//* Returns the prefix for the source file fields.                                          *
+//*=========================================================================================*
+
+DCL-PROC getSourceFieldPrefix;
+
+  DCL-PI *N CHAR(2);
+    p_gen_Level
+    INT(10) Const;
+  END-PI;
+
+  If (p_gen_Level = GEN_LVL_FIELD_COPY);
+    Return SOURCE_PREFIX;
+  Else;
+    Return '';
+  Endif;
+
+END-PROC;
+
+//*=========================================================================================*
+//* Returns the prefix for the target file fields.                                          *
+//*=========================================================================================*
+
+DCL-PROC getTargetFieldPrefix;
+
+  DCL-PI *N CHAR(2);
+    p_gen_Level
+    INT(10) Const;
+  END-PI;
+
+  If (p_gen_Level = GEN_LVL_FIELD_COPY);
+    Return TARGET_PREFIX;
+  Else;
+    Return '';
+  Endif;
+
+END-PROC;
+
