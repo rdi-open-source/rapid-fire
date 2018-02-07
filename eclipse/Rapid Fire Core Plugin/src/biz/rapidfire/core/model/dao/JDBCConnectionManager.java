@@ -69,7 +69,7 @@ public class JDBCConnectionManager {
     private static final String JDBC_FALSE = "false";
     private static final String JDBC_TRUE = "true";
 
-    private static final boolean isDebugMode = true;
+    private static final boolean isDebugMode = false;
 
     /**
      * The instance of this Singleton class.
