@@ -346,4 +346,54 @@ public class ConversionManager extends AbstractManager<IRapidFireConversionResou
 
         return fieldList.getFields();
     }
+
+    public String getSourceFilePrefix(boolean isConversionProgram, String srcLibraryName, String srcFileName, String tgtLibraryName, String tgtFileName ) throws Exception {
+
+        CallableStatement statement = dao.prepareCall(dao
+            .insertLibraryQualifier("{CALL " + IJDBCConnection.LIBRARY + "\"PROMOTER_get_Source_Field_Prefix\"(?, ?, ?, ?, ?, ?)}")); //$NON-NLS-1$ //$NON-NLS-2$
+
+        if (isConversionProgram) {
+        	statement.setString(IConversionGetSourceFieldPrefix.CONVERSION_PROGRAM, "*ANY");
+        } else {
+        	statement.setString(IConversionGetSourceFieldPrefix.CONVERSION_PROGRAM, "*NONE");
+        }
+        statement.setString(IConversionGetSourceFieldPrefix.SOURCE_LIBRARY, srcLibraryName);
+        statement.setString(IConversionGetSourceFieldPrefix.SOURCE_FILE, srcFileName);
+        statement.setString(IConversionGetSourceFieldPrefix.TARGET_LIBRARY, tgtLibraryName);
+        statement.setString(IConversionGetSourceFieldPrefix.TARGET_FILE, tgtFileName);
+        statement.setString(IConversionGetSourceFieldPrefix.PREFIX, EMPTY_STRING);
+
+        statement.registerOutParameter(IConversionGetSourceFieldPrefix.PREFIX, Types.CHAR);
+
+        statement.execute();
+
+        String prefix = getStringTrim(statement, IConversionGetSourceFieldPrefix.PREFIX);
+
+        return prefix;
+    }
+
+    public String getTargetFilePrefix(boolean isConversionProgram, String srcLibraryName, String srcFileName, String tgtLibraryName, String tgtFileName ) throws Exception {
+
+        CallableStatement statement = dao.prepareCall(dao
+            .insertLibraryQualifier("{CALL " + IJDBCConnection.LIBRARY + "\"PROMOTER_get_Target_Field_Prefix\"(?, ?, ?, ?, ?, ?)}")); //$NON-NLS-1$ //$NON-NLS-2$
+
+        if (isConversionProgram) {
+        	statement.setString(IConversionGetTargetFieldPrefix.CONVERSION_PROGRAM, "*ANY");
+        } else {
+        	statement.setString(IConversionGetTargetFieldPrefix.CONVERSION_PROGRAM, "*NONE");
+        }
+        statement.setString(IConversionGetTargetFieldPrefix.SOURCE_LIBRARY, srcLibraryName);
+        statement.setString(IConversionGetTargetFieldPrefix.SOURCE_FILE, srcFileName);
+        statement.setString(IConversionGetTargetFieldPrefix.TARGET_LIBRARY, tgtLibraryName);
+        statement.setString(IConversionGetTargetFieldPrefix.TARGET_FILE, tgtFileName);
+        statement.setString(IConversionGetTargetFieldPrefix.PREFIX, EMPTY_STRING);
+
+        statement.registerOutParameter(IConversionGetTargetFieldPrefix.PREFIX, Types.CHAR);
+
+        statement.execute();
+
+        String prefix = getStringTrim(statement, IConversionGetTargetFieldPrefix.PREFIX);
+
+        return prefix;
+    }
 }
