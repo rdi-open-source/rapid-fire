@@ -199,6 +199,10 @@ public abstract class WizardDataModel {
 
     private IRapidFireJobResource loadJobResource() {
 
+        if (StringHelper.isNullOrEmpty(connectionName) || StringHelper.isNullOrEmpty(dataLibraryName) || StringHelper.isNullOrEmpty(jobName)) {
+            return null;
+        }
+
         IRapidFireSubSystem subSystem = (IRapidFireSubSystem)SystemConnectionHelper.getSubSystem(connectionName, IRapidFireSubSystem.class);
         if (subSystem == null) {
             return null;

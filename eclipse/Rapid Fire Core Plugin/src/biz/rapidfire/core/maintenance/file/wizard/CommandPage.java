@@ -20,6 +20,7 @@ import biz.rapidfire.core.helpers.StringHelper;
 import biz.rapidfire.core.maintenance.MaintenanceMode;
 import biz.rapidfire.core.maintenance.file.wizard.model.FileWizardDataModel;
 import biz.rapidfire.core.maintenance.wizard.AbstractWizardPage;
+import biz.rapidfire.core.model.IRapidFireJobResource;
 import biz.rapidfire.core.swt.widgets.WidgetFactory;
 
 public class CommandPage extends AbstractWizardPage {
@@ -46,7 +47,9 @@ public class CommandPage extends AbstractWizardPage {
     @Override
     public void updateMode() {
 
-        if (model.getJob().isDoCreateEnvironment()) {
+        IRapidFireJobResource job = model.getJob();
+
+        if (job == null || job.isDoCreateEnvironment()) {
             setDescription(Messages.Wizard_Page_Command_description);
             editable = true;
         } else {
