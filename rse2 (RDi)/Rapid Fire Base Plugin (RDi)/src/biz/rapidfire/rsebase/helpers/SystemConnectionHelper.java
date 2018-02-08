@@ -115,10 +115,17 @@ public class SystemConnectionHelper {
         if (resource != null) {
             ISystemRegistry sr = RSECorePlugin.getTheSystemRegistry();
             for (Object parent : parents) {
-                sr.fireEvent(new SystemResourceChangeEvent(resource, ISystemResourceChangeEvents.EVENT_ADD, parent));
-                if (!isSlowConnection) {
-                    sr.fireEvent(new SystemResourceChangeEvent(resource, ISystemResourceChangeEvents.EVENT_CHANGE_CHILDREN, parent));
-                }
+            	if (parent instanceof ISystemFilterReference) {
+            		ISystemFilterReference systemFilterReference = (ISystemFilterReference)parent;
+            		systemFilterReference.markStale(true);
+                    sr.fireEvent(new SystemResourceChangeEvent(systemFilterReference, ISystemResourceChangeEvents.EVENT_REFRESH, null));
+            	}
+            	else {
+                    sr.fireEvent(new SystemResourceChangeEvent(resource, ISystemResourceChangeEvents.EVENT_ADD, parent));
+                    if (!isSlowConnection) {
+                        sr.fireEvent(new SystemResourceChangeEvent(resource, ISystemResourceChangeEvents.EVENT_CHANGE_CHILDREN, parent));
+                    }
+            	}
             }
         }
     }
