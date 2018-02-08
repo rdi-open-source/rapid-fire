@@ -8,8 +8,11 @@
 
 package biz.rapidfire.core.handlers.job;
 
+import org.eclipse.ui.PlatformUI;
+
 import biz.rapidfire.core.maintenance.job.shared.JobAction;
 import biz.rapidfire.core.model.IRapidFireJobResource;
+import biz.rapidfire.core.view.FileCopyStatusView;
 
 public class RefreshJobStatusHandler extends AbstractJobActionHandler {
 
@@ -21,5 +24,12 @@ public class RefreshJobStatusHandler extends AbstractJobActionHandler {
     protected void performAction(IRapidFireJobResource job) throws Exception {
         job.reload(getShell());
         refreshUIChanged(job.getParentSubSystem(), job, job.getParentFilters());
+
+        FileCopyStatusView view = (FileCopyStatusView)PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
+                .findView(FileCopyStatusView.ID);
+        if (view != null) {
+            view.setInput(job);
+        }
+        
     }
 }
