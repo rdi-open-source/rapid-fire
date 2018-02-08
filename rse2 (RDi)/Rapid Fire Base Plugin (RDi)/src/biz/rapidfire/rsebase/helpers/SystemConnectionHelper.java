@@ -117,10 +117,12 @@ public class SystemConnectionHelper {
             for (Object parent : parents) {
             	if (parent instanceof ISystemFilterReference) {
             		ISystemFilterReference systemFilterReference = (ISystemFilterReference)parent;
+                    sr.fireEvent(new SystemResourceChangeEvent(systemFilterReference, ISystemResourceChangeEvents.EVENT_EXPAND_SELECTED, null));
             		systemFilterReference.markStale(true);
                     sr.fireEvent(new SystemResourceChangeEvent(systemFilterReference, ISystemResourceChangeEvents.EVENT_REFRESH, null));
             	}
             	else {
+                    sr.fireEvent(new SystemResourceChangeEvent(parent, ISystemResourceChangeEvents.EVENT_EXPAND_SELECTED, null));
                     sr.fireEvent(new SystemResourceChangeEvent(resource, ISystemResourceChangeEvents.EVENT_ADD, parent));
                     if (!isSlowConnection) {
                         sr.fireEvent(new SystemResourceChangeEvent(resource, ISystemResourceChangeEvents.EVENT_CHANGE_CHILDREN, parent));
