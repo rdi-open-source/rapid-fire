@@ -72,6 +72,7 @@ import biz.rapidfire.core.preferences.Preferences;
 import biz.rapidfire.core.subsystem.IRapidFireSubSystem;
 import biz.rapidfire.core.swt.widgets.ProgressBarPainter;
 import biz.rapidfire.core.view.listener.AutoRefreshViewCloseListener;
+import biz.rapidfire.rsebase.helpers.SystemConnectionHelper;
 
 public class FileCopyStatusView extends ViewPart implements IPropertyChangeListener, IAutoRefreshView, IJobFinishedListener {
 
@@ -205,6 +206,18 @@ public class FileCopyStatusView extends ViewPart implements IPropertyChangeListe
             public void run() {
                 IFileCopyStatus[] fileCopyStatuses = loadInputData(inputData);
                 setInputInternally(fileCopyStatuses);
+                
+                try {
+					inputData.reload(getShell());
+	                SystemConnectionHelper.refreshUIChanged(
+	                		Preferences.getInstance().isSlowConnection(), 
+	                		inputData.getParentSubSystem(), 
+	                		inputData, 
+	                		inputData.getParentFilters());
+				} catch (Exception e) {
+					e.printStackTrace();
+				}
+                
             }
         };
         actionRefreshView.setText(Messages.ActionLabel_Refresh);
@@ -648,6 +661,17 @@ public class FileCopyStatusView extends ViewPart implements IPropertyChangeListe
 
             setInputInternally(fileCopyStatuses);
 
+            try {
+				inputData.reload(getShell());
+                SystemConnectionHelper.refreshUIChanged(
+                		Preferences.getInstance().isSlowConnection(), 
+                		inputData.getParentSubSystem(), 
+                		inputData, 
+                		inputData.getParentFilters());
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+            
             if (finishedListener != null) {
                 finishedListener.jobFinished(this);
             }
