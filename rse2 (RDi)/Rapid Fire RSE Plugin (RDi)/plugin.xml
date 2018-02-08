@@ -172,6 +172,13 @@
       </command>
          
       <command
+         id="biz.rapidfire.core.command.Job.refreshjobstatus"
+         categoryId="biz.rapidfire.category.Commands"
+         name="%command_Refresh_Job_Status"
+         description="%command_Refresh_Job_Status_Description">
+      </command>
+         
+      <command
          id="biz.rapidfire.core.command.Job.displaycopystatus"
          categoryId="biz.rapidfire.category.Commands"
          name="%command_Display_copy_status"
@@ -593,6 +600,19 @@
       <handler
          commandId="biz.rapidfire.core.command.Job.display"
          class="biz.rapidfire.core.handlers.job.DisplayJobHandler">
+         <enabledWhen>
+            <with variable="selection">
+               <count value="1" />
+               <iterate operator="and">
+                  <adapt type="biz.rapidfire.rse.subsystem.resources.RapidFireJobResource" />
+               </iterate>
+            </with>
+         </enabledWhen>
+      </handler>
+      
+      <handler
+         commandId="biz.rapidfire.core.command.Job.refreshjobstatus"
+         class="biz.rapidfire.core.handlers.job.RefreshJobStatusHandler">
          <enabledWhen>
             <with variable="selection">
                <count value="1" />
@@ -1331,6 +1351,19 @@
 	           </with>
 	        </visibleWhen>
          </separator>
+
+         <command
+            commandId="biz.rapidfire.core.command.Job.refreshjobstatus" 
+            icon="icons/refresh.gif"
+            >
+	        <visibleWhen>
+	           <with variable="selection">
+	              <iterate operator="and">
+	                 <adapt type="biz.rapidfire.rse.subsystem.resources.RapidFireJobResource" />
+	              </iterate>
+	           </with>
+	        </visibleWhen>
+         </command>
          
          <command
             commandId="biz.rapidfire.core.command.Job.displaycopystatus" 

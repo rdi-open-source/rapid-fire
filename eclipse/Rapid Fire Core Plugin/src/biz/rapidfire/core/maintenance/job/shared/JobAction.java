@@ -32,7 +32,8 @@ public enum JobAction implements IResourceAction {
     RESETJOB ("*RESETJOB"), //$NON-NLS-1$
     RESETJOBA ("*RESETJOBA"), //$NON-NLS-1$
     DSPSTS ("*DSPSTS"), //$NON-NLS-1$
-    DSPERR ("*DSPERR"); //$NON-NLS-1$
+    DSPERR ("*DSPERR"), //$NON-NLS-1$
+    RFRJOBSTS ("*RFRJOBSTS"); //$NON-NLS-1$
 
     private String label;
 

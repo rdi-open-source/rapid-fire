@@ -229,6 +229,7 @@ public class JobManager extends AbstractManager<IRapidFireJobResource, JobKey, J
         if (result.isSuccessfull()) {
             jobActions.add(JobAction.CREATE);
         }
+        jobActions.add(JobAction.RFRJOBSTS);
 
         return jobActions.toArray(new JobAction[jobActions.size()]);
     }
