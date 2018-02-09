@@ -37,10 +37,12 @@ public class Field extends AbstractField implements Comparable<Field> {
 
     private boolean isNumeric;
 
+    @Override
     protected void setNumeric(boolean isNumeric) {
         this.isNumeric = isNumeric;
     }
 
+    @Override
     protected void setName(String aName) {
         name = aName;
     }
@@ -49,6 +51,7 @@ public class Field extends AbstractField implements Comparable<Field> {
         return name;
     }
 
+    @Override
     protected void setText(String aText) {
         text = aText;
     }
@@ -57,6 +60,7 @@ public class Field extends AbstractField implements Comparable<Field> {
         return text;
     }
 
+    @Override
     protected void setType(char aType) {
         type = String.valueOf(aType);
     }
@@ -65,6 +69,7 @@ public class Field extends AbstractField implements Comparable<Field> {
         return type;
     }
 
+    @Override
     protected void setLength(Integer aLength) {
         length = aLength;
     }
@@ -73,6 +78,7 @@ public class Field extends AbstractField implements Comparable<Field> {
         return length;
     }
 
+    @Override
     protected void setDecimalPosition(Integer aDecimalPosition) {
         decimalPosition = aDecimalPosition;
     }
@@ -81,6 +87,7 @@ public class Field extends AbstractField implements Comparable<Field> {
         return decimalPosition;
     }
 
+    @Override
     protected void setAbsoluteReferencedField(String aReferencedField) {
 
         if (aReferencedField == null) {

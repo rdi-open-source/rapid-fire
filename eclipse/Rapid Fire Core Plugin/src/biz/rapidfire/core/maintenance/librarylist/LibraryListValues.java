@@ -9,7 +9,6 @@
 package biz.rapidfire.core.maintenance.librarylist;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import biz.rapidfire.core.RapidFireCorePlugin;

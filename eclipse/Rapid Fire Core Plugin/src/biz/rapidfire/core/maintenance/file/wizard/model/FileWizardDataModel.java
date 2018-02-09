@@ -355,7 +355,7 @@ public class FileWizardDataModel extends WizardDataModel {
 
             IRapidFireLibraryResource libraryResource = getLibrary(libraryName);
 
-            FieldList fieldList = new FieldList(getConnectionName(), fileName, libraryResource.getName()); //$NON-NLS-1$
+            FieldList fieldList = new FieldList(getConnectionName(), fileName, libraryResource.getName());
 
             return fieldList.getFields();
 

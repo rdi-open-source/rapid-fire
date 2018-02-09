@@ -21,7 +21,8 @@ public class JobResourceDecorator extends AbstractResourceDecorator<IRapidFireJo
             decorationBuilder.addSuffix(DELIMITER + resource.getErrorText());
             decorationBuilder.addOverlay(getErrorOverlay(), IDecoration.TOP_RIGHT);
         } else {
-            decorationBuilder.addSuffix(DELIMITER + resource.getStatus().label() + " - " + resource.getPhase().label() + " - " + QUOTES + resource.getDescription() + QUOTES);
+            decorationBuilder.addSuffix(DELIMITER + resource.getStatus().label() + " - " + resource.getPhase().label() + " - " + QUOTES
+                + resource.getDescription() + QUOTES);
         }
     }
 }

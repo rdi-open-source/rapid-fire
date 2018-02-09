@@ -19,36 +19,44 @@ import biz.rapidfire.core.model.IRapidFireConversionResource;
 
 public class ChangeConversionHandler extends AbstractConversionMaintenanceHandler implements IHandler {
 
-	public ChangeConversionHandler() {
-		super(MaintenanceMode.CHANGE, ConversionAction.CHANGE);
-	}
+    public ChangeConversionHandler() {
+        super(MaintenanceMode.CHANGE, ConversionAction.CHANGE);
+    }
 
-	@Override
-	protected void performAction(IRapidFireConversionResource conversion) throws Exception {
+    @Override
+    protected void performAction(IRapidFireConversionResource conversion) throws Exception {
 
-		ConversionValues values = getManager().getValues();
+        ConversionValues values = getManager().getValues();
 
-		// String prefix1= getManager().getSourceFilePrefix(true, "RFPRI", "JOBS", "RFPRI", "JOBS");
-		// String prefix2= getManager().getSourceFilePrefix(true, "RFPRI", "JOBS", "RFPRI", "FILES");
+        // String prefix1= getManager().getSourceFilePrefix(true, "RFPRI",
+        // "JOBS", "RFPRI", "JOBS");
+        // String prefix2= getManager().getSourceFilePrefix(true, "RFPRI",
+        // "JOBS", "RFPRI", "FILES");
 
-		// String prefix3= getManager().getSourceFilePrefix(false, "RFPRI", "JOBS", "RFPRI", "JOBS");
-		// String prefix4= getManager().getSourceFilePrefix(false, "RFPRI", "JOBS", "RFPRI", "FILES");
+        // String prefix3= getManager().getSourceFilePrefix(false, "RFPRI",
+        // "JOBS", "RFPRI", "JOBS");
+        // String prefix4= getManager().getSourceFilePrefix(false, "RFPRI",
+        // "JOBS", "RFPRI", "FILES");
 
-		// String prefix5= getManager().getTargetFilePrefix(true, "RFPRI", "JOBS", "RFPRI", "JOBS");
-		// String prefix6= getManager().getTargetFilePrefix(true, "RFPRI", "JOBS", "RFPRI", "FILES");
+        // String prefix5= getManager().getTargetFilePrefix(true, "RFPRI",
+        // "JOBS", "RFPRI", "JOBS");
+        // String prefix6= getManager().getTargetFilePrefix(true, "RFPRI",
+        // "JOBS", "RFPRI", "FILES");
 
-		// String prefix7= getManager().getTargetFilePrefix(false, "RFPRI", "JOBS", "RFPRI", "JOBS");
-		// String prefix8= getManager().getTargetFilePrefix(false, "RFPRI", "JOBS", "RFPRI", "FILES");
+        // String prefix7= getManager().getTargetFilePrefix(false, "RFPRI",
+        // "JOBS", "RFPRI", "JOBS");
+        // String prefix8= getManager().getTargetFilePrefix(false, "RFPRI",
+        // "JOBS", "RFPRI", "FILES");
 
-		ConversionMaintenanceDialog dialog = ConversionMaintenanceDialog.getChangeDialog(getShell(), getManager());
-		dialog.setFields(new String[0]);
-		dialog.setValue(values);
+        ConversionMaintenanceDialog dialog = ConversionMaintenanceDialog.getChangeDialog(getShell(), getManager());
+        dialog.setFields(new String[0]);
+        dialog.setValue(values);
 
-		if (dialog.open() == Dialog.OK) {
-			getManager().book();
+        if (dialog.open() == Dialog.OK) {
+            getManager().book();
 
-			conversion.reload(getShell());
-			refreshUIChanged(conversion.getParentSubSystem(), conversion, conversion.getParentNode());
-		}
-	}
+            conversion.reload(getShell());
+            refreshUIChanged(conversion.getParentSubSystem(), conversion, conversion.getParentNode());
+        }
+    }
 }

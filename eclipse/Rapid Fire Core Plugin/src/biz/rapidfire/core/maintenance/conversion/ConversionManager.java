@@ -316,7 +316,7 @@ public class ConversionManager extends AbstractManager<IRapidFireConversionResou
             AS400 system = file.getParentSubSystem().getHostSystem();
             if (RapidFireHelper.checkLibrary(system, libraryName)) {
                 fileName = file.getName();
-                if (RapidFireHelper.checkFile(system, libraryName, file.getName())) { //$NON-NLS-1$
+                if (RapidFireHelper.checkFile(system, libraryName, file.getName())) {
                     break;
                 } else {
                     errorType = FILE_NOT_FOUND;
@@ -342,20 +342,21 @@ public class ConversionManager extends AbstractManager<IRapidFireConversionResou
             return null;
         }
 
-        FieldList fieldList = new FieldList(connectionName, fileName, libraryName); //$NON-NLS-1$
+        FieldList fieldList = new FieldList(connectionName, fileName, libraryName);
 
         return fieldList.getFields();
     }
 
-    public String getSourceFilePrefix(boolean isConversionProgram, String srcLibraryName, String srcFileName, String tgtLibraryName, String tgtFileName ) throws Exception {
+    public String getSourceFilePrefix(boolean isConversionProgram, String srcLibraryName, String srcFileName, String tgtLibraryName,
+        String tgtFileName) throws Exception {
 
         CallableStatement statement = dao.prepareCall(dao
             .insertLibraryQualifier("{CALL " + IJDBCConnection.LIBRARY + "\"PROMOTER_get_Source_Field_Prefix\"(?, ?, ?, ?, ?, ?)}")); //$NON-NLS-1$ //$NON-NLS-2$
 
         if (isConversionProgram) {
-        	statement.setString(IConversionGetSourceFieldPrefix.CONVERSION_PROGRAM, "*ANY");
+            statement.setString(IConversionGetSourceFieldPrefix.CONVERSION_PROGRAM, "*ANY");
         } else {
-        	statement.setString(IConversionGetSourceFieldPrefix.CONVERSION_PROGRAM, "*NONE");
+            statement.setString(IConversionGetSourceFieldPrefix.CONVERSION_PROGRAM, "*NONE");
         }
         statement.setString(IConversionGetSourceFieldPrefix.SOURCE_LIBRARY, srcLibraryName);
         statement.setString(IConversionGetSourceFieldPrefix.SOURCE_FILE, srcFileName);
@@ -372,15 +373,16 @@ public class ConversionManager extends AbstractManager<IRapidFireConversionResou
         return prefix;
     }
 
-    public String getTargetFilePrefix(boolean isConversionProgram, String srcLibraryName, String srcFileName, String tgtLibraryName, String tgtFileName ) throws Exception {
+    public String getTargetFilePrefix(boolean isConversionProgram, String srcLibraryName, String srcFileName, String tgtLibraryName,
+        String tgtFileName) throws Exception {
 
         CallableStatement statement = dao.prepareCall(dao
             .insertLibraryQualifier("{CALL " + IJDBCConnection.LIBRARY + "\"PROMOTER_get_Target_Field_Prefix\"(?, ?, ?, ?, ?, ?)}")); //$NON-NLS-1$ //$NON-NLS-2$
 
         if (isConversionProgram) {
-        	statement.setString(IConversionGetTargetFieldPrefix.CONVERSION_PROGRAM, "*ANY");
+            statement.setString(IConversionGetTargetFieldPrefix.CONVERSION_PROGRAM, "*ANY");
         } else {
-        	statement.setString(IConversionGetTargetFieldPrefix.CONVERSION_PROGRAM, "*NONE");
+            statement.setString(IConversionGetTargetFieldPrefix.CONVERSION_PROGRAM, "*NONE");
         }
         statement.setString(IConversionGetTargetFieldPrefix.SOURCE_LIBRARY, srcLibraryName);
         statement.setString(IConversionGetTargetFieldPrefix.SOURCE_FILE, srcFileName);

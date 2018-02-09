@@ -83,6 +83,7 @@ public class NewFileWizard extends AbstractNewWizard<FileWizardDataModel> {
         }
     }
 
+    @Override
     protected void updatePageEnablement(AbstractWizardPage page) {
 
         IRapidFireJobResource job = null;
@@ -101,6 +102,7 @@ public class NewFileWizard extends AbstractNewWizard<FileWizardDataModel> {
         }
     }
 
+    @Override
     protected void prepareForDisplay(AbstractWizardPage page) {
 
         page.prepareForDisplay();

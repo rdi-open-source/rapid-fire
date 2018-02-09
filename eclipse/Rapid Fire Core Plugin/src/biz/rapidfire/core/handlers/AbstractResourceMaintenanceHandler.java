@@ -103,12 +103,13 @@ public abstract class AbstractResourceMaintenanceHandler<R extends IRapidFireRes
      * called by one of the "NewResourceAction" classes of the
      * RapidFireRSEPlugin, it gets a resource object.
      */
+    @Override
     public void setEnabled(Object object) {
 
         if (isInstanceOf(object)) {
             setEnabledByResource((R)object);
         } else if (object instanceof ISelection) {
-            selectionChanged((ISelection)object);
+            selectionChanged(object);
         } else {
             Object selection = ExpressionsHelper.getSelection(object);
             selectionChanged(selection);

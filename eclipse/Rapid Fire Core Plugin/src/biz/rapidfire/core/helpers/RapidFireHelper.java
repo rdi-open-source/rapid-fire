@@ -213,7 +213,7 @@ public class RapidFireHelper {
                 }
             }
         }
-        return null; //$NON-NLS-1$
+        return null;
     }
 
     /**

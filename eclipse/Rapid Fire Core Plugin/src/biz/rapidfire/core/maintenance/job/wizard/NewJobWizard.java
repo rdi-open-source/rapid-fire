@@ -54,6 +54,7 @@ public class NewJobWizard extends AbstractNewWizard<JobWizardDataModel> {
         addPage(new LibraryListPage(model));
     }
 
+    @Override
     protected void updatePageEnablement(AbstractWizardPage page) {
 
         if (model.isCreateEnvironment()) {

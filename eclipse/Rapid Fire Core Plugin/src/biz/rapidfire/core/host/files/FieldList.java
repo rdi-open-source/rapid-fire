@@ -44,14 +44,17 @@ public class FieldList extends AbstractFieldList {
         initialize(connectionName);
     }
 
+    @Override
     public String getFile() {
         return file;
     }
 
+    @Override
     public String getLibrary() {
         return library;
     }
 
+    @Override
     public String getRecordFormat() {
         return recordFormat;
     }
@@ -66,10 +69,12 @@ public class FieldList extends AbstractFieldList {
         return fields.toArray(new Field[fields.size()]);
     }
 
+    @Override
     protected void setLibrary(String aLibrary) {
         this.library = aLibrary;
     }
 
+    @Override
     protected void setRecordFormat(String recordFormat) {
         this.recordFormat = recordFormat;
     }
@@ -79,6 +84,7 @@ public class FieldList extends AbstractFieldList {
         this.fieldList.add(field);
     }
 
+    @Override
     protected AbstractField createEmptyField() {
         return new Field();
     }

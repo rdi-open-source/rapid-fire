@@ -81,6 +81,7 @@ public class CommandPage extends AbstractWizardPage {
         }
     }
 
+    @Override
     public void createContent(Composite parent) {
 
         commandMaintenanceControl = new CommandMaintenanceControl(parent, false, SWT.NONE);

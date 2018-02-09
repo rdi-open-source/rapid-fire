@@ -78,6 +78,7 @@ public class AreaPage extends AbstractWizardPage {
         }
     }
 
+    @Override
     public void createContent(Composite parent) {
 
         areaMaintenanceControl = new AreaMaintenanceControl(parent, false, SWT.NONE);

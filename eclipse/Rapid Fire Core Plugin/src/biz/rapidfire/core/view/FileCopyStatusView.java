@@ -206,18 +206,15 @@ public class FileCopyStatusView extends ViewPart implements IPropertyChangeListe
             public void run() {
                 IFileCopyStatus[] fileCopyStatuses = loadInputData(inputData);
                 setInputInternally(fileCopyStatuses);
-                
+
                 try {
-					inputData.reload(getShell());
-	                SystemConnectionHelper.refreshUIChanged(
-	                		Preferences.getInstance().isSlowConnection(), 
-	                		inputData.getParentSubSystem(), 
-	                		inputData, 
-	                		inputData.getParentFilters());
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-                
+                    inputData.reload(getShell());
+                    SystemConnectionHelper.refreshUIChanged(Preferences.getInstance().isSlowConnection(), inputData.getParentSubSystem(), inputData,
+                        inputData.getParentFilters());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+
             }
         };
         actionRefreshView.setText(Messages.ActionLabel_Refresh);
@@ -662,16 +659,13 @@ public class FileCopyStatusView extends ViewPart implements IPropertyChangeListe
             setInputInternally(fileCopyStatuses);
 
             try {
-				inputData.reload(getShell());
-                SystemConnectionHelper.refreshUIChanged(
-                		Preferences.getInstance().isSlowConnection(), 
-                		inputData.getParentSubSystem(), 
-                		inputData, 
-                		inputData.getParentFilters());
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-            
+                inputData.reload(getShell());
+                SystemConnectionHelper.refreshUIChanged(Preferences.getInstance().isSlowConnection(), inputData.getParentSubSystem(), inputData,
+                    inputData.getParentFilters());
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
             if (finishedListener != null) {
                 finishedListener.jobFinished(this);
             }

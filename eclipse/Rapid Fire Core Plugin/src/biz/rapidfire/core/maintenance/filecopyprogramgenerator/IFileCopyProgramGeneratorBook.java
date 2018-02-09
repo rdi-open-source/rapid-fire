@@ -8,7 +8,6 @@
 
 package biz.rapidfire.core.maintenance.filecopyprogramgenerator;
 
-
 public interface IFileCopyProgramGeneratorBook {
 
     public static final int SUCCESS = 1;

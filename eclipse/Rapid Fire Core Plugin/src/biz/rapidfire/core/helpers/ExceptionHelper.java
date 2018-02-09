@@ -8,7 +8,6 @@
 
 package biz.rapidfire.core.helpers;
 
-
 public final class ExceptionHelper {
 
     public static String getLocalizedMessage(Throwable throwable) {

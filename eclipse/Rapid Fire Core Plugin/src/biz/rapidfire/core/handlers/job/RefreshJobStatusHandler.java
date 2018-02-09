@@ -26,10 +26,10 @@ public class RefreshJobStatusHandler extends AbstractJobActionHandler {
         refreshUIChanged(job.getParentSubSystem(), job, job.getParentFilters());
 
         FileCopyStatusView view = (FileCopyStatusView)PlatformUI.getWorkbench().getActiveWorkbenchWindow().getActivePage()
-                .findView(FileCopyStatusView.ID);
+            .findView(FileCopyStatusView.ID);
         if (view != null) {
             view.setInput(job);
         }
-        
+
     }
 }
