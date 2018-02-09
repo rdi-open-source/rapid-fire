@@ -10,7 +10,6 @@ package biz.rapidfire.rse.subsystem.actions;
 
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.jface.viewers.StructuredSelection;
-import org.eclipse.rse.core.subsystems.ISubSystem;
 import org.eclipse.swt.widgets.Shell;
 
 import biz.rapidfire.core.RapidFireCorePlugin;
