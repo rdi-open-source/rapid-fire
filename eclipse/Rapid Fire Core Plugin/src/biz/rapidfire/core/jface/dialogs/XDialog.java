@@ -251,7 +251,6 @@ public class XDialog extends Dialog {
      * @return a boolean indicating whether the dialog is resizable and should
      *         have the default style bits for resizable dialogs
      */
-    @Override
     protected boolean isResizable() {
         return false;
     }
