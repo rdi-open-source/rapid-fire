@@ -8,7 +8,12 @@
 
 package biz.rapidfire.rse.subsystem.adapters;
 
+import java.util.HashSet;
+import java.util.Set;
+
 import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.jface.action.ActionContributionItem;
+import org.eclipse.jface.action.IContributionItem;
 import org.eclipse.jface.resource.ImageDescriptor;
 import org.eclipse.jface.viewers.IStructuredSelection;
 import org.eclipse.swt.widgets.Shell;
@@ -25,6 +30,20 @@ import com.ibm.etools.systems.subsystems.SubSystem;
 
 public abstract class AbstractResourceAdapter<R extends IRapidFireResource> extends AbstractSystemViewAdapter implements ISystemRemoteElementAdapter {
 
+    private Set<String> forbiddenActions;
+
+    public AbstractResourceAdapter() {
+
+        forbiddenActions = new HashSet<String>();
+        forbiddenActions.add("com.ibm.etools.systems.core.ui.actions.SystemRefreshAction");
+        forbiddenActions.add("com.ibm.etools.systems.core.ui.actions.SystemCommonRenameAction");
+        forbiddenActions.add("com.ibm.etools.systems.core.ui.actions.SystemCommonDeleteAction");
+    }
+
+    protected Set<String> getForbiddenActions() {
+        return forbiddenActions;
+    }
+
     @Override
     public SubSystem getSubSystem(Object element) {
 
@@ -35,6 +54,29 @@ public abstract class AbstractResourceAdapter<R extends IRapidFireResource> exte
 
     @Override
     public void addActions(SystemMenuManager menu, IStructuredSelection selection, Shell parent, String menuGroup) {
+    }
+
+    /**
+     * Removes unwanted actions, because the can* methods do not work for items,
+     * that are selected, when the workbench starts. It starts working, when the
+     * user clicks another item. But that might be too late. So we go the hard
+     * way here.
+     */
+    @Override
+    public void addCommonRemoteActions(SystemMenuManager menu, IStructuredSelection selection, Shell shell, String menuGroup) {
+
+        IContributionItem[] items = menu.getMenuManager().getItems();
+        for (int i = 0; i < items.length; i++) {
+            IContributionItem item = items[i];
+            if (item instanceof ActionContributionItem) {
+                ActionContributionItem actionItem = (ActionContributionItem)item;
+                if (getForbiddenActions().contains(actionItem.getAction().getClass().getName())) {
+                    menu.getMenuManager().remove(items[i]);
+                }
+            }
+        }
+
+        super.addCommonRemoteActions(menu, selection, shell, menuGroup);
     }
 
     @Override
@@ -50,6 +92,27 @@ public abstract class AbstractResourceAdapter<R extends IRapidFireResource> exte
     @Override
     public String getText(Object element) {
         return Messages.EMPTY;
+    }
+
+    /*
+     * Disabled default action. Does not work for items, that are selected when
+     * the workbench starts. It starts working as soon, as the user switched to
+     * another item. Therefore we go the hard why in addCommonRemoteActions()
+     * and remove the unwanted actions.
+     */
+    @Override
+    public boolean showRefresh(Object element) {
+        return false;
+    }
+
+    @Override
+    public boolean showRename(Object element) {
+        return false;
+    }
+
+    @Override
+    public boolean showDelete(Object element) {
+        return false;
     }
 
     /**
