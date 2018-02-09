@@ -25,7 +25,7 @@ public abstract class AbstractField {
         setDecimalPosition(tField.getDecimalPosition());
 
         if (tField instanceof ISeriesDatabaseField) {
-            ISeriesDatabaseField tDatabaseField = (ISeriesDatabaseField)tField;
+            ISeriesDatabaseField tDatabaseField = tField;
             setAbsoluteReferencedField(tDatabaseField.getReferencedField());
         }
     }
