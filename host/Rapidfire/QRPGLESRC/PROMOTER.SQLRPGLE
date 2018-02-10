@@ -20,9 +20,10 @@
 //*    >>IMPORTANT<<                                                                        *
 //*      >>PARM<<  OUTPUT(*PRINT);                                                          *
 //*      >>PARM<<  GENLVL(0);                                                               *
-//*      >>PARM<<  DBGVIEW(*SOURCE);                                                        *
+//*      >>PARM<<  DBGVIEW(*NONE);                                                          *
 //*      >>PARM<<  OPTION(*EVENTF);                                                         *
 //*      >>PARM<<  TGTRLS(&TR);                                                             *
+//*      >>PARM<<  COMPILEOPT('DBGVIEW(*ALL)');                                             *
 //*    >>END-IMPORTANT<<                                                                    *
 //*    >>EXECUTE<<                                                                          *
 //*  >>END-PRE-COMPILER<<                                                                   *
@@ -219,7 +220,10 @@ DCL-S g_User_Space_Pointer
       POINTER;
 DCL-S g_File_Counter
       ZONED(3);
-// Prototype for x_Copy_Program
+DCL-S g_src_Pfx
+      CHAR(2) Inz('*N');
+DCL-S g_tgt_Pfx
+      CHAR(2) Inz('*N');
 
 //*-----------------------------------------------------------------------------------------*
 
@@ -1020,7 +1024,6 @@ DCL-PROC build_Environment;
         PROMOTER_generate_Copy_Program(
           p_Job :
           Files.Position :
-          Files.Area :
           Files.Library :
           Files.Shadow_Library :
           Files.File :
@@ -1470,10 +1473,6 @@ DCL-PROC PROMOTER_generate_Copy_Program EXPORT;
   DCL-S l_types CHAR(2);
   DCL-S l_gen_Level
         INT(10);
-  DCL-S l_src_Pfx
-        CHAR(2) Inz('*N');
-  DCL-S l_tgt_Pfx
-        CHAR(2) Inz('*N');
   DCL-S l_conversionError
         VARCHAR(40) Inz;
   DCL-S l_targetFieldValue
@@ -1508,7 +1507,8 @@ DCL-PROC PROMOTER_generate_Copy_Program EXPORT;
     l_Source_Record_Format = get_Record_Format(
       l_logErrJob :
       p_Library :
-      p_File
+      p_File :
+      USRSPC_PROMOTER
     );
 
     If RAPIDFIRE_is_Error(l_logErrJob);
@@ -1519,7 +1519,8 @@ DCL-PROC PROMOTER_generate_Copy_Program EXPORT;
     l_Target_Record_Format = get_Record_Format(
       l_logErrJob :
       p_Shadow_Library :
-      p_File
+      p_File :
+      USRSPC_PROMOTER
     );
 
     If RAPIDFIRE_is_Error(l_logErrJob);
@@ -1567,22 +1568,22 @@ DCL-PROC PROMOTER_generate_Copy_Program EXPORT;
         //   // Use 'field copy mode' when the record formats are different
         //   // or when a copy program is used.
         //   l_gen_Level = GEN_LVL_FIELD_COPY;
-        //   l_src_Pfx = SOURCE_PREFIX;
-        //   l_tgt_Pfx = TARGET_PREFIX;
+        //   g_src_Pfx = SOURCE_PREFIX;
+        //   g_tgt_Pfx = TARGET_PREFIX;
         // Else;
         //
         //   // Else use the faster 'record copy mode'
         //   l_gen_Level = GEN_LVL_RECORD_COPY;
-        //   l_src_Pfx = '''''';
-        //   l_tgt_Pfx = l_src_Pfx;
+        //   g_src_Pfx = '''''';
+        //   g_tgt_Pfx = g_src_Pfx;
         // Endif;
 
         l_srcFormatLevelId = FieldAttributes_getFormatLevelId(l_hSrcFields);
         l_tgtFormatLevelId = FieldAttributes_getFormatLevelId(l_hTgtFields);
 
         l_gen_Level = getFieldCopyMode(p_Conversion_Program: l_srcFormatLevelId: l_tgtFormatLevelId);
-        l_src_Pfx = getSourceFieldPrefix(l_gen_Level);
-        l_tgt_Pfx = getTargetFieldPrefix(l_gen_Level);
+        g_src_Pfx = getSourceFieldPrefix(l_gen_Level);
+        g_tgt_Pfx = getTargetFieldPrefix(l_gen_Level);
 
         // Create source physical file in library QTEMP
         EXCCMD_execute_Command(
@@ -1744,8 +1745,12 @@ DCL-PROC PROMOTER_generate_Copy_Program EXPORT;
                     %Trim(l_Source_Record_Format) +
                     '''';
                 When %Scan('%%SOURCE_PREFIX%%' : QTARGETRF.Data) <> 0;
-                  %SubSt(QTARGETRF.Data : 44) =
-                    'Prefix(' + l_src_Pfx + ')';
+                  If g_src_Pfx = *Blanks;
+                    QTARGETRF.Data = *Blanks;
+                  Else;
+                    %SubSt(QTARGETRF.Data : 44) =
+                      'Prefix(' + g_src_Pfx + ')';
+                  EndIf;
                 When %Scan('%%TARGET_EXTDESC%%' : QTARGETRF.Data) <> 0;
                   %SubSt(QTARGETRF.Data : 44) =
                     'ExtDesc(''' +
@@ -1772,8 +1777,12 @@ DCL-PROC PROMOTER_generate_Copy_Program EXPORT;
                     %Trim(l_Target_Record_Format) +
                     '''';
                 When %Scan('%%TARGET_PREFIX%%' : QTARGETRF.Data) <> 0;
-                  %SubSt(QTARGETRF.Data : 44) =
-                    'Prefix(' + l_tgt_Pfx + ')';
+                  If g_tgt_Pfx = *Blanks;
+                    QTARGETRF.Data = *Blanks;
+                  Else;
+                    %SubSt(QTARGETRF.Data : 44) =
+                      'Prefix(' + g_tgt_Pfx + ')';
+                  EndIf;
                 When %Scan('%%CNV_PGM%%' : QTARGETRF.Data) <> 0;
                   If p_Conversion_Program <> '*NONE';
                     %SubSt(QTARGETRF.Data : 44) =
@@ -2055,15 +2064,15 @@ DCL-PROC PROMOTER_generate_Copy_Program EXPORT;
             // Hex literals do not yet work.
             // TODO: how can we assign a hex literal to a graphic field?
             //    Statement =
-            //      l_tgt_Pfx + %trim(l_tgtField.name) + ' -> ' +
+            //      g_tgt_Pfx + %trim(l_tgtField.name) + ' -> ' +
             //      '*ERROR: *HEX default value';
             Statement =
-              l_tgt_Pfx + %trim(l_tgtField.name) + ' = ' +
+              g_tgt_Pfx + %trim(l_tgtField.name) + ' = ' +
               getDefaultValue(l_tgtField) + ';';
           Else;
             // Default value is specified.
             Statement =
-              l_tgt_Pfx + %trim(l_tgtField.name) + ' = ' +
+              g_tgt_Pfx + %trim(l_tgtField.name) + ' = ' +
               getDefaultValue(l_tgtField) + ';';
           EndIf;
         Other;
@@ -2075,11 +2084,11 @@ DCL-PROC PROMOTER_generate_Copy_Program EXPORT;
              l_tgtField.type = FLDATTRS_TYPE_TIME or
              l_tgtField.type = FLDATTRS_TYPE_TMSTMP;
             Statement =
-              l_tgt_Pfx + %trim(l_tgtField.name) + ' = ' +
+              g_tgt_Pfx + %trim(l_tgtField.name) + ' = ' +
               getDefaultValueCurrentTime(l_tgtField)+ ';';
           else;
             Statement =
-              'Clear ' + l_tgt_Pfx + %trim(l_tgtField.name) + ';';
+              'Clear ' + g_tgt_Pfx + %trim(l_tgtField.name) + ';';
           EndIf;
         EndSl;
 
@@ -2088,10 +2097,10 @@ DCL-PROC PROMOTER_generate_Copy_Program EXPORT;
         If (l_tgtField.alwNull);
           If (l_tgtField.isNullDft);
             Statement =
-            '%NullInd(' + l_tgt_Pfx + %trim(l_tgtField.name) + ') = *ON;';
+            '%NullInd(' + g_tgt_Pfx + %trim(l_tgtField.name) + ') = *ON;';
           Else;
             Statement =
-            '%NullInd(' + l_tgt_Pfx + %trim(l_tgtField.name) + ') = *OFF;';
+            '%NullInd(' + g_tgt_Pfx + %trim(l_tgtField.name) + ') = *OFF;';
           EndIf;
           generate_Statement(QTARGET: Statement: 1);
         EndIf;
@@ -2155,8 +2164,8 @@ DCL-PROC PROMOTER_generate_Copy_Program EXPORT;
             %trim(l_tgtField.name) + ' -> ' + l_conversionError;
         Else;
           Statement =
-            l_tgt_Pfx + %trim(l_tgtField.name) + ' = ' +
-            l_src_Pfx + %trim(l_srcField.name) + ';';
+            g_tgt_Pfx + %trim(l_tgtField.name) + ' = ' +
+            g_src_Pfx + %trim(l_srcField.name) + ';';
         EndIf;
 
         generate_Statement(QTARGET: Statement: 1);
@@ -2200,11 +2209,11 @@ DCL-PROC PROMOTER_generate_Copy_Program EXPORT;
         // Target must be updated from source field
         If (l_srcField.alwNull);
           Statement =
-            '%NullInd(' + l_tgt_Pfx + %trim(l_tgtField.name) + ') = ' +
-            '%NullInd(' + l_src_Pfx + %trim(l_srcField.name) + ');';
+            '%NullInd(' + g_tgt_Pfx + %trim(l_tgtField.name) + ') = ' +
+            '%NullInd(' + g_src_Pfx + %trim(l_srcField.name) + ');';
         Else;
           Statement =
-            '%NullInd(' + l_tgt_Pfx + %trim(l_tgtField.name) + ') = *OFF;';
+            '%NullInd(' + g_tgt_Pfx + %trim(l_tgtField.name) + ') = *OFF;';
         EndIf;
         generate_Statement(QTARGET: Statement: 1);
       EndIf;
@@ -2347,7 +2356,7 @@ DCL-PROC PROMOTER_generate_Copy_Program EXPORT;
           l_cnvEntries.field(l_index).newName <> '*NONE';
           l_nullMapField.name = l_cnvEntries.field(l_index).newName;
         Else;
-          l_nullMapField.name = l_src_Pfx + %trim(l_nullMapField.name);
+          l_nullMapField.name = g_src_Pfx + %trim(l_nullMapField.name);
         EndIf;
         Statement = 'g_Source_nullMap(' +
                     %char(l_nullMapField.fieldIndex)  + ') = ' +
@@ -2570,12 +2579,14 @@ DCL-PROC get_Record_Format;
     CHAR(10) Const;
     p_File
     CHAR(10) Const;
+    p_usrspc
+    CHAR(20) Const;
   END-PI;
 
   // List record formats
   Reset ERRC0100;
   QUSLRCD(
-    USRSPC_PROMOTER : // --> Qualified user space name
+    p_usrspc :        // --> Qualified user space name
     'RCDL0100' :      // --> Format name
     p_File +
     p_Library :       // --> Qualified file name
@@ -4023,4 +4034,175 @@ DCL-PROC getTargetFieldPrefix;
   Endif;
 
 END-PROC;
+
+//*=========================================================================================*
+//* Get Source Field Prefix Of Last Generated Copy Program                                  *
+//*=========================================================================================*
+
+DCL-PROC PROMOTER_get_Source_Field_Prefix_Of_Last_Generated_Copy_Program EXPORT;
+
+  DCL-PI PROMOTER_get_Source_Field_Prefix_Of_Last_Generated_Copy_Program CHAR(2);
+  END-PI;
+
+  Return g_src_Pfx;
+
+END-PROC PROMOTER_get_Source_Field_Prefix_Of_Last_Generated_Copy_Program;
+
+//*=========================================================================================*
+//* Get Target Field Prefix Of Last Generated Copy Program                                  *
+//*=========================================================================================*
+
+DCL-PROC PROMOTER_get_Target_Field_Prefix_Of_Last_Generated_Copy_Program EXPORT;
+
+  DCL-PI PROMOTER_get_Target_Field_Prefix_Of_Last_Generated_Copy_Program CHAR(2);
+  END-PI;
+
+  Return g_tgt_Pfx;
+
+END-PROC PROMOTER_get_Target_Field_Prefix_Of_Last_Generated_Copy_Program;
+
+//*=========================================================================================*
+//* Get Source Field Prefix                                                                 *
+//*=========================================================================================*
+
+DCL-PROC PROMOTER_get_Source_Field_Prefix EXPORT;
+
+  DCL-PI PROMOTER_get_Source_Field_Prefix CHAR(2);
+    p_Conversion_Program
+    CHAR(10) Const;
+    p_SrcLibrary
+    CHAR(10) Const;
+    p_SrcFile
+    CHAR(10) Const;
+    p_TgtLibrary
+    CHAR(10) Const;
+    p_TgtFile
+    CHAR(10) Const;
+    l_Src_Pfx
+    CHAR(2);
+  END-PI;
+
+  DCL-S l_srcFormatLevelId Char(13);
+  DCL-S l_tgtFormatLevelId Char(13);
+  DCL-S l_gen_Level INT(10);
+
+  l_srcFormatLevelId = getRecordFormatLevelId(p_SrcLibrary: p_SrcFile);
+  l_tgtFormatLevelId = getRecordFormatLevelId(p_TgtLibrary: p_TgtFile);
+
+  If (l_srcFormatLevelId <> '' and l_tgtFormatLevelId <> '');
+    l_gen_Level = getFieldCopyMode(p_Conversion_Program: l_srcFormatLevelId: l_tgtFormatLevelId);
+    l_Src_Pfx = getSourceFieldPrefix(l_gen_Level);
+  EndIf;
+
+  Return l_Src_Pfx;
+
+END-PROC PROMOTER_get_Source_Field_Prefix;
+
+//*=========================================================================================*
+//* Get Target Field Prefix                                                                 *
+//*=========================================================================================*
+
+DCL-PROC PROMOTER_get_Target_Field_Prefix EXPORT;
+
+  DCL-PI PROMOTER_get_Target_Field_Prefix CHAR(2);
+    p_Conversion_Program
+    CHAR(10) Const;
+    p_SrcLibrary
+    CHAR(10) Const;
+    p_SrcFile
+    CHAR(10) Const;
+    p_TgtLibrary
+    CHAR(10) Const;
+    p_TgtFile
+    CHAR(10) Const;
+    l_Tgt_Pfx
+    CHAR(2);
+  END-PI;
+
+  DCL-S l_srcFormatLevelId Char(13);
+  DCL-S l_tgtFormatLevelId Char(13);
+  DCL-S l_gen_Level INT(10);
+
+  l_srcFormatLevelId = getRecordFormatLevelId(p_SrcLibrary: p_SrcFile);
+  l_tgtFormatLevelId = getRecordFormatLevelId(p_TgtLibrary: p_TgtFile);
+
+  If (l_srcFormatLevelId <> '' and l_tgtFormatLevelId <> '');
+    l_gen_Level = getFieldCopyMode(p_Conversion_Program: l_srcFormatLevelId: l_tgtFormatLevelId);
+    l_Tgt_Pfx = getTargetFieldPrefix(l_gen_Level);
+  EndIf;
+
+  Return l_Tgt_Pfx;
+
+END-PROC PROMOTER_get_Target_Field_Prefix;
+
+//*=========================================================================================*
+//* Get Record FormatLevel ID.                                                              *
+//*=========================================================================================*
+
+DCL-PROC getRecordFormatLevelId;
+
+  DCL-PI getRecordFormatLevelId CHAR(13);
+    p_Library
+    CHAR(10) Const;
+    p_File
+    CHAR(10) Const;
+  END-PI;
+
+  DCL-S l_Record_Format CHAR(10);
+  DCL-S l_hFields Like(fldAttrs_handle_t) inz(*null);
+  DCL-S l_FormatLevelId Char(13);
+  DCL-C USRSPC_PROMOTER2 'PROMOTER2 QTEMP     ';
+
+  DCL-S l_User_Space_Pointer Pointer Inz(*null);
+
+  DoU '1';
+
+    EXCCMD_execute_Command(
+      'CHKOBJ ' +
+      'OBJ(QTEMP/PROMOTER2) ' +
+      'OBJTYPE(*USRSPC)'
+    );
+
+    // User space does not exit
+    If EXCCMD_Message_Id <> *Blanks;
+      UserSpace_create(USRSPC_PROMOTER2);
+    EndIf;
+
+    l_User_Space_Pointer = g_User_Space_Pointer;
+    UserSpace_retrievePointer(
+      USRSPC_PROMOTER2: g_User_Space_Pointer);
+
+    l_Record_Format = get_Record_Format(
+      RAPIDFIRE_JOB_NONE :
+      p_Library :
+      p_File :
+      USRSPC_PROMOTER2
+    );
+
+    If (RAPIDFIRE_is_Error(RAPIDFIRE_JOB_NONE));
+      Leave; // Cleanup & Exit
+    Endif;
+
+    l_hFields = FieldAttributes_new(p_File: p_Library:
+                                       l_Record_Format: ERRC0100);
+    If (FieldAttributes_isNull(l_hFields));
+      Leave; // Cleanup & Exit
+    EndIf;
+
+    l_FormatLevelId = FieldAttributes_getFormatLevelId(l_hFields);
+
+  EndDo;
+
+  If (l_User_Space_Pointer <> *null);
+    g_User_Space_Pointer = l_User_Space_Pointer;
+  EndIf;
+
+  If (l_hFields <> *null);
+    FieldAttributes_delete(l_hFields);
+    l_hFields = *null;
+  EndIf;
+
+  Return l_FormatLevelId;
+
+END-PROC getRecordFormatLevelId;
 

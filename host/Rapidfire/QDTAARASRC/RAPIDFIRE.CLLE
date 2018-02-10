@@ -56,8 +56,8 @@
              RTVSYSVAL  SYSVAL(QDATE) RTNVAR(&SYSDATE)
              CVTDAT     DATE(&SYSDATE) TOVAR(&DATEISO) FROMFMT(*JOB) TOFMT(*ISO)
 
-             CHGVAR     VAR(&RF_VER ) VALUE('04')
-             CHGVAR     VAR(&RF_RLS ) VALUE('06')
+             CHGVAR     VAR(&RF_VER ) VALUE('05')
+             CHGVAR     VAR(&RF_RLS ) VALUE('00')
              CHGVAR     VAR(&RF_MDN ) VALUE('00')
 
              CHGVAR     VAR(&CM_VER ) VALUE('04')
@@ -85,7 +85,7 @@
              /* --------------------------------------------------- */
              /*   Error Handler                                     */
              /* --------------------------------------------------- */
- ERRHDLR:    CALL       PGM(QMHMOVPM) PARM(&ERRMSGKEY &ERRMSGTYPE &ERRNUMTYPE &ERRSTKE &ERRSTKCNT &E
+ ERRHDLR:    CALL       PGM(QMHMOVPM) PARM(&ERRMSGKEY &ERRMSGTYPE &ERRNUMTYPE &ERRSTKE &ERRSTKCNT &ERRCODE    )
              MONMSG     MSGID(CPF0000)
 
              CALL       PGM(QMHRSNEM) PARM(&ERRMSGKEY &ERRCODE    )

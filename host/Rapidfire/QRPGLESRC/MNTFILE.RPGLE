@@ -325,7 +325,7 @@ DCL-PROC MNTFILE_check EXPORT;
         g_MODE = MNTFILE_COPY);
 
       // The value in field 'Position' is not valid
-      if g_POS = *zero;
+      if g_POS <= *zero;
         p_FLD = 'POS';
         l_MSGID = 'ERR0002';
         leave;

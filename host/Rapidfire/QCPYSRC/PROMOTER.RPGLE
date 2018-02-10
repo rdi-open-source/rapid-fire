@@ -36,6 +36,8 @@ DCL-PR PROMOTER_generate_Copy_Program;
   CHAR(10) Const;
   p_Position
   ZONED(6) Const;
+  p_Area
+  CHAR(10) Const;
   p_Library
   CHAR(10) Const;
   p_Shadow_Library
@@ -59,6 +61,42 @@ DCL-PR PROMOTER_reapply_All_Changes;
   ZONED(6) Const;
   p_Area
   CHAR(10) Const;
+END-PR;
+
+DCL-PR PROMOTER_get_Source_Field_Prefix_Of_Last_Generated_Copy_Program CHAR(2);
+END-PR;
+
+DCL-PR PROMOTER_get_Target_Field_Prefix_Of_Last_Generated_Copy_Program CHAR(2);
+END-PR;
+
+DCL-PR PROMOTER_get_Source_Field_Prefix CHAR(2);
+  p_Conversion_Program
+  CHAR(10) Const;
+  p_SrcLibrary
+  CHAR(10) Const;
+  p_SrcFile
+  CHAR(10) Const;
+  p_TgtLibrary
+  CHAR(10) Const;
+  p_TgtFile
+  CHAR(10) Const;
+  p_Src_Pfx
+  CHAR(2);
+END-PR;
+
+DCL-PR PROMOTER_get_Target_Field_Prefix CHAR(2);
+  p_Conversion_Program
+  CHAR(10) Const;
+  p_SrcLibrary
+  CHAR(10) Const;
+  p_SrcFile
+  CHAR(10) Const;
+  p_TgtLibrary
+  CHAR(10) Const;
+  p_TgtFile
+  CHAR(10) Const;
+  p_Tgt_Pfx
+  CHAR(2);
 END-PR;
 
 /copy QCPYSRC,TYPES_H

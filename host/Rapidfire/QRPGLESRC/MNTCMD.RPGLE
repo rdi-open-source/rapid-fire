@@ -328,7 +328,7 @@ DCL-PROC MNTCMD_check EXPORT;
       endif;
 
       // The value in field 'Sequence' is not valid
-      if g_SEQ = *Zero;
+      if g_SEQ <= *Zero;
         p_FLD = 'SEQ';
         l_MSGID = 'ERR0009';
         leave;

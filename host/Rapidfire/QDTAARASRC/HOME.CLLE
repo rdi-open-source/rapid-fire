@@ -8,7 +8,7 @@
      /*                                                                                           */
      /*-------------------------------------------------------------------------------------------*/
      /*                                                                                           */
-     /* Create data area 'HOME', which contains the name of the Rapid Fire product library.       */
+     /* Create data area 'HOME', which contains the Rapid Fire home library.                      */
      /*                                                                                           */
      /*-------------------------------------------------------------------------------------------*/
      /* STRPREPRC Compile Options:                                                                */
@@ -26,9 +26,8 @@
              DCL        VAR(&LIB ) TYPE(*CHAR) LEN(10)
              DCL        VAR(&OBJ ) TYPE(*CHAR) LEN(10)
 
-             DCL        VAR(&HOME     ) TYPE(*CHAR) LEN(10)
-             DCL        VAR(&RF_HOME) TYPE(*CHAR) STG(*DEFINED) LEN(10) DEFVAR(&HOME  1)
-
+             DCL        VAR(&HOME) TYPE(*CHAR) LEN(10)
+             DCL        VAR(&HOME_LIB) TYPE(*CHAR) STG(*DEFINED) LEN(10) DEFVAR(&HOME 1)
 
              /* ------------------------- Error handler ------------------------- */
              DCL        VAR(&ERRMSGKEY ) TYPE(*CHAR) LEN( 4)
@@ -41,14 +40,15 @@
              MONMSG     MSGID(CPF0000) EXEC(GOTO ERRHDLR)
              /* ----------------------------------------------------------------- */
 
-             CHGVAR     VAR(&RF_HOME) VALUE(&LIB)
+             CHGVAR     VAR(&HOME_LIB) VALUE(&LIB)
 
              DLTDTAARA  DTAARA(&LIB/&OBJ)
              MONMSG     MSGID(CPF2105) EXEC(DO)
                 RMVMSG     PGMQ(*SAME (*)) CLEAR(*ALL)
              ENDDO
 
-             CRTDTAARA  DTAARA(&LIB/&OBJ) TYPE(*CHAR) LEN(10) TEXT('Rapid Fire Home Library')
+             CRTDTAARA  DTAARA(&LIB/&OBJ) TYPE(*CHAR) LEN(10) +
+                          TEXT('Rapid Fire Home Library')
 
              CHGDTAARA  DTAARA(&LIB/&OBJ (*ALL)) VALUE(&HOME)
 
@@ -57,7 +57,7 @@
              /* --------------------------------------------------- */
              /*   Error Handler                                     */
              /* --------------------------------------------------- */
- ERRHDLR:    CALL       PGM(QMHMOVPM) PARM(&ERRMSGKEY &ERRMSGTYPE &ERRNUMTYPE &ERRSTKE &ERRSTKCNT &E
+ ERRHDLR:    CALL       PGM(QMHMOVPM) PARM(&ERRMSGKEY &ERRMSGTYPE &ERRNUMTYPE &ERRSTKE &ERRSTKCNT &ERRCODE    )
              MONMSG     MSGID(CPF0000)
 
              CALL       PGM(QMHRSNEM) PARM(&ERRMSGKEY &ERRCODE    )
