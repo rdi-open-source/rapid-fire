@@ -35,6 +35,7 @@ public abstract class AbstractResourceAdapter<R extends IRapidFireResource> exte
     public AbstractResourceAdapter() {
 
         forbiddenActions = new HashSet<String>();
+        // "Refresh" action should be enabled, because it refresh the children.
         // forbiddenActions.add("com.ibm.etools.systems.core.ui.actions.SystemRefreshAction");
         forbiddenActions.add("com.ibm.etools.systems.core.ui.actions.SystemCommonRenameAction");
         forbiddenActions.add("com.ibm.etools.systems.core.ui.actions.SystemCommonDeleteAction");
@@ -102,7 +103,7 @@ public abstract class AbstractResourceAdapter<R extends IRapidFireResource> exte
      */
     @Override
     public boolean showRefresh(Object element) {
-        return false;
+        return true;
     }
 
     @Override
