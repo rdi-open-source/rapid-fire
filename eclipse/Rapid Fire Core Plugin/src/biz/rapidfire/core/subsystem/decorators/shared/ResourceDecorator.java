@@ -31,6 +31,8 @@ import biz.rapidfire.core.subsystem.decorators.NotificationResourceDecorator;
 
 public class ResourceDecorator implements ILightweightLabelDecorator {
 
+    public static final String ID = "biz.rapidfire.core.subsystem.decorators.shared.ResourceDecorator";
+
     private FileResourceDecorator fileResourceDecorator;
     private JobResourceDecorator jobResourceDecorator;
     private LibraryResourceDecorator libraryResourceDecorator;
