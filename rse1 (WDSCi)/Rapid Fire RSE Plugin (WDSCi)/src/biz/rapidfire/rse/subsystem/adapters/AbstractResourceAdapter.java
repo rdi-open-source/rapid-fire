@@ -35,7 +35,7 @@ public abstract class AbstractResourceAdapter<R extends IRapidFireResource> exte
     public AbstractResourceAdapter() {
 
         forbiddenActions = new HashSet<String>();
-        forbiddenActions.add("com.ibm.etools.systems.core.ui.actions.SystemRefreshAction");
+        // forbiddenActions.add("com.ibm.etools.systems.core.ui.actions.SystemRefreshAction");
         forbiddenActions.add("com.ibm.etools.systems.core.ui.actions.SystemCommonRenameAction");
         forbiddenActions.add("com.ibm.etools.systems.core.ui.actions.SystemCommonDeleteAction");
     }
