@@ -35,6 +35,7 @@ public abstract class AbstractResourceAdapter<R extends IRapidFireResource> exte
     public AbstractResourceAdapter() {
 
         forbiddenActions = new HashSet<String>();
+        // "Refresh" action should be enabled, because it refresh the children.
         // forbiddenActions.add("org.eclipse.rse.ui.actions.SystemRefreshAction");
         forbiddenActions.add("org.eclipse.rse.internal.ui.actions.SystemCommonRenameAction");
         forbiddenActions.add("org.eclipse.rse.internal.ui.actions.SystemCommonDeleteAction");
