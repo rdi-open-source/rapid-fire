@@ -35,7 +35,7 @@ public abstract class AbstractResourceAdapter<R extends IRapidFireResource> exte
     public AbstractResourceAdapter() {
 
         forbiddenActions = new HashSet<String>();
-        forbiddenActions.add("org.eclipse.rse.ui.actions.SystemRefreshAction");
+        // forbiddenActions.add("org.eclipse.rse.ui.actions.SystemRefreshAction");
         forbiddenActions.add("org.eclipse.rse.internal.ui.actions.SystemCommonRenameAction");
         forbiddenActions.add("org.eclipse.rse.internal.ui.actions.SystemCommonDeleteAction");
     }
@@ -101,7 +101,7 @@ public abstract class AbstractResourceAdapter<R extends IRapidFireResource> exte
      */
     @Override
     public boolean showRefresh(Object element) {
-        return false;
+        return true;
     }
 
     @Override
