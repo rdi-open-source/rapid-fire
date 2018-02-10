@@ -9,6 +9,17 @@
  *   This Ant script must run in the same JRE of the workspace,
  *   to make the "eclipse.refreshLocal" tag work properly.
  *
+ *   The classpath must include the following jars for executing
+ *   this build script:
+ *      commons-net-3.3-patched.jar
+ *      jsch-0.1.51.jar
+ *
+ *   The following jar files are loaded dynamically, because they
+ *   are part of a task def contribution or class path:
+ *      ant-contrib-1.0b3.jar
+ *      junit.jar
+ *      org.hamcrest.core_1.1.0.v20090501071000.jar
+ *
  *   Creating the Update site
  *   ========================
  *
@@ -204,6 +215,11 @@
     *   This target requires a patched version of commons-net-3.3.jar
     *   where bug NET-512 has been fixed.
     *   (https://issues.apache.org/jira/browse/NET-512)
+    *
+    *   Steps for preparing the RAPIDFIRE save file:
+    *    1) CRTSAVF FILE(QTEMP/RAPIDFIRE)
+    *    2) SAVLIB LIB(RAPIDFIRE) DEV(*SAVF) SAVF(QTEMP/RAPIDFIRE) TGTRLS(V7R1M0) DTACPR(*MEDIUM)
+    *    3) MOVOBJ OBJ(QTEMP/RAPIDFIRE) OBJTYPE(*FILE) TOLIB(RAPIDFIRE)
     * ===================================================================== -->
 	<target name="downloadIBMiLibrary" depends="ftpCredentialsIBMi" description="Download library from IBM i">
 
@@ -256,7 +272,6 @@
 				<path location="${build.dir}/build/lib/junit.jar" />
 				<path location="${build.dir}/build/lib/org.hamcrest.core_1.1.0.v20090501071000.jar" />
 				<!-- OSGI for finding org.eclipse.osgi.util.NLS -->
-				<path location="${build.dir}/build/lib/org.eclipse.osgi_3.6.3.R36x_v20110629.jar" />
 				<!-- Projects with Messages classes -->
 				<dirset dir="${workspace.home}" >
 					<include name="${build.junit.classpath}"/>
