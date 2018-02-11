@@ -4086,6 +4086,8 @@ DCL-PROC PROMOTER_get_Source_Field_Prefix EXPORT;
   DCL-S l_tgtFormatLevelId Char(13);
   DCL-S l_gen_Level INT(10);
 
+  RAPIDFIRE_set_Error(RAPIDFIRE_JOB_NONE: *off);
+
   l_srcFormatLevelId = getRecordFormatLevelId(p_SrcLibrary: p_SrcFile);
   l_tgtFormatLevelId = getRecordFormatLevelId(p_TgtLibrary: p_TgtFile);
 
@@ -4122,6 +4124,8 @@ DCL-PROC PROMOTER_get_Target_Field_Prefix EXPORT;
   DCL-S l_srcFormatLevelId Char(13);
   DCL-S l_tgtFormatLevelId Char(13);
   DCL-S l_gen_Level INT(10);
+
+  RAPIDFIRE_set_Error(RAPIDFIRE_JOB_NONE: *off);
 
   l_srcFormatLevelId = getRecordFormatLevelId(p_SrcLibrary: p_SrcFile);
   l_tgtFormatLevelId = getRecordFormatLevelId(p_TgtLibrary: p_TgtFile);
