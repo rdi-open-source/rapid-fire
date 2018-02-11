@@ -30,6 +30,7 @@ public class FilePage extends AbstractWizardPage {
     public static final String NAME = "FILE_PAGE"; //$NON-NLS-1$
 
     private FileWizardDataModel model;
+    private boolean updateDataModel;
 
     private Validator nameValidator;
     private Validator copyProgramNameValidator;
@@ -43,6 +44,7 @@ public class FilePage extends AbstractWizardPage {
         super(NAME);
 
         this.model = model;
+        this.updateDataModel = true;
 
         this.nameValidator = Validator.getNameInstance();
         this.copyProgramNameValidator = Validator.getNameInstance(CopyProgram.labels());
@@ -89,10 +91,17 @@ public class FilePage extends AbstractWizardPage {
 
     public void setJobNames(String[] jobNames) {
 
-        if (jobNames != null) {
-            String jobName = model.getJobName();
-            fileMaintenanceControl.setJobNames(jobNames);
-            fileMaintenanceControl.selectJob(jobName);
+        try {
+            updateDataModel = false;
+
+            if (jobNames != null) {
+                String jobName = model.getJobName();
+                fileMaintenanceControl.setJobNames(jobNames);
+                fileMaintenanceControl.selectJob(jobName);
+            }
+
+        } finally {
+            updateDataModel = true;
         }
     }
 
@@ -204,6 +213,10 @@ public class FilePage extends AbstractWizardPage {
     }
 
     private void updateValues() {
+
+        if (!updateDataModel) {
+            return;
+        }
 
         model.setJobName(fileMaintenanceControl.getJobName());
         model.setPosition(IntHelper.tryParseInt(fileMaintenanceControl.getPosition(), -1));
