@@ -13,7 +13,7 @@
        //=======================================================================
        //  >>PRE-COMPILER<<
        //    >>CRTCMD<<  RUCRTTST    TSTPGM(&LI/&OB) +
-       //                            SRCFILE(&SL/&SF);
+       //                            SRCFILE(&SL/&SF) SRCMBR(&SM);
        //    >>COMPILE<<
        //      >>PARM<< DBGVIEW(*LIST);
        //      >>PARM<< BNDSRVPGM(FLDATTRS);
@@ -344,43 +344,43 @@
                  pList: FLDATTRS_FLD_NEXT: flda0300: 'FLDA0300');
          iEqual(1: rc: 'rc');
          aEqual('DATE_': flda0300.name: 'flda0300.name');
-         iEqual(7: flda0300.fieldNum: 'flda0300.fieldNum');
+         iEqual(1: flda0300.fieldIndex: 'flda0300.fieldNum');
 
          rc = FieldAttributes_retrieve(
                  pList: FLDATTRS_FLD_NEXT: flda0300: 'FLDA0300');
          iEqual(2: rc: 'rc');
          aEqual('TIME_': flda0300.name: 'flda0300.name');
-         iEqual(7: flda0300.fieldNum: 'flda0300.fieldNum');
+         iEqual(2: flda0300.fieldIndex: 'flda0300.fieldNum');
 
          rc = FieldAttributes_retrieve(
                  pList: FLDATTRS_FLD_NEXT: flda0300: 'FLDA0300');
          iEqual(3: rc: 'rc');
          aEqual('TIMESTAMP_': flda0300.name: 'flda0300.name');
-         iEqual(7: flda0300.fieldNum: 'flda0300.fieldNum');
+         iEqual(3: flda0300.fieldIndex: 'flda0300.fieldNum');
 
          rc = FieldAttributes_retrieve(
                  pList: FLDATTRS_FLD_NEXT: flda0300: 'FLDA0300');
          iEqual(4: rc: 'rc');
          aEqual('HEX_': flda0300.name: 'flda0300.name');
-         iEqual(7: flda0300.fieldNum: 'flda0300.fieldNum');
+         iEqual(4: flda0300.fieldIndex: 'flda0300.fieldNum');
 
          rc = FieldAttributes_retrieve(
                  pList: FLDATTRS_FLD_NEXT: flda0300: 'FLDA0300');
          iEqual(5: rc: 'rc');
          aEqual('BOOL_': flda0300.name: 'flda0300.name');
-         iEqual(7: flda0300.fieldNum: 'flda0300.fieldNum');
+         iEqual(5: flda0300.fieldIndex: 'flda0300.fieldNum');
 
          rc = FieldAttributes_retrieve(
                  pList: FLDATTRS_FLD_NEXT: flda0300: 'FLDA0300');
          iEqual(6: rc: 'rc');
          aEqual('CHAR273_': flda0300.name: 'flda0300.name');
-         iEqual(7: flda0300.fieldNum: 'flda0300.fieldNum');
+         iEqual(6: flda0300.fieldIndex: 'flda0300.fieldNum');
 
          rc = FieldAttributes_retrieve(
                  pList: FLDATTRS_FLD_NEXT: flda0300: 'FLDA0300');
          iEqual(7: rc: 'rc');
          aEqual('CHAR37_': flda0300.name: 'flda0300.name');
-         iEqual(7: flda0300.fieldNum: 'flda0300.fieldNum');
+         iEqual(7: flda0300.fieldIndex: 'flda0300.fieldNum');
 
          // End of field list
          rc = FieldAttributes_retrieve(
