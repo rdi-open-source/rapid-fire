@@ -69,17 +69,22 @@ public class NewFileWizard extends AbstractNewWizard<FileWizardDataModel> {
     @Override
     public void pageChanged(PageChangedEvent event) {
         super.pageChanged(event);
+    }
 
-        if (event.getSelectedPage() instanceof FilePage) {
-            FilePage filePage = (FilePage)event.getSelectedPage();
+    protected void updatePageValues(AbstractWizardPage page) {
+
+        if (page instanceof FilePage) {
+            FilePage filePage = (FilePage)page;
             filePage.setJobNames(getJobNames(model.getJobs()));
-        } else if (event.getSelectedPage() instanceof AreaPage) {
-            AreaPage areaPage = (AreaPage)event.getSelectedPage();
+        } else if (page instanceof AreaPage) {
+            AreaPage areaPage = (AreaPage)page;
             areaPage.setLibraryNames(getLibraryNames(model.getLibraries()));
             areaPage.setLibraryListNames(getLibraryListNames(model.getLibraryLists()));
-        } else if (event.getSelectedPage() instanceof ConversionPage) {
-            ConversionPage conversionPage = (ConversionPage)event.getSelectedPage();
+        } else if (page instanceof ConversionPage) {
+            ConversionPage conversionPage = (ConversionPage)page;
             conversionPage.setFieldsToConvert(getFieldNames(model.getFields()));
+            conversionPage.setSourceFieldsPrefix(model.getSourceFieldsPrefix());
+            conversionPage.setTargetFieldsPrefix(model.getTargetFieldsPrefix());
         }
     }
 

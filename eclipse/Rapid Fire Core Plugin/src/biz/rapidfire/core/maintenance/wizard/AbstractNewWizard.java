@@ -89,13 +89,15 @@ public abstract class AbstractNewWizard<M extends WizardDataModel> extends Wizar
         if (page instanceof AbstractWizardPage) {
             AbstractWizardPage abstractWizardPage = (AbstractWizardPage)page;
 
-            abstractWizardPage.setFocus();
+            updatePageValues(abstractWizardPage);
 
             updatePageMode(abstractWizardPage);
 
             updatePageEnablement(abstractWizardPage);
 
             prepareForDisplay(abstractWizardPage);
+
+            abstractWizardPage.setFocus();
         }
     }
 
@@ -258,6 +260,9 @@ public abstract class AbstractNewWizard<M extends WizardDataModel> extends Wizar
         }
     }
 
+    protected void updatePageValues(AbstractWizardPage page) {
+    }
+
     protected void updatePageEnablement(AbstractWizardPage page) {
     }
 
@@ -298,8 +303,12 @@ public abstract class AbstractNewWizard<M extends WizardDataModel> extends Wizar
 
         List<String> names = new ArrayList<String>();
 
-        for (IRapidFireLibraryListResource libraryList : libraryLists) {
-            names.add(libraryList.getName());
+        if (libraryLists != null) {
+            for (IRapidFireLibraryListResource libraryList : libraryLists) {
+                names.add(libraryList.getName());
+            }
+        } else {
+            names.add("<Could not library lists>");
         }
 
         String[] sortedNames = names.toArray(new String[names.size()]);
@@ -313,8 +322,12 @@ public abstract class AbstractNewWizard<M extends WizardDataModel> extends Wizar
 
         List<String> names = new ArrayList<String>();
 
-        for (Field field : fields) {
-            names.add(field.getName());
+        if (fields != null) {
+            for (Field field : fields) {
+                names.add(field.getName());
+            }
+        } else {
+            names.add("<Could not load field names>");
         }
 
         String[] sortedNames = names.toArray(new String[names.size()]);

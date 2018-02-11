@@ -11,6 +11,7 @@ package biz.rapidfire.core.maintenance.file.wizard;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Text;
 
 import biz.rapidfire.core.Messages;
@@ -29,6 +30,12 @@ public class ConversionPage extends AbstractWizardPage {
 
     private ConversionMaintenanceControl conversionMaintenanceControl;
     private Text infoBox;
+
+    private Label textSourceFieldPrefix;
+    private Label textTargetFieldPrefix;
+
+    private String sourceFieldsPrefix;
+    private String targetFieldsPrefix;
 
     public ConversionPage(FileWizardDataModel model) {
         super(NAME);
@@ -81,8 +88,16 @@ public class ConversionPage extends AbstractWizardPage {
         conversionMaintenanceControl = new ConversionMaintenanceControl(parent, false, SWT.NONE);
         conversionMaintenanceControl.setLayoutData(new GridData(SWT.FILL, SWT.BEGINNING, true, false, 2, 1));
 
+        WidgetFactory.createLabel(parent, "Source field prefix:", null);
+        textSourceFieldPrefix = WidgetFactory.createLabel(parent, "", null);
+
+        WidgetFactory.createLabel(parent, "Target field prefix:", null);
+        textTargetFieldPrefix = WidgetFactory.createLabel(parent, "", null);
+
         infoBox = WidgetFactory.createMultilineLabel(parent);
-        infoBox.setLayoutData(new GridData(GridData.FILL_BOTH));
+        GridData gridData = new GridData(SWT.FILL, SWT.FILL, true, true, 2, 1);
+        gridData.minimumHeight = 80;
+        infoBox.setLayoutData(gridData);
 
         updateMode();
     }
@@ -94,12 +109,18 @@ public class ConversionPage extends AbstractWizardPage {
     @Override
     public void prepareForDisplay() {
 
+        textSourceFieldPrefix.setText(sourceFieldsPrefix);
+        textTargetFieldPrefix.setText(targetFieldsPrefix);
+
         StringBuilder buffer = new StringBuilder();
         buffer.append(Messages.Wizard_Conversion_page_info_box_1);
         buffer.append("\n"); //$NON-NLS-1$
         buffer.append(Messages.Wizard_Conversion_page_info_box_2);
-
         infoBox.setText(buffer.toString());
+
+        textTargetFieldPrefix.getParent().getParent().layout(true, true);
+
+        getWizard().getContainer().getShell().layout(true, true);
     }
 
     @Override
@@ -121,6 +142,14 @@ public class ConversionPage extends AbstractWizardPage {
         }
 
         conversionMaintenanceControl.setFieldsToConvert(fieldNames);
+    }
+
+    public void setSourceFieldsPrefix(String prefix) {
+        this.sourceFieldsPrefix = prefix;
+    }
+
+    public void setTargetFieldsPrefix(String prefix) {
+        this.targetFieldsPrefix = prefix;
     }
 
     @Override

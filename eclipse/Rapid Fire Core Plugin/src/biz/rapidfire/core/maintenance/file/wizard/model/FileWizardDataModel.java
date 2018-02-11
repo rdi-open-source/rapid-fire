@@ -14,17 +14,21 @@ import org.eclipse.swt.widgets.Shell;
 
 import biz.rapidfire.core.Messages;
 import biz.rapidfire.core.helpers.ExceptionHelper;
+import biz.rapidfire.core.helpers.RapidFireHelper;
 import biz.rapidfire.core.helpers.StringHelper;
 import biz.rapidfire.core.host.files.Field;
 import biz.rapidfire.core.host.files.FieldList;
 import biz.rapidfire.core.maintenance.area.shared.Ccsid;
 import biz.rapidfire.core.maintenance.command.shared.CommandType;
+import biz.rapidfire.core.maintenance.conversion.ConversionManager;
 import biz.rapidfire.core.maintenance.conversion.FieldConversions;
 import biz.rapidfire.core.maintenance.conversion.shared.NewFieldName;
+import biz.rapidfire.core.maintenance.file.shared.ConversionProgram;
 import biz.rapidfire.core.maintenance.file.shared.FileType;
 import biz.rapidfire.core.maintenance.wizard.model.WizardDataModel;
 import biz.rapidfire.core.model.IRapidFireLibraryResource;
 import biz.rapidfire.core.model.QualifiedProgramName;
+import biz.rapidfire.core.model.dao.JDBCConnectionManager;
 import biz.rapidfire.core.subsystem.IRapidFireSubSystem;
 import biz.rapidfire.rsebase.helpers.SystemConnectionHelper;
 
@@ -56,6 +60,8 @@ public class FileWizardDataModel extends WizardDataModel {
 
     // File dependent resources
     private Field[] fields;
+    private String sourceFieldieldsPrefix;
+    private String targetFieldieldsPrefix;
 
     public static FileWizardDataModel createInitialized() {
 
@@ -193,7 +199,14 @@ public class FileWizardDataModel extends WizardDataModel {
     }
 
     public void setAreaName(String areaName) {
+
+        if (!hasAreaChanged(areaName)) {
+            return;
+        }
+
         this.areaName = areaName;
+
+        clearFileDependantResources();
     }
 
     public String getLibraryName() {
@@ -319,6 +332,24 @@ public class FileWizardDataModel extends WizardDataModel {
         return fields;
     }
 
+    public String getSourceFieldsPrefix() {
+
+        // if (sourceFieldieldsPrefix == null) {
+        sourceFieldieldsPrefix = loadSourceFieldPrefix();
+        // }
+
+        return sourceFieldieldsPrefix;
+    }
+
+    public String getTargetFieldsPrefix() {
+
+        // if (targetFieldieldsPrefix == null) {
+        targetFieldieldsPrefix = loadTargetFieldPrefix();
+        // }
+
+        return targetFieldieldsPrefix;
+    }
+
     private boolean hasFileChanged(String newFileName) {
 
         if (this.fileName == null || !this.fileName.equals(newFileName)) {
@@ -337,9 +368,20 @@ public class FileWizardDataModel extends WizardDataModel {
         return false;
     }
 
+    private boolean hasAreaChanged(String newAreaName) {
+
+        if (this.areaName == null || !this.areaName.equals(newAreaName)) {
+            return true;
+        }
+
+        return false;
+    }
+
     private void clearFileDependantResources() {
 
         this.fields = null;
+        this.sourceFieldieldsPrefix = null;
+        this.targetFieldieldsPrefix = null;
     }
 
     private Field[] loadFields() {
@@ -364,5 +406,58 @@ public class FileWizardDataModel extends WizardDataModel {
         }
 
         return null;
+    }
+
+    private String loadSourceFieldPrefix() {
+
+        loadFieldprefixes();
+
+        return sourceFieldieldsPrefix;
+    }
+
+    private String loadTargetFieldPrefix() {
+
+        loadFieldprefixes();
+
+        return targetFieldieldsPrefix;
+    }
+
+    private void loadFieldprefixes() {
+
+        Shell shell = Display.getCurrent().getActiveShell();
+
+        try {
+
+            IRapidFireLibraryResource libraryResource = getLibrary(libraryName);
+            String conversionProgram = getConversionProgramName();
+            String fileName = getFileName();
+            String fromLibrary = libraryResource.getDataLibrary();
+            String shadowLibrary = libraryResource.getShadowLibrary();
+
+            ConversionManager manager = new ConversionManager(JDBCConnectionManager.getInstance().getConnectionForRead(getConnectionName(),
+                getDataLibraryName()));
+
+            boolean isConversionProgram;
+            if (ConversionProgram.NONE.label().equals(conversionProgram)) {
+                isConversionProgram = false;
+            } else {
+                isConversionProgram = true;
+            }
+
+            if (!RapidFireHelper.checkFile(SystemConnectionHelper.getSystem(getConnectionName()), fromLibrary, fileName)) {
+                sourceFieldieldsPrefix = "File not found.";
+            } else {
+                sourceFieldieldsPrefix = manager.getSourceFilePrefix(isConversionProgram, fromLibrary, fileName, shadowLibrary, fileName);
+            }
+
+            if (!RapidFireHelper.checkFile(SystemConnectionHelper.getSystem(getConnectionName()), shadowLibrary, fileName)) {
+                targetFieldieldsPrefix = "File not found.";
+            } else {
+                targetFieldieldsPrefix = manager.getTargetFilePrefix(isConversionProgram, fromLibrary, fileName, shadowLibrary, fileName);
+            }
+
+        } catch (Throwable e) {
+            MessageDialog.openError(shell, Messages.E_R_R_O_R, ExceptionHelper.getLocalizedMessage(e));
+        }
     }
 }
