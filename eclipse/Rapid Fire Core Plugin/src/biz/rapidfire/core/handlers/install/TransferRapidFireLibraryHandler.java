@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2017-2017 Rapid Fire Project Team
+ * Copyright (c) 2017-2018 Rapid Fire Project Team
  * All rights reserved. This program and the accompanying materials 
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
@@ -23,7 +23,8 @@ import biz.rapidfire.core.helpers.StringHelper;
 import biz.rapidfire.core.install.dialogs.TransferRapidFireLibrary;
 
 /**
- * This class is the action handler of the "TransferLibraryAction".
+ * This class is the action handler of the "TransferLibraryAction". It is used
+ * for uploading the rapid Fire library to the host.
  */
 public class TransferRapidFireLibraryHandler extends AbstractHandler implements IHandler {
 
