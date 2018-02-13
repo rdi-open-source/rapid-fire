@@ -1,0 +1,181 @@
+     /*-------------------------------------------------------------------------------------------*/
+     /*                                                                                           */
+     /* Copyright (c) 2018 Task Force IT-Consulting GmbH, Waltrop (Germany)                       */
+     /* This software and the accompanying materials are made available                           */
+     /* under the terms of the GNU General Public License version 2.0 (GPLv2)                     */
+     /* which accompanies this distribution and is available at                                   */
+     /* http://www.gnu.org/licenses/gpl-2.0.html                                                  */
+     /*                                                                                           */
+     /*-------------------------------------------------------------------------------------------*/
+     /*                                                                                           */
+     /* Start/End Journaling of Rapid Fire Objects                                                */
+     /*                                                                                           */
+     /*-------------------------------------------------------------------------------------------*/
+     /*  >>PRE-COMPILER<<                                                                         */
+     /*    >>CRTCMD<< CRTBNDCL     PGM(&LI/&OB) +                                                 */
+     /*                              SRCFILE(&SL/&SF) SRCMBR(&SM);                                */
+     /*    >>IMPORTANT<<                                                                          */
+     /*      >>PARM<<  DBGVIEW(*ALL);                                                             */
+     /*      >>PARM<<  OPTION(*EVENTF);                                                           */
+     /*      >>PARM<<  TGTRLS(&TR);                                                               */
+     /*    >>END-IMPORTANT<<                                                                      */
+     /*    >>EXECUTE<<                                                                            */
+     /*  >>END-PRE-COMPILER<<                                                                     */
+     /*------------+--------+---------------------------------------------------------------------*/
+     /*   Date     I Progr. I Description                                                         */
+     /*------------+--------+---------------------------------------------------------------------*/
+     /* 13.02.2018 I   TR   I Program created                                                     */
+     /*------------+--------+---------------------------------------------------------------------*/
+
+     /* Start */
+             PGM        PARM(&CMD &LIB)
+
+     /* Declare Variables */
+             DCL        VAR(&CMD) TYPE(*CHAR) LEN(10)
+             DCL        VAR(&LIB) TYPE(*CHAR) LEN(10)
+
+             DCL        VAR(&TYPE) TYPE(*CHAR) LEN(10)
+             DCL        VAR(&NAME) TYPE(*CHAR) LEN(10)
+
+             DCL        VAR(&JRN) TYPE(*CHAR) LEN(10) VALUE('RAPIDFIRE')
+             DCL        VAR(&JRNRCV) TYPE(*CHAR) LEN(10) VALUE('RAPIDFIRE')
+             DCL        VAR(&TEXT) TYPE(*CHAR) LEN(10) VALUE('Rapid Fire')
+
+     /* Check parameters */
+             IF         COND(&CMD *NE '*START' *AND &CMD *NE '*END') THEN(DO)
+                SNDPGMMSG  MSGID(CPF9898) MSGF(QCPFMSG) +
+                             MSGDTA('Usage: CALL PGM(STRENDJRN) PARM(*START|*END libraryName)') +
+                            TOPGMQ(*PRV (*PGMBDY *NONE))
+                GOTO       CMDLBL(STEP999)
+             ENDDO
+
+             CHKOBJ     OBJ(&LIB) OBJTYPE(*LIB)
+             MONMSG     MSGID(CPF9801) EXEC(DO) /* Library not found */
+                SNDPGMMSG  MSGID(CPF9898) MSGF(QCPFMSG) +
+                             MSGDTA('Library ' *CAT &LIB *TCAT ' not found') +
+                            TOPGMQ(*PRV (*PGMBDY *NONE))
+                GOTO       CMDLBL(STEP999)
+             ENDDO
+
+     /* Create journal */
+             IF         COND(&CMD *EQ '*START') THEN(DO)
+                CHKOBJ     OBJ(&LIB/&JRN) OBJTYPE(*JRN)
+                MONMSG     MSGID(CPF9801) EXEC(DO) /* Journal does not yet exist */
+                   RCVMSG     PGMQ(*SAME (*)) MSGTYPE(*LAST) RMV(*YES)
+                   CRTJRNRCV  JRNRCV(&LIB/&JRNRCV) TEXT(&TEXT)
+                   CRTJRN     JRN(&LIB/&JRN) JRNRCV(&LIB/&JRNRCV) +
+                                MNGRCV(*SYSTEM) DLTRCV(*YES) TEXT(&TEXT)
+                ENDDO
+             ENDDO
+
+     /* Start/end journaling */
+             IF         COND(&CMD *EQ '*START' *OR &CMD *EQ '*END') THEN(DO)
+
+        /* Process Files */
+                CHGVAR     VAR(&TYPE) VALUE('*FILE')
+
+                CHGVAR     VAR(&NAME) VALUE('ACTSCHD')
+                CALLSUBR   SUBR(EXECUTE)
+
+                CHGVAR     VAR(&NAME) VALUE('AREAS')
+                CALLSUBR   SUBR(EXECUTE)
+
+                CHGVAR     VAR(&NAME) VALUE('CHANGES')
+                CALLSUBR   SUBR(EXECUTE)
+
+                CHGVAR     VAR(&NAME) VALUE('CHANGESLOG')
+                CALLSUBR   SUBR(EXECUTE)
+
+                CHGVAR     VAR(&NAME) VALUE('CNVS')
+                CALLSUBR   SUBR(EXECUTE)
+
+                CHGVAR     VAR(&NAME) VALUE('COMMANDS')
+                CALLSUBR   SUBR(EXECUTE)
+
+                CHGVAR     VAR(&NAME) VALUE('FILES')
+                CALLSUBR   SUBR(EXECUTE)
+
+                CHGVAR     VAR(&NAME) VALUE('JOBS')
+                CALLSUBR   SUBR(EXECUTE)
+
+                CHGVAR     VAR(&NAME) VALUE('LIBLETYS')
+                CALLSUBR   SUBR(EXECUTE)
+
+                CHGVAR     VAR(&NAME) VALUE('LIBLS')
+                CALLSUBR   SUBR(EXECUTE)
+
+                CHGVAR     VAR(&NAME) VALUE('LIBRARIES')
+                CALLSUBR   SUBR(EXECUTE)
+
+                CHGVAR     VAR(&NAME) VALUE('LICENSE')
+                CALLSUBR   SUBR(EXECUTE)
+
+                CHGVAR     VAR(&NAME) VALUE('MEMBERS')
+                CALLSUBR   SUBR(EXECUTE)
+
+                CHGVAR     VAR(&NAME) VALUE('RECORDS')
+                CALLSUBR   SUBR(EXECUTE)
+
+                CHGVAR     VAR(&NAME) VALUE('RFJOBS')
+                CALLSUBR   SUBR(EXECUTE)
+
+                CHGVAR     VAR(&NAME) VALUE('SQLLOG')
+                CALLSUBR   SUBR(EXECUTE)
+
+                CHGVAR     VAR(&NAME) VALUE('SQLTRACE')
+                CALLSUBR   SUBR(EXECUTE)
+
+                CHGVAR     VAR(&NAME) VALUE('SUBTOBENOT')
+                CALLSUBR   SUBR(EXECUTE)
+
+             ENDDO
+
+     /* Delete journal */
+             IF         COND(&CMD *EQ '*END') THEN(DO)
+                CHKOBJ     OBJ(&LIB/&JRN) OBJTYPE(*JRN)
+                MONMSG     MSGID(CPF9801) EXEC(DO) /* Journal does not exist */
+                   RCVMSG     PGMQ(*SAME (*)) MSGTYPE(*LAST) RMV(*YES)
+                   GOTO       CMDLBL(SKIP_DLT)
+                ENDDO
+                DLTJRN     JRN(&LIB/&JRN)
+                DLTJRNRCV  JRNRCV(&LIB/&JRNRCV) DLTOPT(*IGNINQMSG)
+SKIP_DLT:
+             ENDDO
+
+     /* Exit the program */
+             SNDPGMMSG  MSGID(CPF9897) MSGF(*LIBL/QCPFMSG) +
+                          MSGDTA('Reclaim activation group RAPIDFIRE before executing the program again.') +
+                          TOPGMQ(*PRV (*PGMBDY *NONE *NONE))
+
+             RETURN
+
+     /* --------------------------------------------------- */
+     /*   Actually starts/ends journaling                   */
+     /* --------------------------------------------------- */
+             SUBR       SUBR(EXECUTE)
+
+             SELECT
+             WHEN       COND(&CMD *EQ '*START') THEN(DO)
+                IF         COND(&TYPE *EQ '*FILE') THEN(DO)
+                   STRJRNPF   FILE(&LIB/&NAME) JRN(&LIB/&JRN) +
+                                IMAGES(*BOTH) OMTJRNE(*OPNCLO)
+                   MONMSG     MSGID(CPF7030) EXEC(DO) /* Already journaled */
+                      RCVMSG     PGMQ(*SAME (*)) MSGTYPE(*LAST) RMV(*YES)
+                   ENDDO
+                ENDDO
+
+             ENDDO
+
+             WHEN       COND(&CMD *EQ '*END') THEN(DO)
+                IF         COND(&TYPE *EQ '*FILE') THEN(DO)
+                   ENDJRNPF   FILE(&LIB/&NAME) JRN(*FILE)
+                ENDDO
+
+             ENDDO
+
+             ENDSELECT
+
+             ENDSUBR
+
+     /* End */
+ STEP999:    ENDPGM
