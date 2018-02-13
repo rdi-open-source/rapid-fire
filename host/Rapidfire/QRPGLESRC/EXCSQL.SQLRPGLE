@@ -60,6 +60,10 @@ End-Ds;
 
 //*-----------------------------------------------------------------------------------------*
 
+// Global constants
+
+DCL-C DOUBLE_QUOTES '"';
+
 // Fields to export
 
 DCL-S EXCSQL_Message
@@ -89,7 +93,7 @@ DCL-PROC EXCSQL_execute_Stmt EXPORT;
   // Set SQL schema
   if (%parmnum(p_Schema) >= %parms() and %addr(p_Schema) <> *null);
 
-    l_SQLStmt = 'SET SCHEMA ' + %trim(p_Schema);
+    l_SQLStmt = 'SET SCHEMA ' + addQuotes(p_Schema);
 
     Exec SQL
       EXECUTE IMMEDIATE :l_SQLStmt;
@@ -148,7 +152,7 @@ DCL-PROC EXCSQL_execute_Script EXPORT;
   // Set SQL schema
   if (%parmnum(p_Schema) >= %parms() and %addr(p_Schema) <> *null);
 
-    l_SQLStmt = 'SET SCHEMA ' + %trim(p_Schema);
+    l_SQLStmt = 'SET SCHEMA ' + addQuotes(p_Schema);
 
     Exec SQL
       EXECUTE IMMEDIATE :l_SQLStmt;
@@ -237,3 +241,20 @@ DCL-PROC EXCSQL_get_Message EXPORT;
   Return EXCSQL_Message;
 
 END-PROC EXCSQL_get_Message;
+
+//*=========================================================================================*
+//* Puts a given string in double quotes. The string is trimmed beforehand.                 *
+//*=========================================================================================*
+
+DCL-PROC addQuotes;
+
+  DCL-PI addQuotes VARCHAR(1024);                                          // Quoted string
+    p_string
+    VARCHAR(1024) Value;                                                   // --> String to quote
+  END-PI;
+
+  p_string = %trim(p_string);
+
+  Return DOUBLE_QUOTES + p_string + DOUBLE_QUOTES;
+
+END-PROC addQuotes;
