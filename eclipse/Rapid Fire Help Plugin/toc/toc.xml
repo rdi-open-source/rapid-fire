@@ -14,4 +14,7 @@
 	   <topic label="Appearance" href="html/preferences/appearance/appearance.html" />
 	   <topic label="Library" href="html/preferences/library/library.html" />
    </topic>
+   <topic label="Uninstall Instructions" >
+      <topic label="Uninstall Library" href="html/uninstall/uninstall_library.html" />
+   </topic>
 </toc>
