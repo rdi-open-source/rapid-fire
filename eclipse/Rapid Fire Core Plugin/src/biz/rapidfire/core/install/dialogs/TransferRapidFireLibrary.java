@@ -10,6 +10,9 @@ package biz.rapidfire.core.install.dialogs;
 
 import java.io.File;
 import java.net.URL;
+import java.util.Date;
+import java.util.LinkedList;
+import java.util.List;
 
 import org.eclipse.core.runtime.FileLocator;
 import org.eclipse.jface.dialogs.Dialog;
@@ -35,18 +38,21 @@ import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.ui.PlatformUI;
 
+import com.ibm.as400.access.AS400;
+import com.ibm.as400.access.AS400FTP;
+import com.ibm.as400.access.AS400Message;
+import com.ibm.as400.access.CommandCall;
+import com.ibm.as400.access.FTP;
+import com.ibm.as400.access.Job;
+import com.ibm.as400.access.JobLog;
+import com.ibm.as400.access.QueuedMessage;
+
 import biz.rapidfire.core.Messages;
 import biz.rapidfire.core.RapidFireCorePlugin;
 import biz.rapidfire.core.helpers.ClipboardHelper;
 import biz.rapidfire.core.helpers.RapidFireHelper;
 import biz.rapidfire.core.preferences.Preferences;
 import biz.rapidfire.core.swt.widgets.WidgetFactory;
-
-import com.ibm.as400.access.AS400;
-import com.ibm.as400.access.AS400FTP;
-import com.ibm.as400.access.AS400Message;
-import com.ibm.as400.access.CommandCall;
-import com.ibm.as400.access.FTP;
 
 public class TransferRapidFireLibrary extends Shell {
 
@@ -160,9 +166,7 @@ public class TransferRapidFireLibrary extends Shell {
     private boolean checkLibraryPrecondition(String libraryName) {
 
         while (libraryExists(libraryName)) {
-            if (!MessageDialog.openQuestion(
-                getShell(),
-                Messages.DialogTitle_Delete_Object,
+            if (!MessageDialog.openQuestion(getShell(), Messages.DialogTitle_Delete_Object,
                 Messages.bind(Messages.Library_A_does_already_exist, libraryName) + "\n\n"
                     + Messages.bind(Messages.Question_Do_you_want_to_delete_library_A, libraryName))) {
                 return false;
@@ -195,11 +199,9 @@ public class TransferRapidFireLibrary extends Shell {
     private boolean checkSaveFilePrecondition(String workLibrary, String saveFileName) {
 
         while (saveFileExists(workLibrary, saveFileName)) {
-            if (!MessageDialog.openQuestion(
-                getShell(),
-                Messages.DialogTitle_Delete_Object,
-                Messages.bind(Messages.File_B_in_library_A_does_already_exist, new String[] { workLibrary, saveFileName }) + "\n\n"
-                    + Messages.bind(Messages.Question_Do_you_want_to_delete_object_A_B_type_C, new String[] { workLibrary, saveFileName, "*FILE" }))) {
+            if (!MessageDialog.openQuestion(getShell(), Messages.DialogTitle_Delete_Object,
+                Messages.bind(Messages.File_B_in_library_A_does_already_exist, new String[] { workLibrary, saveFileName }) + "\n\n" + Messages
+                    .bind(Messages.Question_Do_you_want_to_delete_object_A_B_type_C, new String[] { workLibrary, saveFileName, "*FILE" }))) {
                 return false;
             }
             setStatus(Messages.bind(Messages.Deleting_object_A_B_of_type_C, new String[] { workLibrary, saveFileName, "*FILE" }));
@@ -236,12 +238,109 @@ public class TransferRapidFireLibrary extends Shell {
         return true;
     }
 
-    private boolean restoreLibrary(String workLibrary, String saveFileName, String libraryName) {
+    private boolean restoreLibrary(String workLibrary, String saveFileName, String libraryName) throws Exception {
 
-        String cpfMsg = executeCommand("RSTLIB SAVLIB(RAPIDFIRE) DEV(*SAVF) SAVF(" + workLibrary + "/" + saveFileName + ") RSTLIB(" + libraryName
-            + ")", true);
+        AS400 system = commandCall.getSystem();
+        Job serverJob = commandCall.getServerJob();
+        JobLog jobLog = new JobLog(system, serverJob.getName(), serverJob.getUser(), serverJob.getNumber());
+        jobLog.setListDirection(false);
+
+        Date startingMessageDate = null;
+        QueuedMessage[] startingMessages = jobLog.getMessages(0, 1);
+        if (startingMessages != null) {
+            startingMessageDate = startingMessages[0].getDate().getTime();
+        }
+
+        String cpfMsg = executeCommand(
+            "RSTLIB SAVLIB(RAPIDFIRE) DEV(*SAVF) SAVF(" + workLibrary + "/" + saveFileName + ") RSTLIB(" + libraryName + ")", true);
         if (!cpfMsg.equals("")) {
+            if (cpfMsg.equals("CPF3773")) {
+
+                List<QueuedMessage> countNotRestored = new LinkedList<QueuedMessage>();
+                List<QueuedMessage> countIgnored = new LinkedList<QueuedMessage>();
+
+                QueuedMessage[] messages;
+                final int chunkSize = 20;
+                int offset = 0;
+
+                jobLog = new JobLog(system, serverJob.getName(), serverJob.getUser(), serverJob.getNumber());
+                jobLog.setListDirection(false);
+                while ((messages = jobLog.getMessages(offset, chunkSize)) != null && messages.length > 0 && startingMessageDate != null) {
+                    for (QueuedMessage message : messages) {
+
+                        // CPF3756 - &2 &1 not restored to &3.
+                        if ("CPF3756".equals(message.getID())) {
+                            countNotRestored.add(message);
+                        }
+
+                        // CPF7086 - Cannot restore journal &1 to library &4.
+                        // CPF707F - Cannot restore receiver &1 into library &2.
+                        if ("CPF7086".equals(message.getID()) || "CPF707F".equals(message.getID())) {
+                            countIgnored.add(message);
+                        }
+
+                        if (message.getDate().getTime().compareTo(startingMessageDate) < 0) {
+                            startingMessageDate = null;
+                            break;
+                        }
+                    }
+                    offset = offset + chunkSize;
+                }
+
+                for (int i = countNotRestored.size() - 1; i >= 0; i--) {
+                    QueuedMessage notRestoredMessage = countNotRestored.get(i);
+                    setStatus(countNotRestored.get(i) + ": " + notRestoredMessage.getText());
+                }
+
+                if (countNotRestored.size() == countIgnored.size()) {
+                    setStatus(Messages.Journaling_will_be_started_by_the_installer);
+                    return true;
+                }
+            }
             return false;
+        }
+
+        return true;
+    }
+
+    private boolean initializeLibrary(String libraryName) {
+
+        String cpfMsg;
+        boolean isLibraryListChanged = false;
+
+        try {
+
+            cpfMsg = executeCommand("ADDLIBLE LIB(" + libraryName + ") POSITION(*FIRST)", true);
+            if (!cpfMsg.equals("")) {
+                isLibraryListChanged = false;
+            } else {
+                isLibraryListChanged = true;
+            }
+
+            cpfMsg = executeCommand("CALL PGM(" + libraryName + "/STRENDJRN) PARM(*END " + libraryName + ")", true);
+            if (!cpfMsg.equals("")) {
+                return false;
+            }
+
+            cpfMsg = executeCommand("CALL PGM(" + libraryName + "/STRENDJRN) PARM(*START " + libraryName + ")", true);
+            if (!cpfMsg.equals("")) {
+                return false;
+            }
+
+            cpfMsg = executeCommand("CALL PGM(" + libraryName + "/CRTDRPSQL) PARM(*DROP " + libraryName + ")", true);
+            if (!cpfMsg.equals("")) {
+                return false;
+            }
+
+            cpfMsg = executeCommand("CALL PGM(" + libraryName + "/CRTDRPSQL) PARM(*CREATE " + libraryName + ")", true);
+            if (!cpfMsg.equals("")) {
+                return false;
+            }
+
+        } finally {
+            if (isLibraryListChanged) {
+                executeCommand("RMVLIBLE LIB(" + libraryName + ")", true);
+            }
         }
 
         return true;
@@ -286,8 +385,8 @@ public class TransferRapidFireLibrary extends Shell {
                     commandCall = new CommandCall(as400);
                     if (commandCall != null) {
                         hostName = as400.getSystemName();
-                        setStatus(Messages.bind(Messages.About_to_transfer_library_A_to_host_B_using_port_C, new String[] { rapidFireLibrary.trim(),
-                            hostName, Integer.toString(ftpPort) }));
+                        setStatus(Messages.bind(Messages.About_to_transfer_library_A_to_host_B_using_port_C,
+                            new String[] { rapidFireLibrary.trim(), hostName, Integer.toString(ftpPort) }));
                         buttonStart.setEnabled(true);
                         buttonClose.setEnabled(true);
                         return true;
@@ -323,9 +422,9 @@ public class TransferRapidFireLibrary extends Shell {
 
                     setStatus(Messages.bind(Messages.Creating_save_file_B_in_library_A, new String[] { workLibrary, saveFileName }));
                     if (!createSaveFile(workLibrary, saveFileName, true)) {
-                        setStatus("!!!   "
-                            + Messages.bind(Messages.Could_not_create_save_file_B_in_library_A, new String[] { workLibrary, saveFileName })
-                            + "   !!!");
+                        setStatus(
+                            "!!!   " + Messages.bind(Messages.Could_not_create_save_file_B_in_library_A, new String[] { workLibrary, saveFileName })
+                                + "   !!!");
                     } else {
 
                         try {
@@ -347,8 +446,19 @@ public class TransferRapidFireLibrary extends Shell {
                             if (!restoreLibrary(workLibrary, saveFileName, rapidFireLibrary)) {
                                 setStatus("!!!   " + Messages.bind(Messages.Could_not_restore_library_A, rapidFireLibrary) + "   !!!");
                             } else {
-                                setStatus("!!!   " + Messages.bind(Messages.Library_A_successfull_transfered, rapidFireLibrary) + "   !!!");
-                                successfullyTransfered = true;
+
+                                boolean isInitialized;
+                                if (!isDefaultLibrary(rapidFireLibrary)) {
+                                    setStatus(Messages.bind(Messages.Initializing_library_A, new String[] { rapidFireLibrary }));
+                                    isInitialized = initializeLibrary(rapidFireLibrary);
+                                } else {
+                                    isInitialized = true;
+                                }
+
+                                if (isInitialized) {
+                                    setStatus("!!!   " + Messages.bind(Messages.Library_A_successfull_transfered, rapidFireLibrary) + "   !!!");
+                                    successfullyTransfered = true;
+                                }
                             }
 
                         } catch (Throwable e) {
@@ -375,6 +485,13 @@ public class TransferRapidFireLibrary extends Shell {
                 buttonClose.setEnabled(true);
                 buttonClose.setFocus();
             }
+        }
+
+        private boolean isDefaultLibrary(String rapidFireLibrary) {
+
+            String defaultLibrary = Preferences.getInstance().getDefaultRapidFireLibrary();
+
+            return rapidFireLibrary.equals(defaultLibrary);
         }
     }
 

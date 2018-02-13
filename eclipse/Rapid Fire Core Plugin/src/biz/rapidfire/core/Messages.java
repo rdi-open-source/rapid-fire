@@ -217,6 +217,8 @@ public class Messages extends NLS {
     public static String Deleting_library_A;
     public static String Deleting_object_A_B_of_type_C;
     public static String Restoring_library_A;
+    public static String Journaling_will_be_started_by_the_installer;
+    public static String Initializing_library_A;
     public static String Library_A_successfull_transfered;
     public static String No_errors;
     public static String NewJobWizard_Rapid_Fire_job_A_created;
