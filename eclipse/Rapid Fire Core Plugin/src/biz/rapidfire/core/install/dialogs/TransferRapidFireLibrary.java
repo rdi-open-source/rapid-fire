@@ -157,10 +157,14 @@ public class TransferRapidFireLibrary extends Shell {
         // Disable the check that prevents subclassing of SWT components
     }
 
-    public void setStatus(String status) {
+    private void setStatus(String status) {
         TableItem itemStatus = new TableItem(tableStatus, SWT.BORDER);
         itemStatus.setText(status);
         tableStatus.update();
+    }
+
+    private void setErrorStatus(String status) {
+        setStatus("!!!   " + status + "   !!!");
     }
 
     private boolean checkLibraryPrecondition(String libraryName) {
@@ -189,7 +193,28 @@ public class TransferRapidFireLibrary extends Shell {
 
     private boolean deleteLibrary(String libraryName, boolean logErrors) {
 
-        if (!executeCommand("DLTLIB LIB(" + libraryName + ")", logErrors).equals("")) {
+        String cpfMsg;
+
+        try {
+
+            executeCommand("ADDLIBLE LIB(" + libraryName + ") POSITION(*FIRST)", false);
+
+            cpfMsg = dropSqlProcedures(libraryName, true);
+            if (!cpfMsg.equals("")) {
+                return false;
+            }
+
+            cpfMsg = endJournaling(libraryName, true);
+            if (!cpfMsg.equals("")) {
+                return false;
+            }
+
+        } finally {
+            executeCommand("RMVLIBLE LIB(" + libraryName + ")", false);
+        }
+
+        cpfMsg = executeCommand("DLTLIB LIB(" + libraryName + ")", logErrors);
+        if (!cpfMsg.equals("")) {
             return false;
         }
 
@@ -317,22 +342,22 @@ public class TransferRapidFireLibrary extends Shell {
                 isLibraryListChanged = true;
             }
 
-            cpfMsg = executeCommand("CALL PGM(" + libraryName + "/STRENDJRN) PARM(*END " + libraryName + ")", true);
+            cpfMsg = endJournaling(libraryName, true);
             if (!cpfMsg.equals("")) {
                 return false;
             }
 
-            cpfMsg = executeCommand("CALL PGM(" + libraryName + "/STRENDJRN) PARM(*START " + libraryName + ")", true);
+            cpfMsg = startJournaling(libraryName, true);
             if (!cpfMsg.equals("")) {
                 return false;
             }
 
-            cpfMsg = executeCommand("CALL PGM(" + libraryName + "/CRTDRPSQL) PARM(*DROP " + libraryName + ")", true);
+            cpfMsg = dropSqlProcedures(libraryName, true);
             if (!cpfMsg.equals("")) {
                 return false;
             }
 
-            cpfMsg = executeCommand("CALL PGM(" + libraryName + "/CRTDRPSQL) PARM(*CREATE " + libraryName + ")", true);
+            cpfMsg = createSqlProcedures(libraryName, true);
             if (!cpfMsg.equals("")) {
                 return false;
             }
@@ -344,6 +369,22 @@ public class TransferRapidFireLibrary extends Shell {
         }
 
         return true;
+    }
+
+    private String endJournaling(String libraryName, boolean logError) {
+        return executeCommand("CALL PGM(" + libraryName + "/STRENDJRN) PARM(*END " + libraryName + ")", logError);
+    }
+
+    private String startJournaling(String libraryName, boolean logError) {
+        return executeCommand("CALL PGM(" + libraryName + "/STRENDJRN) PARM(*START " + libraryName + ")", logError);
+    }
+
+    private String dropSqlProcedures(String libraryName, boolean logError) {
+        return executeCommand("CALL PGM(" + libraryName + "/CRTDRPSQL) PARM(*DROP " + libraryName + ")", logError);
+    }
+
+    private String createSqlProcedures(String libraryName, boolean logError) {
+        return executeCommand("CALL PGM(" + libraryName + "/CRTDRPSQL) PARM(*CREATE " + libraryName + ")", logError);
     }
 
     private String executeCommand(String command, boolean logError) {
@@ -412,19 +453,16 @@ public class TransferRapidFireLibrary extends Shell {
 
             setStatus(Messages.bind(Messages.Checking_library_A_for_existence, rapidFireLibrary));
             if (!checkLibraryPrecondition(rapidFireLibrary)) {
-                setStatus("!!!   " + Messages.bind(Messages.Library_A_does_already_exist, rapidFireLibrary) + "   !!!");
+                setErrorStatus(Messages.bind(Messages.Library_A_does_already_exist, rapidFireLibrary));
             } else {
                 setStatus(Messages.bind(Messages.Checking_file_B_in_library_A_for_existence, new String[] { workLibrary, saveFileName }));
                 if (!checkSaveFilePrecondition(workLibrary, saveFileName)) {
-                    setStatus("!!!   " + Messages.bind(Messages.File_B_in_library_A_does_already_exist, new String[] { workLibrary, saveFileName })
-                        + "   !!!");
+                    setErrorStatus(Messages.bind(Messages.File_B_in_library_A_does_already_exist, new String[] { workLibrary, saveFileName }));
                 } else {
 
                     setStatus(Messages.bind(Messages.Creating_save_file_B_in_library_A, new String[] { workLibrary, saveFileName }));
                     if (!createSaveFile(workLibrary, saveFileName, true)) {
-                        setStatus(
-                            "!!!   " + Messages.bind(Messages.Could_not_create_save_file_B_in_library_A, new String[] { workLibrary, saveFileName })
-                                + "   !!!");
+                        setErrorStatus(Messages.bind(Messages.Could_not_create_save_file_B_in_library_A, new String[] { workLibrary, saveFileName }));
                     } else {
 
                         try {
@@ -444,7 +482,7 @@ public class TransferRapidFireLibrary extends Shell {
 
                             setStatus(Messages.bind(Messages.Restoring_library_A, rapidFireLibrary));
                             if (!restoreLibrary(workLibrary, saveFileName, rapidFireLibrary)) {
-                                setStatus("!!!   " + Messages.bind(Messages.Could_not_restore_library_A, rapidFireLibrary) + "   !!!");
+                                setErrorStatus(Messages.bind(Messages.Could_not_restore_library_A, rapidFireLibrary));
                             } else {
 
                                 boolean isInitialized;
@@ -456,7 +494,7 @@ public class TransferRapidFireLibrary extends Shell {
                                 }
 
                                 if (isInitialized) {
-                                    setStatus("!!!   " + Messages.bind(Messages.Library_A_successfull_transfered, rapidFireLibrary) + "   !!!");
+                                    setErrorStatus(Messages.bind(Messages.Library_A_successfull_transfered, rapidFireLibrary));
                                     successfullyTransfered = true;
                                 }
                             }
@@ -464,7 +502,7 @@ public class TransferRapidFireLibrary extends Shell {
                         } catch (Throwable e) {
                             RapidFireCorePlugin.logError(Messages.Could_not_send_save_file_to_host, e);
 
-                            setStatus("!!!   " + Messages.Could_not_send_save_file_to_host + "   !!!");
+                            setErrorStatus(Messages.Could_not_send_save_file_to_host);
                             setStatus(e.getLocalizedMessage());
                         } finally {
 
