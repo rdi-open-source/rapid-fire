@@ -12,7 +12,7 @@
 <p>
 <a href="../introduction/introduction.html">Next page</a>
 &nbsp;•&nbsp;
-<a href="../deploying_files_today/deploying_files_today.html">Next page</a>
+<a href="../install/install_library.html">Next page</a>
 <p>
 <div align="right">
 </div>
@@ -23,7 +23,6 @@ Installing Rapid Fire requires the following prerequisites:
 <p>
 <ul>
 <li>IBM i with i5/OS 7.1 or higher</li>
-<li>Run SQL (RUNSQL) command, shipped for 7.1 as a PTF</li>
 </ul>
 <p>
 <u>Client side</u>
@@ -32,6 +31,24 @@ Installing Rapid Fire requires the following prerequisites:
 <li>IBM Websphere Development Studio for iSeries 7.0<p>or</li>
 <li>IBM Rational Developer for Power Systems Software 8.0 or higher</li>
 </ul>
+<p>
+<table>
+	<tr>
+		<td class="notice"><b>Notice</b>:<br>
+		                   The Rapid Fire plug-in is a client-server application that utilizes
+		                   SQL stored procedures and functions for retrieving data from the host
+		                   and for executing actions on the host. All SQL procedures and functions
+		                   are installed with the specific schema name that equals the name of the
+		                   Rapid Fire product library. The default name is <i>RAPIDFIRE</i>.<p>
+		                   The library is shipped with program CRTDRPSQL that can be used for
+		                   deleting and/or creating the procedures and functions.<p>
+		                   The procedures and functions are created automatically by the installer,
+		                   when you use the "Transfer Rapid Fire library" dialog for installing
+		                   the library.<p>
+		                   Please consider reading <a href="../uninstall/uninstall_library.html">Uninstall Rapid Fire Library</a>
+		                   before installing it.</td>
+	</tr>
+</table>
 <p>
 </div>
 <p>
