@@ -148,6 +148,8 @@ public class Messages extends NLS {
     public static String Label_Is_slow_connection;
     public static String Label_Wizard_settings;
     public static String Label_Skip_disabled_pages;
+    public static String Label_Uninstall_library;
+    public static String Label_Uninstal_library_instructions;
 
     public static String Tooltip_Library;
     public static String Tooltip_Job;

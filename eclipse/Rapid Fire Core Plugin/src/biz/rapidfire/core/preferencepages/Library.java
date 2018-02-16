@@ -25,10 +25,15 @@ import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
+import org.eclipse.swt.widgets.Group;
 import org.eclipse.swt.widgets.Label;
+import org.eclipse.swt.widgets.Link;
 import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
+import org.eclipse.ui.PlatformUI;
+
+import com.ibm.as400.access.AS400;
 
 import biz.rapidfire.core.Messages;
 import biz.rapidfire.core.RapidFireCorePlugin;
@@ -43,8 +48,6 @@ import biz.rapidfire.core.validators.Validator;
 import biz.rapidfire.rsebase.helpers.SystemConnectionHelper;
 import biz.rapidfire.rsebase.swt.widgets.SystemHostCombo;
 
-import com.ibm.as400.access.AS400;
-
 public class Library extends PreferencePage implements IWorkbenchPreferencePage {
 
     private String rapidFireLibrary;
@@ -57,7 +60,7 @@ public class Library extends PreferencePage implements IWorkbenchPreferencePage 
     private Button buttonUpdateProductLibraryVersion;
     private Button buttonTransfer;
 
-    private boolean updateProductLibraryVersion;
+    private boolean enableUpdateProductLibraryVersion;
 
     public Library() {
         super();
@@ -65,7 +68,8 @@ public class Library extends PreferencePage implements IWorkbenchPreferencePage 
         setPreferenceStore(RapidFireCorePlugin.getDefault().getPreferenceStore());
         getPreferenceStore();
 
-        this.updateProductLibraryVersion = false;
+        this.enableUpdateProductLibraryVersion = false;
+        setControlEnablement();
     }
 
     @Override
@@ -81,7 +85,11 @@ public class Library extends PreferencePage implements IWorkbenchPreferencePage 
         comboConnection.addSelectionListener(new SelectionListener() {
             public void widgetSelected(SelectionEvent event) {
                 setErrorMessage(null);
-                updateProductLibraryVersion();
+                if (!isSlowConnection()) {
+                    updateProductLibraryVersion();
+                } else {
+                    clearProductLibraryVersion();
+                }
             }
 
             public void widgetDefaultSelected(SelectionEvent event) {
@@ -115,8 +123,11 @@ public class Library extends PreferencePage implements IWorkbenchPreferencePage 
         });
         textProductLibrary.addModifyListener(new ModifyListener() {
             public void modifyText(ModifyEvent arg0) {
-                updateProductLibraryVersion();
-                return;
+                if (!isSlowConnection()) {
+                    updateProductLibraryVersion();
+                } else {
+                    clearProductLibraryVersion();
+                }
             }
         });
         textProductLibrary.setLayoutData(createTextLayoutData());
@@ -134,7 +145,6 @@ public class Library extends PreferencePage implements IWorkbenchPreferencePage 
         buttonUpdateProductLibraryVersion.setImage(RapidFireCorePlugin.getDefault().getImageRegistry().get(RapidFireCorePlugin.IMAGE_REFRESH));
         buttonUpdateProductLibraryVersion.addSelectionListener(new SelectionListener() {
             public void widgetSelected(SelectionEvent arg0) {
-                updateProductLibraryVersion = true;
                 updateProductLibraryVersion();
             }
 
@@ -160,9 +170,38 @@ public class Library extends PreferencePage implements IWorkbenchPreferencePage 
         buttonTransfer.setText(Messages.ActionLabel_Transfer_Rapid_Fire_library);
         buttonTransfer.setToolTipText(Messages.ActionTooltip_Transfer_Rapid_Fire_library);
 
+        createSectionLabelDecorations(container);
+
         setScreenToValues();
 
         return container;
+    }
+
+    private void createSectionLabelDecorations(Composite parent) {
+
+        WidgetFactory.createLineFiller(parent);
+
+        GridLayout layout = (GridLayout)parent.getLayout();
+
+        Group group = new Group(parent, SWT.NONE);
+        group.setLayout(new GridLayout(3, false));
+        group.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, layout.numColumns, 1));
+        group.setText(Messages.Label_Uninstall_library);
+
+        Link lnkHelp = new Link(group, SWT.NONE);
+        lnkHelp.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false, 2, 1));
+        lnkHelp.setText(Messages.bindParameters(Messages.Label_Uninstal_library_instructions, "<a>", "</a>")); //$NON-NLS-1$ //$NON-NLS-2$
+        lnkHelp.pack();
+        lnkHelp.addSelectionListener(new SelectionAdapter() {
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                PlatformUI.getWorkbench().getHelpSystem().displayHelpResource("/biz.rapidfire.help/html/uninstall/uninstall_library.html"); //$NON-NLS-1$
+            }
+        });
+    }
+
+    private boolean isSlowConnection() {
+        return Preferences.getInstance().isSlowConnection();
     }
 
     @Override
@@ -185,22 +224,24 @@ public class Library extends PreferencePage implements IWorkbenchPreferencePage 
 
     private void setControlEnablement() {
 
-        if (updateProductLibraryVersion) {
-            buttonUpdateProductLibraryVersion.setEnabled(false);
-        } else {
-            buttonUpdateProductLibraryVersion.setEnabled(true);
+        if (buttonUpdateProductLibraryVersion != null) {
+            if (!enableUpdateProductLibraryVersion) {
+                buttonUpdateProductLibraryVersion.setEnabled(false);
+            } else {
+                buttonUpdateProductLibraryVersion.setEnabled(true);
+            }
         }
     }
 
-    protected void setStoreToValues() {
+    private void setStoreToValues() {
 
         Preferences.getInstance().setRapidFireLibrary(rapidFireLibrary);
         Preferences.getInstance().setConnectionName(comboConnection.getConnectionName());
-        Preferences.getInstance().setFtpPortNumber(
-            IntHelper.tryParseInt(textFtpPortNumber.getText(), Preferences.getInstance().getDefaultFtpPortNumber()));
+        Preferences.getInstance()
+            .setFtpPortNumber(IntHelper.tryParseInt(textFtpPortNumber.getText(), Preferences.getInstance().getDefaultFtpPortNumber()));
     }
 
-    protected void setScreenToValues() {
+    private void setScreenToValues() {
 
         rapidFireLibrary = Preferences.getInstance().getRapidFireLibrary();
         String connectionName = Preferences.getInstance().getHostName();
@@ -212,9 +253,12 @@ public class Library extends PreferencePage implements IWorkbenchPreferencePage 
         textFtpPortNumber.setText(Integer.toString(Preferences.getInstance().getFtpPortNumber()));
 
         setScreenValues();
+
+        enableUpdateProductLibraryVersion = true;
+        setControlEnablement();
     }
 
-    protected void setScreenToDefaultValues() {
+    private void setScreenToDefaultValues() {
 
         rapidFireLibrary = Preferences.getInstance().getDefaultRapidFireLibrary();
         String connectionName = Preferences.getInstance().getDefaultHostName();
@@ -226,7 +270,7 @@ public class Library extends PreferencePage implements IWorkbenchPreferencePage 
         setScreenValues();
     }
 
-    protected void setScreenValues() {
+    private void setScreenValues() {
 
         textProductLibrary.setText(rapidFireLibrary);
     }
@@ -246,6 +290,10 @@ public class Library extends PreferencePage implements IWorkbenchPreferencePage 
         return new GridData(SWT.FILL, SWT.CENTER, true, false, horizontalSpan, 1);
     }
 
+    private void clearProductLibraryVersion() {
+        textProductLibraryVersion.setText(""); //$NON-NLS-1$
+    }
+
     private void updateProductLibraryVersion() {
         String text = getProductLibraryVersion(comboConnection.getHostName(), textProductLibrary.getText());
         if (text == null) {
@@ -253,18 +301,15 @@ public class Library extends PreferencePage implements IWorkbenchPreferencePage 
         }
 
         textProductLibraryVersion.setText(text);
-
-        setControlEnablement();
     }
 
     private String getProductLibraryVersion(String hostName, String library) {
 
-        if (!updateProductLibraryVersion) {
+        if (!enableUpdateProductLibraryVersion) {
             return ""; //$NON-NLS-1$
         }
 
         if (StringHelper.isNullOrEmpty(hostName) || StringHelper.isNullOrEmpty(library)) {
-            updateProductLibraryVersion = false;
             return Messages.Enter_a_host_name;
         }
 
@@ -274,7 +319,6 @@ public class Library extends PreferencePage implements IWorkbenchPreferencePage 
 
             AS400 as400 = SystemConnectionHelper.findSystem(hostName);
             if (as400 == null) {
-                updateProductLibraryVersion = false;
                 return Messages.bind(Messages.Host_A_not_found_in_configured_RSE_connections, hostName);
             }
 
