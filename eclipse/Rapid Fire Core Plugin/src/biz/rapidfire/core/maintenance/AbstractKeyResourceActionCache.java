@@ -20,6 +20,9 @@ public abstract class AbstractKeyResourceActionCache {
     public static final String IS_ZERO = "IS_ZERO"; //$NON-NLS-1$
     public static final String IS_NOT_ZERO = "IS_NOT_ZERO"; //$NON-NLS-1$
 
+    public static final String IS_TRUE = "IS_TRUE"; //$NON-NLS-1$
+    public static final String IS_FALSE = "IS_FALSE"; //$NON-NLS-1$
+
     private String value;
 
     public AbstractKeyResourceActionCache(IRapidFireJobResource job, String... keyExtensions) {
@@ -30,14 +33,14 @@ public abstract class AbstractKeyResourceActionCache {
 
         StringBuilder buffer = new StringBuilder();
 
-        // Add job attributes that effect the possible actions:
+        // Add job attributes that affect the possible actions:
         // - Status
         // - Create Environment
-        // These attributes also effect all other dependent objects.
+        // These attributes also affect all other dependent objects.
         if (job != null) {
             buffer.append(job.getStatus());
             buffer.append(SEPARATOR);
-            buffer.append(Boolean.toString(job.isDoCreateEnvironment()));
+            buffer.append(isBooleanValueTrue(job.isDoCreateEnvironment()));
         }
 
         // Add attributes that are specific to the other Rapid Fire resources,
@@ -67,6 +70,15 @@ public abstract class AbstractKeyResourceActionCache {
             return IS_EMPTY;
         } else {
             return IS_NOT_EMPTY;
+        }
+    }
+
+    protected static String isBooleanValueTrue(boolean value) {
+
+        if (value) {
+            return IS_TRUE;
+        } else {
+            return IS_FALSE;
         }
     }
 
