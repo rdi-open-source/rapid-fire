@@ -15,9 +15,14 @@ import biz.rapidfire.core.model.IRapidFireLibraryResource;
  * This class produces the key value for the LibraryActionCache.
  * 
  * <pre>
- * Form of the key:    [dataLibrary], [jobName], [jobStatus], [libraryName_isEmpty]
- * Example key value:  RFPRI, CUSTUPD, RDY, IS_EMPTY
+ * Form of the key:    [jobStatus], [createEnvironment], [libraryName_isEmpty]
+ * Example key value:  RDY, true, IS_EMPTY
  * </pre>
+ * 
+ * The key is composed from the attributes of the job ('status' and 'create
+ * environment') plus the name of the library ('name'). The library name is
+ * translated to IS_EMPTY or IS_NOT_EMPTY, because the actual name is not
+ * relevant.
  */
 public class KeyLibraryActionCache extends AbstractKeyResourceActionCache {
 

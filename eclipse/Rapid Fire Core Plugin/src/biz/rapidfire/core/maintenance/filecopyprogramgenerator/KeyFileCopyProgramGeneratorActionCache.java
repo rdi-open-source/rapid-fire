@@ -12,16 +12,12 @@ import biz.rapidfire.core.maintenance.AbstractKeyResourceActionCache;
 import biz.rapidfire.core.model.IRapidFireAreaResource;
 
 /**
- * This class produces the key value for the FileActionCache.
- * 
- * <pre>
- * Form of the key:    [dataLibrary], [jobName], [jobStatus], [position_isZero]
- * Example key value:  RFPRI, CUSTUPD, RDY, IS_ZERO
- * </pre>
+ * This class is not yet used, because the program generator can be called at
+ * any time.
  */
 public class KeyFileCopyProgramGeneratorActionCache extends AbstractKeyResourceActionCache {
 
     public KeyFileCopyProgramGeneratorActionCache(IRapidFireAreaResource area) {
-        super(area.getParentJob(), area.getParentJob().getPhase().label());
+        super(null);
     }
 }

@@ -15,9 +15,12 @@ import biz.rapidfire.core.model.IFileCopyStatus;
  * This class produces the key value for the FileActionCache.
  * 
  * <pre>
- * Form of the key:    [dataLibrary], [jobName], [jobStatus], [position_isZero]
- * Example key value:  RFPRI, CUSTUPD, RDY, IS_ZERO
+ * Form of the key:    [jobStatus], [createEnvironment], [phase]
+ * Example key value:  RDY, true, phase
  * </pre>
+ * 
+ * The key is composed from the attributes of the job ('status' and 'create
+ * environment') plus the phase of the job.
  */
 public class KeyReapplyChangesActionCache extends AbstractKeyResourceActionCache {
 

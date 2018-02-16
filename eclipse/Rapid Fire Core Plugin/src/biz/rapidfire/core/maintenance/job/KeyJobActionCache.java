@@ -15,9 +15,12 @@ import biz.rapidfire.core.model.IRapidFireJobResource;
  * This class produces the key value for the JobActionCache.
  * 
  * <pre>
- * Form of the key:    [dataLibrary], [jobName], [jobStatus]
- * Example key value:  RFPRI, CUSTUPD, RDY
+ * Form of the key:    [jobStatus], [createEnvironment]
+ * Example key value:  RDY, true
  * </pre>
+ * 
+ * The key is composed from the job attributes 'status' and 'create
+ * environment'.
  */
 public class KeyJobActionCache extends AbstractKeyResourceActionCache {
 

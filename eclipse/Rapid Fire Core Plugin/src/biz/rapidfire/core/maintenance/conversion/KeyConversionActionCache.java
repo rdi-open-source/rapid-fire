@@ -15,13 +15,19 @@ import biz.rapidfire.core.model.IRapidFireConversionResource;
  * This class produces the key value for the FileActionCache.
  * 
  * <pre>
- * Form of the key:    [dataLibrary], [jobName], [jobStatus], [position], [fieldToConvert_isEmpty]
- * Example key value:  RFPRI, CUSTUPD, RDY, 10, IS_EMPTY
+ * Form of the key:    [jobStatus], [createEnvironment], [position], [fieldToConvert_isEmpty]
+ * Example key value:  RDY, true, IS_ZERO, IS_EMPTY
  * </pre>
+ * 
+ * The key is composed from the attributes of the job ('status' and 'create
+ * environment') plus the file ('position') and the conversion identifiers
+ * ('field to convert'). The value of 'position' is translated to IS_ZERO or
+ * IS_NOT_ZERO, because the actual position is not relevant. The same applies to
+ * 'field to convert'.
  */
 public class KeyConversionActionCache extends AbstractKeyResourceActionCache {
 
     public KeyConversionActionCache(IRapidFireConversionResource conversion) {
-        super(conversion.getParentJob(), Integer.toString(conversion.getPosition()), isStringValueEmpty(conversion.getFieldToConvert()));
+        super(conversion.getParentJob(), isNumericValueZero(conversion.getPosition()), isStringValueEmpty(conversion.getFieldToConvert()));
     }
 }

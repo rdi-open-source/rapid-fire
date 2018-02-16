@@ -12,12 +12,16 @@ import biz.rapidfire.core.maintenance.AbstractKeyResourceActionCache;
 import biz.rapidfire.core.model.IRapidFireActivityResource;
 
 /**
- * This class produces the key value for the FileActionCache.
+ * This class produces the key value for the ActivityActionCache.
  * 
  * <pre>
- * Form of the key:    [dataLibrary], [jobName], [jobStatus], [position_isZero]
- * Example key value:  RFPRI, CUSTUPD, RDY, IS_ZERO
+ * Form of the key:    [jobStatus], [createEnvironment]
+ * Example key value:  RDY, true
  * </pre>
+ * 
+ * These are the same attributes that are used to determine the valid job
+ * actions. Therefore no more attributes are passed to the constructor of the
+ * super class.
  */
 public class KeyActivityActionCache extends AbstractKeyResourceActionCache {
 

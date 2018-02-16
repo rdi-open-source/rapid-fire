@@ -30,13 +30,18 @@ public abstract class AbstractKeyResourceActionCache {
 
         StringBuilder buffer = new StringBuilder();
 
-        // buffer.append(job.getDataLibrary());
-        // buffer.append(SEPARATOR);
-        // buffer.append(job.getName());
-        // buffer.append(SEPARATOR);
+        // Add job attributes that effect the possible actions:
+        // - Status
+        // - Create Environment
+        // These attributes also effect all other dependent objects.
+        if (job != null) {
+            buffer.append(job.getStatus());
+            buffer.append(SEPARATOR);
+            buffer.append(Boolean.toString(job.isDoCreateEnvironment()));
+        }
 
-        buffer.append(job.getStatus());
-
+        // Add attributes that are specific to the other Rapid Fire resources,
+        // such as 'Libraries', 'Library Lists', 'Files', etc.
         if (keyExtensions != null && keyExtensions.length > 0) {
             for (String keyExtension : keyExtensions) {
                 buffer.append(SEPARATOR);

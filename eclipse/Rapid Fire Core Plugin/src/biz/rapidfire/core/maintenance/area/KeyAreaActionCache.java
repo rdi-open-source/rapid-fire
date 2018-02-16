@@ -12,12 +12,17 @@ import biz.rapidfire.core.maintenance.AbstractKeyResourceActionCache;
 import biz.rapidfire.core.model.IRapidFireAreaResource;
 
 /**
- * This class produces the key value for the FileActionCache.
+ * This class produces the key value for the AreaActionCache.
  * 
  * <pre>
- * Form of the key:    [dataLibrary], [jobName], [jobStatus], [position}, [area_isEmpty]
- * Example key value:  RFPRI, CUSTUPD, RDY, 10, IS_EMPTY
+ * Form of the key:    [jobStatus], [createEnvironment], [position], [area_isEmpty]
+ * Example key value:  RDY, true, 10, IS_EMPTY
  * </pre>
+ * 
+ * The key is composed from the attributes of the job ('status' and 'create
+ * environment') plus the file ('position') and the area ('name'). The name is
+ * translated to IS_EMPTY or IS_NOT_EMPTY, because the actual name is not
+ * relevant.
  */
 public class KeyAreaActionCache extends AbstractKeyResourceActionCache {
 
