@@ -14,6 +14,24 @@
 &nbsp;•&nbsp;
 <a href="../deploying_files_today/deploying_files_today.html">Next page</a>
 <p>
+<a id="before_you_begin"></a>
+Before you begin:
+<p>
+<table>
+	<tr>
+		<td class="notice"><b>Notice</b>:<br>
+		                   Rapid Fire uses commitment control to update its files. Therefore a journal 
+		                   must be attached to all Rapid Fire files. By default the Rapid Fire installer
+		                   ensures that journaling is started for all Rapid Fire files.<br>
+		                   But in case that you have installed a high availability software that also use
+		                   journals to keep track of object changes, you may need to install Rapid Fire
+		                   without a journal, because that is attached by your HA software.<br><br>
+		                   <font color="red">Please uncheck "Start journaling Rapid Fire files" on the 
+		                   "Transfer Rapid Fire Library" dialog to transfer the Rapid Fire library 
+		                   without attaching a journal to the Rapid Fire files.</font></td>
+	</tr>
+</table>
+<p>
 Before you proceed:
 <p>
 <table>
@@ -57,8 +75,9 @@ Follow these steps to install the Rapid Fire library from the host:
     system and enter the user and password to be used to connect to the host.<p>
     <img src="./assets/signon.png" /><p></li>
 <li>Click the [OK] button to proceed.<p></li>
-<li>On the following &quot;Transfer Rapid Fire library&quot; dialog, click 
-    [Start Transfer] to start the FTP transfer.<p>
+<li>On the following &quot;Transfer Rapid Fire library&quot; dialog, specify whether
+    to start journaling the Rapid Fire files and then click [Start Transfer] to start 
+    the FTP transfer.<p>
     <img src="./assets/transfer_start.png" /><p></li>
 <li>If the Rapid FIre library already exists, you will be asked to confirm 
     that you want to delete it:<p>
