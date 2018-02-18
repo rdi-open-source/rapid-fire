@@ -893,7 +893,7 @@ public final class WidgetFactory {
 
         Button checkBox = new Button(inner, SWT.CHECK);
 
-        if (numColumns == 2 && (isOption(style, SWT.RIGHT) || isOption(style, SWT.NONE))) {
+        if (numColumns == 2 && isOption(style, SWT.RIGHT)) {
             labelControl = createLabel(inner, text, tooltip);
         }
 

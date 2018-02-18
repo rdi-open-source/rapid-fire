@@ -104,7 +104,7 @@ public class TransferRapidFireLibrary extends Shell {
         buttonStart.setText(Messages.ActionLabel_Start_Transfer);
 
         buttonStartJournaling = WidgetFactory.createCheckbox(this, Messages.Label_Start_journaling_Rapid_Fire_files,
-            Messages.Tooltip_Start_journaling_Rapid_Fire_files, SWT.NONE);
+            Messages.Tooltip_Start_journaling_Rapid_Fire_files, SWT.RIGHT);
         buttonStartJournaling.setSelection(Preferences.getInstance().isStartJournaling());
         buttonStartJournaling.addSelectionListener(new SelectionListener() {
             public void widgetSelected(SelectionEvent event) {
