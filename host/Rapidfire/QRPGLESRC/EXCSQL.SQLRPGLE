@@ -258,3 +258,4 @@ DCL-PROC addQuotes;
   Return DOUBLE_QUOTES + p_string + DOUBLE_QUOTES;
 
 END-PROC addQuotes;
+
