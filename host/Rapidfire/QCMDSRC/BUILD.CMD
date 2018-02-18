@@ -29,3 +29,7 @@
              PARM       KWD(LIB) TYPE(*NAME) LEN(10) DFT(RAPIDFIRE) +
                           PROMPT('Rapid Fire library')
 
+             PARM       KWD(CPYSAVF) TYPE(*CHAR) LEN(10) DFT(*NO) +
+                          RSTD(*YES) SPCVAL((*YES) (*NO)) +
+                          PROMPT('Copy save file')
+

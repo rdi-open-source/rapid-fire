@@ -41,12 +41,16 @@
      /*------------+--------+---------------------------------------------------------------------*/
 
      /* Start */
-             PGM        PARM(&LIB)
+             PGM        PARM(&LIB &CPYSAVF)
 
              DCL        VAR(&LIB) TYPE(*CHAR) LEN(10)
+             DCL        VAR(&CPYSAVF) TYPE(*CHAR) LEN(10)
 
              DCL        VAR(&JRN) TYPE(*CHAR) LEN(10) VALUE('RAPIDFIRE')
              DCL        VAR(&SAVF) TYPE(*CHAR) LEN(10) VALUE('RAPIDFIRE')
+
+             DCL        VAR(&FROMMBR) TYPE(*CHAR) LEN(100)
+             DCL        VAR(&TOSTMF) TYPE(*CHAR) LEN(100)
 
              CALL       PGM(CRTDRPSQL) PARM('*DROP' &LIB)
 
@@ -85,6 +89,14 @@
 
              SAVLIB     LIB(&LIB) DEV(*SAVF) SAVF(&LIB/&SAVF) +
                           TGTRLS(V7R1M0) DTACPR(*HIGH)
+
+             IF         COND(&CPYSAVF *EQ '*YES') THEN(DO)
+                CHGVAR    VAR(&FROMMBR) +
+                            VALUE('/QSYS.LIB/' *CAT &LIB *TCAT '.LIB/' *CAT &SAVF *TCAT '.FILE')
+                CHGVAR    VAR(&TOSTMF) +
+                            VALUE('/home/raddatz/' *CAT &SAVF *TCAT '.SAVF')
+                CPYTOSTMF FROMMBR(&FROMMBR) TOSTMF(&TOSTMF) CVTDTA(*NONE) STMFOPT(*REPLACE)
+             ENDDO
 
      /* End */
  STEP999:    ENDPGM

@@ -25,6 +25,7 @@
 :HELP name='BUILD/ALL'.
 :IMHELP name=BUILD.
 :IMHELP name='BUILD/LIB       '.
+:IMHELP name='BUILD/CPYSAVF   '.
 :EHELP.
 .*--------------------------------------------------------------------
 .* Helptext für den Befehl
@@ -51,6 +52,28 @@ is RAPIDFIRE.
 :PARML.
 :PT.:PV.library name:EPV.
 :PD.Name of the Rapid Fire production library.
+:EPARML.
+.*
+:EHELP.
+.*
+.*--------------------------------------------------------------------
+.* Helptext für Schlüsselwort CPYSAVF
+.*--------------------------------------------------------------------
+:HELP name='BUILD/CPYSAVF'.
+Copy save file - Help
+:XH3.Copy save file (CPYSAVF)
+:P.
+Specifies whether to copy the save file to the home directory of the.
+user who executes the build command.
+.*
+:IMHELP name='COM/OPTPARM'.
+.*
+:PARML.
+:PT.:PK DEF.*NO:EPK.
+:PD.The save is not copied.
+:PT.:PV.*NO:EPV.
+:PD.The save file is copied to the home directory. An existing file
+with the same name will be replaced.
 :EPARML.
 .*
 :EHELP.

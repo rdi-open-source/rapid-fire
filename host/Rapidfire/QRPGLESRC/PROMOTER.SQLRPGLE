@@ -88,6 +88,8 @@ CTL-OPT ExtBinInt(*YES);
 
 // Includes
 
+/Include QCPYSRC,PROMOTER
+
 /Include QCPYSRC,RAPIDFIRE
 /Include QCPYSRC,EXCCMD
 /Include QCPYSRC,QLIRLIBD
@@ -1383,7 +1385,7 @@ DCL-PROC PROMOTER_generate_Copy_Program EXPORT;
     CHAR(10) Const;
     p_Conversion_Program
     CHAR(10) Const;
-    p_test_mode
+    p_is_option_81
     IND Const Options(*NoPass);
     p_Source_Member
          Const LikeDs(qMbr_t) Options(*NoPass);
@@ -1489,13 +1491,15 @@ DCL-PROC PROMOTER_generate_Copy_Program EXPORT;
   l_hTgtFields = *null;
 
   // If p_job = RAPIDFIRE_JOB_NONE;
-  If %parms() >= %parmnum(p_test_mode) and
-     p_test_mode = *ON;
+  If %parms() >= %parmnum(p_is_option_81) and
+     p_is_option_81 = *ON;
     UserSpace_create(USRSPC_PROMOTER);
     UserSpace_retrievePointer(
       USRSPC_PROMOTER: g_User_Space_Pointer);
     l_Delete_User_Space = *ON;
     l_logErrJob = RAPIDFIRE_JOB_NONE;
+    // Read Rapid Fire Home Library
+    In l_Rapid_Fire_Home_Library;
   Else;
     l_Delete_User_Space = *OFF;
     l_logErrJob = p_job;
@@ -1610,7 +1614,7 @@ DCL-PROC PROMOTER_generate_Copy_Program EXPORT;
           l_Compile = *Off;
 
           // Open source file
-          l_File = l_Rapid_Fire_Home_Library + '/QRPGLESRC';
+          l_File = %Trim(l_Rapid_Fire_Home_Library) + '/QRPGLESRC';
           Open(E) QSOURCE;
 
           // Source file of copy program for file &1 in library &2 could not be opened

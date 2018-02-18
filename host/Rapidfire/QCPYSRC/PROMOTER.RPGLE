@@ -36,8 +36,6 @@ DCL-PR PROMOTER_generate_Copy_Program;
   CHAR(10) Const;
   p_Position
   ZONED(6) Const;
-  p_Area
-  CHAR(10) Const;
   p_Library
   CHAR(10) Const;
   p_Shadow_Library
@@ -48,7 +46,7 @@ DCL-PR PROMOTER_generate_Copy_Program;
   CHAR(10) Const;
   p_Conversion_Program
   CHAR(10) Const;
-  p_test_mode
+  p_is_option_81
   IND Const Options(*NoPass);
   p_Source_Member
        Const LikeDs(qMbr_t) Options(*NoPass);
