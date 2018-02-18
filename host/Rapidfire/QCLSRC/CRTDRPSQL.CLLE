@@ -303,6 +303,7 @@
              IF         COND(&MSG_LEN *NE 0) THEN(DO)
                 SNDPGMMSG  MSGID(CPF9898) MSGF(*LIBL/QCPFMSG) MSGDTA(%SST(&MSG_TXT 1 &MSG_LEN)) +
                              TOPGMQ(*PRV (*PGMBDY *NONE *NONE))
+                ROLLBACK
              ENDDO
              ENDDO
              WHEN       COND(&CMD *EQ '*DROP') THEN(DO)
@@ -316,9 +317,12 @@
              IF         COND(&MSG_LEN *NE 0) THEN(DO)
                 SNDPGMMSG  MSGID(CPF9898) MSGF(*LIBL/QCPFMSG) MSGDTA(%SST(&MSG_TXT 1 &MSG_LEN)) +
                              TOPGMQ(*PRV (*PGMBDY *NONE *NONE))
+                ROLLBACK
              ENDDO
              ENDDO
              ENDSELECT
+
+             COMMIT
 
              ENDSUBR
 
