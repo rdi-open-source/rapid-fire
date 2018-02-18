@@ -1,0 +1,91 @@
+.*-----------------------------------------------------------------------*
+.*                                                                       *
+.* Copyright (c) 2018 Task Force IT-Consulting GmbH, Waltrop (Germany)   *
+.* This software and the accompanying materials are made available       *
+.* under the terms of the GNU General Public License version 2.0 (GPLv2) *
+.* which accompanies this distribution and is available at               *
+.* http://www.gnu.org/licenses/gpl-2.0.html                              *
+.*                                                                       *
+.*-----------------------------------------------------------------------*
+.*                                                                       *
+.* Rapid Fire Build                                                      *
+.*                                                                       *
+.*-----------------------------------------------------------------------*
+.* STRPREPRC Compile Options:                                            *
+.*   >>PRE-COMPILER<<                                                    *
+.*     >>CRTCMD<<    CRTPNLGRP  PNLGRP(&LI/&OB) +                        *
+.*                              SRCFILE(&SL/&SF) SRCMBR(&SM);            *
+.*       >>COMPILE<<                                                     *
+.*       >>END-COMPILE<<                                                 *
+.*       >>EXECUTE<<                                                     *
+.*   >>END-PRE-COMPILER<<                                                *
+.*-----------------------------------------------------------------------*
+:PNLGRP.
+.*
+:HELP name='BUILD/ALL'.
+:IMHELP name=BUILD.
+:IMHELP name='BUILD/LIB       '.
+:EHELP.
+.*--------------------------------------------------------------------
+.* Helptext für den Befehl
+.*--------------------------------------------------------------------
+:HELP NAME='BUILD'.
+Rapid Fire Build (BUILD) - Help
+:P.
+The BUILD command produces the Rapid Fire save file.
+.*
+:EHELP.
+.*
+.*--------------------------------------------------------------------
+.* Helptext für Schlüsselwort PRDLIB
+.*--------------------------------------------------------------------
+:HELP name='BUILD/LIB'.
+Rapid Fire library - Help
+:XH3.Rapid Fire library (LIB)
+:P.
+Specifies the name of the Rapid Fire production library. Usually that
+is RAPIDFIRE.
+.*
+:IMHELP name='COM/OPTPARM'.
+.*
+:PARML.
+:PT.:PV.library name:EPV.
+:PD.Name of the Rapid Fire production library.
+:EPARML.
+.*
+:EHELP.
+.*
+.*====================================================================
+.*  Textbausteine, die an mehreren Stellen im Helptext
+.*  verwendet werden.
+.*====================================================================
+
+.*=====================================
+.*  Erforderlicher Parameter
+.*=====================================
+:HELP NAME='COM/REQPARM'.
+:P.
+This is a required parameter.
+:P.
+:IMHELP name='COM/VALUES'.
+:EHELP.
+
+.*=====================================
+.*  Optionaler Parameter
+.*=====================================
+:HELP NAME='COM/OPTPARM'.
+:P.
+This is an optional parameter.
+:P.
+:IMHELP name='COM/VALUES'.
+:EHELP.
+
+.*=====================================
+.*  Werteliste
+.*=====================================
+:HELP NAME='COM/VALUES'.
+:P.
+The possible values are:
+:EHELP.
+.*
+:EPNLGRP.

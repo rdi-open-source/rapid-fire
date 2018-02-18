@@ -1,0 +1,90 @@
+     /*-------------------------------------------------------------------------------------------*/
+     /*                                                                                           */
+     /* Copyright (c) 2014 Task Force IT-Consulting GmbH, Waltrop (Germany)                       */
+     /* This software and the accompanying materials are made available                           */
+     /* under the terms of the GNU General Public License version 2.0 (GPLv2)                     */
+     /* which accompanies this distribution and is available at                                   */
+     /* http://www.gnu.org/licenses/gpl-2.0.html                                                  */
+     /*                                                                                           */
+     /*-------------------------------------------------------------------------------------------*/
+     /*                                                                                           */
+     /* Rapid Fire Build                                                                          */
+     /*                                                                                           */
+     /*-------------------------------------------------------------------------------------------*/
+     /*  >>PRE-COMPILER<<                                                                         */
+     /*    >>CRTCMD<< CRTBNDCL     PGM(&LI/&OB) +                                                 */
+     /*                              SRCFILE(&SL/&SF) SRCMBR(&SM);                                */
+     /*    >>IMPORTANT<<                                                                          */
+     /*      >>PARM<<  DBGVIEW(*ALL);                                                             */
+     /*      >>PARM<<  OPTION(*EVENTF);                                                           */
+     /*      >>PARM<<  TGTRLS(&TR);                                                               */
+     /*    >>END-IMPORTANT<<                                                                      */
+     /*    >>EXECUTE<<                                                                            */
+     /*  >>END-PRE-COMPILER<<                                                                     */
+     /*-------------------------------------------------------------------------------------------*/
+     /*  SQL for checking the procedures and functions                                            */
+     /*  select 'PROCEDURE' TYPE,                                                                 */
+     /*         substr(SPECIFIC_SCHEMA, 1, 20) SPECIFIC_SCHEMA,                                   */
+     /*         substr(ROUTINE_NAME, 1, 30) ROUTINE_NAME                                          */
+     /*  from qsys2.sysprocs                                                                      */
+     /*  where specific_schema = 'RFPRI'                                                          */
+     /*  union                                                                                    */
+     /*  select 'FUNCTION' TYPE,                                                                  */
+     /*         substr(SPECIFIC_SCHEMA, 1, 20) SPECIFIC_SCHEMA,                                   */
+     /*         substr(ROUTINE_NAME, 1, 30) ROUTINE_NAME                                          */
+     /*  from qsys2.sysfuncs                                                                      */
+     /*  where specific_schema = 'RFPRI'                                                          */
+     /*------------+--------+---------------------------------------------------------------------*/
+     /*   Date     I Progr. I Description                                                         */
+     /*------------+--------+---------------------------------------------------------------------*/
+     /* 13.02.2018 I   TR   I Program created                                                     */
+     /*------------+--------+---------------------------------------------------------------------*/
+
+     /* Start */
+             PGM        PARM(&LIB)
+
+             DCL        VAR(&LIB) TYPE(*CHAR) LEN(10)
+
+             DCL        VAR(&JRN) TYPE(*CHAR) LEN(10) VALUE('RAPIDFIRE')
+             DCL        VAR(&SAVF) TYPE(*CHAR) LEN(10) VALUE('RAPIDFIRE')
+
+             CALL       PGM(CRTDRPSQL) PARM('*DROP' &LIB)
+
+             CLRPFM     FILE(&LIB/ACTSCHD)
+             CLRPFM     FILE(&LIB/AREAS)
+             CLRPFM     FILE(&LIB/CHANGES)
+             CLRPFM     FILE(&LIB/CHANGESLOG)
+             CLRPFM     FILE(&LIB/CNVS)
+             CLRPFM     FILE(&LIB/COMMANDS)
+             CLRPFM     FILE(&LIB/FILES)
+             CLRPFM     FILE(&LIB/JOBS)
+             CLRPFM     FILE(&LIB/LIBLETYS)
+             CLRPFM     FILE(&LIB/LIBLS)
+             CLRPFM     FILE(&LIB/LIBRARIES)
+             CLRPFM     FILE(&LIB/MEMBERS)
+             CLRPFM     FILE(&LIB/RECORDS)
+             CLRPFM     FILE(&LIB/RFJOBS)
+             CLRPFM     FILE(&LIB/SQLLOG)
+             CLRPFM     FILE(&LIB/SQLTRACE)
+             CLRPFM     FILE(&LIB/SUBTOBENOT)
+
+             CHGJRN JRN(&LIB/&JRN) JRNRCV(*GEN)
+
+             DLTF FILE(&LIB/EVF*)
+             MONMSG     MSGID(CPF2125) EXEC(DO) /* No objects deleted */
+                RMVMSG     PGMQ(*SAME (*)) CLEAR(*ALL)
+             ENDDO
+
+             CHKOBJ     OBJ(&LIB/&SAVF) OBJTYPE(*FILE)
+             MONMSG     MSGID(CPF9801) EXEC(DO) /* Object not found */
+                RMVMSG     PGMQ(*SAME (*)) CLEAR(*ALL)
+                CRTSAVF FILE(&LIB/&SAVF) TEXT('Rapid Fire')
+             ENDDO
+
+             CLRSAVF FILE(&LIB/&SAVF)
+
+             SAVLIB     LIB(&LIB) DEV(*SAVF) SAVF(&LIB/&SAVF) +
+                          TGTRLS(V7R1M0) DTACPR(*HIGH)
+
+     /* End */
+ STEP999:    ENDPGM
