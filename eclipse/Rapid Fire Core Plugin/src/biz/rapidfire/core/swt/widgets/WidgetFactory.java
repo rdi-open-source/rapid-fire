@@ -893,7 +893,7 @@ public final class WidgetFactory {
 
         Button checkBox = new Button(inner, SWT.CHECK);
 
-        if (numColumns == 2 && isOption(style, SWT.RIGHT)) {
+        if (numColumns == 2 && (isOption(style, SWT.RIGHT) || isOption(style, SWT.NONE))) {
             labelControl = createLabel(inner, text, tooltip);
         }
 
@@ -1006,7 +1006,8 @@ public final class WidgetFactory {
         return systemHostCombo;
     }
 
-    private SystemMemberPrompt produceSystemMemberPrompt(Composite parent, int style, boolean allowGeneric, boolean allowLibl, SystemFileType fileType) {
+    private SystemMemberPrompt produceSystemMemberPrompt(Composite parent, int style, boolean allowGeneric, boolean allowLibl,
+        SystemFileType fileType) {
 
         SystemMemberPrompt systemMemberPrompt = new SystemMemberPrompt(parent, style, allowGeneric, allowLibl, fileType);
 

@@ -150,6 +150,8 @@ public class Messages extends NLS {
     public static String Label_Skip_disabled_pages;
     public static String Label_Uninstall_library;
     public static String Label_Uninstal_library_instructions;
+    public static String Label_Start_journaling_Rapid_Fire_files;
+    public static String Label_Start_journaling_Rapid_Fire_files_help;
 
     public static String Tooltip_Library;
     public static String Tooltip_Job;
@@ -196,6 +198,7 @@ public class Messages extends NLS {
     public static String Tooltip_Is_slow_connection;
     public static String Tooltip_Select_conversion_program_of_file;
     public static String Tooltip_Skip_disabled_pages;
+    public static String Tooltip_Start_journaling_Rapid_Fire_files;
 
     // Questions
     public static String Question_Do_you_want_to_delete_library_A;

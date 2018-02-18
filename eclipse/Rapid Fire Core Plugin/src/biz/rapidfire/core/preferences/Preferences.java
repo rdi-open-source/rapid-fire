@@ -82,6 +82,9 @@ public final class Preferences {
     private static final String CONNECTION = DOMAIN + "CONNECTION.";
     private static final String CONNECTION_IS_SLOW = CONNECTION + "IS_SLOW"; //$NON-NLS-1$
 
+    private static final String INSTALL = DOMAIN + "INSTALL.";
+    private static final String INSTALL_IS_START_JOURNALING = INSTALL + "IS_START_JOURNALING"; //$NON-NLS-1$
+
     private static final String DATE_FORMAT_LOCALE = "*LOCALE"; //$NON-NLS-1$
     private static final String TIME_FORMAT_LOCALE = "*LOCALE"; //$NON-NLS-1$
 
@@ -181,6 +184,10 @@ public final class Preferences {
         return preferenceStore.getBoolean(CONNECTION_IS_SLOW);
     }
 
+    public boolean isStartJournaling() {
+        return preferenceStore.getBoolean(INSTALL_IS_START_JOURNALING);
+    }
+
     /*
      * Preferences: SETTER
      */
@@ -245,6 +252,10 @@ public final class Preferences {
         preferenceStore.setValue(CONNECTION_IS_SLOW, isSlow);
     }
 
+    public void setStartJournaling(boolean isStartJournaling) {
+        preferenceStore.setValue(INSTALL_IS_START_JOURNALING, isStartJournaling);
+    }
+
     /*
      * Preferences: Default Initializer
      */
@@ -269,6 +280,8 @@ public final class Preferences {
         preferenceStore.setDefault(GENERATOR_CONVERSION_PROGRAM_LIBRARY, getDefaultGeneratorConversionProgramLibrary());
 
         preferenceStore.setDefault(CONNECTION_IS_SLOW, getDefaultIsSlowConnection());
+
+        preferenceStore.setDefault(INSTALL_IS_START_JOURNALING, getDefaultIsStartJournaling());
     }
 
     /*
@@ -348,6 +361,10 @@ public final class Preferences {
 
     public boolean getDefaultIsSlowConnection() {
         return false;
+    }
+
+    public boolean getDefaultIsStartJournaling() {
+        return true;
     }
 
     public void registerPreferencesListener(IPropertyChangeListener listener) {

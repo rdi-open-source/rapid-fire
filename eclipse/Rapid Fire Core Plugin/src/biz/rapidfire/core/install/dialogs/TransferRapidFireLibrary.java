@@ -26,10 +26,12 @@ import org.eclipse.swt.events.MenuAdapter;
 import org.eclipse.swt.events.MenuEvent;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
+import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Link;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Shell;
@@ -60,6 +62,7 @@ public class TransferRapidFireLibrary extends Shell {
     private CommandCall commandCall;
     private Table tableStatus;
     private Button buttonStart;
+    private Button buttonStartJournaling;
     private Button buttonClose;
     private String rapidFireLibrary;
     private int ftpPort;
@@ -87,7 +90,7 @@ public class TransferRapidFireLibrary extends Shell {
 
     protected void createContents() {
 
-        GridLayout gl_shell = new GridLayout();
+        GridLayout gl_shell = new GridLayout(2, false);
         gl_shell.marginTop = 10;
         gl_shell.verticalSpacing = 10;
         setLayout(gl_shell);
@@ -97,11 +100,36 @@ public class TransferRapidFireLibrary extends Shell {
 
         buttonStart = WidgetFactory.createPushButton(this);
         buttonStart.addSelectionListener(new TransferLibrarySelectionAdapter());
-        buttonStart.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+        buttonStart.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));
         buttonStart.setText(Messages.ActionLabel_Start_Transfer);
 
+        buttonStartJournaling = WidgetFactory.createCheckbox(this, Messages.Label_Start_journaling_Rapid_Fire_files,
+            Messages.Tooltip_Start_journaling_Rapid_Fire_files, SWT.NONE);
+        buttonStartJournaling.setSelection(Preferences.getInstance().isStartJournaling());
+        buttonStartJournaling.addSelectionListener(new SelectionListener() {
+            public void widgetSelected(SelectionEvent event) {
+                Preferences.getInstance().setStartJournaling(buttonStartJournaling.getSelection());
+            }
+
+            public void widgetDefaultSelected(SelectionEvent event) {
+                widgetSelected(event);
+            }
+        });
+
+        Link lnkHelp = new Link(this, SWT.NONE);
+        lnkHelp.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false));
+        lnkHelp.setText(Messages.bindParameters(Messages.Label_Start_journaling_Rapid_Fire_files_help, "<a>", "</a>")); //$NON-NLS-1$ //$NON-NLS-2$
+        lnkHelp.pack();
+        lnkHelp.addSelectionListener(new SelectionAdapter() {
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                PlatformUI.getWorkbench().getHelpSystem()
+                    .displayHelpResource("/biz.rapidfire.help/html/install/install_library.html#before_you_begin"); //$NON-NLS-1$
+            }
+        });
+
         tableStatus = new Table(this, SWT.BORDER | SWT.MULTI);
-        final GridData gd_tableStatus = new GridData(SWT.FILL, SWT.FILL, true, true);
+        final GridData gd_tableStatus = new GridData(SWT.FILL, SWT.FILL, true, true, 2, 1);
         tableStatus.setLayoutData(gd_tableStatus);
 
         final TableColumn columnStatus = new TableColumn(tableStatus, SWT.NONE);
@@ -148,7 +176,7 @@ public class TransferRapidFireLibrary extends Shell {
             }
         });
 
-        GridData gd_buttonClose = new GridData(GridData.CENTER, GridData.CENTER, true, false);
+        GridData gd_buttonClose = new GridData(GridData.CENTER, GridData.CENTER, true, false, 2, 1);
         buttonClose.setLayoutData(gd_buttonClose);
     }
 
@@ -328,7 +356,7 @@ public class TransferRapidFireLibrary extends Shell {
         return true;
     }
 
-    private boolean initializeLibrary(String libraryName) {
+    private boolean initializeLibrary(String libraryName, boolean startJournaling) {
 
         String cpfMsg;
         boolean isLibraryListChanged = false;
@@ -342,20 +370,26 @@ public class TransferRapidFireLibrary extends Shell {
                 isLibraryListChanged = true;
             }
 
-            cpfMsg = endJournaling(libraryName, true);
-            if (!cpfMsg.equals("")) {
-                return false;
+            // Form now on (18.02.2019) the library is shipped without a
+            // journal.
+            // cpfMsg = endJournaling(libraryName, true);
+            // if (!cpfMsg.equals("")) {
+            // return false;
+            // }
+
+            if (startJournaling) {
+                cpfMsg = startJournaling(libraryName, true);
+                if (!cpfMsg.equals("")) {
+                    return false;
+                }
             }
 
-            cpfMsg = startJournaling(libraryName, true);
-            if (!cpfMsg.equals("")) {
-                return false;
-            }
-
-            cpfMsg = dropSqlProcedures(libraryName, true);
-            if (!cpfMsg.equals("")) {
-                return false;
-            }
+            // Form now on (18.02.2019) the library is shipped without SQL
+            // procedures and functions.
+            // cpfMsg = dropSqlProcedures(libraryName, true);
+            // if (!cpfMsg.equals("")) {
+            // return false;
+            // }
 
             cpfMsg = createSqlProcedures(libraryName, true);
             if (!cpfMsg.equals("")) {
@@ -416,6 +450,7 @@ public class TransferRapidFireLibrary extends Shell {
     public boolean connect() {
         as400 = new AS400(hostName, "RADDATZ2", "TOOLS400");
         buttonStart.setEnabled(false);
+        buttonStartJournaling.setEnabled(false);
         buttonClose.setEnabled(false);
         SignOnDialog signOnDialog = new SignOnDialog(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(), hostName);
         if (signOnDialog.open() == Dialog.OK) {
@@ -429,6 +464,7 @@ public class TransferRapidFireLibrary extends Shell {
                         setStatus(Messages.bind(Messages.About_to_transfer_library_A_to_host_B_using_port_C,
                             new String[] { rapidFireLibrary.trim(), hostName, Integer.toString(ftpPort) }));
                         buttonStart.setEnabled(true);
+                        buttonStartJournaling.setEnabled(true);
                         buttonClose.setEnabled(true);
                         return true;
                     }
@@ -445,8 +481,11 @@ public class TransferRapidFireLibrary extends Shell {
         public void widgetSelected(final SelectionEvent event) {
 
             buttonStart.setEnabled(false);
+            buttonStartJournaling.setEnabled(false);
             buttonClose.setEnabled(false);
+
             boolean successfullyTransfered = false;
+            boolean startJournaling = buttonStartJournaling.getSelection();
 
             String workLibrary = "QGPL";
             String saveFileName = rapidFireLibrary;
@@ -485,18 +524,11 @@ public class TransferRapidFireLibrary extends Shell {
                                 setErrorStatus(Messages.bind(Messages.Could_not_restore_library_A, rapidFireLibrary));
                             } else {
 
-                                boolean isInitialized;
-                                if (!isDefaultLibrary(rapidFireLibrary)) {
-                                    setStatus(Messages.bind(Messages.Initializing_library_A, new String[] { rapidFireLibrary }));
-                                    isInitialized = initializeLibrary(rapidFireLibrary);
-                                } else {
-                                    isInitialized = true;
-                                }
-
-                                if (isInitialized) {
+                                if (initializeLibrary(rapidFireLibrary, startJournaling)) {
                                     setErrorStatus(Messages.bind(Messages.Library_A_successfull_transfered, rapidFireLibrary));
                                     successfullyTransfered = true;
                                 }
+
                             }
 
                         } catch (Throwable e) {
@@ -516,20 +548,15 @@ public class TransferRapidFireLibrary extends Shell {
 
             if (successfullyTransfered) {
                 buttonStart.setEnabled(false);
+                buttonStartJournaling.setEnabled(false);
                 buttonClose.setEnabled(true);
                 buttonClose.setFocus();
             } else {
                 buttonStart.setEnabled(true);
+                buttonStartJournaling.setEnabled(true);
                 buttonClose.setEnabled(true);
                 buttonClose.setFocus();
             }
-        }
-
-        private boolean isDefaultLibrary(String rapidFireLibrary) {
-
-            String defaultLibrary = Preferences.getInstance().getDefaultRapidFireLibrary();
-
-            return rapidFireLibrary.equals(defaultLibrary);
         }
     }
 
