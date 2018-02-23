@@ -228,6 +228,22 @@ public class LibraryManager extends AbstractManager<IRapidFireLibraryResource, L
     @Override
     public boolean isValidAction(IRapidFireLibraryResource library, LibraryAction action) throws Exception {
 
+        if (isActionCacheEnabled()) {
+            return isValidCachedAction(library, action);
+        } else {
+            return isValidUncachedAction(library, action);
+        }
+    }
+
+    private boolean isValidUncachedAction(IRapidFireLibraryResource library, LibraryAction action) throws Exception {
+
+        Result result = checkAction(library.getKey(), action);
+
+        return result.isSuccessfull();
+    }
+
+    private boolean isValidCachedAction(IRapidFireLibraryResource library, LibraryAction action) throws Exception {
+
         KeyLibraryActionCache libraryActionsKey = new KeyLibraryActionCache(library);
 
         Set<LibraryAction> actionsSet = LibraryActionCache.getInstance().getActions(libraryActionsKey);

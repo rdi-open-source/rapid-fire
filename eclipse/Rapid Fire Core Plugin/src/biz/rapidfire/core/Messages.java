@@ -146,6 +146,7 @@ public class Messages extends NLS {
     public static String Label_Open_member_colon;
     public static String Label_Remote_Connection_settings;
     public static String Label_Is_slow_connection;
+    public static String Label_Enable_action_cache;
     public static String Label_Wizard_settings;
     public static String Label_Skip_disabled_pages;
     public static String Label_Uninstall_library;
@@ -196,6 +197,7 @@ public class Messages extends NLS {
     public static String Tooltip_Open_member;
     public static String Tooltip_Select_libraries_by_area;
     public static String Tooltip_Is_slow_connection;
+    public static String Tooltip_Enable_action_cache;
     public static String Tooltip_Select_conversion_program_of_file;
     public static String Tooltip_Skip_disabled_pages;
     public static String Tooltip_Start_journaling_Rapid_Fire_files;

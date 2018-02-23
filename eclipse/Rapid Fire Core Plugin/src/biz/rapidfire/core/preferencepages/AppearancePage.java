@@ -36,6 +36,7 @@ public class AppearancePage extends PreferencePage implements IWorkbenchPreferen
     private Combo textDateFormat;
     private Combo textTimeFormat;
     private Button btnIsSlowConnection;
+    private Button btnIsActionCacheEnabled;
     private Button btnSkipDisabledPages;
 
     public AppearancePage() {
@@ -118,7 +119,6 @@ public class AppearancePage extends PreferencePage implements IWorkbenchPreferen
 
     private void createSectionDateAndTime(Composite parent) {
 
-        // Date and Time Formats
         Group groupDateAndTimeFormats = new Group(parent, SWT.NONE);
         groupDateAndTimeFormats.setLayout(new GridLayout(3, false));
         groupDateAndTimeFormats.setLayoutData(new GridData(SWT.FILL, SWT.BEGINNING, true, false, 2, 1));
@@ -143,13 +143,12 @@ public class AppearancePage extends PreferencePage implements IWorkbenchPreferen
 
     private void createSectionConnection(Composite parent) {
 
-        // Date and Time Formats
-        Group groupDateAndTimeFormats = new Group(parent, SWT.NONE);
-        groupDateAndTimeFormats.setLayout(new GridLayout(3, false));
-        groupDateAndTimeFormats.setLayoutData(new GridData(SWT.FILL, SWT.BEGINNING, true, false, 2, 1));
-        groupDateAndTimeFormats.setText(Messages.Label_Remote_Connection_settings);
+        Group groupRemoteConnection = new Group(parent, SWT.NONE);
+        groupRemoteConnection.setLayout(new GridLayout(1, false));
+        groupRemoteConnection.setLayoutData(new GridData(SWT.FILL, SWT.BEGINNING, true, false, 2, 1));
+        groupRemoteConnection.setText(Messages.Label_Remote_Connection_settings);
 
-        btnIsSlowConnection = WidgetFactory.createCheckbox(groupDateAndTimeFormats);
+        btnIsSlowConnection = WidgetFactory.createCheckbox(groupRemoteConnection);
         btnIsSlowConnection.setText(Messages.Label_Is_slow_connection);
         btnIsSlowConnection.setToolTipText(Messages.Tooltip_Is_slow_connection);
         btnIsSlowConnection.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
@@ -157,6 +156,23 @@ public class AppearancePage extends PreferencePage implements IWorkbenchPreferen
 
             public void widgetSelected(SelectionEvent event) {
                 if (validateSlowConnection()) {
+                    checkAllValues();
+                }
+            }
+
+            public void widgetDefaultSelected(SelectionEvent event) {
+                widgetSelected(event);
+            }
+        });
+
+        btnIsActionCacheEnabled = WidgetFactory.createCheckbox(groupRemoteConnection);
+        btnIsActionCacheEnabled.setText(Messages.Label_Enable_action_cache);
+        btnIsActionCacheEnabled.setToolTipText(Messages.Tooltip_Enable_action_cache);
+        btnIsActionCacheEnabled.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+        btnIsActionCacheEnabled.addSelectionListener(new SelectionListener() {
+
+            public void widgetSelected(SelectionEvent event) {
+                if (validateActionCache()) {
                     checkAllValues();
                 }
             }
@@ -220,6 +236,7 @@ public class AppearancePage extends PreferencePage implements IWorkbenchPreferen
         preferences.setDateFormatLabel(textDateFormat.getText());
         preferences.setTimeFormatLabel(textTimeFormat.getText());
         preferences.setSlowConnection(btnIsSlowConnection.getSelection());
+        preferences.setActionCacheEnabled(btnIsActionCacheEnabled.getSelection());
         preferences.setSkipDisabledWizardPages(btnSkipDisabledPages.getSelection());
     }
 
@@ -231,6 +248,7 @@ public class AppearancePage extends PreferencePage implements IWorkbenchPreferen
         textDateFormat.setText(preferences.getDateFormatLabel());
         textTimeFormat.setText(preferences.getTimeFormatLabel());
         btnIsSlowConnection.setSelection(preferences.isSlowConnection());
+        btnIsActionCacheEnabled.setSelection(preferences.isActionCacheEnabled());
         btnSkipDisabledPages.setSelection(preferences.skipDisabledWizardPages());
 
         checkAllValues();
@@ -245,6 +263,7 @@ public class AppearancePage extends PreferencePage implements IWorkbenchPreferen
         textDateFormat.setText(preferences.getDefaultDateFormatLabel());
         textTimeFormat.setText(preferences.getDefaultTimeFormatLabel());
         btnIsSlowConnection.setSelection(preferences.getDefaultIsSlowConnection());
+        btnIsActionCacheEnabled.setSelection(preferences.getDefaultIsActionCacheEnabled());
         btnSkipDisabledPages.setSelection(preferences.getDefaultSkipDisabledWizardPages());
 
         checkAllValues();
@@ -257,6 +276,11 @@ public class AppearancePage extends PreferencePage implements IWorkbenchPreferen
     }
 
     private boolean validateSlowConnection() {
+
+        return true;
+    }
+
+    private boolean validateActionCache() {
 
         return true;
     }

@@ -66,6 +66,7 @@ public final class Preferences {
     public static final String APPEARANCE_PROGRESS_BAR_SIZE = APPEARANCE + "PROGRESS_BAR_SIZE"; //$NON-NLS-1$
     private static final String APPEARANCE_DATE_FORMAT = APPEARANCE + "DATE_FORMAT"; //$NON-NLS-1$
     private static final String APPEARANCE_TIME_FORMAT = APPEARANCE + "TIME_FORMAT"; //$NON-NLS-1$
+    private static final String APPEARANCE_IS_ACTION_CACHE_ENABLED = APPEARANCE + "IS_ACTION_CACHE_ENABLED"; //$NON-NLS-1$
 
     private static final String WIZARD = DOMAIN + "WIZARD.";
     private static final String WIZARD_CONNECTION = WIZARD + "CONNECTION"; //$NON-NLS-1$
@@ -148,6 +149,10 @@ public final class Preferences {
         return preferenceStore.getString(APPEARANCE_TIME_FORMAT);
     }
 
+    public boolean isActionCacheEnabled() {
+        return preferenceStore.getBoolean(APPEARANCE_IS_ACTION_CACHE_ENABLED);
+    }
+
     public String getWizardConnection() {
         return preferenceStore.getString(WIZARD_CONNECTION);
     }
@@ -216,6 +221,10 @@ public final class Preferences {
         preferenceStore.setValue(APPEARANCE_TIME_FORMAT, dateFormatLabel);
     }
 
+    public void setActionCacheEnabled(boolean enabled) {
+        preferenceStore.setValue(APPEARANCE_IS_ACTION_CACHE_ENABLED, enabled);
+    }
+
     public void setWizardConnection(String connectionName) {
         preferenceStore.setValue(WIZARD_CONNECTION, connectionName);
     }
@@ -268,6 +277,7 @@ public final class Preferences {
         preferenceStore.setDefault(APPEARANCE_PROGRESS_BAR_SIZE, getDefaultIsLargeProgressBar());
         preferenceStore.setDefault(APPEARANCE_DATE_FORMAT, getDefaultDateFormatLabel());
         preferenceStore.setDefault(APPEARANCE_TIME_FORMAT, getDefaultTimeFormatLabel());
+        preferenceStore.setDefault(APPEARANCE_IS_ACTION_CACHE_ENABLED, getDefaultIsActionCacheEnabled());
 
         preferenceStore.setDefault(WIZARD_CONNECTION, getDefaultWizardConnection());
         preferenceStore.setDefault(WIZARD_RAPID_FIRE_LIBRARY, getDefaultWizardRapidFireLibrary());
@@ -325,6 +335,10 @@ public final class Preferences {
 
     public String getDefaultTimeFormatLabel() {
         return TIME_FORMAT_LOCALE;
+    }
+
+    public boolean getDefaultIsActionCacheEnabled() {
+        return true;
     }
 
     public String getDefaultWizardConnection() {

@@ -279,6 +279,22 @@ public class ConversionManager extends AbstractManager<IRapidFireConversionResou
     @Override
     public boolean isValidAction(IRapidFireConversionResource conversion, ConversionAction action) throws Exception {
 
+        if (isActionCacheEnabled()) {
+            return isValidCachedAction(conversion, action);
+        } else {
+            return isValidUncachedAction(conversion, action);
+        }
+    }
+
+    private boolean isValidUncachedAction(IRapidFireConversionResource conversion, ConversionAction action) throws Exception {
+
+        Result result = checkAction(conversion.getKey(), action);
+
+        return result.isSuccessfull();
+    }
+
+    private boolean isValidCachedAction(IRapidFireConversionResource conversion, ConversionAction action) throws Exception {
+
         KeyConversionActionCache conversionActionsKey = new KeyConversionActionCache(conversion);
 
         Set<ConversionAction> actionsSet = ConversionActionCache.getInstance().getActions(conversionActionsKey);

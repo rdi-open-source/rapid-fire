@@ -138,6 +138,22 @@ public class ReapplyChangesManager extends AbstractManager<IFileCopyStatus, Area
     @Override
     public boolean isValidAction(IFileCopyStatus area, ReapplyChangesAction action) throws Exception {
 
+        if (isActionCacheEnabled()) {
+            return isValidCachedAction(area, action);
+        } else {
+            return isValidUncachedAction(area, action);
+        }
+    }
+
+    private boolean isValidUncachedAction(IFileCopyStatus area, ReapplyChangesAction action) throws Exception {
+
+        Result result = checkAction(area.getKey(), action);
+
+        return result.isSuccessfull();
+    }
+
+    private boolean isValidCachedAction(IFileCopyStatus area, ReapplyChangesAction action) throws Exception {
+
         KeyReapplyChangesActionCache reapplyChangesActionsKey = new KeyReapplyChangesActionCache(area);
 
         Set<ReapplyChangesAction> actionsSet = ReapplyChangesActionCache.getInstance().getActions(reapplyChangesActionsKey);

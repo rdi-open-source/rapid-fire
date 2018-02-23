@@ -184,8 +184,8 @@ public class JobManager extends AbstractManager<IRapidFireJobResource, JobKey, J
     @Override
     public Result checkAction(JobKey key, JobAction jobAction) throws Exception {
 
-        CallableStatement statement = dao.prepareCall(dao
-            .insertLibraryQualifier("{CALL " + IJDBCConnection.LIBRARY + "\"MNTJOB_checkAction\"(?, ?, ?, ?)}")); //$NON-NLS-1$ //$NON-NLS-2$
+        CallableStatement statement = dao.prepareCall(dao.insertLibraryQualifier("{CALL " + IJDBCConnection.LIBRARY //$NON-NLS-1$
+            + "\"MNTJOB_checkAction\"(?, ?, ?, ?)}")); //$NON-NLS-1$
 
         statement.setString(IJobCheckAction.ACTION, jobAction.label());
         statement.setString(IJobCheckAction.JOB, key.getJobName());
@@ -205,8 +205,8 @@ public class JobManager extends AbstractManager<IRapidFireJobResource, JobKey, J
 
     protected JobAction[] getValidActions(JobKey jobKey) throws Exception {
 
-        CallableStatement statement = dao.prepareCall(dao
-            .insertLibraryQualifier("{CALL " + IJDBCConnection.LIBRARY + "\"MNTJOB_getValidActions\"(?, ?, ?)}")); //$NON-NLS-1$ //$NON-NLS-2$
+        CallableStatement statement = dao.prepareCall(dao.insertLibraryQualifier("{CALL " + IJDBCConnection.LIBRARY //$NON-NLS-1$
+            + "\"MNTJOB_getValidActions\"(?, ?, ?)}")); //$NON-NLS-1$
 
         statement.setString(IJobGetValidActions.JOB, jobKey.getJobName());
         statement.setInt(IJobGetValidActions.NUMBER_ACTIONS, 0);
@@ -295,6 +295,22 @@ public class JobManager extends AbstractManager<IRapidFireJobResource, JobKey, J
 
     @Override
     public boolean isValidAction(IRapidFireJobResource job, JobAction action) throws Exception {
+
+        if (isActionCacheEnabled()) {
+            return isValidCachedAction(job, action);
+        } else {
+            return isValidUncachedAction(job, action);
+        }
+    }
+
+    private boolean isValidUncachedAction(IRapidFireJobResource job, JobAction action) throws Exception {
+
+        Result result = checkAction(job.getKey(), action);
+
+        return result.isSuccessfull();
+    }
+
+    private boolean isValidCachedAction(IRapidFireJobResource job, JobAction action) throws Exception {
 
         KeyJobActionCache jobActionsKey = new KeyJobActionCache(job);
 

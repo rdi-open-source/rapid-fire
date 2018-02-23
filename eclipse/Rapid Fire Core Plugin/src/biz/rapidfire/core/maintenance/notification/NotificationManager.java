@@ -242,6 +242,22 @@ public class NotificationManager extends AbstractManager<IRapidFireNotificationR
     @Override
     public boolean isValidAction(IRapidFireNotificationResource notification, NotificationAction action) throws Exception {
 
+        if (isActionCacheEnabled()) {
+            return isValidCachedAction(notification, action);
+        } else {
+            return isValidUncachedAction(notification, action);
+        }
+    }
+
+    private boolean isValidUncachedAction(IRapidFireNotificationResource notification, NotificationAction action) throws Exception {
+
+        Result result = checkAction(notification.getKey(), action);
+
+        return result.isSuccessfull();
+    }
+
+    private boolean isValidCachedAction(IRapidFireNotificationResource notification, NotificationAction action) throws Exception {
+
         KeyNotificationActionCache notificationActionsKey = new KeyNotificationActionCache(notification);
 
         Set<NotificationAction> actionsSet = NotificationActionCache.getInstance().getActions(notificationActionsKey);

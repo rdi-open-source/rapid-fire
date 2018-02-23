@@ -247,6 +247,22 @@ public class CommandManager extends AbstractManager<IRapidFireCommandResource, C
     @Override
     public boolean isValidAction(IRapidFireCommandResource command, CommandAction action) throws Exception {
 
+        if (isActionCacheEnabled()) {
+            return isValidCachedAction(command, action);
+        } else {
+            return isValidUncachedAction(command, action);
+        }
+    }
+
+    private boolean isValidUncachedAction(IRapidFireCommandResource command, CommandAction action) throws Exception {
+
+        Result result = checkAction(command.getKey(), action);
+
+        return result.isSuccessfull();
+    }
+
+    private boolean isValidCachedAction(IRapidFireCommandResource command, CommandAction action) throws Exception {
+
         KeyCommandActionCache commandActionsKey = new KeyCommandActionCache(command);
 
         Set<CommandAction> actionsSet = CommandActionCache.getInstance().getActions(commandActionsKey);

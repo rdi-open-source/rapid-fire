@@ -249,6 +249,22 @@ public class FileManager extends AbstractManager<IRapidFireFileResource, FileKey
     @Override
     public boolean isValidAction(IRapidFireFileResource file, FileAction action) throws Exception {
 
+        if (isActionCacheEnabled()) {
+            return isValidCachedAction(file, action);
+        } else {
+            return isValidUncachedAction(file, action);
+        }
+    }
+
+    private boolean isValidUncachedAction(IRapidFireFileResource file, FileAction action) throws Exception {
+
+        Result result = checkAction(file.getKey(), action);
+
+        return result.isSuccessfull();
+    }
+
+    private boolean isValidCachedAction(IRapidFireFileResource file, FileAction action) throws Exception {
+
         KeyFileActionCache fileActionsKey = new KeyFileActionCache(file);
 
         Set<FileAction> actionsSet = FileActionCache.getInstance().getActions(fileActionsKey);

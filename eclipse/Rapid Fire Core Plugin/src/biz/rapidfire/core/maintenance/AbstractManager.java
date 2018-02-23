@@ -13,6 +13,7 @@ import java.sql.SQLException;
 
 import biz.rapidfire.core.maintenance.shared.IResourceAction;
 import biz.rapidfire.core.model.IRapidFireResource;
+import biz.rapidfire.core.preferences.Preferences;
 
 public abstract class AbstractManager<R extends IRapidFireResource, K extends IResourceKey, V extends IResourceValues, A extends IResourceAction> {
 
@@ -39,6 +40,10 @@ public abstract class AbstractManager<R extends IRapidFireResource, K extends IR
 
     public boolean isValidAction(R resource, A resourceAction) throws Exception {
         return true;
+    }
+
+    protected boolean isActionCacheEnabled() {
+        return Preferences.getInstance().isActionCacheEnabled();
     }
 
     protected String getStringTrim(CallableStatement statement, int parameterIndex) throws SQLException {

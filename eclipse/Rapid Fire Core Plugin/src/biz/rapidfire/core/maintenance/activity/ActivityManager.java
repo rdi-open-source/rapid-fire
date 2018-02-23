@@ -141,6 +141,22 @@ public class ActivityManager extends AbstractManager<IRapidFireActivityResource,
     @Override
     public boolean isValidAction(IRapidFireActivityResource activity, ActivityAction action) throws Exception {
 
+        if (isActionCacheEnabled()) {
+            return isValidCachedAction(activity, action);
+        } else {
+            return isValidUncachedAction(activity, action);
+        }
+    }
+
+    private boolean isValidUncachedAction(IRapidFireActivityResource activity, ActivityAction action) throws Exception {
+
+        Result result = checkAction(activity.getKey(), action);
+
+        return result.isSuccessfull();
+    }
+
+    private boolean isValidCachedAction(IRapidFireActivityResource activity, ActivityAction action) throws Exception {
+
         KeyActivityActionCache activityActionsKey = new KeyActivityActionCache(activity);
 
         Set<ActivityAction> actionsSet = ActivityActionCache.getInstance().getActions(activityActionsKey);

@@ -253,6 +253,22 @@ public class AreaManager extends AbstractManager<IRapidFireAreaResource, AreaKey
     @Override
     public boolean isValidAction(IRapidFireAreaResource area, AreaAction action) throws Exception {
 
+        if (isActionCacheEnabled()) {
+            return isValidCachedAction(area, action);
+        } else {
+            return isValidUncachedAction(area, action);
+        }
+    }
+
+    private boolean isValidUncachedAction(IRapidFireAreaResource area, AreaAction action) throws Exception {
+
+        Result result = checkAction(area.getKey(), action);
+
+        return result.isSuccessfull();
+    }
+
+    private boolean isValidCachedAction(IRapidFireAreaResource area, AreaAction action) throws Exception {
+
         KeyAreaActionCache areaActionsKey = new KeyAreaActionCache(area);
 
         Set<AreaAction> actionsSet = AreaActionCache.getInstance().getActions(areaActionsKey);
