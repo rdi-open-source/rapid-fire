@@ -52,8 +52,6 @@
              DCL        VAR(&FROMMBR) TYPE(*CHAR) LEN(100)
              DCL        VAR(&TOSTMF) TYPE(*CHAR) LEN(100)
 
-             CALL       PGM(CRTDRPSQL) PARM('*DROP' &LIB)
-
              CLRPFM     FILE(&LIB/ACTSCHD)
              CLRPFM     FILE(&LIB/AREAS)
              CLRPFM     FILE(&LIB/CHANGES)
@@ -72,12 +70,22 @@
              CLRPFM     FILE(&LIB/SQLTRACE)
              CLRPFM     FILE(&LIB/SUBTOBENOT)
 
-             CHGJRN JRN(&LIB/&JRN) JRNRCV(*GEN)
+             ENDJRNPF   FILE(*ALL) JRN(&LIB/&JRN)
+             MONMSG     MSGID(CPF9801) EXEC(DO) /* No object found */
+                RMVMSG     PGMQ(*SAME (*)) CLEAR(*ALL)
+             ENDDO
+
+             DLTJRN     JRN(&LIB/&JRN)
+             MONMSG     MSGID(CPF2105) EXEC(DO) /* No object found */
+                RMVMSG     PGMQ(*SAME (*)) CLEAR(*ALL)
+             ENDDO
 
              DLTF FILE(&LIB/EVF*)
              MONMSG     MSGID(CPF2125) EXEC(DO) /* No objects deleted */
                 RMVMSG     PGMQ(*SAME (*)) CLEAR(*ALL)
              ENDDO
+
+             CALL       PGM(CRTDRPSQL) PARM('*DROP' &LIB)
 
              CHKOBJ     OBJ(&LIB/&SAVF) OBJTYPE(*FILE)
              MONMSG     MSGID(CPF9801) EXEC(DO) /* Object not found */
