@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <site>
-   <feature url="features/biz.rapidfire.core_1.0.0.b001.jar" id="biz.rapidfire.core" version="1.0.0.b001"/>
+   <feature url="features/biz.rapidfire.core_1.0.0.b002.jar" id="biz.rapidfire.core" version="1.0.0.b002"/>
    <category-def name="biz.rapidfire.core" label="Rapid Fire for RDi 8.0+ (Base Component)"/>
 </site>
