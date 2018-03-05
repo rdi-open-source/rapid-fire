@@ -2,7 +2,7 @@
 <feature
       id="biz.rapidfire.core"
       label="Rapid Fire Core (WDSCi) (required)"
-      version="1.0.0.b002"
+      version="1.0.0.r"
       provider-name="Rapid Fire Project Team">
 
    <description url="https://sourceforge.net/projects/rapid-fire/">
