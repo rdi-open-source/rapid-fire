@@ -73,7 +73,7 @@
 			<table border="0" style="border-spacing: 0px 0px; ">
 			<tr><td valign="top"><h2>Contributors</h2></td></tr>
 			<tr><td height="15px"></td></tr>
-			<tr><td nowrap>Donal Duck</td><td>-</td><td nowrap>. . .</td></tr>
+			<tr><td nowrap>Donald Duck</td><td>-</td><td nowrap>. . .</td></tr>
 	        </table>
 	        -->
 		</td></tr>
@@ -96,7 +96,6 @@
         
         <h2 class="release">Installation</h2>
         <div class="section">
-        <!--
         The easiest way to install the Rapid Fire plug-in is using the official update sites:
         <p/>
         <table class="nomargin">
@@ -106,7 +105,6 @@
         <p/>
         Refer to the Rapid Fire <a target="_help" href="http://rapid-fire.sourceforge.net/help/">help</a> page for detailed installation instructions.
         <p/>
-        -->
         The Rapid Fire beta versions are available here:
         <p/>
         <table class="nomargin">
@@ -120,9 +118,7 @@
         <h2 class="release">Help</h2>
         <div class="section">
         <table>
-        <!--
         <tr><td>Visit the Rapid Fire <a target="_help" href="http://rapid-fire.sourceforge.net/help/">help</a> page.</td></tr>
-        -->
         <tr><td>Ask your questions at the <a target="_wdsci-l" href="http://lists.midrange.com/mailman/listinfo/wdsci-l">WDSCI-L</a> mailing list at <a target="_wdsci-l" href="http://www.midrange.com">midrange.com</a>.</td></tr>
         <tr><td>For bug reports open a ticket at the <a href="https://sourceforge.net/p/rapid-fire/tickets/">Rapid Fire bug tracker.</a></td></tr>
         </table>
