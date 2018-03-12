@@ -538,7 +538,7 @@
          <enabledWhen>
             <with variable="selection">
                <count value="+" />
-               <iterate operator="and">
+               <iterate operator="and" ifEmpty="false">
                   <adapt type="biz.rapidfire.rse.subsystem.resources.RapidFireJobResource" />
                </iterate>
             </with>
@@ -551,7 +551,7 @@
          <enabledWhen>
             <with variable="selection">
                <count value="+" />
-               <iterate operator="and">
+               <iterate operator="and" ifEmpty="false">
                   <adapt type="biz.rapidfire.rse.subsystem.resources.RapidFireJobResource" />
                </iterate>
             </with>
@@ -564,7 +564,7 @@
          <enabledWhen>
             <with variable="selection">
                <count value="+" />
-               <iterate operator="and">
+               <iterate operator="and" ifEmpty="false">
                   <adapt type="biz.rapidfire.rse.subsystem.resources.RapidFireJobResource" />
                </iterate>
             </with>
@@ -577,7 +577,7 @@
          <enabledWhen>
             <with variable="selection">
                <count value="1" />
-               <iterate operator="and">
+               <iterate operator="and" ifEmpty="false">
                   <adapt type="biz.rapidfire.rse.subsystem.resources.RapidFireJobResource" />
                </iterate>
             </with>
@@ -590,7 +590,7 @@
          <enabledWhen>
             <with variable="selection">
                <count value="+" />
-               <iterate operator="and">
+               <iterate operator="and" ifEmpty="false">
                   <adapt type="biz.rapidfire.rse.subsystem.resources.RapidFireJobResource" />
                </iterate>
             </with>
@@ -603,7 +603,7 @@
          <enabledWhen>
             <with variable="selection">
                <count value="1" />
-               <iterate operator="and">
+               <iterate operator="and" ifEmpty="false">
                   <adapt type="biz.rapidfire.rse.subsystem.resources.RapidFireJobResource" />
                </iterate>
             </with>
@@ -616,7 +616,7 @@
          <enabledWhen>
             <with variable="selection">
                <count value="1" />
-               <iterate operator="and">
+               <iterate operator="and" ifEmpty="false">
                   <adapt type="biz.rapidfire.rse.subsystem.resources.RapidFireJobResource" />
                </iterate>
             </with>
@@ -629,7 +629,7 @@
          <enabledWhen>
             <with variable="selection">
                <count value="1" />
-               <iterate operator="and">
+               <iterate operator="and" ifEmpty="false">
                   <adapt type="biz.rapidfire.rse.subsystem.resources.RapidFireJobResource" />
                </iterate>
             </with>
@@ -642,7 +642,7 @@
          <enabledWhen>
             <with variable="selection">
                <count value="+" />
-               <iterate operator="and">
+               <iterate operator="and" ifEmpty="false">
                   <adapt type="biz.rapidfire.rse.subsystem.resources.RapidFireJobResource" />
                </iterate>
             </with>
@@ -655,7 +655,7 @@
          <enabledWhen>
             <with variable="selection">
                <count value="+" />
-               <iterate operator="and">
+               <iterate operator="and" ifEmpty="false">
                   <adapt type="biz.rapidfire.rse.subsystem.resources.RapidFireJobResource" />
                </iterate>
             </with>
@@ -668,7 +668,7 @@
          <enabledWhen>
             <with variable="selection">
                <count value="+" />
-               <iterate operator="and">
+               <iterate operator="and" ifEmpty="false">
                   <adapt type="biz.rapidfire.rse.subsystem.resources.RapidFireJobResource" />
                </iterate>
             </with>
@@ -681,7 +681,7 @@
          <enabledWhen>
             <with variable="selection">
                <count value="+" />
-               <iterate operator="and">
+               <iterate operator="and" ifEmpty="false">
                   <adapt type="biz.rapidfire.rse.subsystem.resources.RapidFireJobResource" />
                </iterate>
             </with>
@@ -694,7 +694,7 @@
          <enabledWhen>
             <with variable="selection">
                <count value="+" />
-               <iterate operator="and">
+               <iterate operator="and" ifEmpty="false">
                   <adapt type="biz.rapidfire.rse.subsystem.resources.RapidFireJobResource" />
                </iterate>
             </with>
@@ -707,7 +707,7 @@
          <enabledWhen>
             <with variable="selection">
                <count value="+" />
-               <iterate operator="and">
+               <iterate operator="and" ifEmpty="false">
                   <adapt type="biz.rapidfire.rse.subsystem.resources.RapidFireJobResource" />
                </iterate>
             </with>
@@ -726,7 +726,7 @@
          <enabledWhen>
             <with variable="selection">
                <count value="+" />
-               <iterate operator="and">
+               <iterate operator="and" ifEmpty="false">
                   <adapt type="biz.rapidfire.rse.subsystem.resources.RapidFireFileResource" />
                </iterate>
             </with>
@@ -739,7 +739,7 @@
          <enabledWhen>
             <with variable="selection">
                <count value="+" />
-               <iterate operator="and">
+               <iterate operator="and" ifEmpty="false">
                   <adapt type="biz.rapidfire.rse.subsystem.resources.RapidFireFileResource" />
                </iterate>
             </with>
@@ -752,7 +752,7 @@
          <enabledWhen>
             <with variable="selection">
                <count value="1" />
-               <iterate operator="and">
+               <iterate operator="and" ifEmpty="false">
                   <adapt type="biz.rapidfire.rse.subsystem.resources.RapidFireFileResource" />
                </iterate>
             </with>
@@ -765,7 +765,7 @@
          <enabledWhen>
             <with variable="selection">
                <count value="+" />
-               <iterate operator="and">
+               <iterate operator="and" ifEmpty="false">
                   <adapt type="biz.rapidfire.rse.subsystem.resources.RapidFireFileResource" />
                </iterate>
             </with>
@@ -778,7 +778,7 @@
          <enabledWhen>
             <with variable="selection">
                <count value="1" />
-               <iterate operator="and">
+               <iterate operator="and" ifEmpty="false">
                   <adapt type="biz.rapidfire.rse.subsystem.resources.RapidFireFileResource" />
                </iterate>
             </with>
@@ -791,7 +791,7 @@
          <enabledWhen>
             <with variable="selection">
                <count value="1" />
-               <iterate operator="and">
+               <iterate operator="and" ifEmpty="false">
                   <adapt type="biz.rapidfire.rse.subsystem.resources.RapidFireFileResource" />
                </iterate>
             </with>
@@ -810,7 +810,7 @@
          <enabledWhen>
             <with variable="selection">
                <count value="+" />
-               <iterate operator="and">
+               <iterate operator="and" ifEmpty="false">
                   <adapt type="biz.rapidfire.rse.subsystem.resources.RapidFireLibraryResource" />
                </iterate>
             </with>
@@ -823,7 +823,7 @@
          <enabledWhen>
             <with variable="selection">
                <count value="+" />
-               <iterate operator="and">
+               <iterate operator="and" ifEmpty="false">
                   <adapt type="biz.rapidfire.rse.subsystem.resources.RapidFireLibraryResource" />
                </iterate>
             </with>
@@ -836,7 +836,7 @@
          <enabledWhen>
             <with variable="selection">
                <count value="1" />
-               <iterate operator="and">
+               <iterate operator="and" ifEmpty="false">
                   <adapt type="biz.rapidfire.rse.subsystem.resources.RapidFireLibraryResource" />
                </iterate>
             </with>
@@ -849,7 +849,7 @@
          <enabledWhen>
             <with variable="selection">
                <count value="+" />
-               <iterate operator="and">
+               <iterate operator="and" ifEmpty="false">
                   <adapt type="biz.rapidfire.rse.subsystem.resources.RapidFireLibraryResource" />
                </iterate>
             </with>
@@ -862,7 +862,7 @@
          <enabledWhen>
             <with variable="selection">
                <count value="1" />
-               <iterate operator="and">
+               <iterate operator="and" ifEmpty="false">
                   <adapt type="biz.rapidfire.rse.subsystem.resources.RapidFireLibraryResource" />
                </iterate>
             </with>
@@ -881,7 +881,7 @@
          <enabledWhen>
             <with variable="selection">
                <count value="+" />
-               <iterate operator="and">
+               <iterate operator="and" ifEmpty="false">
                   <adapt type="biz.rapidfire.rse.subsystem.resources.RapidFireLibraryListResource" />
                </iterate>
             </with>
@@ -894,7 +894,7 @@
          <enabledWhen>
             <with variable="selection">
                <count value="+" />
-               <iterate operator="and">
+               <iterate operator="and" ifEmpty="false">
                   <adapt type="biz.rapidfire.rse.subsystem.resources.RapidFireLibraryListResource" />
                </iterate>
             </with>
@@ -907,7 +907,7 @@
          <enabledWhen>
             <with variable="selection">
                <count value="1" />
-               <iterate operator="and">
+               <iterate operator="and" ifEmpty="false">
                   <adapt type="biz.rapidfire.rse.subsystem.resources.RapidFireLibraryListResource" />
                </iterate>
             </with>
@@ -920,7 +920,7 @@
          <enabledWhen>
             <with variable="selection">
                <count value="+" />
-               <iterate operator="and">
+               <iterate operator="and" ifEmpty="false">
                   <adapt type="biz.rapidfire.rse.subsystem.resources.RapidFireLibraryListResource" />
                </iterate>
             </with>
@@ -933,7 +933,7 @@
          <enabledWhen>
             <with variable="selection">
                <count value="1" />
-               <iterate operator="and">
+               <iterate operator="and" ifEmpty="false">
                   <adapt type="biz.rapidfire.rse.subsystem.resources.RapidFireLibraryListResource" />
                </iterate>
             </with>
@@ -952,7 +952,7 @@
          <enabledWhen>
             <with variable="selection">
                <count value="+" />
-               <iterate operator="and">
+               <iterate operator="and" ifEmpty="false">
                   <adapt type="biz.rapidfire.rse.subsystem.resources.RapidFireNotificationResource" />
                </iterate>
             </with>
@@ -965,7 +965,7 @@
          <enabledWhen>
             <with variable="selection">
                <count value="+" />
-               <iterate operator="and">
+               <iterate operator="and" ifEmpty="false">
                   <adapt type="biz.rapidfire.rse.subsystem.resources.RapidFireNotificationResource" />
                </iterate>
             </with>
@@ -978,7 +978,7 @@
          <enabledWhen>
             <with variable="selection">
                <count value="1" />
-               <iterate operator="and">
+               <iterate operator="and" ifEmpty="false">
                   <adapt type="biz.rapidfire.rse.subsystem.resources.RapidFireNotificationResource" />
                </iterate>
             </with>
@@ -991,7 +991,7 @@
          <enabledWhen>
             <with variable="selection">
                <count value="+" />
-               <iterate operator="and">
+               <iterate operator="and" ifEmpty="false">
                   <adapt type="biz.rapidfire.rse.subsystem.resources.RapidFireNotificationResource" />
                </iterate>
             </with>
@@ -1004,7 +1004,7 @@
          <enabledWhen>
             <with variable="selection">
                <count value="1" />
-               <iterate operator="and">
+               <iterate operator="and" ifEmpty="false">
                   <adapt type="biz.rapidfire.rse.subsystem.resources.RapidFireNotificationResource" />
                </iterate>
             </with>
@@ -1023,7 +1023,7 @@
          <enabledWhen>
             <with variable="selection">
                <count value="+" />
-               <iterate operator="and">
+               <iterate operator="and" ifEmpty="false">
                   <adapt type="biz.rapidfire.rse.subsystem.resources.RapidFireAreaResource" />
                </iterate>
             </with>
@@ -1036,7 +1036,7 @@
          <enabledWhen>
             <with variable="selection">
                <count value="+" />
-               <iterate operator="and">
+               <iterate operator="and" ifEmpty="false">
                   <adapt type="biz.rapidfire.rse.subsystem.resources.RapidFireAreaResource" />
                </iterate>
             </with>
@@ -1049,7 +1049,7 @@
          <enabledWhen>
             <with variable="selection">
                <count value="1" />
-               <iterate operator="and">
+               <iterate operator="and" ifEmpty="false">
                   <adapt type="biz.rapidfire.rse.subsystem.resources.RapidFireAreaResource" />
                </iterate>
             </with>
@@ -1062,7 +1062,7 @@
          <enabledWhen>
             <with variable="selection">
                <count value="+" />
-               <iterate operator="and">
+               <iterate operator="and" ifEmpty="false">
                   <adapt type="biz.rapidfire.rse.subsystem.resources.RapidFireAreaResource" />
                </iterate>
             </with>
@@ -1075,7 +1075,7 @@
          <enabledWhen>
             <with variable="selection">
                <count value="1" />
-               <iterate operator="and">
+               <iterate operator="and" ifEmpty="false">
                   <adapt type="biz.rapidfire.rse.subsystem.resources.RapidFireAreaResource" />
                </iterate>
             </with>
@@ -1094,7 +1094,7 @@
          <enabledWhen>
             <with variable="selection">
                <count value="+" />
-               <iterate operator="and">
+               <iterate operator="and" ifEmpty="false">
                   <adapt type="biz.rapidfire.rse.subsystem.resources.RapidFireConversionResource" />
                </iterate>
             </with>
@@ -1107,7 +1107,7 @@
          <enabledWhen>
             <with variable="selection">
                <count value="+" />
-               <iterate operator="and">
+               <iterate operator="and" ifEmpty="false">
                   <adapt type="biz.rapidfire.rse.subsystem.resources.RapidFireConversionResource" />
                </iterate>
             </with>
@@ -1120,7 +1120,7 @@
          <enabledWhen>
             <with variable="selection">
                <count value="1" />
-               <iterate operator="and">
+               <iterate operator="and" ifEmpty="false">
                   <adapt type="biz.rapidfire.rse.subsystem.resources.RapidFireConversionResource" />
                </iterate>
             </with>
@@ -1133,7 +1133,7 @@
          <enabledWhen>
             <with variable="selection">
                <count value="+" />
-               <iterate operator="and">
+               <iterate operator="and" ifEmpty="false">
                   <adapt type="biz.rapidfire.rse.subsystem.resources.RapidFireConversionResource" />
                </iterate>
             </with>
@@ -1146,7 +1146,7 @@
          <enabledWhen>
             <with variable="selection">
                <count value="1" />
-               <iterate operator="and">
+               <iterate operator="and" ifEmpty="false">
                   <adapt type="biz.rapidfire.rse.subsystem.resources.RapidFireConversionResource" />
                </iterate>
             </with>
@@ -1165,7 +1165,7 @@
          <enabledWhen>
             <with variable="selection">
                <count value="+" />
-               <iterate operator="and">
+               <iterate operator="and" ifEmpty="false">
                   <adapt type="biz.rapidfire.rse.subsystem.resources.RapidFireCommandResource" />
                </iterate>
             </with>
@@ -1178,7 +1178,7 @@
          <enabledWhen>
             <with variable="selection">
                <count value="+" />
-               <iterate operator="and">
+               <iterate operator="and" ifEmpty="false">
                   <adapt type="biz.rapidfire.rse.subsystem.resources.RapidFireCommandResource" />
                </iterate>
             </with>
@@ -1191,7 +1191,7 @@
          <enabledWhen>
             <with variable="selection">
                <count value="1" />
-               <iterate operator="and">
+               <iterate operator="and" ifEmpty="false">
                   <adapt type="biz.rapidfire.rse.subsystem.resources.RapidFireCommandResource" />
                </iterate>
             </with>
@@ -1204,7 +1204,7 @@
          <enabledWhen>
             <with variable="selection">
                <count value="+" />
-               <iterate operator="and">
+               <iterate operator="and" ifEmpty="false">
                   <adapt type="biz.rapidfire.rse.subsystem.resources.RapidFireCommandResource" />
                </iterate>
             </with>
@@ -1217,7 +1217,7 @@
          <enabledWhen>
             <with variable="selection">
                <count value="1" />
-               <iterate operator="and">
+               <iterate operator="and" ifEmpty="false">
                   <adapt type="biz.rapidfire.rse.subsystem.resources.RapidFireCommandResource" />
                </iterate>
             </with>
@@ -1243,7 +1243,7 @@
             visible="true">
 	        <visibleWhen>
 	           <with variable="selection">
-	              <iterate operator="and">
+	              <iterate operator="and" ifEmpty="false">
 	                 <adapt type="biz.rapidfire.rse.subsystem.resources.RapidFireJobResource" />
 	              </iterate>
 	           </with>
@@ -1256,7 +1256,7 @@
             >
 	        <visibleWhen>
 	           <with variable="selection">
-	              <iterate operator="and">
+	              <iterate operator="and" ifEmpty="false">
 	                 <adapt type="biz.rapidfire.rse.subsystem.resources.RapidFireJobResource" />
 	              </iterate>
 	           </with>
@@ -1268,7 +1268,7 @@
             visible="true">
 	        <visibleWhen>
 	           <with variable="selection">
-	              <iterate operator="and">
+	              <iterate operator="and" ifEmpty="false">
 	                 <adapt type="biz.rapidfire.rse.subsystem.resources.RapidFireJobResource" />
 	              </iterate>
 	           </with>
@@ -1281,7 +1281,7 @@
             >
 	        <visibleWhen>
 	           <with variable="selection">
-	              <iterate operator="and">
+	              <iterate operator="and" ifEmpty="false">
 	                 <adapt type="biz.rapidfire.rse.subsystem.resources.RapidFireJobResource" />
 	              </iterate>
 	           </with>
@@ -1294,7 +1294,7 @@
             >
 	        <visibleWhen>
 	           <with variable="selection">
-	              <iterate operator="and">
+	              <iterate operator="and" ifEmpty="false">
 	                 <adapt type="biz.rapidfire.rse.subsystem.resources.RapidFireJobResource" />
 	              </iterate>
 	           </with>
@@ -1307,7 +1307,7 @@
             >
 	        <visibleWhen>
 	           <with variable="selection">
-	              <iterate operator="and">
+	              <iterate operator="and" ifEmpty="false">
 	                 <adapt type="biz.rapidfire.rse.subsystem.resources.RapidFireJobResource" />
 	              </iterate>
 	           </with>
@@ -1320,7 +1320,7 @@
             >
 	        <visibleWhen>
 	           <with variable="selection">
-	              <iterate operator="and">
+	              <iterate operator="and" ifEmpty="false">
 	                 <adapt type="biz.rapidfire.rse.subsystem.resources.RapidFireJobResource" />
 	              </iterate>
 	           </with>
@@ -1333,7 +1333,7 @@
             >
 	        <visibleWhen>
 	           <with variable="selection">
-	              <iterate operator="and">
+	              <iterate operator="and" ifEmpty="false">
 	                 <adapt type="biz.rapidfire.rse.subsystem.resources.RapidFireJobResource" />
 	              </iterate>
 	           </with>
@@ -1345,7 +1345,7 @@
             visible="true">
 	        <visibleWhen>
 	           <with variable="selection">
-	              <iterate operator="and">
+	              <iterate operator="and" ifEmpty="false">
 	                 <adapt type="biz.rapidfire.rse.subsystem.resources.RapidFireJobResource" />
 	              </iterate>
 	           </with>
@@ -1358,7 +1358,7 @@
             >
 	        <visibleWhen>
 	           <with variable="selection">
-	              <iterate operator="and">
+	              <iterate operator="and" ifEmpty="false">
 	                 <adapt type="biz.rapidfire.rse.subsystem.resources.RapidFireJobResource" />
 	              </iterate>
 	           </with>
@@ -1371,7 +1371,7 @@
             >
 	        <visibleWhen>
 	           <with variable="selection">
-	              <iterate operator="and">
+	              <iterate operator="and" ifEmpty="false">
 	                 <adapt type="biz.rapidfire.rse.subsystem.resources.RapidFireJobResource" />
 	              </iterate>
 	           </with>
@@ -1384,7 +1384,7 @@
             >
 	        <visibleWhen>
 	           <with variable="selection">
-	              <iterate operator="and">
+	              <iterate operator="and" ifEmpty="false">
 	                 <adapt type="biz.rapidfire.rse.subsystem.resources.RapidFireJobResource" />
 	              </iterate>
 	           </with>
@@ -1396,7 +1396,7 @@
             visible="true">
 	        <visibleWhen>
 	           <with variable="selection">
-	              <iterate operator="and">
+	              <iterate operator="and" ifEmpty="false">
 	                 <adapt type="biz.rapidfire.rse.subsystem.resources.RapidFireJobResource" />
 	              </iterate>
 	           </with>
@@ -1409,7 +1409,7 @@
             >
 	        <visibleWhen>
 	           <with variable="selection">
-	              <iterate operator="and">
+	              <iterate operator="and" ifEmpty="false">
 	                 <adapt type="biz.rapidfire.rse.subsystem.resources.RapidFireJobResource" />
 	              </iterate>
 	           </with>
@@ -1422,7 +1422,7 @@
             >
 	        <visibleWhen>
 	           <with variable="selection">
-	              <iterate operator="and">
+	              <iterate operator="and" ifEmpty="false">
 	                 <adapt type="biz.rapidfire.rse.subsystem.resources.RapidFireJobResource" />
 	              </iterate>
 	           </with>
@@ -1435,7 +1435,7 @@
             >
 	        <visibleWhen>
 	           <with variable="selection">
-	              <iterate operator="and">
+	              <iterate operator="and" ifEmpty="false">
 	                 <adapt type="biz.rapidfire.rse.subsystem.resources.RapidFireJobResource" />
 	              </iterate>
 	           </with>
@@ -1447,7 +1447,7 @@
             visible="true">
 	        <visibleWhen>
 	           <with variable="selection">
-	              <iterate operator="and">
+	              <iterate operator="and" ifEmpty="false">
 	                 <adapt type="biz.rapidfire.rse.subsystem.resources.RapidFireJobResource" />
 	              </iterate>
 	           </with>
@@ -1460,7 +1460,7 @@
             >
 	        <visibleWhen>
 	           <with variable="selection">
-	              <iterate operator="and">
+	              <iterate operator="and" ifEmpty="false">
 	                 <adapt type="biz.rapidfire.rse.subsystem.resources.RapidFireJobResource" />
 	              </iterate>
 	           </with>
@@ -1473,7 +1473,7 @@
             >
 	        <visibleWhen>
 	           <with variable="selection">
-	              <iterate operator="and">
+	              <iterate operator="and" ifEmpty="false">
 	                 <adapt type="biz.rapidfire.rse.subsystem.resources.RapidFireJobResource" />
 	              </iterate>
 	           </with>
@@ -1500,7 +1500,7 @@
             visible="true">
 	        <visibleWhen>
 	           <with variable="selection">
-	              <iterate operator="and">
+	              <iterate operator="and" ifEmpty="false">
 	                 <adapt type="biz.rapidfire.rse.subsystem.resources.RapidFireFileResource" />
 	              </iterate>
 	           </with>
@@ -1513,7 +1513,7 @@
             >
 	        <visibleWhen>
 	           <with variable="selection">
-	              <iterate operator="and">
+	              <iterate operator="and" ifEmpty="false">
 	                 <adapt type="biz.rapidfire.rse.subsystem.resources.RapidFireFileResource" />
 	              </iterate>
 	           </with>
@@ -1526,7 +1526,7 @@
             >
 	        <visibleWhen>
 	           <with variable="selection">
-	              <iterate operator="and">
+	              <iterate operator="and" ifEmpty="false">
 	                 <adapt type="biz.rapidfire.rse.subsystem.resources.RapidFireFileResource" />
 	              </iterate>
 	           </with>
@@ -1539,7 +1539,7 @@
             >
 	        <visibleWhen>
 	           <with variable="selection">
-	              <iterate operator="and">
+	              <iterate operator="and" ifEmpty="false">
 	                 <adapt type="biz.rapidfire.rse.subsystem.resources.RapidFireFileResource" />
 	              </iterate>
 	           </with>
@@ -1552,7 +1552,7 @@
             >
 	        <visibleWhen>
 	           <with variable="selection">
-	              <iterate operator="and">
+	              <iterate operator="and" ifEmpty="false">
 	                 <adapt type="biz.rapidfire.rse.subsystem.resources.RapidFireFileResource" />
 	              </iterate>
 	           </with>
@@ -1565,7 +1565,7 @@
             >
 	        <visibleWhen>
 	           <with variable="selection">
-	              <iterate operator="and">
+	              <iterate operator="and" ifEmpty="false">
 	                 <adapt type="biz.rapidfire.rse.subsystem.resources.RapidFireFileResource" />
 	              </iterate>
 	           </with>
@@ -1577,7 +1577,7 @@
             visible="true">
 	        <visibleWhen>
 	           <with variable="selection">
-	              <iterate operator="and">
+	              <iterate operator="and" ifEmpty="false">
 	                 <adapt type="biz.rapidfire.rse.subsystem.resources.RapidFireFileResource" />
 	              </iterate>
 	           </with>
@@ -1590,7 +1590,7 @@
             >
 	        <visibleWhen>
 	           <with variable="selection">
-	              <iterate operator="and">
+	              <iterate operator="and" ifEmpty="false">
 	                 <adapt type="biz.rapidfire.rse.subsystem.resources.RapidFireFileResource" />
 	              </iterate>
 	           </with>
@@ -1617,7 +1617,7 @@
             visible="true">
 	        <visibleWhen>
 	           <with variable="selection">
-	              <iterate operator="and">
+	              <iterate operator="and" ifEmpty="false">
 	                 <adapt type="biz.rapidfire.rse.subsystem.resources.RapidFireLibraryResource" />
 	              </iterate>
 	           </with>
@@ -1630,7 +1630,7 @@
             >
 	        <visibleWhen>
 	           <with variable="selection">
-	              <iterate operator="and">
+	              <iterate operator="and" ifEmpty="false">
 	                 <adapt type="biz.rapidfire.rse.subsystem.resources.RapidFireLibraryResource" />
 	              </iterate>
 	           </with>
@@ -1643,7 +1643,7 @@
             >
 	        <visibleWhen>
 	           <with variable="selection">
-	              <iterate operator="and">
+	              <iterate operator="and" ifEmpty="false">
 	                 <adapt type="biz.rapidfire.rse.subsystem.resources.RapidFireLibraryResource" />
 	              </iterate>
 	           </with>
@@ -1656,7 +1656,7 @@
             >
 	        <visibleWhen>
 	           <with variable="selection">
-	              <iterate operator="and">
+	              <iterate operator="and" ifEmpty="false">
 	                 <adapt type="biz.rapidfire.rse.subsystem.resources.RapidFireLibraryResource" />
 	              </iterate>
 	           </with>
@@ -1669,7 +1669,7 @@
             >
 	        <visibleWhen>
 	           <with variable="selection">
-	              <iterate operator="and">
+	              <iterate operator="and" ifEmpty="false">
 	                 <adapt type="biz.rapidfire.rse.subsystem.resources.RapidFireLibraryResource" />
 	              </iterate>
 	           </with>
@@ -1682,7 +1682,7 @@
             >
 	        <visibleWhen>
 	           <with variable="selection">
-	              <iterate operator="and">
+	              <iterate operator="and" ifEmpty="false">
 	                 <adapt type="biz.rapidfire.rse.subsystem.resources.RapidFireLibraryResource" />
 	              </iterate>
 	           </with>
@@ -1709,7 +1709,7 @@
             visible="true">
 	        <visibleWhen>
 	           <with variable="selection">
-	              <iterate operator="and">
+	              <iterate operator="and" ifEmpty="false">
 	                 <adapt type="biz.rapidfire.rse.subsystem.resources.RapidFireLibraryListResource" />
 	              </iterate>
 	           </with>
@@ -1722,7 +1722,7 @@
             >
 	        <visibleWhen>
 	           <with variable="selection">
-	              <iterate operator="and">
+	              <iterate operator="and" ifEmpty="false">
 	                 <adapt type="biz.rapidfire.rse.subsystem.resources.RapidFireLibraryListResource" />
 	              </iterate>
 	           </with>
@@ -1735,7 +1735,7 @@
             >
 	        <visibleWhen>
 	           <with variable="selection">
-	              <iterate operator="and">
+	              <iterate operator="and" ifEmpty="false">
 	                 <adapt type="biz.rapidfire.rse.subsystem.resources.RapidFireLibraryListResource" />
 	              </iterate>
 	           </with>
@@ -1748,7 +1748,7 @@
             >
 	        <visibleWhen>
 	           <with variable="selection">
-	              <iterate operator="and">
+	              <iterate operator="and" ifEmpty="false">
 	                 <adapt type="biz.rapidfire.rse.subsystem.resources.RapidFireLibraryListResource" />
 	              </iterate>
 	           </with>
@@ -1761,7 +1761,7 @@
             >
 	        <visibleWhen>
 	           <with variable="selection">
-	              <iterate operator="and">
+	              <iterate operator="and" ifEmpty="false">
 	                 <adapt type="biz.rapidfire.rse.subsystem.resources.RapidFireLibraryListResource" />
 	              </iterate>
 	           </with>
@@ -1774,7 +1774,7 @@
             >
 	        <visibleWhen>
 	           <with variable="selection">
-	              <iterate operator="and">
+	              <iterate operator="and" ifEmpty="false">
 	                 <adapt type="biz.rapidfire.rse.subsystem.resources.RapidFireLibraryListResource" />
 	              </iterate>
 	           </with>
@@ -1801,7 +1801,7 @@
             visible="true">
 	        <visibleWhen>
 	           <with variable="selection">
-	              <iterate operator="and">
+	              <iterate operator="and" ifEmpty="false">
 	                 <adapt type="biz.rapidfire.rse.subsystem.resources.RapidFireNotificationResource" />
 	              </iterate>
 	           </with>
@@ -1814,7 +1814,7 @@
             >
 	        <visibleWhen>
 	           <with variable="selection">
-	              <iterate operator="and">
+	              <iterate operator="and" ifEmpty="false">
 	                 <adapt type="biz.rapidfire.rse.subsystem.resources.RapidFireNotificationResource" />
 	              </iterate>
 	           </with>
@@ -1827,7 +1827,7 @@
             >
 	        <visibleWhen>
 	           <with variable="selection">
-	              <iterate operator="and">
+	              <iterate operator="and" ifEmpty="false">
 	                 <adapt type="biz.rapidfire.rse.subsystem.resources.RapidFireNotificationResource" />
 	              </iterate>
 	           </with>
@@ -1840,7 +1840,7 @@
             >
 	        <visibleWhen>
 	           <with variable="selection">
-	              <iterate operator="and">
+	              <iterate operator="and" ifEmpty="false">
 	                 <adapt type="biz.rapidfire.rse.subsystem.resources.RapidFireNotificationResource" />
 	              </iterate>
 	           </with>
@@ -1853,7 +1853,7 @@
             >
 	        <visibleWhen>
 	           <with variable="selection">
-	              <iterate operator="and">
+	              <iterate operator="and" ifEmpty="false">
 	                 <adapt type="biz.rapidfire.rse.subsystem.resources.RapidFireNotificationResource" />
 	              </iterate>
 	           </with>
@@ -1866,7 +1866,7 @@
             >
 	        <visibleWhen>
 	           <with variable="selection">
-	              <iterate operator="and">
+	              <iterate operator="and" ifEmpty="false">
 	                 <adapt type="biz.rapidfire.rse.subsystem.resources.RapidFireNotificationResource" />
 	              </iterate>
 	           </with>
@@ -1893,7 +1893,7 @@
             visible="true">
 	        <visibleWhen>
 	           <with variable="selection">
-	              <iterate operator="and">
+	              <iterate operator="and" ifEmpty="false">
 	                 <adapt type="biz.rapidfire.rse.subsystem.resources.RapidFireAreaResource" />
 	              </iterate>
 	           </with>
@@ -1906,7 +1906,7 @@
             >
 	        <visibleWhen>
 	           <with variable="selection">
-	              <iterate operator="and">
+	              <iterate operator="and" ifEmpty="false">
 	                 <adapt type="biz.rapidfire.rse.subsystem.resources.RapidFireAreaResource" />
 	              </iterate>
 	           </with>
@@ -1919,7 +1919,7 @@
             >
 	        <visibleWhen>
 	           <with variable="selection">
-	              <iterate operator="and">
+	              <iterate operator="and" ifEmpty="false">
 	                 <adapt type="biz.rapidfire.rse.subsystem.resources.RapidFireAreaResource" />
 	              </iterate>
 	           </with>
@@ -1932,7 +1932,7 @@
             >
 	        <visibleWhen>
 	           <with variable="selection">
-	              <iterate operator="and">
+	              <iterate operator="and" ifEmpty="false">
 	                 <adapt type="biz.rapidfire.rse.subsystem.resources.RapidFireAreaResource" />
 	              </iterate>
 	           </with>
@@ -1945,7 +1945,7 @@
             >
 	        <visibleWhen>
 	           <with variable="selection">
-	              <iterate operator="and">
+	              <iterate operator="and" ifEmpty="false">
 	                 <adapt type="biz.rapidfire.rse.subsystem.resources.RapidFireAreaResource" />
 	              </iterate>
 	           </with>
@@ -1958,7 +1958,7 @@
             >
 	        <visibleWhen>
 	           <with variable="selection">
-	              <iterate operator="and">
+	              <iterate operator="and" ifEmpty="false">
 	                 <adapt type="biz.rapidfire.rse.subsystem.resources.RapidFireAreaResource" />
 	              </iterate>
 	           </with>
@@ -1985,7 +1985,7 @@
             visible="true">
 	        <visibleWhen>
 	           <with variable="selection">
-	              <iterate operator="and">
+	              <iterate operator="and" ifEmpty="false">
 	                 <adapt type="biz.rapidfire.rse.subsystem.resources.RapidFireConversionResource" />
 	              </iterate>
 	           </with>
@@ -1998,7 +1998,7 @@
             >
 	        <visibleWhen>
 	           <with variable="selection">
-	              <iterate operator="and">
+	              <iterate operator="and" ifEmpty="false">
 	                 <adapt type="biz.rapidfire.rse.subsystem.resources.RapidFireConversionResource" />
 	              </iterate>
 	           </with>
@@ -2011,7 +2011,7 @@
             >
 	        <visibleWhen>
 	           <with variable="selection">
-	              <iterate operator="and">
+	              <iterate operator="and" ifEmpty="false">
 	                 <adapt type="biz.rapidfire.rse.subsystem.resources.RapidFireConversionResource" />
 	              </iterate>
 	           </with>
@@ -2024,7 +2024,7 @@
             >
 	        <visibleWhen>
 	           <with variable="selection">
-	              <iterate operator="and">
+	              <iterate operator="and" ifEmpty="false">
 	                 <adapt type="biz.rapidfire.rse.subsystem.resources.RapidFireConversionResource" />
 	              </iterate>
 	           </with>
@@ -2037,7 +2037,7 @@
             >
 	        <visibleWhen>
 	           <with variable="selection">
-	              <iterate operator="and">
+	              <iterate operator="and" ifEmpty="false">
 	                 <adapt type="biz.rapidfire.rse.subsystem.resources.RapidFireConversionResource" />
 	              </iterate>
 	           </with>
@@ -2050,7 +2050,7 @@
             >
 	        <visibleWhen>
 	           <with variable="selection">
-	              <iterate operator="and">
+	              <iterate operator="and" ifEmpty="false">
 	                 <adapt type="biz.rapidfire.rse.subsystem.resources.RapidFireConversionResource" />
 	              </iterate>
 	           </with>
@@ -2077,7 +2077,7 @@
             visible="true">
 	        <visibleWhen>
 	           <with variable="selection">
-	              <iterate operator="and">
+	              <iterate operator="and" ifEmpty="false">
 	                 <adapt type="biz.rapidfire.rse.subsystem.resources.RapidFireCommandResource" />
 	              </iterate>
 	           </with>
@@ -2090,7 +2090,7 @@
             >
 	        <visibleWhen>
 	           <with variable="selection">
-	              <iterate operator="and">
+	              <iterate operator="and" ifEmpty="false">
 	                 <adapt type="biz.rapidfire.rse.subsystem.resources.RapidFireCommandResource" />
 	              </iterate>
 	           </with>
@@ -2103,7 +2103,7 @@
             >
 	        <visibleWhen>
 	           <with variable="selection">
-	              <iterate operator="and">
+	              <iterate operator="and" ifEmpty="false">
 	                 <adapt type="biz.rapidfire.rse.subsystem.resources.RapidFireCommandResource" />
 	              </iterate>
 	           </with>
@@ -2116,7 +2116,7 @@
             >
 	        <visibleWhen>
 	           <with variable="selection">
-	              <iterate operator="and">
+	              <iterate operator="and" ifEmpty="false">
 	                 <adapt type="biz.rapidfire.rse.subsystem.resources.RapidFireCommandResource" />
 	              </iterate>
 	           </with>
@@ -2129,7 +2129,7 @@
             >
 	        <visibleWhen>
 	           <with variable="selection">
-	              <iterate operator="and">
+	              <iterate operator="and" ifEmpty="false">
 	                 <adapt type="biz.rapidfire.rse.subsystem.resources.RapidFireCommandResource" />
 	              </iterate>
 	           </with>
@@ -2142,7 +2142,7 @@
             >
 	        <visibleWhen>
 	           <with variable="selection">
-	              <iterate operator="and">
+	              <iterate operator="and" ifEmpty="false">
 	                 <adapt type="biz.rapidfire.rse.subsystem.resources.RapidFireCommandResource" />
 	              </iterate>
 	           </with>
