@@ -105,6 +105,7 @@ public class Messages extends NLS {
     public static String Label_Job_queue_name_colon;
     public static String Label_Job_queue_library_name_colon;
     public static String Label_Status_colon;
+    public static String Label_Phase_colon;
     public static String Label_Full_generic_string;
     public static String Label_Enable_large_progress_bar;
     public static String Label_Position_colon;

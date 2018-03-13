@@ -45,12 +45,14 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
+import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.IActionBars;
 import org.eclipse.ui.IViewSite;
 import org.eclipse.ui.PartInitException;
@@ -106,7 +108,11 @@ public class FileCopyStatusView extends ViewPart implements IPropertyChangeListe
     private ReapplyChangesHandler handler;
 
     private int columnIds[];
-
+    
+    private Text textJob;
+    private Text textStatus;
+    private Text textPhase;
+    
     public FileCopyStatusView() {
 
         this.inputData = null;
@@ -140,6 +146,37 @@ public class FileCopyStatusView extends ViewPart implements IPropertyChangeListe
 
     private void createJobStatusTable(Composite parent) {
 
+        Composite jobStatusHeader = new Composite(parent, SWT.NONE);
+        jobStatusHeader.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+  
+        GridLayout gridLayoutJobStatusHeader = new GridLayout();
+        gridLayoutJobStatusHeader.numColumns = 6;
+        jobStatusHeader.setLayout(gridLayoutJobStatusHeader);
+        
+        Label labelJob = new Label(jobStatusHeader, SWT.NONE);
+        labelJob.setText(Messages.Label_Job_colon);
+        
+        textJob = new Text(jobStatusHeader, SWT.BORDER);
+        textJob.setLayoutData(new GridData(100, SWT.DEFAULT));
+        textJob.setText("./.");
+        textJob.setEditable(false);
+        
+        Label labelStatus = new Label(jobStatusHeader, SWT.NONE);
+        labelStatus.setText(Messages.Label_Status_colon);
+        
+        textStatus = new Text(jobStatusHeader, SWT.BORDER);
+        textStatus.setLayoutData(new GridData(100, SWT.DEFAULT));
+        textStatus.setText("./.");
+        textStatus.setEditable(false);
+        
+        Label labelPhase = new Label(jobStatusHeader, SWT.NONE);
+        labelPhase.setText(Messages.Label_Phase_colon);
+        
+        textPhase = new Text(jobStatusHeader, SWT.BORDER);
+        textPhase.setLayoutData(new GridData(100, SWT.DEFAULT));
+        textPhase.setText("./.");
+        textPhase.setEditable(false);
+        
         Composite jobStatusArea = new Composite(parent, SWT.NONE);
         jobStatusArea.setLayout(new FillLayout());
         jobStatusArea.setLayoutData(new GridData(GridData.FILL_BOTH));
@@ -149,17 +186,16 @@ public class FileCopyStatusView extends ViewPart implements IPropertyChangeListe
 
         List<Integer> availableColumns = new LinkedList<Integer>();
 
-        availableColumns.add(createColumn(tblJobStatuses, COLUMN_ID_FILE, 80, Messages.ColumnLabel_File));
-        availableColumns.add(createColumn(tblJobStatuses, COLUMN_ID_LIBRARY, 80, Messages.ColumnLabel_Library));
-        availableColumns.add(createColumn(tblJobStatuses, COLUMN_ID_PROGRESS, 110, Messages.ColumnLabel_Progress));
-        availableColumns.add(createColumn(tblJobStatuses, COLUMN_ID_RECORDS_IN_PRODUCTION_LIBRARY, 110,
-            Messages.ColumnLabel_Records_in_production_library));
+        availableColumns.add(createColumn(tblJobStatuses, COLUMN_ID_FILE, 110, Messages.ColumnLabel_File));
+        availableColumns.add(createColumn(tblJobStatuses, COLUMN_ID_LIBRARY, 110, Messages.ColumnLabel_Library));
+        availableColumns.add(createColumn(tblJobStatuses, COLUMN_ID_RECORDS_IN_PRODUCTION_LIBRARY, 110, Messages.ColumnLabel_Records_in_production_library));
         availableColumns.add(createColumn(tblJobStatuses, COLUMN_ID_RECORDS_IN_SHADOW_LIBRARY, 110, Messages.ColumnLabel_Records_in_shadow_library));
         availableColumns.add(createColumn(tblJobStatuses, COLUMN_ID_RECORDS_TO_COPY, 110, Messages.ColumnLabel_Records_to_copy));
         availableColumns.add(createColumn(tblJobStatuses, COLUMN_ID_RECORDS_COPIED, 110, Messages.ColumnLabel_Records_copied));
         availableColumns.add(createColumn(tblJobStatuses, COLUMN_ID_ESTIMATED_TIME, 110, Messages.ColumnLabel_Estimated_time));
         availableColumns.add(createColumn(tblJobStatuses, COLUMN_ID_CHANGES_TO_APPLY, 110, Messages.ColumnLabel_Changes_to_apply));
         availableColumns.add(createColumn(tblJobStatuses, COLUMN_ID_CHANGES_APPLIED, 110, Messages.ColumnLabel_Changes_applied));
+        availableColumns.add(createColumn(tblJobStatuses, COLUMN_ID_PROGRESS, 440, Messages.ColumnLabel_Progress));
 
         columnIds = new int[availableColumns.size()];
         for (int i = 0; i < availableColumns.size(); i++) {
@@ -346,8 +382,14 @@ public class FileCopyStatusView extends ViewPart implements IPropertyChangeListe
 
         if (!isDataAvailable() || isAutoRefreshOn()) {
             actionRefreshView.setEnabled(false);
+            textJob.setText("./.");
+            textStatus.setText("./.");
+            textPhase.setText("./.");
         } else {
             actionRefreshView.setEnabled(true);
+            textJob.setText(inputData.getName());
+            textStatus.setText(inputData.getStatus().label());
+            textPhase.setText(inputData.getPhase().label());
         }
 
         if (isAutoRefreshOn()) {
