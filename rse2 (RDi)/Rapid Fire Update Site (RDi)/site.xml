@@ -1,12 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <site>
    <feature url="features/biz.rapidfire.core_1.0.0.r.jar" id="biz.rapidfire.core" version="1.0.0.r">
-      <category name="biz.rapidfire.core"/>
+      <category name="Rapid Fire for RDi 8.0+"/>
    </feature>
    <feature url="features/biz.rapidfire.help_1.0.0.r.jar" id="biz.rapidfire.help" version="1.0.0.r">
-      <category name="biz.rapidfire.core"/>
+      <category name="Rapid Fire for RDi 8.0+"/>
    </feature>
-   <category-def name="biz.rapidfire.core" label="Rapid Fire for RDi 8.0+ (Base Component)">
+   <category-def name="Rapid Fire for RDi 8.0+" label="Rapid Fire for RDi 8.0+">
       <description>
          Rapid Fire for RDi 8.0+. Base component of the Rapid Fire plug-in. This component is required for all RDi versions.
       </description>
