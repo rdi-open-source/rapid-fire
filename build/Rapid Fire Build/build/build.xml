@@ -41,7 +41,7 @@
 		</classpath>
 	</taskdef>
 
-	<property name="plugin.name" value="Rapid Fire" />
+	<property name="plugin.name" value="${build.public.project.name}" />
 	<property name="workspace.home" location="./../.." />
 
 	<!-- Load project names and new version number -->
@@ -494,7 +494,9 @@
 		<replace file="${build.upload.dir.home}/${home.page}" token="@TARGET_IDE_PRODUCT_NAME_SHORT_WDSCI@" value="${target.ide.product.name.short.wdsci}" />
 		<replace file="${build.upload.dir.home}/${home.page}" token="@VERSION_MANIFEST@" value="${sf.notifier.url}" />
 		<replace file="${build.upload.dir.home}/${home.page}" token="@BETA_VERSION@" value="${sf.ftp.beta.dir.name}" />
+		<replace file="${build.upload.dir.home}/${home.page}" token="@TODAY_YEAR@" value="${today.year}" />
 		
+		<replace file="${build.upload.dir.home}/${support.page}" token="@TODAY_YEAR@" value="${today.year}" />
 		<replace file="${build.upload.dir.home}/${support.page}" token="@TODAY@" value="${today.timestamp}" />
 
 		<eclipse.refreshLocal resource="${build.project.name}" depth="infinite" />
@@ -699,6 +701,7 @@
 		<mkdir dir="${temp.dir.local_updatesite}" />
 		<mkdir dir="${temp.dir.local_updatesite}/features" />
 		<mkdir dir="${temp.dir.local_updatesite}/plugins" />
+		<mkdir dir="${temp.dir.local_updatesite}/Server" />
 
 		<copy todir="${temp.dir.local_updatesite}/features">
 			<fileset dir="${site.dir}/features" />
@@ -712,6 +715,10 @@
 			<fileset dir="${site.dir}" includes="artifacts.jar" />
 			<fileset dir="${site.dir}" includes="content.jar" />
 			<fileset dir="${site.dir}" includes="*.tag" />
+		</copy>
+		
+		<copy toDir="${temp.dir.local_updatesite}/Server" >
+			<fileset dir="${local.savefile.directory}" includes="${local.savefile.name}" />
 		</copy>
 
 		<if>
@@ -749,7 +756,7 @@
 	<!-- =============================================================
 	      Löscht alle bestehenden Dateien.
 	     ============================================================= -->
-	<target name="clean" >
+	<target name="clean" depends="cleanTempAndPDE">
 
 		<mkdir dir="${build.upload.dir}" />
 		<mkdir dir="${local.download.directory}" />
