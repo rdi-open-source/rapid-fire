@@ -11,7 +11,6 @@ package biz.rapidfire.core.handlers.job;
 import org.eclipse.core.commands.IHandler;
 import org.eclipse.jface.dialogs.Dialog;
 
-import biz.rapidfire.core.RapidFireCorePlugin;
 import biz.rapidfire.core.dialogs.maintenance.activity.ActivityMaintenanceDialog;
 import biz.rapidfire.core.maintenance.MaintenanceMode;
 import biz.rapidfire.core.maintenance.Result;
@@ -19,17 +18,14 @@ import biz.rapidfire.core.maintenance.activity.ActivityManager;
 import biz.rapidfire.core.maintenance.activity.ActivityValues;
 import biz.rapidfire.core.maintenance.job.shared.JobAction;
 import biz.rapidfire.core.model.IRapidFireJobResource;
+import biz.rapidfire.core.model.Status;
 import biz.rapidfire.core.model.dao.IJDBCConnection;
 import biz.rapidfire.core.model.dao.JDBCConnectionManager;
 
 public class MaintainActivitiesHandler extends AbstractJobMaintenanceHandler implements IHandler {
 
-    private JobAction jobAction;
-
     public MaintainActivitiesHandler() {
         super(MaintenanceMode.CHANGE, JobAction.MNTAS);
-
-        this.jobAction = JobAction.MNTAS;
     }
 
     @Override
@@ -43,7 +39,10 @@ public class MaintainActivitiesHandler extends AbstractJobMaintenanceHandler imp
         ActivityManager activityManager = null;
 
         ActivityMaintenanceDialog dialog;
-        if (canChangeJob(job)) {
+        
+        if (job.getStatus().equals(Status.RDY) ||
+       		job.getStatus().equals(Status.RUN_PENDING) ||
+ 			job.getStatus().equals(Status.RUN)) {
 
             IJDBCConnection jdbcConnection = JDBCConnectionManager.getInstance().getConnectionForUpdateNoAutoCommit(
                 job.getParentSubSystem().getConnectionName(), job.getDataLibrary());
@@ -77,19 +76,5 @@ public class MaintainActivitiesHandler extends AbstractJobMaintenanceHandler imp
 
         }
     }
-
-    private boolean canChangeJob(IRapidFireJobResource job) {
-
-        try {
-
-            Result result = getManager().checkAction(job.getKey(), JobAction.CHANGE);
-
-            return result.isSuccessfull();
-
-        } catch (Exception e) {
-            RapidFireCorePlugin.logError("*** Could not check job action ***", e); //$NON-NLS-1$
-        }
-
-        return false;
-    }
+    
 }
