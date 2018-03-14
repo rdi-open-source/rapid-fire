@@ -14,6 +14,17 @@
  *      commons-net-3.3-patched.jar
  *      jsch-0.1.51.jar
  *
+ *   Follow these steps to add the jars to the Ant classpath:
+ *
+ *   1) Execute the "build" target and ignore all errors, to create an
+ *      "External Tools Configuration".
+ *   2) Right-click the "build" target and select option "Run as -> Ant Build..."
+ *   3) Click the "Classpath" tab, select "User Entries" and add the jars 
+ *      from "[Rapid Fire Build]/build/lib".
+ *   4) Click the "JRE" tab and select option "Run in the same JRE as the 
+ *      workspace".
+ *   5) Save your changes. 
+ *
  *   The following jar files are loaded dynamically, because they
  *   are part of a task def contribution or class path:
  *      ant-contrib-1.0b3.jar
@@ -25,11 +36,14 @@
  *
  *   1. Open "build.properties" of project "Java Scoped Template Variables Build".
  *   2. Increment version number of property "build.version".
- *   3. Execute target "build".
- *   4. Create plug-in: Right-click 'site.xml', select 'PDE Tools -> Build Site'.
- *   5. Execute target "createSourceForgeFiles".
- *   6. Check-in source code.
- *   7. Create version tag.
+ *   3. Verify the setting of the "build.help.enabled" property in "build.properties.
+ *      Sometimes the property is accidentally checked-in with "false", which usually
+ *      is not what you want. 
+ *   4. Execute target "build".
+ *   5. Create plug-in: Right-click 'site.xml', select 'PDE Tools -> Build Site'.
+ *   6. Execute target "createSourceForgeFiles".
+ *   7. Check-in source code.
+ *   8. Create version tag.
  *
  * ===================================================================== -->
 <project name="Rapid Fire Build" default="build" basedir=".">
@@ -51,7 +65,17 @@
 	<property file="ftp.properties" />
 
 	<!-- Load SourceForge ftp user name and password -->
-	<property file="ftp-credentials.properties" />
+    <if>
+        <available file="ftp-credentials.properties"/>
+        <then>
+            <property file="ftp-credentials.properties" />
+        </then>
+        <else>
+			<echo>File 'ftp-credentials.properties' not found.</echo>
+			<echo>Copy 'ftp-credentials_template.properties' to 'ftp-credentials.properties' and set the user names only (recommended).</echo>
+        	<fail message="Ant script stopped."/>
+        </else>
+    </if>
 
 	<!-- Set date and time -->
 	<tstamp>
@@ -357,13 +381,6 @@
     *   go to the project's update site.
     *   This target is specific to RDi/WDSCi and controlled by build.target.
     *
-    *   Set the build properties as shown below, if you want to update 
-    *   index.html and .htaccess only:
-    * 
-    *     build.files.enabled=false
-    *     build.web.enabled=true
-    *     build.help.enabled=false
-    *
     *   You can also update the update site like this:
     *     cleanUploadDir
     *     createSourceForgeWebUpdateSite
@@ -432,12 +449,10 @@
     *   This target is not specific to RDi/WDSCi. It does not matter for 
     *   what target it is called.
     *
-    *   Set the build properties as shown below, if you want to update 
-    *   index.html and .htaccess only:
+    *   Building the Rapid Fire online help if controlled by the
+    *   following property: 
     * 
-    *     build.files.enabled=false
-    *     build.web.enabled=false
-    *     build.help.enabled=true
+    *     build.help.enabled=true|false
     *
     *   You can also update the help pages like this:
     *     cleanUploadDir
