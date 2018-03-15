@@ -32,7 +32,7 @@
         <td align="left" width="100%" >
         <h1>Rapid Fire Plug-in</h1>
         <p>Hi, this is the home of the Rapid Fire plug-in for RDi and WDSCi.</p>
-        <p>Visit the <a target="_help" href="http://rapid-fire.sourceforge.net/beta-version/help/">Rapid Fire help</a> site to find out more about the plug-in.</p>
+        <p>Visit the <a target="_help" href="http://rapid-fire.sourceforge.net/help/">Rapid Fire help</a> site to find out more about the plug-in.</p>
         </td>
         <td valign="bottom" align="right" nowrap>
         <b>Version: <?php echo $current_version; ?></b>
