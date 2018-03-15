@@ -448,7 +448,7 @@ public class RapidFireSubSystem extends DefaultSubSystemImpl implements IISeries
 
         String libraryName = job.getDataLibrary();
 
-        FileCopyStatusDAO dao = new FileCopyStatusDAO(getHostName(), libraryName);
+        FileCopyStatusDAO dao = new FileCopyStatusDAO(getConnectionName(), libraryName);
         List<IFileCopyStatus> fileCopyStatuses = dao.load(job, shell);
         if (fileCopyStatuses == null) {
             return null;

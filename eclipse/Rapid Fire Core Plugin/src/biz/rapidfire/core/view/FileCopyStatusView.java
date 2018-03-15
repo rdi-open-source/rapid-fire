@@ -372,6 +372,7 @@ public class FileCopyStatusView extends ViewPart implements IPropertyChangeListe
             return null;
         } catch (Exception e) {
             MessageDialog.openError(getShell(), Messages.E_R_R_O_R, ExceptionHelper.getLocalizedMessage(e));
+            RapidFireCorePlugin.logError("*** Could not load file copy statuses ***", e);
             return null;
         }
     }
