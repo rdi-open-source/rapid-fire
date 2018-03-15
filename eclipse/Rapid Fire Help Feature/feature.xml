@@ -10,7 +10,7 @@
    </description>
 
    <copyright url="https://sourceforge.net/projects/rapid-fire/">
-      Copyright (c) 2017-2017 Rapid Fire Project Team. All rights reserved.
+      Copyright (c) 2017-2018 Rapid Fire Project Team. All rights reserved.
    </copyright>
 
    <license url="http://www.eclipse.org/legal/cpl-v10.html">
@@ -26,7 +26,7 @@ this distribution, and is available at http://www.eclipse.org/legal/cpl-v10.html
    </url>
 
    <requires>
-      <import feature="biz.rapidfire.core" version="1.0.0.b001"/>
+      <import feature="biz.rapidfire.core" version="1.0.1.r"/>
    </requires>
 
    <plugin
