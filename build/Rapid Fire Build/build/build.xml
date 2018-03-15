@@ -6,37 +6,44 @@
  *   The Eclipse "iSphere Help Builder" project is part of the "iSphere"
  *   project at SourceForge:  https://sourceforge.net/projects/isphere/
  * =====================================================================
- *   This Ant script must run in the same JRE of the workspace,
- *   to make the "eclipse.refreshLocal" tag work properly.
  *
- *   You have to install the "iSphere Ant Contribution" plug-in if you want to
- *   upload files to SourceForge. The local update site can be found here:
+ *   Verifying and setting up prerequisites
+ *   ======================================
  *
- *   [iSphere Eclipse Setup]/plug-ins/iSphere_Ant_Contribution.zip
+ *   1. This Ant script must run in the same JRE of the workspace,
+ *      to make the "eclipse.refreshLocal" tag work properly.
  *
- *   The "iSphere Eclipse Setup" project is part of the iSphere project.
+ *   2. You have to install the "iSphere Ant Contribution" plug-in if you want to
+ *      upload files to SourceForge. The local update site can be found here:
  *
- *   The classpath must include the following jars for executing
- *   this build script:
- *      commons-net-3.3-patched.jar
- *      jsch-0.1.51.jar
+ *         [iSphere Eclipse Setup]/plug-ins/iSphere_Ant_Contribution.zip
  *
- *   Follow these steps to add the jars to the Ant classpath:
+ *      The "iSphere Eclipse Setup" project is part of the iSphere project.
  *
- *   1) Execute the "build" target and ignore all errors, to create an
- *      "External Tools Configuration".
- *   2) Right-click the "build" target and select option "Run as -> Ant Build..."
- *   3) Click the "Classpath" tab, select "User Entries" and add the jars 
- *      from "[Rapid Fire Build]/build/lib".
- *   4) Click the "JRE" tab and select option "Run in the same JRE as the 
- *      workspace".
- *   5) Save your changes. 
+ *   3. The classpath must include the following jars for executing
+ *      this build script:
+ *         commons-net-3.3-patched.jar
+ *         jsch-0.1.51.jar
  *
- *   The following jar files are loaded dynamically, because they
- *   are part of a task def contribution or class path:
- *      ant-contrib-1.0b3.jar
- *      junit.jar
- *      org.hamcrest.core_1.1.0.v20090501071000.jar
+ *      Follow these steps to add the jars to the Ant classpath:
+ *
+ *      3.1 Execute the "build" target and ignore all errors, to create an
+ *          "External Tools Configuration".
+ *      3.2 Right-click the "build" target and select option "Run as -> Ant Build..."
+ *      3.3 Click the "Classpath" tab, select "User Entries" and add the jars 
+ *          from "[Rapid Fire Build]/build/lib".
+ *      3.4 Click the "JRE" tab and select option "Run in the same JRE as the 
+ *          workspace".
+ *      3.5 Save your changes. 
+ *
+ *      The following jar files are loaded dynamically, because they
+ *      are part of a task def contribution or class path:
+ *         ant-contrib-1.0b3.jar
+ *         junit.jar
+ *         org.hamcrest.core_1.1.0.v20090501071000.jar
+ *
+ *   4. Checkout project "iSphere Help Builder" from the iSphere project page
+ *      at SourceForge. The project is required for building the html help pages.
  *
  *   Creating the Update site
  *   ========================
