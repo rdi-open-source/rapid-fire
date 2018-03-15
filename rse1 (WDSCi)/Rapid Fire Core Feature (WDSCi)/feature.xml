@@ -2,7 +2,7 @@
 <feature
       id="biz.rapidfire.core"
       label="Rapid Fire Core (WDSCi) (required)"
-      version="1.0.0.r"
+      version="1.0.1.r"
       provider-name="Rapid Fire Project Team">
 
    <description url="https://sourceforge.net/projects/rapid-fire/">
@@ -11,7 +11,7 @@ Plug-in. Installing this feature is required.
    </description>
 
    <copyright url="https://sourceforge.net/projects/rapid-fire/">
-      Copyright (c) 2017-2017 Rapid Fire Project Team. All rights reserved.
+      Copyright (c) 2017-2018 Rapid Fire Project Team. All rights reserved.
    </copyright>
 
    <license url="http://www.eclipse.org/legal/cpl-v10.html">
