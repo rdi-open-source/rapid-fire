@@ -9,6 +9,13 @@
  *   This Ant script must run in the same JRE of the workspace,
  *   to make the "eclipse.refreshLocal" tag work properly.
  *
+ *   You have to install the "iSphere Ant Contribution" plug-in if you want to
+ *   upload files to SourceForge. The local update site can be found here:
+ *
+ *   [iSphere Eclipse Setup]/plug-ins/iSphere_Ant_Contribution.zip
+ *
+ *   The "iSphere Eclipse Setup" project is part of the iSphere project.
+ *
  *   The classpath must include the following jars for executing
  *   this build script:
  *      commons-net-3.3-patched.jar
@@ -157,18 +164,18 @@
 	<!-- Check for BETA or RELEASE version -->
 	<propertyregex property="release.flag" input="${build.version}" regexp="${release.flag.regex}" select="\1" casesensitive="true" />
 	<if>
-		<equals arg1="${release.flag}" arg2="r" />
+		<equals arg1="${release.flag}" arg2="b" />
 		<then>
-			<echo>Building a RELEASE version.</echo>
-			<property name="is.beta.version" value="false" />
-			<property name="beta.dir" value="." />
-			<property name="version.info" value="&lt;div class=&quot;release&quot;&gt;Release Version - ${build.version}&lt;/div&gt;" />
-		</then>
-		<else>
 			<echo>Building a BETA version.</echo>
 			<property name="is.beta.version" value="true" />
 			<property name="beta.dir" value="${sf.ftp.beta.dir.name}" />
 			<property name="version.info" value="&lt;div class=&quot;beta&quot;&gt;Beta Version - ${build.version}&lt;/div&gt;" />
+		</then>
+		<else>
+			<echo>Building a RELEASE version.</echo>
+			<property name="is.beta.version" value="false" />
+			<property name="beta.dir" value="." />
+			<property name="version.info" value="&lt;div class=&quot;release&quot;&gt;Release Version - ${build.version}&lt;/div&gt;" />
 		</else>
 	</if>
 
