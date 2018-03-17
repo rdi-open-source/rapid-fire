@@ -86,7 +86,6 @@
 		</classpath>
 	</taskdef>
 
-	<property name="plugin.name" value="${build.public.project.name}" />
 	<property name="workspace.home" location="./../.." />
 
 	<!-- Load project names and new version number -->
@@ -477,7 +476,7 @@
 		<replace file="${build.upload.dir.web.eclipse}/${target.ide.sf.dir}\index.html" token="@VERSION_NUMBER@" value="${build.version}" />
 		<replace file="${build.upload.dir.web.eclipse}/${target.ide.sf.dir}\index.html" token="@PROJECT_HOME@" value="${sf.home.url}" />
 		<replace file="${build.upload.dir.web.eclipse}/${target.ide.sf.dir}\index.html" token="@PROJECT_HELP@" value="${sf.help.url}" />
-		<replace file="${build.upload.dir.web.eclipse}/${target.ide.sf.dir}\index.html" token="@PLUGIN_NAME@" value="${plugin.name}" />
+		<replace file="${build.upload.dir.web.eclipse}/${target.ide.sf.dir}\index.html" token="@PLUGIN_NAME@" value="${build.public.project.name}" />
 
 		<eclipse.refreshLocal resource="${build.project.name}" depth="infinite" />
 
