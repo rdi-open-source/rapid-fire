@@ -59,16 +59,21 @@
  *   4. Set property "build.target" to RDi or WDSCi depending on what you want.
  *   5. Set property "build.help.enabled" to true or false depending on what you want.
  *   6. Execute target "build" in build.xml. Choose "Run As/Ant Build...".
- *   7. If you specified WDSCi as target environment, then revert changes in "build.properties".
- *   8. Commit changed files in Rapid Fire projects to SVN repository.
- *   9. Create plug-in: Right-click 'site.xml', select 'PDE Tools -> Build Site'.
- *   10. Execute target "createSourceForgeFiles" in build.xml. Choose "Run As/Ant Build...".
- *   11. Create version tag.
+ *   7. Create plug-in: Right-click 'site.xml', select 'PDE Tools -> Build Site'.
+ *   8. Execute target "createSourceForgeFiles" in build.xml. Choose "Run As/Ant Build...".
  *
  *   Upload the Update site to SourceForge
  *   =====================================
+ *
  *   1. Execute target "uploadSourceForgeFiles" in build.xml. Choose "Run As/Ant Build...".
  *
+ *   Final steps in workspace
+ *   ========================
+ *
+ *   1. If you specified WDSCi as target environment, then revert changes in "build.properties".
+ *   2. Commit changed files in Rapid Fire projects to SVN repository.
+ *   3. Create version tag.
+ * 
  *   Updating the DOWNLOAD button at SourceForge
  *   ===========================================
  *
