@@ -55,16 +55,19 @@
  *
  *   1. Synchronize Rapid Fire projects with SVN repository.
  *   2. Open "build.properties" of project "Rapid Fire Build".
- *   3. Increment version number of property "build.version".
- *   4. Verify the setting of the "build.help.enabled" property in "build.properties.
- *      Sometimes the property is accidentally checked-in with "false", which usually
- *      is not what you want. 
- *   5. Execute target "build". Choose in context menu of build.xml "Run As/Ant Build...".
- *   6. Commit changed files in Rapid Fire projects to SVN repository.
- *   7. Create plug-in: Right-click 'site.xml', select 'PDE Tools -> Build Site'.
- *   8. Execute target "createSourceForgeFiles".
- *   9. Check-in source code.
- *   10. Create version tag.
+ *   3. Set property "build.version" to the new version.
+ *   4. Set property "build.target" to RDi or WDSCi depending on what you want.
+ *   5. Set property "build.help.enabled" to true or false depending on what you want.
+ *   6. Execute target "build" in build.xml. Choose "Run As/Ant Build...".
+ *   7. If you specified WDSCi as target environment, then revert changes in "build.properties".
+ *   8. Commit changed files in Rapid Fire projects to SVN repository.
+ *   9. Create plug-in: Right-click 'site.xml', select 'PDE Tools -> Build Site'.
+ *   10. Execute target "createSourceForgeFiles" in build.xml. Choose "Run As/Ant Build...".
+ *   11. Create version tag.
+ *
+ *   Upload the Update site to SourceForge
+ *   =====================================
+ *   1. Execute target "uploadSourceForgeFiles" in build.xml. Choose "Run As/Ant Build...".
  *
  *   Updating the DOWNLOAD button at SourceForge
  *   ===========================================
@@ -72,11 +75,12 @@
  *   After a new release version (not a beta version) has been uploaded to SourceForge,
  *   the big green DOWNLOAD button must be updated.
  *
- *   1. Go to the Rapid Fire project page at SourceForge.
- *   2. Select the "Files" tab.
- *   3. Click the "i" in the circle button next to "Rapid Fire for RDi 8.0+ (v1.0.1.r Update Site).zip".
- *   4. Click "select all" next to the "Default Download For:" label.
- *   5. Click the "Save" button.
+ *   1. Sign on at SourceForge.
+ *   2. Go to the Rapid Fire project page at SourceForge.
+ *   3. Select the "Files" tab.
+ *   4. Click the "i" in the circle button next to "Rapid Fire for RDi 8.0+ (vX.X.X.r Update Site).zip".
+ *   5. Click "select all" next to the "Default Download For:" label.
+ *   6. Click the "Save" button.
  *
  * ===================================================================== -->
 <project name="Rapid Fire Build" default="build" basedir=".">
