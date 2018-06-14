@@ -53,16 +53,18 @@
  *   Creating the Update site
  *   ========================
  *
- *   1. Open "build.properties" of project "Java Scoped Template Variables Build".
- *   2. Increment version number of property "build.version".
- *   3. Verify the setting of the "build.help.enabled" property in "build.properties.
+ *   1. Synchronize Rapid Fire projects with SVN repository.
+ *   2. Open "build.properties" of project "Rapid Fire Build".
+ *   3. Increment version number of property "build.version".
+ *   4. Verify the setting of the "build.help.enabled" property in "build.properties.
  *      Sometimes the property is accidentally checked-in with "false", which usually
  *      is not what you want. 
- *   4. Execute target "build".
- *   5. Create plug-in: Right-click 'site.xml', select 'PDE Tools -> Build Site'.
- *   6. Execute target "createSourceForgeFiles".
- *   7. Check-in source code.
- *   8. Create version tag.
+ *   5. Execute target "build". Choose in context menu of build.xml "Run As/Ant Build...".
+ *   6. Commit changed files in Rapid Fire projects to SVN repository.
+ *   7. Create plug-in: Right-click 'site.xml', select 'PDE Tools -> Build Site'.
+ *   8. Execute target "createSourceForgeFiles".
+ *   9. Check-in source code.
+ *   10. Create version tag.
  *
  *   Updating the DOWNLOAD button at SourceForge
  *   ===========================================
