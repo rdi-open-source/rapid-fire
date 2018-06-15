@@ -63,7 +63,7 @@ is RAPIDFIRE.
 Copy save file - Help
 :XH3.Copy save file (CPYSAVF)
 :P.
-Specifies whether to copy the save file to the home directory of the.
+Specifies whether to copy the save file to the home directory of the
 user who executes the build command.
 .*
 :IMHELP name='COM/OPTPARM'.
