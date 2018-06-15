@@ -137,6 +137,7 @@
                    RCVMSG     PGMQ(*SAME (*)) MSGTYPE(*LAST) RMV(*YES)
                    GOTO       CMDLBL(SKIP_DLT)
                 ENDDO
+             CHGJRN     JRN(&LIB/&JRN) MNGRCV(*SYSTEM) DLTRCV(*NO)
                 DLTJRN     JRN(&LIB/&JRN)
                 DLTJRNRCV  JRNRCV(&LIB/&JRNRCV) DLTOPT(*IGNINQMSG)
 SKIP_DLT:
@@ -169,6 +170,7 @@ SKIP_DLT:
              WHEN       COND(&CMD *EQ '*END') THEN(DO)
                 IF         COND(&TYPE *EQ '*FILE') THEN(DO)
                    ENDJRNPF   FILE(&LIB/&NAME) JRN(*FILE)
+                   MONMSG     MSGID(CPF9812)
                 ENDDO
 
              ENDDO
