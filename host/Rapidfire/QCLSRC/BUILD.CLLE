@@ -70,6 +70,11 @@
              CLRPFM     FILE(&LIB/SQLTRACE)
              CLRPFM     FILE(&LIB/SUBTOBENOT)
 
+             ENDJRNAP   FILE(*ALL) JRN(&LIB/&JRN)
+             MONMSG     MSGID(CPF9801) EXEC(DO) /* No object found */
+                RMVMSG     PGMQ(*SAME (*)) CLEAR(*ALL)
+             ENDDO
+
              ENDJRNPF   FILE(*ALL) JRN(&LIB/&JRN)
              MONMSG     MSGID(CPF9801) EXEC(DO) /* No object found */
                 RMVMSG     PGMQ(*SAME (*)) CLEAR(*ALL)
@@ -77,6 +82,11 @@
 
              DLTJRN     JRN(&LIB/&JRN)
              MONMSG     MSGID(CPF2105) EXEC(DO) /* No object found */
+                RMVMSG     PGMQ(*SAME (*)) CLEAR(*ALL)
+             ENDDO
+
+             DLTJRNRCV  JRNRCV(&LIB/RAPID*) DLTOPT(*IGNINQMSG)
+             MONMSG     MSGID(CPF2125) EXEC(DO) /* No object found */
                 RMVMSG     PGMQ(*SAME (*)) CLEAR(*ALL)
              ENDDO
 
@@ -99,11 +109,16 @@
                           TGTRLS(V7R1M0) DTACPR(*HIGH)
 
              IF         COND(&CPYSAVF *EQ '*YES') THEN(DO)
+
+                MD        DIR('/home/rapidfire')
+                MONMSG    MSGID(CPFA0A0)
+
                 CHGVAR    VAR(&FROMMBR) +
                             VALUE('/QSYS.LIB/' *CAT &LIB *TCAT '.LIB/' *CAT &SAVF *TCAT '.FILE')
                 CHGVAR    VAR(&TOSTMF) +
-                            VALUE('/home/raddatz/' *CAT &SAVF *TCAT '.SAVF')
+                            VALUE('/home/rapidfire/' *CAT &SAVF *TCAT '.SAVF')
                 CPYTOSTMF FROMMBR(&FROMMBR) TOSTMF(&TOSTMF) CVTDTA(*NONE) STMFOPT(*REPLACE)
+
              ENDDO
 
      /* End */
