@@ -319,12 +319,30 @@ DCL-PROC JOB_reset EXPORT;
             Leave;
           EndIf;
 
-          // Delete journal and journal receiver first to avoid inquiry message
+          // End journaling of access paths
+          EXCCMD_execute_Command(
+            'ENDJRNAP ' +
+            'FILE(*ALL) ' +
+            'JRN(' + %Trim(Libraries.Shadow_Library) + '/' +
+                     'RAPIDFIRE)'
+          );
+
+          // End journaling of physical files
+          EXCCMD_execute_Command(
+            'ENDJRNPF ' +
+            'FILE(*ALL) ' +
+            'JRN(' + %Trim(Libraries.Shadow_Library) + '/' +
+                     'RAPIDFIRE)'
+          );
+
+          // Delete journal
           EXCCMD_execute_Command(
             'DLTJRN ' +
             'JRN(' + %Trim(Libraries.Shadow_Library) + '/' +
-                     'RAPID*)'
+                     'RAPIDFIRE)'
           );
+
+          // Delete journal receiver
           EXCCMD_execute_Command(
             'DLTJRNRCV ' +
             'JRNRCV(' + %Trim(Libraries.Shadow_Library) + '/' +
