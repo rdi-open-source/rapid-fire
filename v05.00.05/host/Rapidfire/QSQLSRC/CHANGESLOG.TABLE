@@ -1,0 +1,38 @@
+-- *------------------------------------------------------------------------*
+-- *                                                                        *
+-- * Copyright (c) 2014 Task Force IT-Consulting GmbH, Waltrop (Germany)    *
+-- * This software and the accompanying materials are made available        *
+-- * under the terms of the GNU General Public License version 2.0 (GPLv2)  *
+-- * which accompanies this distribution and is available at                *
+-- * http://www.gnu.org/licenses/gpl-2.0.html                               *
+-- *                                                                        *
+-- *------------------------------------------------------------------------*
+-- *                                                                        *
+-- * Changes log                                                            *
+-- *                                                                        *
+-- *------------------------------------------------------------------------*
+
+CREATE TABLE CHANGESLOG
+(
+ MEMBER FOR COLUMN XEMBR CHAR(10) NOT NULL WITH DEFAULT,
+ RECORD_NUMBER FOR COLUMN XERCD DECIMAL(10, 0) NOT NULL WITH DEFAULT
+);
+
+LABEL ON TABLE CHANGESLOG
+ IS '* * *   R A P I D   F I R E   * * *';
+
+LABEL ON COLUMN CHANGESLOG
+(
+ MEMBER IS 'Member',
+ RECORD_NUMBER IS 'Record number'
+);
+
+LABEL ON COLUMN CHANGESLOG
+(
+ MEMBER TEXT IS 'Member',
+ RECORD_NUMBER TEXT IS 'Record number'
+);
+
+ALTER TABLE CHANGESLOG
+ADD CONSTRAINT CHANGESLOG_PRIMARY_KEY
+PRIMARY KEY (MEMBER, RECORD_NUMBER);

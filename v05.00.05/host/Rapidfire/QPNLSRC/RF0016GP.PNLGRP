@@ -1,0 +1,158 @@
+.*-------------------------------------------------------------------------------------------*
+.*                                                                                           *
+.* Copyright (c) 2016 Task Force IT-Consulting GmbH, Waltrop (Germany)                       *
+.* This software and the accompanying materials are made available                           *
+.* under the terms of the GNU General Public License version 2.0 (GPLv2)                     *
+.* which accompanies this distribution and is available at                                   *
+.* http://www.gnu.org/licenses/gpl-2.0.html                                                  *
+.*                                                                                           *
+.*-------------------------------------------------------------------------------------------*
+.*                                                                                           *
+.* Maintain Areas                                                                            *
+.*                                                                                           *
+.*-------------------------------------------------------------------------------------------*
+.*  >>PRE-COMPILER<<                                                                         *
+.*    >>CRTCMD<< CRTPNLGRP    PNLGRP(&LI/&OB) +                                              *
+.*                              SRCFILE(&SL/&SF) SRCMBR(&SM);                                *
+.*    >>IMPORTANT<<                                                                          *
+.*      >>PARM<<  OPTION(*EVENTF);                                                           *
+.*    >>END-IMPORTANT<<                                                                      *
+.*    >>EXECUTE<<                                                                            *
+.*  >>END-PRE-COMPILER<<                                                                     *
+.*------------+--------+---------------------------------------------------------------------*
+.*   Date     I Progr. I Description                                                         *
+.*------------+--------+---------------------------------------------------------------------*
+.* 15.10.2015 I   FH   I Created                                                             *
+.*------------+--------+---------------------------------------------------------------------*
+.* 13.06.2016 I   TR   I Enabled program for '*DISPLAY' mode.                                *
+.*------------+--------+---------------------------------------------------------------------*
+
+.*-------------------------------------------------------------------------------------------*
+.* Begin of panelgroup                                                                       *
+.*-------------------------------------------------------------------------------------------*
+
+:PnlGrp.
+
+.*-------------------------------------------------------------------------------------------*
+.* Imports                                                                                   *
+.*-------------------------------------------------------------------------------------------*
+
+:Import Name='*' PnlGrp=GENERAL.
+
+.*-------------------------------------------------------------------------------------------*
+.* Helptext - Option (Edit)                                                                  *
+.*-------------------------------------------------------------------------------------------*
+
+:Help Name='OPT/EDT'.
+Options - Helptext
+:XH3.
+Options
+:PARML.
+:PT.
+2=Change
+:PD.
+Changes the area.
+:PT.
+3=Copy
+:PD.
+Copies the area.
+:PT.
+4=Delete
+:PD.
+Deletes the area.
+:PT.
+5=Display
+:PD.
+Displays the area.
+:EPARML.
+:EHelp.
+
+.*-------------------------------------------------------------------------------------------*
+.* Helptext - Option (Display)                                                               *
+.*-------------------------------------------------------------------------------------------*
+
+:Help Name='OPT/DSP'.
+Options - Helptext
+:XH3.
+Options
+:PARML.
+:PT.
+5=Display
+:PD.
+Displays the area.
+:EPARML.
+:EHelp.
+
+.*-------------------------------------------------------------------------------------------*
+.* Helptext - Option (Select)                                                                *
+.*-------------------------------------------------------------------------------------------*
+
+:Help Name='OPT/SLC'.
+NODEF - Helptext
+:XH3.
+NODEF
+:P.
+NODEF
+:EHelp.
+
+.*-------------------------------------------------------------------------------------------*
+.* Helptext - Funktion Keys (Edit)                                                           *
+.*-------------------------------------------------------------------------------------------*
+
+:Help Name='FKT/EDT'.
+Function Keys - Help
+:XH3.
+Function Keys
+:ImHelp Name=F1.
+:ImHelp Name=F3.
+:ImHelp Name=F4.
+:ImHelp Name=F5.
+:PARML.
+:PT.
+F6=Create
+:PD.
+Creates a new area.
+:EPARML.
+:ImHelp Name=F9.
+:ImHelp Name=F12.
+:ImHelp Name=F17.
+:ImHelp Name=F18.
+:ImHelp Name=F24.
+:EHelp.
+
+.*-------------------------------------------------------------------------------------------*
+.* Helptext - Funktion Keys (Select)                                                         *
+.*-------------------------------------------------------------------------------------------*
+
+:Help Name='FKT/SLC'.
+NODEF - Helptext
+:XH3.
+NODEF
+:P.
+NODEF
+:EHelp.
+
+.*-------------------------------------------------------------------------------------------*
+.* Helptext - Funktion Keys (Display)                                                        *
+.*-------------------------------------------------------------------------------------------*
+
+:Help Name='FKT/DSP'.
+Function Keys - Help
+:XH3.
+Function Keys
+:ImHelp Name=F1.
+:ImHelp Name=F3.
+:ImHelp Name=F4.
+:ImHelp Name=F5.
+:ImHelp Name=F9.
+:ImHelp Name=F12.
+:ImHelp Name=F17.
+:ImHelp Name=F18.
+:ImHelp Name=F24.
+:EHelp.
+
+.*-------------------------------------------------------------------------------------------*
+.* End of panelgroup                                                                         *
+.*-------------------------------------------------------------------------------------------*
+
+:EPnlGrp.

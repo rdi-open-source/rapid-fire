@@ -1,0 +1,54 @@
+     /*-------------------------------------------------------------------------------------------*/
+     /*                                                                                           */
+     /* Copyright (c) 2014 Task Force IT-Consulting GmbH, Waltrop (Germany)                       */
+     /* This software and the accompanying materials are made available                           */
+     /* under the terms of the GNU General Public License version 2.0 (GPLv2)                     */
+     /* which accompanies this distribution and is available at                                   */
+     /* http://www.gnu.org/licenses/gpl-2.0.html                                                  */
+     /*                                                                                           */
+     /*-------------------------------------------------------------------------------------------*/
+     /*                                                                                           */
+     /* Maintain Library                                                                          */
+     /*                                                                                           */
+     /*-------------------------------------------------------------------------------------------*/
+     /*  >>PRE-COMPILER<<                                                                         */
+     /*    >>CRTCMD<< CRTSRVPGM    SRVPGM(&LI/&OB) EXPORT(*SRCFILE) +                             */
+     /*                              SRCFILE(&SL/&SF) SRCMBR(&SM);                                */
+     /*    >>IMPORTANT<<                                                                          */
+     /*      >>PARM<<  MODULE(MNTLIB);                                                            */
+     /*      >>PARM<<  TEXT('Maintain Library');                                                  */
+     /*      >>PARM<<  BNDDIR(RAPIDFIRE);                                                         */
+     /*      >>PARM<<  ACTGRP(RAPIDFIRE);                                                         */
+     /*      >>PARM<<  DETAIL(*BASIC);                                                            */
+     /*      >>PARM<<  TGTRLS(&TR);                                                               */
+     /*    >>END-IMPORTANT<<                                                                      */
+     /*    >>EXECUTE<<                                                                            */
+     /*  >>END-PRE-COMPILER<<                                                                     */
+     /*------------+--------+---------------------------------------------------------------------*/
+     /*   Datum    I Progr. I Beschreibung                                                        */
+     /*------------+--------+---------------------------------------------------------------------*/
+     /* 26.10.2017 I   FH   I Creation                                                            */
+     /*-------------------------------------------------------------------------------------------*/
+
+             STRPGMEXP
+
+                EXPORT     SYMBOL('MNTLIB_openFiles')
+
+                EXPORT     SYMBOL('MNTLIB_closeFiles')
+
+                EXPORT     SYMBOL('MNTLIB_initialize')
+
+                EXPORT     SYMBOL('MNTLIB_getValues')
+
+                EXPORT     SYMBOL('MNTLIB_setValues')
+
+                EXPORT     SYMBOL('MNTLIB_check')
+
+                EXPORT     SYMBOL('MNTLIB_book')
+
+                EXPORT     SYMBOL('MNTLIB_checkAction')
+
+                EXPORT     SYMBOL('MNTLIB_getValidActions')
+
+             ENDPGMEXP
+

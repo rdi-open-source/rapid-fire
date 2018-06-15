@@ -1,0 +1,34 @@
+     A*%%TS  SD  20180314  143839  HILDEBRAND  REL-V7R3M0  5770-WDS
+     A*------------------------------------------------------------------------*
+     A*                                                                        *
+     A* COPYRIGHT (C) 2014 TASK FORCE IT-CONSULTING GMBH, WALTROP (GERMANY)    *
+     A* This software and the accompanying materials are made available        *
+     A* under the terms of the GNU General Public License version 2.0 (GPLv2)  *
+     A* which accompanies this distribution and is available at                *
+     A* http://www.gnu.org/licenses/gpl-2.0.html                               *
+     A*                                                                        *
+     A*------------------------------------------------------------------------*
+     A*  >>PRE-COMPILER<<                                                      *
+     A*    >>CRTCMD<< CRTDSPF    FILE(&LI/&OB) +                               *
+     A*                            SRCFILE(&SL/&SF) SRCMBR(&SM);               *
+     A*    >>IMPORTANT<<                                                       *
+     A*      >>PARM<<  OPTION(*EVENTF);                                        *
+     A*    >>END-IMPORTANT<<                                                   *
+     A*    >>EXECUTE<<                                                         *
+     A*  >>END-PRE-COMPILER<<                                                  *
+     A*------------------------------------------------------------------------*
+     A*
+     A*%%EC
+     A                                      DSPSIZ(24 80 *DS3)
+     A                                      CHGINPDFT
+     A                                      PRINT
+     A          R DSPF010
+     A*%%TS  SD  20180314  143839  HILDEBRAND  REL-V7R3M0  5770-WDS
+     A            ERR           78A  O 12  2
+     A          R DSPF020
+     A*%%TS  SD  20180314  143839  HILDEBRAND  REL-V7R3M0  5770-WDS
+     A            TXT           76A  O 12  2
+     A            OPT            1A  B 12 79DSPATR(UL)
+     A          R DSPF030
+     A*%%TS  SD  20180314  143839  HILDEBRAND  REL-V7R3M0  5770-WDS
+     A            FNS           78A  O 12  2

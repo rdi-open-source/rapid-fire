@@ -1,0 +1,187 @@
+.*-------------------------------------------------------------------------------------------*
+.*                                                                                           *
+.* Copyright (c) 2014 Task Force IT-Consulting GmbH, Waltrop (Germany)                       *
+.* This software and the accompanying materials are made available                           *
+.* under the terms of the GNU General Public License version 2.0 (GPLv2)                     *
+.* which accompanies this distribution and is available at                                   *
+.* http://www.gnu.org/licenses/gpl-2.0.html                                                  *
+.*                                                                                           *
+.*-------------------------------------------------------------------------------------------*
+.*                                                                                           *
+.* Maintain Jobs                                                                             *
+.*                                                                                           *
+.*-------------------------------------------------------------------------------------------*
+.*  >>PRE-COMPILER<<                                                                         *
+.*    >>CRTCMD<< CRTPNLGRP    PNLGRP(&LI/&OB) +                                              *
+.*                              SRCFILE(&SL/&SF) SRCMBR(&SM);                                *
+.*    >>IMPORTANT<<                                                                          *
+.*      >>PARM<<  OPTION(*EVENTF);                                                           *
+.*    >>END-IMPORTANT<<                                                                      *
+.*    >>EXECUTE<<                                                                            *
+.*  >>END-PRE-COMPILER<<                                                                     *
+.*------------+--------+---------------------------------------------------------------------*
+.*   Date     I Progr. I Description                                                         *
+.*------------+--------+---------------------------------------------------------------------*
+.* 01.07.2014 I   FH   I Created                                                             *
+.*------------+--------+---------------------------------------------------------------------*
+
+.*-------------------------------------------------------------------------------------------*
+.* Begin of panelgroup                                                                       *
+.*-------------------------------------------------------------------------------------------*
+
+:PnlGrp.
+
+.*-------------------------------------------------------------------------------------------*
+.* Imports                                                                                   *
+.*-------------------------------------------------------------------------------------------*
+
+:Import Name='*' PnlGrp=GENERAL.
+
+.*-------------------------------------------------------------------------------------------*
+.* Helptext - Option (Edit)                                                                  *
+.*-------------------------------------------------------------------------------------------*
+
+:Help Name='OPT/EDT'.
+Options - Helptext
+:XH3.
+Options
+:PARML.
+:PT.
+2=Change
+:PD.
+Changes the job.
+:PT.
+3=Copy
+:PD.
+Copies the job.
+:PT.
+4=Delete
+:PD.
+Deletes the job.
+:PT.
+5=Display
+:PD.
+Displays the job.
+:PT.
+10=Libraries
+:PD.
+Maintain the production libraries and the associated shadow libraries with the physical and
+logical files.
+:PT.
+11=Library lists
+:PD.
+Maintian the library lists needed when automatically creation of the environment by Rapid Fire
+has choosen.
+:PT.
+12=Files
+:PD.
+Maintain the physical and logical files which have to be converted by Rapid Fire.
+
+:PT.
+13=Subjects to be notified
+:PD.
+If a special event occurs while the Rapid Fire job is running, e.G. all records have copied
+by a Rapid Fire job and the Rapid Fire job is ready for installation, you can specify here
+the subjects to be notified of this event.
+:PT.
+20=Test job
+:PD.
+If automatically creation of the environment by Rapid Fire has choosen, the shadow libraries
+and the physical and logical files will be created. In every case the copy programs will
+be generated. They will be placed in the shadow libraries. With this option you can test
+if during the creation and generation phase errors are occuring. No records will be copied.
+:PT.
+21=Start job
+:PD.
+The job will be started. All neccesary objects will be created. All records will be copied.
+:PT.
+22=End job
+:PD.
+The job will be ended. If you end the job prior the job has reached phase *APY-CHG the job
+will be ended and the phase will be set to *ABORT meaning that the job has aborted
+by the user. If you end the job and the job has reached phase *APY-CHG the job will be ended
+and the phase will be set to *RDY-PRD meaning that the job has succesfull finished and
+the files in the shadow libraries are ready to promote to production.
+:PT.
+23=Reset job
+:PD.
+The job will be resetted. Nothing special happens. Only the status will be set to *RDY after
+issueing this option. Use this option e.G. if you have first issued option "Test job" and
+you want to issue option "Start job" now.
+:PT.
+24=Reset job after abortion
+:PD.
+Use this option with care. You can compare this option with the IBM-i command ENDJOBABN.
+You should issue this option only if an unpredictable error occurs e.G. you have
+accidentally ended one of the Rapid Fire IBM-i jobs or there is a real bug in Rapid Fire.
+:PT.
+30=Display status
+:PD.
+Displays the status of the job. e.G. you can see how much records have already been copyied
+and how much changes have been applied.
+:PT.
+31=Display error
+:PD.
+Displays the detailed error description if an error has occured.
+:PT.
+99=Activity schedule
+:PD.
+If you want to specify the time when the Rapid Fire File Handler Jobs are active or not
+you can do this here.
+:EPARML.
+:EHelp.
+
+.*-------------------------------------------------------------------------------------------*
+.* Helptext - Option (Select)                                                                *
+.*-------------------------------------------------------------------------------------------*
+
+:Help Name='OPT/SLC'.
+NODEF - Helptext
+:XH3.
+NODEF
+:P.
+NODEF
+:EHelp.
+
+.*-------------------------------------------------------------------------------------------*
+.* Helptext - Funktion Keys (Edit)                                                           *
+.*-------------------------------------------------------------------------------------------*
+
+:Help Name='FKT/EDT'.
+Function Keys - Help
+:XH3.
+Function Keys
+:ImHelp Name=F1.
+:ImHelp Name=F3.
+:ImHelp Name=F4.
+:ImHelp Name=F5.
+:PARML.
+:PT.
+F6=Create
+:PD.
+Creates a new job.
+:EPARML.
+:ImHelp Name=F9.
+:ImHelp Name=F12.
+:ImHelp Name=F17.
+:ImHelp Name=F18.
+:ImHelp Name=F24.
+:EHelp.
+
+.*-------------------------------------------------------------------------------------------*
+.* Helptext - Funktion Keys (Select)                                                         *
+.*-------------------------------------------------------------------------------------------*
+
+:Help Name='FKT/SLC'.
+NODEF - Helptext
+:XH3.
+NODEF
+:P.
+NODEF
+:EHelp.
+
+.*-------------------------------------------------------------------------------------------*
+.* End of panelgroup                                                                         *
+.*-------------------------------------------------------------------------------------------*
+
+:EPnlGrp.

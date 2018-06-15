@@ -1,0 +1,58 @@
+     /*-------------------------------------------------------------------------------------------*/
+     /*                                                                                           */
+     /* Copyright (c) 2016 Task Force IT-Consulting GmbH, Waltrop (Germany)                       */
+     /* This software and the accompanying materials are made available                           */
+     /* under the terms of the GNU General Public License version 2.0 (GPLv2)                     */
+     /* which accompanies this distribution and is available at                                   */
+     /* http://www.gnu.org/licenses/gpl-2.0.html                                                  */
+     /*                                                                                           */
+     /*-------------------------------------------------------------------------------------------*/
+     /*                                                                                           */
+     /* Miscellaneous                                                                             */
+     /*                                                                                           */
+     /*-------------------------------------------------------------------------------------------*/
+     /*  >>PRE-COMPILER<<                                                                         */
+     /*    >>CRTCMD<< CRTSRVPGM    SRVPGM(&LI/&OB) EXPORT(*SRCFILE) +                             */
+     /*                              SRCFILE(&SL/&SF) SRCMBR(&SM);                                */
+     /*    >>IMPORTANT<<                                                                          */
+     /*      >>PARM<<  MODULE(RTVFKTKEY RMVERRMSG SNDERRMSG +                                     */
+     /*                       HDLRCDLCK CHKVAL BOOL STRING +                                      */
+     /*                       RTVMSGD CHKOBJ);                                                    */
+     /*      >>PARM<<  TEXT('Miscellaneous');                                                     */
+     /*      >>PARM<<  BNDDIR(RAPIDFIRE);                                                         */
+     /*      >>PARM<<  ACTGRP(RAPIDFIRE);                                                         */
+     /*      >>PARM<<  DETAIL(*BASIC);                                                            */
+     /*      >>PARM<<  TGTRLS(&TR);                                                               */
+     /*    >>END-IMPORTANT<<                                                                      */
+     /*    >>EXECUTE<<                                                                            */
+     /*  >>END-PRE-COMPILER<<                                                                     */
+     /*------------+--------+---------------------------------------------------------------------*/
+     /*   Datum    I Progr. I Beschreibung                                                        */
+     /*------------+--------+---------------------------------------------------------------------*/
+     /* 03.02.2016 I   TR   I STRPREPRC Header hinzugefügt.                                       */
+     /*-------------------------------------------------------------------------------------------*/
+
+             STRPGMEXP
+
+                EXPORT     SYMBOL('RTVFKTKEY')
+                EXPORT     SYMBOL('RMVERRMSG')
+                EXPORT     SYMBOL('SNDERRMSG')
+                EXPORT     SYMBOL('HDLRCDLCK')
+                EXPORT     SYMBOL('CHKVAL')
+                EXPORT     SYMBOL('BOOL_isBitOn')
+                EXPORT     SYMBOL('STRING_unquote')
+                EXPORT     SYMBOL('STRING_startsWith')
+                EXPORT     SYMBOL('STRING_endsWith')
+                EXPORT     SYMBOL('STRING_lcase')
+                EXPORT     SYMBOL('STRING_space')
+                EXPORT     SYMBOL('STRING_wordWrap')
+                EXPORT     SYMBOL('RTVMSGD_rtvMsgText')
+                EXPORT     SYMBOL('RTVMSGD_rtvMsgHelp')
+                EXPORT     SYMBOL('CHKOBJ_Library_exist')
+                EXPORT     SYMBOL('CHKOBJ_File_exist')
+                EXPORT     SYMBOL('CHKOBJ_Member_exist')
+                EXPORT     SYMBOL('CHKOBJ_Object_exist')
+                EXPORT     SYMBOL('CHKOBJ_File_isSourceFile')
+
+             ENDPGMEXP
+

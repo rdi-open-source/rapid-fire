@@ -1,0 +1,45 @@
+-- *------------------------------------------------------------------------*
+-- *                                                                        *
+-- * Copyright (c) 2014 Task Force IT-Consulting GmbH, Waltrop (Germany)    *
+-- * This software and the accompanying materials are made available        *
+-- * under the terms of the GNU General Public License version 2.0 (GPLv2)  *
+-- * which accompanies this distribution and is available at                *
+-- * http://www.gnu.org/licenses/gpl-2.0.html                               *
+-- *                                                                        *
+-- *------------------------------------------------------------------------*
+-- *                                                                        *
+-- * Library list entries                                                   *
+-- *                                                                        *
+-- *------------------------------------------------------------------------*
+
+CREATE TABLE LIBRARY_LIST_ENTRIES
+FOR SYSTEM NAME LIBLETYS
+(
+ JOB FOR COLUMN X5JOB CHAR(10) NOT NULL WITH DEFAULT,
+ LIBRARY_LIST FOR COLUMN X5LIBL CHAR(10) NOT NULL WITH DEFAULT,
+ SEQUENCE FOR COLUMN X5SEQ DECIMAL(4, 0) NOT NULL WITH DEFAULT,
+ LIBRARY FOR COLUMN X5LIB CHAR(10) NOT NULL WITH DEFAULT
+);
+
+LABEL ON TABLE LIBRARY_LIST_ENTRIES
+ IS 'Library list entries';
+
+LABEL ON COLUMN LIBRARY_LIST_ENTRIES
+(
+ JOB IS 'Job',
+ LIBRARY_LIST IS 'Library list',
+ SEQUENCE IS 'Sequence',
+ LIBRARY IS 'Library'
+);
+
+LABEL ON COLUMN LIBRARY_LIST_ENTRIES
+(
+ JOB TEXT IS 'Job',
+ LIBRARY_LIST TEXT IS 'Library list',
+ SEQUENCE TEXT IS 'Sequence',
+ LIBRARY TEXT IS 'Library'
+);
+
+ALTER TABLE LIBRARY_LIST_ENTRIES
+ADD CONSTRAINT LIBRARY_LIST_ENTRIES_PRIMARY_KEY
+PRIMARY KEY (JOB, LIBRARY_LIST, SEQUENCE);

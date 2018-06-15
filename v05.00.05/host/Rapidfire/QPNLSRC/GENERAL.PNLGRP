@@ -1,0 +1,185 @@
+.*-------------------------------------------------------------------------------------------*
+.*                                                                                           *
+.* Copyright (c) 2014 Task Force IT-Consulting GmbH, Waltrop (Germany)                       *
+.* This software and the accompanying materials are made available                           *
+.* under the terms of the GNU General Public License version 2.0 (GPLv2)                     *
+.* which accompanies this distribution and is available at                                   *
+.* http://www.gnu.org/licenses/gpl-2.0.html                                                  *
+.*                                                                                           *
+.*-------------------------------------------------------------------------------------------*
+.*                                                                                           *
+.* General                                                                                   *
+.*                                                                                           *
+.*-------------------------------------------------------------------------------------------*
+.*  >>PRE-COMPILER<<                                                                         *
+.*    >>CRTCMD<< CRTPNLGRP    PNLGRP(&LI/&OB) +                                              *
+.*                              SRCFILE(&SL/&SF) SRCMBR(&SM);                                *
+.*    >>IMPORTANT<<                                                                          *
+.*      >>PARM<<  OPTION(*EVENTF);                                                           *
+.*    >>END-IMPORTANT<<                                                                      *
+.*    >>EXECUTE<<                                                                            *
+.*  >>END-PRE-COMPILER<<                                                                     *
+.*------------+--------+---------------------------------------------------------------------*
+.*   Date     I Progr. I Description                                                         *
+.*------------+--------+---------------------------------------------------------------------*
+.* 01.07.2014 I   FH   I Created                                                             *
+.*------------+--------+---------------------------------------------------------------------*
+
+.*-------------------------------------------------------------------------------------------*
+.* Begin of panelgroup                                                                       *
+.*-------------------------------------------------------------------------------------------*
+
+:PnlGrp.
+
+.*-------------------------------------------------------------------------------------------*
+.* Help - F1=Help                                                                            *
+.*-------------------------------------------------------------------------------------------*
+
+:Help Name='F1'.
+:PARML.
+:PT.
+F1=Help
+:PD.
+Provides additional information about using the display or a
+specific field on the display.
+:EPARML.
+:EHelp.
+
+.*-------------------------------------------------------------------------------------------*
+.* Help - F3=Exit                                                                            *
+.*-------------------------------------------------------------------------------------------*
+
+:Help Name='F3'.
+:PARML.
+:PT.
+F3=Exit
+:PD.
+Ends the current task and returns to the display from which the task
+was started.
+:EPARML.
+:EHelp.
+
+.*-------------------------------------------------------------------------------------------*
+.* Help - F4=Prompt                                                                          *
+.*-------------------------------------------------------------------------------------------*
+
+:Help Name='F4'.
+:PARML.
+:PT.
+F4=Prompt
+:PD.
+Provides further assistance for a specific field on the display.
+:EPARML.
+:EHelp.
+
+.*-------------------------------------------------------------------------------------------*
+.* Help - F5=Refresh                                                                         *
+.*-------------------------------------------------------------------------------------------*
+
+:Help Name='F5'.
+:PARML.
+:PT.
+F5=Refresh
+:PD.
+Shows the display again with the most recent information and removes
+any selections you typed.
+:EPARML.
+:EHelp.
+
+.*-------------------------------------------------------------------------------------------*
+.* Help - F9=Retrieve                                                                        *
+.*-------------------------------------------------------------------------------------------*
+
+:Help Name='F9'.
+:PARML.
+:PT.
+F9=Retrieve
+:PD.
+Shows the last command you typed on the command line, along with any
+parameters you included.  By pressing this key once, you will
+receive the last command you ran.  By pressing this key twice, you
+will receive the next to last command that you ran, and so on.
+:EPARML.
+:EHelp.
+
+.*-------------------------------------------------------------------------------------------*
+.* Help - F12=Cancel                                                                         *
+.*-------------------------------------------------------------------------------------------*
+
+:Help Name='F12'.
+:PARML.
+:PT.
+F12=Cancel
+:PD.
+Returns to the previous menu or display.
+:EPARML.
+:EHelp.
+
+.*-------------------------------------------------------------------------------------------*
+.* Help - F17=Top                                                                            *
+.*-------------------------------------------------------------------------------------------*
+
+:Help Name='F17'.
+:PARML.
+:PT.
+F17=Top
+:PD.
+Shows the first record of the list.
+:EPARML.
+:EHelp.
+
+.*-------------------------------------------------------------------------------------------*
+.* Help - F18=Bottom                                                                         *
+.*-------------------------------------------------------------------------------------------*
+
+:Help Name='F18'.
+:PARML.
+:PT.
+F18=Bottom
+:PD.
+Shows the last record of the list.
+:EPARML.
+:EHelp.
+
+.*-------------------------------------------------------------------------------------------*
+.* Help - F24=More keys                                                                      *
+.*-------------------------------------------------------------------------------------------*
+
+:Help Name='F24'.
+:PARML.
+:PT.
+F24=More keys
+:PD.
+Shows additional function keys that can be used for this display.
+:EPARML.
+:EHelp.
+
+.*-------------------------------------------------------------------------------------------*
+.* Help - Command                                                                            *
+.*-------------------------------------------------------------------------------------------*
+
+:Help Name='COMMAND'.
+Command - Help
+:XH3.
+Command
+:P.
+Enter the command you want to execute.
+:EHelp.
+
+.*-------------------------------------------------------------------------------------------*
+.* Help - Position                                                                           *
+.*-------------------------------------------------------------------------------------------*
+
+:Help Name='POSITIONING'.
+Positioning - Help
+:XH3.
+Positioning
+:P.
+Shows the first record of the list which matches the specified value.
+:EHelp.
+
+.*-------------------------------------------------------------------------------------------*
+.* End of panelgroup                                                                         *
+.*-------------------------------------------------------------------------------------------*
+
+:EPnlGrp.

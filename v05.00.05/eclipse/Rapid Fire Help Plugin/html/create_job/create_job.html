@@ -1,0 +1,134 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<link rel="stylesheet" type="text/css" href="../stylesheet.css">
+	<title>Creating a Rapid Fire Job</title>
+</head>
+
+<body>
+<h1>Creating a Rapid Fire Job</h1>
+<p>
+<a href="../er_model/er_model.html">Previous page</a>
+&nbsp;•&nbsp;
+<a href="../add_file/add_file.html">Next page</a>
+<p>
+<div align="right">
+</div>
+<div align="left">
+Creating a Rapid Fire job is easy when you follow these steps:
+<p>
+<ul>
+<li><a href="#create_job">Create Job</a></li>
+<li><a href="#add_libraries">Add Libraries</a></li>
+<li><a href="#add_library_list">Add Library List</a></li>
+<li><a href="#add_file">Add File</a></li>
+</ul>
+<p>
+Optionally you can :
+<p>
+<ul>
+<li><a href="#add_notification">Add Notification</a></li>
+</ul>
+<p>
+<a id="#create_job"></a>
+<h2>Create Job</h2>
+<p>
+Select option <i>New Job</i> from the context menu of a Rapid Fire filter or a Rapid Fire job to 
+start creating a new job. The host and the Rapid Fire product library are taken from the selected item
+when you start this way.
+<p>
+<table>
+<tr><td valign="top" nowrap>Job</td><td valign="top"> - </td>
+    <td>Enter the name of the Rapid Fire copy job. The name must follow the rules for host object names.</td></tr>
+<tr><td valign="top" nowrap>Description</td><td valign="top"> - </td>
+    <td>Enter a descriptive text for the job.</td></tr>
+<tr><td valign="top" nowrap>Create environment</td><td valign="top"> - </td>
+    <td>Activate the checkbox if you want Rapid Fire to create the copy environment for you. Deactivate 
+        the checkbox if you want to create the copy environment by yourself.</td></tr>
+<tr><td valign="top" nowrap>Job queue name</td><td valign="top"> - </td>
+    <td>Specify the name of the job queue that Rapid Fire shall use for submitting the copy jobs to batch processing.</td></tr>
+<tr><td valign="top" nowrap>Job queue library name</td><td valign="top"> - </td>
+    <td>Specify the name of the library where the job queue is stored.</td></tr>
+</table>
+<p>
+Optionally you can press <i>Ctrl+N</i> to open the Eclipse <i>New</i> dialog and select the <i>Rapid Fire - Job</i>
+wizard to produce a new job. This way, the host and product library attributes are taken from the resource that
+was selected when you pressed <i>Ctrl+N</i> or you need to specify these information if no Rapid Fire resource
+was selected.
+<p>
+<a id="#add_libraries"></a>
+<h2>Add Libraries</h2>
+<p>
+Expand the created <i>Job</i> node and select <i>New -> Library...</i> from the context menu of 
+the <i>Libraries</i> node. Then enter the following attributes:
+<p>
+<table>
+<tr><td valign="top" nowrap>Library</td><td valign="top"> - </td>
+    <td>Enter the name of production library where the file that is copied is stored.</td></tr>
+<tr><td valign="top" nowrap>Shadow library</td><td valign="top"> - </td>
+    <td>Enter the name of the shadow library that contains the target file.</td></tr>
+</table>
+<p>
+Rapid Fire copies the data from the production file to the shadow file. When the copy job has finished, you 
+can move the production file to a backup library and the shadow file to the production library.
+<p>
+<a id="#add_library_list"></a>
+<h2>Add Library List</h2>
+<p>
+Creating a library list is only required when <i>Create environment</i> has been checked, because Rapid Fire 
+needs to find referenced objects, e.g. a field reference file, when compiling the objects of the shadow library.
+<p>
+Expand the created <i>Job</i> node and select <i>New -> Library List...</i> from the context menu of 
+the <i>Library Lists</i> node. Then enter the following attributes:
+<p>
+<table>
+<tr><td valign="top" nowrap>Library list</td><td valign="top"> - </td>
+    <td>Enter the name of the library list. The name must follow the rules for host object names.</td></tr>
+<tr><td valign="top" nowrap>Description</td><td valign="top"> - </td>
+    <td>Enter a descriptive text for the library list.</td></tr>
+<tr><td valign="top" nowrap>Library</td><td valign="top"> - </td>
+    <td>Enter the name of an existing library and click the <i>Add</i> button or press the <i>Enter</i> key 
+        to add it to the library list.</td></tr>
+</table>
+<p>
+You may need to add additional library lists, in case your copy job is going to copy several files, which must 
+be compiled with different library lists. One library list can be assigned to multiple files.
+<p>
+<a id="#add_file"></a>
+<h2>Add File</h2>
+<p>
+Refer to <a href="./../add_file/add_file.html"><i>Adding Files to a Rapid Fire Job</i></a> to see how to
+add a file to a Rapid Fire copy job.
+<p>
+<a id="#add_notification"></a>
+<h2>Add Notification</h2>
+<p>
+Adding notifications is optionally and only required if you want to be notified about the end of a Rapid Fire job.
+<p>
+Expand the created <i>Job</i> node and select <i>New -> Notification...</i> from the context menu of 
+the <i>Notifications</i> node. Then enter the following attributes:
+<p>
+<table>
+<tr><td valign="top" nowrap>Position</td><td valign="top"> - </td>
+    <td>Enter the position. The position controls the order in which notifications are sent.</td></tr>
+<tr><td valign="top" nowrap>Type</td><td valign="top"> - </td>
+    <td>Select the type of the notification. For a <i>*USR</i> notification a message is sent to 
+        the specified user profile. For <i>*MSGQ</i> notifications you need to specify the message
+        queue that will receive the notification message.</td></tr>
+<tr><td valign="top" nowrap>User</td><td valign="top"> - </td>
+     <td>Enter the name of the user profile the notification message is sent to.</td></tr>
+<tr><td valign="top" nowrap>Message queue</td><td valign="top"> - </td>
+    <td>Enter the name of the message queue that will receive the notification message.</td></tr>
+<tr><td valign="top" nowrap>Message queue library</td><td valign="top"> - </td>
+    <td>Enter the name of the library where the message queue is stored.</td></tr>
+</table>
+<p>
+You can specify multiple notification targets, which are notified in the order of the specified position numbers.
+<p>
+</div>
+<p>
+<iframe src="../copyright.html" width="100%" frameborder="0" marginheight="0" marginwidth="0"></iframe>
+</body>
+</html>

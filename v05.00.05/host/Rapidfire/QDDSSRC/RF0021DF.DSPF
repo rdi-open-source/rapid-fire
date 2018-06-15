@@ -1,0 +1,44 @@
+     A*%%TS  SD  20171220  154614  HILDEBRAND  REL-V7R3M0  5770-WDS
+     A*------------------------------------------------------------------------*
+     A*                                                                        *
+     A* COPYRIGHT (C) 2014 TASK FORCE IT-CONSULTING GMBH, WALTROP (GERMANY)    *
+     A* This software and the accompanying materials are made available        *
+     A* under the terms of the GNU General Public License version 2.0 (GPLv2)  *
+     A* which accompanies this distribution and is available at                *
+     A* http://www.gnu.org/licenses/gpl-2.0.html                               *
+     A*                                                                        *
+     A*------------------------------------------------------------------------*
+     A*  >>PRE-COMPILER<<                                                      *
+     A*    >>CRTCMD<< CRTDSPF    FILE(&LI/&OB) +                               *
+     A*                            SRCFILE(&SL/&SF) SRCMBR(&SM);               *
+     A*    >>IMPORTANT<<                                                       *
+     A*      >>PARM<<  OPTION(*EVENTF);                                        *
+     A*    >>END-IMPORTANT<<                                                   *
+     A*    >>EXECUTE<<                                                         *
+     A*  >>END-PRE-COMPILER<<                                                  *
+     A*------------------------------------------------------------------------*
+     A*
+     A*%%EC
+     A                                      DSPSIZ(24 80 *DS3)
+     A          R DSPF010
+     A*%%TS  SD  20160421  125411  HILDEBRAND  REL-V7R1M0  5770-WDS
+     A                                  1  2MSGCON(078 CON0001 *LIBL/RF0021MF)
+     A                                      COLOR(RED)
+     A                                  3  2MSGCON(078 CON0014 *LIBL/RF0021MF)
+     A                                  4  2MSGCON(078 CON0015 *LIBL/RF0021MF)
+     A                                  5  2MSGCON(078 CON0016 *LIBL/RF0021MF)
+     A                                  6  2MSGCON(078 CON0017 *LIBL/RF0021MF)
+     A                                  8  2MSGCON(078 CON0002 *LIBL/RF0021MF)
+     A                                  9  2MSGCON(078 CON0003 *LIBL/RF0021MF)
+     A                                 10  2MSGCON(078 CON0004 *LIBL/RF0021MF)
+     A                                 12  2MSGCON(078 CON0005 *LIBL/RF0021MF)
+     A                                 13  2MSGCON(078 CON0006 *LIBL/RF0021MF)
+     A                                 14  2MSGCON(078 CON0007 *LIBL/RF0021MF)
+     A                                 15  2MSGCON(078 CON0008 *LIBL/RF0021MF)
+     A                                 16  2MSGCON(078 CON0009 *LIBL/RF0021MF)
+     A                                 18  2MSGCON(078 CON0010 *LIBL/RF0021MF)
+     A                                 19  2MSGCON(078 CON0011 *LIBL/RF0021MF)
+     A                                 20  2MSGCON(078 CON0012 *LIBL/RF0021MF)
+     A                                 21  2MSGCON(078 CON0013 *LIBL/RF0021MF)
+     A                                 23  2MSGCON(078 CON0001 *LIBL/RF0021MF)
+     A                                      COLOR(RED)

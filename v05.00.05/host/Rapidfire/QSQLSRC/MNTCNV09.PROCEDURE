@@ -1,0 +1,32 @@
+-- *------------------------------------------------------------------------*
+-- *                                                                        *
+-- * Copyright (c) 2014 Task Force IT-Consulting GmbH, Waltrop (Germany)    *
+-- * This software and the accompanying materials are made available        *
+-- * under the terms of the GNU General Public License version 2.0 (GPLv2)  *
+-- * which accompanies this distribution and is available at                *
+-- * http://www.gnu.org/licenses/gpl-2.0.html                               *
+-- *                                                                        *
+-- *------------------------------------------------------------------------*
+-- *                                                                        *
+-- * Get Valid Actions                                                      *
+-- *                                                                        *
+-- *------------+--------+--------------------------------------------------*
+-- *   Datum    I Progr. I Beschreibung                                     *
+-- *------------+--------+--------------------------------------------------*
+-- * 13.12.2017 I   FH   I Dateierstellung                                  *
+-- *------------+--------+--------------------------------------------------*
+
+CREATE PROCEDURE "MNTCNV_getValidActions"
+(
+  IN    JOB    CHAR(10),
+  IN    POS    DECIMAL(6, 0),
+  IN    FTC    CHAR(10),
+  INOUT NBRACT DECIMAL(2, 0),
+  INOUT ACT    CHAR(250)
+)
+EXTERNAL NAME MNTCNV("MNTCNV_getValidActions")
+SPECIFIC MNTCNV09
+LANGUAGE RPGLE
+PARAMETER STYLE GENERAL
+MODIFIES SQL DATA
+NOT DETERMINISTIC;

@@ -1,0 +1,109 @@
+.*-------------------------------------------------------------------------------------------*
+.*                                                                                           *
+.* Copyright (c) 2014 Task Force IT-Consulting GmbH, Waltrop (Germany)                       *
+.* This software and the accompanying materials are made available                           *
+.* under the terms of the GNU General Public License version 2.0 (GPLv2)                     *
+.* which accompanies this distribution and is available at                                   *
+.* http://www.gnu.org/licenses/gpl-2.0.html                                                  *
+.*                                                                                           *
+.*-------------------------------------------------------------------------------------------*
+.*                                                                                           *
+.* Conversions                                                                               *
+.*                                                                                           *
+.*-------------------------------------------------------------------------------------------*
+.*  >>PRE-COMPILER<<                                                                         *
+.*    >>CRTCMD<< CRTPNLGRP    PNLGRP(&LI/&OB) +                                              *
+.*                              SRCFILE(&SL/&SF) SRCMBR(&SM);                                *
+.*    >>IMPORTANT<<                                                                          *
+.*      >>PARM<<  OPTION(*EVENTF);                                                           *
+.*    >>END-IMPORTANT<<                                                                      *
+.*    >>EXECUTE<<                                                                            *
+.*  >>END-PRE-COMPILER<<                                                                     *
+.*------------+--------+---------------------------------------------------------------------*
+.*   Date     I Progr. I Description                                                         *
+.*------------+--------+---------------------------------------------------------------------*
+.* 27.10.2014 I   FH   I Created                                                             *
+.*------------+--------+---------------------------------------------------------------------*
+
+.*-------------------------------------------------------------------------------------------*
+.* Begin of panelgroup                                                                       *
+.*-------------------------------------------------------------------------------------------*
+
+:PnlGrp.
+
+.*-------------------------------------------------------------------------------------------*
+.* Help - General                                                                            *
+.*-------------------------------------------------------------------------------------------*
+
+:Help Name='GNR'.
+Conversions - Help
+:P.
+If there is the need to convert the data of a field while Rapid Fire copies the records
+from the production library to the shadow library, you can specify a conversion at this
+point. You can code up to 6 RPG IV lines per field to convert. If this method is
+insufficient for a specific conversion you can specify a user defined conversion program
+at the level of the file. This conversion program will be called for each record of the
+file. With this conversion program you have the ability to do conversions without
+limitations.
+:EHelp.
+
+.*-------------------------------------------------------------------------------------------*
+.* Help - Field to convert                                                                   *
+.*-------------------------------------------------------------------------------------------*
+
+:Help Name='FTC'.
+Field to convert - Help
+:XH3.
+Field to convert
+:P.
+Specifies the name of the field to convert.
+:EHelp.
+
+.*-------------------------------------------------------------------------------------------*
+.* Help - Rename field in old file to                                                        *
+.*-------------------------------------------------------------------------------------------*
+
+:Help Name='RFT'.
+Rename field in old file to - Help
+:XH3.
+Rename field in old file to
+:P.
+If an attribute of a field has changed, e.g. changed field size or changed field type, you
+have to specify a new field name for the field in the file of the production library. In the
+conversion statements you have to code an assignment of the value of the field in the
+file of the production library to the value of the field of the file in the shadow library in
+the following format.
+:LINES.
+Field_To_Convert = Rename_Field_In_Old_File_To;
+:ELINES.
+:PARML.
+:PT.
+*NONE
+:PD.
+No attribute of the field has changed. No renaming is necessary. You will use this value
+for example if a new field has added to the file and you want to initialize this field.
+:PT.
+Name
+:PD.
+At least one attribute of the field has changed. You have to specify a new field name
+for the field of the file in the production library.
+:EPARML.
+:EHelp.
+
+.*-------------------------------------------------------------------------------------------*
+.* Help - Statement                                                                          *
+.*-------------------------------------------------------------------------------------------*
+
+:Help Name='STM'.
+Statement - Help
+:XH3.
+Statement
+:P.
+Code up to 6 RPG IV lines in free form format for the conversion of the field.
+:EHelp.
+
+.*-------------------------------------------------------------------------------------------*
+.* End of panelgroup                                                                         *
+.*-------------------------------------------------------------------------------------------*
+
+:EPnlGrp.

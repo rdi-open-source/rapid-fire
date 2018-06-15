@@ -1,0 +1,54 @@
+     /*-------------------------------------------------------------------------------------------*/
+     /*                                                                                           */
+     /* Copyright (c) 2014 Task Force IT-Consulting GmbH, Waltrop (Germany)                       */
+     /* This software and the accompanying materials are made available                           */
+     /* under the terms of the GNU General Public License version 2.0 (GPLv2)                     */
+     /* which accompanies this distribution and is available at                                   */
+     /* http://www.gnu.org/licenses/gpl-2.0.html                                                  */
+     /*                                                                                           */
+     /*-------------------------------------------------------------------------------------------*/
+     /*                                                                                           */
+     /* Maintain Conversions                                                                      */
+     /*                                                                                           */
+     /*-------------------------------------------------------------------------------------------*/
+     /*  >>PRE-COMPILER<<                                                                         */
+     /*    >>CRTCMD<< CRTSRVPGM    SRVPGM(&LI/&OB) EXPORT(*SRCFILE) +                             */
+     /*                              SRCFILE(&SL/&SF) SRCMBR(&SM);                                */
+     /*    >>IMPORTANT<<                                                                          */
+     /*      >>PARM<<  MODULE(MNTCNV);                                                            */
+     /*      >>PARM<<  TEXT('Maintain Conversions');                                              */
+     /*      >>PARM<<  BNDDIR(RAPIDFIRE);                                                         */
+     /*      >>PARM<<  ACTGRP(RAPIDFIRE);                                                         */
+     /*      >>PARM<<  DETAIL(*BASIC);                                                            */
+     /*      >>PARM<<  TGTRLS(&TR);                                                               */
+     /*    >>END-IMPORTANT<<                                                                      */
+     /*    >>EXECUTE<<                                                                            */
+     /*  >>END-PRE-COMPILER<<                                                                     */
+     /*------------+--------+---------------------------------------------------------------------*/
+     /*   Datum    I Progr. I Beschreibung                                                        */
+     /*------------+--------+---------------------------------------------------------------------*/
+     /* 03.11.2017 I   ML   I Creation                                                            */
+     /*-------------------------------------------------------------------------------------------*/
+
+             STRPGMEXP
+
+                EXPORT     SYMBOL('MNTCNV_openFiles')
+
+                EXPORT     SYMBOL('MNTCNV_closeFiles')
+
+                EXPORT     SYMBOL('MNTCNV_initialize')
+
+                EXPORT     SYMBOL('MNTCNV_getValues')
+
+                EXPORT     SYMBOL('MNTCNV_setValues')
+
+                EXPORT     SYMBOL('MNTCNV_check')
+
+                EXPORT     SYMBOL('MNTCNV_book')
+
+                EXPORT     SYMBOL('MNTCNV_checkAction')
+
+                EXPORT     SYMBOL('MNTCNV_getValidActions')
+
+             ENDPGMEXP
+

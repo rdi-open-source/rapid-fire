@@ -1,0 +1,50 @@
+     A*%%TS  SD  20171220  154614  HILDEBRAND  REL-V7R3M0  5770-WDS
+     A*------------------------------------------------------------------------*
+     A*                                                                        *
+     A* COPYRIGHT (C) 2014 TASK FORCE IT-CONSULTING GMBH, WALTROP (GERMANY)    *
+     A* This software and the accompanying materials are made available        *
+     A* under the terms of the GNU General Public License version 2.0 (GPLv2)  *
+     A* which accompanies this distribution and is available at                *
+     A* http://www.gnu.org/licenses/gpl-2.0.html                               *
+     A*                                                                        *
+     A*------------------------------------------------------------------------*
+     A*  >>PRE-COMPILER<<                                                      *
+     A*    >>CRTCMD<< CRTDSPF    FILE(&LI/&OB) +                               *
+     A*                            SRCFILE(&SL/&SF) SRCMBR(&SM);               *
+     A*    >>IMPORTANT<<                                                       *
+     A*      >>PARM<<  OPTION(*EVENTF);                                        *
+     A*    >>END-IMPORTANT<<                                                   *
+     A*    >>EXECUTE<<                                                         *
+     A*  >>END-PRE-COMPILER<<                                                  *
+     A*------------------------------------------------------------------------*
+     A*
+     A*%%EC
+     A                                      DSPSIZ(24 80 *DS3)
+     A                                      CHGINPDFT
+     A                                      PRINT
+     A          R DSPF000
+     A*%%TS  SD  19980803  155237  EXT01       REL-V4R2M0  5769-PW1
+     A                                      ASSUME
+     A            §§§§§§         1   O  1  2
+     A          R DSPF010W
+     A*%%TS  SD  20010720  164814  HILDEBRAND  REL-V4R2M0  5769-PW1
+     A                                      WINDOW(5 1 13 76)
+     A                                      KEEP
+     A                                      OVERLAY
+     A                                  1  1DATE
+     A                                      EDTCDE(Y)
+     A                                      DSPATR(HI)
+     A                                  1 10MSGCON(057 CON0001 *LIBL/HDLRCDLCK)
+     A                                      DSPATR(HI)
+     A                                  1 68'HDLRCDLCK'
+     A                                      DSPATR(HI)
+     A                                  3 18MSGCON(030 CON0008 *LIBL/HDLRCDLCK)
+     A            DFUSER        10A  O  3 49
+     A                                  5  1MSGCON(076 CON0002 *LIBL/HDLRCDLCK)
+     A                                  6  1MSGCON(076 CON0003 *LIBL/HDLRCDLCK)
+     A                                  7  1MSGCON(076 CON0004 *LIBL/HDLRCDLCK)
+     A                                  8  1MSGCON(076 CON0005 *LIBL/HDLRCDLCK)
+     A                                  9  1MSGCON(076 CON0006 *LIBL/HDLRCDLCK)
+     A                                 10  1MSGCON(076 CON0007 *LIBL/HDLRCDLCK)
+     A                                 12  1MSGCON(076 CON0010 *LIBL/HDLRCDLCK)
+     A                                      COLOR(BLU)

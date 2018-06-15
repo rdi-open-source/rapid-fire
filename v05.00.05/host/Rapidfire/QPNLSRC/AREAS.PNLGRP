@@ -1,0 +1,133 @@
+.*-------------------------------------------------------------------------------------------*
+.*                                                                                           *
+.* Copyright (c) 2014 Task Force IT-Consulting GmbH, Waltrop (Germany)                       *
+.* This software and the accompanying materials are made available                           *
+.* under the terms of the GNU General Public License version 2.0 (GPLv2)                     *
+.* which accompanies this distribution and is available at                                   *
+.* http://www.gnu.org/licenses/gpl-2.0.html                                                  *
+.*                                                                                           *
+.*-------------------------------------------------------------------------------------------*
+.*                                                                                           *
+.* Areas                                                                                     *
+.*                                                                                           *
+.*-------------------------------------------------------------------------------------------*
+.*  >>PRE-COMPILER<<                                                                         *
+.*    >>CRTCMD<< CRTPNLGRP    PNLGRP(&LI/&OB) +                                              *
+.*                              SRCFILE(&SL/&SF) SRCMBR(&SM);                                *
+.*    >>IMPORTANT<<                                                                          *
+.*      >>PARM<<  OPTION(*EVENTF);                                                           *
+.*    >>END-IMPORTANT<<                                                                      *
+.*    >>EXECUTE<<                                                                            *
+.*  >>END-PRE-COMPILER<<                                                                     *
+.*------------+--------+---------------------------------------------------------------------*
+.*   Date     I Progr. I Description                                                         *
+.*------------+--------+---------------------------------------------------------------------*
+.* 15.10.2015 I   FH   I Created                                                             *
+.*------------+--------+---------------------------------------------------------------------*
+
+.*-------------------------------------------------------------------------------------------*
+.* Begin of panelgroup                                                                       *
+.*-------------------------------------------------------------------------------------------*
+
+:PnlGrp.
+
+.*-------------------------------------------------------------------------------------------*
+.* Help - General                                                                            *
+.*-------------------------------------------------------------------------------------------*
+
+:Help Name='GNR'.
+Areas - Help
+:P.
+At this point you have to specify all the libraries where the file resides. This can be
+only one library and in most cases this will be only one, but this also can be multiple.
+:EHelp.
+
+.*-------------------------------------------------------------------------------------------*
+.* Help - Area                                                                               *
+.*-------------------------------------------------------------------------------------------*
+
+:Help Name='ARA'.
+Area - Help
+:XH3.
+Area
+:P.
+Specifies the area. This is just a symbolic name for the library.
+:PARML.
+:PT.
+*NONE
+:PD.
+There is no specific area. Use this value, if the file resides
+only in one library.
+:PT.
+Name
+:PD.
+Specifies an area name. Use this value, if the file resides
+in multiple libraries.
+:EPARML.
+:EHelp.
+
+.*-------------------------------------------------------------------------------------------*
+.* Help - Library                                                                            *
+.*-------------------------------------------------------------------------------------------*
+
+:Help Name='LIB'.
+Library - Help
+:XH3.
+Library
+:P.
+Specifies the name of the library the file resides.
+:EHelp.
+
+.*-------------------------------------------------------------------------------------------*
+.* Help - Library list                                                                       *
+.*-------------------------------------------------------------------------------------------*
+
+:Help Name='LIBL'.
+Library list - Help
+:XH3.
+Library list
+:P.
+Specifies the library list used when the commands assigned to the file will be executed.
+:EHelp.
+
+.*-------------------------------------------------------------------------------------------*
+.* Help - CCSID                                                                              *
+.*-------------------------------------------------------------------------------------------*
+
+:Help Name='CCSID'.
+CCSID - Help
+:XH3.
+CCSID
+:P.
+Specifies the coded character set identifier (CCSID) being used to
+describe character data in the fields of the file.
+:PARML.
+:PT.
+*JOB
+:PD.
+The current job's default CCSID is used.
+:PT.
+integer
+:PD.
+Specify the CCSID to be used.
+:EPARML.
+:EHelp.
+
+.*-------------------------------------------------------------------------------------------*
+.* Help - Command extension                                                                  *
+.*-------------------------------------------------------------------------------------------*
+
+:Help Name='CEXT'.
+Command extension - Help
+:XH3.
+Command extension
+:P.
+If the compile command assigned to the file needs an area specific parameter extension
+you can specify this here. Otherwise leave this field blank.
+:EHelp.
+
+.*-------------------------------------------------------------------------------------------*
+.* End of panelgroup                                                                         *
+.*-------------------------------------------------------------------------------------------*
+
+:EPnlGrp.

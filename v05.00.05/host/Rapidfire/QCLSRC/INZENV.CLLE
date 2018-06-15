@@ -1,0 +1,67 @@
+     /*-------------------------------------------------------------------------------------------*/
+     /*                                                                                           */
+     /* Copyright (c) 2014 Task Force IT-Consulting GmbH, Waltrop (Germany)                       */
+     /* This software and the accompanying materials are made available                           */
+     /* under the terms of the GNU General Public License version 2.0 (GPLv2)                     */
+     /* which accompanies this distribution and is available at                                   */
+     /* http://www.gnu.org/licenses/gpl-2.0.html                                                  */
+     /*                                                                                           */
+     /*-------------------------------------------------------------------------------------------*/
+     /*                                                                                           */
+     /* Initialize environment                                                                    */
+     /*                                                                                           */
+     /*-------------------------------------------------------------------------------------------*/
+     /*  >>PRE-COMPILER<<                                                                         */
+     /*    >>CRTCMD<< CRTBNDCL     PGM(&LI/&OB) +                                                 */
+     /*                              SRCFILE(&SL/&SF) SRCMBR(&SM);                                */
+     /*    >>IMPORTANT<<                                                                          */
+     /*      >>PARM<<  DBGVIEW(*ALL);                                                             */
+     /*      >>PARM<<  OPTION(*EVENTF);                                                           */
+     /*      >>PARM<<  TGTRLS(&TR);                                                               */
+     /*    >>END-IMPORTANT<<                                                                      */
+     /*    >>EXECUTE<<                                                                            */
+     /*  >>END-PRE-COMPILER<<                                                                     */
+     /*------------+--------+---------------------------------------------------------------------*/
+     /*   Date     I Progr. I Description                                                         */
+     /*------------+--------+---------------------------------------------------------------------*/
+     /* 01.07.2014 I   FH   I Program created                                                     */
+     /*------------+--------+---------------------------------------------------------------------*/
+
+     /* Start */
+             PGM        PARM(&LIB)
+
+     /* Declare compile options */
+             DCLPRCOPT  DFTACTGRP(*NO) ACTGRP(RAPIDFIRE) +
+                          BNDDIR(RAPIDFIRE)
+
+     /* Declare variables */
+             DCL        VAR(&LIB) TYPE(*CHAR) LEN(10)
+             DCL        VAR(&JRNSTS) TYPE(*CHAR) LEN(1)
+
+     /* Create data area with Rapid Fire Home Library */
+             CHKOBJ     OBJ(&LIB/HOME) OBJTYPE(*DTAARA)
+             MONMSG     MSGID(CPF9801) EXEC(DO)
+             CRTDTAARA  DTAARA(&LIB/HOME) TYPE(*CHAR) LEN(10) +
+                          VALUE(&LIB) TEXT('Rapid Fire Home Library')
+             ENDDO
+
+     /* Create journal */
+             CHKOBJ     OBJ(&LIB/RAPIDFIRE) OBJTYPE(*JRN)
+             MONMSG     MSGID(CPF9801) EXEC(DO)
+             CRTJRNRCV  JRNRCV(&LIB/RAPIDFIRE) THRESHOLD(102400) +
+                          TEXT('Rapid Fire')
+             CRTJRN     JRN(&LIB/RAPIDFIRE) JRNRCV(&LIB/RAPIDFIRE) +
+                          MNGRCV(*SYSTEM) DLTRCV(*YES) TEXT('Rapid +
+                          Fire')
+             ENDDO
+
+     /* Start journal library */
+             RTVLIBD    LIB(&LIB) JRNSTS(&JRNSTS)
+             IF         COND(&JRNSTS *EQ '0') THEN(DO)
+             STRJRNLIB  LIB(&LIB) JRN(&LIB/RAPIDFIRE) +
+                          INHRULES((*FILE *ALLOPR *INCLUDE *BOTH +
+                          *OPNCLO *OBJDFT *ALL))
+             ENDDO
+
+     /* End */
+ STEP999:    ENDPGM

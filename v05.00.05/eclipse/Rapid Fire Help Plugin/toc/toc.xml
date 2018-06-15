@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<?NLS TYPE="org.eclipse.help.toc"?>
+
+<toc label="Rapid Fire">
+   <topic label="Introduction" href="html/introduction/introduction.html" />
+   <topic label="Prerequisites" href="html/prerequisites/prerequisites.html" />
+   <topic label="Install Instructions" >
+	   <topic label="Install Instructions" href="html/install/install_library.html" />
+   </topic>
+   <topic label="Deploying Data File Changes Today" href="html/deploying_files_today/deploying_files_today.html" />
+   <topic label="Deploying Data File Changes With Rapid Fire" href="html/deploying_files_with_rapidfire/deploying_files_with_rapidfire.html" />
+   <topic label="ER Model and Overview" href="html/er_model/er_model.html" />
+   <topic label="Creating a Rapid Fire Job" href="html/create_job/create_job.html" />
+   <topic label="Adding a File to a Rapid Fire Job" href="html/add_file/add_file.html" />
+   <topic label="Menu Options" href="html/menu_options/menu_options.html" />
+   <topic label="Preferences" >
+	   <topic label="Appearance" href="html/preferences/appearance/appearance.html" />
+	   <topic label="Library" href="html/preferences/library/library.html" />
+   </topic>
+   <topic label="Uninstall Instructions" >
+       <topic label="Uninstall Library" href="html/uninstall/uninstall_library.html" />
+   </topic>
+</toc>

@@ -1,0 +1,35 @@
+-- *------------------------------------------------------------------------*
+-- *                                                                        *
+-- * Copyright (c) 2014 Task Force IT-Consulting GmbH, Waltrop (Germany)    *
+-- * This software and the accompanying materials are made available        *
+-- * under the terms of the GNU General Public License version 2.0 (GPLv2)  *
+-- * which accompanies this distribution and is available at                *
+-- * http://www.gnu.org/licenses/gpl-2.0.html                               *
+-- *                                                                        *
+-- *------------------------------------------------------------------------*
+-- *                                                                        *
+-- * Get Target Field Prefix ...                                            *
+-- *                                                                        *
+-- *------------+--------+--------------------------------------------------*
+-- *   Datum    I Progr. I Beschreibung                                     *
+-- *------------+--------+--------------------------------------------------*
+-- * 07.02.2018 I   FH   I Dateierstellung                                  *
+-- *------------+--------+--------------------------------------------------*
+
+CREATE PROCEDURE
+  "PROMOTER_get_Target_Field_Prefix"
+(
+  IN CNV_PROGRAM CHAR(10),
+  IN SRC_LIBRARY CHAR(10),
+  IN SRC_FILE CHAR(10),
+  IN TGT_LIBRARY CHAR(10),
+  IN TGT_FILE CHAR(10),
+  INOUT PREFIX CHAR(2)
+)
+EXTERNAL NAME
+  PROMOTER(PROMOTER_GET_TARGET_FIELD_PREFIX)
+SPECIFIC PROMOTER05
+LANGUAGE RPGLE
+PARAMETER STYLE GENERAL
+MODIFIES SQL DATA
+NOT DETERMINISTIC;

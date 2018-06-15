@@ -1,0 +1,84 @@
+     /*-------------------------------------------------------------------------------------------*/
+     /*                                                                                           */
+     /* Copyright (c) 2014 Task Force IT-Consulting GmbH, Waltrop (Germany)                       */
+     /* This software and the accompanying materials are made available                           */
+     /* under the terms of the GNU General Public License version 2.0 (GPLv2)                     */
+     /* which accompanies this distribution and is available at                                   */
+     /* http://www.gnu.org/licenses/gpl-2.0.html                                                  */
+     /*                                                                                           */
+     /*-------------------------------------------------------------------------------------------*/
+     /*                                                                                           */
+     /* Uninstall Rapid Fire                                                                      */
+     /*                                                                                           */
+     /*-------------------------------------------------------------------------------------------*/
+     /*  >>PRE-COMPILER<<                                                                         */
+     /*    >>CRTCMD<< CRTBNDCL     PGM(&LI/&OB) +                                                 */
+     /*                              SRCFILE(&SL/&SF) SRCMBR(&SM);                                */
+     /*    >>IMPORTANT<<                                                                          */
+     /*      >>PARM<<  DBGVIEW(*ALL);                                                             */
+     /*      >>PARM<<  OPTION(*EVENTF);                                                           */
+     /*      >>PARM<<  TGTRLS(&TR);                                                               */
+     /*    >>END-IMPORTANT<<                                                                      */
+     /*    >>EXECUTE<<                                                                            */
+     /*  >>END-PRE-COMPILER<<                                                                     */
+     /*------------+--------+---------------------------------------------------------------------*/
+     /*   Date     I Progr. I Description                                                         */
+     /*------------+--------+---------------------------------------------------------------------*/
+     /* 14.03.2018 I   FH   I Program created                                                     */
+     /*------------+--------+---------------------------------------------------------------------*/
+
+     /* Start */
+             PGM        PARM(&LIB &CURRFLIB)
+
+     /* Declare variables */
+             DCL        VAR(&LIB) TYPE(*CHAR) LEN(10)
+             DCL        VAR(&CURRFLIB) TYPE(*CHAR) LEN(10)
+             DCL        VAR(&OPT) TYPE(*CHAR) LEN(1)
+
+     /* Check, if library exists */
+             CHKOBJ     OBJ(QSYS/&LIB) OBJTYPE(*LIB)
+             MONMSG     MSGID(CPF9801) EXEC(DO)
+             CALL       PGM(UNINSTALL3) PARM(&LIB 'ERR0001')
+             GOTO       CMDLBL(STEP999)
+             ENDDO
+
+     /* Check, if library is a Rapid Fire library */
+             CHKOBJ     OBJ(&LIB/RAPIDFIRE) OBJTYPE(*DTAARA)
+             MONMSG     MSGID(CPF9801) EXEC(DO)
+             CALL       PGM(UNINSTALL3) PARM(&LIB 'ERR0002')
+             GOTO       CMDLBL(STEP999)
+             ENDDO
+
+     /* Ask, if the Rapid Fire library shall really be uninstalled */
+             CALL       PGM(UNINSTALL2) PARM(&LIB &OPT)
+             IF         COND(&OPT *EQ 'N') THEN(DO)
+             GOTO       CMDLBL(STEP999)
+             ENDDO
+
+     /* Remove depencencies in Rapid Fire library */
+             ADDLIBLE   LIB(&CURRFLIB) POSITION(*AFTER QTEMP)
+             CALL       PGM(CRTDRPSQL) PARM('*DROP' &LIB)
+             CALL       PGM(STRENDJRN) PARM('*END' &LIB)
+             RMVLIBLE   LIB(&CURRFLIB)
+
+     /* Delete Rapid Fire library */
+             DLTLIB     LIB(&LIB)
+             MONMSG     MSGID(CPF2113) EXEC(DO)
+             CALL       PGM(UNINSTALL3) PARM(&LIB 'ERR0003')
+             GOTO       CMDLBL(STEP999)
+             ENDDO
+             MONMSG     MSGID(CPF2161) EXEC(DO)
+             CALL       PGM(UNINSTALL3) PARM(&LIB 'ERR0004')
+             GOTO       CMDLBL(STEP999)
+             ENDDO
+
+     /* Rapid Fire library successfully uninstalled */
+             CALL       PGM(UNINSTALL4) PARM(&LIB)
+
+ STEP999:
+
+     /* Sign off */
+             SIGNOFF
+
+     /* End */
+             ENDPGM

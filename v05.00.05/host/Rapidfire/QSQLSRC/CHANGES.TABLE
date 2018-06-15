@@ -1,0 +1,42 @@
+-- *------------------------------------------------------------------------*
+-- *                                                                        *
+-- * Copyright (c) 2014 Task Force IT-Consulting GmbH, Waltrop (Germany)    *
+-- * This software and the accompanying materials are made available        *
+-- * under the terms of the GNU General Public License version 2.0 (GPLv2)  *
+-- * which accompanies this distribution and is available at                *
+-- * http://www.gnu.org/licenses/gpl-2.0.html                               *
+-- *                                                                        *
+-- *------------------------------------------------------------------------*
+-- *                                                                        *
+-- * Changes                                                                *
+-- *                                                                        *
+-- *------------------------------------------------------------------------*
+
+CREATE TABLE CHANGES
+(
+ MEMBER FOR COLUMN X8MBR CHAR(10) NOT NULL WITH DEFAULT,
+ SEQUENCE_NUMBER FOR COLUMN X8SEQ DECIMAL(10, 0) NOT NULL
+  GENERATED ALWAYS AS IDENTITY (START WITH 1, INCREMENT BY 1),
+ RECORD_NUMBER FOR COLUMN X8RCD DECIMAL(10, 0) NOT NULL WITH DEFAULT
+);
+
+LABEL ON TABLE CHANGES
+ IS '* * *   R A P I D   F I R E   * * *';
+
+LABEL ON COLUMN CHANGES
+(
+ MEMBER IS 'Member',
+ SEQUENCE_NUMBER IS 'Sequence number',
+ RECORD_NUMBER IS 'Record number'
+);
+
+LABEL ON COLUMN CHANGES
+(
+ MEMBER TEXT IS 'Member',
+ SEQUENCE_NUMBER TEXT IS 'Sequence number',
+ RECORD_NUMBER TEXT IS 'Record number'
+);
+
+ALTER TABLE CHANGES
+ADD CONSTRAINT CHANGES_PRIMARY_KEY
+PRIMARY KEY (MEMBER, SEQUENCE_NUMBER);

@@ -1,0 +1,47 @@
+     /*-------------------------------------------------------------------------------------------*/
+     /*                                                                                           */
+     /* Copyright (c) 2014 Task Force IT-Consulting GmbH, Waltrop (Germany)                       */
+     /* This software and the accompanying materials are made available                           */
+     /* under the terms of the GNU General Public License version 2.0 (GPLv2)                     */
+     /* which accompanies this distribution and is available at                                   */
+     /* http://www.gnu.org/licenses/gpl-2.0.html                                                  */
+     /*                                                                                           */
+     /*-------------------------------------------------------------------------------------------*/
+     /*                                                                                           */
+     /* Promoter                                                                                  */
+     /*                                                                                           */
+     /*-------------------------------------------------------------------------------------------*/
+     /*  >>PRE-COMPILER<<                                                                         */
+     /*    >>CRTCMD<< CRTSRVPGM    SRVPGM(&LI/&OB) EXPORT(*SRCFILE) +                             */
+     /*                              SRCFILE(&SL/&SF) SRCMBR(&SM);                                */
+     /*    >>IMPORTANT<<                                                                          */
+     /*      >>PARM<<  MODULE(PROMOTER);                                                          */
+     /*      >>PARM<<  TEXT('Promoter');                                                          */
+     /*      >>PARM<<  BNDDIR(RAPIDFIRE);                                                         */
+     /*      >>PARM<<  ACTGRP(RAPIDFIRE);                                                         */
+     /*      >>PARM<<  DETAIL(*BASIC);                                                            */
+     /*      >>PARM<<  TGTRLS(&TR);                                                               */
+     /*    >>END-IMPORTANT<<                                                                      */
+     /*    >>EXECUTE<<                                                                            */
+     /*  >>END-PRE-COMPILER<<                                                                     */
+     /*------------+--------+---------------------------------------------------------------------*/
+     /*   Datum    I Progr. I Beschreibung                                                        */
+     /*------------+--------+---------------------------------------------------------------------*/
+     /* 03.02.2016 I   TR   I STRPREPRC Header hinzugefügt.                                       */
+     /*-------------------------------------------------------------------------------------------*/
+
+             STRPGMEXP
+
+                EXPORT     SYMBOL('PROMOTER_INITIALIZE')
+                EXPORT     SYMBOL('PROMOTER_PROMOTE')
+                EXPORT     SYMBOL('PROMOTER_APPLY_CHANGES')
+                EXPORT     SYMBOL('PROMOTER_CLEAN')
+                EXPORT     SYMBOL('PROMOTER_GENERATE_COPY_PROGRAM')
+                EXPORT     SYMBOL('PROMOTER_REAPPLY_ALL_CHANGES')
+                EXPORT     SYMBOL('PROMOTER_GET_SOURCE_FIELD_PREFIX_OF_LAST_GENERATED_COPY_PROGRAM')
+                EXPORT     SYMBOL('PROMOTER_GET_TARGET_FIELD_PREFIX_OF_LAST_GENERATED_COPY_PROGRAM')
+                EXPORT     SYMBOL('PROMOTER_GET_SOURCE_FIELD_PREFIX')
+                EXPORT     SYMBOL('PROMOTER_GET_TARGET_FIELD_PREFIX')
+
+             ENDPGMEXP
+
