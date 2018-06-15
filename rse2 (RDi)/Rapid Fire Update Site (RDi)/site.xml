@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <site>
-   <feature url="features/biz.rapidfire.core_1.0.3.r.jar" id="biz.rapidfire.core" version="1.0.3.r">
+   <feature url="features/biz.rapidfire.core_1.0.4.r.jar" id="biz.rapidfire.core" version="1.0.4.r">
       <category name="Rapid Fire for RDi 8.0+"/>
    </feature>
-   <feature url="features/biz.rapidfire.help_1.0.3.r.jar" id="biz.rapidfire.help" version="1.0.3.r">
+   <feature url="features/biz.rapidfire.help_1.0.4.r.jar" id="biz.rapidfire.help" version="1.0.4.r">
       <category name="Rapid Fire for RDi 8.0+"/>
    </feature>
    <category-def name="Rapid Fire for RDi 8.0+" label="Rapid Fire for RDi 8.0+">
