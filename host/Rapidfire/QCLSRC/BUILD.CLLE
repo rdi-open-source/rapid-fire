@@ -86,7 +86,7 @@
              ENDDO
 
              DLTJRNRCV  JRNRCV(&LIB/RAPID*) DLTOPT(*IGNINQMSG)
-             MONMSG     MSGID(CPF2125) EXEC(DO) /* No object found */
+             MONMSG     MSGID(CPF2125 CPF2105) EXEC(DO) /* No object found */
                 RMVMSG     PGMQ(*SAME (*)) CLEAR(*ALL)
              ENDDO
 
