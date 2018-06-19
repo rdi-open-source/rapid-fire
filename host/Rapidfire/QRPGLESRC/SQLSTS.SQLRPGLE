@@ -2297,7 +2297,7 @@ When pi_State = '428DE';
 
 When pi_State = '428EC';
      //Der für die MQT (Materialized Query Table) angegebene
-     //Fullselect ist ungültig.	
+     //Fullselect ist ungültig.
 
   LastErrorMessage = SqlProblem();
   return *off;
@@ -3323,7 +3323,7 @@ When pi_State = '58017';
   return *off;
 
 When pi_State = '58018';
-     //Die DDM-Antwortnachricht wird nicht unterstützt.	
+     //Die DDM-Antwortnachricht wird nicht unterstützt.
 
   LastErrorMessage = SqlProblem();
   return *off;
