@@ -52,6 +52,26 @@
              DCL        VAR(&FROMMBR) TYPE(*CHAR) LEN(100)
              DCL        VAR(&TOSTMF) TYPE(*CHAR) LEN(100)
 
+             CHKOBJ     OBJ(&LIB/&JRN) OBJTYPE(*JRN)
+             MONMSG     MSGID(CPF9801) EXEC(DO) /* Journal does not exist */
+                RCVMSG     PGMQ(*SAME (*)) MSGTYPE(*LAST) RMV(*YES)
+                GOTO       CMDLBL(SKIP_DLT)
+             ENDDO
+
+             ENDJRNAP   FILE(*ALL) JRN(&LIB/&JRN)
+             MONMSG     MSGID(CPF0000)
+
+             ENDJRNPF   FILE(*ALL) JRN(&LIB/&JRN)
+             MONMSG     MSGID(CPF0000)
+
+             DLTJRN     JRN(&LIB/&JRN)
+             MONMSG     MSGID(CPF0000)
+
+             DLTJRNRCV  JRNRCV(&LIB/RAPID*) DLTOPT(*IGNINQMSG)
+             MONMSG     MSGID(CPF0000)
+
+SKIP_DLT:
+
              CLRPFM     FILE(&LIB/ACTSCHD)
              CLRPFM     FILE(&LIB/AREAS)
              CLRPFM     FILE(&LIB/CHANGES)
@@ -69,26 +89,6 @@
              CLRPFM     FILE(&LIB/SQLLOG)
              CLRPFM     FILE(&LIB/SQLTRACE)
              CLRPFM     FILE(&LIB/SUBTOBENOT)
-
-             ENDJRNAP   FILE(*ALL) JRN(&LIB/&JRN)
-             MONMSG     MSGID(CPF9801) EXEC(DO) /* No object found */
-                RMVMSG     PGMQ(*SAME (*)) CLEAR(*ALL)
-             ENDDO
-
-             ENDJRNPF   FILE(*ALL) JRN(&LIB/&JRN)
-             MONMSG     MSGID(CPF9801) EXEC(DO) /* No object found */
-                RMVMSG     PGMQ(*SAME (*)) CLEAR(*ALL)
-             ENDDO
-
-             DLTJRN     JRN(&LIB/&JRN)
-             MONMSG     MSGID(CPF2105) EXEC(DO) /* No object found */
-                RMVMSG     PGMQ(*SAME (*)) CLEAR(*ALL)
-             ENDDO
-
-             DLTJRNRCV  JRNRCV(&LIB/RAPID*) DLTOPT(*IGNINQMSG)
-             MONMSG     MSGID(CPF2125 CPF2105) EXEC(DO) /* No object found */
-                RMVMSG     PGMQ(*SAME (*)) CLEAR(*ALL)
-             ENDDO
 
              DLTF FILE(&LIB/EVF*)
              MONMSG     MSGID(CPF2125) EXEC(DO) /* No objects deleted */

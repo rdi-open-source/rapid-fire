@@ -48,6 +48,7 @@ CTL-OPT ExtBinInt(*YES);
 /Include QCPYSRC,SQLSTS
 /Include QCPYSRC,RFCCSTR
 /Include QCPYSRC,RFCCEND
+/Include QCPYSRC,FILE
 
 //*-----------------------------------------------------------------------------------------*
 
@@ -230,10 +231,30 @@ DCL-PROC RAPIDFIRE_start EXPORT;
     p_MSG     CHAR(256);      // <-- Message
   END-PI;
 
-  RFCCSTR(
-    p_SUCCESS : // <-- Success
-    p_MSG       // <-- Message
+  If Not FILE_is_File_Journaled(
+    '*LIBL' : // --> Library - File
+    'JOBS'    // --> File
   );
+
+    p_SUCCESS = 'N';
+    p_MSG =
+      'The Raid Fire files are not journaled. ' +
+      'Probaly you unchecked the button ' +
+      '"Start journaling Rapid Fire files" ' +
+      'when you transfered the Rapid Fire library ' +
+      'to the host. Execute ' +
+      'CALL ' +
+      'PGM(MY_RAPID_FIRE_LIB/STRENDJRN) ' +
+      'PARM(''*START'' ''MY_RAPID_FIRE_LIB'')';
+
+  Else;
+
+    RFCCSTR(
+      p_SUCCESS : // <-- Success
+      p_MSG       // <-- Message
+    );
+
+  EndIf;
 
   if (p_SUCCESS = 'Y');
     return *on;

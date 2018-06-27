@@ -10,7 +10,7 @@
 //*                                                                                         *
 //*-----------------------------------------------------------------------------------------*
 //*                                                                                         *
-//* Rapid Fire                                                                              *
+//* Rapid Fire files are not journaled                                                      *
 //*                                                                                         *
 //*-----------------------------------------------------------------------------------------*
 //*  >>PRE-COMPILER<<                                                                       *
@@ -26,7 +26,7 @@
 //*------------+--------+-------------------------------------------------------------------*
 //*   Datum    I Progr. I Beschreibung                                                      *
 //*------------+--------+-------------------------------------------------------------------*
-//* 01.07.2014 I   FH   I Programm erstellt                                                 *
+//* 26.06.2018 I   FH   I Programm erstellt                                                 *
 //*------------+--------+-------------------------------------------------------------------*
 
 // Control
@@ -38,109 +38,21 @@ CTL-OPT ExtBinInt(*YES);
 
 //*-----------------------------------------------------------------------------------------*
 
-DCL-F RFINTRO WORKSTN(*EXT) USAGE(*INPUT : *OUTPUT) USROPN;
+DCL-F RF0022DF Workstn(*EXT) USAGE(*INPUT:*OUTPUT);
 
 //*-----------------------------------------------------------------------------------------*
 
 // Procedure interface
 
-/Include QCPYSRC,RF
+/Include QCPYSRC,RF0022PG
 
-DCL-PI RF;
+DCL-PI RF0022PG;
 END-PI;
 
 //*-----------------------------------------------------------------------------------------*
 
-// Includes
-
-/Include QCPYSRC,RF0001PG
-/Include QCPYSRC,RF0022PG
-/Include QCPYSRC,EXCCMD
-/Include QCPYSRC,FILE
-/Include QCPYSRC,QTNRCMTI
-/Include QCPYSRC,CMTI0100
-/Include QCPYSRC,ERRC0100
-
-// Global field declarations
-
-DCL-S g_Sts CHAR(10);  // Message-Id.
-DCL-S g_Prc CHAR(10);  // Processing
-DCL-S g_JOB CHAR(10);  // Job
-DCL-S g_RtCd CHAR(10); // Return code
-
-//*-----------------------------------------------------------------------------------------*
-
-If Not FILE_is_File_Journaled(
-  '*LIBL' : // --> Library - File
-  'JOBS'    // --> File
-);
-
-  // The Rapid Fire files are not journaled
-  RF0022PG();
-
-Else;
-
-  // Retrieve commitment informations
-  Reset ERRC0100;
-  QTNRCMTI(
-   CMTI0100 :        // <-- Receiver variable
-   %Size(CMTI0100) : // --> Length of receiver variable
-   'CMTI0100' :      // --> Format name
-   ERRC0100          // <-> Error code
-  );
-
-  // commitment informations retrieved
-  If ERRC0100.Exeption_Id = *Blanks;
-
-    // Initialize processing
-    g_Prc = '*YES';
-
-    // Commitment control has to be started
-    If CMTI0100.Commit_Definition_Status = 'I';
-
-      // Start commitment control
-      EXCCMD_execute_Command(
-       'STRCMTCTL ' +
-       'LCKLVL(*CHG) ' +
-       'CMTSCOPE(*ACTGRP) ' +
-       'TEXT(''Rapid Fire'')'
-      );
-
-      // commitment control could not be started
-      If EXCCMD_Message_Id <> *Blanks;
-        g_Prc = '*NO';
-      EndIf;
-
-    EndIf;
-
-    If g_Prc = '*YES';
-
-      // Show main panel
-      Open RFINTRO;
-      ExFmt DSPF010;
-      Close RFINTRO;
-
-      // Maintain Jobs
-      RF0001PG(
-       '*EDIT' : // --> Modus
-       *Blanks : // --> Filter Job
-       g_JOB :   // <-> Job
-       g_RtCd    // <-- Rückkehrcode
-      );
-
-      // Commitment control has to be ended
-      If CMTI0100.Commit_Definition_Status = 'I';
-        // Commitment-Control beenden
-        EXCCMD_execute_Command(
-        'ENDCMTCTL'
-        );
-      EndIf;
-
-    EndIf;
-
-  EndIf;
-
-EndIf;
+// Show main panel
+ExFmt DSPF010;
 
 // End of program
 *INLR = *On;

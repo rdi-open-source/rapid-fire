@@ -132,6 +132,7 @@
 
      /* Delete journal */
              IF         COND(&CMD *EQ '*END') THEN(DO)
+
                 CHKOBJ     OBJ(&LIB/&JRN) OBJTYPE(*JRN)
                 MONMSG     MSGID(CPF9801) EXEC(DO) /* Journal does not exist */
                    RCVMSG     PGMQ(*SAME (*)) MSGTYPE(*LAST) RMV(*YES)
@@ -139,24 +140,16 @@
                 ENDDO
 
                 ENDJRNAP   FILE(*ALL) JRN(&LIB/&JRN)
-                MONMSG     MSGID(CPF9801) EXEC(DO) /* No object found */
-                   RCVMSG     PGMQ(*SAME (*)) MSGTYPE(*LAST) RMV(*YES)
-                ENDDO
+                MONMSG     MSGID(CPF0000)
 
                 ENDJRNPF   FILE(*ALL) JRN(&LIB/&JRN)
-                MONMSG     MSGID(CPF9801) EXEC(DO) /* No object found */
-                   RCVMSG     PGMQ(*SAME (*)) MSGTYPE(*LAST) RMV(*YES)
-                ENDDO
+                MONMSG     MSGID(CPF0000)
 
                 DLTJRN     JRN(&LIB/&JRN)
-                MONMSG     MSGID(CPF2105) EXEC(DO) /* No object found */
-                   RCVMSG     PGMQ(*SAME (*)) MSGTYPE(*LAST) RMV(*YES)
-                ENDDO
+                MONMSG     MSGID(CPF0000)
 
                 DLTJRNRCV  JRNRCV(&LIB/RAPID*) DLTOPT(*IGNINQMSG)
-                MONMSG     MSGID(CPF2125 CPF2105) EXEC(DO) /* No object found */
-                   RCVMSG     PGMQ(*SAME (*)) MSGTYPE(*LAST) RMV(*YES)
-                ENDDO
+                MONMSG     MSGID(CPF0000)
 
 SKIP_DLT:
              ENDDO

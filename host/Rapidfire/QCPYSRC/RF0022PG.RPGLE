@@ -1,0 +1,4 @@
+**FREE
+
+DCL-PR RF0022PG ExtPgm('RF0022PG');
+END-PR;

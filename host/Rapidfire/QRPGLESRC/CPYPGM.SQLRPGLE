@@ -68,6 +68,12 @@
      f                                     Rename(RECORDS : RECORDSRF)
      f                                     UsrOpn
 
+     fRCDTGT    UF   E           K Disk    ExtDesc('RECORDSI01')
+     f                                     ExtFile(p_Qual_Rcd_Tgt)
+     f                                     Rename(RECORDS : RCDTGTRF)
+     f                                     Prefix(RCDTGT_)
+     f                                     UsrOpn
+
      fCHANGES   IF A E           K Disk    ExtFile(p_Qual_Changes)
      f                                     Rename(CHANGES : CHANGESRF)
      f                                     UsrOpn
@@ -83,6 +89,7 @@
       /Include QCPYSRC,RAPIDFIRE
       /Include QCPYSRC,SQLSTS
       /Include QCPYSRC,EXCCMD
+      /Include QCPYSRC,DPLKEYHDLR
 
        //*-----------------------------------------------------------------------------------------*
 
@@ -117,6 +124,8 @@
      d  p_Member...
      d                 S             10A
      d  p_Qual_Records...
+     d                 S             21A
+     d  p_Qual_Rcd_Tgt...
      d                 S             21A
      d  p_Qual_Changes...
      d                 S             21A
@@ -246,6 +255,16 @@
      d                 S              1A
      d g_CURRENT_TIMESTAMP...
      d                 S               Z
+     d g_Record_With_Duplicate_Key...
+     d                 S               N
+     d g_Changes_Not_Yet_Applied...
+     d                 S             10S 0
+     d g_RCD1...
+     d                 S             10U 0
+     d g_RCD2...
+     d                 S             10U 0
+     d g_OK...
+     d                 S              1A
 
        //*-----------------------------------------------------------------------------------------*
 
@@ -268,6 +287,7 @@
      c                   Parm                    p_Qual_Target
      c                   Parm                    p_Member
      c                   Parm                    p_Qual_Records
+     c                   Parm                    p_Qual_Rcd_Tgt
      c                   Parm                    p_Qual_Changes
      c                   Parm                    p_Qual_Chg_Log
 
@@ -324,6 +344,7 @@
             // Open files
             Open Target;
             Open Records;
+            Open RcdTgt;
             Open Changes;
             Open ChangesLog;
             // %%CONVERSION_OPEN%%
@@ -337,13 +358,16 @@
                 g_InfDs_Target.qFile: g_Target_rcdFmt: g_Target_fmtLvlId);
               ExSr copy_Records;
             When p_Mode = '*APPLY';
-              ExSr apply_Changes;
+              DoU Not g_Record_With_Duplicate_Key;
+                ExSr apply_Changes;
+              EndDo;
             EndSl;
 
             // Close files
             Close Source;
             Close Target;
             Close Records;
+            Close RcdTgt;
             Close Changes;
             Close ChangesLog;
             // %%CONVERSION_CLOSE%%
@@ -396,6 +420,9 @@
        //*-----------------------------------------------------------------------------------------*
 
         BegSr copy_Records;
+
+          // Initialize record with duplicate key
+          g_Record_With_Duplicate_Key = *Off;
 
           // Set start time
           g_Start_Time = %TimeStamp();
@@ -469,6 +496,9 @@
        //*-----------------------------------------------------------------------------------------*
 
         BegSr apply_Changes;
+
+          // Initialize record with duplicate key
+          g_Record_With_Duplicate_Key = *Off;
 
           // Get highest sequence number
           SetGt (p_Member) CHANGESRF;
@@ -606,10 +636,37 @@
               setIgnoreWarnings();
               SqlCheckState(sqlState);
 
+              // Get not yet applied changes
+              g_SQL_Statement =
+                'Values (' +
+                  'Select Count(*) From (' +
+                    'Select Distinct Record_Number ' +
+                    'From ' + prepareSQLTableName(p_Qual_Changes) + ' ' +
+                    'Where Member = ''' + %Trim(p_Member) + '''' +
+                  ') As X' +
+                ') Into ?';
+              Exec SQL
+                Prepare Changes_Not_Yet_Applied
+                  From :g_SQL_Statement;
+              setIgnoreWarnings();
+              If Not SqlCheckState(sqlState);
+                g_Changes_Not_Yet_Applied = *Zero;
+              Else;
+                exec sql
+                  Execute Changes_Not_Yet_Applied
+                    Using :g_Changes_Not_Yet_Applied;
+                setIgnoreWarnings();
+                If Not SqlCheckState(sqlState);
+                  g_Changes_Not_Yet_Applied = *Zero;
+                EndIf;
+              EndIf;
+
               // Update changes applied
               Exec SQL
                 Update Areas
-                Set Changes_Applied = Changes_To_Apply
+                Set Changes_Applied =
+                      Changes_To_Apply -
+                      :g_Changes_Not_Yet_Applied
                 Where Job = :p_Job And
                       Position = :p_Position And
                       Area = :p_Area;
@@ -618,6 +675,13 @@
 
             EndIf;
 
+          EndIf;
+
+          // Delay job, if record with duplicate key has occured
+          If g_Record_With_Duplicate_Key;
+            EXCCMD_execute_Command(
+              'DLYJOB DLY(1)'
+            );
           EndIf;
 
         EndSr;
@@ -647,10 +711,61 @@
 
           On-Error 01021;
 
+            // Set record with duplicate key
+            g_Record_With_Duplicate_Key = *On;
+
+            // Unlock files. Even if a duplicate key occors, then the records still remain locked
+            Unlock TARGET;
+            Unlock RECORDS;
+
+            // Get the records affected by the duplicate key
+            DPLKEYHDLR(g_RCD1 : g_RCD2);
+
+            // Set OK
+            g_OK = 'N';
+
+            // Delete first record from shadow library
+            If g_RCD1 <> *Zero;
+              Chain (p_Member : g_RCD1) RCDTGTRF;
+              If %Found;
+                Delete RCDTGTRF;
+                Chain g_RCD1 TARGETRF;
+                If %Found;
+                  Delete TARGETRF;
+                  X8MBR = p_Member;
+                  X8RCD = RCDTGT_X9SRN;
+                  Write CHANGESRF;
+                  If RCDTGT_X9SRN = g_InfDs_Source.Record_Number;
+                    g_OK = 'Y';
+                  EndIf;
+                EndIf;
+              EndIf;
+            EndIf;
+
+            // Delete second record from shadow library
+            If g_RCD2 <> *Zero;
+              Chain (p_Member : g_RCD2) RCDTGTRF;
+              If %Found;
+                Delete RCDTGTRF;
+                Chain g_RCD2 TARGETRF;
+                If %Found;
+                  Delete TARGETRF;
+                  X8MBR = p_Member;
+                  X8RCD = RCDTGT_X9SRN;
+                  Write CHANGESRF;
+                  If RCDTGT_X9SRN = g_InfDs_Source.Record_Number;
+                    g_OK = 'Y';
+                  EndIf;
+                EndIf;
+              EndIf;
+            EndIf;
+
             // Duplicate key
-            X8MBR = p_Member;
-            X8RCD = g_InfDs_Source.Record_Number;
-            Write CHANGESRF;
+            If g_OK = 'N';
+              X8MBR = p_Member;
+              X8RCD = g_InfDs_Source.Record_Number;
+              Write CHANGESRF;
+            EndIf;
 
             // Not done
             g_Done = *Off;

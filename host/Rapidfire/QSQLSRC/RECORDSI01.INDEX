@@ -8,38 +8,17 @@
 -- *                                                                        *
 -- *------------------------------------------------------------------------*
 -- *                                                                        *
--- * Files                                                                  *
+-- * Records                                                                *
 -- *                                                                        *
 -- *------------------------------------------------------------------------*
 
-CREATE VIEW FILES_WITH_SHADOW_LIBRARY
-FOR SYSTEM NAME FILESV01 AS
+CREATE UNIQUE INDEX RECORDS_INDEX_01
+FOR SYSTEM NAME RECORDSI01
+ON RECORDS
 (
- SELECT
-    A.*,
-    B.AREA,
-    B.LIBRARY,
-    B.LIBRARY_LIST,
-    B.CCSID,
-    B.COMMAND_EXTENSION,
-    B.WORKFILE_RECORDS,
-    B.WORKFILE_RECORDS_TARGET,
-    B.WORKFILE_CHANGES,
-    B.WORKFILE_CHANGESLOG,
-    B.JOURNALING,
-    B.JOURNAL_LIBRARY,
-    B.JOURNAL,
-    B.RECORDS_TO_COPY,
-    B.RECORDS_COPIED,
-    B.TIME_CONSUMED,
-    B.CHANGES_TO_APPLY,
-    B.CHANGES_APPLIED,
-    C.SHADOW_LIBRARY
- FROM
-    (FILES A INNER JOIN AREAS B
-    ON A.JOB = B.JOB AND A.POSITION = B.POSITION)
-    INNER JOIN LIBRARIES C
-    ON B.JOB = C.JOB AND B.LIBRARY = C.LIBRARY
+ MEMBER ASC,
+ TARGET_RECORD_NUMBER ASC
 );
 
-CL: CHGOBJD OBJ(FILESV01) OBJTYPE(*FILE) TEXT('Files');
+LABEL ON INDEX RECORDS_INDEX_01
+ IS '* * *   R A P I D   F I R E   * * *';

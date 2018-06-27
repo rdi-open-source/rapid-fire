@@ -1,0 +1,91 @@
+     /*-------------------------------------------------------------------------------------------*/
+     /*                                                                                           */
+     /* Copyright (c) 2014 Task Force IT-Consulting GmbH, Waltrop (Germany)                       */
+     /* This software and the accompanying materials are made available                           */
+     /* under the terms of the GNU General Public License version 2.0 (GPLv2)                     */
+     /* which accompanies this distribution and is available at                                   */
+     /* http://www.gnu.org/licenses/gpl-2.0.html                                                  */
+     /*                                                                                           */
+     /*-------------------------------------------------------------------------------------------*/
+     /*                                                                                           */
+     /* Duplicate Key Handler                                                                     */
+     /*                                                                                           */
+     /*-------------------------------------------------------------------------------------------*/
+     /*  >>PRE-COMPILER<<                                                                         */
+     /*    >>CRTCMD<< CRTBNDCL     PGM(&LI/&OB) +                                                 */
+     /*                              SRCFILE(&SL/&SF) SRCMBR(&SM);                                */
+     /*    >>IMPORTANT<<                                                                          */
+     /*      >>PARM<<  DBGVIEW(*ALL);                                                             */
+     /*      >>PARM<<  OPTION(*EVENTF);                                                           */
+     /*      >>PARM<<  TGTRLS(&TR);                                                               */
+     /*    >>END-IMPORTANT<<                                                                      */
+     /*    >>EXECUTE<<                                                                            */
+     /*  >>END-PRE-COMPILER<<                                                                     */
+     /*------------+--------+---------------------------------------------------------------------*/
+     /*   Date     I Progr. I Description                                                         */
+     /*------------+--------+---------------------------------------------------------------------*/
+     /* 25.06.2018 I   FH   I Program created                                                     */
+     /*------------+--------+---------------------------------------------------------------------*/
+
+     /* Start */
+             PGM        PARM(&RCD1 &RCD2)
+
+     /* Declare compile options */
+             DCLPRCOPT  DFTACTGRP(*NO) ACTGRP(RAPIDFIRE) +
+                          BNDDIR(RAPIDFIRE)
+
+     /* Declare variables */
+             DCL        VAR(&RCD1) TYPE(*CHAR) LEN(4)
+             DCL        VAR(&RCD2) TYPE(*CHAR) LEN(4)
+             DCL        VAR(&KEYVAR) TYPE(*CHAR) LEN(4)
+             DCL        VAR(&MSGKEY) TYPE(*CHAR) LEN(4)
+             DCL        VAR(&MSGID) TYPE(*CHAR) LEN(7)
+             DCL        VAR(&MSGDTA) TYPE(*CHAR) LEN(256)
+             DCL        VAR(&MSGF) TYPE(*CHAR) LEN(10)
+             DCL        VAR(&FND) TYPE(*CHAR) LEN(1)
+
+     /* Initialize fields */
+             CHGVAR     VAR(&FND) VALUE('N')
+             CHGVAR     VAR(&RCD1) VALUE(X'00000000')
+             CHGVAR     VAR(&RCD2) VALUE(X'00000000')
+
+     /* Get records */
+             RCVMSG     PGMQ(*PRV (* *NONE *NONE)) MSGTYPE(*LAST) +
+                          RMV(*NO) KEYVAR(&KEYVAR) MSGDTA(&MSGDTA) +
+                          MSGID(&MSGID) MSGF(&MSGF)
+
+             DOWHILE    COND(&KEYVAR *NE ' ')
+
+               IF         COND(&MSGID *EQ 'CPF5009') THEN(DO)
+                 CHGVAR     VAR(&FND) VALUE('Y')
+                 CHGVAR     VAR(&RCD1) VALUE(%SST(&MSGDTA 31 4))
+                 CHGVAR     VAR(&RCD2) VALUE(%SST(&MSGDTA 47 4))
+                 LEAVE
+               ENDDO
+
+               CHGVAR     VAR(&MSGKEY) VALUE(&KEYVAR)
+               RCVMSG     PGMQ(*PRV (* *NONE *NONE)) MSGTYPE(*PRV) +
+                            MSGKEY(&MSGKEY) RMV(*NO) KEYVAR(&KEYVAR) +
+                            MSGDTA(&MSGDTA) MSGID(&MSGID) MSGF(&MSGF)
+
+             ENDDO
+
+     /* Remove messages from message queue */
+             IF         COND(&FND *EQ 'Y') THEN(DO)
+
+               RMVMSG     PGMQ(*PRV (* *NONE *NONE)) CLEAR(*ALL)
+               MONMSG     MSGID(CPF0000) EXEC(DO)
+                 RCVMSG     PGMQ(*SAME (* *NONE *NONE)) MSGTYPE(*LAST) +
+                              RMV(*YES)
+               ENDDO
+
+               RMVMSG     PGMQ(*ALLINACT) CLEAR(*ALL)
+               MONMSG     MSGID(CPF0000) EXEC(DO)
+                 RCVMSG     PGMQ(*SAME (* *NONE *NONE)) MSGTYPE(*LAST) +
+                              RMV(*YES)
+               ENDDO
+
+             ENDDO
+
+     /* End */
+ STEP999:    ENDPGM

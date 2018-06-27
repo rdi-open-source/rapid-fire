@@ -226,6 +226,8 @@ DCL-S g_src_Pfx
       CHAR(2) Inz('*N');
 DCL-S g_tgt_Pfx
       CHAR(2) Inz('*N');
+DCL-S g_Status
+      CHAR(10);
 
 //*-----------------------------------------------------------------------------------------*
 
@@ -3151,10 +3153,14 @@ DCL-PROC create_Work_Files;
 
   DCL-S l_File_Records
         CHAR(10);
+  DCL-S l_File_Records_Target
+        CHAR(10);
   DCL-S l_File_Changes
         CHAR(10);
   DCL-S l_File_ChangesLog
         CHAR(10);
+  DCL-S l_SQL_Statement
+        CHAR(256);
 
   // Set file counter
   If g_File_Counter = 999;
@@ -3165,6 +3171,10 @@ DCL-PROC create_Work_Files;
   // Build name of Workfile Records
   l_File_Records =
     '$R' + %Trim(%SubSt(p_File : 1 : 5)) +
+    %EditC(g_File_Counter : 'X');
+
+  l_File_Records_Target =
+    '$T' + %Trim(%SubSt(p_File : 1 : 5)) +
     %EditC(g_File_Counter : 'X');
 
   // Build name of Workfile Changes
@@ -3198,6 +3208,34 @@ DCL-PROC create_Work_Files;
       p_Library :
       EXCCMD_Message_Id :
       EXCCMD_Message_Data
+    );
+    Return;
+  EndIf;
+
+  // Create Workfile Records Target
+  l_SQL_Statement =
+    'CREATE UNIQUE INDEX ' +
+    '"' + %Trim(p_Shadow_Library) + '"' + '/' +
+    '"' + %Trim(l_File_Records_Target) + '" ' +
+    'ON ' +
+    '"' + %Trim(p_Shadow_Library) + '"' + '/' +
+    '"' + %Trim(l_File_Records) + '" ' +
+    '(MEMBER ASC, TARGET_RECORD_NUMBER ASC)';
+  Exec SQL
+    Prepare File_Records_Target From :l_SQL_Statement;
+  Exec SQL
+    Execute File_Records_Target;
+
+  // Workfile "Records Target" for file &1 in library &2 could not be created
+  setIgnoreWarnings();
+  If Not SqlCheckState(sqlState);
+    RAPIDFIRE_log_Error(
+      p_Job :
+      'MSG0055' :
+      p_File +
+      p_Library :
+      'CPF9898' :
+      'Error in command : ' + %Trim(l_SQL_Statement)
     );
     Return;
   EndIf;
@@ -3256,6 +3294,7 @@ DCL-PROC create_Work_Files;
   Exec SQL
     Update Areas
     Set Workfile_Records = :l_File_Records,
+        Workfile_Records_Target = :l_File_Records_Target,
         Workfile_Changes = :l_File_Changes,
         Workfile_ChangesLog = :l_File_ChangesLog
     Where Job = :p_Job And
@@ -3343,6 +3382,7 @@ DCL-PROC PROMOTER_promote EXPORT;
         Files.Shadow_Library :
         Files.File :
         Files.Workfile_Records :
+        Files.Workfile_Records_Target :
         Files.Workfile_Changes :
         Files.Workfile_ChangesLog :
         Files.Copy_Program_Library :
@@ -3523,31 +3563,45 @@ DCL-PROC PROMOTER_apply_Changes EXPORT;
 
   Else;
 
-    DoW g_Loop;
+    // Apply changes
+    call_Copy_Program(
+      '*APPLY' :
+      Files.Job :
+      Files.Position :
+      Files.Area :
+      Files.Library :
+      Files.Shadow_Library :
+      Files.File :
+      Files.Workfile_Records :
+      Files.Workfile_Records_Target :
+      Files.Workfile_Changes :
+      Files.Workfile_ChangesLog :
+      Files.Copy_Program_Library :
+      Files.Copy_Program
+    );
+    If RAPIDFIRE_is_Error(p_Job);
+      // ...
+    EndIf;
 
-      // Apply changes
-      call_Copy_Program(
-        '*APPLY' :
-        Files.Job :
-        Files.Position :
-        Files.Area :
-        Files.Library :
-        Files.Shadow_Library :
-        Files.File :
-        Files.Workfile_Records :
-        Files.Workfile_Changes :
-        Files.Workfile_ChangesLog :
-        Files.Copy_Program_Library :
-        Files.Copy_Program
-      );
-      If RAPIDFIRE_is_Error(p_Job);
-        Leave;
-      EndIf;
+    // Shall job end?
+    Exec SQL
+      Select Status Into :g_Status
+      From Jobs
+      Where Job = :p_Job;
+    setIgnoreWarnings();
+    If Not (SqlCheckState(sqlState) And g_Status = '*RUN');
 
-      // Leave
-      Leave;
+      // Update changes applied
+      Exec SQL
+        Update Areas
+        Set Changes_Applied = Changes_To_Apply
+        Where Job = :p_Job And
+              Position = :Files.Position And
+              Area = :Files.Area;
+      setIgnoreWarnings();
+      SqlCheckState(sqlState);
 
-    EndDo;
+    EndIf;
 
   EndIf;
 
@@ -3575,6 +3629,8 @@ DCL-PROC call_Copy_Program;
     p_File
     CHAR(10) Const;
     p_Workfile_Records
+    CHAR(10) Const;
+    p_Workfile_Records_Target
     CHAR(10) Const;
     p_Workfile_Changes
     CHAR(10) Const;
@@ -3606,6 +3662,8 @@ DCL-PROC call_Copy_Program;
         CHAR(10);
   DCL-S l_Qual_Records
         CHAR(21);
+  DCL-S l_Qual_Records_Target
+        CHAR(21);
   DCL-S l_Qual_Changes
         CHAR(21);
   DCL-S l_Qual_Chg_Log
@@ -3620,6 +3678,7 @@ DCL-PROC call_Copy_Program;
     l_Qual_Target_ LIKE(l_Qual_Target);
     l_Member_ LIKE(l_Member);
     l_Qual_Records LIKE(l_Qual_Records);
+    l_Qual_Records_Target LIKE(l_Qual_Records_Target);
     l_Qual_Changes LIKE(l_Qual_Changes);
     l_Qual_Chg_Log LIKE(l_Qual_Chg_Log);
   END-PR;
@@ -3680,6 +3739,9 @@ DCL-PROC call_Copy_Program;
       l_Qual_Records =
         %Trim(p_Shadow_Library) + '/' +
         %Trim(p_Workfile_Records);
+      l_Qual_Records_Target =
+        %Trim(p_Shadow_Library) + '/' +
+        %Trim(p_Workfile_Records_Target);
       l_Qual_Changes =
         %Trim(p_Shadow_Library) + '/' +
         %Trim(p_Workfile_Changes);
@@ -3691,7 +3753,7 @@ DCL-PROC call_Copy_Program;
       CALLP(E) x_Copy_Program ( l_Mode : l_Job :
       l_Position : l_Area : l_Qual_Source :
       l_Qual_Target : l_Member :
-      l_Qual_Records : l_Qual_Changes :
+      l_Qual_Records : l_Qual_Records_Target : l_Qual_Changes :
       l_Qual_Chg_Log );
 
       // Copy program for file &1 in library &2 crashed. Mode &3.

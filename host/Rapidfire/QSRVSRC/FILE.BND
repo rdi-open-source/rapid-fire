@@ -33,6 +33,7 @@
              STRPGMEXP
 
                 EXPORT     SYMBOL('FILE_GET_NUMBER_OF_RECORDS')
+                EXPORT     SYMBOL('FILE_IS_FILE_JOURNALED')
 
              ENDPGMEXP
 
