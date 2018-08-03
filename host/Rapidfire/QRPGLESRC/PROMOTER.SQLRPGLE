@@ -2064,41 +2064,42 @@ DCL-PROC PROMOTER_generate_Copy_Program EXPORT;
             l_hSrcFields: l_tgtField.name: l_srcField: 'FLDA0300') <= 0;
 
         // Field has been added to target file.
-        Select;
-        When (l_tgtField.lenDftValue > 0 or l_tgtField.isCurrTime);
-          If (l_tgtField.isHexLiteral);
-            // Hex literals do not yet work.
-            // TODO: how can we assign a hex literal to a graphic field?
-            //    Statement =
-            //      g_tgt_Pfx + %trim(l_tgtField.name) + ' -> ' +
-            //      '*ERROR: *HEX default value';
-            Statement =
-              g_tgt_Pfx + %trim(l_tgtField.name) + ' = ' +
-              getDefaultValue(l_tgtField) + ';';
-          Else;
-            // Default value is specified.
-            Statement =
-              g_tgt_Pfx + %trim(l_tgtField.name) + ' = ' +
-              getDefaultValue(l_tgtField) + ';';
-          EndIf;
-        Other;
-          // Default value is missing.
-          // Set date, time and timestamp fields to
-          // current date, time or timestamp value.
-          // Clear all other field types.
-          If l_tgtField.type = FLDATTRS_TYPE_DATE or
-             l_tgtField.type = FLDATTRS_TYPE_TIME or
-             l_tgtField.type = FLDATTRS_TYPE_TMSTMP;
-            Statement =
-              g_tgt_Pfx + %trim(l_tgtField.name) + ' = ' +
-              getDefaultValueCurrentTime(l_tgtField)+ ';';
-          else;
-            Statement =
-              'Clear ' + g_tgt_Pfx + %trim(l_tgtField.name) + ';';
-          EndIf;
-        EndSl;
-
-        generate_Statement(QTARGET: Statement: 1);
+        If (not (l_tgtField.alwNull and l_tgtField.isNullDft));
+          Select;
+          When (l_tgtField.lenDftValue > 0 or l_tgtField.isCurrTime);
+            If (l_tgtField.isHexLiteral);
+              // Hex literals do not yet work.
+              // TODO: how can we assign a hex literal to a graphic field?
+              //    Statement =
+              //      g_tgt_Pfx + %trim(l_tgtField.name) + ' -> ' +
+              //      '*ERROR: *HEX default value';
+              Statement =
+                g_tgt_Pfx + %trim(l_tgtField.name) + ' = ' +
+                getDefaultValue(l_tgtField) + ';';
+            Else;
+              // Default value is specified.
+              Statement =
+                g_tgt_Pfx + %trim(l_tgtField.name) + ' = ' +
+                getDefaultValue(l_tgtField) + ';';
+            EndIf;
+          Other;
+            // Default value is missing.
+            // Set date, time and timestamp fields to
+            // current date, time or timestamp value.
+            // Clear all other field types.
+            If l_tgtField.type = FLDATTRS_TYPE_DATE or
+               l_tgtField.type = FLDATTRS_TYPE_TIME or
+               l_tgtField.type = FLDATTRS_TYPE_TMSTMP;
+              Statement =
+                g_tgt_Pfx + %trim(l_tgtField.name) + ' = ' +
+                getDefaultValueCurrentTime(l_tgtField)+ ';';
+            else;
+              Statement =
+                'Clear ' + g_tgt_Pfx + %trim(l_tgtField.name) + ';';
+            EndIf;
+          EndSl;
+          generate_Statement(QTARGET: Statement: 1);
+        EndIf;
 
         If (l_tgtField.alwNull);
           If (l_tgtField.isNullDft);
