@@ -136,7 +136,7 @@ public abstract class AbstractJobsDAO {
         String cmoneFormNumber = resultSet.getString(CMONE_FORM).trim();
 
         if (rapidFireLibraryVersion != null &&
-        		rapidFireLibraryVersion.compareTo("050010") >= 0) {
+        		rapidFireLibraryVersion.compareTo("050011") >= 0) {
         	if (status.equals("*RUN") &&
         			!isJobActive(batchJob, batchUser, batchNumber)) {
         		status = "*ABORT";
@@ -195,7 +195,7 @@ public abstract class AbstractJobsDAO {
     	
 		try {
 	        CallableStatement statement = dao.prepareCall(dao
-	                .insertLibraryQualifier("{CALL " + IJDBCConnection.LIBRARY + "\"JOB_isJobActive\"(?, ?, ?, ?)}")); //$NON-NLS-1$ //$NON-NLS-2$
+	                .insertLibraryQualifier("{CALL " + IJDBCConnection.LIBRARY + "\"JOB_isJobActiveSP\"(?, ?, ?, ?)}")); //$NON-NLS-1$ //$NON-NLS-2$
 
 	        statement.setString(1, batchJob);
 	        statement.setString(2, batchUser);
