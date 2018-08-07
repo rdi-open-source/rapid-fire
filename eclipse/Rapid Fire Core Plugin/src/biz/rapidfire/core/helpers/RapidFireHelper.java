@@ -45,6 +45,21 @@ public class RapidFireHelper {
 
         return getVersionFormatted(libraryVersion);
     }
+    
+    public static String getRapidFireLibraryVersionUnformatted(AS400 as400, String library) {
+
+        RapidFireDataArea dataAreaRapidFireContent = readRapidFireDataArea(null, as400, library);
+        if (dataAreaRapidFireContent == null) {
+            return null;
+        }
+
+        String libraryVersion = dataAreaRapidFireContent.getServerVersion();
+        if (libraryVersion == null) {
+            return null;
+        }
+
+        return libraryVersion;
+    }
 
     public static String getRapidFireLibraryBuildDate(AS400 as400, String library) {
 

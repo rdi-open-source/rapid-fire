@@ -16,7 +16,8 @@ public enum Status {
     RUN_PENDING ("*RUN-PND"), //$NON-NLS-1$
     RUN ("*RUN"), //$NON-NLS-1$
     END_PND ("*END-PND"), //$NON-NLS-1$
-    END ("*END"); //$NON-NLS-1$
+    END ("*END"), //$NON-NLS-1$
+    ABORT ("*ABORT"); //$NON-NLS-1$
 
     private String label;
 

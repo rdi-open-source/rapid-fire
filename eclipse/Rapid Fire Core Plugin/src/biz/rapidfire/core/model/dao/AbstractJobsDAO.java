@@ -8,14 +8,17 @@
 
 package biz.rapidfire.core.model.dao;
 
+import java.sql.CallableStatement;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
+import java.sql.Types;
 import java.util.ArrayList;
 import java.util.List;
 
 import org.eclipse.swt.widgets.Shell;
 
+import biz.rapidfire.core.helpers.RapidFireHelper;
 import biz.rapidfire.core.model.IRapidFireJobResource;
 import biz.rapidfire.core.model.JobName;
 import biz.rapidfire.core.model.Phase;
@@ -40,9 +43,11 @@ public abstract class AbstractJobsDAO {
     public static final String CMONE_FORM = "CMONE_FORM"; //$NON-NLS-1$
 
     private IJDBCConnection dao;
-
+    private String rapidFireLibraryVersion = null;
+    
     public AbstractJobsDAO(IJDBCConnection dao) {
         this.dao = dao;
+        rapidFireLibraryVersion = RapidFireHelper.getRapidFireLibraryVersionUnformatted(dao.getSystem(), dao.getLibraryName());
     }
 
     public List<IRapidFireJobResource> load(IRapidFireSubSystem subSystem, Shell shell) throws Exception {
@@ -130,6 +135,16 @@ public abstract class AbstractJobsDAO {
         String isStopApplyChanges = resultSet.getString(STOP_APPLY_CHANGES).trim();
         String cmoneFormNumber = resultSet.getString(CMONE_FORM).trim();
 
+        if (rapidFireLibraryVersion != null &&
+        		rapidFireLibraryVersion.compareTo("050010") >= 0) {
+        	if (status.equals("*RUN") &&
+        			!isJobActive(batchJob, batchUser, batchNumber)) {
+        		status = "*ABORT";
+        		phase = "*NONE";
+        		isError = "N";
+        	}
+        }
+        
         jobResource.setDescription(description);
         jobResource.setDoCreateEnvironment(dao.convertYesNo(createEnvironment));
         jobResource.setJobQueueName(jobQueueName);
@@ -173,4 +188,36 @@ public abstract class AbstractJobsDAO {
 
         return dao.insertLibraryQualifier(sqlStatement);
     }
+    
+    private boolean isJobActive(String batchJob, String batchUser, String batchNumber) {
+
+    	boolean active = true;
+    	
+		try {
+	        CallableStatement statement = dao.prepareCall(dao
+	                .insertLibraryQualifier("{CALL " + IJDBCConnection.LIBRARY + "\"JOB_isJobActive\"(?, ?, ?, ?)}")); //$NON-NLS-1$ //$NON-NLS-2$
+
+	        statement.setString(1, batchJob);
+	        statement.setString(2, batchUser);
+	        statement.setString(3, batchNumber);
+	        statement.setString(4, "");
+
+	        statement.registerOutParameter(4, Types.CHAR);
+
+	        statement.execute();
+
+	        String _active = statement.getString(4).trim();
+	        
+	        if (_active.equals("N")) {
+	        	active = false;
+	        }
+			
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+
+		return active;
+		
+    }
+
 }
