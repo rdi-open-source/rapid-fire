@@ -2,7 +2,7 @@ Manifest-Version: 1.0
 Bundle-ManifestVersion: 2
 Bundle-Name: Rapid Fire RSE Base Plugin (RDi)
 Bundle-SymbolicName: biz.rapidfire.rsebase;singleton:=true
-Bundle-Version: 1.0.6.r
+Bundle-Version: 1.0.7.r
 Bundle-Activator: biz.rapidfire.rsebase.RapidFireBasePlugin
 Bundle-Vendor: Rapid Fire Project Team
 Bundle-Localization: plugin
