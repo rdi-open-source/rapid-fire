@@ -109,6 +109,7 @@ public class FileCopyStatusView extends ViewPart implements IPropertyChangeListe
 
     private int columnIds[];
     
+    private Text textConnection;
     private Text textJob;
     private Text textStatus;
     private Text textPhase;
@@ -150,8 +151,16 @@ public class FileCopyStatusView extends ViewPart implements IPropertyChangeListe
         jobStatusHeader.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
   
         GridLayout gridLayoutJobStatusHeader = new GridLayout();
-        gridLayoutJobStatusHeader.numColumns = 6;
+        gridLayoutJobStatusHeader.numColumns = 8;
         jobStatusHeader.setLayout(gridLayoutJobStatusHeader);
+        
+        Label labelConnection = new Label(jobStatusHeader, SWT.NONE);
+        labelConnection.setText(Messages.Label_Connection_colon);
+        
+        textConnection = new Text(jobStatusHeader, SWT.BORDER);
+        textConnection.setLayoutData(new GridData(100, SWT.DEFAULT));
+        textConnection.setText("./.");
+        textConnection.setEditable(false);
         
         Label labelJob = new Label(jobStatusHeader, SWT.NONE);
         labelJob.setText(Messages.Label_Job_colon);
@@ -383,11 +392,13 @@ public class FileCopyStatusView extends ViewPart implements IPropertyChangeListe
 
         if (!isDataAvailable() || isAutoRefreshOn()) {
             actionRefreshView.setEnabled(false);
+            textConnection.setText("./.");
             textJob.setText("./.");
             textStatus.setText("./.");
             textPhase.setText("./.");
         } else {
             actionRefreshView.setEnabled(true);
+            textConnection.setText(inputData.getParentSubSystem().getConnectionName());
             textJob.setText(inputData.getName());
             textStatus.setText(inputData.getStatus().label());
             textPhase.setText(inputData.getPhase().label());

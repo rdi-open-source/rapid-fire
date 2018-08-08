@@ -154,6 +154,7 @@ public class Messages extends NLS {
     public static String Label_Uninstal_library_instructions;
     public static String Label_Start_journaling_Rapid_Fire_files;
     public static String Label_Start_journaling_Rapid_Fire_files_help;
+    public static String Label_Connection_colon;
 
     public static String Tooltip_Library;
     public static String Tooltip_Job;
