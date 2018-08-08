@@ -340,6 +340,8 @@ public class FileCopyStatusView extends ViewPart implements IPropertyChangeListe
 
     public void setInput(IRapidFireJobResource job) {
 
+    	textConnection.setFocus();
+    	
         this.inputData = job;
 
         if (this.inputData != null) {
