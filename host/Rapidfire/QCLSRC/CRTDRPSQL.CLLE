@@ -253,6 +253,8 @@
              CALLSUBR   SUBR(EXECUTE)
              CHGVAR     VAR(&NAME) VALUE('JOB03')
              CALLSUBR   SUBR(EXECUTE)
+             CHGVAR     VAR(&NAME) VALUE('JOB04')
+             CALLSUBR   SUBR(EXECUTE)
 
              CHGVAR     VAR(&NAME) VALUE('PROMOTER01')
              CALLSUBR   SUBR(EXECUTE)
