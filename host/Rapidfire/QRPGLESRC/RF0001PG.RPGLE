@@ -1373,8 +1373,19 @@ BegSr SR090;
     DFJOB = X1JOB;
     DFDSCR = X1DSCR;
     DFSTS = X1STS;
-    DFERR = X1ERR;
     DFPHS = X1PHS;
+    DFERR = X1ERR;
+    if (DFSTS = '*RUN' and
+        not JOB_is_Job_Active(
+          X1BJOB : // --> Job
+          X1BUSR : // --> User
+          X1BNBR   // --> Number
+        )
+       );
+      DFSTS = '*ABORT';
+      DFPHS = '*NONE';
+      DFERR = 'N';
+    endif;
     DFCRTE = X1CRTE;
     // Auswahl initialisieren
     DFOPT = *Blanks;
@@ -1410,6 +1421,7 @@ BegSr SR090;
     *IN63 = *Off;
     // Bezugszahlen für Satz setzen
     If DFERR = 'Y' Or
+      DFSTS = '*ABORT' Or
       DFPHS = '*ABORT';
       *IN10 = *On;
     Else;
@@ -1566,6 +1578,7 @@ BegSr SR095;
     *IN63 = *On;
     // Bezugszahlen für Satz setzen
     If DFERR = 'Y' Or
+      DFSTS = '*ABORT' Or
       DFPHS = '*ABORT';
       *IN10 = *On;
     Else;
@@ -1643,12 +1656,12 @@ BegSr SR105;
     When ITFnd = 'J' And
       DFOPT = *Blanks;
       OptAct(ITOPos) = 'N';
-      OptSts(ITOpt) = '';
+      OptSts(ITOPos) = '';
       // Die Auswahl wurde bei einer bestehenden Position geändert
     When ITFnd = 'J' And
       DFOPT <> *Blanks;
       OptOpt(ITOPos) = DFOPT;
-      OptSts(ITOpt) = DFSTS;
+      OptSts(ITOPos) = DFSTS;
     EndSl;
     // Schlüssel merken
     If ITPos = '*YES' And

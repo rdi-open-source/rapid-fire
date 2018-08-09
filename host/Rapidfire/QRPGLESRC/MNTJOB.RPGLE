@@ -65,6 +65,8 @@ DCL-F LIBLS
 
 /INCLUDE QCPYSRC,CHKVAL
 
+/INCLUDE QCPYSRC,JOB
+
 DCL-DS PSDS LEN(429) QUALifIED PSDS;
 END-DS;
 
@@ -567,6 +569,9 @@ DCL-PROC MNTJOB_checkAction EXPORT;
   DCL-S l_SUCCESS CHAR(1);   // Success
   DCL-S l_MSG     CHAR(256); // Message
   DCL-S l_OPN     IND;       // Open indicator
+  DCL-S l_STS     CHAR(10);  // Status
+  DCL-S l_PHS     CHAR(10);  // Phase
+  DCL-S l_ERR     CHAR(1);   // Error
 
   // Initialize returning fields
   p_MSG = *blanks;
@@ -604,35 +609,52 @@ DCL-PROC MNTJOB_checkAction EXPORT;
       leave;
     endif;
 
+    // Set status
+    l_STS = X1STS;
+    l_PHS = X1PHS;
+    l_ERR = X1ERR;
+    if (l_STS = '*RUN' and
+        not JOB_is_Job_Active(
+          X1BJOB : // --> Job
+          X1BUSR : // --> User
+          X1BNBR   // --> Number
+        )
+       );
+      l_STS = '*ABORT';
+      l_PHS = '*NONE';
+      l_ERR = 'N';
+    endif;
+
     // The action is only valid for jobs with status *RDY
     if ((p_ACT = MNTJOB_CHANGE or
          p_ACT = MNTJOB_DELETE or
          p_ACT = MNTJOB_TSTJOB or
          p_ACT = MNTJOB_STRJOB) and
-        X1STS <> '*RDY');
+        l_STS <> '*RDY');
       l_MSGID = 'ERR0006';
       leave;
     endif;
 
-    // The action is only valid for jobs with status *RUN-PND, *RUN or *END-PND
+    // The action is only valid for jobs with status *RUN-PND, *RUN, *END-PND or *ABORT
     if (p_ACT = MNTJOB_RESETJOBA and
-        X1STS <> '*RUN-PND' and
-        X1STS <> '*RUN' and
-        X1STS <> '*END-PND');
+        l_STS <> '*RUN-PND' and
+        l_STS <> '*RUN' and
+        l_STS <> '*END-PND' and
+        l_STS <> '*ABORT');
       l_MSGID = 'ERR0007';
       leave;
     endif;
 
     // The action is only valid for jobs with status *RUN
     if (p_ACT = MNTJOB_ENDJOB and
-        X1STS <> '*RUN');
+        l_STS <> '*RUN');
       l_MSGID = 'ERR0008';
       leave;
     endif;
 
     // The action is only valid for jobs with status *END
     if (p_ACT = MNTJOB_RESETJOB and
-        X1STS <> '*END');
+        l_STS <> '*END');
       l_MSGID = 'ERR0009';
       leave;
     endif;

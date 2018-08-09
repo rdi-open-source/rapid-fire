@@ -518,6 +518,8 @@ DCL-PROC JOB_is_Job_Active EXPORT;
     CHAR(10) Const;
     p_Number
     CHAR(6) Const;
+    p_Active
+    CHAR(1) Options(*NoPass);
   END-PI;
 
   Reset ERRC0100;
@@ -535,8 +537,14 @@ DCL-PROC JOB_is_Job_Active EXPORT;
   If ERRC0100.Exeption_Id = *Blanks And
         (JOBI0700.Job_Status = '*ACTIVE' Or
         JOBI0700.Job_Status = '*JOBQ');
+    If %Parms >= 4;
+      p_Active = 'Y';
+    EndIf;
     Return *On;
   Else;
+    If %Parms >= 4;
+      p_Active = 'N';
+    EndIf;
     Return *Off;
   EndIf;
 
