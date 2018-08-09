@@ -29,5 +29,11 @@ DCL-PR JOB_is_Job_Active
   *N CHAR(10) Const;                                                     // --> Job
   *N CHAR(10) Const;                                                     // --> User
   *N CHAR(6) Const;                                                      // --> Number
-  *N CHAR(1) Options(*NoPass);                                           // <-- Active
+END-PR;
+
+DCL-PR JOB_is_Job_Active_SP;
+  *N CHAR(10) Const;                                                     // --> Job
+  *N CHAR(10) Const;                                                     // --> User
+  *N CHAR(6) Const;                                                      // --> Number
+  *N CHAR(1);                                                            // <-- Active
 END-PR;

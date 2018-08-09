@@ -16,14 +16,14 @@
 -- * 07.08.2018 I   FH   I Dateierstellung                                  *
 -- *------------+--------+--------------------------------------------------*
 
-CREATE PROCEDURE "JOB_isJobActive"
+CREATE PROCEDURE "JOB_isJobActiveSP"
 (
   IN JOB CHAR(10),
   IN USER CHAR(10),
   IN NUMBER CHAR(6),
   INOUT ACTIVE CHAR(1)
 )
-EXTERNAL NAME JOB(JOB_IS_JOB_ACTIVE)
+EXTERNAL NAME JOB(JOB_IS_JOB_ACTIVE_SP)
 SPECIFIC JOB04
 LANGUAGE RPGLE
 PARAMETER STYLE GENERAL

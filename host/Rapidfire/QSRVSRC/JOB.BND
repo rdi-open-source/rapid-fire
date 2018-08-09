@@ -36,6 +36,7 @@
                 EXPORT     SYMBOL('JOB_END')
                 EXPORT     SYMBOL('JOB_RESET')
                 EXPORT     SYMBOL('JOB_IS_JOB_ACTIVE')
+                EXPORT     SYMBOL('JOB_IS_JOB_ACTIVE_SP')
 
              ENDPGMEXP
 
