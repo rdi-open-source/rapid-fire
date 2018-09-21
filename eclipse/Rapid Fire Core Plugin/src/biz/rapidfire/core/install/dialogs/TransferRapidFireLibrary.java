@@ -448,7 +448,6 @@ public class TransferRapidFireLibrary extends Shell {
     }
 
     public boolean connect() {
-        as400 = new AS400(hostName, "RADDATZ2", "TOOLS400");
         buttonStart.setEnabled(false);
         buttonStartJournaling.setEnabled(false);
         buttonClose.setEnabled(false);
