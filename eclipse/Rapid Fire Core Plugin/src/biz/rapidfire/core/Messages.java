@@ -233,6 +233,7 @@ public class Messages extends NLS {
     public static String NewJobWizard_Rapid_Fire_job_A_created;
     public static String NewFileWizard_File_A_created;
     public static String Copy_program_successfully_generated;
+    public static String Job_log_has_been_printed;
 
     // Action labels
     public static String ActionLabel_Refresh;
@@ -242,8 +243,10 @@ public class Messages extends NLS {
     public static String ActionLabel_Enable_activity_time_frame;
     public static String ActionLabel_Disable_activity_time_frame;
     public static String ActionLabel_Start_Transfer;
+    public static String ActionLabel_Print_job_log;
     public static String ActionLabel_Close;
     public static String ActionLabel_Copy;
+    public static String ActionLabel_Copy_all;
     public static String ActionLabel_Transfer_Rapid_Fire_library;
     public static String ActionLabel_Reapply_changes;
 
@@ -413,6 +416,9 @@ public class Messages extends NLS {
     public static String CommandManager_002;
     public static String CommandManager_003;
     public static String CommandManager_004;
+
+    // String compare
+    public static String Server_job_colon;
 
     private Messages() {
     }

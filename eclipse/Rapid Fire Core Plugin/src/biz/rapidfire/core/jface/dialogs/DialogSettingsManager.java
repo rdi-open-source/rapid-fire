@@ -17,9 +17,15 @@ import biz.rapidfire.core.helpers.StringHelper;
 public class DialogSettingsManager {
 
     private IDialogSettings dialogSettings = null;
+    private Class<?> section;
 
     public DialogSettingsManager(IDialogSettings aDialogSettings) {
-        dialogSettings = aDialogSettings;
+        this(aDialogSettings, null);
+    }
+
+    public DialogSettingsManager(IDialogSettings aDialogSettings, Class<?> section) {
+        this.dialogSettings = aDialogSettings;
+        this.section = section;
     }
 
     /**
@@ -102,7 +108,18 @@ public class DialogSettingsManager {
      * @return dialog settings
      */
     private IDialogSettings getDialogSettings() {
-        return dialogSettings;
+
+        if (section == null) {
+            return dialogSettings;
+        }
+
+        String sectionName = section.getName();
+        IDialogSettings dialogSectionSettings = dialogSettings.getSection(sectionName);
+        if (dialogSectionSettings == null) {
+            dialogSectionSettings = dialogSettings.addNewSection(sectionName);
+        }
+
+        return dialogSectionSettings;
     }
 
 }

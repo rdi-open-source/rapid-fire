@@ -24,21 +24,39 @@ import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.KeyListener;
 import org.eclipse.swt.events.MenuAdapter;
 import org.eclipse.swt.events.MenuEvent;
+import org.eclipse.swt.events.MouseAdapter;
+import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
+import org.eclipse.swt.events.ShellAdapter;
+import org.eclipse.swt.events.ShellEvent;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Display;
+import org.eclipse.swt.widgets.Event;
+import org.eclipse.swt.widgets.Group;
+import org.eclipse.swt.widgets.Label;
 import org.eclipse.swt.widgets.Link;
+import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
+import org.eclipse.swt.widgets.Text;
 import org.eclipse.ui.PlatformUI;
+
+import biz.rapidfire.core.Messages;
+import biz.rapidfire.core.RapidFireCorePlugin;
+import biz.rapidfire.core.helpers.ClipboardHelper;
+import biz.rapidfire.core.helpers.RapidFireHelper;
+import biz.rapidfire.core.helpers.StringHelper;
+import biz.rapidfire.core.preferences.Preferences;
+import biz.rapidfire.core.swt.widgets.WidgetFactory;
 
 import com.ibm.as400.access.AS400;
 import com.ibm.as400.access.AS400FTP;
@@ -49,24 +67,25 @@ import com.ibm.as400.access.Job;
 import com.ibm.as400.access.JobLog;
 import com.ibm.as400.access.QueuedMessage;
 
-import biz.rapidfire.core.Messages;
-import biz.rapidfire.core.RapidFireCorePlugin;
-import biz.rapidfire.core.helpers.ClipboardHelper;
-import biz.rapidfire.core.helpers.RapidFireHelper;
-import biz.rapidfire.core.preferences.Preferences;
-import biz.rapidfire.core.swt.widgets.WidgetFactory;
-
 public class TransferRapidFireLibrary extends Shell {
+
+    private static final String ASP_DEVICE_DEFAULT_VALUE = "*DEFAULT";
 
     private AS400 as400;
     private CommandCall commandCall;
     private Table tableStatus;
+    private Composite buttonPanel;
     private Button buttonStart;
     private Button buttonStartJournaling;
     private Button buttonClose;
+    private Button buttonJobLog;
     private String rapidFireLibrary;
+    private String aspDevice;
     private int ftpPort;
     private String hostName;
+    private Group groupRestoreParameters;
+    private Label lblASPDevice;
+    private Text txtASPDevice;
 
     public TransferRapidFireLibrary(Display display, int style, String rapidFireLibrary, String aHostName, int aFtpPort) {
         super(display, style);
@@ -74,10 +93,31 @@ public class TransferRapidFireLibrary extends Shell {
         setImage(RapidFireCorePlugin.getDefault().getImageRegistry().get(RapidFireCorePlugin.IMAGE_TRANSFER_LIBRARY));
 
         this.rapidFireLibrary = rapidFireLibrary;
+        this.aspDevice = ASP_DEVICE_DEFAULT_VALUE;
         this.hostName = aHostName;
         setFtpPort(aFtpPort);
 
         createContents();
+
+        addListener(SWT.Close, new Listener() {
+            public void handleEvent(Event event) {
+                if (!buttonClose.isDisposed()) {
+                    event.doit = buttonClose.isEnabled();
+                } else {
+                    event.doit = true;
+                }
+            }
+        });
+
+        addShellListener(new ShellAdapter() {
+            public void shellClosed(ShellEvent arg0) {
+                if (as400 != null) {
+                    as400.disconnectAllServices();
+                    as400 = null;
+                    commandCall = null;
+                }
+            }
+        });
     }
 
     private void setFtpPort(int aFtpPort) {
@@ -96,7 +136,7 @@ public class TransferRapidFireLibrary extends Shell {
         setLayout(gl_shell);
 
         setText(Messages.DialogTitle_Transfer_Rapid_Fire_library);
-        setSize(500, 330);
+        setSize(500, 400);
 
         buttonStart = WidgetFactory.createPushButton(this);
         buttonStart.addSelectionListener(new TransferLibrarySelectionAdapter());
@@ -117,7 +157,7 @@ public class TransferRapidFireLibrary extends Shell {
         });
 
         Link lnkHelp = new Link(this, SWT.NONE);
-        lnkHelp.setLayoutData(new GridData(SWT.RIGHT, SWT.CENTER, false, false));
+        lnkHelp.setLayoutData(new GridData(SWT.END, SWT.CENTER, true, false));
         lnkHelp.setText(Messages.bindParameters(Messages.Label_Start_journaling_Rapid_Fire_files_help, "<a>", "</a>")); //$NON-NLS-1$ //$NON-NLS-2$
         lnkHelp.pack();
         lnkHelp.addSelectionListener(new SelectionAdapter() {
@@ -127,6 +167,20 @@ public class TransferRapidFireLibrary extends Shell {
                     .displayHelpResource("/biz.rapidfire.help/html/install/install_library.html#before_you_begin"); //$NON-NLS-1$
             }
         });
+
+        groupRestoreParameters = new Group(this, SWT.NONE);
+        groupRestoreParameters.setLayoutData(new GridData(SWT.FILL, SWT.BEGINNING, true, false, 2, 1));
+        groupRestoreParameters.setLayout(new GridLayout(2, false));
+        groupRestoreParameters.setText("Restore_library_parameters");
+
+        lblASPDevice = new Label(groupRestoreParameters, SWT.NONE);
+        lblASPDevice.setText("ASP_device_name:");
+
+        txtASPDevice = WidgetFactory.createNameText(groupRestoreParameters);
+        GridData ld_txtASPDevice = new GridData();
+        ld_txtASPDevice.widthHint = 120;
+        txtASPDevice.setLayoutData(ld_txtASPDevice);
+        txtASPDevice.setText(aspDevice);
 
         tableStatus = new Table(this, SWT.BORDER | SWT.MULTI);
         final GridData gd_tableStatus = new GridData(SWT.FILL, SWT.FILL, true, true, 2, 1);
@@ -158,7 +212,16 @@ public class TransferRapidFireLibrary extends Shell {
                     tableStatus.selectAll();
                 }
                 if (event.keyCode == 'c') {
-                    ClipboardHelper.setTableItemsText(tableStatus.getSelection());
+                    copyStatusLinesToClipboard(tableStatus.getSelection());
+                }
+            }
+        });
+
+        tableStatus.addMouseListener(new MouseAdapter() {
+            @Override
+            public void mouseDoubleClick(MouseEvent e) {
+                if (e.button == 1) {
+                    copyStatusLinesToClipboard(tableStatus.getSelection());
                 }
             }
         });
@@ -167,7 +230,67 @@ public class TransferRapidFireLibrary extends Shell {
         menuTableStatusContextMenu.addMenuListener(new TableContextMenu(tableStatus));
         tableStatus.setMenu(menuTableStatusContextMenu);
 
-        buttonClose = WidgetFactory.createPushButton(this);
+        buttonPanel = createButtons(false);
+    }
+
+    protected void copyStatusLinesToClipboard(TableItem[] tableItems) {
+
+        if (tableItems.length == 1) {
+            copyStatusLineToClipboard();
+        } else {
+            ClipboardHelper.setTableItemsText(tableItems);
+        }
+    }
+
+    protected void copyStatusLineToClipboard() {
+
+        TableItem[] tableItems = tableStatus.getSelection();
+        if (tableItems != null && tableItems.length >= 1) {
+            String text = tableItems[0].getText();
+            if (text.startsWith(Messages.Server_job_colon)) {
+                text = text.substring(Messages.Server_job_colon.length());
+            }
+            ClipboardHelper.setText(text.trim());
+        }
+    }
+
+    private Composite createButtons(boolean printJobLogButton) {
+
+        Composite buttonPanel = new Composite(this, SWT.NONE);
+        GridLayout buttonPanelLayout = new GridLayout(1, true);
+        buttonPanel.setLayoutData(new GridData(SWT.CENTER, SWT.CENTER, true, false, 2, 1));
+        buttonPanelLayout.marginHeight = 0;
+        buttonPanelLayout.marginWidth = 0;
+        buttonPanel.setLayout(buttonPanelLayout);
+
+        if (printJobLogButton) {
+            createButtonPrintJobLog(buttonPanel);
+        }
+
+        createButtonClose(buttonPanel);
+
+        return buttonPanel;
+    }
+
+    private void createButtonPrintJobLog(Composite buttonPanel) {
+
+        GridLayout buttonPanelLayout = (GridLayout)buttonPanel.getLayout();
+        buttonPanelLayout.numColumns++;
+
+        buttonJobLog = WidgetFactory.createPushButton(buttonPanel);
+        buttonJobLog.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
+        buttonJobLog.setText(Messages.ActionLabel_Print_job_log);
+        buttonJobLog.addSelectionListener(new SelectionAdapter() {
+            @Override
+            public void widgetSelected(SelectionEvent e) {
+                printJobLog();
+            }
+        });
+    }
+
+    private void createButtonClose(Composite buttonPanel) {
+        buttonClose = WidgetFactory.createPushButton(buttonPanel);
+        buttonClose.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
         buttonClose.setText(Messages.ActionLabel_Close);
         buttonClose.addSelectionListener(new SelectionAdapter() {
             @Override
@@ -175,9 +298,6 @@ public class TransferRapidFireLibrary extends Shell {
                 close();
             }
         });
-
-        GridData gd_buttonClose = new GridData(GridData.CENTER, GridData.CENTER, true, false, 2, 1);
-        buttonClose.setLayoutData(gd_buttonClose);
     }
 
     @Override
@@ -189,22 +309,25 @@ public class TransferRapidFireLibrary extends Shell {
         TableItem itemStatus = new TableItem(tableStatus, SWT.BORDER);
         itemStatus.setText(status);
         tableStatus.update();
+        redraw();
     }
 
     private void setErrorStatus(String status) {
         setStatus("!!!   " + status + "   !!!");
     }
 
-    private boolean checkLibraryPrecondition(String libraryName) {
+    private boolean checkLibraryPrecondition(String libraryName, String aspDevice) {
 
         while (libraryExists(libraryName)) {
-            if (!MessageDialog.openQuestion(getShell(), Messages.DialogTitle_Delete_Object,
+            if (!MessageDialog.openQuestion(
+                getShell(),
+                Messages.DialogTitle_Delete_Object,
                 Messages.bind(Messages.Library_A_does_already_exist, libraryName) + "\n\n"
                     + Messages.bind(Messages.Question_Do_you_want_to_delete_library_A, libraryName))) {
                 return false;
             }
             setStatus(Messages.bind(Messages.Deleting_library_A, libraryName));
-            deleteLibrary(libraryName, true);
+            deleteLibrary(libraryName, aspDevice);
         }
 
         return true;
@@ -219,7 +342,7 @@ public class TransferRapidFireLibrary extends Shell {
         return true;
     }
 
-    private boolean deleteLibrary(String libraryName, boolean logErrors) {
+    private boolean deleteLibrary(String libraryName, String aspDevice) {
 
         String cpfMsg;
 
@@ -241,7 +364,8 @@ public class TransferRapidFireLibrary extends Shell {
             executeCommand("RMVLIBLE LIB(" + libraryName + ")", false);
         }
 
-        cpfMsg = executeCommand("DLTLIB LIB(" + libraryName + ")", logErrors);
+        cpfMsg = executeCommand("DLTLIB LIB(" + libraryName + ")", true);
+        cpfMsg = executeCommand(produceDeleteLibraryCommand(libraryName, aspDevice), true);
         if (!cpfMsg.equals("")) {
             return false;
         }
@@ -252,9 +376,11 @@ public class TransferRapidFireLibrary extends Shell {
     private boolean checkSaveFilePrecondition(String workLibrary, String saveFileName) {
 
         while (saveFileExists(workLibrary, saveFileName)) {
-            if (!MessageDialog.openQuestion(getShell(), Messages.DialogTitle_Delete_Object,
-                Messages.bind(Messages.File_B_in_library_A_does_already_exist, new String[] { workLibrary, saveFileName }) + "\n\n" + Messages
-                    .bind(Messages.Question_Do_you_want_to_delete_object_A_B_type_C, new String[] { workLibrary, saveFileName, "*FILE" }))) {
+            if (!MessageDialog.openQuestion(
+                getShell(),
+                Messages.DialogTitle_Delete_Object,
+                Messages.bind(Messages.File_B_in_library_A_does_already_exist, new String[] { workLibrary, saveFileName }) + "\n\n"
+                    + Messages.bind(Messages.Question_Do_you_want_to_delete_object_A_B_type_C, new String[] { workLibrary, saveFileName, "*FILE" }))) {
                 return false;
             }
             setStatus(Messages.bind(Messages.Deleting_object_A_B_of_type_C, new String[] { workLibrary, saveFileName, "*FILE" }));
@@ -291,7 +417,7 @@ public class TransferRapidFireLibrary extends Shell {
         return true;
     }
 
-    private boolean restoreLibrary(String workLibrary, String saveFileName, String libraryName) throws Exception {
+    private boolean restoreLibrary(String workLibrary, String saveFileName, String libraryName, String aspDevice) throws Exception {
 
         AS400 system = commandCall.getSystem();
         Job serverJob = commandCall.getServerJob();
@@ -304,8 +430,7 @@ public class TransferRapidFireLibrary extends Shell {
             startingMessageDate = startingMessages[0].getDate().getTime();
         }
 
-        String cpfMsg = executeCommand(
-            "RSTLIB SAVLIB(RAPIDFIRE) DEV(*SAVF) SAVF(" + workLibrary + "/" + saveFileName + ") RSTLIB(" + libraryName + ")", true);
+        String cpfMsg = executeCommand(produceRestoreLibraryCommand(workLibrary, saveFileName, libraryName, aspDevice), true);
         if (!cpfMsg.equals("")) {
             if (cpfMsg.equals("CPF3773")) {
 
@@ -421,6 +546,14 @@ public class TransferRapidFireLibrary extends Shell {
         return executeCommand("CALL PGM(" + libraryName + "/CRTDRPSQL) PARM(*CREATE " + libraryName + ")", logError);
     }
 
+    private void printJobLog() {
+
+        String cpfMsg = executeCommand("DSPJOBLOG JOB(*) OUTPUT(*PRINT)", true);
+        if (cpfMsg.equals("")) {
+            setStatus(Messages.Job_log_has_been_printed);
+        }
+    }
+
     private String executeCommand(String command, boolean logError) {
         try {
             commandCall.run(command);
@@ -460,8 +593,8 @@ public class TransferRapidFireLibrary extends Shell {
                     commandCall = new CommandCall(as400);
                     if (commandCall != null) {
                         hostName = as400.getSystemName();
-                        setStatus(Messages.bind(Messages.About_to_transfer_library_A_to_host_B_using_port_C,
-                            new String[] { rapidFireLibrary.trim(), hostName, Integer.toString(ftpPort) }));
+                        setStatus(Messages.bind(Messages.About_to_transfer_library_A_to_host_B_using_port_C, new String[] { rapidFireLibrary.trim(),
+                            hostName, Integer.toString(ftpPort) }));
                         buttonStart.setEnabled(true);
                         buttonStartJournaling.setEnabled(true);
                         buttonClose.setEnabled(true);
@@ -475,6 +608,39 @@ public class TransferRapidFireLibrary extends Shell {
         return false;
     }
 
+    private String produceRestoreLibraryCommand(String workLibrary, String saveFileName, String libraryName, String aspDevice) {
+
+        String command = "RSTLIB SAVLIB(RAPIDFIRE) DEV(*SAVF) SAVF(" + workLibrary + "/" + saveFileName + ") RSTLIB(" + libraryName + ")";
+        if (isASPDeviceSpecified(aspDevice)) {
+            command += " RSTASPDEV(" + aspDevice + ")";
+        }
+
+        return command;
+    }
+
+    private String produceDeleteLibraryCommand(String libraryName, String aspDevice) {
+
+        String command = "DLTLIB LIB(" + libraryName + ")";
+        if (isASPDeviceSpecified(aspDevice)) {
+            command += " ASPDEV(*)";
+        }
+
+        return command;
+    }
+
+    private boolean isASPDeviceSpecified(String aspDevice) {
+
+        if (StringHelper.isNullOrEmpty(aspDevice)) {
+            return false;
+        }
+
+        if (ASP_DEVICE_DEFAULT_VALUE.equals(aspDevice)) {
+            return false;
+        }
+
+        return true;
+    }
+
     private class TransferLibrarySelectionAdapter extends SelectionAdapter {
         @Override
         public void widgetSelected(final SelectionEvent event) {
@@ -482,79 +648,94 @@ public class TransferRapidFireLibrary extends Shell {
             buttonStart.setEnabled(false);
             buttonStartJournaling.setEnabled(false);
             buttonClose.setEnabled(false);
+            txtASPDevice.setEnabled(false);
 
             boolean successfullyTransfered = false;
-            boolean startJournaling = buttonStartJournaling.getSelection();
 
-            String workLibrary = "QGPL";
-            String saveFileName = rapidFireLibrary;
+            try {
 
-            setStatus(Messages.bind(Messages.Checking_library_A_for_existence, rapidFireLibrary));
-            if (!checkLibraryPrecondition(rapidFireLibrary)) {
-                setErrorStatus(Messages.bind(Messages.Library_A_does_already_exist, rapidFireLibrary));
-            } else {
-                setStatus(Messages.bind(Messages.Checking_file_B_in_library_A_for_existence, new String[] { workLibrary, saveFileName }));
-                if (!checkSaveFilePrecondition(workLibrary, saveFileName)) {
-                    setErrorStatus(Messages.bind(Messages.File_B_in_library_A_does_already_exist, new String[] { workLibrary, saveFileName }));
+                boolean startJournaling = buttonStartJournaling.getSelection();
+
+                String workLibrary = "QGPL";
+                String saveFileName = rapidFireLibrary;
+                aspDevice = txtASPDevice.getText().toUpperCase();
+
+                setStatus(Messages.bind(Messages.Checking_library_A_for_existence, rapidFireLibrary));
+                if (!checkLibraryPrecondition(rapidFireLibrary, aspDevice)) {
+                    setErrorStatus(Messages.bind(Messages.Library_A_does_already_exist, rapidFireLibrary));
                 } else {
-
-                    setStatus(Messages.bind(Messages.Creating_save_file_B_in_library_A, new String[] { workLibrary, saveFileName }));
-                    if (!createSaveFile(workLibrary, saveFileName, true)) {
-                        setErrorStatus(Messages.bind(Messages.Could_not_create_save_file_B_in_library_A, new String[] { workLibrary, saveFileName }));
+                    setStatus(Messages.bind(Messages.Checking_file_B_in_library_A_for_existence, new String[] { workLibrary, saveFileName }));
+                    if (!checkSaveFilePrecondition(workLibrary, saveFileName)) {
+                        setErrorStatus(Messages.bind(Messages.File_B_in_library_A_does_already_exist, new String[] { workLibrary, saveFileName }));
                     } else {
 
-                        try {
+                        setStatus(Messages.bind(Messages.Creating_save_file_B_in_library_A, new String[] { workLibrary, saveFileName }));
+                        if (!createSaveFile(workLibrary, saveFileName, true)) {
+                            setErrorStatus(Messages.bind(Messages.Could_not_create_save_file_B_in_library_A,
+                                new String[] { workLibrary, saveFileName }));
+                        } else {
 
-                            setStatus(Messages.Sending_save_file_to_host);
-                            setStatus(Messages.bind(Messages.Using_Ftp_port_number, new Integer(ftpPort)));
-                            AS400FTP client = new AS400FTP(as400);
+                            try {
 
-                            URL fileUrl = FileLocator.toFileURL(RapidFireCorePlugin.getInstallURL());
-                            File file = new File(fileUrl.getPath() + "Server" + File.separator + "RAPIDFIRE.SAVF");
-                            client.setPort(ftpPort);
-                            client.setDataTransferType(FTP.BINARY);
-                            if (client.connect()) {
-                                client.put(file, "/QSYS.LIB/" + workLibrary + ".LIB/" + saveFileName + ".FILE");
-                                client.disconnect();
-                            }
+                                setStatus(Messages.Sending_save_file_to_host);
+                                setStatus(Messages.bind(Messages.Using_Ftp_port_number, new Integer(ftpPort)));
+                                AS400FTP client = new AS400FTP(as400);
 
-                            setStatus(Messages.bind(Messages.Restoring_library_A, rapidFireLibrary));
-                            if (!restoreLibrary(workLibrary, saveFileName, rapidFireLibrary)) {
-                                setErrorStatus(Messages.bind(Messages.Could_not_restore_library_A, rapidFireLibrary));
-                            } else {
-
-                                if (initializeLibrary(rapidFireLibrary, startJournaling)) {
-                                    setErrorStatus(Messages.bind(Messages.Library_A_successfull_transfered, rapidFireLibrary));
-                                    successfullyTransfered = true;
+                                URL fileUrl = FileLocator.toFileURL(RapidFireCorePlugin.getInstallURL());
+                                File file = new File(fileUrl.getPath() + "Server" + File.separator + "RAPIDFIRE.SAVF");
+                                client.setPort(ftpPort);
+                                client.setDataTransferType(FTP.BINARY);
+                                if (client.connect()) {
+                                    client.put(file, "/QSYS.LIB/" + workLibrary + ".LIB/" + saveFileName + ".FILE");
+                                    client.disconnect();
                                 }
 
+                                setStatus(Messages.bind(Messages.Restoring_library_A, rapidFireLibrary));
+                                if (!restoreLibrary(workLibrary, saveFileName, rapidFireLibrary, aspDevice)) {
+                                    setErrorStatus(Messages.bind(Messages.Could_not_restore_library_A, rapidFireLibrary));
+                                } else {
+
+                                    if (initializeLibrary(rapidFireLibrary, startJournaling)) {
+                                        setErrorStatus(Messages.bind(Messages.Library_A_successfull_transfered, rapidFireLibrary));
+                                        successfullyTransfered = true;
+                                    }
+
+                                }
+
+                            } catch (Throwable e) {
+                                RapidFireCorePlugin.logError(Messages.Could_not_send_save_file_to_host, e);
+
+                                setErrorStatus(Messages.Could_not_send_save_file_to_host);
+                                setStatus(e.getLocalizedMessage());
+                            } finally {
+
+                                setStatus(Messages.bind(Messages.Deleting_object_A_B_of_type_C, new String[] { workLibrary, saveFileName, "*FILE" }));
+                                deleteSaveFile(workLibrary, saveFileName, true);
                             }
 
-                        } catch (Throwable e) {
-                            RapidFireCorePlugin.logError(Messages.Could_not_send_save_file_to_host, e);
-
-                            setErrorStatus(Messages.Could_not_send_save_file_to_host);
-                            setStatus(e.getLocalizedMessage());
-                        } finally {
-
-                            setStatus(Messages.bind(Messages.Deleting_object_A_B_of_type_C, new String[] { workLibrary, saveFileName, "*FILE" }));
-                            deleteSaveFile(workLibrary, saveFileName, true);
                         }
-
                     }
                 }
-            }
 
-            if (successfullyTransfered) {
-                buttonStart.setEnabled(false);
-                buttonStartJournaling.setEnabled(false);
-                buttonClose.setEnabled(true);
-                buttonClose.setFocus();
-            } else {
-                buttonStart.setEnabled(true);
-                buttonStartJournaling.setEnabled(true);
-                buttonClose.setEnabled(true);
-                buttonClose.setFocus();
+                buttonPanel.dispose();
+                buttonPanel = createButtons(true);
+                layout(true);
+
+            } finally {
+
+                if (successfullyTransfered) {
+                    buttonStart.setEnabled(false);
+                    buttonStartJournaling.setEnabled(false);
+                    buttonClose.setEnabled(true);
+                    txtASPDevice.setEnabled(false);
+                    buttonClose.setFocus();
+                } else {
+                    buttonStart.setEnabled(true);
+                    buttonStartJournaling.setEnabled(true);
+                    buttonClose.setEnabled(true);
+                    txtASPDevice.setEnabled(true);
+                    buttonClose.setFocus();
+                }
             }
         }
     }
@@ -566,6 +747,7 @@ public class TransferRapidFireLibrary extends Shell {
 
         private Table table;
         private MenuItem menuItemCopySelected;
+        private MenuItem menuItemCopyAll;
 
         public TableContextMenu(Table table) {
             this.table = table;
@@ -585,6 +767,9 @@ public class TransferRapidFireLibrary extends Shell {
             if (!((menuItemCopySelected == null) || (menuItemCopySelected.isDisposed()))) {
                 menuItemCopySelected.dispose();
             }
+            if (!((menuItemCopyAll == null) || (menuItemCopyAll.isDisposed()))) {
+                menuItemCopyAll.dispose();
+            }
         }
 
         private void createMenuItems() {
@@ -599,7 +784,16 @@ public class TransferRapidFireLibrary extends Shell {
             menuItemCopySelected.addSelectionListener(new SelectionAdapter() {
                 @Override
                 public void widgetSelected(SelectionEvent e) {
-                    ClipboardHelper.setTableItemsText(table.getItems());
+                    copyStatusLinesToClipboard(table.getSelection());
+                }
+            });
+
+            menuItemCopyAll = new MenuItem(getMenu(), SWT.NONE);
+            menuItemCopyAll.setText(Messages.ActionLabel_Copy_all);
+            menuItemCopyAll.addSelectionListener(new SelectionAdapter() {
+                @Override
+                public void widgetSelected(SelectionEvent e) {
+                    copyStatusLinesToClipboard(table.getItems());
                 }
             });
         }
