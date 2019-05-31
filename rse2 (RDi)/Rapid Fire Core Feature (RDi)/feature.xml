@@ -2,7 +2,7 @@
 <feature
       id="biz.rapidfire.core"
       label="Rapid Fire Core for RDi 8.0+ (required)"
-      version="1.0.9.r"
+      version="1.1.0.r"
       provider-name="Rapid Fire Project Team">
 
    <description url="https://sourceforge.net/projects/rapid-fire/">
@@ -11,7 +11,7 @@ Plug-in. Installing this feature is required.
    </description>
 
    <copyright url="https://sourceforge.net/projects/rapid-fire/">
-      Copyright (c) 2017-2018 Rapid Fire Project Team. All rights reserved.
+      Copyright (c) 2017-2019 Rapid Fire Project Team. All rights reserved.
    </copyright>
 
    <license url="http://www.eclipse.org/legal/cpl-v10.html">
