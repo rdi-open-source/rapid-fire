@@ -171,10 +171,10 @@ public class TransferRapidFireLibrary extends Shell {
         groupRestoreParameters = new Group(this, SWT.NONE);
         groupRestoreParameters.setLayoutData(new GridData(SWT.FILL, SWT.BEGINNING, true, false, 2, 1));
         groupRestoreParameters.setLayout(new GridLayout(2, false));
-        groupRestoreParameters.setText("Restore_library_parameters");
+        groupRestoreParameters.setText(Messages.bindParameters(Messages.Restore_library_parameters));
 
         lblASPDevice = new Label(groupRestoreParameters, SWT.NONE);
-        lblASPDevice.setText("ASP_device_name:");
+        lblASPDevice.setText(Messages.bindParameters(Messages.ASP_device_name_colon));
 
         txtASPDevice = WidgetFactory.createNameText(groupRestoreParameters);
         GridData ld_txtASPDevice = new GridData();

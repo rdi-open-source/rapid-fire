@@ -417,6 +417,10 @@ public class Messages extends NLS {
     public static String CommandManager_003;
     public static String CommandManager_004;
 
+    // Miscellaneous
+    public static String Restore_library_parameters;
+    public static String ASP_device_name_colon;
+    
     // String compare
     public static String Server_job_colon;
 
