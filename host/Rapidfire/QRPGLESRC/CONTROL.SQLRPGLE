@@ -446,7 +446,11 @@ DCL-PROC submit_Journal_Jobs;
           'JOBQ(' + %Trim(l_Job_Queue_Library) + '/' +
                     %Trim(l_Job_Queue) + ') ' +
           'LOG(4 0 *MSG) ' +
-          'HOLD(*YES)'
+          'HOLD(*YES) ' +
+          'SYSLIBL(*CURRENT) ' +
+          'CURLIB(*CURRENT) ' +
+          'INLLIBL(*CURRENT) ' +
+          'SPLFACN(*KEEP)'
         );
 
         // Journal job for journal &1 in library &2 could not be submitted
@@ -728,7 +732,11 @@ DCL-PROC submit_File_Jobs;
           'JOBQ(' + %Trim(l_Job_Queue_Library) + '/' +
                     %Trim(l_Job_Queue) + ') ' +
           'LOG(4 0 *MSG) ' +
-          'HOLD(*YES)'
+          'HOLD(*YES) ' +
+          'SYSLIBL(*CURRENT) ' +
+          'CURLIB(*CURRENT) ' +
+          'INLLIBL(*CURRENT) ' +
+          'SPLFACN(*KEEP)'
         );
 
         // File job for file &1 in library &2 could not be submitted
