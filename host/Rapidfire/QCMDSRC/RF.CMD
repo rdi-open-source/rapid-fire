@@ -18,7 +18,6 @@
      /*      >>PARM<<  HLPID(*CMD);                                                               */
      /*      >>PARM<<  HLPPNLGRP(RF);                                                             */
      /*      >>PARM<<  PMTFILE(RF);                                                               */
-     /*      >>PARM<<  PRDLIB(&LI);                                                               */
      /*    >>END-IMPORTANT<<                                                                      */
      /*    >>EXECUTE<<                                                                            */
      /*  >>END-PRE-COMPILER<<                                                                     */

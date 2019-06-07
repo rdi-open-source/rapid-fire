@@ -38,20 +38,20 @@ The BUILD command produces the Rapid Fire save file.
 :EHELP.
 .*
 .*--------------------------------------------------------------------
-.* Helptext für Schlüsselwort PRDLIB
+.* Helptext für Schlüsselwort LIB
 .*--------------------------------------------------------------------
 :HELP name='BUILD/LIB'.
 Rapid Fire library - Help
 :XH3.Rapid Fire library (LIB)
 :P.
-Specifies the name of the Rapid Fire production library. Usually that
+Specifies the name of the Rapid Fire library. Usually that
 is RAPIDFIRE.
 .*
 :IMHELP name='COM/OPTPARM'.
 .*
 :PARML.
 :PT.:PV.library name:EPV.
-:PD.Name of the Rapid Fire production library.
+:PD.Name of the Rapid Fire library.
 :EPARML.
 .*
 :EHELP.
@@ -63,17 +63,16 @@ is RAPIDFIRE.
 Copy save file - Help
 :XH3.Copy save file (CPYSAVF)
 :P.
-Specifies whether to copy the save file to the home directory of the
-user who executes the build command.
+Specifies whether to copy the save file to the IFS.
 .*
 :IMHELP name='COM/OPTPARM'.
 .*
 :PARML.
 :PT.:PK DEF.*NO:EPK.
 :PD.The save is not copied.
-:PT.:PV.*NO:EPV.
-:PD.The save file is copied to the home directory. An existing file
-with the same name will be replaced.
+:PT.:PV.*YES:EPV.
+:PD.The save file is copied to directory /home/rapidfire.
+An existing file with the same name will be replaced.
 :EPARML.
 .*
 :EHELP.

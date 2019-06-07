@@ -129,7 +129,11 @@ DCL-PROC JOB_start EXPORT;
       'JOBQ(' + %Trim(Jobs.Job_Queue_Library) + '/' +
                 %Trim(Jobs.Job_Queue) + ') ' +
       'LOG(4 0 *MSG) ' +
-      'HOLD(*YES)'
+      'HOLD(*YES) ' +
+      'SYSLIBL(*CURRENT) ' +
+      'CURLIB(*CURRENT) ' +
+      'INLLIBL(*CURRENT) ' +
+      'SPLFACN(*KEEP)'
     );
 
     // Control job for job &1 could not be submitted
