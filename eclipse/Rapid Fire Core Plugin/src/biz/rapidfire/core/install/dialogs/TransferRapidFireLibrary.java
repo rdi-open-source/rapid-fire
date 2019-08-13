@@ -592,6 +592,7 @@ public class TransferRapidFireLibrary extends Shell {
                     as400.connectService(AS400.COMMAND);
                     commandCall = new CommandCall(as400);
                     if (commandCall != null) {
+                        setStatus(Messages.Server_job_colon + " " + commandCall.getServerJob().toString());
                         hostName = as400.getSystemName();
                         setStatus(Messages.bind(Messages.About_to_transfer_library_A_to_host_B_using_port_C, new String[] { rapidFireLibrary.trim(),
                             hostName, Integer.toString(ftpPort) }));
