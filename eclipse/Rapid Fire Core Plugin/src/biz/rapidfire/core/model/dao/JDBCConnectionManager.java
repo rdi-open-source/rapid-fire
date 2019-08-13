@@ -12,6 +12,7 @@ import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
+import java.sql.Statement;
 import java.sql.Types;
 import java.util.HashMap;
 import java.util.Map;
@@ -310,6 +311,10 @@ public class JDBCConnectionManager {
         jdbcProperties.put(PROPERTIES_LIBRARIES, libraryName + ",*LIBL"); //$NON-NLS-1$
 
         Connection connection = as400JDBCDriver.connect(system, jdbcProperties, libraryName, true);
+        
+        // Remove current library from library list
+		Statement stmt = connection.createStatement();
+		stmt.executeUpdate("CALL QSYS.QCMDEXC('CHGCURLIB CURLIB(*CRTDFT)',0000000025.00000)");
 
         return connection;
     }
