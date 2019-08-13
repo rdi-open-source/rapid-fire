@@ -858,6 +858,15 @@ DCL-PROC build_Environment;
     CHAR(10) Const;
   END-PI;
 
+  // Spoolfiles created by Rapid Fire have to be created with special parameters
+  EXCCMD_execute_Command(
+    'OVRPRTF ' +
+    'FILE(*PRTF) ' +
+    'HOLD(*YES) ' +
+    'OUTQ(*JOB) ' +
+    'OVRSCOPE(*JOB)'
+  );
+
   // Declare Cursor
   Exec SQL
     Declare Files_1 Cursor For
@@ -1063,6 +1072,13 @@ DCL-PROC build_Environment;
     SqlCheckState(sqlState);
 
   EndIf;
+
+  // Delete overrides
+  EXCCMD_execute_Command(
+    'DLTOVR ' +
+    'FILE(*PRTF) ' +
+    'LVL(*JOB)'
+  );
 
 END-PROC build_Environment;
 
@@ -1540,7 +1556,7 @@ DCL-PROC PROMOTER_generate_Copy_Program EXPORT;
       RAPIDFIRE_log_Error(
         l_logErrJob :
         'MSG0051' :             // Could not retrieve field list of file &1 in library &2.
-        p_File + p_Shadow_Library :
+        p_File + p_Library :
         ERRC0100.Exeption_Id :
         ERRC0100.Exeption_Data
       );
@@ -2158,12 +2174,12 @@ DCL-PROC PROMOTER_generate_Copy_Program EXPORT;
                      : l_types) <> 0);
             l_conversionError = '*ERROR: different types';
           EndIf;
-        When l_tgtField.ccsid <> l_srcField.ccsid;
-          l_conversionError = '*ERROR: different CCSIDs';
-        When l_tgtField.datTimFmt <> l_srcField.datTimFmt;
-          l_conversionError = '*ERROR: different date/time formats';
-        When l_tgtField.datTimSep <> l_srcField.datTimSep;
-          l_conversionError = '*ERROR: different date/time separators';
+     // When l_tgtField.ccsid <> l_srcField.ccsid;
+     //   l_conversionError = '*ERROR: different CCSIDs';
+     // When l_tgtField.datTimFmt <> l_srcField.datTimFmt;
+     //   l_conversionError = '*ERROR: different date/time formats';
+     // When l_tgtField.datTimSep <> l_srcField.datTimSep;
+     //   l_conversionError = '*ERROR: different date/time separators';
         EndSl;
 
         If l_conversionError <> '';

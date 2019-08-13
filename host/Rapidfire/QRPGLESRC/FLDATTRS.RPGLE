@@ -138,12 +138,14 @@ DCL-PROC FieldAttributes_new EXPORT;
   //  Handle
   DCL-DS handle likeds(handle_t) based(pHandle);
 
-  DCL-S haveBuffer IND inz(FALSE);
-  DCL-S bufferSize INT(10);
-  DCL-DS buffer based(pBuffer) qualified;
+  DCL-S receiverSize INT(10);
+  DCL-DS receiver qualified;
     bytRet INT(10);
     bytAvl INT(10);
   END-DS;
+
+  DCL-S bufferSize INT(10);
+  DCL-S buffer CHAR(1) based(pBuffer);
 
   DCL-DS errCode likeds(ERRC0100) inz;
   DCL-DS qFile likeds(qObj_t) inz;
@@ -155,32 +157,26 @@ DCL-PROC FieldAttributes_new EXPORT;
      clear errCode;
   endif;
 
-  haveBuffer = FALSE;
-
   // Retrieve file description ...
 
-  // ... allocate memory
-  bufferSize = %size(buffer);
-  pBuffer = %alloc(bufferSize);
-  haveBuffer = TRUE;
+  // ... Initialize receiver
+  receiverSize = %size(receiver);
+  clear receiver;
 
   // ... determine size of memory actually needed
   qFile.name = i_file;
   qFile.lib = i_lib;
-  QDBRTVFD(buffer: bufferSize : qRetFile: 'FILD0200'
+  QDBRTVFD(receiver: receiverSize : qRetFile: 'FILD0200'
            : qFile : i_rcdFormat: '0': '*LCL':'*EXT': errCode);
 
   // ... retrieve file description
   //     (incrementing buffer size as needed; strange API)
-  dow (errCode.Exeption_Id = *Blanks and
-       buffer.bytAvl > buffer.bytRet);
-     bufferSize = buffer.bytAvl;
-     pBuffer = %realloc(pBuffer: bufferSize);
+  if (errCode.Exeption_Id = *Blanks);
+     bufferSize = receiver.bytAvl;
+     pBuffer = %alloc(bufferSize);
      QDBRTVFD(Buffer : bufferSize : qRetFile: 'FILD0200'
               : qRetFile: i_rcdFormat: '0': '*LCL': '*EXT': errCode);
-  enddo;
-
-  pHandle = *null;
+  endif;
 
   // If the file description is available ...
   if (errCode.Exeption_Id = *Blanks);
@@ -193,13 +189,7 @@ DCL-PROC FieldAttributes_new EXPORT;
      handle.lastFldNum = 0;
      handle.lastFldPtr = *null;
   else;
-  // ... else deallocate buffer and
-  //     set return value to NULL
-     if (haveBuffer);
-        dealloc(N) pBuffer;
-        haveBuffer = FALSE;
-        bufferSize = 0;
-     endif;
+  // ... else set return value to NULL
      pHandle = *null;
   endif;
 
@@ -694,6 +684,40 @@ DCL-PROC FieldAttributes_length EXPORT;
 
   // Ermitteln Anzahl Felder
   return Qdb_Qddfmt.Qddffldnum;
+
+END-PROC;
+
+//*-----------------------------------------------------------------------------------------*
+//* Returns the record format                                                               *
+//*-----------------------------------------------------------------------------------------*
+//* Parameters:                                                                             *
+//*  i_handle      - Handle create by FieldAttributes_new().                                *
+//*                                                                                         *
+//* Returns:                                                                                *
+//*  Record format.                                                                         *
+//*-----------------------------------------------------------------------------------------*
+
+DCL-PROC FieldAttributes_getRecordFormat EXPORT;
+
+  DCL-PI *N CHAR(10);
+    i_handle const  like(fldAttrs_handle_t);
+  END-PI;
+
+  //  Handle
+  DCL-DS handle likeds(handle_t) based(pHandle);
+
+    //  Format Definition Header (Qdb_Qddfmt)
+  DCL-DS Qdb_Qddfmt likeds(Qdb_Qddfmt_t)
+   based(pQdb_Qddfmt );
+
+  // Einblenden Handle
+  pHandle = i_handle;
+
+  // Ermöglichen Zugriff auf "Format Definition Header"
+  pQdb_Qddfmt = handle.pointer;
+
+  // Satzformat zurückgeben
+  return Qdb_Qddfmt.Qddfname;
 
 END-PROC;
 

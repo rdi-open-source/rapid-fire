@@ -103,6 +103,8 @@ DCL-PROC JOB_start EXPORT;
         CHAR(10);
   DCL-S l_Error
         IND;
+  DCL-S l_Count
+        INT(10);
 
   // Read job
   Exec SQL
@@ -114,63 +116,59 @@ DCL-PROC JOB_start EXPORT;
     // Initialize error
     l_Error = *On;
 
-    // Submit control job
-    EXCCMD_execute_Command(
-      'SBMJOB ' +
-      'CMD(' +
-        'CALL ' +
-        'PGM(CONTROL) ' +
-        'PARM(' +
-          '''' + p_Job + '''' + ' ' +
-          '''' + p_Test + '''' +
-        ')' +
-      ') ' +
-      'JOB(' + %Trim(p_Job) + ') ' +
-      'JOBQ(' + %Trim(Jobs.Job_Queue_Library) + '/' +
-                %Trim(Jobs.Job_Queue) + ') ' +
-      'LOG(4 0 *MSG) ' +
-      'HOLD(*YES) ' +
-      'SYSLIBL(*CURRENT) ' +
-      'CURLIB(*CURRENT) ' +
-      'INLLIBL(*CURRENT) ' +
-      'SPLFACN(*KEEP)'
-    );
+    // Check, if the combination of library and file has been specified multiple times
+    Exec SQL
+      Select Count(*) Into :l_Count
+      From
+      (
+       Select File, Library, Count(*)
+       From Files_With_Shadow_Library
+       Where Job = :p_Job
+       Group By File, Library
+       Having Count(*) > 1
+      ) As X;
+    setIgnoreWarnings();
+    If (SqlCheckState(sqlState) And
+        l_Count > *Zero);
 
-    // Control job for job &1 could not be submitted
-    If EXCCMD_Message_Id <> *Blanks;
+      // At least one combination of library and file has been specified multiple times
       RAPIDFIRE_log_Error(
         p_Job :
-        'MSG0033' :
+        'MSG0056' :
         p_Job :
-        EXCCMD_Message_Id :
-        EXCCMD_Message_Data
+        *Blanks :
+        *Blanks
       );
 
     Else;
 
-      // Get submitted job
-      Reset ERRC0100;
-      QMHRCVPM(
-        RCVM0100 :        // <-- Message information
-        %Size(RCVM0100) : // --> Length of message information
-        'RCVM0100' :      // --> Format name
-        '*' :             // --> Call stack entry
-        0 :               // --> Call stack counter
-        '*LAST' :         // --> Message type
-        *Blanks :         // --> Message key
-        0 :               // --> Wait time
-        '*SAME' :         // --> Message action
-        ERRC0100 :        // <-> Error code
-        %Size('*') :      // --> Length of call stack entry
-        '*NONE     *NONE' // --> Call stack entry qualification
+      // Submit control job
+      EXCCMD_execute_Command(
+        'SBMJOB ' +
+        'CMD(' +
+          'CALL ' +
+          'PGM(CONTROL) ' +
+          'PARM(' +
+            '''' + p_Job + '''' + ' ' +
+            '''' + p_Test + '''' +
+          ')' +
+        ') ' +
+        'JOB(' + %Trim(p_Job) + ') ' +
+        'JOBQ(' + %Trim(Jobs.Job_Queue_Library) + '/' +
+                  %Trim(Jobs.Job_Queue) + ') ' +
+        'LOG(4 0 *MSG) ' +
+        'HOLD(*YES) ' +
+        'SYSLIBL(*CURRENT) ' +
+        'CURLIB(*CURRENT) ' +
+        'INLLIBL(*CURRENT) ' +
+        'SPLFACN(*KEEP)'
       );
 
-      // Control job for job &1 could not be retrieved
-      If EXCCMD_Message_Id <> *Blanks Or
-            RCVM0100.Message_Id <> 'CPC1221';
+      // Control job for job &1 could not be submitted
+      If EXCCMD_Message_Id <> *Blanks;
         RAPIDFIRE_log_Error(
           p_Job :
-          'MSG0034' :
+          'MSG0033' :
           p_Job :
           EXCCMD_Message_Id :
           EXCCMD_Message_Data
@@ -178,35 +176,29 @@ DCL-PROC JOB_start EXPORT;
 
       Else;
 
-        // Retrieve job
-        l_Job = %SubSt(RCVM0100.Message_Text : 1 : 10);
-        l_User = %SubSt(RCVM0100.Message_Text : 11 : 10);
-        l_Number = %SubSt(RCVM0100.Message_Text : 21 : 6);
-
-        // Update Jobs
-        Exec SQL
-          Update Jobs
-          Set Status = '*RUN-PND',
-              Batch_Job = :l_Job,
-              Batch_User = :l_User,
-              Batch_Number = :l_Number
-          Where Job = :p_Job;
-        setIgnoreWarnings();
-        SqlCheckState(sqlState);
-
-        // Release journal job
-        EXCCMD_execute_Command(
-          'RLSJOB ' +
-          'JOB(' + %Trim(l_Number) + '/' +
-                   %Trim(l_User) + '/' +
-                   %Trim(l_Job) + ')'
+        // Get submitted job
+        Reset ERRC0100;
+        QMHRCVPM(
+          RCVM0100 :        // <-- Message information
+          %Size(RCVM0100) : // --> Length of message information
+          'RCVM0100' :      // --> Format name
+          '*' :             // --> Call stack entry
+          0 :               // --> Call stack counter
+          '*LAST' :         // --> Message type
+          *Blanks :         // --> Message key
+          0 :               // --> Wait time
+          '*SAME' :         // --> Message action
+          ERRC0100 :        // <-> Error code
+          %Size('*') :      // --> Length of call stack entry
+          '*NONE     *NONE' // --> Call stack entry qualification
         );
 
-        // Control job for job &1 could not be released
-        If EXCCMD_Message_Id <> *Blanks;
+        // Control job for job &1 could not be retrieved
+        If EXCCMD_Message_Id <> *Blanks Or
+              RCVM0100.Message_Id <> 'CPC1221';
           RAPIDFIRE_log_Error(
             p_Job :
-            'MSG0035' :
+            'MSG0034' :
             p_Job :
             EXCCMD_Message_Id :
             EXCCMD_Message_Data
@@ -214,8 +206,46 @@ DCL-PROC JOB_start EXPORT;
 
         Else;
 
-          // Initialize error
-          l_Error = *Off;
+          // Retrieve job
+          l_Job = %SubSt(RCVM0100.Message_Text : 1 : 10);
+          l_User = %SubSt(RCVM0100.Message_Text : 11 : 10);
+          l_Number = %SubSt(RCVM0100.Message_Text : 21 : 6);
+
+          // Update Jobs
+          Exec SQL
+            Update Jobs
+            Set Status = '*RUN-PND',
+                Batch_Job = :l_Job,
+                Batch_User = :l_User,
+                Batch_Number = :l_Number
+            Where Job = :p_Job;
+          setIgnoreWarnings();
+          SqlCheckState(sqlState);
+
+          // Release journal job
+          EXCCMD_execute_Command(
+            'RLSJOB ' +
+            'JOB(' + %Trim(l_Number) + '/' +
+                     %Trim(l_User) + '/' +
+                     %Trim(l_Job) + ')'
+          );
+
+          // Control job for job &1 could not be released
+          If EXCCMD_Message_Id <> *Blanks;
+            RAPIDFIRE_log_Error(
+              p_Job :
+              'MSG0035' :
+              p_Job :
+              EXCCMD_Message_Id :
+              EXCCMD_Message_Data
+            );
+
+          Else;
+
+            // Initialize error
+            l_Error = *Off;
+
+          EndIf;
 
         EndIf;
 

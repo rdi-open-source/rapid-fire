@@ -26,7 +26,7 @@
      /* >>END-PRE-COMPILER<<                                                                      */
      /*-------------------------------------------------------------------------------------------*/
 
-             STRPGMEXP  SIGNATURE('Field_Attributes')
+             STRPGMEXP
 
                 EXPORT     SYMBOL('FLDATTRS_FieldAttributes_new')
                 EXPORT     SYMBOL('FLDATTRS_FieldAttributes_delete')
@@ -34,6 +34,7 @@
                 EXPORT     SYMBOL('FLDATTRS_FieldAttributes_retrieve')
                 EXPORT     SYMBOL('FLDATTRS_FieldAttributes_length')
                 EXPORT     SYMBOL('FLDATTRS_FieldAttributes_isNull')
+                EXPORT     SYMBOL('FLDATTRS_FieldAttributes_getRecordFormat')
                 EXPORT     SYMBOL('FLDATTRS_FieldAttributes_getFormatLevelId')
 
              ENDPGMEXP

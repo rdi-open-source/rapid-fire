@@ -58,12 +58,12 @@
 
              CHGVAR     VAR(&RF_VER ) VALUE('05')
              CHGVAR     VAR(&RF_RLS ) VALUE('00')
-             CHGVAR     VAR(&RF_MDN ) VALUE('12')
+             CHGVAR     VAR(&RF_MDN ) VALUE('13')
 
-             CHGVAR     VAR(&CM_VER ) VALUE('04')
+             CHGVAR     VAR(&CM_VER ) VALUE('05')
              CHGVAR     VAR(&CM_RLS ) VALUE('01')
              CHGVAR     VAR(&CM_MDN ) VALUE('00')
-             CHGVAR     VAR(&CM_PTF ) VALUE('C410000032')
+             CHGVAR     VAR(&CM_PTF ) VALUE('C510000')
 
              CHGVAR     VAR(&BD_DATE) VALUE(&DATEISO)
 
@@ -85,7 +85,8 @@
              /* --------------------------------------------------- */
              /*   Error Handler                                     */
              /* --------------------------------------------------- */
- ERRHDLR:    CALL       PGM(QMHMOVPM) PARM(&ERRMSGKEY &ERRMSGTYPE &ERRNUMTYPE &ERRSTKE &ERRSTKCNT &ERRCODE    )
+ ERRHDLR:    CALL       PGM(QMHMOVPM) PARM(&ERRMSGKEY &ERRMSGTYPE &ERRNUMTYPE &ERRSTKE &ERRSTKCNT +
+                          &ERRCODE    )
              MONMSG     MSGID(CPF0000)
 
              CALL       PGM(QMHRSNEM) PARM(&ERRMSGKEY &ERRCODE    )

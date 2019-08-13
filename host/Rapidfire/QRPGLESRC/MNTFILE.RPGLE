@@ -52,13 +52,6 @@ DCL-F FILES
       COMMIT
       USROPN;
 
-DCL-F FILESI01
-      DISK(*EXT)
-      USAGE(*INPUT)
-      KEYED
-      RENAME(FILES : FILERF01)
-      USROPN;
-
 //*-----------------------------------------------------------------------------------------*
 
 /INCLUDE QCPYSRC,MNTJOB
@@ -98,7 +91,6 @@ DCL-PROC MNTFILE_openFiles EXPORT;
 
   open JOBS;
   open FILES;
-  open FILESI01;
 
   g_OPN = *on;
 
@@ -115,7 +107,6 @@ DCL-PROC MNTFILE_closeFiles EXPORT;
 
   close JOBS;
   close FILES;
-  close FILESI01;
 
   g_OPN = *off;
 
@@ -351,17 +342,6 @@ DCL-PROC MNTFILE_check EXPORT;
         p_FLD = 'FILE';
         l_MSGID = 'ERR0005';
         leave;
-      endif;
-
-      // The file does already exist
-      if Not (g_MODE = MNTFILE_CHANGE and
-              g_FILE = X3FILE);
-        SetLL ( g_JOB : g_FILE) FILERF01;
-        if %Equal;
-          p_FLD = 'FILE';
-          l_MSGID = 'ERR0008';
-          leave;
-        endif;
       endif;
 
       // The value in field 'Type' is not valid

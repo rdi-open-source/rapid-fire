@@ -66,6 +66,15 @@ DCL-PR FieldAttributes_length
   i_handle const  like(fldAttrs_handle_t);
 END-PR;
 
+//  Returns the record format
+DCL-PR FieldAttributes_getRecordFormat
+       CHAR(10)
+       extproc('FLDATTRS+
+       _FieldAttributes_getRecordFormat+
+       ');
+  i_handle const  like(fldAttrs_handle_t);
+END-PR;
+
 //  Returns the format level identifier used for level check.
 DCL-PR FieldAttributes_getFormatLevelId
        CHAR(13)
