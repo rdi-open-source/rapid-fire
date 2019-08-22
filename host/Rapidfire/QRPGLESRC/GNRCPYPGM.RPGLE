@@ -477,6 +477,7 @@ DCL-PROC GNRCPYPGM_book EXPORT;
   PROMOTER_generate_Copy_Program(
     g_JOB :
     g_POS :
+    g_ARA :
     g_LIB :
     g_SLIB :
     X3FILE :

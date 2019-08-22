@@ -111,6 +111,7 @@ CTL-OPT ExtBinInt(*YES);
 /Include QCPYSRC,FILD0100
 /Include QCPYSRC,SQLSTS
 /Include QCPYSRC,SETCCSID
+/Include QCPYSRC,PRCSDT
 
 /Include QCPYSRC,TYPES_H                    Type Templates
 /Include QCPYSRC,FLDATTRS                   Field Attributes
@@ -858,6 +859,16 @@ DCL-PROC build_Environment;
     CHAR(10) Const;
   END-PI;
 
+  // Locale field declarations
+
+  DCL-S l_SDTViewTarget CHAR(10);
+  DCL-S l_SDTViewRecordFormatTarget CHAR(10);
+  DCL-S l_SDTViewFormatLevelIdTarget CHAR(13);
+  DCL-S l_SDTViewSource CHAR(10);
+  DCL-S l_SDTViewRecordFormatSource CHAR(10);
+  DCL-S l_SDTViewFormatLevelIdSource CHAR(13);
+  DCL-S l_Error CHAR(256);
+
   // Spoolfiles created by Rapid Fire have to be created with special parameters
   EXCCMD_execute_Command(
     'OVRPRTF ' +
@@ -992,7 +1003,7 @@ DCL-PROC build_Environment;
 
       // Retrieve members of old file
       retrieve_Members(
-        Files.Job :
+        p_Job :
         Files.Position :
         Files.Area :
         Files.Library :
@@ -1006,7 +1017,7 @@ DCL-PROC build_Environment;
 
       // Retrieve members of new file
       retrieve_Members(
-        Files.Job :
+        p_Job :
         Files.Position :
         Files.Area :
         Files.Shadow_Library :
@@ -1020,9 +1031,10 @@ DCL-PROC build_Environment;
 
       // Create members
       create_Members(
-        Files.Job :
+        p_Job :
         Files.Position :
         Files.Area :
+        Files.Library :
         Files.Shadow_Library :
         Files.File :
         Files.Type
@@ -1031,27 +1043,11 @@ DCL-PROC build_Environment;
         Leave;
       EndIf;
 
-      // Generate copy program
-      If Files.Type = '*PHYSICAL' And
-            Files.Copy_Program = '*GEN';
-        PROMOTER_generate_Copy_Program(
-          p_Job :
-          Files.Position :
-          Files.Library :
-          Files.Shadow_Library :
-          Files.File :
-          Files.Conversion_Program_Library :
-          Files.Conversion_Program
-        );
-        If RAPIDFIRE_is_Error(p_Job);
-          Leave;
-        EndIf;
-      EndIf;
-
-      // Create work files
       If Files.Type = '*PHYSICAL';
+
+        // Create work files
         create_Work_Files(
-          Files.Job :
+          p_Job :
           Files.Position :
           Files.Area :
           Files.Library :
@@ -1061,6 +1057,98 @@ DCL-PROC build_Environment;
         If RAPIDFIRE_is_Error(p_Job);
           Leave;
         EndIf;
+
+        // Create environment for "Special Data Types" like LOB and DATALINK
+        If Not PRCSDT_createEnvironment(
+          p_Job :                        // --> Job
+          Files.Position :               // --> Position
+          Files.Area :                   // --> Area
+          Files.Library :                // --> Library
+          Files.Shadow_Library :         // --> Shadow library
+          Files.File :                   // --> File
+          'N' :                          // --> SDT View Processing
+          l_SDTViewTarget :              // <-- SDT View Target
+          l_SDTViewRecordFormatTarget :  // <-- SDT View Record Format Target
+          l_SDTViewFormatLevelIdTarget : // <-- SDT View Format Level Id. Target
+          l_SDTViewSource :              // <-- SDT View Source
+          l_SDTViewRecordFormatSource :  // <-- SDT View Record Format Target
+          l_SDTViewFormatLevelIdSource : // <-- SDT View Format Level Id. Target
+          l_Error                        // <-- Error
+        );
+          RAPIDFIRE_log_Error(
+            p_Job :
+            'MSG0057' :
+            l_Error :
+            *Blanks :
+            *Blanks
+          );
+          Leave;
+        EndIf;
+
+        // Store SDT views
+        Exec SQL
+          Update Areas
+          Set SDT_View_Target = :l_SDTViewTarget,
+              SDT_View_Source = :l_SDTViewSource
+          Where Job = :p_Job And
+                Position = :Files.Position And
+                Area = :Files.Area;
+        setIgnoreWarnings();
+        SqlCheckState(sqlState);
+
+        // Check, if file in source library contains fields with "Special Data Types" like LOB and DATALINK
+        If PRCSDT_containsSDTFields(
+          p_Job :
+          Files.Position :
+          Files.Area :
+          'S'
+        );
+          RAPIDFIRE_log_Error(
+            p_Job :
+            'MSG0058' :
+            Files.File +
+            Files.Library :
+            *Blanks :
+            *Blanks
+          );
+          Leave;
+        EndIf;
+
+        // Check, if file in target library contains fields with "Special Data Types" like LOB and DATALINK
+        If PRCSDT_containsSDTFields(
+          p_Job :
+          Files.Position :
+          Files.Area :
+          'T'
+        );
+          RAPIDFIRE_log_Error(
+            p_Job :
+            'MSG0058' :
+            Files.File +
+            Files.Shadow_Library :
+            *Blanks :
+            *Blanks
+          );
+          Leave;
+        EndIf;
+
+        // Generate copy program
+        If Files.Copy_Program = '*GEN';
+          PROMOTER_generate_Copy_Program(
+            p_Job :
+            Files.Position :
+            Files.Area :
+            Files.Library :
+            Files.Shadow_Library :
+            Files.File :
+            Files.Conversion_Program_Library :
+            Files.Conversion_Program
+          );
+          If RAPIDFIRE_is_Error(p_Job);
+            Leave;
+          EndIf;
+        EndIf;
+
       EndIf;
 
     EndDo;
@@ -1393,6 +1481,8 @@ DCL-PROC PROMOTER_generate_Copy_Program EXPORT;
     CHAR(10) Const;
     p_Position
     ZONED(6) Const;
+    p_Area
+    CHAR(10) Const;
     p_Library
     CHAR(10) Const;
     p_Shadow_Library
@@ -2762,8 +2852,9 @@ DCL-PROC retrieve_Members;
       SqlCheckState(sqlState);
 
       // Initialize records to copy
-      If p_Type = '*PHYSICAL';
-        l_Records_To_Copy=+MBRD0300_A.Number_Of_Current_Records;
+      If p_Reference_Point = '*OLD' And
+            p_Type = '*PHYSICAL';
+        l_Records_To_Copy += MBRD0300_A.Number_Of_Current_Records;
       EndIf;
 
       // Reference point is new file
@@ -2840,6 +2931,8 @@ DCL-PROC create_Members;
     CHAR(10) Const;
     p_Library
     CHAR(10) Const;
+    p_Shadow_Library
+    CHAR(10) Const;
     p_File
     CHAR(10) Const;
     p_Type
@@ -2891,7 +2984,7 @@ DCL-PROC create_Members;
         // Create members
         EXCCMD_execute_Command(
           'ADDPFM ' +
-          'FILE(' + %Trim(p_Library) + '/' +
+          'FILE(' + %Trim(p_Shadow_Library) + '/' +
                     %Trim(p_File) + ') ' +
           'MBR(' + %Trim(Members.Member) + ') ' +
           'TEXT(''' + %Trim(Members.Text) + ''')'
@@ -2911,7 +3004,7 @@ DCL-PROC create_Members;
         // Create members
         EXCCMD_execute_Command(
           'ADDLFM ' +
-          'FILE(' + %Trim(p_Library) + '/' +
+          'FILE(' + %Trim(p_Shadow_Library) + '/' +
                     %Trim(p_File) + ') ' +
           'MBR(' + %Trim(Members.Member) + ') ' +
           'DTAMBRS(' + %Trim(l_Data_Members) + ') ' +
@@ -2927,7 +3020,7 @@ DCL-PROC create_Members;
           'MSG0024' :
           Members.Member +
           p_File +
-          p_Library :
+          p_Shadow_Library :
           EXCCMD_Message_Id :
           EXCCMD_Message_Data
         );
@@ -3369,7 +3462,7 @@ DCL-PROC PROMOTER_promote EXPORT;
       // Get force ratio value of file
       l_Force_Ratio = get_Force_Ratio(
         p_Job :
-        Files.Library :
+        Files.Shadow_Library :
         Files.File
       );
       If RAPIDFIRE_is_Error(p_Job);
@@ -3380,7 +3473,7 @@ DCL-PROC PROMOTER_promote EXPORT;
       If l_Force_Ratio <> '*NONE';
         set_Force_Ratio(
           p_Job :
-          Files.Library :
+          Files.Shadow_Library :
           Files.File :
           '*NONE'
         );
@@ -3413,7 +3506,7 @@ DCL-PROC PROMOTER_promote EXPORT;
       If l_Force_Ratio <> '*NONE';
         set_Force_Ratio(
           p_Job :
-          Files.Library :
+          Files.Shadow_Library :
           Files.File :
           l_Force_Ratio
         );
@@ -3700,11 +3793,7 @@ DCL-PROC call_Copy_Program;
     l_Qual_Chg_Log LIKE(l_Qual_Chg_Log);
   END-PR;
 
-  // Prepare parameters for copy program
-  l_Mode = p_Mode;
-  l_Job = p_Job;
-  l_Position = p_Position;
-  l_Area = p_Area;
+  // Prepare copy programm
   If p_Copy_Program = '*GEN';
     l_Copy_Program =
       %Trim(p_Shadow_Library) + '/' +
@@ -3714,12 +3803,30 @@ DCL-PROC call_Copy_Program;
       %Trim(p_Copy_Program_Library) + '/' +
       %Trim(p_Copy_Program);
   EndIf;
+
+  // Prepare parameters for copy program
+  l_Mode = p_Mode;
+  l_Job = p_Job;
+  l_Position = p_Position;
+  l_Area = p_Area;
   l_Qual_Source =
     %Trim(p_Library) + '/' +
     %Trim(p_File);
   l_Qual_Target =
     %Trim(p_Shadow_Library) + '/' +
     %Trim(p_File);
+  l_Qual_Records =
+    %Trim(p_Shadow_Library) + '/' +
+    %Trim(p_Workfile_Records);
+  l_Qual_Records_Target =
+    %Trim(p_Shadow_Library) + '/' +
+    %Trim(p_Workfile_Records_Target);
+  l_Qual_Changes =
+    %Trim(p_Shadow_Library) + '/' +
+    %Trim(p_Workfile_Changes);
+  l_Qual_Chg_Log =
+    %Trim(p_Shadow_Library) + '/' +
+    %Trim(p_Workfile_ChangesLog);
 
   // Declare Cursor
   Exec SQL
@@ -3753,25 +3860,21 @@ DCL-PROC call_Copy_Program;
 
       // Prepare parameters for copy program
       l_Member = Members.Member;
-      l_Qual_Records =
-        %Trim(p_Shadow_Library) + '/' +
-        %Trim(p_Workfile_Records);
-      l_Qual_Records_Target =
-        %Trim(p_Shadow_Library) + '/' +
-        %Trim(p_Workfile_Records_Target);
-      l_Qual_Changes =
-        %Trim(p_Shadow_Library) + '/' +
-        %Trim(p_Workfile_Changes);
-      l_Qual_Chg_Log =
-        %Trim(p_Shadow_Library) + '/' +
-        %Trim(p_Workfile_ChangesLog);
 
       // Call copy program
-      CALLP(E) x_Copy_Program ( l_Mode : l_Job :
-      l_Position : l_Area : l_Qual_Source :
-      l_Qual_Target : l_Member :
-      l_Qual_Records : l_Qual_Records_Target : l_Qual_Changes :
-      l_Qual_Chg_Log );
+      CallP(E) x_Copy_Program (
+        l_Mode :
+        l_Job :
+        l_Position :
+        l_Area :
+        l_Qual_Source :
+        l_Qual_Target :
+        l_Member :
+        l_Qual_Records :
+        l_Qual_Records_Target :
+        l_Qual_Changes :
+        l_Qual_Chg_Log
+      );
 
       // Copy program for file &1 in library &2 crashed. Mode &3.
       If %Error;
@@ -3815,6 +3918,10 @@ DCL-PROC PROMOTER_clean EXPORT;
     CHAR(10) Const;
   END-PI;
 
+  // Locale field declarations
+
+  DCL-S l_Error CHAR(256);
+
   // Delete temporary data
   Exec SQL
     Delete
@@ -3830,14 +3937,20 @@ DCL-PROC PROMOTER_clean EXPORT;
   setIgnoreWarnings();
   SqlCheckState(sqlState);
 
+  Exec SQL
+    Delete
+    From Fields
+    Where Job = :p_Job;
+  setIgnoreWarnings();
+  SqlCheckState(sqlState);
+
   // Declare Cursor
   Exec SQL
     Declare Files_5 Cursor For
       Select *
       From Files_With_Shadow_Library
       Where Job = :p_Job And
-            Type = '*PHYSICAL' And
-            Journaling = 'N'
+            Type = '*PHYSICAL'
       Order By Job, Position, Area
       For Read Only;
 
@@ -3861,24 +3974,48 @@ DCL-PROC PROMOTER_clean EXPORT;
         Leave;
       EndIf;
 
-      // End journaling of physical file
-      EXCCMD_execute_Command(
-        'ENDJRNPF ' +
-        'FILE(' + %Trim(Files.Library) + '/' +
-                  %Trim(Files.File) + ') ' +
-        'JRN(*FILE)'
-      );
+      If Files.Journaling = 'N';
 
-      // Journaling for file &1 in library &2 could not be ended
-      If EXCCMD_Message_Id <> *Blanks;
-        RAPIDFIRE_log_Error(
-          p_Job :
-          'MSG0040' :
-          Files.File +
-          Files.Library :
-          EXCCMD_Message_Id :
-          EXCCMD_Message_Data
+        // End journaling of physical file
+        EXCCMD_execute_Command(
+          'ENDJRNPF ' +
+          'FILE(' + %Trim(Files.Library) + '/' +
+                    %Trim(Files.File) + ') ' +
+          'JRN(*FILE)'
         );
+
+        // Journaling for file &1 in library &2 could not be ended
+        If EXCCMD_Message_Id <> *Blanks;
+          RAPIDFIRE_log_Error(
+            p_Job :
+            'MSG0040' :
+            Files.File +
+            Files.Library :
+            EXCCMD_Message_Id :
+            EXCCMD_Message_Data
+          );
+        EndIf;
+
+      EndIf;
+
+      If Files.SDT_View_Target <> *Blanks And
+         Files.SDT_View_Source <> *Blanks;
+
+        // Delete SDT view in environment for "Special Data Types" like LOB and DATALINK
+        PRCSDT_deleteEnvironment(
+          p_Job :                 // --> Job
+          Files.Position :        // --> Position
+          Files.Area :            // --> Area
+          'N' :                   // --> Delete Field List Target
+          'N' :                   // --> Delete Field List Source
+          'Y' :                   // --> Delete SDT View Target
+          'Y' :                   // --> Delete SDT View Source
+          Files.Shadow_Library :  // --> Shadow library
+          Files.SDT_View_Target : // --> SDT View Target
+          Files.SDT_View_Source : // --> SDT View Source
+          l_Error                 // <-- Error
+        );
+
       EndIf;
 
     EndDo;

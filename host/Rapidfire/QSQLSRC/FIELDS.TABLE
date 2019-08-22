@@ -1,0 +1,62 @@
+-- *------------------------------------------------------------------------*
+-- *                                                                        *
+-- * Copyright (c) 2014 Task Force IT-Consulting GmbH, Waltrop (Germany)    *
+-- * This software and the accompanying materials are made available        *
+-- * under the terms of the GNU General Public License version 2.0 (GPLv2)  *
+-- * which accompanies this distribution and is available at                *
+-- * http://www.gnu.org/licenses/gpl-2.0.html                               *
+-- *                                                                        *
+-- *------------------------------------------------------------------------*
+-- *                                                                        *
+-- * Fields                                                                 *
+-- *                                                                        *
+-- *------------------------------------------------------------------------*
+
+CREATE TABLE FIELDS
+(
+ JOB FOR COLUMN XGJOB CHAR(10) NOT NULL WITH DEFAULT,
+ POSITION FOR COLUMN XGPOS DECIMAL(6, 0) NOT NULL WITH DEFAULT,
+ AREA FOR COLUMN XGARA CHAR(10) NOT NULL WITH DEFAULT,
+ SOURCE_TARGET FOR COLUMN XGSRCTGT CHAR(1) NOT NULL WITH DEFAULT,
+ SEQUENCE FOR COLUMN XGSEQ DECIMAL(4, 0) NOT NULL WITH DEFAULT,
+ RECORD_FORMAT FOR COLUMN XGRCDFMT CHAR(10) NOT NULL WITH DEFAULT,
+ FORMAT_LEVEL_ID FOR COLUMN XGFMTLVLID CHAR(13) NOT NULL WITH DEFAULT,
+ FIELD FOR COLUMN XGFLD CHAR(10) NOT NULL WITH DEFAULT,
+ SPECIAL_DATA_TYPE FOR COLUMN XGSDT CHAR(1) NOT NULL WITH DEFAULT,
+ DEFAULT_VALUE FOR COLUMN XGDFTVAL CHAR(1) NOT NULL WITH DEFAULT
+);
+
+LABEL ON TABLE FIELDS
+ IS 'Fields';
+
+LABEL ON COLUMN FIELDS
+(
+ JOB IS 'Job',
+ POSITION IS 'Position',
+ AREA IS 'Area',
+ SOURCE_TARGET IS 'Source/Target',
+ SEQUENCE IS 'Sequence',
+ RECORD_FORMAT IS 'Record format',
+ FORMAT_LEVEL_ID IS 'Record format level id',
+ FIELD IS 'Field',
+ SPECIAL_DATA_TYPE IS 'Special data type',
+ DEFAULT_VALUE IS 'Default value'
+);
+
+LABEL ON COLUMN FIELDS
+(
+ JOB TEXT IS 'Job',
+ POSITION TEXT IS 'Position',
+ AREA TEXT IS 'Area',
+ SOURCE_TARGET TEXT IS 'Source/Target',
+ SEQUENCE TEXT IS 'Sequence',
+ RECORD_FORMAT TEXT IS 'Record format',
+ FORMAT_LEVEL_ID TEXT IS 'Record format level id',
+ FIELD TEXT IS 'Field',
+ SPECIAL_DATA_TYPE TEXT IS 'Special data type',
+ DEFAULT_VALUE TEXT IS 'Default value'
+);
+
+ALTER TABLE FIELDS
+ADD CONSTRAINT FIELDS_PRIMARY_KEY
+PRIMARY KEY (JOB, POSITION, AREA, SOURCE_TARGET, SEQUENCE);

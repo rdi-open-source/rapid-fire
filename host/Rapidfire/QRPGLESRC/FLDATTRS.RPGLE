@@ -817,9 +817,15 @@ DCL-PROC intToExtDataType;
     // DBCS-capable (not yet supported)
   when (i_inTDataType = X'0006');
     return FLDATTRS_TYPE_ERROR;
-    // Large object CLOB/BLOB
-  when (i_inTDataType = X'4004');
+    // Large object BLOB/CLOB/DBCLOB/CLOB-OPEN
+  when (i_inTDataType = X'4004' or
+        i_inTDataType = X'4005' or
+        i_inTDataType = X'4006');
     return FLDATTRS_TYPE_LOB;
+    // Data link DATALINK-CHAR/DATALINK-OPEN
+  when (i_inTDataType = X'8044' or
+        i_inTDataType = X'8046');
+    return FLDATTRS_TYPE_DATALINK;
     // Var graphic
   when (i_inTDataType = X'8005');
     return FLDATTRS_TYPE_GRAPHIC;

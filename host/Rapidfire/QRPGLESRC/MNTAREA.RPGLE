@@ -493,10 +493,13 @@ DCL-PROC MNTAREA_book EXPORT;
     XDPOS = g_POS;
 
     exsr fillRecord;
-
     XDFILE = *Blanks;
     XDRCDW = *Blanks;
+    XDRCDTW = *Blanks;
     XDCHGW = *Blanks;
+    XDLOGW = *Blanks;
+    XDSDTSRC = *Blanks;
+    XDSDTTGT = *Blanks;
     XDJLNG = *Blank;
     XDJRNL = *Blanks;
     XDJRN = *Blanks;
@@ -523,7 +526,11 @@ DCL-PROC MNTAREA_book EXPORT;
 
     XDFILE = *Blanks;
     XDRCDW = *Blanks;
+    XDRCDTW = *Blanks;
     XDCHGW = *Blanks;
+    XDLOGW = *Blanks;
+    XDSDTSRC = *Blanks;
+    XDSDTTGT = *Blanks;
     XDJLNG = *Blank;
     XDJRNL = *Blanks;
     XDJRN = *Blanks;

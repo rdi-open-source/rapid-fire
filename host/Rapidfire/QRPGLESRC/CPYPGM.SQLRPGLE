@@ -454,7 +454,8 @@
               // Update records copied
               Exec SQL
                 Update Areas
-                Set Records_Copied = :g_Records_Copied,
+                Set Records_Copied =
+                      Records_Copied + :g_Records_Copied_Internal,
                     Time_Consumed = :g_Time_Consumed
                 Where Job = :p_Job And
                       Position = :p_Position And
@@ -482,7 +483,8 @@
           // Update records copied
           Exec SQL
             Update Areas
-            Set Records_Copied = :g_Records_Copied
+            Set Records_Copied =
+                  Records_Copied + :g_Records_Copied_Internal
             Where Job = :p_Job And
                   Position = :p_Position And
                   Area = :p_Area;

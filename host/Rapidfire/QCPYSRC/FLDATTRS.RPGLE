@@ -122,6 +122,8 @@ DCL-C FLDATTRS_TYPE_TMSTMP
       const('Z');
 DCL-C FLDATTRS_TYPE_LOB
       const('1');
+DCL-C FLDATTRS_TYPE_DATALINK
+      const('2');
 
 //  Field usage ...
 DCL-C FLDATTRS_USE_ERROR

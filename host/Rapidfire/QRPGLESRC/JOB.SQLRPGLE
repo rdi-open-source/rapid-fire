@@ -411,7 +411,8 @@ DCL-PROC JOB_reset EXPORT;
           Error_Text = '',
           Batch_Job = '',
           Batch_User = '',
-          Batch_Number = ''
+          Batch_Number = '',
+          Stop_Apply_Changes = 'N'
       Where Job = :p_Job;
     setIgnoreWarnings();
     SqlCheckState(sqlState);
@@ -419,14 +420,19 @@ DCL-PROC JOB_reset EXPORT;
     // Update Areas
     Exec SQL
       Update Areas
-      Set Workfile_Records = '',
+      Set File = '',
+          Workfile_Records = '',
+          Workfile_Records_Target = '',
           Workfile_Changes = '',
           Workfile_ChangesLog = '',
+          SDT_View_Source = '',
+          SDT_View_Target = '',
           Journaling = '',
           Journal_Library = '',
           Journal = '',
           Records_To_Copy = 0,
           Records_Copied = 0,
+          Time_Consumed = 0,
           Changes_To_Apply = 0,
           Changes_Applied = 0
       Where Job = :p_Job;
@@ -445,6 +451,14 @@ DCL-PROC JOB_reset EXPORT;
     Exec SQL
       Delete
       From Members
+      Where Job = :p_Job;
+    setIgnoreWarnings();
+    SqlCheckState(sqlState);
+
+    // Delete Fields
+    Exec SQL
+      Delete
+      From Fields
       Where Job = :p_Job;
     setIgnoreWarnings();
     SqlCheckState(sqlState);

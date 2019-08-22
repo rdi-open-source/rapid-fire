@@ -8,40 +8,13 @@
 -- *                                                                        *
 -- *------------------------------------------------------------------------*
 -- *                                                                        *
--- * Files                                                                  *
+-- * Fields                                                                 *
 -- *                                                                        *
 -- *------------------------------------------------------------------------*
 
-CREATE VIEW FILES_WITH_SHADOW_LIBRARY
-FOR SYSTEM NAME FILESV01 AS
-(
- SELECT
-    A.*,
-    B.AREA,
-    B.LIBRARY,
-    B.LIBRARY_LIST,
-    B.CCSID,
-    B.COMMAND_EXTENSION,
-    B.WORKFILE_RECORDS,
-    B.WORKFILE_RECORDS_TARGET,
-    B.WORKFILE_CHANGES,
-    B.WORKFILE_CHANGESLOG,
-    B.SDT_VIEW_SOURCE,
-    B.SDT_VIEW_TARGET,
-    B.JOURNALING,
-    B.JOURNAL_LIBRARY,
-    B.JOURNAL,
-    B.RECORDS_TO_COPY,
-    B.RECORDS_COPIED,
-    B.TIME_CONSUMED,
-    B.CHANGES_TO_APPLY,
-    B.CHANGES_APPLIED,
-    C.SHADOW_LIBRARY
- FROM
-    (FILES A INNER JOIN AREAS B
-    ON A.JOB = B.JOB AND A.POSITION = B.POSITION)
-    INNER JOIN LIBRARIES C
-    ON B.JOB = C.JOB AND B.LIBRARY = C.LIBRARY
-);
-
-CL: CHGOBJD OBJ(FILESV01) OBJTYPE(*FILE) TEXT('Files'); 
+ALTER TABLE FIELDS
+ADD CONSTRAINT FIELDS___AREAS
+FOREIGN KEY (JOB, POSITION, AREA)
+REFERENCES AREAS (JOB, POSITION, AREA)
+ON DELETE CASCADE
+ON UPDATE NO ACTION

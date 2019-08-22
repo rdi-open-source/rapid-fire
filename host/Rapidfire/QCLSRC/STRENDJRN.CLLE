@@ -43,17 +43,15 @@
 
      /* Check parameters */
              IF         COND(&CMD *NE '*START' *AND &CMD *NE '*END') THEN(DO)
-                SNDPGMMSG  MSGID(CPF9898) MSGF(QCPFMSG) +
-                             MSGDTA('Usage: CALL PGM(STRENDJRN) PARM(*START|*END libraryName)') +
-                            TOPGMQ(*PRV (*PGMBDY *NONE))
+                SNDPGMMSG  MSGID(CPF9898) MSGF(QCPFMSG) MSGDTA('Usage: CALL PGM(STRENDJRN) +
+                             PARM(*START|*END libraryName)') TOPGMQ(*PRV (*PGMBDY *NONE))
                 GOTO       CMDLBL(STEP999)
              ENDDO
 
              CHKOBJ     OBJ(&LIB) OBJTYPE(*LIB)
              MONMSG     MSGID(CPF9801) EXEC(DO) /* Library not found */
-                SNDPGMMSG  MSGID(CPF9898) MSGF(QCPFMSG) +
-                             MSGDTA('Library ' *CAT &LIB *TCAT ' not found') +
-                            TOPGMQ(*PRV (*PGMBDY *NONE))
+                SNDPGMMSG  MSGID(CPF9898) MSGF(QCPFMSG) MSGDTA('Library ' *CAT &LIB *TCAT ' not +
+                             found') TOPGMQ(*PRV (*PGMBDY *NONE))
                 GOTO       CMDLBL(STEP999)
              ENDDO
 
@@ -63,8 +61,8 @@
                 MONMSG     MSGID(CPF9801) EXEC(DO) /* Journal does not yet exist */
                    RCVMSG     PGMQ(*SAME (*)) MSGTYPE(*LAST) RMV(*YES)
                    CRTJRNRCV  JRNRCV(&LIB/&JRNRCV) TEXT(&TEXT)
-                   CRTJRN     JRN(&LIB/&JRN) JRNRCV(&LIB/&JRNRCV) +
-                                MNGRCV(*SYSTEM) DLTRCV(*YES) TEXT(&TEXT)
+                   CRTJRN     JRN(&LIB/&JRN) JRNRCV(&LIB/&JRNRCV) MNGRCV(*SYSTEM) DLTRCV(*YES) +
+                                TEXT(&TEXT)
                 ENDDO
              ENDDO
 
@@ -90,6 +88,9 @@
                 CALLSUBR   SUBR(EXECUTE)
 
                 CHGVAR     VAR(&NAME) VALUE('COMMANDS')
+                CALLSUBR   SUBR(EXECUTE)
+
+                CHGVAR     VAR(&NAME) VALUE('FIELDS')
                 CALLSUBR   SUBR(EXECUTE)
 
                 CHGVAR     VAR(&NAME) VALUE('FILES')
@@ -151,13 +152,12 @@
                 DLTJRNRCV  JRNRCV(&LIB/RAPID*) DLTOPT(*IGNINQMSG)
                 MONMSG     MSGID(CPF0000)
 
-SKIP_DLT:
+ SKIP_DLT:
              ENDDO
 
      /* Exit the program */
-             SNDPGMMSG  MSGID(CPF9897) MSGF(*LIBL/QCPFMSG) +
-                          MSGDTA('Reclaim activation group RAPIDFIRE before executing the program again.') +
-                          TOPGMQ(*PRV (*PGMBDY *NONE *NONE))
+             SNDPGMMSG  MSGID(CPF9897) MSGF(*LIBL/QCPFMSG) MSGDTA('Reclaim activation group RAPIDFIRE +
+                          before executing the program again.') TOPGMQ(*PRV (*PGMBDY *NONE *NONE))
 
              RETURN
 
@@ -166,27 +166,26 @@ SKIP_DLT:
      /* --------------------------------------------------- */
              SUBR       SUBR(EXECUTE)
 
-             SELECT
-             WHEN       COND(&CMD *EQ '*START') THEN(DO)
-                IF         COND(&TYPE *EQ '*FILE') THEN(DO)
-                   STRJRNPF   FILE(&LIB/&NAME) JRN(&LIB/&JRN) +
-                                IMAGES(*BOTH) OMTJRNE(*OPNCLO)
-                   MONMSG     MSGID(CPF7030) EXEC(DO) /* Already journaled */
-                      RCVMSG     PGMQ(*SAME (*)) MSGTYPE(*LAST) RMV(*YES)
+                SELECT
+                   WHEN       COND(&CMD *EQ '*START') THEN(DO)
+                      IF         COND(&TYPE *EQ '*FILE') THEN(DO)
+                         STRJRNPF   FILE(&LIB/&NAME) JRN(&LIB/&JRN) IMAGES(*BOTH) OMTJRNE(*OPNCLO)
+                         MONMSG     MSGID(CPF7030) EXEC(DO) /* Already journaled */
+                            RCVMSG     PGMQ(*SAME (*)) MSGTYPE(*LAST) RMV(*YES)
+                         ENDDO
+                      ENDDO
+
                    ENDDO
-                ENDDO
 
-             ENDDO
+                   WHEN       COND(&CMD *EQ '*END') THEN(DO)
+                      IF         COND(&TYPE *EQ '*FILE') THEN(DO)
+                         ENDJRNPF   FILE(&LIB/&NAME) JRN(*FILE)
+                         MONMSG     MSGID(CPF9812)
+                      ENDDO
 
-             WHEN       COND(&CMD *EQ '*END') THEN(DO)
-                IF         COND(&TYPE *EQ '*FILE') THEN(DO)
-                   ENDJRNPF   FILE(&LIB/&NAME) JRN(*FILE)
-                   MONMSG     MSGID(CPF9812)
-                ENDDO
+                   ENDDO
 
-             ENDDO
-
-             ENDSELECT
+                ENDSELECT
 
              ENDSUBR
 
