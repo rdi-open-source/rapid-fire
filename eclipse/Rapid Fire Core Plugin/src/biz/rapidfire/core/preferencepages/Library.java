@@ -23,6 +23,7 @@ import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
+import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Group;
@@ -53,9 +54,13 @@ public class Library extends PreferencePage implements IWorkbenchPreferencePage 
     private String rapidFireLibrary;
     private Validator validatorLibrary;
 
+    private String aspGroup;
+    private Validator validatorASPGroup;
+    
     private SystemHostCombo comboConnection;
     private Text textFtpPortNumber;
     private Text textProductLibrary;
+    private Combo comboASPGroup;
     private Label textProductLibraryVersion;
     private Button buttonUpdateProductLibraryVersion;
     private Button buttonTransfer;
@@ -134,7 +139,35 @@ public class Library extends PreferencePage implements IWorkbenchPreferencePage 
         textProductLibrary.setTextLimit(10);
 
         validatorLibrary = Validator.getLibraryNameInstance();
+        
+        WidgetFactory.createLabel(container, Messages.Label_ASP_group_colon, Messages.Tooltip_ASP_group);
 
+        comboASPGroup = WidgetFactory.createNameCombo(container);
+        comboASPGroup.setToolTipText(Messages.Tooltip_ASP_group);
+        comboASPGroup.addModifyListener(new ModifyListener() {
+            public void modifyText(ModifyEvent arg0) {
+                aspGroup = comboASPGroup.getText().toUpperCase().trim();
+                if (aspGroup.equals("") || !validatorASPGroup.validate(aspGroup)) {
+                    setErrorMessage(Messages.The_name_of_the_asp_group_is_invalid);
+                    setValid(false);
+                } else {
+                    setErrorMessage(null);
+                    setValid(true);
+                	if (!isSlowConnection()) {
+                        updateProductLibraryVersion();
+                    } else {
+                        clearProductLibraryVersion();
+                    }
+                }
+            }
+        });
+        comboASPGroup.setLayoutData(createTextLayoutData());
+        comboASPGroup.setTextLimit(10);
+        comboASPGroup.add("*NONE");
+
+        validatorASPGroup = Validator.getNameInstance();
+        validatorASPGroup.addSpecialValue("*NONE");
+        
         WidgetFactory.createLabel(container, Messages.Label_Version_colon, Messages.Tooltip_Version);
 
         textProductLibraryVersion = new Label(container, SWT.NONE);
@@ -158,7 +191,7 @@ public class Library extends PreferencePage implements IWorkbenchPreferencePage 
             public void widgetSelected(SelectionEvent event) {
                 String hostName = comboConnection.getHostName();
                 int ftpPort = IntHelper.tryParseInt(textFtpPortNumber.getText(), Preferences.getInstance().getDefaultFtpPortNumber());
-                TransferRapidFireLibraryHandler handler = new TransferRapidFireLibraryHandler(hostName, ftpPort, rapidFireLibrary);
+                TransferRapidFireLibraryHandler handler = new TransferRapidFireLibraryHandler(hostName, ftpPort, rapidFireLibrary, aspGroup);
                 try {
                     handler.execute(null);
                 } catch (Throwable e) {
@@ -239,6 +272,8 @@ public class Library extends PreferencePage implements IWorkbenchPreferencePage 
         Preferences.getInstance().setConnectionName(comboConnection.getConnectionName());
         Preferences.getInstance()
             .setFtpPortNumber(IntHelper.tryParseInt(textFtpPortNumber.getText(), Preferences.getInstance().getDefaultFtpPortNumber()));
+        Preferences.getInstance().setASPGroup(aspGroup);
+
     }
 
     private void setScreenToValues() {
@@ -251,6 +286,7 @@ public class Library extends PreferencePage implements IWorkbenchPreferencePage 
             }
         }
         textFtpPortNumber.setText(Integer.toString(Preferences.getInstance().getFtpPortNumber()));
+        aspGroup = Preferences.getInstance().getASPGroup();
 
         setScreenValues();
 
@@ -266,6 +302,7 @@ public class Library extends PreferencePage implements IWorkbenchPreferencePage 
             setErrorMessage(Messages.bindParameters(Messages.Connection_A_not_found, connectionName));
         }
         textFtpPortNumber.setText(Integer.toString(Preferences.getInstance().getDefaultFtpPortNumber()));
+        aspGroup = Preferences.getInstance().getDefaultASPGroup();
 
         setScreenValues();
     }
@@ -273,6 +310,8 @@ public class Library extends PreferencePage implements IWorkbenchPreferencePage 
     private void setScreenValues() {
 
         textProductLibrary.setText(rapidFireLibrary);
+        comboASPGroup.setText(aspGroup);
+        
     }
 
     public void init(IWorkbench workbench) {

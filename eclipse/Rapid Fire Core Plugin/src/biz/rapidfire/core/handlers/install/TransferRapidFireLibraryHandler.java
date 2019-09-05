@@ -32,6 +32,7 @@ public class TransferRapidFireLibraryHandler extends AbstractHandler implements 
     private String hostName;
     private int ftpPort;
     private String rapidFireLibrary;
+    private String aspGroup;
 
     /**
      * Default constructor, used by the Eclipse framework.
@@ -40,10 +41,11 @@ public class TransferRapidFireLibraryHandler extends AbstractHandler implements 
         super();
     }
 
-    public TransferRapidFireLibraryHandler(String hostName, int ftpPort, String rapidFireLibrary) {
+    public TransferRapidFireLibraryHandler(String hostName, int ftpPort, String rapidFireLibrary, String aspGroup) {
         this.hostName = hostName;
         this.ftpPort = ftpPort;
         this.rapidFireLibrary = rapidFireLibrary;
+        this.aspGroup = aspGroup;
     }
 
     /*
@@ -64,7 +66,7 @@ public class TransferRapidFireLibraryHandler extends AbstractHandler implements 
             }
 
             TransferRapidFireLibrary statusDialog = new TransferRapidFireLibrary(Display.getCurrent(), SWT.APPLICATION_MODAL | SWT.SHELL_TRIM,
-                rapidFireLibrary, hostName, ftpPort);
+                rapidFireLibrary, aspGroup, hostName, ftpPort);
             if (statusDialog.connect()) {
                 statusDialog.open();
             }

@@ -137,6 +137,7 @@ public class Messages extends NLS {
     public static String Label_Signon_User_colon;
     public static String Label_Password_colon;
     public static String Label_Rapid_Fire_library_colon;
+    public static String Label_ASP_group_colon;
     public static String Label_Version_colon;
     public static String Label_Show_logical_files_colon;
     public static String Label_Label_Decorations_RSE_host_objects_Description;
@@ -192,6 +193,7 @@ public class Messages extends NLS {
     public static String Tooltip_Signon_User;
     public static String Tooltip_Password;
     public static String Tooltip_Rapid_Fire_library;
+    public static String Tooltip_ASP_group;
     public static String Tooltip_Version;
     public static String Tooltip_Connection_name;
     public static String Tooltip_Specifies_the_format_for_displaying_date_values;
@@ -229,6 +231,8 @@ public class Messages extends NLS {
     public static String Journaling_will_be_started_by_the_installer;
     public static String Initializing_library_A;
     public static String Library_A_successfull_transfered;
+    public static String Error_occurred_while_transfering_library_A;
+    public static String Error_occurred_while_setting_the_asp_group_to_A;
     public static String No_errors;
     public static String NewJobWizard_Rapid_Fire_job_A_created;
     public static String NewFileWizard_File_A_created;
@@ -337,6 +341,7 @@ public class Messages extends NLS {
     public static String Could_not_send_save_file_to_host;
     public static String Rapid_Fire_library_not_set_in_preferences;
     public static String The_name_of_the_Rapid_Fire_library_is_invalid;
+    public static String The_name_of_the_asp_group_is_invalid;
     public static String Host_A_not_found_in_configured_RSE_connections;
     public static String Rapid_Fire_version_information_not_found_in_library_A;
     public static String Could_not_rereieve_Rapid_Fire_version_information_due_to_backend_error_A;
@@ -416,10 +421,6 @@ public class Messages extends NLS {
     public static String CommandManager_002;
     public static String CommandManager_003;
     public static String CommandManager_004;
-
-    // Miscellaneous
-    public static String Restore_library_parameters;
-    public static String ASP_device_name_colon;
     
     // String compare
     public static String Server_job_colon;

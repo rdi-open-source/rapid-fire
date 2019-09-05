@@ -61,6 +61,7 @@ public final class Preferences {
     private static final String LIBRARY_HOST_NAME = LIBRARY + "HOST_NAME"; //$NON-NLS-1$
     private static final String LIBRARY_FTP_PORT_NUMBER = LIBRARY + "FTP_PORT_NUMBER"; //$NON-NLS-1$
     private static final String LIBRARY_RAPID_FIRE_LIBRARY = LIBRARY + "LIBRARY"; //$NON-NLS-1$
+    private static final String LIBRARY_ASP_GROUP = LIBRARY + "ASP_GROUP"; //$NON-NLS-1$
 
     private static final String APPEARANCE = DOMAIN + "APPEARANCE.";
     public static final String APPEARANCE_PROGRESS_BAR_SIZE = APPEARANCE + "PROGRESS_BAR_SIZE"; //$NON-NLS-1$
@@ -137,6 +138,10 @@ public final class Preferences {
         return preferenceStore.getString(LIBRARY_RAPID_FIRE_LIBRARY);
     }
 
+    public String getASPGroup() {
+        return preferenceStore.getString(LIBRARY_ASP_GROUP);
+    }
+
     public boolean isLargeProgressBar() {
         return preferenceStore.getBoolean(APPEARANCE_PROGRESS_BAR_SIZE);
     }
@@ -209,6 +214,10 @@ public final class Preferences {
         preferenceStore.setValue(LIBRARY_RAPID_FIRE_LIBRARY, aLibrary.trim());
     }
 
+    public void setASPGroup(String aASPGroup) {
+        preferenceStore.setValue(LIBRARY_ASP_GROUP, aASPGroup.trim());
+    }
+
     public void setLargeProgressBar(boolean isLarge) {
         preferenceStore.setValue(APPEARANCE_PROGRESS_BAR_SIZE, isLarge);
     }
@@ -274,6 +283,7 @@ public final class Preferences {
         preferenceStore.setDefault(LIBRARY_HOST_NAME, getDefaultHostName());
         preferenceStore.setDefault(LIBRARY_FTP_PORT_NUMBER, getDefaultFtpPortNumber());
         preferenceStore.setDefault(LIBRARY_RAPID_FIRE_LIBRARY, getDefaultRapidFireLibrary());
+        preferenceStore.setDefault(LIBRARY_ASP_GROUP, getDefaultASPGroup());
         preferenceStore.setDefault(APPEARANCE_PROGRESS_BAR_SIZE, getDefaultIsLargeProgressBar());
         preferenceStore.setDefault(APPEARANCE_DATE_FORMAT, getDefaultDateFormatLabel());
         preferenceStore.setDefault(APPEARANCE_TIME_FORMAT, getDefaultTimeFormatLabel());
@@ -325,6 +335,15 @@ public final class Preferences {
         return "RAPIDFIRE";
     }
 
+    /**
+     * Returns the default asp group.
+     * 
+     * @return default asp group
+     */
+    public String getDefaultASPGroup() {
+        return "*NONE";
+    }
+
     public boolean getDefaultIsLargeProgressBar() {
         return false;
     }
@@ -347,6 +366,10 @@ public final class Preferences {
 
     public String getDefaultWizardRapidFireLibrary() {
         return getDefaultRapidFireLibrary();
+    }
+
+    public String getDefaultWizardASPGroup() {
+        return getDefaultASPGroup();
     }
 
     public boolean getDefaultSkipDisabledWizardPages() {
