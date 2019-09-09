@@ -219,7 +219,7 @@ public class Messages extends NLS {
     public static String Question_Could_not_generate_copy_program_Do_you_want_to_try_again;
 
     // Status messages
-    public static String About_to_transfer_library_A_to_host_B_using_port_C;
+    public static String About_to_transfer_library_A_ASP_group_D_to_host_B_using_port_C;
     public static String Checking_library_A_for_existence;
     public static String Checking_file_B_in_library_A_for_existence;
     public static String Creating_save_file_B_in_library_A;
@@ -421,7 +421,7 @@ public class Messages extends NLS {
     public static String CommandManager_002;
     public static String CommandManager_003;
     public static String CommandManager_004;
-    
+
     // String compare
     public static String Server_job_colon;
 
