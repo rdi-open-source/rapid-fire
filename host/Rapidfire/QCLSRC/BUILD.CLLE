@@ -48,6 +48,8 @@
 
              DCL        VAR(&JRN) TYPE(*CHAR) LEN(10) VALUE('RAPIDFIRE')
              DCL        VAR(&SAVF) TYPE(*CHAR) LEN(10) VALUE('RAPIDFIRE')
+             DCL        VAR(&TMPLIB) TYPE(*CHAR) LEN(10) VALUE('QTEMP')
+             DCL        VAR(&OWNER) TYPE(*CHAR) LEN(10) VALUE('QPGMR')
 
              DCL        VAR(&FROMMBR) TYPE(*CHAR) LEN(100)
              DCL        VAR(&TOSTMF) TYPE(*CHAR) LEN(100)
@@ -103,6 +105,13 @@ SKIP_DLT:
                 CRTSAVF FILE(&LIB/&SAVF) TEXT('Rapid Fire')
              ENDDO
 
+             CALL       PGM(&LIB/BUILD_OWN) PARM(&LIB &TMPLIB &OWNER)
+
+             SNDPGMMSG  MSGID(CPF9897) MSGF(QCPFMSG) +
+                          MSGDTA('Saving Rapid Fire objects ...') +
+                          TOPGMQ(*EXT) TOMSGQ(*TOPGMQ) +
+                          MSGTYPE(*STATUS)
+
              CLRSAVF FILE(&LIB/&SAVF)
 
              SAVLIB     LIB(&LIB) DEV(*SAVF) SAVF(&LIB/&SAVF) +
@@ -120,6 +129,10 @@ SKIP_DLT:
                 CPYTOSTMF FROMMBR(&FROMMBR) TOSTMF(&TOSTMF) CVTDTA(*NONE) STMFOPT(*REPLACE)
 
              ENDDO
+
+             SNDPGMMSG    MSG('Created Rapid Fire save file' *BCAT &SAVF *BCAT 'in +
+                               library' *BCAT &LIB *TCAT '.') TOPGMQ(*PRV (*CTLBDY)) +
+                               MSGTYPE(*INFO)
 
      /* End */
  STEP999:    ENDPGM
