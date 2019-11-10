@@ -239,6 +239,18 @@ DCL-PROC Main;
                     Leave;
                   EndIf;
 
+                  // Command PWRDWNSYS, ENDSBS or ENDJOB with parameter OPTION(*CNTRLD) has performed
+                  If %Shtdn();
+                    RAPIDFIRE_log_Error(
+                      p_Job :
+                      'MSG0060' :
+                      *Blanks :
+                      *Blanks :
+                      *Blanks
+                    );
+                    Leave;
+                  EndIf;
+
                   Exec SQL
                     Select Status Into :l_Status
                     From Jobs
