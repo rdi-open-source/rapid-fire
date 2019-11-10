@@ -60,6 +60,7 @@ END-PI;
 /Include QCPYSRC,QTNRCMTI
 /Include QCPYSRC,CMTI0100
 /Include QCPYSRC,ERRC0100
+/Include QCPYSRC,LANGUAGE
 
 // Global field declarations
 
@@ -67,6 +68,7 @@ DCL-S g_Sts CHAR(10);  // Message-Id.
 DCL-S g_Prc CHAR(10);  // Processing
 DCL-S g_JOB CHAR(10);  // Job
 DCL-S g_RtCd CHAR(10); // Return code
+DCL-S g_Rslt CHAR(1); // Result
 
 //*-----------------------------------------------------------------------------------------*
 
@@ -79,6 +81,9 @@ If Not FILE_is_File_Journaled(
   RF0022PG();
 
 Else;
+
+  // Set languge
+  g_RSLT = LANGUAGE_setLanguage();
 
   // Retrieve commitment informations
   Reset ERRC0100;
@@ -138,6 +143,11 @@ Else;
 
     EndIf;
 
+  EndIf;
+
+  // Reset languge
+  If g_RSLT = 'Y';
+    LANGUAGE_resetLanguage();
   EndIf;
 
 EndIf;

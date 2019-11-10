@@ -49,6 +49,7 @@ CTL-OPT ExtBinInt(*YES);
 /Include QCPYSRC,RFCCSTR
 /Include QCPYSRC,RFCCEND
 /Include QCPYSRC,FILE
+/Include QCPYSRC,LANGUAGE
 
 //*-----------------------------------------------------------------------------------------*
 
@@ -56,6 +57,7 @@ CTL-OPT ExtBinInt(*YES);
 
 DCL-S g_isError IND Inz(*OFF);
 DCL-S g_AUTCMT CHAR(1) Inz('Y');
+DCL-S g_RSLTLNG CHAR(1); // Result language
 
 //*-----------------------------------------------------------------------------------------*
 
@@ -249,6 +251,8 @@ DCL-PROC RAPIDFIRE_start EXPORT;
 
   Else;
 
+    g_RSLTLNG = LANGUAGE_setLanguage();
+
     RFCCSTR(
       p_SUCCESS : // <-- Success
       p_MSG       // <-- Message
@@ -279,6 +283,10 @@ DCL-PROC RAPIDFIRE_stop EXPORT;
     p_SUCCESS : // <-- Success
     p_MSG       // <-- Message
   );
+
+  If g_RSLTLNG = 'Y';
+    LANGUAGE_resetLanguage();
+  EndIf;
 
   if (p_SUCCESS = 'Y');
     return *on;
