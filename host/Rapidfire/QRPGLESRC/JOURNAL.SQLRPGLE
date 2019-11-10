@@ -256,7 +256,9 @@ When p_Journal_Status.Status = STATUS_BLOCK_ENTRY;
             g_Journal_Entry.Journal_Entry_Type <> 'IL' And
             g_Journal_Entry.Relative_Record_Number <> *Zero) Or
            (g_Journal_Entry.Journal_Code = 'F' And
-            g_Journal_Entry.Journal_Entry_Type = 'CR');
+            g_Journal_Entry.Journal_Entry_Type = 'CR') Or
+           (g_Journal_Entry.Journal_Code = 'F' And
+            g_Journal_Entry.Journal_Entry_Type = 'RG');
 
         // Initialize error
         g_Error = 'N';
@@ -291,39 +293,18 @@ When p_Journal_Status.Status = STATUS_BLOCK_ENTRY;
 
         Else;
 
-          If g_Journal_Entry.Journal_Code = 'F' And
-              g_Journal_Entry.Journal_Entry_Type = 'CR';
-            g_Relative_Record_Number = -1;
-          Else;
-            g_Relative_Record_Number =
-              g_Journal_Entry.Relative_Record_Number;
-          EndIf;
+          if g_Journal_Entry.Journal_Code = 'F' And
+             g_Journal_Entry.Journal_Entry_Type = 'RG';
 
-          g_Insert =
-            'Insert Into ' +
-              quote(%Trim(g_Workfile_Library)) + '/' +
-              quote(%Trim(g_Workfile)) +
-            ' (Member, Record_Number) ' +
-            'Values(' +
-              sqlCharValue(%Trim(g_Journal_Entry.Member)) + ', ' +
-              %Char(g_Relative_Record_Number) + ')';
-          Exec SQL
-            Prepare Changes From :g_Insert;
-          Exec SQL
-            Execute Changes;
-          setIgnoreWarnings();
-          If Not SqlCheckState(sqlState);
-
-            // Journal job for journal &1 in library &2 could not write to
-            // "Changes Workfile" for file &3 in library &4. Failed Statement : &5
+            // Journal job for journal &1 in library &2 received performed
+            // command RGZPFM for file &3 in library &4
             RAPIDFIRE_log_Error(
               g_Job :
-              'MSG0006' :
+              'MSG0059' :
               g_Journal +
               g_Journal_Library +
               g_Journal_Entry.Object +
-              g_Journal_Entry.Object_Library +
-              %SubSt(g_Insert : 1 : 128) :
+              g_Journal_Entry.Object_Library :
               *Blanks :
               *Blanks
             );
@@ -332,96 +313,139 @@ When p_Journal_Status.Status = STATUS_BLOCK_ENTRY;
 
           Else;
 
-            // Update statistics for changes to apply for file
-            If g_Journal_Entry.Journal_Entry_Type <> 'BR' And
-                  g_Journal_Entry.Journal_Entry_Type <> 'UB';
-
-              Exec SQL
-                Update Areas
-                Set Changes_To_Apply = Changes_To_Apply + 1
-                Where Job = :g_Job And
-                      Library = :g_Journal_Entry.Object_Library And
-                      File = :g_Journal_Entry.Object;
-              setIgnoreWarnings();
-              SqlCheckState(sqlState);
-
+            If g_Journal_Entry.Journal_Code = 'F' And
+                g_Journal_Entry.Journal_Entry_Type = 'CR';
+              g_Relative_Record_Number = -1;
+            Else;
+              g_Relative_Record_Number =
+                g_Journal_Entry.Relative_Record_Number;
             EndIf;
 
-            // Set date and time
-            g_Date = g_Journal_Entry.Date;
-            g_Time = g_Journal_Entry.Time;
-
-            // Wait, until file handler job has cleared member of file in shadow library
-            If g_Relative_Record_Number = -1;
-              g_SQL_Statement =
-                'Select Count(*) From ' +
+            g_Insert =
+              'Insert Into ' +
                 quote(%Trim(g_Workfile_Library)) + '/' +
                 quote(%Trim(g_Workfile)) +
-                ' Where Member = ' +
-                sqlCharValue(%Trim(g_Journal_Entry.Member));
-              Exec SQL
-                Prepare Select_Changes From :g_SQL_Statement;
-              setIgnoreWarnings();
-              If Not SqlCheckState(sqlState);
-                g_Error = 'Y';
-              Else;
+              ' (Member, Record_Number) ' +
+              'Values(' +
+                sqlCharValue(%Trim(g_Journal_Entry.Member)) + ', ' +
+                %Char(g_Relative_Record_Number) + ')';
+            Exec SQL
+              Prepare Changes From :g_Insert;
+            Exec SQL
+              Execute Changes;
+            setIgnoreWarnings();
+            If Not SqlCheckState(sqlState);
+
+              // Journal job for journal &1 in library &2 could not write to
+              // "Changes Workfile" for file &3 in library &4. Failed Statement : &5
+              RAPIDFIRE_log_Error(
+                g_Job :
+                'MSG0006' :
+                g_Journal +
+                g_Journal_Library +
+                g_Journal_Entry.Object +
+                g_Journal_Entry.Object_Library +
+                %SubSt(g_Insert : 1 : 128) :
+                *Blanks :
+                *Blanks
+              );
+
+              g_Error = 'Y';
+
+            Else;
+
+              // Update statistics for changes to apply for file
+              If g_Journal_Entry.Journal_Entry_Type <> 'BR' And
+                    g_Journal_Entry.Journal_Entry_Type <> 'UB';
+
                 Exec SQL
-                  Declare Cursor_Changes Cursor For Select_Changes;
+                  Update Areas
+                  Set Changes_To_Apply = Changes_To_Apply + 1
+                  Where Job = :g_Job And
+                        Library = :g_Journal_Entry.Object_Library And
+                        File = :g_Journal_Entry.Object;
+                setIgnoreWarnings();
+                SqlCheckState(sqlState);
+
+              EndIf;
+
+              // Set date and time
+              g_Date = g_Journal_Entry.Date;
+              g_Time = g_Journal_Entry.Time;
+
+              // Wait, until file handler job has cleared member of file in shadow library
+              If g_Relative_Record_Number = -1;
+                g_SQL_Statement =
+                  'Select Count(*) From ' +
+                  quote(%Trim(g_Workfile_Library)) + '/' +
+                  quote(%Trim(g_Workfile)) +
+                  ' Where Member = ' +
+                  sqlCharValue(%Trim(g_Journal_Entry.Member));
+                Exec SQL
+                  Prepare Select_Changes From :g_SQL_Statement;
                 setIgnoreWarnings();
                 If Not SqlCheckState(sqlState);
                   g_Error = 'Y';
                 Else;
-                  DoW g_Loop;
-                    Exec SQL
-                      Open Cursor_Changes;
-                    setIgnoreWarnings();
-                    If Not SqlCheckState(sqlState);
-                      g_Error = 'Y';
-                      Leave;
-                    Else;
+                  Exec SQL
+                    Declare Cursor_Changes Cursor For Select_Changes;
+                  setIgnoreWarnings();
+                  If Not SqlCheckState(sqlState);
+                    g_Error = 'Y';
+                  Else;
+                    DoW g_Loop;
                       Exec SQL
-                        Fetch Next From Cursor_Changes
-                        Into :g_Number_Of_Changes;
+                        Open Cursor_Changes;
                       setIgnoreWarnings();
                       If Not SqlCheckState(sqlState);
                         g_Error = 'Y';
                         Leave;
                       Else;
                         Exec SQL
-                          Close Cursor_Changes;
+                          Fetch Next From Cursor_Changes
+                          Into :g_Number_Of_Changes;
                         setIgnoreWarnings();
                         If Not SqlCheckState(sqlState);
                           g_Error = 'Y';
                           Leave;
                         Else;
-                          If g_Number_Of_Changes = *Zero;
+                          Exec SQL
+                            Close Cursor_Changes;
+                          setIgnoreWarnings();
+                          If Not SqlCheckState(sqlState);
+                            g_Error = 'Y';
                             Leave;
                           Else;
-                            EXCCMD_execute_Command(
-                              'DLYJOB DLY(5)'
-                            );
+                            If g_Number_Of_Changes = *Zero;
+                              Leave;
+                            Else;
+                              EXCCMD_execute_Command(
+                                'DLYJOB DLY(5)'
+                              );
+                            EndIf;
                           EndIf;
                         EndIf;
                       EndIf;
-                    EndIf;
-                  EndDo;
+                    EndDo;
+                  EndIf;
+                EndIf;
+                If g_Error = 'Y';
+                  // Journal job for journal &1 in library &2 could not retrieve changes in
+                  // "Changes Workfile" for file &3 in library &4. Failed Statement : &5
+                  RAPIDFIRE_log_Error(
+                    g_Job :
+                    'MSG0052' :
+                    g_Journal +
+                    g_Journal_Library +
+                    g_Journal_Entry.Object +
+                    g_Journal_Entry.Object_Library +
+                    %SubSt(g_SQL_Statement : 1 : 128) :
+                    *Blanks :
+                    *Blanks
+                  );
                 EndIf;
               EndIf;
-              If g_Error = 'Y';
-                // Journal job for journal &1 in library &2 could not retrieve changes in
-                // "Changes Workfile" for file &3 in library &4. Failed Statement : &5
-                RAPIDFIRE_log_Error(
-                  g_Job :
-                  'MSG0052' :
-                  g_Journal +
-                  g_Journal_Library +
-                  g_Journal_Entry.Object +
-                  g_Journal_Entry.Object_Library +
-                  %SubSt(g_SQL_Statement : 1 : 128) :
-                  *Blanks :
-                  *Blanks
-                );
-              EndIf;
+
             EndIf;
 
           EndIf;
