@@ -28,16 +28,17 @@
      /*------------+--------+---------------------------------------------------------------------*/
 
      /* Start */
-             PGM        PARM(&JOB &CMD)
+             PGM        PARM(&JOB &CMD &CMDLNG)
 
      /* Declare compile options */
-             DCLPRCOPT  DFTACTGRP(*NO) ACTGRP(RAPIDFIRE) +
-                          BNDDIR(RAPIDFIRE JOURNALRTN)
+             DCLPRCOPT  DFTACTGRP(*NO) ACTGRP(RAPIDFIRE) BNDDIR(RAPIDFIRE JOURNALRTN)
 
      /* Declare variables */
              DCL        VAR(&JOB) TYPE(*CHAR) LEN(10)
-             DCL        VAR(&CMD) TYPE(*CHAR) LEN(2048)
-             DCL        VAR(&EXCCMD) TYPE(*CHAR) LEN(4096)
+             DCL        VAR(&CMD) TYPE(*CHAR) LEN(16384)
+             DCL        VAR(&CMDLNG) TYPE(*DEC) LEN(15 5)
+             DCL        VAR(&CMDVAR) TYPE(*CHAR) LEN(16384)
+             DCL        VAR(&CMDVARLNG) TYPE(*DEC) LEN(5 0)
              DCL        VAR(&DATE) TYPE(*CHAR) LEN(6)
              DCL        VAR(&TIME) TYPE(*CHAR) LEN(6)
              DCL        VAR(&RTNCDE) TYPE(*CHAR) LEN(10)
@@ -55,73 +56,68 @@
              DOWHILE    COND(&LOOP)
 
      /* Initialize return code */
-             CHGVAR     VAR(&RTNCDE) VALUE('*ERROR')
+                CHGVAR     VAR(&RTNCDE) VALUE('*ERROR')
 
      /* Set parameter for exit program for command RCVJRNE */
-             CALLPRC    PRC(JOURNALRTN_SET_JOB) PARM((&JOB))
-             CALLPRC    PRC(JOURNALRTN_SET_RETURN_CODE) PARM((&RTNCDE))
-             CALLPRC    PRC(JOURNALRTN_SET_DATE) PARM((&DATE))
-             CALLPRC    PRC(JOURNALRTN_SET_TIME) PARM((&TIME))
+                CALLPRC    PRC(JOURNALRTN_SET_JOB) PARM((&JOB))
+                CALLPRC    PRC(JOURNALRTN_SET_RETURN_CODE) PARM((&RTNCDE))
+                CALLPRC    PRC(JOURNALRTN_SET_DATE) PARM((&DATE))
+                CALLPRC    PRC(JOURNALRTN_SET_TIME) PARM((&TIME))
 
      /* Build command RCVJRNE */
-             CHGVAR     VAR(&EXCCMD) VALUE(&CMD *TCAT ' FROMTIME(' +
-                          *CAT &DATE *CAT ' ' *CAT &TIME *CAT ')')
+                CHGVAR     VAR(&CMDVAR) VALUE(%SST(&CMD 1 &CMDLNG) *TCAT ' FROMTIME(' *CAT &DATE *CAT +
+                             ' ' *CAT &TIME *CAT ')')
+                CHGVAR     VAR(&CMDVARLNG) VALUE(%CHECKR(' ' &CMDVAR))
 
-             DOUNTIL    COND(&MSGID *NE 'CPF9803' *AND &MSGID *NE +
-                          'CPF7007')
+                DOUNTIL    COND(&MSGID *NE 'CPF9803' *AND &MSGID *NE 'CPF7007')
 
      /* Execute command RCVJRNE */
-             CALLPRC    PRC(EXCCMD_EXECUTE_COMMAND) PARM((&EXCCMD +
-                          *BYREF))
+                   CALLPRC    PRC(EXCCMDVAR_EXECUTE_COMMAND) PARM((&CMDVAR *BYREF) (&CMDVARLNG *BYREF))
 
      /* Get message id sent by command RCVJRNE */
-             CALLPRC    PRC(EXCCMD_GET_MESSAGE_ID) RTNVAL(&MSGID)
+                   CALLPRC    PRC(EXCCMDVAR_GET_MESSAGE_ID) RTNVAL(&MSGID)
 
      /* An object is allocated, so command RCVJRNE cannot work */
-             IF         COND(&MSGID *EQ 'CPF9803' *OR &MSGID *EQ +
-                          'CPF7007') THEN(DO)
-             DLYJOB     DLY(10)
-             ENDDO
+                   IF         COND(&MSGID *EQ 'CPF9803' *OR &MSGID *EQ 'CPF7007') THEN(DO)
+                      DLYJOB     DLY(10)
+                   ENDDO
 
-             ENDDO
+                ENDDO
 
      /* Command RCVJRNE has finished with error &1 */
-             IF         COND(&MSGID *NE 'CPF7062' *AND &MSGID *NE ' +
-                          ') THEN(DO)
-             CHGVAR     VAR(&MSGID1) VALUE('MSG0049')
-             CHGVAR     VAR(&MSGDTA1) VALUE(&MSGID)
-             CHGVAR     VAR(&MSGID2) VALUE(' ')
-             CHGVAR     VAR(&MSGDTA2) VALUE(' ')
-             CALLPRC    PRC(RAPIDFIRE_LOG_ERROR) PARM((&JOB *BYREF) +
-                          (&MSGID1 *BYREF) (&MSGDTA1 *BYREF) +
-                          (&MSGID2 *BYREF) (&MSGDTA2 *BYREF))
-             LEAVE
-             ENDDO
+                IF         COND(&MSGID *NE 'CPF7062' *AND &MSGID *NE ' ') THEN(DO)
+                   CHGVAR     VAR(&MSGID1) VALUE('MSG0049')
+                   CHGVAR     VAR(&MSGDTA1) VALUE(&MSGID)
+                   CHGVAR     VAR(&MSGID2) VALUE(' ')
+                   CHGVAR     VAR(&MSGDTA2) VALUE(' ')
+                   CALLPRC    PRC(RAPIDFIRE_LOG_ERROR) PARM((&JOB *BYREF) (&MSGID1 *BYREF) (&MSGDTA1 +
+                                *BYREF) (&MSGID2 *BYREF) (&MSGDTA2 *BYREF))
+                   LEAVE
+                ENDDO
 
      /* Get return code of exit program for command RCVJRNE */
-             CALLPRC    PRC(JOURNALRTN_GET_RETURN_CODE) RTNVAL(&RTNCDE)
+                CALLPRC    PRC(JOURNALRTN_GET_RETURN_CODE) RTNVAL(&RTNCDE)
 
      /* Exit program for command RCVJRNE has finished normal */
-             IF         COND(&RTNCDE *EQ '*NORMAL') THEN(DO)
-             LEAVE
-             ENDDO
+                IF         COND(&RTNCDE *EQ '*NORMAL') THEN(DO)
+                   LEAVE
+                ENDDO
 
      /* Journal receiver has detached e.G. CHGJRN */
-             IF         COND(&RTNCDE *EQ '*DETACHED') THEN(DO)
-             CALLPRC    PRC(JOURNALRTN_GET_DATE) RTNVAL(&DATE)
-             CALLPRC    PRC(JOURNALRTN_GET_TIME) RTNVAL(&TIME)
-             ITERATE
-             ENDDO
+                IF         COND(&RTNCDE *EQ '*DETACHED') THEN(DO)
+                   CALLPRC    PRC(JOURNALRTN_GET_DATE) RTNVAL(&DATE)
+                   CALLPRC    PRC(JOURNALRTN_GET_TIME) RTNVAL(&TIME)
+                   ITERATE
+                ENDDO
 
      /* Exit program for command RCVJRNE has finished with error */
-             CHGVAR     VAR(&MSGID1) VALUE('MSG0050')
-             CHGVAR     VAR(&MSGDTA1) VALUE(' ')
-             CHGVAR     VAR(&MSGID2) VALUE(' ')
-             CHGVAR     VAR(&MSGDTA2) VALUE(' ')
-             CALLPRC    PRC(RAPIDFIRE_LOG_ERROR) PARM((&JOB *BYREF) +
-                          (&MSGID1 *BYREF) (&MSGDTA1 *BYREF) +
-                          (&MSGID2 *BYREF) (&MSGDTA2 *BYREF))
-             LEAVE
+                CHGVAR     VAR(&MSGID1) VALUE('MSG0050')
+                CHGVAR     VAR(&MSGDTA1) VALUE(' ')
+                CHGVAR     VAR(&MSGID2) VALUE(' ')
+                CHGVAR     VAR(&MSGDTA2) VALUE(' ')
+                CALLPRC    PRC(RAPIDFIRE_LOG_ERROR) PARM((&JOB *BYREF) (&MSGID1 *BYREF) (&MSGDTA1 +
+                             *BYREF) (&MSGID2 *BYREF) (&MSGDTA2 *BYREF))
+                LEAVE
 
              ENDDO
 

@@ -50,6 +50,7 @@ CTL-OPT ExtBinInt(*YES);
 /Include QCPYSRC,RCVM0100
 /Include QCPYSRC,ERRC0100
 /Include QCPYSRC,EXCCMD
+/Include QCPYSRC,EXCCMDVAR
 /Include QCPYSRC,JOB
 /Include QCPYSRC,NOTIFIER
 /Include QCPYSRC,SQLSTS
@@ -370,9 +371,11 @@ DCL-PROC submit_Journal_Jobs;
   DCL-S l_Number
         CHAR(10);
   DCL-S l_Files
-        CHAR(2048);
+        CHAR(16384);
   DCL-S l_Cmd
-        CHAR(2048);
+        CHAR(16384);
+  DCL-S l_CmdLng
+        PACKED(5 : 0);
 
   // Initialize jobs
   l_Jobs = *Zero;
@@ -442,16 +445,18 @@ DCL-PROC submit_Journal_Jobs;
           'ENTFMT(*TYPE1) ' +
           'DELAY(' + %Char(g_wait_Seconds) + ') ' +
           'BLKLEN(*CALC)';
+        l_CmdLng = %Len(%TrimR(l_Cmd));
 
-        // Submit journal job
-        EXCCMD_execute_Command(
+        // Create command SBMJOB
+        l_Cmd =
           'SBMJOB ' +
           'CMD(' +
             'CALL ' +
             'PGM(RCVJRNE) ' +
             'PARM(' +
               '''' + p_Job + '''' + ' ' +
-              '''' + l_Cmd + '''' +
+              '''' + %TrimR(l_Cmd) + '''' + ' ' +
+              %Char(l_CmdLng) +
             ')' +
           ') ' +
           'JOB(' + %Trim(p_Job) + ') ' +
@@ -462,18 +467,24 @@ DCL-PROC submit_Journal_Jobs;
           'SYSLIBL(*CURRENT) ' +
           'CURLIB(*CURRENT) ' +
           'INLLIBL(*CURRENT) ' +
-          'SPLFACN(*KEEP)'
+          'SPLFACN(*KEEP)';
+        l_CmdLng = %Len(%TrimR(l_Cmd));
+
+        // Submit journal job
+        EXCCMDVAR_execute_Command(
+          l_Cmd :  // --> Command
+          l_CmdLng // --> Length of command
         );
 
         // Journal job for journal &1 in library &2 could not be submitted
-        If EXCCMD_Message_Id <> *Blanks;
+        If EXCCMDVAR_Message_Id <> *Blanks;
           RAPIDFIRE_log_Error(
             p_Job :
             'MSG0001' :
             l_Journal +
             l_Journal_Library :
-            EXCCMD_Message_Id :
-            EXCCMD_Message_Data
+            EXCCMDVAR_Message_Id :
+            EXCCMDVAR_Message_Data
           );
           Leave;
         EndIf;
@@ -496,15 +507,15 @@ DCL-PROC submit_Journal_Jobs;
         );
 
         // Journal job for journal &1 in library &2 could not be retrieved
-        If EXCCMD_Message_Id <> *Blanks Or
+        If ERRC0100.Exeption_Id <> *Blanks Or
               RCVM0100.Message_Id <> 'CPC1221';
           RAPIDFIRE_log_Error(
             p_Job :
             'MSG0002' :
             l_Journal +
             l_Journal_Library :
-            EXCCMD_Message_Id :
-            EXCCMD_Message_Data
+            ERRC0100.Exeption_Id :
+            ERRC0100.Exeption_Data
           );
           Leave;
         EndIf;
@@ -583,7 +594,7 @@ END-PROC submit_Journal_Jobs;
 DCL-PROC get_Journaled_Files;
 
   DCL-PI get_Journaled_Files
-         CHAR(2048);
+         CHAR(16384);
     p_Job
     CHAR(10) Const;
     p_Journal_Library
@@ -595,7 +606,7 @@ DCL-PROC get_Journaled_Files;
   // Locale field declarations
 
   DCL-S l_Files
-        CHAR(2048);
+        CHAR(16384);
   DCL-S l_Library
         CHAR(10);
   DCL-S l_File
@@ -782,15 +793,15 @@ DCL-PROC submit_File_Jobs;
         );
 
         // File job for file &1 in library &2 could not be retrieved
-        If EXCCMD_Message_Id <> *Blanks Or
+        If ERRC0100.Exeption_Id <> *Blanks Or
               RCVM0100.Message_Id <> 'CPC1221';
           RAPIDFIRE_log_Error(
             p_Job :
             'MSG0043' :
             l_File +
             l_File_Library :
-            EXCCMD_Message_Id :
-            EXCCMD_Message_Data
+            ERRC0100.Exeption_Id :
+            ERRC0100.Exeption_Data
           );
           Leave;
         EndIf;
