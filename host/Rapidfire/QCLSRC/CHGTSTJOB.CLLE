@@ -1,0 +1,56 @@
+     /*-------------------------------------------------------------------------------------------*/
+     /*                                                                                           */
+     /* Copyright (c) 2014 Task Force IT-Consulting GmbH, Waltrop (Germany)                       */
+     /* This software and the accompanying materials are made available                           */
+     /* under the terms of the GNU General Public License version 2.0 (GPLv2)                     */
+     /* which accompanies this distribution and is available at                                   */
+     /* http://www.gnu.org/licenses/gpl-2.0.html                                                  */
+     /*                                                                                           */
+     /*-------------------------------------------------------------------------------------------*/
+     /*                                                                                           */
+     /* Change Test Job                                                                           */
+     /*                                                                                           */
+     /*-------------------------------------------------------------------------------------------*/
+     /*  >>PRE-COMPILER<<                                                                         */
+     /*    >>CRTCMD<< CRTBNDCL     PGM(&LI/&OB) +                                                 */
+     /*                              SRCFILE(&SL/&SF) SRCMBR(&SM);                                */
+     /*    >>IMPORTANT<<                                                                          */
+     /*      >>PARM<<  DBGVIEW(*ALL);                                                             */
+     /*      >>PARM<<  OPTION(*EVENTF);                                                           */
+     /*      >>PARM<<  TGTRLS(&TR);                                                               */
+     /*    >>END-IMPORTANT<<                                                                      */
+     /*    >>EXECUTE<<                                                                            */
+     /*  >>END-PRE-COMPILER<<                                                                     */
+     /*------------+--------+---------------------------------------------------------------------*/
+     /*   Date     I Progr. I Description                                                         */
+     /*------------+--------+---------------------------------------------------------------------*/
+     /* 27.11.2019 I   FH   I Program created                                                     */
+     /*------------+--------+---------------------------------------------------------------------*/
+
+     /* Start */
+             PGM        PARM(&JOB &FROMROW &TOROW &CHGVAL)
+
+     /* Declare compile options */
+             DCLPRCOPT  DFTACTGRP(*NO) ACTGRP(RAPIDFIRE) +
+                          BNDDIR(RAPIDFIRE)
+
+     /* Declare variables */
+             DCL        VAR(&JOB) TYPE(*CHAR) LEN(10)
+             DCL        VAR(&FROMROW) TYPE(*DEC) LEN(6 0)
+             DCL        VAR(&TOROW) TYPE(*DEC) LEN(6 0)
+             DCL        VAR(&CHGVAL) TYPE(*CHAR) LEN(3)
+             DCL        VAR(&MSG) TYPE(*CHAR) LEN(80)
+
+     /* Change test job */
+             CALLPRC    PRC('CHGTSTJOB_CHANGE_TEST_JOB') PARM((&JOB +
+                          *BYREF) (&FROMROW) (&TOROW) (&CHGVAL)) +
+                          RTNVAL(&MSG)
+
+     /* Send message */
+             IF         COND(&MSG *NE ' ') THEN(DO)
+             SNDUSRMSG  MSG(&MSG) MSGTYPE(*INFO) TOMSGQ(*EXT)
+             GOTO       CMDLBL(STEP999)
+             ENDDO
+
+     /* End */
+ STEP999:    ENDPGM

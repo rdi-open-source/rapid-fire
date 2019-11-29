@@ -1,0 +1,71 @@
+     /*-------------------------------------------------------------------------------------------*/
+     /*                                                                                           */
+     /* Copyright (c) 2014 Task Force IT-Consulting GmbH, Waltrop (Germany)                       */
+     /* This software and the accompanying materials are made available                           */
+     /* under the terms of the GNU General Public License version 2.0 (GPLv2)                     */
+     /* which accompanies this distribution and is available at                                   */
+     /* http://www.gnu.org/licenses/gpl-2.0.html                                                  */
+     /*                                                                                           */
+     /*-------------------------------------------------------------------------------------------*/
+     /*                                                                                           */
+     /* Create Test Job                                                                           */
+     /*                                                                                           */
+     /*-------------------------------------------------------------------------------------------*/
+     /*  >>PRE-COMPILER<<                                                                         */
+     /*    >>CRTCMD<< CRTBNDCL     PGM(&LI/&OB) +                                                 */
+     /*                              SRCFILE(&SL/&SF) SRCMBR(&SM);                                */
+     /*    >>IMPORTANT<<                                                                          */
+     /*      >>PARM<<  DBGVIEW(*ALL);                                                             */
+     /*      >>PARM<<  OPTION(*EVENTF);                                                           */
+     /*      >>PARM<<  TGTRLS(&TR);                                                               */
+     /*    >>END-IMPORTANT<<                                                                      */
+     /*    >>EXECUTE<<                                                                            */
+     /*  >>END-PRE-COMPILER<<                                                                     */
+     /*------------+--------+---------------------------------------------------------------------*/
+     /*   Date     I Progr. I Description                                                         */
+     /*------------+--------+---------------------------------------------------------------------*/
+     /* 26.11.2019 I   FH   I Program created                                                     */
+     /*------------+--------+---------------------------------------------------------------------*/
+
+     /* Start */
+             PGM        PARM(&JOB &PRDLIB &SDWLIB &NBRTBL &NBRCOL +
+                          &NBRROW &NBRIDX &ADDCOL &JOBQ)
+
+     /* Declare compile options */
+             DCLPRCOPT  DFTACTGRP(*NO) ACTGRP(RAPIDFIRE) +
+                          BNDDIR(RAPIDFIRE)
+
+     /* Declare variables */
+             DCL        VAR(&JOB) TYPE(*CHAR) LEN(10)
+             DCL        VAR(&PRDLIB) TYPE(*CHAR) LEN(10)
+             DCL        VAR(&SDWLIB) TYPE(*CHAR) LEN(10)
+             DCL        VAR(&NBRTBL) TYPE(*DEC) LEN(3 0)
+             DCL        VAR(&NBRCOL) TYPE(*DEC) LEN(3 0)
+             DCL        VAR(&NBRROW) TYPE(*DEC) LEN(6 0)
+             DCL        VAR(&NBRIDX) TYPE(*DEC) LEN(3 0)
+             DCL        VAR(&ADDCOL) TYPE(*CHAR) LEN(10)
+             DCL        VAR(&JOBQ) TYPE(*CHAR) LEN(20)
+             DCL        VAR(&JOBQ1) TYPE(*CHAR) LEN(10)
+             DCL        VAR(&JOBQ2) TYPE(*CHAR) LEN(10)
+             DCL        VAR(&MSG) TYPE(*CHAR) LEN(80)
+
+     /* Split job queue */
+             CHGVAR     VAR(&JOBQ1) VALUE(%SST(&JOBQ 11 10))
+             CHGVAR     VAR(&JOBQ2) VALUE(%SST(&JOBQ 1 10))
+
+     /* Create test job */
+             CALLPRC    PRC('CRTTSTJOB_CREATE_TEST_JOB') PARM((&JOB +
+                          *BYREF) (&PRDLIB *BYREF) (&SDWLIB *BYREF) +
+                          (&NBRTBL *BYREF) (&NBRCOL *BYREF) +
+                          (&NBRROW *BYREF) (&NBRIDX *BYREF) +
+                          (&ADDCOL *BYREF) (&JOBQ1 *BYREF) (&JOBQ2 +
+                          *BYREF)) RTNVAL(&MSG)
+
+     /* Send message */
+             IF         COND(&MSG *NE ' ') THEN(DO)
+             SNDUSRMSG  MSG(&MSG) MSGTYPE(*INFO) TOMSGQ(*EXT)
+             GOTO       CMDLBL(STEP999)
+             ENDDO
+
+     /* End */
+ STEP999:    ENDPGM
