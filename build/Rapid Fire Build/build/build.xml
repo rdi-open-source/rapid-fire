@@ -7,34 +7,36 @@
  *   project at SourceForge:  https://sourceforge.net/projects/isphere/
  * =====================================================================
  *
- *   Verifying and setting up prerequisites
- *   ======================================
+ *   Verifying and setting up prerequisites (Read the entire text before you start)
+ *   ==============================================================================
  *
- *   1. This Ant script must run in the same JRE of the workspace,
- *      to make the "eclipse.refreshLocal" tag work properly.
- *
- *   2. You have to install the "iSphere Ant Contribution" plug-in if you want to
+ *   1. You have to install the "iSphere Ant Contribution" plug-in if you want to
  *      upload files to SourceForge. The local update site can be found here:
  *
  *         [iSphere Eclipse Setup]/plug-ins/iSphere_Ant_Contribution.zip
  *
  *      The "iSphere Eclipse Setup" project is part of the iSphere project.
  *
- *   3. The classpath must include the following jars for executing
- *      this build script:
+ *   2. This Ant script must run in the same JRE of the workspace,
+ *      to make the "eclipse.refreshLocal" tag work properly. Item 4 describes how to do this.
+ *
+ *   3. The classpath must include the following jars for executing this build script.
+ *      Item 4 describes how to do this.
  *         commons-net-3.3-patched.jar
  *         jsch-0.1.51.jar
  *
- *      Follow these steps to add the jars to the Ant classpath:
+ *   4. Follow these steps to change the JRE of the Ant script and to add the jars to the Ant classpath:
  *
- *      3.1 Execute the "build" target and ignore all errors, to create an
+ *      4.1 Execute the "build" target and ignore all errors, to create an
  *          "External Tools Configuration".
- *      3.2 Right-click the "build" target and select option "Run as -> Ant Build..."
- *      3.3 Click the "Classpath" tab, select "User Entries" and add the jars 
- *          from "[Rapid Fire Build]/build/lib".
- *      3.4 Click the "JRE" tab and select option "Run in the same JRE as the 
+ *      4.2 Right-click the "build" target and select option "Run as -> Ant Build..."
+ *      4.3 Click the "JRE" tab and select option "Run in the same JRE as the 
  *          workspace".
- *      3.5 Save your changes. 
+ *      4.4 Click the "Classpath" tab, select "User Entries" and add the following jars 
+ *          from "[Rapid Fire Build]/build/lib".
+ *          * commons-net-3.3-patched.jar
+ *          * jsch-0.1.51.jar
+ *      4.5 Save your changes. 
  *
  *      The following jar files are loaded dynamically, because they
  *      are part of a task def contribution or class path:
@@ -42,14 +44,20 @@
  *         junit.jar
  *         org.hamcrest.core_1.1.0.v20090501071000.jar
  *
- *   4. Checkout project "iSphere Help Builder" from the iSphere project page
+ *   5. Checkout project "iSphere Help Builder" from the iSphere project page
  *      at SourceForge. The project is required for building the html help pages.
  *
- *   5. Make sure, your Eclipse preference key "Ant -> Runtime -> Ant Home Entries"
- *      point to your RDP 8.0 Ant runtime:
+ *   6. Make sure, your Eclipse preference key "Ant -> Runtime -> Ant Home Entries"
+ *      point to your RDP 8.0 Ant runtime. In WDSCi 7.0 you have to change this in every case.
  *
  *      E.g:  "c:\Programme x86\IBM\SDP_Shared\plugins\org.apache.ant_1.7.1.v20100518-1145"
  *
+ *      For WDSCi 7.0 only: If you have installed WDSCi 7.0 without RDP 8.0 on your computer you have to copy
+ *      the plugin org.apache.ant_1.7.1.v20100518-1145 from the "iSphere Eclipse Setup" project to the IBM
+ *      shared folder and to unzip it. E.g:  "c:\Programme x86\IBM\SDP_Shared\plugins\".
+ 
+ *      [iSphere Eclipse Setup]/plug-ins/org.apache.ant_1.7.1.v20100518-1145.zip
+ * 
  *   Creating the Update site
  *   ========================
  *
