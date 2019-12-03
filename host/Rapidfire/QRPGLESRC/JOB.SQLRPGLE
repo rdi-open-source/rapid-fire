@@ -120,7 +120,8 @@ DCL-PROC JOB_start EXPORT;
     Exec SQL
       Select Count(*) Into :l_Count
       From Files_With_Shadow_Library
-      Where Job = :p_Job;
+      Where Job = :p_Job And
+            Type = '*PHYSICAL';
     setIgnoreWarnings();
     If (SqlCheckState(sqlState) And
         l_Count > 300);

@@ -31,7 +31,7 @@
                           PROMPT('From row')
 
              PARM       KWD(TOROW) TYPE(*DEC) LEN(6 0) MIN(1) +
-                          PROMPT('From row')
+                          PROMPT('To row')
 
              PARM       KWD(CHGVAL) TYPE(*CHAR) LEN(3) MIN(1) +
                           PROMPT('Change value')
