@@ -39,6 +39,8 @@
      /*------------+--------+---------------------------------------------------------------------*/
      /* 13.02.2018 I   TR   I Program created                                                     */
      /* 10.11.2019 I   TR   I Changed program to call BUILD_OWN and added status messages.        */
+     /* 17.12.2019 I   TR   I Re-added the accidentally removed CHGOBJOWN command for changing    */
+     /*            I        I the owner of the save file.                                         */
      /*------------+--------+---------------------------------------------------------------------*/
 
      /* Start */
@@ -104,6 +106,8 @@ SKIP_DLT:
              MONMSG     MSGID(CPF9801) EXEC(DO) /* Object not found */
                 RMVMSG     PGMQ(*SAME (*)) CLEAR(*ALL)
                 CRTSAVF FILE(&LIB/&SAVF) TEXT('Rapid Fire')
+                CHGOBJOWN  OBJ(&LIB/&SAVF) OBJTYPE(*FILE) +
+                           NEWOWN(QPGMR) CUROWNAUT(*REVOKE)
              ENDDO
 
              CALL       PGM(&LIB/BUILD_OWN) PARM(&LIB &TMPLIB &OWNER)
