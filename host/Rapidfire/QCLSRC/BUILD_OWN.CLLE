@@ -25,6 +25,7 @@
      /*   Date     I Progr. I Description                                                         */
      /*------------+--------+---------------------------------------------------------------------*/
      /* 10.11.2019 I   TR   I Program created                                                     */
+     /* 17.12.2019 I   TR   I Added CHGOBJOWN for changing the owner of the RAPIDFIRE library.    */
      /*------------+--------+---------------------------------------------------------------------*/
              PGM        PARM(&PRDLIB &TMPLIB &OWNER)
 
@@ -41,6 +42,9 @@
                           MSGDTA('Changing object owner to' *BCAT &OWNER *BCAT '...') +
                           TOPGMQ(*EXT) TOMSGQ(*TOPGMQ) +
                           MSGTYPE(*STATUS)
+
+             CHGOBJOWN  OBJ(QSYS/&PRDLIB) OBJTYPE(*LIB) +
+                          NEWOWN(&OWNER) CUROWNAUT(*REVOKE)
 
              OVRDBF     FILE(QADSPOBJ) TOFILE(&TMPLIB/&TMPFILE) OVRSCOPE(*CALLLVL)
 
