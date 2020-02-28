@@ -21,6 +21,7 @@ import biz.rapidfire.core.dialogs.MessageDialogAsync;
 import biz.rapidfire.core.exceptions.AutoReconnectErrorException;
 import biz.rapidfire.core.exceptions.IllegalParameterException;
 import biz.rapidfire.core.helpers.RapidFireHelper;
+import biz.rapidfire.core.helpers.SqlHelper;
 
 import com.ibm.as400.access.AS400;
 
@@ -37,7 +38,7 @@ class JDBCConnection implements IJDBCConnection {
     private Connection connection;
     private String libraryName;
     private boolean isAutoCommit;
-    private String catalogSeparator;
+    private SqlHelper sqlHelper;
 
     public JDBCConnection(String connectionName, AS400 system, Connection jdbcConnection, String libraryName, boolean isAutoCommit) throws Exception {
 
@@ -46,7 +47,7 @@ class JDBCConnection implements IJDBCConnection {
         this.connection = jdbcConnection;
         this.libraryName = libraryName;
         this.isAutoCommit = isAutoCommit;
-        this.catalogSeparator = connection.getMetaData().getCatalogSeparator();
+        this.sqlHelper = new SqlHelper(this.connection);
     }
 
     public AS400 getSystem() {
@@ -201,7 +202,7 @@ class JDBCConnection implements IJDBCConnection {
     }
 
     public String insertLibraryQualifier(String sqlStatement) {
-        return sqlStatement.replaceAll(IJDBCConnection.LIBRARY, libraryName + getSeparator());
+        return sqlStatement.replaceAll(IJDBCConnection.LIBRARY, sqlHelper.quoteName(libraryName) + getSeparator());
     }
 
     public boolean convertYesNo(String yesNoValue) {
@@ -216,7 +217,7 @@ class JDBCConnection implements IJDBCConnection {
     }
 
     private String getSeparator() {
-        return catalogSeparator;
+        return sqlHelper.getCatalogSeparator();
     }
 
     public boolean isAutoCommit() {
