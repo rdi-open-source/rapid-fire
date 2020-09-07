@@ -69,7 +69,7 @@
 
                 GRTOBJAUT  OBJ(&OBJ_ODLBNM/&OBJ_ODOBNM) +
                              OBJTYPE(&OBJ_ODOBTP) +
-                             USER(*PUBLIC) AUT(*CHANGE)
+                             USER(*PUBLIC) AUT(*ALL)
 
                 CHGVAR     VAR(&NUM_RCDS) VALUE(&NUM_RCDS - 1)
                 IF         COND(&NUM_RCDS > 0) THEN(DO)
