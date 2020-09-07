@@ -409,6 +409,8 @@ DCL-PROC MNTLIB_book EXPORT;
 
     exsr fillRecord;
 
+    X2ASPNBR = *Zero;
+    X2ASPDEV = *Blanks;
     write LIBRF;
 
     if RAPIDFIRE_getAutoCommit() = 'Y';
@@ -425,6 +427,8 @@ DCL-PROC MNTLIB_book EXPORT;
 
     exsr fillRecord;
 
+    X2ASPNBR = *Zero;
+    X2ASPDEV = *Blanks;
     write LIBRF;
 
     if RAPIDFIRE_getAutoCommit() = 'Y';

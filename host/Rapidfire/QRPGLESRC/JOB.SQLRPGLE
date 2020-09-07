@@ -440,6 +440,15 @@ DCL-PROC JOB_reset EXPORT;
     setIgnoreWarnings();
     SqlCheckState(sqlState);
 
+    // Update Libraries
+    Exec SQL
+      Update Libraries
+      Set ASP_Number = 0,
+          ASP_Device = ' '
+      Where Job = :p_Job;
+    setIgnoreWarnings();
+    SqlCheckState(sqlState);
+
     // Update Areas
     Exec SQL
       Update Areas

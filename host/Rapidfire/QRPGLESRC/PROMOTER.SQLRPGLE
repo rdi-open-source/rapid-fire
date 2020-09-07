@@ -671,6 +671,8 @@ DCL-PROC build_Shadow_Libraries;
         CHAR(10);
   DCL-S l_ASP_Device
         CHAR(10);
+  DCL-S l_ASP_Number
+        INT(10);
 
   // Declare Cursor
   Exec SQL
@@ -679,7 +681,7 @@ DCL-PROC build_Shadow_Libraries;
       From Libraries
       Where Job = :p_Job
       Order By Job, Library
-      For Read Only;
+      For Update Of ASP_Number, ASP_Device;
 
   // Open cursor
   Exec SQL
@@ -831,6 +833,23 @@ DCL-PROC build_Shadow_Libraries;
         );
         Leave;
       EndIf;
+
+      // Initialize ASP-Number and ASP-Device
+      l_ASP_Number = l_ASP_DS.l_ASP;
+      If l_ASP_DS.l_ASP <= 32;
+        l_ASP_Device = *blanks;
+      Else;
+        l_ASP_Device = l_ASP_Device_DS.l_ASP_Device;
+      EndIf;
+
+      // Update 'Libraries'
+      Exec SQL
+        Update Libraries
+        Set ASP_Number = :l_ASP_Number,
+            ASP_Device = :l_ASP_Device
+        Where Current Of Libraries;
+      setIgnoreWarnings();
+      SqlCheckState(sqlState);
 
     EndDo;
 

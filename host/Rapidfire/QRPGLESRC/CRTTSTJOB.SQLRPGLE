@@ -498,13 +498,17 @@ DCL-PROC create_Rapid_Fire_Job;
     (
      Job,
      Library,
-     Shadow_Library
+     Shadow_Library,
+     ASP_Number,
+     ASP_Device
     )
     Values
     (
      :p_Job,
      :p_Production_Library,
-     :p_Shadow_Library
+     :p_Shadow_Library,
+     0,
+     ' '
     );
   setIgnoreWarnings();
   If Not SqlCheckState(sqlState);
