@@ -54,6 +54,8 @@ CTL-OPT ExtBinInt(*YES);
 /Include QCPYSRC,JOB
 /Include QCPYSRC,NOTIFIER
 /Include QCPYSRC,SQLSTS
+/Include QCPYSRC,QDBRTVFD
+/Include QCPYSRC,FILD0100
 
 //*-----------------------------------------------------------------------------------------*
 
@@ -61,6 +63,9 @@ CTL-OPT ExtBinInt(*YES);
 
 DCL-DS RFJobs
        Extname('RFJOBS') Alias Qualified;
+END-DS;
+DCL-DS Files
+       Extname('FILESV01') Alias Qualified;
 END-DS;
 
 // Global constant declarations
@@ -135,6 +140,10 @@ DCL-PROC Main;
         IND;
   DCL-S l_Stop_Apply_Changes
         CHAR(1);
+  DCL-S l_Jrn_File
+        CHAR(10);
+  DCL-S l_Jrn_Shadow_Library
+        CHAR(10);
 
   Exec SQL
     Select Status Into :l_Status
@@ -233,6 +242,27 @@ DCL-PROC Main;
                         p_Job :
                         'MSG0042' :
                         *Blanks :
+                        *Blanks :
+                        *Blanks
+                      );
+                    EndIf;
+                    Leave;
+                  EndIf;
+
+                  // File &1 in shadow library &2 has journaled. Perhaps a HA solution like
+                  // BUS/400, iTERA, MIMIX ... has caused the problem.
+                  If has_File_Journaled(p_Job : l_Jrn_File : l_Jrn_Shadow_Library);
+                    Exec SQL
+                      Select Status Into :l_Status
+                      From Jobs
+                      where Job = :p_Job;
+                    setIgnoreWarnings();
+                    If SqlCheckState(sqlState) And l_Status = '*RUN';
+                      RAPIDFIRE_log_Error(
+                        p_Job :
+                        'MSG0062' :
+                        l_Jrn_File +
+                        l_Jrn_Shadow_Library :
                         *Blanks :
                         *Blanks
                       );
@@ -1002,3 +1032,146 @@ DCL-PROC get_Number_Of_Active_Jobs;
   Return l_Jobs;
 
 END-PROC get_Number_Of_Active_Jobs;
+
+//*=========================================================================================*
+//* Has File Journaled                                                                      *
+//*=========================================================================================*
+
+DCL-PROC has_File_Journaled EXPORT;
+
+  DCL-PI has_File_Journaled
+         IND;
+    p_Job
+    CHAR(10) Const;
+    p_File
+    CHAR(10);
+    p_Shadow_Library
+    CHAR(10);
+  END-PI;
+
+  // Locale field declarations
+
+  DCL-S l_Journaling
+        CHAR(1);
+  DCL-S l_Qualified_File
+        CHAR(20);
+
+  // Initialize journaling
+  l_Journaling = 'N';
+
+  // Initialize return values
+  p_File = *Blanks;
+  p_Shadow_Library = *Blanks;
+
+  // Declare Cursor
+  Exec SQL
+    Declare Files Cursor For
+      Select *
+      From Files_With_Shadow_Library
+      Where Job = :p_Job And
+            Type = '*PHYSICAL'
+      Order By Job, Position, Area
+      For Read Only;
+
+  // Open cursor
+  Exec SQL
+    Open Files;
+  setIgnoreWarnings();
+  If SqlCheckState(sqlState);
+
+    DoW g_Loop;
+
+      // Read 'Files'
+      Exec SQL
+        Fetch Next
+        From Files
+        Into :Files;
+
+      // End of file
+      setIgnoreWarnings();
+      If Not SqlCheckState(sqlState);
+        Leave;
+      EndIf;
+
+      // Get number of bytes needed
+      Reset ERRC0100;
+      QDBRTVFD(
+        FILD0100 :             // <-- Receiver variable
+        %Size(FILD0100) :      // --> Length of receiver variable
+        l_Qualified_File :     // <-- Qualified returned file name
+        'FILD0100' :           // --> Format name
+        Files.File +
+        Files.Shadow_Library : // --> Qualified file name
+        '*FIRST' :             // --> Record format name
+        '0' :                  // --> Override processing
+        '*LCL' :               // --> System
+        '*INT' :               // --> Format type
+        ERRC0100               // <-> Error code
+      );
+
+      If ERRC0100.Exeption_Id = *Blanks;
+
+        // Allocate heap storage
+        QDBRTVFD_Heap_Pointer = %Alloc(Qdbfyavl);
+
+        // Retrieve informations
+        Reset ERRC0100;
+        QDBRTVFD(
+          QDBRTVFD_Heap :        // <-- Receiver variable
+          Qdbfyavl :             // --> Length of receiver variable
+          l_Qualified_File :     // <-- Qualified returned file name
+          'FILD0100' :           // --> Format name
+          Files.File +
+          Files.Shadow_Library : // --> Qualified file name
+          '*FIRST' :             // --> Record format name
+          '0' :                  // --> Override processing
+          '*LCL' :               // --> System
+          '*INT' :               // --> Format type
+          ERRC0100               // <-> Error code
+        );
+
+        If ERRC0100.Exeption_Id = *Blanks;
+
+          // Set pointer to 'File Definition Header'
+          Qdb_QdbfhP = QDBRTVFD_Heap_Pointer;
+
+          // Set pointer to 'Journal Informations'
+          Qdb_QdbfjoalP = Qdb_QdbfhP + Qdbfjorn;
+
+          // The file has journaled
+          If Qdbfjact = '1';
+            l_Journaling = 'Y';
+            p_File = Files.File;
+            p_Shadow_Library = Files.Shadow_Library;
+          EndIf;
+
+        EndIf;
+
+        // Deallocate heap storate
+        DeAlloc QDBRTVFD_Heap_Pointer;
+
+      EndIf;
+
+      // The file has journaled
+      If l_Journaling = 'Y';
+        Leave;
+      EndIf;
+
+    EndDo;
+
+    // Close cursor
+    Exec SQL
+      Close Files;
+    setIgnoreWarnings();
+    SqlCheckState(sqlState);
+
+  EndIf;
+
+  // Return result
+  If l_Journaling = 'Y';
+    Return *On;
+  Else;
+    Return *Off;
+  EndIf;
+
+END-PROC has_File_Journaled;
