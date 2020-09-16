@@ -104,6 +104,7 @@ public class Messages extends NLS {
     public static String Label_Create_environment_colon;
     public static String Label_Job_queue_name_colon;
     public static String Label_Job_queue_library_name_colon;
+    public static String Label_Cancel_ASP_threshold_exceeds_colon;
     public static String Label_Status_colon;
     public static String Label_Phase_colon;
     public static String Label_Full_generic_string;
@@ -163,6 +164,7 @@ public class Messages extends NLS {
     public static String Tooltip_Create_environment;
     public static String Tooltip_Job_queue_name;
     public static String Tooltip_Job_queue_library_name;
+    public static String Tooltip_Cancel_ASP_threshold_exceeds;
     public static String Tooltip_Enable_large_progress_bar;
     public static String Tooltip_Position;
     public static String Tooltip_File;
@@ -291,6 +293,7 @@ public class Messages extends NLS {
     public static String Library_name_A_is_not_valid;
     public static String Create_environment_value_has_been_rejected;
     public static String Job_queue_name_A_is_not_valid;
+    public static String Cancel_ASP_threshold_exceeds_value_has_been_rejected;
     public static String The_library_name_must_be_specified;
     public static String The_job_name_must_be_specified;
     public static String The_job_status_must_be_specified;

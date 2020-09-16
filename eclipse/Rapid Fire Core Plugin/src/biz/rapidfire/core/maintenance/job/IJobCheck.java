@@ -17,4 +17,5 @@ public interface IJobCheck extends ICheck {
     public static final String FIELD_CREATE_ENVIRONMENT = "CRTE"; //$NON-NLS-1$
     public static final String FIELD_JOB_QUEUE_NAME = "JQ"; //$NON-NLS-1$
     public static final String FIELD_JOB_QUEUE_LIBRARY_NAME = "JQL"; //$NON-NLS-1$
+    public static final String FIELD_CANCEL_ASP_THRESHOLD_EXCEEDS = "CASPTE"; //$NON-NLS-1$
 }

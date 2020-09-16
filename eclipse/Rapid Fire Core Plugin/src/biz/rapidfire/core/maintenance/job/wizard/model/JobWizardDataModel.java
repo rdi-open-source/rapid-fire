@@ -19,6 +19,7 @@ public class JobWizardDataModel extends WizardDataModel {
     private String jobDescription;
     private boolean isCreateEnvironment;
     private QualifiedProgramName qualifiedJobQueueName;
+    private boolean isCancelASPThresholdExceeds;
 
     // Library page
     private String libraryName;
@@ -40,6 +41,7 @@ public class JobWizardDataModel extends WizardDataModel {
         // Job page
         model.setJobDescription(EMPTY);
         model.setCreateEnvironment(true);
+        model.setCancelASPThresholdExceeds(true);
 
         // Library page
         model.setLibraryName(EMPTY);
@@ -87,6 +89,14 @@ public class JobWizardDataModel extends WizardDataModel {
 
     public void setJobQueueLibraryName(String libraryName) {
         this.qualifiedJobQueueName.setLibrary(libraryName);
+    }
+
+    public boolean isCancelASPThresholdExceeds() {
+        return isCancelASPThresholdExceeds;
+    }
+
+    public void setCancelASPThresholdExceeds(boolean isCancelASPThresholdExceeds) {
+        this.isCancelASPThresholdExceeds = isCancelASPThresholdExceeds;
     }
 
     public String getLibraryName() {

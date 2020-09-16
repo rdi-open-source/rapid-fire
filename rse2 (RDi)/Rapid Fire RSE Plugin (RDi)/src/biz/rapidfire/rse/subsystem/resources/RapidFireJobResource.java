@@ -132,6 +132,14 @@ public class RapidFireJobResource extends AbstractResource implements IRapidFire
         delegate.setJobQueueLibrary(jobQueueLibrary);
     }
 
+    public boolean isDoCancelASPThresholdExceeds() {
+        return delegate.isDoCancelASPThresholdExceeds();
+    }
+
+    public void setDoCancelASPThresholdExceeds(boolean doCancelASPThresholdExceeds) {
+        delegate.setDoCancelASPThresholdExceeds(doCancelASPThresholdExceeds);
+    }
+
     public Status getStatus() {
         return delegate.getStatus();
     }
@@ -204,6 +212,7 @@ public class RapidFireJobResource extends AbstractResource implements IRapidFire
         delegate.setDoCreateEnvironment(job.isDoCreateEnvironment());
         delegate.setJobQueueName(job.getJobQueueName());
         delegate.setJobQueueLibrary(job.getJobQueueLibrary());
+        delegate.setDoCancelASPThresholdExceeds(job.isDoCancelASPThresholdExceeds());
         delegate.setStatus(job.getStatus());
         delegate.setPhase(job.getPhase());
         delegate.setError(job.isError());

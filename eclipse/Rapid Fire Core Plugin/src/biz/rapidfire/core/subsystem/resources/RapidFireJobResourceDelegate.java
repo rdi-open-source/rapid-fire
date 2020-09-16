@@ -22,6 +22,7 @@ public class RapidFireJobResourceDelegate implements Comparable<IRapidFireJobRes
     private boolean doCreateEnvironment;
     private String jobQueueName;
     private String jobQueueLibrary;
+    private boolean doCancelASPThresholdExceeds;
     private Status status;
     private Phase phase;
     private boolean isError;
@@ -83,6 +84,14 @@ public class RapidFireJobResourceDelegate implements Comparable<IRapidFireJobRes
 
     public void setJobQueueLibrary(String jobQueueLibrary) {
         this.jobQueueLibrary = jobQueueLibrary;
+    }
+
+    public boolean isDoCancelASPThresholdExceeds() {
+        return doCancelASPThresholdExceeds;
+    }
+
+    public void setDoCancelASPThresholdExceeds(boolean doCancelASPThresholdExceeds) {
+        this.doCancelASPThresholdExceeds = doCancelASPThresholdExceeds;
     }
 
     public Status getStatus() {

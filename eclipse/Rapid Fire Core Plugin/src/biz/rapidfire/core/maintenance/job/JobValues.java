@@ -22,6 +22,7 @@ public class JobValues implements IResourceValues {
     private String createEnvironment;
     private String jobQueueName;
     private String jobQueueLibraryName;
+    private String cancelASPThresholdExceeds;
 
     public static JobValues createInitialized() {
 
@@ -87,12 +88,33 @@ public class JobValues implements IResourceValues {
     public void setJobQueueLibraryName(String jobQueueLibraryName) {
         this.jobQueueLibraryName = jobQueueLibraryName.trim();
     }
+    
+    public String getCancelASPThresholdExceeds() {
+        return cancelASPThresholdExceeds;
+    }
 
+    public boolean isCancelASPThresholdExceeds() {
+        return "*YES".equals(this.cancelASPThresholdExceeds);
+    }
+
+    public void setCancelASPThresholdExceeds(String cancelASPThresholdExceeds) {
+        this.cancelASPThresholdExceeds = cancelASPThresholdExceeds.trim();
+    }
+
+    public void setCancelASPThresholdExceeds(boolean cancelASPThresholdExceeds) {
+        if (cancelASPThresholdExceeds) {
+            this.cancelASPThresholdExceeds = "*YES";
+        } else {
+            this.cancelASPThresholdExceeds = "*NO";
+        }
+    }
+    
     public void clear() {
         setDescription(null);
         setCreateEnvironment(null);
         setJobQueueName(null);
         setJobQueueLibraryName(null);
+        setCancelASPThresholdExceeds(null);
     }
 
     private void ensureKey() {

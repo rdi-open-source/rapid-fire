@@ -87,6 +87,7 @@ public class JobPage extends AbstractWizardPage {
         jobMaintenanceControl.setCreateEnvironment(model.isCreateEnvironment());
         jobMaintenanceControl.setJobQueueName(model.getJobQueueName());
         jobMaintenanceControl.setJobQueueLibraryName(model.getJobQueueLibraryName());
+        jobMaintenanceControl.setCancelASPThresholdExceeds(model.isCancelASPThresholdExceeds());
     }
 
     @Override
@@ -133,6 +134,7 @@ public class JobPage extends AbstractWizardPage {
         model.setCreateEnvironment(jobMaintenanceControl.isCreateEnvironment());
         model.setJobQueueName(jobMaintenanceControl.getJobQueueName());
         model.setJobQueueLibraryName(jobMaintenanceControl.getJobQueueLibraryName());
+        model.setCancelASPThresholdExceeds(jobMaintenanceControl.isCancelASPThresholdExceeds());
     }
 
     @Override

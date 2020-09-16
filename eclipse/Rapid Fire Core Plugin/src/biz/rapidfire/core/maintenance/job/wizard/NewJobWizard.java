@@ -219,6 +219,7 @@ public class NewJobWizard extends AbstractNewWizard<JobWizardDataModel> {
         jobValues.setCreateEnvironment(model.isCreateEnvironment());
         jobValues.setJobQueueName(model.getJobQueueName());
         jobValues.setJobQueueLibraryName(model.getJobQueueLibraryName());
+        jobValues.setCancelASPThresholdExceeds(model.isCancelASPThresholdExceeds());
 
         return jobValues;
     }

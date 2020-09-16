@@ -102,19 +102,21 @@ public class JobManager extends AbstractManager<IRapidFireJobResource, JobKey, J
     public JobValues getValues() throws Exception {
 
         CallableStatement statement = dao.prepareCall(dao
-            .insertLibraryQualifier("{CALL " + IJDBCConnection.LIBRARY + "\"MNTJOB_getValues\"(?, ?, ?, ?, ?)}")); //$NON-NLS-1$ //$NON-NLS-2$
+            .insertLibraryQualifier("{CALL " + IJDBCConnection.LIBRARY + "\"MNTJOB_getValues\"(?, ?, ?, ?, ?, ?)}")); //$NON-NLS-1$ //$NON-NLS-2$
 
         statement.setString(IJobGetValues.JOB, EMPTY_STRING);
         statement.setString(IJobGetValues.DESCRIPTION, EMPTY_STRING);
         statement.setString(IJobGetValues.CREATE_ENVIRONMENT, EMPTY_STRING);
         statement.setString(IJobGetValues.JOB_QUEUE_NAME, EMPTY_STRING);
         statement.setString(IJobGetValues.JOB_QUEUE_LIBRARY_NAME, EMPTY_STRING);
+        statement.setString(IJobGetValues.CANCEL_ASP_THRESHOLD_EXCEEDS, EMPTY_STRING);
 
         statement.registerOutParameter(IJobGetValues.JOB, Types.CHAR);
         statement.registerOutParameter(IJobGetValues.DESCRIPTION, Types.CHAR);
         statement.registerOutParameter(IJobGetValues.CREATE_ENVIRONMENT, Types.CHAR);
         statement.registerOutParameter(IJobGetValues.JOB_QUEUE_NAME, Types.CHAR);
         statement.registerOutParameter(IJobGetValues.JOB_QUEUE_LIBRARY_NAME, Types.CHAR);
+        statement.registerOutParameter(IJobGetValues.CANCEL_ASP_THRESHOLD_EXCEEDS, Types.CHAR);
 
         statement.execute();
 
@@ -124,6 +126,7 @@ public class JobManager extends AbstractManager<IRapidFireJobResource, JobKey, J
         values.setCreateEnvironment(statement.getString(IJobGetValues.CREATE_ENVIRONMENT));
         values.setJobQueueName(statement.getString(IJobGetValues.JOB_QUEUE_NAME));
         values.setJobQueueLibraryName(statement.getString(IJobGetValues.JOB_QUEUE_LIBRARY_NAME));
+        values.setCancelASPThresholdExceeds(statement.getString(IJobGetValues.CANCEL_ASP_THRESHOLD_EXCEEDS));
 
         return values;
     }
@@ -132,13 +135,14 @@ public class JobManager extends AbstractManager<IRapidFireJobResource, JobKey, J
     public void setValues(JobValues values) throws Exception {
 
         CallableStatement statement = dao.prepareCall(dao
-            .insertLibraryQualifier("{CALL " + IJDBCConnection.LIBRARY + "\"MNTJOB_setValues\"(?, ?, ?, ?, ?)}")); //$NON-NLS-1$ //$NON-NLS-2$
+            .insertLibraryQualifier("{CALL " + IJDBCConnection.LIBRARY + "\"MNTJOB_setValues\"(?, ?, ?, ?, ?, ?)}")); //$NON-NLS-1$ //$NON-NLS-2$
 
         statement.setString(IJobSetValues.JOB, values.getKey().getJobName());
         statement.setString(IJobSetValues.DESCRIPTION, values.getDescription());
         statement.setString(IJobSetValues.CREATE_ENVIRONMENT, values.getCreateEnvironment());
         statement.setString(IJobSetValues.JOB_QUEUE_NAME, values.getJobQueueName());
         statement.setString(IJobSetValues.JOB_QUEUE_LIBRARY_NAME, values.getJobQueueLibraryName());
+        statement.setString(IJobSetValues.CANCEL_ASP_THRESHOLD_EXCEEDS, values.getCancelASPThresholdExceeds());
 
         statement.execute();
     }

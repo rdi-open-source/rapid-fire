@@ -29,6 +29,7 @@ public class JobMaintenanceControl extends AbstractMaintenanceControl {
     private Button buttonCreateEnvironment;
     private Text textJobQueueName;
     private Text textJobQueueLibraryName;
+    private Button buttonCancelASPThresholdExceeds;
 
     public JobMaintenanceControl(Composite parent, int style) {
         super(parent, style, true);
@@ -58,6 +59,10 @@ public class JobMaintenanceControl extends AbstractMaintenanceControl {
         textJobQueueLibraryName.setFocus();
     }
 
+    public void setFocusCancelASPThresholdExceeds() {
+        buttonCancelASPThresholdExceeds.setFocus();
+    }
+
     @Override
     public void setMode(MaintenanceMode mode) {
 
@@ -68,6 +73,7 @@ public class JobMaintenanceControl extends AbstractMaintenanceControl {
         buttonCreateEnvironment.setEnabled(isFieldsEnabled());
         textJobQueueName.setEnabled(isFieldsEnabled());
         textJobQueueLibraryName.setEnabled(isFieldsEnabled());
+        buttonCancelASPThresholdExceeds.setEnabled(isFieldsEnabled());
     }
 
     @Override
@@ -103,6 +109,13 @@ public class JobMaintenanceControl extends AbstractMaintenanceControl {
         textJobQueueLibraryName = WidgetFactory.createNameText(parent);
         textJobQueueLibraryName.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
         textJobQueueLibraryName.setToolTipText(Messages.Tooltip_Job_queue_library_name);
+
+        WidgetFactory.createLabel(parent, Messages.Label_Cancel_ASP_threshold_exceeds_colon, Messages.Tooltip_Cancel_ASP_threshold_exceeds);
+
+        buttonCancelASPThresholdExceeds = WidgetFactory.createCheckbox(parent);
+        buttonCancelASPThresholdExceeds.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false));
+        buttonCancelASPThresholdExceeds.setToolTipText(Messages.Tooltip_Cancel_ASP_threshold_exceeds);
+
     }
 
     public String getJobName() {
@@ -145,12 +158,22 @@ public class JobMaintenanceControl extends AbstractMaintenanceControl {
         textJobQueueLibraryName.setText(jobQueueLibraryName);
     }
 
+    public boolean isCancelASPThresholdExceeds() {
+        return buttonCancelASPThresholdExceeds.getSelection();
+    }
+
+    public void setCancelASPThresholdExceeds(boolean cancelASPThresholdExceeds) {
+        buttonCancelASPThresholdExceeds.setSelection(cancelASPThresholdExceeds);
+    }
+
     public void addSelectionListener(SelectionListener listener) {
         buttonCreateEnvironment.addSelectionListener(listener);
+        buttonCancelASPThresholdExceeds.addSelectionListener(listener);
     }
 
     public void removeSelectionListener(SelectionListener listener) {
         buttonCreateEnvironment.removeSelectionListener(listener);
+        buttonCancelASPThresholdExceeds.removeSelectionListener(listener);
     }
 
     public void addModifyListener(ModifyListener listener) {

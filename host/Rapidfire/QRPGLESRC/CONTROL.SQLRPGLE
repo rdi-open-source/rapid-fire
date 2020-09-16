@@ -56,6 +56,9 @@ CTL-OPT ExtBinInt(*YES);
 /Include QCPYSRC,SQLSTS
 /Include QCPYSRC,QDBRTVFD
 /Include QCPYSRC,FILD0100
+/Include QCPYSRC,QYASPOL
+/Include QCPYSRC,YASP0200
+/Include QCPYSRC,OPNLSTINF
 
 //*-----------------------------------------------------------------------------------------*
 
@@ -144,6 +147,10 @@ DCL-PROC Main;
         CHAR(10);
   DCL-S l_Jrn_Shadow_Library
         CHAR(10);
+  DCL-S l_ASP
+        CHAR(25);
+  DCL-S l_CASPTE
+        CHAR(10);
 
   Exec SQL
     Select Status Into :l_Status
@@ -201,6 +208,15 @@ DCL-PROC Main;
                   Where Job = :p_Job;
                 setIgnoreWarnings();
                 SqlCheckState(sqlState);
+
+                Exec SQL
+                  Select Cancel_ASP_Threshold_Exceeds Into :l_CASPTE
+                  From Jobs
+                  where Job = :p_Job;
+                setIgnoreWarnings();
+                If Not SqlCheckState(sqlState);
+                  l_CASPTE = '*YES';
+                EndIf;
 
                 l_Apply_Changes = *Off;
 
@@ -263,6 +279,26 @@ DCL-PROC Main;
                         'MSG0062' :
                         l_Jrn_File +
                         l_Jrn_Shadow_Library :
+                        *Blanks :
+                        *Blanks
+                      );
+                    EndIf;
+                    Leave;
+                  EndIf;
+
+                  // The threshold for ASP &1 has exceeded.
+                  If l_CASPTE = '*YES' And
+                     has_ASP_Threshold_Exceeded(p_Job : l_ASP);
+                    Exec SQL
+                      Select Status Into :l_Status
+                      From Jobs
+                      where Job = :p_Job;
+                    setIgnoreWarnings();
+                    If SqlCheckState(sqlState) And l_Status = '*RUN';
+                      RAPIDFIRE_log_Error(
+                        p_Job :
+                        'MSG0063' :
+                        l_ASP :
                         *Blanks :
                         *Blanks
                       );
@@ -1175,3 +1211,115 @@ DCL-PROC has_File_Journaled EXPORT;
   EndIf;
 
 END-PROC has_File_Journaled;
+
+//*=========================================================================================*
+//* Has ASP Threshold Exceeded                                                              *
+//*=========================================================================================*
+
+DCL-PROC has_ASP_Threshold_Exceeded EXPORT;
+
+  DCL-PI has_ASP_Threshold_Exceeded
+         IND;
+    p_Job
+    CHAR(10) Const;
+    p_ASP
+    CHAR(25);
+  END-PI;
+
+  // Locale field declarations
+
+  DCL-S l_Exceeded
+        CHAR(1);
+  DCL-S l_ASP_Number
+        INT(10);
+  DCL-S l_ASP_Device
+        CHAR(10);
+
+  DCL-DS QYASPOL_FLTINF Qualified;
+    *N         INT(10) INZ(16);  // --> Size of filter entry
+    *N         INT(10) INZ(1);   // --> Filter key
+    *N         INT(10) INZ(4);   // --> Size of filter data
+    ASP_Number INT(10);          // --> Filter data
+  END-DS;
+
+  // Initialize exceeded
+  l_Exceeded = 'N';
+
+  // Initialize return values
+  p_ASP = *Blanks;
+
+  // Declare Cursor
+  Exec SQL
+    Declare ASPs Cursor For
+      Select Distinct ASP_Number, ASP_Device
+      From Libraries
+      Where Job = :p_Job
+      Order By ASP_Number, ASP_Device
+      For Read Only;
+
+  // Open cursor
+  Exec SQL
+    Open ASPs;
+  setIgnoreWarnings();
+  If SqlCheckState(sqlState);
+
+    DoW g_Loop;
+
+      // Read 'ASPs'
+      Exec SQL
+        Fetch Next
+        From ASPs
+        Into :l_ASP_Number,
+             :l_ASP_Device;
+
+      // End of file
+      setIgnoreWarnings();
+      If Not SqlCheckState(sqlState);
+        Leave;
+      EndIf;
+
+      // Get ASP informations
+      QYASPOL_FLTINF.ASP_Number = l_ASP_Number;
+      Reset ERRC0100;
+      QYASPOL(
+        YASP0200 :                   // <-- Receiver variable
+        %Size(YASP0200) :            // --> Length of receiver variable
+        OPNLSTINF :                  // <-- List information
+        -1 :                         // --> Number of records to return
+        1 :                          // --> Number of filters
+        QYASPOL_FLTINF :             // --> Filter information
+        'YASP0200' :                 // --> Format name
+        ERRC0100                     // <-> Error code
+      );
+
+      // ASP Threshold has exceeded
+      If ERRC0100.Exeption_Id = *Blanks And
+         100 - (100 / YASP0200.ASP_Capacity_Total * YASP0200.ASP_Capacity_Available_Total) >=
+         YASP0200.Storage_Threshold_Percentage;
+        l_Exceeded = 'Y';
+        If l_ASP_Device = *Blanks;
+          p_ASP = %Char(l_ASP_Number);
+        Else;
+          p_ASP = %Char(l_ASP_Number) + ' / ' + l_ASP_Device;
+        EndIf;
+        Leave;
+      EndIf;
+
+    EndDo;
+
+    // Close cursor
+    Exec SQL
+      Close ASPs;
+    setIgnoreWarnings();
+    SqlCheckState(sqlState);
+
+  EndIf;
+
+  // Return result
+  If l_Exceeded = 'Y';
+    Return *On;
+  Else;
+    Return *Off;
+  EndIf;
+
+END-PROC has_ASP_Threshold_Exceeded;

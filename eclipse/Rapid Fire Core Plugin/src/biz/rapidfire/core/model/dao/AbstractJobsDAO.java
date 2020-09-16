@@ -32,6 +32,7 @@ public abstract class AbstractJobsDAO {
     public static final String CREATE_ENVIRONMENT = "CREATE_ENVIRONMENT"; //$NON-NLS-1$
     public static final String JOB_QUEUE_LIBRARY = "JOB_QUEUE_LIBRARY"; //$NON-NLS-1$
     public static final String JOB_QUEUE = "JOB_QUEUE"; //$NON-NLS-1$
+    public static final String CANCEL_ASP_THRESHOLD_EXCEEDS = "CANCEL_ASP_THRESHOLD_EXCEEDS"; //$NON-NLS-1$
     public static final String STATUS = "STATUS"; //$NON-NLS-1$
     public static final String PHASE = "PHASE"; //$NON-NLS-1$
     public static final String ERROR = "ERROR"; //$NON-NLS-1$
@@ -125,6 +126,7 @@ public abstract class AbstractJobsDAO {
         String createEnvironment = resultSet.getString(CREATE_ENVIRONMENT).trim();
         String jobQueueLibrary = resultSet.getString(JOB_QUEUE_LIBRARY).trim();
         String jobQueueName = resultSet.getString(JOB_QUEUE).trim();
+        String cancelASPThresholdExceeds = resultSet.getString(CANCEL_ASP_THRESHOLD_EXCEEDS).trim();
         String status = resultSet.getString(STATUS).trim();
         String phase = resultSet.getString(PHASE).trim();
         String isError = resultSet.getString(ERROR).trim();
@@ -149,6 +151,7 @@ public abstract class AbstractJobsDAO {
         jobResource.setDoCreateEnvironment(dao.convertYesNo(createEnvironment));
         jobResource.setJobQueueName(jobQueueName);
         jobResource.setJobQueueLibrary(jobQueueLibrary);
+        jobResource.setDoCancelASPThresholdExceeds(dao.convertYesNo(cancelASPThresholdExceeds));
         jobResource.setStatus(Status.find(status));
         jobResource.setPhase(Phase.find(phase));
         jobResource.setError(dao.convertYesNo(isError));
@@ -172,6 +175,7 @@ public abstract class AbstractJobsDAO {
             "CREATE_ENVIRONMENT, " +
             "JOB_QUEUE_LIBRARY, " +
             "JOB_QUEUE, " +
+            "CANCEL_ASP_THRESHOLD_EXCEEDS, " +
             "STATUS, " +
             "PHASE, " +
             "ERROR, " +

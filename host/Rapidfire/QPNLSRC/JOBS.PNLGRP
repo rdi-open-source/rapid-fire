@@ -136,6 +136,38 @@ the QGPL library is used.
 :EHelp.
 
 .*-------------------------------------------------------------------------------------------*
+.* Help - Cancel, if ASP threshold exceeds                                                   *
+.*-------------------------------------------------------------------------------------------*
+
+:Help Name='CASPTE'.
+Cancel, if ASP threshold exceeds - Help
+:XH3.
+Cancel, if ASP threshold exceeds
+:P.
+Specifies wether or not the job cancels, if the threshold of the ASP, the shadow library
+resides, exceeds. This is a safty feature to avoid disk space overflow.
+You can display or change the threshold of the ASPs by doing the following.
+:LINES.
+1. Enter command STRSST.
+2. Sign on to SST.
+3. Select menu item "3. Work with disk units"
+4. Select menu item "2. Work with disk configuration"
+5. Select menu item "3. Work with ASP threshold"
+:ELINES.
+:PARML.
+:PT.
+*YES
+:PD.
+The job cancels, if the threshold of the ASP, the shadow library resides, exceeds.
+:PT.
+*NO
+:PD.
+The job does not cancel, if the threshold of the ASP, the shadow library resides, exceeds.
+It is your responsibility to make sure, that there is enought disk space available for the job.
+:EPARML.
+:EHelp.
+
+.*-------------------------------------------------------------------------------------------*
 .* Helptext - Status                                                                         *
 .*-------------------------------------------------------------------------------------------*
 

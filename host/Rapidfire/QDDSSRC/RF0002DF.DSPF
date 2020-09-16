@@ -1,4 +1,4 @@
-     A*%%TS  SD  20171220  154614  HILDEBRAND  REL-V7R3M0  5770-WDS
+     A*%%TS  SD  20200915  100458  HILDEBRAND  REL-V7R3M0  5770-WDS
      A*------------------------------------------------------------------------*
      A*                                                                        *
      A* COPYRIGHT (C) 2014 TASK FORCE IT-CONSULTING GMBH, WALTROP (GERMANY)    *
@@ -23,7 +23,7 @@
      A                                      CHGINPDFT
      A                                      PRINT
      A          R DSPF010
-     A*%%TS  SD  20140708  112855  HILDEBRAND  REL-V7R1M0  5770-WDS
+     A*%%TS  SD  20200915  100458  HILDEBRAND  REL-V7R3M0  5770-WDS
      A                                      CA03
      A                                      CA12
      A                                      CF01
@@ -101,6 +101,15 @@
      A  84N85 86                            DSPATR(RI)
      A  84N85 86                            DSPATR(PC)
      A                                 10 37MSGCON(030 CON0069 *LIBL/RF0002MF)
+     A                                 12  2MSGCON(035 CON0014 *LIBL/RF0002MF)
+     A            DFCASPTE  R        B 12 38REFFLD(JOBS/X1CASPTE *LIBL/JOBS)
+     A  01
+     AO 02
+     AO 03                                  DSPATR(UL)
+     A N01N02N03                            DSPATR(PR)
+     A  87 88 89                            DSPATR(RI)
+     A  87 88 89                            DSPATR(PC)
+     A                                 12 52MSGCON(030 CON0015 *LIBL/RF0002MF)
      A N01N02N03                       23  2MSGCON(078 CON0006 *LIBL/RF0002MF)
      A                                      COLOR(BLU)
      A  01

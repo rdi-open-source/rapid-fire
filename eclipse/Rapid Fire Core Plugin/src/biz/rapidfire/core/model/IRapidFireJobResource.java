@@ -47,6 +47,10 @@ public interface IRapidFireJobResource extends IRapidFireResource {
 
     public void setJobQueueLibrary(String jobQueueLibrary);
 
+    public boolean isDoCancelASPThresholdExceeds();
+
+    public void setDoCancelASPThresholdExceeds(boolean doCancelASPThresholdExceeds);
+
     public Status getStatus();
 
     public void setStatus(Status status);

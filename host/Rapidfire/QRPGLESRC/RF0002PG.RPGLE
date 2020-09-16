@@ -338,7 +338,8 @@ BegSr SR030;
     DFDSCR : // <-- Description
     DFCRTE : // <-- Create environment
     DFJQ   : // <-- Job queue
-    DFJQL    // <-- Job queue (Library)
+    DFJQL  : // <-- Job queue (Library)
+    DFCASPTE // <-- Cancel, if ASP threshold exceeds
   );
 EndSr;
 
@@ -475,7 +476,8 @@ BegSr SR050;
       DFDSCR : // --> Description
       DFCRTE : // --> Create environment
       DFJQ   : // --> Job queue
-      DFJQL    // --> Job queue (Library)
+      DFJQL  : // --> Job queue (Library)
+      DFCASPTE // --> Cancel, if ASP threshold exceeds
     );
   EndIf;
   // Prüfen
@@ -509,6 +511,10 @@ BegSr SR050;
       *IN(84) = *ON;
       *IN(85) = *OFF;
       *IN(86) = *ON;
+    when (ITXFld = 'CASPTE');
+      *IN(87) = *ON;
+      *IN(88) = *ON;
+      *IN(89) = *ON;
     endsl;
   endif;
 EndSr;
@@ -600,6 +606,16 @@ BegSr SR060;
     ITHILP(ITNbr) = '*LIBL';
     ITHIMO(ITNbr) = 'JQL';
     If DFFLD010 = 'DFJQL';
+      ITHlp = 'J';
+      ITDsp(1) = ITNbr;
+      ITDsp(2) = ITNbr;
+    EndIf;
+    // Modul 'CASPTE'
+    ITNbr = ITNbr + 1;
+    ITHIPG(ITNbr) = 'JOBS';
+    ITHILP(ITNbr) = '*LIBL';
+    ITHIMO(ITNbr) = 'CASPTE';
+    If DFFLD010 = 'DFCASPTE';
       ITHlp = 'J';
       ITDsp(1) = ITNbr;
       ITDsp(2) = ITNbr;

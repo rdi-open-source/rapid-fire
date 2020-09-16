@@ -85,6 +85,7 @@ public class JobMaintenanceDialog extends AbstractMaintenanceDialog {
         jobMaintenanceControl.setCreateEnvironment(values.isCreateEnvironment());
         jobMaintenanceControl.setJobQueueName(values.getJobQueueName());
         jobMaintenanceControl.setJobQueueLibraryName(values.getJobQueueLibraryName());
+        jobMaintenanceControl.setCancelASPThresholdExceeds(values.isCancelASPThresholdExceeds());
     }
 
     @Override
@@ -96,6 +97,7 @@ public class JobMaintenanceDialog extends AbstractMaintenanceDialog {
         newValues.setCreateEnvironment(jobMaintenanceControl.isCreateEnvironment());
         newValues.setJobQueueName(jobMaintenanceControl.getJobQueueName());
         newValues.setJobQueueLibraryName(jobMaintenanceControl.getJobQueueLibraryName());
+        newValues.setCancelASPThresholdExceeds(jobMaintenanceControl.isCancelASPThresholdExceeds());
 
         if (!isDisplayMode()) {
             try {
@@ -136,6 +138,9 @@ public class JobMaintenanceDialog extends AbstractMaintenanceDialog {
         } else if (IJobCheck.FIELD_JOB_QUEUE_LIBRARY_NAME.equals(fieldName)) {
             jobMaintenanceControl.setFocusJobQueueLibraryName();
             message = Messages.bind(Messages.Library_name_A_is_not_valid, jobMaintenanceControl.getJobQueueLibraryName());
+        } else if (IJobCheck.FIELD_CANCEL_ASP_THRESHOLD_EXCEEDS.equals(fieldName)) {
+            jobMaintenanceControl.setFocusCancelASPThresholdExceeds();
+            message = Messages.Cancel_ASP_threshold_exceeds_value_has_been_rejected;
         }
 
         setErrorMessage(message, result);

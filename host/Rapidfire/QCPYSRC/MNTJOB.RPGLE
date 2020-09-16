@@ -33,6 +33,7 @@ DCL-PR MNTJOB_getValues
   *N CHAR(10); // <-- Create environment
   *N CHAR(10); // <-- Job queue
   *N CHAR(10); // <-- Job queue (Library)
+  *N CHAR(10); // <-- Cancel, if ASP threshold exceeds
 END-PR;
 
 DCL-PR MNTJOB_setValues
@@ -42,6 +43,7 @@ DCL-PR MNTJOB_setValues
   *N CHAR(10) CONST; // --> Create environment
   *N CHAR(10) CONST; // --> Job queue
   *N CHAR(10) CONST; // --> Job queue (Library)
+  *N CHAR(10) CONST; // --> Cancel, if ASP threshold exceeds
 END-PR;
 
 DCL-PR MNTJOB_check IND // <-- Success

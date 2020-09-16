@@ -63,13 +63,13 @@
              CHGVAR     VAR(&CM_VER ) VALUE('05')
              CHGVAR     VAR(&CM_RLS ) VALUE('01')
              CHGVAR     VAR(&CM_MDN ) VALUE('00')
-             CHGVAR     VAR(&CM_PTF ) VALUE('C510000')
+             CHGVAR     VAR(&CM_PTF ) VALUE('C510026')
 
              CHGVAR     VAR(&BD_DATE) VALUE(&DATEISO)
 
              CHGVAR     VAR(&CL_VER ) VALUE('01')
-             CHGVAR     VAR(&CL_RLS ) VALUE('00')
-             CHGVAR     VAR(&CL_MDN ) VALUE('00')
+             CHGVAR     VAR(&CL_RLS ) VALUE('01')
+             CHGVAR     VAR(&CL_MDN ) VALUE('07')
 
              DLTDTAARA  DTAARA(&LIB/&OBJ)
              MONMSG     MSGID(CPF2105) EXEC(DO)

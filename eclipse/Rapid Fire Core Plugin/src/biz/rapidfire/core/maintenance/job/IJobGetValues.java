@@ -15,4 +15,5 @@ public interface IJobGetValues {
     public static final int CREATE_ENVIRONMENT = 3;
     public static final int JOB_QUEUE_NAME = 4;
     public static final int JOB_QUEUE_LIBRARY_NAME = 5;
+    public static final int CANCEL_ASP_THRESHOLD_EXCEEDS = 6;
 }

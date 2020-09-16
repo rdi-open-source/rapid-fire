@@ -76,6 +76,7 @@ DCL-S g_DSCR CHAR(35);              // Description
 DCL-S g_CRTE CHAR(10);              // Create environment
 DCL-S g_JQ   CHAR(10);              // Job queue
 DCL-S g_JQL  CHAR(10);              // Job queue (Library)
+DCL-S g_CASPTE CHAR(10);            // Cancel, if ASP threshold exceeds
 DCL-S g_LIBL CHAR(10) INZ('*NONE'); // Library list
 DCL-S g_OPN  IND INZ(*OFF);         // Open indicator
 
@@ -225,6 +226,7 @@ DCL-PROC MNTJOB_getValues EXPORT;
     p_CRTE CHAR(10); // <-- Create environment
     p_JQ   CHAR(10); // <-- Job queue
     p_JQL  CHAR(10); // <-- Job queue (Library)
+    p_CASPTE CHAR(10); // <-- Cancel, if ASP threshold exceeds
   END-PI;
 
   if (g_MODE = MNTJOB_CREATE);
@@ -234,6 +236,7 @@ DCL-PROC MNTJOB_getValues EXPORT;
     p_CRTE = *blanks;
     p_JQ = *blanks;
     p_JQL = *blanks;
+    p_CASPTE = *blanks;
 
   else;
 
@@ -242,6 +245,7 @@ DCL-PROC MNTJOB_getValues EXPORT;
     p_CRTE = X1CRTE;
     p_JQ = X1JQ;
     p_JQL = X1JQL;
+    p_CASPTE = X1CASPTE;
 
   endif;
 
@@ -259,6 +263,7 @@ DCL-PROC MNTJOB_setValues EXPORT;
     p_CRTE CHAR(10) CONST; // --> Create environment
     p_JQ   CHAR(10) CONST; // --> Job queue
     p_JQL  CHAR(10) CONST; // --> Job queue (Library)
+    p_CASPTE CHAR(10) CONST; // --> Cancel, if ASP threshold exceeds
   END-PI;
 
   g_JOB = p_JOB;
@@ -266,6 +271,7 @@ DCL-PROC MNTJOB_setValues EXPORT;
   g_CRTE = p_CRTE;
   g_JQ = p_JQ;
   g_JQL = p_JQL;
+  g_CASPTE = p_CASPTE;
 
 END-PROC MNTJOB_setValues;
 
@@ -352,6 +358,14 @@ DCL-PROC MNTJOB_check EXPORT;
         leave;
       endif;
 
+      // The value in field 'Cancel, if ASP threshold exceeds' is not valid
+      if g_CASPTE <> '*YES' And
+         g_CASPTE <> '*NO';
+        p_FLD = 'CASPTE';
+        l_MSGID = 'ERR0012';
+        leave;
+      endif;
+
     endif;
 
     //*** Check only for mode DELETE ***
@@ -431,7 +445,7 @@ DCL-PROC MNTJOB_book EXPORT;
     X1CFRM = *Blanks;
     write JOBRF;
 
-    ExSr librarList;
+    ExSr libraryList;
 
     if RAPIDFIRE_getAutoCommit() = 'Y';
       commit;
@@ -458,7 +472,7 @@ DCL-PROC MNTJOB_book EXPORT;
     X1CFRM = *Blanks;
     write JOBRF;
 
-    ExSr librarList;
+    ExSr libraryList;
 
     if RAPIDFIRE_getAutoCommit() = 'Y';
       commit;
@@ -476,7 +490,7 @@ DCL-PROC MNTJOB_book EXPORT;
 
     update JOBRF;
 
-    ExSr librarList;
+    ExSr libraryList;
 
     if RAPIDFIRE_getAutoCommit() = 'Y';
       commit;
@@ -517,6 +531,7 @@ DCL-PROC MNTJOB_book EXPORT;
     X1CRTE = g_CRTE;
     X1JQ = g_JQ;
     X1JQL = g_JQL;
+    X1CASPTE = g_CASPTE;
 
   endsr;
 
@@ -524,7 +539,7 @@ DCL-PROC MNTJOB_book EXPORT;
   //* Library List *NONE                                                                       *
   //*------------------------------------------------------------------------------------------*
 
-  begsr librarList;
+  begsr libraryList;
 
     if g_CRTE = '*NO';
       SetLL ( g_JOB : g_LIBL ) LIBLSTRF;

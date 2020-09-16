@@ -34,6 +34,7 @@ public class RapidFireJobResourceAdapter extends AbstractResourceAdapter<IRapidF
     private static final String CREATE_ENVIRONMENT = "CREATE_ENVIRONMENT"; //$NON-NLS-1$
     private static final String JOB_QUEUE_LIBRARY = "JOB_QUEUE_LIBRARY"; //$NON-NLS-1$
     private static final String JOB_QUEUE = "JOB_QUEUE"; //$NON-NLS-1$
+    private static final String CANCEL_ASP_THRESHOLD_EXCEEDS = "CANCEL_ASP_THRESHOLD_EXCEEDS"; //$NON-NLS-1$
     private static final String STATUS = "STATUS"; //$NON-NLS-1$
     private static final String PHASE = "PHASE"; //$NON-NLS-1$
     private static final String ERROR = "ERROR"; //$NON-NLS-1$
@@ -126,7 +127,7 @@ public class RapidFireJobResourceAdapter extends AbstractResourceAdapter<IRapidF
     @Override
     protected IPropertyDescriptor[] internalGetPropertyDescriptors() {
 
-        PropertyDescriptor[] ourPDs = new PropertyDescriptor[11];
+        PropertyDescriptor[] ourPDs = new PropertyDescriptor[12];
         ourPDs[0] = new PropertyDescriptor(DATA_LIBRARY, Messages.DataLibrary_name);
         ourPDs[0].setDescription(Messages.Tooltip_DataLibrary_name);
         ourPDs[1] = new PropertyDescriptor(JOB, Messages.Job_name);
@@ -141,14 +142,16 @@ public class RapidFireJobResourceAdapter extends AbstractResourceAdapter<IRapidF
         ourPDs[5].setDescription(Messages.Tooltip_Job_queue);
         ourPDs[6] = new PropertyDescriptor(JOB_QUEUE_LIBRARY, Messages.Job_queue_library);
         ourPDs[6].setDescription(Messages.Tooltip_Job_queue_library);
-        ourPDs[7] = new PropertyDescriptor(STATUS, Messages.Status);
-        ourPDs[7].setDescription(Messages.Tooltip_Status);
-        ourPDs[8] = new PropertyDescriptor(PHASE, Messages.Phase);
-        ourPDs[8].setDescription(Messages.Tooltip_Phase);
-        ourPDs[9] = new PropertyDescriptor(ERROR, Messages.Error);
-        ourPDs[9].setDescription(Messages.Tooltip_Error);
-        ourPDs[10] = new PropertyDescriptor(ERROR_TEXT, Messages.Error_text);
-        ourPDs[10].setDescription(Messages.Tooltip_Error_text);
+        ourPDs[7] = new PropertyDescriptor(CANCEL_ASP_THRESHOLD_EXCEEDS, Messages.Cancel_ASP_threshold_exceeds);
+        ourPDs[7].setDescription(Messages.Tooltip_Cancel_ASP_threshold_exceeds);
+        ourPDs[8] = new PropertyDescriptor(STATUS, Messages.Status);
+        ourPDs[8].setDescription(Messages.Tooltip_Status);
+        ourPDs[9] = new PropertyDescriptor(PHASE, Messages.Phase);
+        ourPDs[9].setDescription(Messages.Tooltip_Phase);
+        ourPDs[10] = new PropertyDescriptor(ERROR, Messages.Error);
+        ourPDs[10].setDescription(Messages.Tooltip_Error);
+        ourPDs[11] = new PropertyDescriptor(ERROR_TEXT, Messages.Error_text);
+        ourPDs[11].setDescription(Messages.Tooltip_Error_text);
 
         return ourPDs;
     }
@@ -172,6 +175,8 @@ public class RapidFireJobResourceAdapter extends AbstractResourceAdapter<IRapidF
             return resource.getJobQueueName();
         } else if (propKey.equals(JOB_QUEUE_LIBRARY)) {
             return resource.getJobQueueLibrary();
+        } else if (propKey.equals(CANCEL_ASP_THRESHOLD_EXCEEDS)) {
+            return resource.isDoCancelASPThresholdExceeds();
         } else if (propKey.equals(STATUS)) {
             return resource.getStatus().label();
         } else if (propKey.equals(PHASE)) {
