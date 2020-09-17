@@ -55,6 +55,7 @@ public class Messages extends NLS {
     public static String Create_environment;
     public static String Job_queue;
     public static String Job_queue_library;
+    public static String Cancel_ASP_threshold_exceeds;
     public static String Status;
     public static String Phase;
     public static String Error;
@@ -87,6 +88,7 @@ public class Messages extends NLS {
     public static String Tooltip_Create_environment;
     public static String Tooltip_Job_queue;
     public static String Tooltip_Job_queue_library;
+    public static String Tooltip_Cancel_ASP_threshold_exceeds;
     public static String Tooltip_Status;
     public static String Tooltip_Phase;
     public static String Tooltip_Error;
