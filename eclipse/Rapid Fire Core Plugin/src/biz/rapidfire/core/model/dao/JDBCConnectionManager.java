@@ -33,6 +33,7 @@ import biz.rapidfire.rsebase.helpers.SystemConnectionHelper;
 
 import com.ibm.as400.access.AS400;
 import com.ibm.as400.access.AS400JDBCDriver;
+import com.ibm.as400.access.SecureAS400;
 
 /**
  * This class manages JDBC connections. Connections are created and cached to be
@@ -310,11 +311,16 @@ public class JDBCConnectionManager {
         // add schema and library list
         jdbcProperties.put(PROPERTIES_LIBRARIES, libraryName + ",*LIBL"); //$NON-NLS-1$
 
+        // enable SSL, when the remote system connection uses SSL
+        if (system instanceof SecureAS400) {
+            jdbcProperties.put("secure", "true"); //$NON-NLS-1$ //$NON-NLS-2$
+        }
+
         Connection connection = as400JDBCDriver.connect(system, jdbcProperties, libraryName, true);
-        
+
         // Remove current library from library list
-		Statement stmt = connection.createStatement();
-		stmt.executeUpdate("CALL QSYS.QCMDEXC('CHGCURLIB CURLIB(*CRTDFT)',0000000025.00000)");
+        Statement stmt = connection.createStatement();
+        stmt.executeUpdate("CALL QSYS.QCMDEXC('CHGCURLIB CURLIB(*CRTDFT)',0000000025.00000)");
 
         return connection;
     }
