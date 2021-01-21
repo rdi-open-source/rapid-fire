@@ -20,7 +20,7 @@
              MONMSG     MSGID(MCH3601) EXEC(DO)
                RMVMSG     PGMQ(*SAME (*)) CLEAR(*ALL)
                SNDPGMMSG  MSGID(CPF9898) MSGF(*LIBL/QCPFMSG) +
-                            MSGDTA('Usage: CALL PGM(GNRCPYPGM ) +
+                            MSGDTA('Usage: CALL PGM(GNRCPYPGM) +
                                     PARM(libName [msgFName)') +
                             TOPGMQ(*PRV (*PGMBDY)) MSGTYPE(*ESCAPE)
              ENDDO
@@ -47,13 +47,13 @@
              ADDMSGD +
                 MSGID(ERR0001) +
                 MSGF(&LIB/&OBJ) +
-                MSG(+
+                MSG( +
 'The value in field ''Source File'' is not valid.'                    +
                 ) +
-                SEV(00) +
-     /*   Keine Ersatzvariablen definiert!                          */ +
+                SEV(0) +
+     /*   No replacement variables defined!                         */ +
                 ALROPT(*NO) +
-                CCSID( 65535) +
+                CCSID(65535) +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
@@ -64,13 +64,13 @@
              ADDMSGD +
                 MSGID(ERR0002) +
                 MSGF(&LIB/&OBJ) +
-                MSG(+
+                MSG( +
 'The value in field ''Library'' is not valid.'                        +
                 ) +
-                SEV(00) +
-     /*   Keine Ersatzvariablen definiert!                          */ +
+                SEV(0) +
+     /*   No replacement variables defined!                         */ +
                 ALROPT(*NO) +
-                CCSID( 65535) +
+                CCSID(65535) +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
@@ -81,13 +81,13 @@
              ADDMSGD +
                 MSGID(ERR0003) +
                 MSGF(&LIB/&OBJ) +
-                MSG(+
+                MSG( +
 'The value in field ''Source member'' is not valid.'                  +
                 ) +
-                SEV(00) +
-     /*   Keine Ersatzvariablen definiert!                          */ +
+                SEV(0) +
+     /*   No replacement variables defined!                         */ +
                 ALROPT(*NO) +
-                CCSID( 65535) +
+                CCSID(65535) +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
@@ -98,13 +98,13 @@
              ADDMSGD +
                 MSGID(ERR0004) +
                 MSGF(&LIB/&OBJ) +
-                MSG(+
+                MSG( +
 'Library does not exist.'                                             +
                 ) +
-                SEV(00) +
-     /*   Keine Ersatzvariablen definiert!                          */ +
+                SEV(0) +
+     /*   No replacement variables defined!                         */ +
                 ALROPT(*NO) +
-                CCSID( 65535) +
+                CCSID(65535) +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
@@ -115,13 +115,13 @@
              ADDMSGD +
                 MSGID(ERR0005) +
                 MSGF(&LIB/&OBJ) +
-                MSG(+
+                MSG( +
 'File does not exist.'                                                +
                 ) +
-                SEV(00) +
-     /*   Keine Ersatzvariablen definiert!                          */ +
+                SEV(0) +
+     /*   No replacement variables defined!                         */ +
                 ALROPT(*NO) +
-                CCSID( 65535) +
+                CCSID(65535) +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
@@ -132,13 +132,13 @@
              ADDMSGD +
                 MSGID(ERR0006) +
                 MSGF(&LIB/&OBJ) +
-                MSG(+
+                MSG( +
 'File is not a source file.'                                          +
                 ) +
-                SEV(00) +
-     /*   Keine Ersatzvariablen definiert!                          */ +
+                SEV(0) +
+     /*   No replacement variables defined!                         */ +
                 ALROPT(*NO) +
-                CCSID( 65535) +
+                CCSID(65535) +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
@@ -149,13 +149,13 @@
              ADDMSGD +
                 MSGID(ERR0007) +
                 MSGF(&LIB/&OBJ) +
-                MSG(+
+                MSG( +
 'Member already exists.'                                              +
                 ) +
-                SEV(00) +
-     /*   Keine Ersatzvariablen definiert!                          */ +
+                SEV(0) +
+     /*   No replacement variables defined!                         */ +
                 ALROPT(*NO) +
-                CCSID( 65535) +
+                CCSID(65535) +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
@@ -166,13 +166,13 @@
              ADDMSGD +
                 MSGID(ERR0008) +
                 MSGF(&LIB/&OBJ) +
-                MSG(+
+                MSG( +
 'The value in field ''Area'' is not valid.'                           +
                 ) +
-                SEV(00) +
-     /*   Keine Ersatzvariablen definiert!                          */ +
+                SEV(0) +
+     /*   No replacement variables defined!                         */ +
                 ALROPT(*NO) +
-                CCSID( 65535) +
+                CCSID(65535) +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
@@ -183,13 +183,13 @@
              ADDMSGD +
                 MSGID(ERR0009) +
                 MSGF(&LIB/&OBJ) +
-                MSG(+
+                MSG( +
 'Area does not exist.'                                                +
                 ) +
-                SEV(00) +
-     /*   Keine Ersatzvariablen definiert!                          */ +
+                SEV(0) +
+     /*   No replacement variables defined!                         */ +
                 ALROPT(*NO) +
-                CCSID( 65535) +
+                CCSID(65535) +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
@@ -200,13 +200,13 @@
              ADDMSGD +
                 MSGID(ERR0010) +
                 MSGF(&LIB/&OBJ) +
-                MSG(+
+                MSG( +
 'Library record of area not found.'                                   +
                 ) +
-                SEV(00) +
-     /*   Keine Ersatzvariablen definiert!                          */ +
+                SEV(0) +
+     /*   No replacement variables defined!                         */ +
                 ALROPT(*NO) +
-                CCSID( 65535) +
+                CCSID(65535) +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
@@ -217,13 +217,13 @@
              ADDMSGD +
                 MSGID(ERR0011) +
                 MSGF(&LIB/&OBJ) +
-                MSG(+
+                MSG( +
 'The value in field ''Conversion program'' is not valid.'             +
                 ) +
-                SEV(00) +
-     /*   Keine Ersatzvariablen definiert!                          */ +
+                SEV(0) +
+     /*   No replacement variables defined!                         */ +
                 ALROPT(*NO) +
-                CCSID( 65535) +
+                CCSID(65535) +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
@@ -234,13 +234,13 @@
              ADDMSGD +
                 MSGID(ERR0012) +
                 MSGF(&LIB/&OBJ) +
-                MSG(+
+                MSG( +
 'The value in field ''Library'' is not valid.'                        +
                 ) +
-                SEV(00) +
-     /*   Keine Ersatzvariablen definiert!                          */ +
+                SEV(0) +
+     /*   No replacement variables defined!                         */ +
                 ALROPT(*NO) +
-                CCSID( 65535) +
+                CCSID(65535) +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
@@ -251,13 +251,13 @@
              ADDMSGD +
                 MSGID(ERR0013) +
                 MSGF(&LIB/&OBJ) +
-                MSG(+
+                MSG( +
 'The library must not be specified.'                                  +
                 ) +
-                SEV(00) +
-     /*   Keine Ersatzvariablen definiert!                          */ +
+                SEV(0) +
+     /*   No replacement variables defined!                         */ +
                 ALROPT(*NO) +
-                CCSID( 65535) +
+                CCSID(65535) +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
@@ -268,13 +268,13 @@
              ADDMSGD +
                 MSGID(ERR0014) +
                 MSGF(&LIB/&OBJ) +
-                MSG(+
+                MSG( +
 'The value in field ''Replace'' is not valid.'                        +
                 ) +
-                SEV(00) +
-     /*   Keine Ersatzvariablen definiert!                          */ +
+                SEV(0) +
+     /*   No replacement variables defined!                         */ +
                 ALROPT(*NO) +
-                CCSID( 65535) +
+                CCSID(65535) +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
@@ -285,13 +285,13 @@
              ADDMSGD +
                 MSGID(ERR0017) +
                 MSGF(&LIB/&OBJ) +
-                MSG(+
+                MSG( +
 'Area and libraries are missing. Specify the area or the libraries.'  +
                 ) +
-                SEV(00) +
-     /*   Keine Ersatzvariablen definiert!                          */ +
+                SEV(0) +
+     /*   No replacement variables defined!                         */ +
                 ALROPT(*NO) +
-                CCSID( 65535) +
+                CCSID(65535) +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
@@ -302,13 +302,13 @@
              ADDMSGD +
                 MSGID(ERR0018) +
                 MSGF(&LIB/&OBJ) +
-                MSG(+
+                MSG( +
 'Data library with old file does not exist.'                          +
                 ) +
-                SEV(00) +
-     /*   Keine Ersatzvariablen definiert!                          */ +
+                SEV(0) +
+     /*   No replacement variables defined!                         */ +
                 ALROPT(*NO) +
-                CCSID( 65535) +
+                CCSID(65535) +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
@@ -319,13 +319,13 @@
              ADDMSGD +
                 MSGID(ERR0019) +
                 MSGF(&LIB/&OBJ) +
-                MSG(+
+                MSG( +
 'Shadow library with new file does not exist.'                        +
                 ) +
-                SEV(00) +
-     /*   Keine Ersatzvariablen definiert!                          */ +
+                SEV(0) +
+     /*   No replacement variables defined!                         */ +
                 ALROPT(*NO) +
-                CCSID( 65535) +
+                CCSID(65535) +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
@@ -336,13 +336,13 @@
              ADDMSGD +
                 MSGID(ERR0020) +
                 MSGF(&LIB/&OBJ) +
-                MSG(+
+                MSG( +
 'Old file does not exist in data library.'                            +
                 ) +
-                SEV(00) +
-     /*   Keine Ersatzvariablen definiert!                          */ +
+                SEV(0) +
+     /*   No replacement variables defined!                         */ +
                 ALROPT(*NO) +
-                CCSID( 65535) +
+                CCSID(65535) +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
@@ -353,13 +353,13 @@
              ADDMSGD +
                 MSGID(ERR0021) +
                 MSGF(&LIB/&OBJ) +
-                MSG(+
+                MSG( +
 'New file does not exist in shadow library.'                          +
                 ) +
-                SEV(00) +
-     /*   Keine Ersatzvariablen definiert!                          */ +
+                SEV(0) +
+     /*   No replacement variables defined!                         */ +
                 ALROPT(*NO) +
-                CCSID( 65535) +
+                CCSID(65535) +
                 /*  -EOF-  */
 
              RCLRSC LVL(*)

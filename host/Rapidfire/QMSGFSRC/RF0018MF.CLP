@@ -20,7 +20,7 @@
              MONMSG     MSGID(MCH3601) EXEC(DO)
                RMVMSG     PGMQ(*SAME (*)) CLEAR(*ALL)
                SNDPGMMSG  MSGID(CPF9898) MSGF(*LIBL/QCPFMSG) +
-                            MSGDTA('Usage: CALL PGM(RF0018MF  ) +
+                            MSGDTA('Usage: CALL PGM(RF0018MF) +
                                     PARM(libName [msgFName)') +
                             TOPGMQ(*PRV (*PGMBDY)) MSGTYPE(*ESCAPE)
              ENDDO
@@ -47,13 +47,13 @@
              ADDMSGD +
                 MSGID(CON0001) +
                 MSGF(&LIB/&OBJ) +
-                MSG(+
+                MSG( +
 '                       Generate Copy Program'                        +
                 ) +
-                SEV(00) +
-     /*   Keine Ersatzvariablen definiert!                          */ +
+                SEV(0) +
+     /*   No replacement variables defined!                         */ +
                 ALROPT(*NO) +
-                CCSID( 65535) +
+                CCSID(65535) +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
@@ -64,13 +64,13 @@
              ADDMSGD +
                 MSGID(CON0007) +
                 MSGF(&LIB/&OBJ) +
-                MSG(+
+                MSG( +
 'Job  . . . . . . . :'                                                +
                 ) +
-                SEV(00) +
-     /*   Keine Ersatzvariablen definiert!                          */ +
+                SEV(0) +
+     /*   No replacement variables defined!                         */ +
                 ALROPT(*NO) +
-                CCSID( 65535) +
+                CCSID(65535) +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
@@ -81,13 +81,13 @@
              ADDMSGD +
                 MSGID(CON0008) +
                 MSGF(&LIB/&OBJ) +
-                MSG(+
+                MSG( +
 'Press F10 to generate the copy program or F12 to cancel.'            +
                 ) +
-                SEV(00) +
-     /*   Keine Ersatzvariablen definiert!                          */ +
+                SEV(0) +
+     /*   No replacement variables defined!                         */ +
                 ALROPT(*NO) +
-                CCSID( 65535) +
+                CCSID(65535) +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
@@ -98,13 +98,13 @@
              ADDMSGD +
                 MSGID(CON0009) +
                 MSGF(&LIB/&OBJ) +
-                MSG(+
+                MSG( +
 'File . . . . . . . :'                                                +
                 ) +
-                SEV(00) +
-     /*   Keine Ersatzvariablen definiert!                          */ +
+                SEV(0) +
+     /*   No replacement variables defined!                         */ +
                 ALROPT(*NO) +
-                CCSID( 65535) +
+                CCSID(65535) +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
@@ -115,13 +115,13 @@
              ADDMSGD +
                 MSGID(CON0010) +
                 MSGF(&LIB/&OBJ) +
-                MSG(+
+                MSG( +
 'Position . . . . . :'                                                +
                 ) +
-                SEV(00) +
-     /*   Keine Ersatzvariablen definiert!                          */ +
+                SEV(0) +
+     /*   No replacement variables defined!                         */ +
                 ALROPT(*NO) +
-                CCSID( 65535) +
+                CCSID(65535) +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
@@ -132,13 +132,13 @@
              ADDMSGD +
                 MSGID(CON0013) +
                 MSGF(&LIB/&OBJ) +
-                MSG(+
+                MSG( +
 'F3=Exit  F4=Prompt  F12=Cancel'                                      +
                 ) +
-                SEV(00) +
-     /*   Keine Ersatzvariablen definiert!                          */ +
+                SEV(0) +
+     /*   No replacement variables defined!                         */ +
                 ALROPT(*NO) +
-                CCSID( 65535) +
+                CCSID(65535) +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
@@ -149,13 +149,13 @@
              ADDMSGD +
                 MSGID(CON0014) +
                 MSGF(&LIB/&OBJ) +
-                MSG(+
+                MSG( +
 'Name'                                                                +
                 ) +
-                SEV(00) +
-     /*   Keine Ersatzvariablen definiert!                          */ +
+                SEV(0) +
+     /*   No replacement variables defined!                         */ +
                 ALROPT(*NO) +
-                CCSID( 65535) +
+                CCSID(65535) +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
@@ -166,13 +166,13 @@
              ADDMSGD +
                 MSGID(CON0015) +
                 MSGF(&LIB/&OBJ) +
-                MSG(+
+                MSG( +
 'Name'                                                                +
                 ) +
-                SEV(00) +
-     /*   Keine Ersatzvariablen definiert!                          */ +
+                SEV(0) +
+     /*   No replacement variables defined!                         */ +
                 ALROPT(*NO) +
-                CCSID( 65535) +
+                CCSID(65535) +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
@@ -183,13 +183,13 @@
              ADDMSGD +
                 MSGID(CON0016) +
                 MSGF(&LIB/&OBJ) +
-                MSG(+
+                MSG( +
 'Name'                                                                +
                 ) +
-                SEV(00) +
-     /*   Keine Ersatzvariablen definiert!                          */ +
+                SEV(0) +
+     /*   No replacement variables defined!                         */ +
                 ALROPT(*NO) +
-                CCSID( 65535) +
+                CCSID(65535) +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
@@ -200,13 +200,13 @@
              ADDMSGD +
                 MSGID(CON0017) +
                 MSGF(&LIB/&OBJ) +
-                MSG(+
+                MSG( +
 'Number'                                                              +
                 ) +
-                SEV(00) +
-     /*   Keine Ersatzvariablen definiert!                          */ +
+                SEV(0) +
+     /*   No replacement variables defined!                         */ +
                 ALROPT(*NO) +
-                CCSID( 65535) +
+                CCSID(65535) +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
@@ -217,13 +217,13 @@
              ADDMSGD +
                 MSGID(CON0018) +
                 MSGF(&LIB/&OBJ) +
-                MSG(+
+                MSG( +
 'Source file  . . . :'                                                +
                 ) +
-                SEV(00) +
-     /*   Keine Ersatzvariablen definiert!                          */ +
+                SEV(0) +
+     /*   No replacement variables defined!                         */ +
                 ALROPT(*NO) +
-                CCSID( 65535) +
+                CCSID(65535) +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
@@ -234,13 +234,13 @@
              ADDMSGD +
                 MSGID(CON0019) +
                 MSGF(&LIB/&OBJ) +
-                MSG(+
+                MSG( +
 '  Library  . . . . :'                                                +
                 ) +
-                SEV(00) +
-     /*   Keine Ersatzvariablen definiert!                          */ +
+                SEV(0) +
+     /*   No replacement variables defined!                         */ +
                 ALROPT(*NO) +
-                CCSID( 65535) +
+                CCSID(65535) +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
@@ -251,13 +251,13 @@
              ADDMSGD +
                 MSGID(CON0022) +
                 MSGF(&LIB/&OBJ) +
-                MSG(+
+                MSG( +
 'Source member  . . :'                                                +
                 ) +
-                SEV(00) +
-     /*   Keine Ersatzvariablen definiert!                          */ +
+                SEV(0) +
+     /*   No replacement variables defined!                         */ +
                 ALROPT(*NO) +
-                CCSID( 65535) +
+                CCSID(65535) +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
@@ -268,13 +268,13 @@
              ADDMSGD +
                 MSGID(CON0023) +
                 MSGF(&LIB/&OBJ) +
-                MSG(+
+                MSG( +
 'Area . . . . . . . :'                                                +
                 ) +
-                SEV(00) +
-     /*   Keine Ersatzvariablen definiert!                          */ +
+                SEV(0) +
+     /*   No replacement variables defined!                         */ +
                 ALROPT(*NO) +
-                CCSID( 65535) +
+                CCSID(65535) +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
@@ -285,13 +285,13 @@
              ADDMSGD +
                 MSGID(CON0024) +
                 MSGF(&LIB/&OBJ) +
-                MSG(+
+                MSG( +
 'Name'                                                                +
                 ) +
-                SEV(00) +
-     /*   Keine Ersatzvariablen definiert!                          */ +
+                SEV(0) +
+     /*   No replacement variables defined!                         */ +
                 ALROPT(*NO) +
-                CCSID( 65535) +
+                CCSID(65535) +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
@@ -302,13 +302,13 @@
              ADDMSGD +
                 MSGID(CON0025) +
                 MSGF(&LIB/&OBJ) +
-                MSG(+
+                MSG( +
 '*NONE, Name'                                                         +
                 ) +
-                SEV(00) +
-     /*   Keine Ersatzvariablen definiert!                          */ +
+                SEV(0) +
+     /*   No replacement variables defined!                         */ +
                 ALROPT(*NO) +
-                CCSID( 65535) +
+                CCSID(65535) +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
@@ -319,13 +319,13 @@
              ADDMSGD +
                 MSGID(CON0026) +
                 MSGF(&LIB/&OBJ) +
-                MSG(+
+                MSG( +
 'Library  . . . . . :'                                                +
                 ) +
-                SEV(00) +
-     /*   Keine Ersatzvariablen definiert!                          */ +
+                SEV(0) +
+     /*   No replacement variables defined!                         */ +
                 ALROPT(*NO) +
-                CCSID( 65535) +
+                CCSID(65535) +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
@@ -336,13 +336,13 @@
              ADDMSGD +
                 MSGID(CON0027) +
                 MSGF(&LIB/&OBJ) +
-                MSG(+
+                MSG( +
 'Name'                                                                +
                 ) +
-                SEV(00) +
-     /*   Keine Ersatzvariablen definiert!                          */ +
+                SEV(0) +
+     /*   No replacement variables defined!                         */ +
                 ALROPT(*NO) +
-                CCSID( 65535) +
+                CCSID(65535) +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
@@ -353,13 +353,13 @@
              ADDMSGD +
                 MSGID(CON0028) +
                 MSGF(&LIB/&OBJ) +
-                MSG(+
+                MSG( +
 'Shadow library . . :'                                                +
                 ) +
-                SEV(00) +
-     /*   Keine Ersatzvariablen definiert!                          */ +
+                SEV(0) +
+     /*   No replacement variables defined!                         */ +
                 ALROPT(*NO) +
-                CCSID( 65535) +
+                CCSID(65535) +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
@@ -370,13 +370,13 @@
              ADDMSGD +
                 MSGID(CON0029) +
                 MSGF(&LIB/&OBJ) +
-                MSG(+
+                MSG( +
 'Name'                                                                +
                 ) +
-                SEV(00) +
-     /*   Keine Ersatzvariablen definiert!                          */ +
+                SEV(0) +
+     /*   No replacement variables defined!                         */ +
                 ALROPT(*NO) +
-                CCSID( 65535) +
+                CCSID(65535) +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
@@ -387,13 +387,13 @@
              ADDMSGD +
                 MSGID(CON0030) +
                 MSGF(&LIB/&OBJ) +
-                MSG(+
+                MSG( +
 'Conversion program :'                                                +
                 ) +
-                SEV(00) +
-     /*   Keine Ersatzvariablen definiert!                          */ +
+                SEV(0) +
+     /*   No replacement variables defined!                         */ +
                 ALROPT(*NO) +
-                CCSID( 65535) +
+                CCSID(65535) +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
@@ -404,13 +404,13 @@
              ADDMSGD +
                 MSGID(CON0031) +
                 MSGF(&LIB/&OBJ) +
-                MSG(+
+                MSG( +
 'Name, *NONE'                                                         +
                 ) +
-                SEV(00) +
-     /*   Keine Ersatzvariablen definiert!                          */ +
+                SEV(0) +
+     /*   No replacement variables defined!                         */ +
                 ALROPT(*NO) +
-                CCSID( 65535) +
+                CCSID(65535) +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
@@ -421,13 +421,13 @@
              ADDMSGD +
                 MSGID(CON0032) +
                 MSGF(&LIB/&OBJ) +
-                MSG(+
+                MSG( +
 'Library  . . . . . :'                                                +
                 ) +
-                SEV(00) +
-     /*   Keine Ersatzvariablen definiert!                          */ +
+                SEV(0) +
+     /*   No replacement variables defined!                         */ +
                 ALROPT(*NO) +
-                CCSID( 65535) +
+                CCSID(65535) +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
@@ -438,13 +438,13 @@
              ADDMSGD +
                 MSGID(CON0033) +
                 MSGF(&LIB/&OBJ) +
-                MSG(+
+                MSG( +
 'Name'                                                                +
                 ) +
-                SEV(00) +
-     /*   Keine Ersatzvariablen definiert!                          */ +
+                SEV(0) +
+     /*   No replacement variables defined!                         */ +
                 ALROPT(*NO) +
-                CCSID( 65535) +
+                CCSID(65535) +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
@@ -455,13 +455,13 @@
              ADDMSGD +
                 MSGID(CON0034) +
                 MSGF(&LIB/&OBJ) +
-                MSG(+
+                MSG( +
 'Replace  . . . . . :'                                                +
                 ) +
-                SEV(00) +
-     /*   Keine Ersatzvariablen definiert!                          */ +
+                SEV(0) +
+     /*   No replacement variables defined!                         */ +
                 ALROPT(*NO) +
-                CCSID( 65535) +
+                CCSID(65535) +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
@@ -472,13 +472,13 @@
              ADDMSGD +
                 MSGID(CON0035) +
                 MSGF(&LIB/&OBJ) +
-                MSG(+
+                MSG( +
 '*YES, *NO'                                                           +
                 ) +
-                SEV(00) +
-     /*   Keine Ersatzvariablen definiert!                          */ +
+                SEV(0) +
+     /*   No replacement variables defined!                         */ +
                 ALROPT(*NO) +
-                CCSID( 65535) +
+                CCSID(65535) +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
@@ -489,13 +489,13 @@
              ADDMSGD +
                 MSGID(ERR0015) +
                 MSGF(&LIB/&OBJ) +
-                MSG(+
+                MSG( +
 'No prompt for the requested field available.'                        +
                 ) +
-                SEV(00) +
-     /*   Keine Ersatzvariablen definiert!                          */ +
+                SEV(0) +
+     /*   No replacement variables defined!                         */ +
                 ALROPT(*NO) +
-                CCSID( 65535) +
+                CCSID(65535) +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
@@ -506,13 +506,13 @@
              ADDMSGD +
                 MSGID(ERR0016) +
                 MSGF(&LIB/&OBJ) +
-                MSG(+
+                MSG( +
 'Could not generate copy program. Check job log for details.'         +
                 ) +
-                SEV(00) +
-     /*   Keine Ersatzvariablen definiert!                          */ +
+                SEV(0) +
+     /*   No replacement variables defined!                         */ +
                 ALROPT(*NO) +
-                CCSID( 65535) +
+                CCSID(65535) +
                 /*  -EOF-  */
 
              RCLRSC LVL(*)

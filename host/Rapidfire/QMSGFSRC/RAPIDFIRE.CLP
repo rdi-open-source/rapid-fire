@@ -20,7 +20,7 @@
              MONMSG     MSGID(MCH3601) EXEC(DO)
                RMVMSG     PGMQ(*SAME (*)) CLEAR(*ALL)
                SNDPGMMSG  MSGID(CPF9898) MSGF(*LIBL/QCPFMSG) +
-                            MSGDTA('Usage: CALL PGM(RAPIDFIRE ) +
+                            MSGDTA('Usage: CALL PGM(RAPIDFIRE) +
                                     PARM(libName [msgFName)') +
                             TOPGMQ(*PRV (*PGMBDY)) MSGTYPE(*ESCAPE)
              ENDDO
@@ -47,16 +47,16 @@
              ADDMSGD +
                 MSGID(MSG0001) +
                 MSGF(&LIB/&OBJ) +
-                MSG(+
+                MSG( +
 'Journal job for journal &1 in library &2 could not be submitted.'    +
                 ) +
-                SEV(00) +
+                SEV(0) +
                 FMT( +
-                    (*CHAR 0010) +
-                    (*CHAR 0010) +
+                    (*CHAR 10) +
+                    (*CHAR 10) +
                 ) +
                 ALROPT(*NO) +
-                CCSID( 65535) +
+                CCSID(65535) +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
@@ -67,16 +67,16 @@
              ADDMSGD +
                 MSGID(MSG0002) +
                 MSGF(&LIB/&OBJ) +
-                MSG(+
+                MSG( +
 'Journal job for journal &1 in library &2 could not be retrieved.'    +
                 ) +
-                SEV(00) +
+                SEV(0) +
                 FMT( +
-                    (*CHAR 0010) +
-                    (*CHAR 0010) +
+                    (*CHAR 10) +
+                    (*CHAR 10) +
                 ) +
                 ALROPT(*NO) +
-                CCSID( 65535) +
+                CCSID(65535) +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
@@ -87,13 +87,13 @@
              ADDMSGD +
                 MSGID(MSG0003) +
                 MSGF(&LIB/&OBJ) +
-                MSG(+
+                MSG( +
 'No journal jobs submitted.'                                          +
                 ) +
-                SEV(00) +
-     /*   Keine Ersatzvariablen definiert!                          */ +
+                SEV(0) +
+     /*   No replacement variables defined!                         */ +
                 ALROPT(*NO) +
-                CCSID( 65535) +
+                CCSID(65535) +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
@@ -104,13 +104,13 @@
              ADDMSGD +
                 MSGID(MSG0004) +
                 MSGF(&LIB/&OBJ) +
-                MSG(+
+                MSG( +
 'At least one submitted job has not started within 120 seconds.'      +
                 ) +
-                SEV(00) +
-     /*   Keine Ersatzvariablen definiert!                          */ +
+                SEV(0) +
+     /*   No replacement variables defined!                         */ +
                 ALROPT(*NO) +
-                CCSID( 65535) +
+                CCSID(65535) +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
@@ -121,19 +121,19 @@
              ADDMSGD +
                 MSGID(MSG0005) +
                 MSGF(&LIB/&OBJ) +
-                MSG(+
+                MSG( +
 'Journal job for journal &1 in library &2 could not read "Changes Work-
 file" for file &3 in library &4.'                                     +
                 ) +
-                SEV(00) +
+                SEV(0) +
                 FMT( +
-                    (*CHAR 0010) +
-                    (*CHAR 0010) +
-                    (*CHAR 0010) +
-                    (*CHAR 0010) +
+                    (*CHAR 10) +
+                    (*CHAR 10) +
+                    (*CHAR 10) +
+                    (*CHAR 10) +
                 ) +
                 ALROPT(*NO) +
-                CCSID( 65535) +
+                CCSID(65535) +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
@@ -144,20 +144,20 @@ file" for file &3 in library &4.'                                     +
              ADDMSGD +
                 MSGID(MSG0006) +
                 MSGF(&LIB/&OBJ) +
-                MSG(+
+                MSG( +
 'Journal job for journal &1 in library &2 could not write to "Changes -
 Workfile" for file &3 in library &4. Failed Statement : &5'           +
                 ) +
-                SEV(00) +
+                SEV(0) +
                 FMT( +
-                    (*CHAR 0010) +
-                    (*CHAR 0010) +
-                    (*CHAR 0010) +
-                    (*CHAR 0010) +
-                    (*CHAR 0128) +
+                    (*CHAR 10) +
+                    (*CHAR 10) +
+                    (*CHAR 10) +
+                    (*CHAR 10) +
+                    (*CHAR 128) +
                 ) +
                 ALROPT(*NO) +
-                CCSID( 65535) +
+                CCSID(65535) +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
@@ -168,13 +168,13 @@ Workfile" for file &3 in library &4. Failed Statement : &5'           +
              ADDMSGD +
                 MSGID(MSG0007) +
                 MSGF(&LIB/&OBJ) +
-                MSG(+
+                MSG( +
 'User space PROMOTOR in library QTEMP could not be created.'          +
                 ) +
-                SEV(00) +
-     /*   Keine Ersatzvariablen definiert!                          */ +
+                SEV(0) +
+     /*   No replacement variables defined!                         */ +
                 ALROPT(*NO) +
-                CCSID( 65535) +
+                CCSID(65535) +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
@@ -185,14 +185,14 @@ Workfile" for file &3 in library &4. Failed Statement : &5'           +
              ADDMSGD +
                 MSGID(MSG0008) +
                 MSGF(&LIB/&OBJ) +
-                MSG(+
+                MSG( +
 'Pointer to user space PROMOTOR in library QTEMP could not be retrieve-
 d.'                                                                   +
                 ) +
-                SEV(00) +
-     /*   Keine Ersatzvariablen definiert!                          */ +
+                SEV(0) +
+     /*   No replacement variables defined!                         */ +
                 ALROPT(*NO) +
-                CCSID( 65535) +
+                CCSID(65535) +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
@@ -203,13 +203,13 @@ d.'                                                                   +
              ADDMSGD +
                 MSGID(MSG0009) +
                 MSGF(&LIB/&OBJ) +
-                MSG(+
+                MSG( +
 'User space PROMOTOR in library QTEMP could not be deleted.'          +
                 ) +
-                SEV(00) +
-     /*   Keine Ersatzvariablen definiert!                          */ +
+                SEV(0) +
+     /*   No replacement variables defined!                         */ +
                 ALROPT(*NO) +
-                CCSID( 65535) +
+                CCSID(65535) +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
@@ -220,13 +220,13 @@ d.'                                                                   +
              ADDMSGD +
                 MSGID(MSG0010) +
                 MSGF(&LIB/&OBJ) +
-                MSG(+
+                MSG( +
 'Current library list could not be retrieved.'                        +
                 ) +
-                SEV(00) +
-     /*   Keine Ersatzvariablen definiert!                          */ +
+                SEV(0) +
+     /*   No replacement variables defined!                         */ +
                 ALROPT(*NO) +
-                CCSID( 65535) +
+                CCSID(65535) +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
@@ -237,16 +237,16 @@ d.'                                                                   +
              ADDMSGD +
                 MSGID(MSG0011) +
                 MSGF(&LIB/&OBJ) +
-                MSG(+
+                MSG( +
 'The journal of file &1 in library &2 could not be retrieved.'        +
                 ) +
-                SEV(00) +
+                SEV(0) +
                 FMT( +
-                    (*CHAR 0010) +
-                    (*CHAR 0010) +
+                    (*CHAR 10) +
+                    (*CHAR 10) +
                 ) +
                 ALROPT(*NO) +
-                CCSID( 65535) +
+                CCSID(65535) +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
@@ -257,15 +257,15 @@ d.'                                                                   +
              ADDMSGD +
                 MSGID(MSG0012) +
                 MSGF(&LIB/&OBJ) +
-                MSG(+
+                MSG( +
 'The ASP of library &1 could not be retrieved.'                       +
                 ) +
-                SEV(00) +
+                SEV(0) +
                 FMT( +
-                    (*CHAR 0010) +
+                    (*CHAR 10) +
                 ) +
                 ALROPT(*NO) +
-                CCSID( 65535) +
+                CCSID(65535) +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
@@ -276,15 +276,15 @@ d.'                                                                   +
              ADDMSGD +
                 MSGID(MSG0013) +
                 MSGF(&LIB/&OBJ) +
-                MSG(+
+                MSG( +
 'The ASP device of library &1 could not be retrieved.'                +
                 ) +
-                SEV(00) +
+                SEV(0) +
                 FMT( +
-                    (*CHAR 0010) +
+                    (*CHAR 10) +
                 ) +
                 ALROPT(*NO) +
-                CCSID( 65535) +
+                CCSID(65535) +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
@@ -295,15 +295,15 @@ d.'                                                                   +
              ADDMSGD +
                 MSGID(MSG0014) +
                 MSGF(&LIB/&OBJ) +
-                MSG(+
+                MSG( +
 'Library &1 could not be created.'                                    +
                 ) +
-                SEV(00) +
+                SEV(0) +
                 FMT( +
-                    (*CHAR 0010) +
+                    (*CHAR 10) +
                 ) +
                 ALROPT(*NO) +
-                CCSID( 65535) +
+                CCSID(65535) +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
@@ -314,19 +314,19 @@ d.'                                                                   +
              ADDMSGD +
                 MSGID(MSG0015) +
                 MSGF(&LIB/&OBJ) +
-                MSG(+
+                MSG( +
 'Command for position &1, area &2, type &3 and sequence &4 could not b-
 e executed.'                                                          +
                 ) +
-                SEV(00) +
+                SEV(0) +
                 FMT( +
-                    (*CHAR 0006) +
-                    (*CHAR 0010) +
-                    (*CHAR 0010) +
-                    (*CHAR 0003) +
+                    (*CHAR 6) +
+                    (*CHAR 10) +
+                    (*CHAR 10) +
+                    (*CHAR 3) +
                 ) +
                 ALROPT(*NO) +
-                CCSID( 65535) +
+                CCSID(65535) +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
@@ -337,16 +337,16 @@ e executed.'                                                          +
              ADDMSGD +
                 MSGID(MSG0016) +
                 MSGF(&LIB/&OBJ) +
-                MSG(+
+                MSG( +
 'Library list &1 could not be seted/reseted : Type = &2.'             +
                 ) +
-                SEV(00) +
+                SEV(0) +
                 FMT( +
-                    (*CHAR 0010) +
-                    (*CHAR 0010) +
+                    (*CHAR 10) +
+                    (*CHAR 10) +
                 ) +
                 ALROPT(*NO) +
-                CCSID( 65535) +
+                CCSID(65535) +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
@@ -357,17 +357,17 @@ e executed.'                                                          +
              ADDMSGD +
                 MSGID(MSG0017) +
                 MSGF(&LIB/&OBJ) +
-                MSG(+
+                MSG( +
 'Source physical file of copy program for file &1 in library &2 could -
 not be created in library QTEMP.'                                     +
                 ) +
-                SEV(00) +
+                SEV(0) +
                 FMT( +
-                    (*CHAR 0010) +
-                    (*CHAR 0010) +
+                    (*CHAR 10) +
+                    (*CHAR 10) +
                 ) +
                 ALROPT(*NO) +
-                CCSID( 65535) +
+                CCSID(65535) +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
@@ -378,17 +378,17 @@ not be created in library QTEMP.'                                     +
              ADDMSGD +
                 MSGID(MSG0018) +
                 MSGF(&LIB/&OBJ) +
-                MSG(+
+                MSG( +
 'Source file of copy program for file &1 in library &2 could not be op-
 ened.'                                                                +
                 ) +
-                SEV(00) +
+                SEV(0) +
                 FMT( +
-                    (*CHAR 0010) +
-                    (*CHAR 0010) +
+                    (*CHAR 10) +
+                    (*CHAR 10) +
                 ) +
                 ALROPT(*NO) +
-                CCSID( 65535) +
+                CCSID(65535) +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
@@ -399,16 +399,16 @@ ened.'                                                                +
              ADDMSGD +
                 MSGID(MSG0019) +
                 MSGF(&LIB/&OBJ) +
-                MSG(+
+                MSG( +
 'Copy program for file &1 in library &2 could not be compiled.'       +
                 ) +
-                SEV(00) +
+                SEV(0) +
                 FMT( +
-                    (*CHAR 0010) +
-                    (*CHAR 0010) +
+                    (*CHAR 10) +
+                    (*CHAR 10) +
                 ) +
                 ALROPT(*NO) +
-                CCSID( 65535) +
+                CCSID(65535) +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
@@ -419,17 +419,17 @@ ened.'                                                                +
              ADDMSGD +
                 MSGID(MSG0020) +
                 MSGF(&LIB/&OBJ) +
-                MSG(+
+                MSG( +
 'Source physical file of copy program for file &1 in library &2 could -
 not be deleted in library QTEMP.'                                     +
                 ) +
-                SEV(00) +
+                SEV(0) +
                 FMT( +
-                    (*CHAR 0010) +
-                    (*CHAR 0010) +
+                    (*CHAR 10) +
+                    (*CHAR 10) +
                 ) +
                 ALROPT(*NO) +
-                CCSID( 65535) +
+                CCSID(65535) +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
@@ -440,16 +440,16 @@ not be deleted in library QTEMP.'                                     +
              ADDMSGD +
                 MSGID(MSG0021) +
                 MSGF(&LIB/&OBJ) +
-                MSG(+
+                MSG( +
 'The record format of file &1 in library &2 could not be retrieved.'  +
                 ) +
-                SEV(00) +
+                SEV(0) +
                 FMT( +
-                    (*CHAR 0010) +
-                    (*CHAR 0010) +
+                    (*CHAR 10) +
+                    (*CHAR 10) +
                 ) +
                 ALROPT(*NO) +
-                CCSID( 65535) +
+                CCSID(65535) +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
@@ -460,16 +460,16 @@ not be deleted in library QTEMP.'                                     +
              ADDMSGD +
                 MSGID(MSG0022) +
                 MSGF(&LIB/&OBJ) +
-                MSG(+
+                MSG( +
 'File &1 in library &2 has more than one record format.'              +
                 ) +
-                SEV(00) +
+                SEV(0) +
                 FMT( +
-                    (*CHAR 0010) +
-                    (*CHAR 0010) +
+                    (*CHAR 10) +
+                    (*CHAR 10) +
                 ) +
                 ALROPT(*NO) +
-                CCSID( 65535) +
+                CCSID(65535) +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
@@ -480,16 +480,16 @@ not be deleted in library QTEMP.'                                     +
              ADDMSGD +
                 MSGID(MSG0023) +
                 MSGF(&LIB/&OBJ) +
-                MSG(+
+                MSG( +
 'The members of file &1 in library &2 could not be retrieved.'        +
                 ) +
-                SEV(00) +
+                SEV(0) +
                 FMT( +
-                    (*CHAR 0010) +
-                    (*CHAR 0010) +
+                    (*CHAR 10) +
+                    (*CHAR 10) +
                 ) +
                 ALROPT(*NO) +
-                CCSID( 65535) +
+                CCSID(65535) +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
@@ -500,17 +500,17 @@ not be deleted in library QTEMP.'                                     +
              ADDMSGD +
                 MSGID(MSG0024) +
                 MSGF(&LIB/&OBJ) +
-                MSG(+
+                MSG( +
 'Member &1 could not be added to file &2 in library &3.'              +
                 ) +
-                SEV(00) +
+                SEV(0) +
                 FMT( +
-                    (*CHAR 0010) +
-                    (*CHAR 0010) +
-                    (*CHAR 0010) +
+                    (*CHAR 10) +
+                    (*CHAR 10) +
+                    (*CHAR 10) +
                 ) +
                 ALROPT(*NO) +
-                CCSID( 65535) +
+                CCSID(65535) +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
@@ -521,18 +521,18 @@ not be deleted in library QTEMP.'                                     +
              ADDMSGD +
                 MSGID(MSG0025) +
                 MSGF(&LIB/&OBJ) +
-                MSG(+
+                MSG( +
 'The description of member &1 in file &2 in library &3 could not be re-
 trieved.'                                                             +
                 ) +
-                SEV(00) +
+                SEV(0) +
                 FMT( +
-                    (*CHAR 0010) +
-                    (*CHAR 0010) +
-                    (*CHAR 0010) +
+                    (*CHAR 10) +
+                    (*CHAR 10) +
+                    (*CHAR 10) +
                 ) +
                 ALROPT(*NO) +
-                CCSID( 65535) +
+                CCSID(65535) +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
@@ -543,16 +543,16 @@ trieved.'                                                             +
              ADDMSGD +
                 MSGID(MSG0026) +
                 MSGF(&LIB/&OBJ) +
-                MSG(+
+                MSG( +
 'Workfile Records for file &1 in library &2 could not be created.'    +
                 ) +
-                SEV(00) +
+                SEV(0) +
                 FMT( +
-                    (*CHAR 0010) +
-                    (*CHAR 0010) +
+                    (*CHAR 10) +
+                    (*CHAR 10) +
                 ) +
                 ALROPT(*NO) +
-                CCSID( 65535) +
+                CCSID(65535) +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
@@ -563,16 +563,16 @@ trieved.'                                                             +
              ADDMSGD +
                 MSGID(MSG0027) +
                 MSGF(&LIB/&OBJ) +
-                MSG(+
+                MSG( +
 'Workfile Changes for file &1 in library &2 could not be created.'    +
                 ) +
-                SEV(00) +
+                SEV(0) +
                 FMT( +
-                    (*CHAR 0010) +
-                    (*CHAR 0010) +
+                    (*CHAR 10) +
+                    (*CHAR 10) +
                 ) +
                 ALROPT(*NO) +
-                CCSID( 65535) +
+                CCSID(65535) +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
@@ -583,16 +583,16 @@ trieved.'                                                             +
              ADDMSGD +
                 MSGID(MSG0028) +
                 MSGF(&LIB/&OBJ) +
-                MSG(+
+                MSG( +
 'The description file &1 in library &2 could not be retrieved.'       +
                 ) +
-                SEV(00) +
+                SEV(0) +
                 FMT( +
-                    (*CHAR 0010) +
-                    (*CHAR 0010) +
+                    (*CHAR 10) +
+                    (*CHAR 10) +
                 ) +
                 ALROPT(*NO) +
-                CCSID( 65535) +
+                CCSID(65535) +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
@@ -603,18 +603,18 @@ trieved.'                                                             +
              ADDMSGD +
                 MSGID(MSG0029) +
                 MSGF(&LIB/&OBJ) +
-                MSG(+
+                MSG( +
 'The parameter FRCRATIO in file &1 in library &2 could not be set to t-
 he value &3.'                                                         +
                 ) +
-                SEV(00) +
+                SEV(0) +
                 FMT( +
-                    (*CHAR 0010) +
-                    (*CHAR 0010) +
-                    (*CHAR 0010) +
+                    (*CHAR 10) +
+                    (*CHAR 10) +
+                    (*CHAR 10) +
                 ) +
                 ALROPT(*NO) +
-                CCSID( 65535) +
+                CCSID(65535) +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
@@ -625,17 +625,17 @@ he value &3.'                                                         +
              ADDMSGD +
                 MSGID(MSG0030) +
                 MSGF(&LIB/&OBJ) +
-                MSG(+
+                MSG( +
 'Copy program for file &1 in library &2 crashed. Mode &3.'            +
                 ) +
-                SEV(00) +
+                SEV(0) +
                 FMT( +
-                    (*CHAR 0010) +
-                    (*CHAR 0010) +
-                    (*CHAR 0010) +
+                    (*CHAR 10) +
+                    (*CHAR 10) +
+                    (*CHAR 10) +
                 ) +
                 ALROPT(*NO) +
-                CCSID( 65535) +
+                CCSID(65535) +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
@@ -646,16 +646,16 @@ he value &3.'                                                         +
              ADDMSGD +
                 MSGID(MSG0031) +
                 MSGF(&LIB/&OBJ) +
-                MSG(+
+                MSG( +
 'File job for file &1 in library &2 could not be submitted.'          +
                 ) +
-                SEV(00) +
+                SEV(0) +
                 FMT( +
-                    (*CHAR 0010) +
-                    (*CHAR 0010) +
+                    (*CHAR 10) +
+                    (*CHAR 10) +
                 ) +
                 ALROPT(*NO) +
-                CCSID( 65535) +
+                CCSID(65535) +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
@@ -666,16 +666,16 @@ he value &3.'                                                         +
              ADDMSGD +
                 MSGID(MSG0032) +
                 MSGF(&LIB/&OBJ) +
-                MSG(+
+                MSG( +
 'Journal job for journal &1 in library &2 could not be released.'     +
                 ) +
-                SEV(00) +
+                SEV(0) +
                 FMT( +
-                    (*CHAR 0010) +
-                    (*CHAR 0010) +
+                    (*CHAR 10) +
+                    (*CHAR 10) +
                 ) +
                 ALROPT(*NO) +
-                CCSID( 65535) +
+                CCSID(65535) +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
@@ -686,15 +686,15 @@ he value &3.'                                                         +
              ADDMSGD +
                 MSGID(MSG0033) +
                 MSGF(&LIB/&OBJ) +
-                MSG(+
+                MSG( +
 'Control job for job &1 could not be submitted.'                      +
                 ) +
-                SEV(00) +
+                SEV(0) +
                 FMT( +
-                    (*CHAR 0010) +
+                    (*CHAR 10) +
                 ) +
                 ALROPT(*NO) +
-                CCSID( 65535) +
+                CCSID(65535) +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
@@ -705,15 +705,15 @@ he value &3.'                                                         +
              ADDMSGD +
                 MSGID(MSG0034) +
                 MSGF(&LIB/&OBJ) +
-                MSG(+
+                MSG( +
 'Control job for job &1 could not be retrieved.'                      +
                 ) +
-                SEV(00) +
+                SEV(0) +
                 FMT( +
-                    (*CHAR 0010) +
+                    (*CHAR 10) +
                 ) +
                 ALROPT(*NO) +
-                CCSID( 65535) +
+                CCSID(65535) +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
@@ -724,15 +724,15 @@ he value &3.'                                                         +
              ADDMSGD +
                 MSGID(MSG0035) +
                 MSGF(&LIB/&OBJ) +
-                MSG(+
+                MSG( +
 'Control job for job &1 could not be released.'                       +
                 ) +
-                SEV(00) +
+                SEV(0) +
                 FMT( +
-                    (*CHAR 0010) +
+                    (*CHAR 10) +
                 ) +
                 ALROPT(*NO) +
-                CCSID( 65535) +
+                CCSID(65535) +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
@@ -743,15 +743,15 @@ he value &3.'                                                         +
              ADDMSGD +
                 MSGID(MSG0036) +
                 MSGF(&LIB/&OBJ) +
-                MSG(+
+                MSG( +
 'Library &1 does not exit.'                                           +
                 ) +
-                SEV(00) +
+                SEV(0) +
                 FMT( +
-                    (*CHAR 0010) +
+                    (*CHAR 10) +
                 ) +
                 ALROPT(*NO) +
-                CCSID( 65535) +
+                CCSID(65535) +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
@@ -762,16 +762,16 @@ he value &3.'                                                         +
              ADDMSGD +
                 MSGID(MSG0037) +
                 MSGF(&LIB/&OBJ) +
-                MSG(+
+                MSG( +
 'File &1 in library &2 does not exit.'                                +
                 ) +
-                SEV(00) +
+                SEV(0) +
                 FMT( +
-                    (*CHAR 0010) +
-                    (*CHAR 0010) +
+                    (*CHAR 10) +
+                    (*CHAR 10) +
                 ) +
                 ALROPT(*NO) +
-                CCSID( 65535) +
+                CCSID(65535) +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
@@ -782,17 +782,17 @@ he value &3.'                                                         +
              ADDMSGD +
                 MSGID(MSG0038) +
                 MSGF(&LIB/&OBJ) +
-                MSG(+
+                MSG( +
 'Target file of copy program for file &1 in library &2 could not be op-
 ened.'                                                                +
                 ) +
-                SEV(00) +
+                SEV(0) +
                 FMT( +
-                    (*CHAR 0010) +
-                    (*CHAR 0010) +
+                    (*CHAR 10) +
+                    (*CHAR 10) +
                 ) +
                 ALROPT(*NO) +
-                CCSID( 65535) +
+                CCSID(65535) +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
@@ -803,16 +803,16 @@ ened.'                                                                +
              ADDMSGD +
                 MSGID(MSG0039) +
                 MSGF(&LIB/&OBJ) +
-                MSG(+
+                MSG( +
 'Journaling for file &1 in library &2 could not be started.'          +
                 ) +
-                SEV(00) +
+                SEV(0) +
                 FMT( +
-                    (*CHAR 0010) +
-                    (*CHAR 0010) +
+                    (*CHAR 10) +
+                    (*CHAR 10) +
                 ) +
                 ALROPT(*NO) +
-                CCSID( 65535) +
+                CCSID(65535) +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
@@ -823,16 +823,16 @@ ened.'                                                                +
              ADDMSGD +
                 MSGID(MSG0040) +
                 MSGF(&LIB/&OBJ) +
-                MSG(+
+                MSG( +
 'Journaling for file &1 in library &2 could not be ended.'            +
                 ) +
-                SEV(00) +
+                SEV(0) +
                 FMT( +
-                    (*CHAR 0010) +
-                    (*CHAR 0010) +
+                    (*CHAR 10) +
+                    (*CHAR 10) +
                 ) +
                 ALROPT(*NO) +
-                CCSID( 65535) +
+                CCSID(65535) +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
@@ -843,15 +843,15 @@ ened.'                                                                +
              ADDMSGD +
                 MSGID(MSG0041) +
                 MSGF(&LIB/&OBJ) +
-                MSG(+
+                MSG( +
 'Journal RAPIDFIRE could not be created in library &1.'               +
                 ) +
-                SEV(00) +
+                SEV(0) +
                 FMT( +
-                    (*CHAR 0010) +
+                    (*CHAR 10) +
                 ) +
                 ALROPT(*NO) +
-                CCSID( 65535) +
+                CCSID(65535) +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
@@ -862,13 +862,13 @@ ened.'                                                                +
              ADDMSGD +
                 MSGID(MSG0042) +
                 MSGF(&LIB/&OBJ) +
-                MSG(+
+                MSG( +
 'At least one job is no longer active.'                               +
                 ) +
-                SEV(00) +
-     /*   Keine Ersatzvariablen definiert!                          */ +
+                SEV(0) +
+     /*   No replacement variables defined!                         */ +
                 ALROPT(*NO) +
-                CCSID( 65535) +
+                CCSID(65535) +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
@@ -879,16 +879,16 @@ ened.'                                                                +
              ADDMSGD +
                 MSGID(MSG0043) +
                 MSGF(&LIB/&OBJ) +
-                MSG(+
+                MSG( +
 'File job for file &1 in library &2 could not be retrieved.'          +
                 ) +
-                SEV(00) +
+                SEV(0) +
                 FMT( +
-                    (*CHAR 0010) +
-                    (*CHAR 0010) +
+                    (*CHAR 10) +
+                    (*CHAR 10) +
                 ) +
                 ALROPT(*NO) +
-                CCSID( 65535) +
+                CCSID(65535) +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
@@ -899,16 +899,16 @@ ened.'                                                                +
              ADDMSGD +
                 MSGID(MSG0044) +
                 MSGF(&LIB/&OBJ) +
-                MSG(+
+                MSG( +
 'File job for file &1 in library &2 could not be released.'           +
                 ) +
-                SEV(00) +
+                SEV(0) +
                 FMT( +
-                    (*CHAR 0010) +
-                    (*CHAR 0010) +
+                    (*CHAR 10) +
+                    (*CHAR 10) +
                 ) +
                 ALROPT(*NO) +
-                CCSID( 65535) +
+                CCSID(65535) +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
@@ -919,13 +919,13 @@ ened.'                                                                +
              ADDMSGD +
                 MSGID(MSG0045) +
                 MSGF(&LIB/&OBJ) +
-                MSG(+
+                MSG( +
 'No file jobs submitted.'                                             +
                 ) +
-                SEV(00) +
-     /*   Keine Ersatzvariablen definiert!                          */ +
+                SEV(0) +
+     /*   No replacement variables defined!                         */ +
                 ALROPT(*NO) +
-                CCSID( 65535) +
+                CCSID(65535) +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
@@ -936,16 +936,16 @@ ened.'                                                                +
              ADDMSGD +
                 MSGID(MSG0046) +
                 MSGF(&LIB/&OBJ) +
-                MSG(+
+                MSG( +
 'Data for file &1 in library &2 could not be retrieved.'              +
                 ) +
-                SEV(00) +
+                SEV(0) +
                 FMT( +
-                    (*CHAR 0010) +
-                    (*CHAR 0010) +
+                    (*CHAR 10) +
+                    (*CHAR 10) +
                 ) +
                 ALROPT(*NO) +
-                CCSID( 65535) +
+                CCSID(65535) +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
@@ -956,16 +956,16 @@ ened.'                                                                +
              ADDMSGD +
                 MSGID(MSG0047) +
                 MSGF(&LIB/&OBJ) +
-                MSG(+
+                MSG( +
 'All records in all files of Rapid Fire job &1 have copied. The Rapid -
 Fire job &1 is ready for installation.'                               +
                 ) +
-                SEV(00) +
+                SEV(0) +
                 FMT( +
-                    (*CHAR 0010) +
+                    (*CHAR 10) +
                 ) +
                 ALROPT(*NO) +
-                CCSID( 65535) +
+                CCSID(65535) +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
@@ -976,17 +976,17 @@ Fire job &1 is ready for installation.'                               +
              ADDMSGD +
                 MSGID(MSG0048) +
                 MSGF(&LIB/&OBJ) +
-                MSG(+
+                MSG( +
 'Journal job for journal &1 in library &2 received unexpected status f-
 rom command RCVJRNE.'                                                 +
                 ) +
-                SEV(00) +
+                SEV(0) +
                 FMT( +
-                    (*CHAR 0010) +
-                    (*CHAR 0010) +
+                    (*CHAR 10) +
+                    (*CHAR 10) +
                 ) +
                 ALROPT(*NO) +
-                CCSID( 65535) +
+                CCSID(65535) +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
@@ -997,15 +997,15 @@ rom command RCVJRNE.'                                                 +
              ADDMSGD +
                 MSGID(MSG0049) +
                 MSGF(&LIB/&OBJ) +
-                MSG(+
+                MSG( +
 'Command RCVJRNE has finished with error &1.'                         +
                 ) +
-                SEV(00) +
+                SEV(0) +
                 FMT( +
-                    (*CHAR 0007) +
+                    (*CHAR 7) +
                 ) +
                 ALROPT(*NO) +
-                CCSID( 65535) +
+                CCSID(65535) +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
@@ -1016,13 +1016,13 @@ rom command RCVJRNE.'                                                 +
              ADDMSGD +
                 MSGID(MSG0050) +
                 MSGF(&LIB/&OBJ) +
-                MSG(+
+                MSG( +
 'Exit program for command RCVJRNE has finished with error.'           +
                 ) +
-                SEV(00) +
-     /*   Keine Ersatzvariablen definiert!                          */ +
+                SEV(0) +
+     /*   No replacement variables defined!                         */ +
                 ALROPT(*NO) +
-                CCSID( 65535) +
+                CCSID(65535) +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
@@ -1033,16 +1033,16 @@ rom command RCVJRNE.'                                                 +
              ADDMSGD +
                 MSGID(MSG0051) +
                 MSGF(&LIB/&OBJ) +
-                MSG(+
+                MSG( +
 'Could not retrieve field list of file &1 in library &2.'             +
                 ) +
-                SEV(00) +
+                SEV(0) +
                 FMT( +
-                    (*CHAR 0010) +
-                    (*CHAR 0010) +
+                    (*CHAR 10) +
+                    (*CHAR 10) +
                 ) +
                 ALROPT(*NO) +
-                CCSID( 65535) +
+                CCSID(65535) +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
@@ -1053,20 +1053,20 @@ rom command RCVJRNE.'                                                 +
              ADDMSGD +
                 MSGID(MSG0052) +
                 MSGF(&LIB/&OBJ) +
-                MSG(+
+                MSG( +
 'Journal job for journal &1 in library &2 could not retrieve changes i-
 n "Changes Workfile" for file &3 in library &4. Failed Stm.:&5'       +
                 ) +
-                SEV(00) +
+                SEV(0) +
                 FMT( +
-                    (*CHAR 0010) +
-                    (*CHAR 0010) +
-                    (*CHAR 0010) +
-                    (*CHAR 0010) +
-                    (*CHAR 0128) +
+                    (*CHAR 10) +
+                    (*CHAR 10) +
+                    (*CHAR 10) +
+                    (*CHAR 10) +
+                    (*CHAR 128) +
                 ) +
                 ALROPT(*NO) +
-                CCSID( 65535) +
+                CCSID(65535) +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
@@ -1077,16 +1077,16 @@ n "Changes Workfile" for file &3 in library &4. Failed Stm.:&5'       +
              ADDMSGD +
                 MSGID(MSG0053) +
                 MSGF(&LIB/&OBJ) +
-                MSG(+
+                MSG( +
 'Workfile Changes Log for file &1 in library &2 could not be created.'+
                 ) +
-                SEV(00) +
+                SEV(0) +
                 FMT( +
-                    (*CHAR 0010) +
-                    (*CHAR 0010) +
+                    (*CHAR 10) +
+                    (*CHAR 10) +
                 ) +
                 ALROPT(*NO) +
-                CCSID( 65535) +
+                CCSID(65535) +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
@@ -1097,15 +1097,193 @@ n "Changes Workfile" for file &3 in library &4. Failed Stm.:&5'       +
              ADDMSGD +
                 MSGID(MSG0054) +
                 MSGF(&LIB/&OBJ) +
-                MSG(+
+                MSG( +
 'Copy program could not open file &1.'                                +
                 ) +
-                SEV(00) +
+                SEV(0) +
                 FMT( +
-                    (*CHAR 0021) +
+                    (*CHAR 21) +
                 ) +
                 ALROPT(*NO) +
-                CCSID( 65535) +
+                CCSID(65535) +
+                /*  -EOF-  */
+
+     /*-------------------------------------------------------------*/
+     /*   Cmd-ADDMSGD für Message-ID :   MSG0055                    */
+     /* Workfile "Records Target" for file &1 in library &2 could n */
+     /*-------------------------------------------------------------*/
+
+             ADDMSGD +
+                MSGID(MSG0055) +
+                MSGF(&LIB/&OBJ) +
+                MSG( +
+'Workfile "Records Target" for file &1 in library &2 could not be crea-
+ted.'                                                                 +
+                ) +
+                SEV(0) +
+                FMT( +
+                    (*CHAR 10) +
+                    (*CHAR 10) +
+                ) +
+                ALROPT(*NO) +
+                CCSID(65535) +
+                /*  -EOF-  */
+
+     /*-------------------------------------------------------------*/
+     /*   Cmd-ADDMSGD für Message-ID :   MSG0056                    */
+     /* At least one combination of library and file has been speci */
+     /*-------------------------------------------------------------*/
+
+             ADDMSGD +
+                MSGID(MSG0056) +
+                MSGF(&LIB/&OBJ) +
+                MSG( +
+'At least one combination of library and file has been specified multi-
+ple times.'                                                           +
+                ) +
+                SEV(0) +
+     /*   No replacement variables defined!                         */ +
+                ALROPT(*NO) +
+                CCSID(65535) +
+                /*  -EOF-  */
+
+     /*-------------------------------------------------------------*/
+     /*   Cmd-ADDMSGD für Message-ID :   MSG0057                    */
+     /* &1                                                          */
+     /*-------------------------------------------------------------*/
+
+             ADDMSGD +
+                MSGID(MSG0057) +
+                MSGF(&LIB/&OBJ) +
+                MSG( +
+'&1'                                                                  +
+                ) +
+                SEV(0) +
+                FMT( +
+                    (*CHAR 256) +
+                ) +
+                ALROPT(*NO) +
+                CCSID(65535) +
+                /*  -EOF-  */
+
+     /*-------------------------------------------------------------*/
+     /*   Cmd-ADDMSGD für Message-ID :   MSG0058                    */
+     /* File &1 in library &2 contains fields with "Special Data Ty */
+     /*-------------------------------------------------------------*/
+
+             ADDMSGD +
+                MSGID(MSG0058) +
+                MSGF(&LIB/&OBJ) +
+                MSG( +
+'File &1 in library &2 contains fields with "Special Data Types" like -
+LOB and DATALINK. This is not supported.'                             +
+                ) +
+                SEV(0) +
+                FMT( +
+                    (*CHAR 10) +
+                    (*CHAR 10) +
+                ) +
+                ALROPT(*NO) +
+                CCSID(65535) +
+                /*  -EOF-  */
+
+     /*-------------------------------------------------------------*/
+     /*   Cmd-ADDMSGD für Message-ID :   MSG0059                    */
+     /* Journal job for journal &1 in library &2 received performed */
+     /*-------------------------------------------------------------*/
+
+             ADDMSGD +
+                MSGID(MSG0059) +
+                MSGF(&LIB/&OBJ) +
+                MSG( +
+'Journal job for journal &1 in library &2 received performed command R-
+GZPFM for file &3 in library &4.'                                     +
+                ) +
+                SEV(0) +
+                FMT( +
+                    (*CHAR 10) +
+                    (*CHAR 10) +
+                    (*CHAR 10) +
+                    (*CHAR 10) +
+                ) +
+                ALROPT(*NO) +
+                CCSID(65535) +
+                /*  -EOF-  */
+
+     /*-------------------------------------------------------------*/
+     /*   Cmd-ADDMSGD für Message-ID :   MSG0060                    */
+     /* Command PWRDWNSYS, ENDSBS or ENDJOB with parameter OPTION(* */
+     /*-------------------------------------------------------------*/
+
+             ADDMSGD +
+                MSGID(MSG0060) +
+                MSGF(&LIB/&OBJ) +
+                MSG( +
+'Command PWRDWNSYS, ENDSBS or ENDJOB with parameter OPTION(*CNTRLD) ha-
+s performed.'                                                         +
+                ) +
+                SEV(0) +
+     /*   No replacement variables defined!                         */ +
+                ALROPT(*NO) +
+                CCSID(65535) +
+                /*  -EOF-  */
+
+     /*-------------------------------------------------------------*/
+     /*   Cmd-ADDMSGD für Message-ID :   MSG0061                    */
+     /* There are more than 300 files specified. 300 files is the l */
+     /*-------------------------------------------------------------*/
+
+             ADDMSGD +
+                MSGID(MSG0061) +
+                MSGF(&LIB/&OBJ) +
+                MSG( +
+'There are more than 300 files specified. 300 files is the limit for a-
+ Rapid Fire job.'                                                     +
+                ) +
+                SEV(0) +
+     /*   No replacement variables defined!                         */ +
+                ALROPT(*NO) +
+                CCSID(65535) +
+                /*  -EOF-  */
+
+     /*-------------------------------------------------------------*/
+     /*   Cmd-ADDMSGD für Message-ID :   MSG0062                    */
+     /* File &1 in shadow library &2 has journaled. Perhaps a HA so */
+     /*-------------------------------------------------------------*/
+
+             ADDMSGD +
+                MSGID(MSG0062) +
+                MSGF(&LIB/&OBJ) +
+                MSG( +
+'File &1 in shadow library &2 has journaled. Perhaps a HA solution lik-
+e BUS/400, iTERA, MIMIX ... has caused the problem.'                  +
+                ) +
+                SEV(0) +
+                FMT( +
+                    (*CHAR 10) +
+                    (*CHAR 10) +
+                ) +
+                ALROPT(*NO) +
+                CCSID(65535) +
+                /*  -EOF-  */
+
+     /*-------------------------------------------------------------*/
+     /*   Cmd-ADDMSGD für Message-ID :   MSG0063                    */
+     /* The threshold for ASP &1 has exceeded.                      */
+     /*-------------------------------------------------------------*/
+
+             ADDMSGD +
+                MSGID(MSG0063) +
+                MSGF(&LIB/&OBJ) +
+                MSG( +
+'The threshold for ASP &1 has exceeded.'                              +
+                ) +
+                SEV(0) +
+                FMT( +
+                    (*CHAR 25) +
+                ) +
+                ALROPT(*NO) +
+                CCSID(65535) +
                 /*  -EOF-  */
 
              RCLRSC LVL(*)

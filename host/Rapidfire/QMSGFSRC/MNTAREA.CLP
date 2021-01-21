@@ -20,7 +20,7 @@
              MONMSG     MSGID(MCH3601) EXEC(DO)
                RMVMSG     PGMQ(*SAME (*)) CLEAR(*ALL)
                SNDPGMMSG  MSGID(CPF9898) MSGF(*LIBL/QCPFMSG) +
-                            MSGDTA('Usage: CALL PGM(MNTAREA   ) +
+                            MSGDTA('Usage: CALL PGM(MNTAREA) +
                                     PARM(libName [msgFName)') +
                             TOPGMQ(*PRV (*PGMBDY)) MSGTYPE(*ESCAPE)
              ENDDO
@@ -47,13 +47,13 @@
              ADDMSGD +
                 MSGID(ERR0001) +
                 MSGF(&LIB/&OBJ) +
-                MSG(+
+                MSG( +
 'The area does already exist.'                                        +
                 ) +
-                SEV(00) +
-     /*   Keine Ersatzvariablen definiert!                          */ +
+                SEV(0) +
+     /*   No replacement variables defined!                         */ +
                 ALROPT(*NO) +
-                CCSID( 65535) +
+                CCSID(65535) +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
@@ -64,13 +64,13 @@
              ADDMSGD +
                 MSGID(ERR0002) +
                 MSGF(&LIB/&OBJ) +
-                MSG(+
+                MSG( +
 'The value in field ''Area'' is not valid.'                           +
                 ) +
-                SEV(00) +
-     /*   Keine Ersatzvariablen definiert!                          */ +
+                SEV(0) +
+     /*   No replacement variables defined!                         */ +
                 ALROPT(*NO) +
-                CCSID( 65535) +
+                CCSID(65535) +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
@@ -81,13 +81,13 @@
              ADDMSGD +
                 MSGID(ERR0003) +
                 MSGF(&LIB/&OBJ) +
-                MSG(+
+                MSG( +
 'The value in field ''Library list'' is not valid.'                   +
                 ) +
-                SEV(00) +
-     /*   Keine Ersatzvariablen definiert!                          */ +
+                SEV(0) +
+     /*   No replacement variables defined!                         */ +
                 ALROPT(*NO) +
-                CCSID( 65535) +
+                CCSID(65535) +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
@@ -98,13 +98,13 @@
              ADDMSGD +
                 MSGID(ERR0004) +
                 MSGF(&LIB/&OBJ) +
-                MSG(+
+                MSG( +
 'Invalid parameter values. Error = Area has to be blanks.'            +
                 ) +
-                SEV(00) +
-     /*   Keine Ersatzvariablen definiert!                          */ +
+                SEV(0) +
+     /*   No replacement variables defined!                         */ +
                 ALROPT(*NO) +
-                CCSID( 65535) +
+                CCSID(65535) +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
@@ -115,13 +115,13 @@
              ADDMSGD +
                 MSGID(ERR0005) +
                 MSGF(&LIB/&OBJ) +
-                MSG(+
+                MSG( +
 'The library list has not defined.'                                   +
                 ) +
-                SEV(00) +
-     /*   Keine Ersatzvariablen definiert!                          */ +
+                SEV(0) +
+     /*   No replacement variables defined!                         */ +
                 ALROPT(*NO) +
-                CCSID( 65535) +
+                CCSID(65535) +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
@@ -132,13 +132,13 @@
              ADDMSGD +
                 MSGID(ERR0006) +
                 MSGF(&LIB/&OBJ) +
-                MSG(+
+                MSG( +
 'The library has not defined.'                                        +
                 ) +
-                SEV(00) +
-     /*   Keine Ersatzvariablen definiert!                          */ +
+                SEV(0) +
+     /*   No replacement variables defined!                         */ +
                 ALROPT(*NO) +
-                CCSID( 65535) +
+                CCSID(65535) +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
@@ -149,13 +149,13 @@
              ADDMSGD +
                 MSGID(ERR0007) +
                 MSGF(&LIB/&OBJ) +
-                MSG(+
+                MSG( +
 'The library list has to be *NONE, if create environment is *NO.'     +
                 ) +
-                SEV(00) +
-     /*   Keine Ersatzvariablen definiert!                          */ +
+                SEV(0) +
+     /*   No replacement variables defined!                         */ +
                 ALROPT(*NO) +
-                CCSID( 65535) +
+                CCSID(65535) +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
@@ -166,13 +166,13 @@
              ADDMSGD +
                 MSGID(ERR0008) +
                 MSGF(&LIB/&OBJ) +
-                MSG(+
+                MSG( +
 'The value in field ''CCSID'' is not valid.'                          +
                 ) +
-                SEV(00) +
-     /*   Keine Ersatzvariablen definiert!                          */ +
+                SEV(0) +
+     /*   No replacement variables defined!                         */ +
                 ALROPT(*NO) +
-                CCSID( 65535) +
+                CCSID(65535) +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
@@ -183,15 +183,15 @@
              ADDMSGD +
                 MSGID(ERR0009) +
                 MSGF(&LIB/&OBJ) +
-                MSG(+
+                MSG( +
 'Invalid parameter values. Error = &1.'                               +
                 ) +
-                SEV(00) +
+                SEV(0) +
                 FMT( +
-                    (*CHAR 0256) +
+                    (*CHAR 256) +
                 ) +
                 ALROPT(*NO) +
-                CCSID( 65535) +
+                CCSID(65535) +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
@@ -202,15 +202,15 @@
              ADDMSGD +
                 MSGID(ERR0010) +
                 MSGF(&LIB/&OBJ) +
-                MSG(+
+                MSG( +
 '&1'                                                                  +
                 ) +
-                SEV(00) +
+                SEV(0) +
                 FMT( +
-                    (*CHAR 0256) +
+                    (*CHAR 256) +
                 ) +
                 ALROPT(*NO) +
-                CCSID( 65535) +
+                CCSID(65535) +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
@@ -221,13 +221,13 @@
              ADDMSGD +
                 MSGID(ERR0011) +
                 MSGF(&LIB/&OBJ) +
-                MSG(+
+                MSG( +
 'The action is only valid for jobs with status *RDY.'                 +
                 ) +
-                SEV(00) +
-     /*   Keine Ersatzvariablen definiert!                          */ +
+                SEV(0) +
+     /*   No replacement variables defined!                         */ +
                 ALROPT(*NO) +
-                CCSID( 65535) +
+                CCSID(65535) +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
@@ -238,13 +238,13 @@
              ADDMSGD +
                 MSGID(ERR0019) +
                 MSGF(&LIB/&OBJ) +
-                MSG(+
+                MSG( +
 'The value in field ''Library'' is not valid.'                        +
                 ) +
-                SEV(00) +
-     /*   Keine Ersatzvariablen definiert!                          */ +
+                SEV(0) +
+     /*   No replacement variables defined!                         */ +
                 ALROPT(*NO) +
-                CCSID( 65535) +
+                CCSID(65535) +
                 /*  -EOF-  */
 
              RCLRSC LVL(*)

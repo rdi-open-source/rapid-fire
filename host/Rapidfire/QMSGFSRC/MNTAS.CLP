@@ -20,7 +20,7 @@
              MONMSG     MSGID(MCH3601) EXEC(DO)
                RMVMSG     PGMQ(*SAME (*)) CLEAR(*ALL)
                SNDPGMMSG  MSGID(CPF9898) MSGF(*LIBL/QCPFMSG) +
-                            MSGDTA('Usage: CALL PGM(MNTAS     ) +
+                            MSGDTA('Usage: CALL PGM(MNTAS) +
                                     PARM(libName [msgFName)') +
                             TOPGMQ(*PRV (*PGMBDY)) MSGTYPE(*ESCAPE)
              ENDDO
@@ -47,15 +47,15 @@
              ADDMSGD +
                 MSGID(ERR0001) +
                 MSGF(&LIB/&OBJ) +
-                MSG(+
+                MSG( +
 '&1'                                                                  +
                 ) +
-                SEV(00) +
+                SEV(0) +
                 FMT( +
-                    (*CHAR 0256) +
+                    (*CHAR 256) +
                 ) +
                 ALROPT(*NO) +
-                CCSID( 65535) +
+                CCSID(65535) +
                 /*  -EOF-  */
 
              RCLRSC LVL(*)

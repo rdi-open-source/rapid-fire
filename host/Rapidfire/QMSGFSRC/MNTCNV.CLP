@@ -20,7 +20,7 @@
              MONMSG     MSGID(MCH3601) EXEC(DO)
                RMVMSG     PGMQ(*SAME (*)) CLEAR(*ALL)
                SNDPGMMSG  MSGID(CPF9898) MSGF(*LIBL/QCPFMSG) +
-                            MSGDTA('Usage: CALL PGM(MNTCNV    ) +
+                            MSGDTA('Usage: CALL PGM(MNTCNV) +
                                     PARM(libName [msgFName)') +
                             TOPGMQ(*PRV (*PGMBDY)) MSGTYPE(*ESCAPE)
              ENDDO
@@ -47,13 +47,13 @@
              ADDMSGD +
                 MSGID(ERR0001) +
                 MSGF(&LIB/&OBJ) +
-                MSG(+
+                MSG( +
 'The field to convert does already exist.'                            +
                 ) +
-                SEV(00) +
-     /*   Keine Ersatzvariablen definiert!                          */ +
+                SEV(0) +
+     /*   No replacement variables defined!                         */ +
                 ALROPT(*NO) +
-                CCSID( 65535) +
+                CCSID(65535) +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
@@ -64,13 +64,13 @@
              ADDMSGD +
                 MSGID(ERR0002) +
                 MSGF(&LIB/&OBJ) +
-                MSG(+
+                MSG( +
 'The value in field ''Field to convert'' is not valid.'               +
                 ) +
-                SEV(00) +
-     /*   Keine Ersatzvariablen definiert!                          */ +
+                SEV(0) +
+     /*   No replacement variables defined!                         */ +
                 ALROPT(*NO) +
-                CCSID( 65535) +
+                CCSID(65535) +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
@@ -81,13 +81,13 @@
              ADDMSGD +
                 MSGID(ERR0003) +
                 MSGF(&LIB/&OBJ) +
-                MSG(+
+                MSG( +
 'The value in field ''Rename field in old file to'' is not valid.'    +
                 ) +
-                SEV(00) +
-     /*   Keine Ersatzvariablen definiert!                          */ +
+                SEV(0) +
+     /*   No replacement variables defined!                         */ +
                 ALROPT(*NO) +
-                CCSID( 65535) +
+                CCSID(65535) +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
@@ -98,14 +98,14 @@
              ADDMSGD +
                 MSGID(ERR0004) +
                 MSGF(&LIB/&OBJ) +
-                MSG(+
+                MSG( +
 'Invalid parameter values. Error = "Field to convert" has to be blanks-
 .'                                                                    +
                 ) +
-                SEV(00) +
-     /*   Keine Ersatzvariablen definiert!                          */ +
+                SEV(0) +
+     /*   No replacement variables defined!                         */ +
                 ALROPT(*NO) +
-                CCSID( 65535) +
+                CCSID(65535) +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
@@ -116,13 +116,13 @@
              ADDMSGD +
                 MSGID(ERR0005) +
                 MSGF(&LIB/&OBJ) +
-                MSG(+
+                MSG( +
 'Both fields have to be different.'                                   +
                 ) +
-                SEV(00) +
-     /*   Keine Ersatzvariablen definiert!                          */ +
+                SEV(0) +
+     /*   No replacement variables defined!                         */ +
                 ALROPT(*NO) +
-                CCSID( 65535) +
+                CCSID(65535) +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
@@ -133,13 +133,13 @@
              ADDMSGD +
                 MSGID(ERR0006) +
                 MSGF(&LIB/&OBJ) +
-                MSG(+
+                MSG( +
 'The value in field ''Statement'' is not valid.'                      +
                 ) +
-                SEV(00) +
-     /*   Keine Ersatzvariablen definiert!                          */ +
+                SEV(0) +
+     /*   No replacement variables defined!                         */ +
                 ALROPT(*NO) +
-                CCSID( 65535) +
+                CCSID(65535) +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
@@ -150,15 +150,15 @@
              ADDMSGD +
                 MSGID(ERR0007) +
                 MSGF(&LIB/&OBJ) +
-                MSG(+
+                MSG( +
 'Invalid parameter values. Error = &1.'                               +
                 ) +
-                SEV(00) +
+                SEV(0) +
                 FMT( +
-                    (*CHAR 0256) +
+                    (*CHAR 256) +
                 ) +
                 ALROPT(*NO) +
-                CCSID( 65535) +
+                CCSID(65535) +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
@@ -169,15 +169,15 @@
              ADDMSGD +
                 MSGID(ERR0008) +
                 MSGF(&LIB/&OBJ) +
-                MSG(+
+                MSG( +
 '&1'                                                                  +
                 ) +
-                SEV(00) +
+                SEV(0) +
                 FMT( +
-                    (*CHAR 0256) +
+                    (*CHAR 256) +
                 ) +
                 ALROPT(*NO) +
-                CCSID( 65535) +
+                CCSID(65535) +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
@@ -188,13 +188,13 @@
              ADDMSGD +
                 MSGID(ERR0009) +
                 MSGF(&LIB/&OBJ) +
-                MSG(+
+                MSG( +
 'The action is only valid for jobs with status *RDY.'                 +
                 ) +
-                SEV(00) +
-     /*   Keine Ersatzvariablen definiert!                          */ +
+                SEV(0) +
+     /*   No replacement variables defined!                         */ +
                 ALROPT(*NO) +
-                CCSID( 65535) +
+                CCSID(65535) +
                 /*  -EOF-  */
 
              RCLRSC LVL(*)

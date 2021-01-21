@@ -4,7 +4,7 @@
      /*   >>CRTCMD<<  CALL       PGM(QTEMP/&OB) PARM(&LI &OB);                */
      /*   >>CMD<<     CRTCLPGM   PGM(QTEMP/&OB) +                             */
      /*                          SRCFILE(&SL/&SF) SRCMBR(&SM) +               */
-     /*               TEXT('Maintain Command');                               */
+     /*               TEXT('Rapid Fire files are not journaled');             */
      /*   >>EXECUTE<<                                                         */
      /*   >>CMD<<     DLTPGM PGM(QTEMP/&OB);                                  */
      /* >>END-PRE-COMPILER<<                                                  */
@@ -20,7 +20,7 @@
              MONMSG     MSGID(MCH3601) EXEC(DO)
                RMVMSG     PGMQ(*SAME (*)) CLEAR(*ALL)
                SNDPGMMSG  MSGID(CPF9898) MSGF(*LIBL/QCPFMSG) +
-                            MSGDTA('Usage: CALL PGM(MNTCMD) +
+                            MSGDTA('Usage: CALL PGM(RF0022MF) +
                                     PARM(libName [msgFName)') +
                             TOPGMQ(*PRV (*PGMBDY)) MSGTYPE(*ESCAPE)
              ENDDO
@@ -28,7 +28,7 @@
              CHGVAR     VAR(&OBJ       ) VALUE(&I_OBJ)
              MONMSG     MSGID(MCH3601) EXEC(DO)
                RMVMSG     PGMQ(*SAME (*)) CLEAR(*ALL)
-               CHGVAR     VAR(&OBJ) VALUE('MNTCMD    ')
+               CHGVAR     VAR(&OBJ) VALUE('RF0022MF  ')
              ENDDO
 
              DLTMSGF MSGF(&LIB/&OBJ)
@@ -37,18 +37,18 @@
              ENDDO
 
              CRTMSGF MSGF(&LIB/&OBJ) +
-               TEXT('Maintain Command')
+               TEXT('Rapid Fire files are not journaled')
 
      /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   ERR0001                    */
-     /* Type/Sequence does already exist.                           */
+     /*   Cmd-ADDMSGD für Message-ID :   CON0001                    */
+     /*             ! ! !   The Rapid Fire files are not journaled  */
      /*-------------------------------------------------------------*/
 
              ADDMSGD +
-                MSGID(ERR0001) +
+                MSGID(CON0001) +
                 MSGF(&LIB/&OBJ) +
                 MSG( +
-'Type/Sequence does already exist.'                                   +
+'            ! ! !   The Rapid Fire files are not journaled   ! ! !'  +
                 ) +
                 SEV(0) +
      /*   No replacement variables defined!                         */ +
@@ -57,15 +57,16 @@
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   ERR0002                    */
-     /* The value in field 'Type' is not valid.                     */
+     /*   Cmd-ADDMSGD für Message-ID :   CON0002                    */
+     /* The Raid Fire files are not journaled. Probaly you unchecke */
      /*-------------------------------------------------------------*/
 
              ADDMSGD +
-                MSGID(ERR0002) +
+                MSGID(CON0002) +
                 MSGF(&LIB/&OBJ) +
                 MSG( +
-'The value in field ''Type'' is not valid.'                           +
+'The Raid Fire files are not journaled. Probaly you unchecked the butt-
+on'                                                                   +
                 ) +
                 SEV(0) +
      /*   No replacement variables defined!                         */ +
@@ -74,16 +75,16 @@
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   ERR0003                    */
-     /* Invalid parameter values. Error = Type has to be blanks and */
+     /*   Cmd-ADDMSGD für Message-ID :   CON0003                    */
+     /* "Start journaling Rapid Fire files" when you transfered the */
      /*-------------------------------------------------------------*/
 
              ADDMSGD +
-                MSGID(ERR0003) +
+                MSGID(CON0003) +
                 MSGF(&LIB/&OBJ) +
                 MSG( +
-'Invalid parameter values. Error = Type has to be blanks and sequence -
-has to be zero.'                                                      +
+'"Start journaling Rapid Fire files" when you transfered the Rapid Fir-
+e library'                                                            +
                 ) +
                 SEV(0) +
      /*   No replacement variables defined!                         */ +
@@ -92,53 +93,16 @@ has to be zero.'                                                      +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   ERR0004                    */
-     /* Invalid parameter values. Error = &1.                       */
+     /*   Cmd-ADDMSGD für Message-ID :   CON0004                    */
+     /* to the host. In general you do this, if you have installed  */
      /*-------------------------------------------------------------*/
 
              ADDMSGD +
-                MSGID(ERR0004) +
+                MSGID(CON0004) +
                 MSGF(&LIB/&OBJ) +
                 MSG( +
-'Invalid parameter values. Error = &1.'                               +
-                ) +
-                SEV(0) +
-                FMT( +
-                    (*CHAR 256) +
-                ) +
-                ALROPT(*NO) +
-                CCSID(65535) +
-                /*  -EOF-  */
-
-     /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   ERR0005                    */
-     /* &1                                                          */
-     /*-------------------------------------------------------------*/
-
-             ADDMSGD +
-                MSGID(ERR0005) +
-                MSGF(&LIB/&OBJ) +
-                MSG( +
-'&1'                                                                  +
-                ) +
-                SEV(0) +
-                FMT( +
-                    (*CHAR 256) +
-                ) +
-                ALROPT(*NO) +
-                CCSID(65535) +
-                /*  -EOF-  */
-
-     /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   ERR0006                    */
-     /* If 'Type' is *COMPILE, then 'Sequence' has to be 5.         */
-     /*-------------------------------------------------------------*/
-
-             ADDMSGD +
-                MSGID(ERR0006) +
-                MSGF(&LIB/&OBJ) +
-                MSG( +
-'If ''Type'' is *COMPILE, then ''Sequence'' has to be 5.'             +
+'to the host. In general you do this, if you have installed a high ava-
+ibility'                                                              +
                 ) +
                 SEV(0) +
      /*   No replacement variables defined!                         */ +
@@ -147,15 +111,16 @@ has to be zero.'                                                      +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   ERR0007                    */
-     /* The action is only valid for jobs with status *RDY.         */
+     /*   Cmd-ADDMSGD für Message-ID :   CON0005                    */
+     /* solution like MIMIX, iTERA, BUS/400 or others on your syste */
      /*-------------------------------------------------------------*/
 
              ADDMSGD +
-                MSGID(ERR0007) +
+                MSGID(CON0005) +
                 MSGF(&LIB/&OBJ) +
                 MSG( +
-'The action is only valid for jobs with status *RDY.'                 +
+'solution like MIMIX, iTERA, BUS/400 or others on your system and this-
+ high'                                                                +
                 ) +
                 SEV(0) +
      /*   No replacement variables defined!                         */ +
@@ -164,15 +129,16 @@ has to be zero.'                                                      +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   ERR0009                    */
-     /* The value in field 'Sequence' is not valid.                 */
+     /*   Cmd-ADDMSGD für Message-ID :   CON0006                    */
+     /* avaibility solution shall be responsible for the journaling */
      /*-------------------------------------------------------------*/
 
              ADDMSGD +
-                MSGID(ERR0009) +
+                MSGID(CON0006) +
                 MSGF(&LIB/&OBJ) +
                 MSG( +
-'The value in field ''Sequence'' is not valid.'                       +
+'avaibility solution shall be responsible for the journaling of the Ra-
+pid Fire'                                                             +
                 ) +
                 SEV(0) +
      /*   No replacement variables defined!                         */ +
@@ -181,15 +147,16 @@ has to be zero.'                                                      +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   ERR0015                    */
-     /* The command or one or multiple command parameter are wrong. */
+     /*   Cmd-ADDMSGD für Message-ID :   CON0007                    */
+     /* files. If this is the case, then please check, why your hig */
      /*-------------------------------------------------------------*/
 
              ADDMSGD +
-                MSGID(ERR0015) +
+                MSGID(CON0007) +
                 MSGF(&LIB/&OBJ) +
                 MSG( +
-'The command or one or multiple command parameter are wrong.'         +
+'files. If this is the case, then please check, why your high avaibili-
+ty'                                                                   +
                 ) +
                 SEV(0) +
      /*   No replacement variables defined!                         */ +
@@ -198,15 +165,69 @@ has to be zero.'                                                      +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   ERR0019                    */
-     /* The value in field 'Command' is not valid.                  */
+     /*   Cmd-ADDMSGD für Message-ID :   CON0008                    */
+     /* solution has not journaled the Rapid Fire files. In all oth */
      /*-------------------------------------------------------------*/
 
              ADDMSGD +
-                MSGID(ERR0019) +
+                MSGID(CON0008) +
                 MSGF(&LIB/&OBJ) +
                 MSG( +
-'The value in field ''Command'' is not valid.'                        +
+'solution has not journaled the Rapid Fire files. In all other cases s-
+tart the'                                                             +
+                ) +
+                SEV(0) +
+     /*   No replacement variables defined!                         */ +
+                ALROPT(*NO) +
+                CCSID(65535) +
+                /*  -EOF-  */
+
+     /*-------------------------------------------------------------*/
+     /*   Cmd-ADDMSGD für Message-ID :   CON0009                    */
+     /* journaling of the Rapid Fire files by executing the followi */
+     /*-------------------------------------------------------------*/
+
+             ADDMSGD +
+                MSGID(CON0009) +
+                MSGF(&LIB/&OBJ) +
+                MSG( +
+'journaling of the Rapid Fire files by executing the following command-
+.'                                                                    +
+                ) +
+                SEV(0) +
+     /*   No replacement variables defined!                         */ +
+                ALROPT(*NO) +
+                CCSID(65535) +
+                /*  -EOF-  */
+
+     /*-------------------------------------------------------------*/
+     /*   Cmd-ADDMSGD für Message-ID :   CON0010                    */
+     /* CALL PGM(MY_RAPID_FIRE_LIB/STRENDJRN) PARM('*START' 'MY_RAP */
+     /*-------------------------------------------------------------*/
+
+             ADDMSGD +
+                MSGID(CON0010) +
+                MSGF(&LIB/&OBJ) +
+                MSG( +
+'CALL PGM(MY_RAPID_FIRE_LIB/STRENDJRN) PARM(''*START'' ''MY_RAPID_FIRE-
+_LIB'')'                                                              +
+                ) +
+                SEV(0) +
+     /*   No replacement variables defined!                         */ +
+                ALROPT(*NO) +
+                CCSID(65535) +
+                /*  -EOF-  */
+
+     /*-------------------------------------------------------------*/
+     /*   Cmd-ADDMSGD für Message-ID :   CON0011                    */
+     /* Press enter to continue.                                    */
+     /*-------------------------------------------------------------*/
+
+             ADDMSGD +
+                MSGID(CON0011) +
+                MSGF(&LIB/&OBJ) +
+                MSG( +
+'Press enter to continue.'                                            +
                 ) +
                 SEV(0) +
      /*   No replacement variables defined!                         */ +

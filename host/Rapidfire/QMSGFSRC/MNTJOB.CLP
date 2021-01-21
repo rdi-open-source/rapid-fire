@@ -20,7 +20,7 @@
              MONMSG     MSGID(MCH3601) EXEC(DO)
                RMVMSG     PGMQ(*SAME (*)) CLEAR(*ALL)
                SNDPGMMSG  MSGID(CPF9898) MSGF(*LIBL/QCPFMSG) +
-                            MSGDTA('Usage: CALL PGM(MNTJOB    ) +
+                            MSGDTA('Usage: CALL PGM(MNTJOB) +
                                     PARM(libName [msgFName)') +
                             TOPGMQ(*PRV (*PGMBDY)) MSGTYPE(*ESCAPE)
              ENDDO
@@ -47,13 +47,13 @@
              ADDMSGD +
                 MSGID(ERR0001) +
                 MSGF(&LIB/&OBJ) +
-                MSG(+
+                MSG( +
 'The job does already exist.'                                         +
                 ) +
-                SEV(00) +
-     /*   Keine Ersatzvariablen definiert!                          */ +
+                SEV(0) +
+     /*   No replacement variables defined!                         */ +
                 ALROPT(*NO) +
-                CCSID( 65535) +
+                CCSID(65535) +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
@@ -64,13 +64,13 @@
              ADDMSGD +
                 MSGID(ERR0002) +
                 MSGF(&LIB/&OBJ) +
-                MSG(+
+                MSG( +
 'The value in field ''Job'' is not valid.'                            +
                 ) +
-                SEV(00) +
-     /*   Keine Ersatzvariablen definiert!                          */ +
+                SEV(0) +
+     /*   No replacement variables defined!                         */ +
                 ALROPT(*NO) +
-                CCSID( 65535) +
+                CCSID(65535) +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
@@ -81,13 +81,13 @@
              ADDMSGD +
                 MSGID(ERR0003) +
                 MSGF(&LIB/&OBJ) +
-                MSG(+
+                MSG( +
 'The value in field ''Description'' is not valid.'                    +
                 ) +
-                SEV(00) +
-     /*   Keine Ersatzvariablen definiert!                          */ +
+                SEV(0) +
+     /*   No replacement variables defined!                         */ +
                 ALROPT(*NO) +
-                CCSID( 65535) +
+                CCSID(65535) +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
@@ -98,13 +98,13 @@
              ADDMSGD +
                 MSGID(ERR0004) +
                 MSGF(&LIB/&OBJ) +
-                MSG(+
+                MSG( +
 'The value in field ''Create environment'' is not valid.'             +
                 ) +
-                SEV(00) +
-     /*   Keine Ersatzvariablen definiert!                          */ +
+                SEV(0) +
+     /*   No replacement variables defined!                         */ +
                 ALROPT(*NO) +
-                CCSID( 65535) +
+                CCSID(65535) +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
@@ -115,15 +115,15 @@
              ADDMSGD +
                 MSGID(ERR0005) +
                 MSGF(&LIB/&OBJ) +
-                MSG(+
+                MSG( +
 'Invalid parameter values. Error = &1.'                               +
                 ) +
-                SEV(00) +
+                SEV(0) +
                 FMT( +
-                    (*CHAR 0256) +
+                    (*CHAR 256) +
                 ) +
                 ALROPT(*NO) +
-                CCSID( 65535) +
+                CCSID(65535) +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
@@ -134,13 +134,13 @@
              ADDMSGD +
                 MSGID(ERR0006) +
                 MSGF(&LIB/&OBJ) +
-                MSG(+
+                MSG( +
 'The action is only valid for jobs with status *RDY.'                 +
                 ) +
-                SEV(00) +
-     /*   Keine Ersatzvariablen definiert!                          */ +
+                SEV(0) +
+     /*   No replacement variables defined!                         */ +
                 ALROPT(*NO) +
-                CCSID( 65535) +
+                CCSID(65535) +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
@@ -151,14 +151,14 @@
              ADDMSGD +
                 MSGID(ERR0007) +
                 MSGF(&LIB/&OBJ) +
-                MSG(+
-'The action is only valid for jobs with status *RUN-PND, *RUN or *END--
-PND.'                                                                 +
+                MSG( +
+'The action is only valid for jobs with status *RUN-PND, *RUN, *END-PN-
+D or *ABORT.'                                                         +
                 ) +
-                SEV(00) +
-     /*   Keine Ersatzvariablen definiert!                          */ +
+                SEV(0) +
+     /*   No replacement variables defined!                         */ +
                 ALROPT(*NO) +
-                CCSID( 65535) +
+                CCSID(65535) +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
@@ -169,13 +169,13 @@ PND.'                                                                 +
              ADDMSGD +
                 MSGID(ERR0008) +
                 MSGF(&LIB/&OBJ) +
-                MSG(+
+                MSG( +
 'The action is only valid for jobs with status *RUN.'                 +
                 ) +
-                SEV(00) +
-     /*   Keine Ersatzvariablen definiert!                          */ +
+                SEV(0) +
+     /*   No replacement variables defined!                         */ +
                 ALROPT(*NO) +
-                CCSID( 65535) +
+                CCSID(65535) +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
@@ -186,13 +186,13 @@ PND.'                                                                 +
              ADDMSGD +
                 MSGID(ERR0009) +
                 MSGF(&LIB/&OBJ) +
-                MSG(+
+                MSG( +
 'The action is only valid for jobs with status *END.'                 +
                 ) +
-                SEV(00) +
-     /*   Keine Ersatzvariablen definiert!                          */ +
+                SEV(0) +
+     /*   No replacement variables defined!                         */ +
                 ALROPT(*NO) +
-                CCSID( 65535) +
+                CCSID(65535) +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
@@ -203,13 +203,13 @@ PND.'                                                                 +
              ADDMSGD +
                 MSGID(ERR0010) +
                 MSGF(&LIB/&OBJ) +
-                MSG(+
+                MSG( +
 'The action is only valid for jobs with "Create environment" *YES.'   +
                 ) +
-                SEV(00) +
-     /*   Keine Ersatzvariablen definiert!                          */ +
+                SEV(0) +
+     /*   No replacement variables defined!                         */ +
                 ALROPT(*NO) +
-                CCSID( 65535) +
+                CCSID(65535) +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
@@ -220,13 +220,31 @@ PND.'                                                                 +
              ADDMSGD +
                 MSGID(ERR0011) +
                 MSGF(&LIB/&OBJ) +
-                MSG(+
+                MSG( +
 'Invalid parameter values. Error = Job has to be blanks.'             +
                 ) +
-                SEV(00) +
-     /*   Keine Ersatzvariablen definiert!                          */ +
+                SEV(0) +
+     /*   No replacement variables defined!                         */ +
                 ALROPT(*NO) +
-                CCSID( 65535) +
+                CCSID(65535) +
+                /*  -EOF-  */
+
+     /*-------------------------------------------------------------*/
+     /*   Cmd-ADDMSGD für Message-ID :   ERR0012                    */
+     /* The value in field 'Cancel, if ASP threshold exceeds' is no */
+     /*-------------------------------------------------------------*/
+
+             ADDMSGD +
+                MSGID(ERR0012) +
+                MSGF(&LIB/&OBJ) +
+                MSG( +
+'The value in field ''Cancel, if ASP threshold exceeds'' is not valid.-
+'                                                                     +
+                ) +
+                SEV(0) +
+     /*   No replacement variables defined!                         */ +
+                ALROPT(*NO) +
+                CCSID(65535) +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
@@ -237,13 +255,13 @@ PND.'                                                                 +
              ADDMSGD +
                 MSGID(ERR0045) +
                 MSGF(&LIB/&OBJ) +
-                MSG(+
+                MSG( +
 'The value in field ''Job queue'' is not valid.'                      +
                 ) +
-                SEV(00) +
-     /*   Keine Ersatzvariablen definiert!                          */ +
+                SEV(0) +
+     /*   No replacement variables defined!                         */ +
                 ALROPT(*NO) +
-                CCSID( 65535) +
+                CCSID(65535) +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
@@ -254,13 +272,13 @@ PND.'                                                                 +
              ADDMSGD +
                 MSGID(ERR0048) +
                 MSGF(&LIB/&OBJ) +
-                MSG(+
+                MSG( +
 'The value in field ''Job queue - Library'' is not valid.'            +
                 ) +
-                SEV(00) +
-     /*   Keine Ersatzvariablen definiert!                          */ +
+                SEV(0) +
+     /*   No replacement variables defined!                         */ +
                 ALROPT(*NO) +
-                CCSID( 65535) +
+                CCSID(65535) +
                 /*  -EOF-  */
 
              RCLRSC LVL(*)
