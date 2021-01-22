@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2017-2017 Rapid Fire Project Team
+ * Copyright (c) 2017-2021 Rapid Fire Project Team
  * All rights reserved. This program and the accompanying materials 
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
@@ -207,6 +207,7 @@ public class Messages extends NLS {
     public static String Tooltip_Select_conversion_program_of_file;
     public static String Tooltip_Skip_disabled_pages;
     public static String Tooltip_Start_journaling_Rapid_Fire_files;
+    public static String Tooltip_Label_Connection_colon;
 
     // Questions
     public static String Question_Do_you_want_to_delete_library_A;
@@ -240,6 +241,9 @@ public class Messages extends NLS {
     public static String NewFileWizard_File_A_created;
     public static String Copy_program_successfully_generated;
     public static String Job_log_has_been_printed;
+    public static String Please_select_a_connection;
+    public static String Connecting_to_A;
+    public static String Operation_has_been_canceled_by_the_user;
 
     // Action labels
     public static String ActionLabel_Refresh;

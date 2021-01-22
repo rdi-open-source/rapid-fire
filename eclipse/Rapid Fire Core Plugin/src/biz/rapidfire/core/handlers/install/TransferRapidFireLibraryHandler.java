@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2017-2018 Rapid Fire Project Team
+ * Copyright (c) 2017-2021 Rapid Fire Project Team
  * All rights reserved. This program and the accompanying materials 
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
@@ -29,7 +29,7 @@ import biz.rapidfire.core.install.dialogs.TransferRapidFireLibrary;
  */
 public class TransferRapidFireLibraryHandler extends AbstractHandler implements IHandler {
 
-    private String hostName;
+    private String connectionName;
     private int ftpPort;
     private String rapidFireLibrary;
     private String aspGroup;
@@ -41,8 +41,8 @@ public class TransferRapidFireLibraryHandler extends AbstractHandler implements 
         super();
     }
 
-    public TransferRapidFireLibraryHandler(String hostName, int ftpPort, String rapidFireLibrary, String aspGroup) {
-        this.hostName = hostName;
+    public TransferRapidFireLibraryHandler(String connectionName, int ftpPort, String rapidFireLibrary, String aspGroup) {
+        this.connectionName = connectionName;
         this.ftpPort = ftpPort;
         this.rapidFireLibrary = rapidFireLibrary;
         this.aspGroup = aspGroup;
@@ -66,10 +66,8 @@ public class TransferRapidFireLibraryHandler extends AbstractHandler implements 
             }
 
             TransferRapidFireLibrary statusDialog = new TransferRapidFireLibrary(Display.getCurrent(), SWT.APPLICATION_MODAL | SWT.SHELL_TRIM,
-                rapidFireLibrary, aspGroup, hostName, ftpPort);
-            if (statusDialog.connect()) {
-                statusDialog.open();
-            }
+                rapidFireLibrary, aspGroup, connectionName, ftpPort);
+            statusDialog.open();
 
         } catch (Throwable e) {
             RapidFireCorePlugin.logError("Failed to invoke the 'Transfer Library' handler.", e);

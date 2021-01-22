@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2017-2017 Rapid Fire Project Team
+ * Copyright (c) 2017-2021 Rapid Fire Project Team
  * All rights reserved. This program and the accompanying materials 
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
@@ -34,8 +34,6 @@ import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
 import org.eclipse.ui.PlatformUI;
 
-import com.ibm.as400.access.AS400;
-
 import biz.rapidfire.core.Messages;
 import biz.rapidfire.core.RapidFireCorePlugin;
 import biz.rapidfire.core.handlers.install.TransferRapidFireLibraryHandler;
@@ -49,6 +47,8 @@ import biz.rapidfire.core.validators.Validator;
 import biz.rapidfire.rsebase.helpers.SystemConnectionHelper;
 import biz.rapidfire.rsebase.swt.widgets.SystemHostCombo;
 
+import com.ibm.as400.access.AS400;
+
 public class Library extends PreferencePage implements IWorkbenchPreferencePage {
 
     private String rapidFireLibrary;
@@ -56,7 +56,7 @@ public class Library extends PreferencePage implements IWorkbenchPreferencePage 
 
     private String aspGroup;
     private Validator validatorASPGroup;
-    
+
     private SystemHostCombo comboConnection;
     private Text textFtpPortNumber;
     private Text textProductLibrary;
@@ -139,7 +139,7 @@ public class Library extends PreferencePage implements IWorkbenchPreferencePage 
         textProductLibrary.setTextLimit(10);
 
         validatorLibrary = Validator.getLibraryNameInstance();
-        
+
         WidgetFactory.createLabel(container, Messages.Label_ASP_group_colon, Messages.Tooltip_ASP_group);
 
         comboASPGroup = WidgetFactory.createNameCombo(container);
@@ -153,7 +153,7 @@ public class Library extends PreferencePage implements IWorkbenchPreferencePage 
                 } else {
                     setErrorMessage(null);
                     setValid(true);
-                	if (!isSlowConnection()) {
+                    if (!isSlowConnection()) {
                         updateProductLibraryVersion();
                     } else {
                         clearProductLibraryVersion();
@@ -167,7 +167,7 @@ public class Library extends PreferencePage implements IWorkbenchPreferencePage 
 
         validatorASPGroup = Validator.getNameInstance();
         validatorASPGroup.addSpecialValue("*NONE");
-        
+
         WidgetFactory.createLabel(container, Messages.Label_Version_colon, Messages.Tooltip_Version);
 
         textProductLibraryVersion = new Label(container, SWT.NONE);
@@ -189,9 +189,9 @@ public class Library extends PreferencePage implements IWorkbenchPreferencePage 
         buttonTransfer.addSelectionListener(new SelectionAdapter() {
             @Override
             public void widgetSelected(SelectionEvent event) {
-                String hostName = comboConnection.getHostName();
+                String connectionName = comboConnection.getConnectionName();
                 int ftpPort = IntHelper.tryParseInt(textFtpPortNumber.getText(), Preferences.getInstance().getDefaultFtpPortNumber());
-                TransferRapidFireLibraryHandler handler = new TransferRapidFireLibraryHandler(hostName, ftpPort, rapidFireLibrary, aspGroup);
+                TransferRapidFireLibraryHandler handler = new TransferRapidFireLibraryHandler(connectionName, ftpPort, rapidFireLibrary, aspGroup);
                 try {
                     handler.execute(null);
                 } catch (Throwable e) {
@@ -270,8 +270,8 @@ public class Library extends PreferencePage implements IWorkbenchPreferencePage 
 
         Preferences.getInstance().setRapidFireLibrary(rapidFireLibrary);
         Preferences.getInstance().setConnectionName(comboConnection.getConnectionName());
-        Preferences.getInstance()
-            .setFtpPortNumber(IntHelper.tryParseInt(textFtpPortNumber.getText(), Preferences.getInstance().getDefaultFtpPortNumber()));
+        Preferences.getInstance().setFtpPortNumber(
+            IntHelper.tryParseInt(textFtpPortNumber.getText(), Preferences.getInstance().getDefaultFtpPortNumber()));
         Preferences.getInstance().setASPGroup(aspGroup);
 
     }
@@ -311,7 +311,7 @@ public class Library extends PreferencePage implements IWorkbenchPreferencePage 
 
         textProductLibrary.setText(rapidFireLibrary);
         comboASPGroup.setText(aspGroup);
-        
+
     }
 
     public void init(IWorkbench workbench) {

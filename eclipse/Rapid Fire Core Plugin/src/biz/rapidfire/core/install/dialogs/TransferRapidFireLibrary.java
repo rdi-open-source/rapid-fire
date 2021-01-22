@@ -8,14 +8,9 @@
 
 package biz.rapidfire.core.install.dialogs;
 
-import java.io.File;
-import java.net.URL;
-import java.util.Date;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 
-import org.eclipse.core.runtime.FileLocator;
-import org.eclipse.jface.dialogs.Dialog;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ControlAdapter;
@@ -24,6 +19,8 @@ import org.eclipse.swt.events.KeyEvent;
 import org.eclipse.swt.events.KeyListener;
 import org.eclipse.swt.events.MenuAdapter;
 import org.eclipse.swt.events.MenuEvent;
+import org.eclipse.swt.events.ModifyEvent;
+import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.MouseAdapter;
 import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.SelectionAdapter;
@@ -35,6 +32,7 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
+import org.eclipse.swt.widgets.Control;
 import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Link;
@@ -49,25 +47,33 @@ import org.eclipse.ui.PlatformUI;
 
 import biz.rapidfire.core.Messages;
 import biz.rapidfire.core.RapidFireCorePlugin;
+import biz.rapidfire.core.handlers.install.ProductLibraryUploader;
+import biz.rapidfire.core.handlers.install.StatusMessageReceiver;
 import biz.rapidfire.core.helpers.ClipboardHelper;
-import biz.rapidfire.core.helpers.RapidFireHelper;
+import biz.rapidfire.core.helpers.ExceptionHelper;
+import biz.rapidfire.core.helpers.StringHelper;
 import biz.rapidfire.core.preferences.Preferences;
 import biz.rapidfire.core.swt.widgets.WidgetFactory;
+import biz.rapidfire.rsebase.helpers.SystemConnectionHelper;
+import biz.rapidfire.rsebase.swt.widgets.SystemHostCombo;
 
 import com.ibm.as400.access.AS400;
-import com.ibm.as400.access.AS400FTP;
 import com.ibm.as400.access.AS400Message;
 import com.ibm.as400.access.CommandCall;
-import com.ibm.as400.access.FTP;
-import com.ibm.as400.access.Job;
-import com.ibm.as400.access.JobLog;
-import com.ibm.as400.access.QueuedMessage;
+import com.ibm.as400.access.SecureAS400;
 
-public class TransferRapidFireLibrary extends Shell {
+public class TransferRapidFireLibrary extends Shell implements StatusMessageReceiver {
+
+    private static final String COMBO_CONNECTIONS = "comboConnections"; //$NON-NLS-1$
+    private static final String BUTTON_START = "buttonStart"; //$NON-NLS-1$
+    private static final String BUTTON_START_JOURNALING = "buttonStartJournaling"; //$NON-NLS-1$
+    private static final String BUTTON_CLOSE = "buttonClose"; //$NON-NLS-1$
+    private static final String BUTTON_JOB_LOG = "buttonJobLog"; //$NON-NLS-1$
 
     private AS400 as400;
     private CommandCall commandCall;
     private Table tableStatus;
+    private SystemHostCombo comboConnections;
     private Composite buttonPanel;
     private Button buttonStart;
     private Button buttonStartJournaling;
@@ -76,22 +82,31 @@ public class TransferRapidFireLibrary extends Shell {
     private String rapidFireLibrary;
     private String aspGroup;
     private int ftpPort;
-    private String hostName;
+    private String connectionName;
 
-    public TransferRapidFireLibrary(Display display, int style, String rapidFireLibrary, String aASPGroup, String aHostName, int aFtpPort) {
+    private Map<String, Boolean> controlStatus = new HashMap<String, Boolean>();
+
+    public TransferRapidFireLibrary(Display display, int style, String rapidFireLibrary, String aASPGroup, String aConnectionName, int aFtpPort) {
         super(display, style);
 
         setImage(RapidFireCorePlugin.getDefault().getImageRegistry().get(RapidFireCorePlugin.IMAGE_TRANSFER_LIBRARY));
 
         this.rapidFireLibrary = rapidFireLibrary;
         this.aspGroup = aASPGroup;
-        this.hostName = aHostName;
+        this.connectionName = aConnectionName;
         setFtpPort(aFtpPort);
 
         createContents();
 
         addListener(SWT.Close, new Listener() {
             public void handleEvent(Event event) {
+
+                try {
+                    disconnectSystem();
+                } catch (Throwable e) {
+
+                }
+
                 if (!buttonClose.isDisposed()) {
                     event.doit = buttonClose.isEnabled();
                 } else {
@@ -128,6 +143,21 @@ public class TransferRapidFireLibrary extends Shell {
 
         setText(Messages.DialogTitle_Transfer_Rapid_Fire_library);
         setSize(500, 400);
+
+        comboConnections = WidgetFactory.createSystemHostCombo(this, SWT.NONE);
+        GridData gridData = new GridData(GridData.FILL_HORIZONTAL);
+        gridData.horizontalSpan = 2;
+
+        comboConnections.setLayoutData(gridData);
+        comboConnections.selectConnection(connectionName);
+        comboConnections.addModifyListener(new ModifyListener() {
+            public void modifyText(ModifyEvent arg0) {
+                disconnectSystem();
+                connectionName = comboConnections.getText();
+                clearStatus();
+                showConnectionProperties();
+            }
+        });
 
         buttonStart = WidgetFactory.createPushButton(this);
         buttonStart.addSelectionListener(new TransferLibrarySelectionAdapter());
@@ -208,6 +238,39 @@ public class TransferRapidFireLibrary extends Shell {
         tableStatus.setMenu(menuTableStatusContextMenu);
 
         buttonPanel = createButtons(false);
+
+        clearStatus();
+        showConnectionProperties();
+    }
+
+    private void showConnectionProperties() {
+
+        if (StringHelper.isNullOrEmpty(connectionName)) {
+            setStatus(Messages.Please_select_a_connection);
+            return;
+        }
+
+        if (as400 == null) {
+            // setStatus(Messages.bind(Messages.Not_yet_connected_to_A,
+            // connectionName));
+            setStatus(Messages.bind(Messages.About_to_transfer_library_A_ASP_group_D_to_host_B_using_port_C, new Object[] { rapidFireLibrary,
+                connectionName, ftpPort, aspGroup }));
+        } else {
+
+            try {
+                setStatus(Messages.Server_job_colon + " " + commandCall.getServerJob().toString()); //$NON-NLS-1$
+            } catch (Throwable e) {
+            }
+
+            setStatus(Messages.bind(Messages.About_to_transfer_library_A_ASP_group_D_to_host_B_using_port_C, new Object[] { rapidFireLibrary,
+                connectionName, ftpPort, aspGroup }));
+        }
+
+        if (StringHelper.isNullOrEmpty(connectionName)) {
+            comboConnections.setFocus();
+        } else {
+            buttonStart.setFocus();
+        }
     }
 
     protected void copyStatusLinesToClipboard(TableItem[] tableItems) {
@@ -282,244 +345,20 @@ public class TransferRapidFireLibrary extends Shell {
         // Disable the check that prevents subclassing of SWT components
     }
 
-    private void setStatus(String status) {
+    private void clearStatus() {
+        tableStatus.removeAll();
+        tableStatus.update();
+    }
+
+    public void setStatus(String status) {
         TableItem itemStatus = new TableItem(tableStatus, SWT.BORDER);
         itemStatus.setText(status);
         tableStatus.update();
         redraw();
     }
 
-    private void setErrorStatus(String status) {
+    public void setErrorStatus(String status) {
         setStatus("!!!   " + status + "   !!!");
-    }
-
-    private boolean checkLibraryPrecondition(String libraryName, String aspGroup) {
-
-        while (libraryExists(libraryName)) {
-            if (!MessageDialog.openQuestion(
-                getShell(),
-                Messages.DialogTitle_Delete_Object,
-                Messages.bind(Messages.Library_A_does_already_exist, libraryName) + "\n\n"
-                    + Messages.bind(Messages.Question_Do_you_want_to_delete_library_A, libraryName))) {
-                return false;
-            }
-            setStatus(Messages.bind(Messages.Deleting_library_A, libraryName));
-            deleteLibrary(libraryName, aspGroup);
-        }
-
-        return true;
-    }
-
-    private boolean libraryExists(String libraryName) {
-
-        if (!RapidFireHelper.checkLibrary(as400, libraryName)) {
-            return false;
-        }
-
-        return true;
-    }
-
-    private boolean deleteLibrary(String libraryName, String aspGroup) {
-
-        String cpfMsg;
-
-        try {
-
-            executeCommand("ADDLIBLE LIB(" + libraryName + ") POSITION(*FIRST)", false);
-
-            cpfMsg = dropSqlProcedures(libraryName, true);
-            if (!cpfMsg.equals("")) {
-                return false;
-            }
-
-            cpfMsg = endJournaling(libraryName, true);
-            if (!cpfMsg.equals("")) {
-                return false;
-            }
-
-        } finally {
-            executeCommand("RMVLIBLE LIB(" + libraryName + ")", false);
-        }
-
-        cpfMsg = executeCommand(produceDeleteLibraryCommand(libraryName, aspGroup), true);
-        if (!cpfMsg.equals("")) {
-            return false;
-        }
-
-        return true;
-    }
-
-    private boolean checkSaveFilePrecondition(String workLibrary, String saveFileName) {
-
-        while (saveFileExists(workLibrary, saveFileName)) {
-            if (!MessageDialog.openQuestion(
-                getShell(),
-                Messages.DialogTitle_Delete_Object,
-                Messages.bind(Messages.File_B_in_library_A_does_already_exist, new String[] { workLibrary, saveFileName }) + "\n\n"
-                    + Messages.bind(Messages.Question_Do_you_want_to_delete_object_A_B_type_C, new String[] { workLibrary, saveFileName, "*FILE" }))) {
-                return false;
-            }
-            setStatus(Messages.bind(Messages.Deleting_object_A_B_of_type_C, new String[] { workLibrary, saveFileName, "*FILE" }));
-            deleteSaveFile(workLibrary, saveFileName, true);
-        }
-
-        return true;
-    }
-
-    private boolean saveFileExists(String workLibrary, String saveFileName) {
-
-        if (!RapidFireHelper.checkFile(as400, workLibrary, saveFileName)) {
-            return false;
-        }
-
-        return true;
-    }
-
-    private boolean deleteSaveFile(String workLibrary, String saveFileName, boolean logErrors) {
-
-        if (!executeCommand("DLTF FILE(" + workLibrary + "/" + saveFileName + ")", logErrors).equals("")) {
-            return false;
-        }
-
-        return true;
-    }
-
-    private boolean createSaveFile(String workLibrary, String saveFileName, boolean logErrors) {
-
-        if (!executeCommand("CRTSAVF FILE(" + workLibrary + "/" + saveFileName + ") TEXT('RAPIDFIRE')", logErrors).equals("")) {
-            return false;
-        }
-
-        return true;
-    }
-
-    private boolean restoreLibrary(String workLibrary, String saveFileName, String libraryName, String aspGroup) throws Exception {
-
-        AS400 system = commandCall.getSystem();
-        Job serverJob = commandCall.getServerJob();
-        JobLog jobLog = new JobLog(system, serverJob.getName(), serverJob.getUser(), serverJob.getNumber());
-        jobLog.setListDirection(false);
-
-        Date startingMessageDate = null;
-        QueuedMessage[] startingMessages = jobLog.getMessages(0, 1);
-        if (startingMessages != null) {
-            startingMessageDate = startingMessages[0].getDate().getTime();
-        }
-
-        String cpfMsg = executeCommand(produceRestoreLibraryCommand(workLibrary, saveFileName, libraryName, aspGroup), true);
-        if (!cpfMsg.equals("")) {
-            if (cpfMsg.equals("CPF3773")) {
-
-                List<QueuedMessage> countNotRestored = new LinkedList<QueuedMessage>();
-                List<QueuedMessage> countIgnored = new LinkedList<QueuedMessage>();
-
-                QueuedMessage[] messages;
-                final int chunkSize = 20;
-                int offset = 0;
-
-                jobLog = new JobLog(system, serverJob.getName(), serverJob.getUser(), serverJob.getNumber());
-                jobLog.setListDirection(false);
-                while ((messages = jobLog.getMessages(offset, chunkSize)) != null && messages.length > 0 && startingMessageDate != null) {
-                    for (QueuedMessage message : messages) {
-
-                        // CPF3756 - &2 &1 not restored to &3.
-                        if ("CPF3756".equals(message.getID())) {
-                            countNotRestored.add(message);
-                        }
-
-                        // CPF7086 - Cannot restore journal &1 to library &4.
-                        // CPF707F - Cannot restore receiver &1 into library &2.
-                        if ("CPF7086".equals(message.getID()) || "CPF707F".equals(message.getID())) {
-                            countIgnored.add(message);
-                        }
-
-                        if (message.getDate().getTime().compareTo(startingMessageDate) < 0) {
-                            startingMessageDate = null;
-                            break;
-                        }
-                    }
-                    offset = offset + chunkSize;
-                }
-
-                for (int i = countNotRestored.size() - 1; i >= 0; i--) {
-                    QueuedMessage notRestoredMessage = countNotRestored.get(i);
-                    setStatus(countNotRestored.get(i) + ": " + notRestoredMessage.getText());
-                }
-
-                if (countNotRestored.size() == countIgnored.size()) {
-                    setStatus(Messages.Journaling_will_be_started_by_the_installer);
-                    return true;
-                }
-            }
-            return false;
-        }
-
-        return true;
-    }
-
-    private boolean initializeLibrary(String libraryName, boolean startJournaling) {
-
-        String cpfMsg;
-        boolean isLibraryListChanged = false;
-
-        try {
-
-            cpfMsg = executeCommand("ADDLIBLE LIB(" + libraryName + ") POSITION(*FIRST)", true);
-            if (!cpfMsg.equals("")) {
-                isLibraryListChanged = false;
-            } else {
-                isLibraryListChanged = true;
-            }
-
-            // Form now on (18.02.2019) the library is shipped without a
-            // journal.
-            // cpfMsg = endJournaling(libraryName, true);
-            // if (!cpfMsg.equals("")) {
-            // return false;
-            // }
-
-            if (startJournaling) {
-                cpfMsg = startJournaling(libraryName, true);
-                if (!cpfMsg.equals("")) {
-                    return false;
-                }
-            }
-
-            // Form now on (18.02.2019) the library is shipped without SQL
-            // procedures and functions.
-            // cpfMsg = dropSqlProcedures(libraryName, true);
-            // if (!cpfMsg.equals("")) {
-            // return false;
-            // }
-
-            cpfMsg = createSqlProcedures(libraryName, true);
-            if (!cpfMsg.equals("")) {
-                return false;
-            }
-
-        } finally {
-            if (isLibraryListChanged) {
-                executeCommand("RMVLIBLE LIB(" + libraryName + ")", true);
-            }
-        }
-
-        return true;
-    }
-
-    private String endJournaling(String libraryName, boolean logError) {
-        return executeCommand("CALL PGM(" + libraryName + "/STRENDJRN) PARM(*END " + libraryName + ")", logError);
-    }
-
-    private String startJournaling(String libraryName, boolean logError) {
-        return executeCommand("CALL PGM(" + libraryName + "/STRENDJRN) PARM(*START " + libraryName + ")", logError);
-    }
-
-    private String dropSqlProcedures(String libraryName, boolean logError) {
-        return executeCommand("CALL PGM(" + libraryName + "/CRTDRPSQL) PARM(*DROP " + libraryName + ")", logError);
-    }
-
-    private String createSqlProcedures(String libraryName, boolean logError) {
-        return executeCommand("CALL PGM(" + libraryName + "/CRTDRPSQL) PARM(*CREATE " + libraryName + ")", logError);
     }
 
     private void printJobLog() {
@@ -556,138 +395,35 @@ public class TransferRapidFireLibrary extends Shell {
         }
     }
 
-    public boolean connect() {
-        buttonStart.setEnabled(false);
-        buttonStartJournaling.setEnabled(false);
-        buttonClose.setEnabled(false);
-        SignOnDialog signOnDialog = new SignOnDialog(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(), hostName);
-        if (signOnDialog.open() == Dialog.OK) {
-            as400 = signOnDialog.getAS400();
-            if (as400 != null) {
-                try {
-                    as400.connectService(AS400.COMMAND);
-                    commandCall = new CommandCall(as400);
-                    if (commandCall != null) {
-                        setStatus(Messages.Server_job_colon + " " + commandCall.getServerJob().toString());
-                        hostName = as400.getSystemName();
-                        setStatus(Messages.bind(Messages.About_to_transfer_library_A_ASP_group_D_to_host_B_using_port_C, new String[] {
-                            rapidFireLibrary, hostName, Integer.toString(ftpPort), aspGroup }));
-                        buttonStart.setEnabled(true);
-                        buttonStartJournaling.setEnabled(true);
-                        buttonClose.setEnabled(true);
-                        return true;
-                    }
-                } catch (Throwable e) {
-                    RapidFireCorePlugin.logError("Failed to connect to host: " + hostName, e);
-                }
-            }
-        }
-        return false;
-    }
-
-    private String produceRestoreLibraryCommand(String workLibrary, String saveFileName, String libraryName, String aspGroup) {
-
-        String command = "RSTLIB SAVLIB(RAPIDFIRE) DEV(*SAVF) SAVF(" + workLibrary + "/" + saveFileName + ") RSTLIB(" + libraryName + ")";
-        if (RapidFireHelper.isASPGroupSpecified(aspGroup)) {
-            command += " RSTASPDEV(" + aspGroup + ")";
-        }
-
-        return command;
-    }
-
-    private String produceDeleteLibraryCommand(String libraryName, String aspGroup) {
-
-        String command = "DLTLIB LIB(" + libraryName + ")";
-        if (RapidFireHelper.isASPGroupSpecified(aspGroup)) {
-            command += " ASPDEV(*)";
-        }
-
-        return command;
-    }
-
     private class TransferLibrarySelectionAdapter extends SelectionAdapter {
+
         @Override
         public void widgetSelected(final SelectionEvent event) {
 
-            buttonStart.setEnabled(false);
-            buttonStartJournaling.setEnabled(false);
-            buttonClose.setEnabled(false);
+            disableControls();
 
             boolean successfullyTransfered = false;
 
             try {
 
+                clearStatus();
+                if (as400 == null) {
+                    setStatus(Messages.bind(Messages.Connecting_to_A, connectionName));
+                    if (!connectSystem()) {
+                        setStatus(Messages.Operation_has_been_canceled_by_the_user);
+                        showConnectionProperties();
+                        enableControls();
+                        return;
+                    }
+                }
+
+                showConnectionProperties();
+
                 boolean startJournaling = buttonStartJournaling.getSelection();
 
-                String workLibrary = "QGPL";
-                String saveFileName = rapidFireLibrary;
-
-                boolean ok = true;
-                if (RapidFireHelper.isASPGroupSpecified(aspGroup)) {
-                    String cpfMsg = executeCommand("SETASPGRP ASPGRP(" + aspGroup + ")", true);
-                    if (!cpfMsg.equals("")) {
-                        setStatus(Messages.bind(Messages.Error_occurred_while_setting_the_asp_group_to_A, aspGroup));
-                        ok = false;
-                    }
-                }
-                if (ok) {
-                    setStatus(Messages.bind(Messages.Checking_library_A_for_existence, rapidFireLibrary));
-                    if (!checkLibraryPrecondition(rapidFireLibrary, aspGroup)) {
-                        setErrorStatus(Messages.bind(Messages.Library_A_does_already_exist, rapidFireLibrary));
-                    } else {
-                        setStatus(Messages.bind(Messages.Checking_file_B_in_library_A_for_existence, new String[] { workLibrary, saveFileName }));
-                        if (!checkSaveFilePrecondition(workLibrary, saveFileName)) {
-                            setErrorStatus(Messages.bind(Messages.File_B_in_library_A_does_already_exist, new String[] { workLibrary, saveFileName }));
-                        } else {
-
-                            setStatus(Messages.bind(Messages.Creating_save_file_B_in_library_A, new String[] { workLibrary, saveFileName }));
-                            if (!createSaveFile(workLibrary, saveFileName, true)) {
-                                setErrorStatus(Messages.bind(Messages.Could_not_create_save_file_B_in_library_A, new String[] { workLibrary,
-                                    saveFileName }));
-                            } else {
-
-                                try {
-
-                                    setStatus(Messages.Sending_save_file_to_host);
-                                    setStatus(Messages.bind(Messages.Using_Ftp_port_number, new Integer(ftpPort)));
-                                    AS400FTP client = new AS400FTP(as400);
-
-                                    URL fileUrl = FileLocator.toFileURL(RapidFireCorePlugin.getInstallURL());
-                                    File file = new File(fileUrl.getPath() + "Server" + File.separator + "RAPIDFIRE.SAVF");
-                                    client.setPort(ftpPort);
-                                    client.setDataTransferType(FTP.BINARY);
-                                    if (client.connect()) {
-                                        client.put(file, "/QSYS.LIB/" + workLibrary + ".LIB/" + saveFileName + ".FILE");
-                                        client.disconnect();
-                                    }
-
-                                    setStatus(Messages.bind(Messages.Restoring_library_A, rapidFireLibrary));
-                                    if (!restoreLibrary(workLibrary, saveFileName, rapidFireLibrary, aspGroup)) {
-                                        setErrorStatus(Messages.bind(Messages.Could_not_restore_library_A, rapidFireLibrary));
-                                    } else {
-
-                                        if (initializeLibrary(rapidFireLibrary, startJournaling)) {
-                                            successfullyTransfered = true;
-                                        }
-
-                                    }
-
-                                } catch (Throwable e) {
-                                    RapidFireCorePlugin.logError(Messages.Could_not_send_save_file_to_host, e);
-
-                                    setErrorStatus(Messages.Could_not_send_save_file_to_host);
-                                    setStatus(e.getLocalizedMessage());
-                                } finally {
-
-                                    setStatus(Messages.bind(Messages.Deleting_object_A_B_of_type_C,
-                                        new String[] { workLibrary, saveFileName, "*FILE" }));
-                                    deleteSaveFile(workLibrary, saveFileName, true);
-                                }
-
-                            }
-                        }
-                    }
-                }
+                ProductLibraryUploader uploader = new ProductLibraryUploader(getShell(), as400, ftpPort, rapidFireLibrary, aspGroup, startJournaling);
+                uploader.setStatusMessageReceiver(TransferRapidFireLibrary.this);
+                successfullyTransfered = uploader.run();
 
                 buttonPanel.dispose();
                 buttonPanel = createButtons(true);
@@ -697,18 +433,168 @@ public class TransferRapidFireLibrary extends Shell {
 
                 if (successfullyTransfered) {
                     setErrorStatus(Messages.bind(Messages.Library_A_successfull_transfered, rapidFireLibrary));
-                    buttonStart.setEnabled(false);
-                    buttonStartJournaling.setEnabled(false);
-                    buttonClose.setEnabled(true);
+                    disableControls();
+                    enableControl(BUTTON_JOB_LOG, buttonJobLog);
+                    enableControl(BUTTON_CLOSE, buttonClose);
                     buttonClose.setFocus();
                 } else {
                     setErrorStatus(Messages.bind(Messages.Error_occurred_while_transfering_library_A, rapidFireLibrary));
-                    buttonStart.setEnabled(true);
-                    buttonStartJournaling.setEnabled(true);
-                    buttonClose.setEnabled(true);
+                    enableControls();
                     buttonClose.setFocus();
                 }
             }
+        }
+    }
+
+    private boolean connectSystem() {
+
+        disableControls();
+
+        try {
+
+            if (as400 != null) {
+                disconnectSystem();
+            }
+
+            AS400 tempSystem = SystemConnectionHelper.getSystem(connectionName);
+            if (tempSystem == null) {
+                commandCall = null;
+            } else {
+
+                if (tempSystem instanceof SecureAS400) {
+                    as400 = new SecureAS400(tempSystem);
+                } else {
+                    as400 = new AS400(tempSystem);
+                }
+
+                commandCall = new CommandCall(as400);
+            }
+
+        } catch (Throwable e) {
+            MessageDialog.openError(getShell(), Messages.E_R_R_O_R, ExceptionHelper.getLocalizedMessage(e));
+        } finally {
+            restoreControlsEnablement();
+        }
+
+        if (as400 == null) {
+            return false;
+        } else {
+            return true;
+        }
+    }
+
+    private void disconnectSystem() {
+
+        if (as400 != null) {
+            as400.disconnectAllServices();
+            as400 = null;
+        }
+
+        commandCall = null;
+    }
+
+    private void enableControls() {
+
+        enableControl(COMBO_CONNECTIONS, comboConnections);
+        enableControl(BUTTON_START, buttonStart);
+        enableControl(BUTTON_START_JOURNALING, buttonStartJournaling);
+        enableControl(BUTTON_CLOSE, buttonClose);
+        enableControl(BUTTON_JOB_LOG, buttonJobLog);
+    }
+
+    private void enableControl(String key, Object object) {
+
+        if (object == null) {
+            controlStatus.remove(key);
+            return;
+        }
+
+        if (object instanceof Control) {
+            Control control = (Control)object;
+            if (!control.isDisposed()) {
+                controlStatus.put(key, Boolean.TRUE);
+                control.setEnabled(true);
+            }
+        } else if (object instanceof SystemHostCombo) {
+            SystemHostCombo control = (SystemHostCombo)object;
+            if (!control.isDisposed()) {
+                controlStatus.put(key, Boolean.TRUE);
+                control.setEnabled(true);
+            }
+        } else {
+            throw new IllegalArgumentException("Unsupported object type: " + object.getClass().getName());
+        }
+    }
+
+    private void disableControls() {
+
+        disableControl(COMBO_CONNECTIONS, comboConnections);
+        disableControl(BUTTON_START, buttonStart);
+        disableControl(BUTTON_START_JOURNALING, buttonStartJournaling);
+        disableControl(BUTTON_CLOSE, buttonClose);
+        disableControl(BUTTON_JOB_LOG, buttonJobLog);
+    }
+
+    private void disableControl(String key, Object object) {
+
+        if (object == null) {
+            controlStatus.remove(key);
+            return;
+        }
+
+        if (object instanceof Control) {
+            Control control = (Control)object;
+            if (!control.isDisposed()) {
+                controlStatus.put(key, control.getEnabled());
+                control.setEnabled(false);
+            }
+        } else if (object instanceof SystemHostCombo) {
+            SystemHostCombo control = (SystemHostCombo)object;
+            if (!control.isDisposed()) {
+                controlStatus.put(key, control.getEnabled());
+                control.setEnabled(false);
+            }
+        } else {
+            throw new IllegalArgumentException("Unsupported object type: " + object.getClass().getName());
+        }
+    }
+
+    private void restoreControlsEnablement() {
+
+        restoreControlEnablement(COMBO_CONNECTIONS, comboConnections);
+        restoreControlEnablement(BUTTON_START, buttonStart);
+        restoreControlEnablement(BUTTON_START_JOURNALING, buttonStartJournaling);
+        restoreControlEnablement(BUTTON_CLOSE, buttonClose);
+        restoreControlEnablement(BUTTON_JOB_LOG, buttonJobLog);
+    }
+
+    private void restoreControlEnablement(String key, Object object) {
+
+        if (object == null) {
+            return;
+        }
+
+        if (object instanceof Control) {
+            Control control = (Control)object;
+            if (!control.isDisposed()) {
+                control.setEnabled(getPreviousEnablement(key));
+            }
+        } else if (object instanceof SystemHostCombo) {
+            SystemHostCombo control = (SystemHostCombo)object;
+            if (!control.isDisposed()) {
+                control.setEnabled(getPreviousEnablement(key));
+            }
+        } else {
+            throw new IllegalArgumentException("Unsupported object type: " + object.getClass().getName());
+        }
+    }
+
+    private boolean getPreviousEnablement(String key) {
+        Boolean enabled = controlStatus.get(key);
+        if (enabled instanceof Boolean) {
+            return enabled;
+        } else {
+            return true;
         }
     }
 
