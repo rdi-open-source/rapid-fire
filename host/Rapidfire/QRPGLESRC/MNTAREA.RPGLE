@@ -760,4 +760,3 @@ DCL-PROC MNTAREA_getValidActions EXPORT;
   endsr;
 
 END-PROC MNTAREA_getValidActions;
-

@@ -502,4 +502,3 @@ DCL-PROC GNRCPYPGM_book EXPORT;
   endif;
 
 END-PROC GNRCPYPGM_book;
-

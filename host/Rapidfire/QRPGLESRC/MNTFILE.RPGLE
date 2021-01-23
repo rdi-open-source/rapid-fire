@@ -771,4 +771,3 @@ DCL-PROC MNTFILE_getValidActions EXPORT;
   endsr;
 
 END-PROC MNTFILE_getValidActions;
-
