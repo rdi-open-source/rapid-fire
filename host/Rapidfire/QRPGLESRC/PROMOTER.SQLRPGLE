@@ -19,6 +19,7 @@
 //*                              OBJTYPE(*MODULE);                                          *
 //*    >>IMPORTANT<<                                                                        *
 //*      >>PARM<<  OUTPUT(*PRINT);                                                          *
+//*      >>PARM<<  GENLVL(0);                                                               *
 //*      >>PARM<<  DBGVIEW(*NONE);                                                          *
 //*      >>PARM<<  OPTION(*EVENTF);                                                         *
 //*      >>PARM<<  TGTRLS(&TR);                                                             *
