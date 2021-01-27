@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2017-2017 Rapid Fire Project Team
+ * Copyright (c) 2017-2021 Rapid Fire Project Team
  * All rights reserved. This program and the accompanying materials 
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
@@ -54,6 +54,7 @@ public class XDialog extends Dialog {
 
     private DialogSettingsManager dialogSettingsManager = null;
     private StatusLineManager statusLineManager = null;
+    private Point defaultMinimalSize = null;
 
     /**
      * {@inheritDoc}
@@ -185,9 +186,45 @@ public class XDialog extends Dialog {
             }
         }
 
+        result = ensureMinimalHeight(result);
+        result = ensureMinimalWidth(result);
+
         // No attempt is made to constrain the bounds. The default
         // constraining behavior in Window will be used.
         return result;
+    }
+
+    private Point ensureMinimalHeight(Point result) {
+
+        if (getMinimalSize().y == SWT.DEFAULT) {
+            return result;
+        }
+
+        result.y = Math.max(getMinimalSize().y, result.y);
+        return result;
+    }
+
+    private Point ensureMinimalWidth(Point result) {
+
+        if (getMinimalSize().x == SWT.DEFAULT) {
+            return result;
+        }
+
+        result.x = Math.max(getMinimalSize().x, result.x);
+        return result;
+    }
+
+    public Point getMinimalSize() {
+        return getDefaultMinimalSize();
+    }
+
+    private Point getDefaultMinimalSize() {
+
+        if (defaultMinimalSize == null) {
+            defaultMinimalSize = new Point(SWT.DEFAULT, SWT.DEFAULT);
+        }
+
+        return defaultMinimalSize;
     }
 
     /**
@@ -337,17 +374,6 @@ public class XDialog extends Dialog {
     }
 
     /**
-     * Stores a given numeric value to preserve it for the next time the dialog
-     * is shown.
-     * 
-     * @param aKey - key, the value is assigned to
-     * @param aValue - the screen value that is stored
-     */
-    protected void storeValue(String aKey, int aValue) {
-        dialogSettingsManager.storeValue(aKey, aValue);
-    }
-
-    /**
      * Retrieves the the value that is assigned to a given key.
      * 
      * @param aKey - key, that is used to retrieve the value from the store
@@ -357,5 +383,16 @@ public class XDialog extends Dialog {
      */
     protected int loadIntValue(String aKey, int aDefault) {
         return dialogSettingsManager.loadIntValue(aKey, aDefault);
+    }
+
+    /**
+     * Stores a given numeric value to preserve it for the next time the dialog
+     * is shown.
+     * 
+     * @param aKey - key, the value is assigned to
+     * @param aValue - the screen value that is stored
+     */
+    protected void storeValue(String aKey, int aValue) {
+        dialogSettingsManager.storeValue(aKey, aValue);
     }
 }

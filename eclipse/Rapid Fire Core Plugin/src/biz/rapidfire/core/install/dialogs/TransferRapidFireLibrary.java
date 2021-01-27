@@ -1,16 +1,19 @@
+package biz.rapidfire.core.install.dialogs;
+
 /*******************************************************************************
- * Copyright (c) 2017-2017 Rapid Fire Project Team
+ * Copyright (c) 2017-2021 Rapid Fire Project Team
  * All rights reserved. This program and the accompanying materials 
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
  * http://www.eclipse.org/legal/cpl-v10.html
  *******************************************************************************/
 
-package biz.rapidfire.core.install.dialogs;
-
-import java.util.HashMap;
-import java.util.Map;
-
+import org.eclipse.core.runtime.IProgressMonitor;
+import org.eclipse.core.runtime.IStatus;
+import org.eclipse.core.runtime.Status;
+import org.eclipse.core.runtime.jobs.Job;
+import org.eclipse.jface.dialogs.Dialog;
+import org.eclipse.jface.dialogs.IDialogSettings;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ControlAdapter;
@@ -26,17 +29,13 @@ import org.eclipse.swt.events.MouseEvent;
 import org.eclipse.swt.events.SelectionAdapter;
 import org.eclipse.swt.events.SelectionEvent;
 import org.eclipse.swt.events.SelectionListener;
-import org.eclipse.swt.events.ShellAdapter;
-import org.eclipse.swt.events.ShellEvent;
+import org.eclipse.swt.graphics.Point;
 import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.layout.GridLayout;
 import org.eclipse.swt.widgets.Button;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Control;
-import org.eclipse.swt.widgets.Display;
-import org.eclipse.swt.widgets.Event;
 import org.eclipse.swt.widgets.Link;
-import org.eclipse.swt.widgets.Listener;
 import org.eclipse.swt.widgets.Menu;
 import org.eclipse.swt.widgets.MenuItem;
 import org.eclipse.swt.widgets.Shell;
@@ -44,6 +43,7 @@ import org.eclipse.swt.widgets.Table;
 import org.eclipse.swt.widgets.TableColumn;
 import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.ui.PlatformUI;
+import org.eclipse.ui.progress.UIJob;
 
 import biz.rapidfire.core.Messages;
 import biz.rapidfire.core.RapidFireCorePlugin;
@@ -52,6 +52,8 @@ import biz.rapidfire.core.handlers.install.StatusMessageReceiver;
 import biz.rapidfire.core.helpers.ClipboardHelper;
 import biz.rapidfire.core.helpers.ExceptionHelper;
 import biz.rapidfire.core.helpers.StringHelper;
+import biz.rapidfire.core.jface.dialogs.Size;
+import biz.rapidfire.core.jface.dialogs.XDialog;
 import biz.rapidfire.core.preferences.Preferences;
 import biz.rapidfire.core.swt.widgets.WidgetFactory;
 import biz.rapidfire.rsebase.helpers.SystemConnectionHelper;
@@ -62,68 +64,50 @@ import com.ibm.as400.access.AS400Message;
 import com.ibm.as400.access.CommandCall;
 import com.ibm.as400.access.SecureAS400;
 
-public class TransferRapidFireLibrary extends Shell implements StatusMessageReceiver {
+public class TransferRapidFireLibrary extends XDialog implements StatusMessageReceiver {
 
-    private static final String COMBO_CONNECTIONS = "comboConnections"; //$NON-NLS-1$
-    private static final String BUTTON_START = "buttonStart"; //$NON-NLS-1$
-    private static final String BUTTON_START_JOURNALING = "buttonStartJournaling"; //$NON-NLS-1$
-    private static final String BUTTON_CLOSE = "buttonClose"; //$NON-NLS-1$
-    private static final String BUTTON_JOB_LOG = "buttonJobLog"; //$NON-NLS-1$
+    private static final String ENABLED_STATUS = "ENABLED_STATUS"; //$NON-NLS-1$
 
     private AS400 as400;
     private CommandCall commandCall;
     private Table tableStatus;
     private SystemHostCombo comboConnections;
-    private Composite buttonPanel;
     private Button buttonStart;
     private Button buttonStartJournaling;
     private Button buttonClose;
     private Button buttonJobLog;
-    private String rapidFireLibrary;
+    private String iSphereLibrary;
     private String aspGroup;
     private int ftpPort;
     private String connectionName;
+    private boolean connectionsEnabled;
 
-    private Map<String, Boolean> controlStatus = new HashMap<String, Boolean>();
+    private boolean uploadCompleted;
+    private Job enableEscapeKeyJob;
 
-    public TransferRapidFireLibrary(Display display, int style, String rapidFireLibrary, String aASPGroup, String aConnectionName, int aFtpPort) {
-        super(display, style);
+    private Composite dialogArea;
 
-        setImage(RapidFireCorePlugin.getDefault().getImageRegistry().get(RapidFireCorePlugin.IMAGE_TRANSFER_LIBRARY));
+    public TransferRapidFireLibrary(Shell shell, int style, String anISphereLibrary, String aASPGroup, String aConnectionName, int aFtpPort) {
+        super(shell);
 
-        this.rapidFireLibrary = rapidFireLibrary;
-        this.aspGroup = aASPGroup;
-        this.connectionName = aConnectionName;
+        iSphereLibrary = anISphereLibrary;
+        aspGroup = aASPGroup;
+        connectionName = aConnectionName;
         setFtpPort(aFtpPort);
+        setConnectionsEnabled(true);
 
-        createContents();
+        setUploadCompleted(false);
+    }
 
-        addListener(SWT.Close, new Listener() {
-            public void handleEvent(Event event) {
+    private void setUploadCompleted(boolean completed) {
+        this.uploadCompleted = completed;
+    }
 
-                try {
-                    disconnectSystem();
-                } catch (Throwable e) {
-
-                }
-
-                if (!buttonClose.isDisposed()) {
-                    event.doit = buttonClose.isEnabled();
-                } else {
-                    event.doit = true;
-                }
-            }
-        });
-
-        addShellListener(new ShellAdapter() {
-            public void shellClosed(ShellEvent arg0) {
-                if (as400 != null) {
-                    as400.disconnectAllServices();
-                    as400 = null;
-                    commandCall = null;
-                }
-            }
-        });
+    public void setConnectionsEnabled(boolean enabled) {
+        this.connectionsEnabled = enabled;
+        if (comboConnections != null && !comboConnections.isDisposed()) {
+            comboConnections.setEnabled(connectionsEnabled);
+        }
     }
 
     private void setFtpPort(int aFtpPort) {
@@ -134,37 +118,74 @@ public class TransferRapidFireLibrary extends Shell implements StatusMessageRece
         }
     }
 
-    protected void createContents() {
+    /**
+     * Overridden to set the window title.
+     */
+    @Override
+    protected void configureShell(Shell newShell) {
+        super.configureShell(newShell);
+        newShell.setText(Messages.DialogTitle_Transfer_Rapid_Fire_library);
 
-        GridLayout gl_shell = new GridLayout(2, false);
-        gl_shell.marginTop = 10;
-        gl_shell.verticalSpacing = 10;
-        setLayout(gl_shell);
+        newShell.setImage(RapidFireCorePlugin.getDefault().getImageRegistry().get(RapidFireCorePlugin.IMAGE_TRANSFER_LIBRARY));
+    }
 
-        setText(Messages.DialogTitle_Transfer_Rapid_Fire_library);
-        setSize(500, 400);
+    @Override
+    public boolean close() {
 
-        comboConnections = WidgetFactory.createSystemHostCombo(this, SWT.NONE);
+        if (!buttonClose.isDisposed() && buttonClose.isEnabled()) {
+            boolean closeConfirmed;
+            if (uploadCompleted) {
+                closeConfirmed = true;
+            } else {
+                closeConfirmed = true;
+            }
+            if (closeConfirmed) {
+                if (super.close()) {
+                    disconnectSystem();
+                    return true;
+                }
+            }
+        } else {
+            // Eat Esc keystrokes and 'Window Close' events.
+            enableCloseDelayed();
+        }
+        return false;
+    }
+
+    protected Control createDialogArea(Composite parent) {
+
+        dialogArea = new Composite(parent, SWT.NONE);
+        GridLayout gridLayout = new GridLayout(2, false);
+        gridLayout.marginTop = 10;
+        gridLayout.verticalSpacing = 10;
+        dialogArea.setLayout(gridLayout);
+        dialogArea.setLayoutData(new GridData(GridData.FILL_BOTH));
+
+        comboConnections = WidgetFactory.createSystemHostCombo(dialogArea, SWT.NONE);
+        comboConnections.setEnabled(connectionsEnabled);
         GridData gridData = new GridData(GridData.FILL_HORIZONTAL);
         gridData.horizontalSpan = 2;
-
         comboConnections.setLayoutData(gridData);
         comboConnections.selectConnection(connectionName);
         comboConnections.addModifyListener(new ModifyListener() {
             public void modifyText(ModifyEvent arg0) {
-                disconnectSystem();
                 connectionName = comboConnections.getText();
                 clearStatus();
+                // setStatus(Messages.bind(Messages.Connecting_to_A,
+                // connectionName));
+                // if (!connectSystem()) {
+                // setStatus(Messages.Operation_has_been_canceled_by_the_user);
+                // }
                 showConnectionProperties();
             }
         });
 
-        buttonStart = WidgetFactory.createPushButton(this);
+        buttonStart = WidgetFactory.createPushButton(dialogArea);
         buttonStart.addSelectionListener(new TransferLibrarySelectionAdapter());
-        buttonStart.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, 2, 1));
+        buttonStart.setLayoutData(new GridData(SWT.FILL, SWT.CENTER, true, false, gridLayout.numColumns, 1));
         buttonStart.setText(Messages.ActionLabel_Start_Transfer);
 
-        buttonStartJournaling = WidgetFactory.createCheckbox(this, Messages.Label_Start_journaling_Rapid_Fire_files,
+        buttonStartJournaling = WidgetFactory.createCheckbox(dialogArea, Messages.Label_Start_journaling_Rapid_Fire_files,
             Messages.Tooltip_Start_journaling_Rapid_Fire_files, SWT.RIGHT);
         buttonStartJournaling.setSelection(Preferences.getInstance().isStartJournaling());
         buttonStartJournaling.addSelectionListener(new SelectionListener() {
@@ -177,7 +198,7 @@ public class TransferRapidFireLibrary extends Shell implements StatusMessageRece
             }
         });
 
-        Link lnkHelp = new Link(this, SWT.NONE);
+        Link lnkHelp = new Link(dialogArea, SWT.NONE);
         lnkHelp.setLayoutData(new GridData(SWT.END, SWT.CENTER, true, false));
         lnkHelp.setText(Messages.bindParameters(Messages.Label_Start_journaling_Rapid_Fire_files_help, "<a>", "</a>")); //$NON-NLS-1$ //$NON-NLS-2$
         lnkHelp.pack();
@@ -189,15 +210,13 @@ public class TransferRapidFireLibrary extends Shell implements StatusMessageRece
             }
         });
 
-        tableStatus = new Table(this, SWT.BORDER | SWT.MULTI);
-        final GridData gd_tableStatus = new GridData(SWT.FILL, SWT.FILL, true, true, 2, 1);
+        tableStatus = new Table(dialogArea, SWT.BORDER | SWT.MULTI);
+        final GridData gd_tableStatus = new GridData(SWT.FILL, SWT.FILL, true, true, gridLayout.numColumns, 1);
         tableStatus.setLayoutData(gd_tableStatus);
 
         final TableColumn columnStatus = new TableColumn(tableStatus, SWT.NONE);
-        columnStatus.setWidth(getSize().x);
 
         tableStatus.addControlListener(new ControlAdapter() {
-            @Override
             public void controlResized(ControlEvent event) {
                 Table table = (Table)event.getSource();
                 if (table.getClientArea().width > 0) {
@@ -237,10 +256,23 @@ public class TransferRapidFireLibrary extends Shell implements StatusMessageRece
         menuTableStatusContextMenu.addMenuListener(new TableContextMenu(tableStatus));
         tableStatus.setMenu(menuTableStatusContextMenu);
 
-        buttonPanel = createButtons(false);
+        //        new UIJob("Establish connection") { //$NON-NLS-1$
+        // @Override
+        // public IStatus runInUIThread(IProgressMonitor arg0) {
+        // clearStatus();
+        // setStatus(Messages.bind(Messages.Connecting_to_A, connectionName));
+        // if (!connectSystem()) {
+        // setStatus(Messages.Operation_has_been_canceled_by_the_user);
+        // }
+        // showConnectionProperties();
+        // return Status.OK_STATUS;
+        // }
+        // }.schedule();
 
         clearStatus();
         showConnectionProperties();
+
+        return dialogArea;
     }
 
     private void showConnectionProperties() {
@@ -253,7 +285,7 @@ public class TransferRapidFireLibrary extends Shell implements StatusMessageRece
         if (as400 == null) {
             // setStatus(Messages.bind(Messages.Not_yet_connected_to_A,
             // connectionName));
-            setStatus(Messages.bind(Messages.About_to_transfer_library_A_ASP_group_D_to_host_B_using_port_C, new Object[] { rapidFireLibrary,
+            setStatus(Messages.bind(Messages.About_to_transfer_library_A_ASP_group_D_to_host_B_using_port_C, new Object[] { iSphereLibrary,
                 connectionName, ftpPort, aspGroup }));
         } else {
 
@@ -262,7 +294,7 @@ public class TransferRapidFireLibrary extends Shell implements StatusMessageRece
             } catch (Throwable e) {
             }
 
-            setStatus(Messages.bind(Messages.About_to_transfer_library_A_ASP_group_D_to_host_B_using_port_C, new Object[] { rapidFireLibrary,
+            setStatus(Messages.bind(Messages.About_to_transfer_library_A_ASP_group_D_to_host_B_using_port_C, new Object[] { iSphereLibrary,
                 connectionName, ftpPort, aspGroup }));
         }
 
@@ -294,24 +326,6 @@ public class TransferRapidFireLibrary extends Shell implements StatusMessageRece
         }
     }
 
-    private Composite createButtons(boolean printJobLogButton) {
-
-        Composite buttonPanel = new Composite(this, SWT.NONE);
-        GridLayout buttonPanelLayout = new GridLayout(1, true);
-        buttonPanel.setLayoutData(new GridData(SWT.CENTER, SWT.CENTER, true, false, 2, 1));
-        buttonPanelLayout.marginHeight = 0;
-        buttonPanelLayout.marginWidth = 0;
-        buttonPanel.setLayout(buttonPanelLayout);
-
-        if (printJobLogButton) {
-            createButtonPrintJobLog(buttonPanel);
-        }
-
-        createButtonClose(buttonPanel);
-
-        return buttonPanel;
-    }
-
     private void createButtonPrintJobLog(Composite buttonPanel) {
 
         GridLayout buttonPanelLayout = (GridLayout)buttonPanel.getLayout();
@@ -326,51 +340,23 @@ public class TransferRapidFireLibrary extends Shell implements StatusMessageRece
                 printJobLog();
             }
         });
-    }
 
-    private void createButtonClose(Composite buttonPanel) {
-        buttonClose = WidgetFactory.createPushButton(buttonPanel);
-        buttonClose.setLayoutData(new GridData(GridData.FILL_HORIZONTAL));
-        buttonClose.setText(Messages.ActionLabel_Close);
-        buttonClose.addSelectionListener(new SelectionAdapter() {
-            @Override
-            public void widgetSelected(SelectionEvent e) {
-                close();
-            }
-        });
-    }
-
-    @Override
-    protected void checkSubclass() {
-        // Disable the check that prevents subclassing of SWT components
-    }
-
-    private void clearStatus() {
-        tableStatus.removeAll();
-        tableStatus.update();
-    }
-
-    public void setStatus(String status) {
-        TableItem itemStatus = new TableItem(tableStatus, SWT.BORDER);
-        itemStatus.setText(status);
-        tableStatus.update();
-        redraw();
-    }
-
-    public void setErrorStatus(String status) {
-        setStatus("!!!   " + status + "   !!!");
+        buttonJobLog.setEnabled(false);
+        buttonJobLog.setVisible(buttonJobLog.isEnabled());
     }
 
     private void printJobLog() {
 
-        String cpfMsg = executeCommand("DSPJOBLOG JOB(*) OUTPUT(*PRINT)", true);
-        if (cpfMsg.equals("")) {
+        String cpfMsg = executeCommand("DSPJOBLOG JOB(*) OUTPUT(*PRINT)", true); //$NON-NLS-1$
+        if (StringHelper.isNullOrEmpty(cpfMsg)) {
             setStatus(Messages.Job_log_has_been_printed);
         }
     }
 
     private String executeCommand(String command, boolean logError) {
+
         try {
+
             commandCall.run(command);
             AS400Message[] messageList = commandCall.getMessageList();
             if (messageList.length > 0) {
@@ -382,68 +368,36 @@ public class TransferRapidFireLibrary extends Shell implements StatusMessageRece
                 }
                 if (escapeMessage != null) {
                     if (logError) {
+                        setStatus(Messages.bind(Messages.Error_A, command));
                         for (int idx = 0; idx < messageList.length; idx++) {
-                            setStatus(messageList[idx].getID() + ": " + messageList[idx].getText());
+                            setStatus(messageList[idx].getID() + ": " + messageList[idx].getText()); //$NON-NLS-1$
                         }
                     }
                     return escapeMessage.getID();
                 }
             }
-            return "";
+
+            return Messages.EMPTY;
+
         } catch (Exception e) {
-            return "CPF0000";
+            return "CPF0000"; //$NON-NLS-1$
         }
     }
 
-    private class TransferLibrarySelectionAdapter extends SelectionAdapter {
+    private void clearStatus() {
+        tableStatus.removeAll();
+        tableStatus.update();
+    }
 
-        @Override
-        public void widgetSelected(final SelectionEvent event) {
+    public void setStatus(String message) {
+        TableItem itemStatus = new TableItem(tableStatus, SWT.BORDER);
+        itemStatus.setText(message);
+        tableStatus.update();
+        tableStatus.update();
+    }
 
-            disableControls();
-
-            boolean successfullyTransfered = false;
-
-            try {
-
-                clearStatus();
-                if (as400 == null) {
-                    setStatus(Messages.bind(Messages.Connecting_to_A, connectionName));
-                    if (!connectSystem()) {
-                        setStatus(Messages.Operation_has_been_canceled_by_the_user);
-                        showConnectionProperties();
-                        enableControls();
-                        return;
-                    }
-                }
-
-                showConnectionProperties();
-
-                boolean startJournaling = buttonStartJournaling.getSelection();
-
-                ProductLibraryUploader uploader = new ProductLibraryUploader(getShell(), as400, ftpPort, rapidFireLibrary, aspGroup, startJournaling);
-                uploader.setStatusMessageReceiver(TransferRapidFireLibrary.this);
-                successfullyTransfered = uploader.run();
-
-                buttonPanel.dispose();
-                buttonPanel = createButtons(true);
-                layout(true);
-
-            } finally {
-
-                if (successfullyTransfered) {
-                    setErrorStatus(Messages.bind(Messages.Library_A_successfull_transfered, rapidFireLibrary));
-                    disableControls();
-                    enableControl(BUTTON_JOB_LOG, buttonJobLog);
-                    enableControl(BUTTON_CLOSE, buttonClose);
-                    buttonClose.setFocus();
-                } else {
-                    setErrorStatus(Messages.bind(Messages.Error_occurred_while_transfering_library_A, rapidFireLibrary));
-                    enableControls();
-                    buttonClose.setFocus();
-                }
-            }
-        }
+    public void setErrorStatus(String status) {
+        setStatus("!!!   " + status + "   !!!");
     }
 
     private boolean connectSystem() {
@@ -456,15 +410,15 @@ public class TransferRapidFireLibrary extends Shell implements StatusMessageRece
                 disconnectSystem();
             }
 
-            AS400 tempSystem = SystemConnectionHelper.getSystem(connectionName);
-            if (tempSystem == null) {
+            as400 = SystemConnectionHelper.getSystem(connectionName);
+            if (as400 == null) {
                 commandCall = null;
             } else {
 
-                if (tempSystem instanceof SecureAS400) {
-                    as400 = new SecureAS400(tempSystem);
+                if (as400 instanceof SecureAS400) {
+                    as400 = new SecureAS400(as400);
                 } else {
-                    as400 = new AS400(tempSystem);
+                    as400 = new AS400(as400);
                 }
 
                 commandCall = new CommandCall(as400);
@@ -483,6 +437,39 @@ public class TransferRapidFireLibrary extends Shell implements StatusMessageRece
         }
     }
 
+    private void disableControls() {
+
+        saveEnablement(comboConnections.getCombo());
+        saveEnablement(buttonStart);
+        saveEnablement(buttonJobLog);
+        saveEnablement(buttonClose);
+
+        comboConnections.setEnabled(false);
+        buttonStart.setEnabled(false);
+        buttonJobLog.setEnabled(false);
+        buttonClose.setEnabled(false);
+
+        buttonJobLog.setVisible(buttonJobLog.isEnabled());
+    }
+
+    private void restoreControlsEnablement() {
+
+        comboConnections.setEnabled(getPreviousEnablement(comboConnections.getCombo()));
+        buttonStart.setEnabled(getPreviousEnablement(buttonStart));
+        buttonJobLog.setEnabled(getPreviousEnablement(buttonJobLog));
+        buttonClose.setEnabled(getPreviousEnablement(buttonClose));
+
+        buttonJobLog.setVisible(buttonJobLog.isEnabled());
+    }
+
+    private void saveEnablement(Control control) {
+        control.setData(ENABLED_STATUS, control.isEnabled());
+    }
+
+    private boolean getPreviousEnablement(Control control) {
+        return (Boolean)control.getData(ENABLED_STATUS);
+    }
+
     private void disconnectSystem() {
 
         if (as400 != null) {
@@ -491,111 +478,133 @@ public class TransferRapidFireLibrary extends Shell implements StatusMessageRece
         }
 
         commandCall = null;
-    }
 
-    private void enableControls() {
-
-        enableControl(COMBO_CONNECTIONS, comboConnections);
-        enableControl(BUTTON_START, buttonStart);
-        enableControl(BUTTON_START_JOURNALING, buttonStartJournaling);
-        enableControl(BUTTON_CLOSE, buttonClose);
-        enableControl(BUTTON_JOB_LOG, buttonJobLog);
-    }
-
-    private void enableControl(String key, Object object) {
-
-        if (object == null) {
-            controlStatus.remove(key);
-            return;
+        if (!dialogArea.isDisposed()) {
+            clearStatus();
+            showConnectionProperties();
         }
+    }
 
-        if (object instanceof Control) {
-            Control control = (Control)object;
-            if (!control.isDisposed()) {
-                controlStatus.put(key, Boolean.TRUE);
-                control.setEnabled(true);
+    private class TransferLibrarySelectionAdapter extends SelectionAdapter {
+        @Override
+        public void widgetSelected(final SelectionEvent event) {
+
+            comboConnections.setEnabled(false);
+            buttonStart.setEnabled(false);
+            buttonClose.setEnabled(false);
+
+            buttonJobLog.setEnabled(false);
+            buttonJobLog.setVisible(buttonJobLog.isEnabled());
+
+            clearStatus();
+            if (as400 == null) {
+                setStatus(Messages.bind(Messages.Connecting_to_A, connectionName));
+                if (!connectSystem()) {
+                    setStatus(Messages.Operation_has_been_canceled_by_the_user);
+                    showConnectionProperties();
+                    comboConnections.setEnabled(true);
+                    buttonStart.setEnabled(true);
+                    buttonClose.setEnabled(true);
+                    return;
+                }
             }
-        } else if (object instanceof SystemHostCombo) {
-            SystemHostCombo control = (SystemHostCombo)object;
-            if (!control.isDisposed()) {
-                controlStatus.put(key, Boolean.TRUE);
-                control.setEnabled(true);
+
+            showConnectionProperties();
+
+            boolean startJournaling = buttonStartJournaling.getSelection();
+
+            ProductLibraryUploader uploader = new ProductLibraryUploader(getShell(), as400, ftpPort, iSphereLibrary, aspGroup, startJournaling);
+            uploader.setStatusMessageReceiver(TransferRapidFireLibrary.this);
+
+            if (uploader.run()) {
+                comboConnections.setEnabled(false);
+                buttonStart.setEnabled(false);
+                buttonClose.setFocus();
+            } else {
+                comboConnections.setEnabled(true);
+                buttonStart.setEnabled(true);
+                buttonJobLog.setFocus();
             }
-        } else {
-            throw new IllegalArgumentException("Unsupported object type: " + object.getClass().getName());
+
+            buttonJobLog.setEnabled(true);
+            buttonJobLog.setVisible(buttonJobLog.isEnabled());
+
+            setUploadCompleted(true);
+            enableCloseDelayed();
         }
     }
 
-    private void disableControls() {
-
-        disableControl(COMBO_CONNECTIONS, comboConnections);
-        disableControl(BUTTON_START, buttonStart);
-        disableControl(BUTTON_START_JOURNALING, buttonStartJournaling);
-        disableControl(BUTTON_CLOSE, buttonClose);
-        disableControl(BUTTON_JOB_LOG, buttonJobLog);
+    @Override
+    protected void createButtonsForButtonBar(Composite parent) {
+        createButtonPrintJobLog(parent);
+        super.createButtonsForButtonBar(parent);
     }
 
-    private void disableControl(String key, Object object) {
-
-        if (object == null) {
-            controlStatus.remove(key);
-            return;
+    protected Button createButton(Composite parent, int id, String label, boolean defaultButton) {
+        if (id == Dialog.CANCEL) {
+            buttonClose = super.createButton(parent, id, Messages.ActionLabel_Close, defaultButton);
+            return buttonClose;
         }
-
-        if (object instanceof Control) {
-            Control control = (Control)object;
-            if (!control.isDisposed()) {
-                controlStatus.put(key, control.getEnabled());
-                control.setEnabled(false);
-            }
-        } else if (object instanceof SystemHostCombo) {
-            SystemHostCombo control = (SystemHostCombo)object;
-            if (!control.isDisposed()) {
-                controlStatus.put(key, control.getEnabled());
-                control.setEnabled(false);
-            }
-        } else {
-            throw new IllegalArgumentException("Unsupported object type: " + object.getClass().getName());
-        }
+        return null;
     }
 
-    private void restoreControlsEnablement() {
+    private void enableCloseDelayed() {
 
-        restoreControlEnablement(COMBO_CONNECTIONS, comboConnections);
-        restoreControlEnablement(BUTTON_START, buttonStart);
-        restoreControlEnablement(BUTTON_START_JOURNALING, buttonStartJournaling);
-        restoreControlEnablement(BUTTON_CLOSE, buttonClose);
-        restoreControlEnablement(BUTTON_JOB_LOG, buttonJobLog);
+        if (enableEscapeKeyJob != null) {
+            // Eat Esc keystroke
+            enableEscapeKeyJob.cancel();
+        }
+
+        enableEscapeKeyJob = new Job(Messages.EMPTY) {
+            @Override
+            protected IStatus run(IProgressMonitor arg0) {
+                enableEscapeKeyJob = null;
+                new UIJob(Messages.EMPTY) {
+                    @Override
+                    public IStatus runInUIThread(IProgressMonitor arg0) {
+                        buttonClose.setEnabled(true);
+                        return Status.OK_STATUS;
+                    }
+                }.schedule();
+                return Status.OK_STATUS;
+            }
+        };
+
+        enableEscapeKeyJob.schedule(200);
     }
 
-    private void restoreControlEnablement(String key, Object object) {
-
-        if (object == null) {
-            return;
-        }
-
-        if (object instanceof Control) {
-            Control control = (Control)object;
-            if (!control.isDisposed()) {
-                control.setEnabled(getPreviousEnablement(key));
-            }
-        } else if (object instanceof SystemHostCombo) {
-            SystemHostCombo control = (SystemHostCombo)object;
-            if (!control.isDisposed()) {
-                control.setEnabled(getPreviousEnablement(key));
-            }
-        } else {
-            throw new IllegalArgumentException("Unsupported object type: " + object.getClass().getName());
-        }
+    /**
+     * Overridden to make this dialog resizable.
+     */
+    @Override
+    protected boolean isResizable() {
+        return true;
     }
 
-    private boolean getPreviousEnablement(String key) {
-        Boolean enabled = controlStatus.get(key);
-        if (enabled instanceof Boolean) {
-            return enabled;
-        } else {
-            return true;
-        }
+    /**
+     * Overridden to provide a default size to {@link XDialog}.
+     */
+    @Override
+    protected Point getDefaultSize() {
+        Point defaultSize = getShell().computeSize(Size.getSize(500), Size.getSize(350), true);
+        return defaultSize;
+    }
+
+    /**
+     * Overridden to ensure a minimal size of the dialog.
+     */
+    @Override
+    public Point getMinimalSize() {
+        return new Point(Size.getSize(280), Size.getSize(200));
+    }
+
+    /**
+     * Overridden to let {@link XDialog} store the state of this dialog in a
+     * separate section of the dialog settings file.
+     */
+    @Override
+    protected IDialogSettings getDialogBoundsSettings() {
+        return super.getDialogBoundsSettings(RapidFireCorePlugin.getDefault().getDialogSettings());
     }
 
     /**

@@ -14,7 +14,6 @@ import org.eclipse.core.commands.ExecutionException;
 import org.eclipse.core.commands.IHandler;
 import org.eclipse.jface.dialogs.MessageDialog;
 import org.eclipse.swt.SWT;
-import org.eclipse.swt.widgets.Display;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.ui.PlatformUI;
 
@@ -65,8 +64,8 @@ public class TransferRapidFireLibraryHandler extends AbstractHandler implements 
                 return null;
             }
 
-            TransferRapidFireLibrary statusDialog = new TransferRapidFireLibrary(Display.getCurrent(), SWT.APPLICATION_MODAL | SWT.SHELL_TRIM,
-                rapidFireLibrary, aspGroup, connectionName, ftpPort);
+            TransferRapidFireLibrary statusDialog = new TransferRapidFireLibrary(PlatformUI.getWorkbench().getActiveWorkbenchWindow().getShell(),
+                SWT.APPLICATION_MODAL | SWT.SHELL_TRIM, rapidFireLibrary, aspGroup, connectionName, ftpPort);
             statusDialog.open();
 
         } catch (Throwable e) {
