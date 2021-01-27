@@ -60,71 +60,85 @@ public class ProductLibraryUploader {
     public boolean run() {
 
         boolean successfullyTransfered = false;
-        String workLibrary = "QGPL";
-        String saveFileName = rapidFireLibrary;
 
-        boolean ok = true;
-        if (RapidFireHelper.isASPGroupSpecified(aspGroup)) {
-            String cpfMsg = executeCommand("SETASPGRP ASPGRP(" + aspGroup + ")", true);
-            if (!cpfMsg.equals("")) {
-                setStatus(Messages.bind(Messages.Error_occurred_while_setting_the_asp_group_to_A, aspGroup));
-                ok = false;
+        try {
+
+            String workLibrary = "QGPL";
+            String saveFileName = rapidFireLibrary;
+
+            boolean ok = true;
+            if (RapidFireHelper.isASPGroupSpecified(aspGroup)) {
+                String cpfMsg = executeCommand("SETASPGRP ASPGRP(" + aspGroup + ")", true);
+                if (!cpfMsg.equals("")) {
+                    setStatus(Messages.bind(Messages.Error_occurred_while_setting_the_asp_group_to_A, aspGroup));
+                    ok = false;
+                }
             }
-        }
-        if (ok) {
-            setStatus(Messages.bind(Messages.Checking_library_A_for_existence, rapidFireLibrary));
-            if (!checkLibraryPrecondition(rapidFireLibrary, aspGroup)) {
-                setErrorStatus(Messages.bind(Messages.Library_A_does_already_exist, rapidFireLibrary));
-            } else {
-                setStatus(Messages.bind(Messages.Checking_file_B_in_library_A_for_existence, new String[] { workLibrary, saveFileName }));
-                if (!checkSaveFilePrecondition(workLibrary, saveFileName)) {
-                    setErrorStatus(Messages.bind(Messages.File_B_in_library_A_does_already_exist, new String[] { workLibrary, saveFileName }));
-                } else {
 
-                    setStatus(Messages.bind(Messages.Creating_save_file_B_in_library_A, new String[] { workLibrary, saveFileName }));
-                    if (!createSaveFile(workLibrary, saveFileName, true)) {
-                        setErrorStatus(Messages.bind(Messages.Could_not_create_save_file_B_in_library_A, new String[] { workLibrary, saveFileName }));
+            if (ok) {
+                setStatus(Messages.bind(Messages.Checking_library_A_for_existence, rapidFireLibrary));
+                if (!checkLibraryPrecondition(rapidFireLibrary, aspGroup)) {
+                    setErrorStatus(Messages.bind(Messages.Library_A_does_already_exist, rapidFireLibrary));
+                } else {
+                    setStatus(Messages.bind(Messages.Checking_file_B_in_library_A_for_existence, new String[] { workLibrary, saveFileName }));
+                    if (!checkSaveFilePrecondition(workLibrary, saveFileName)) {
+                        setErrorStatus(Messages.bind(Messages.File_B_in_library_A_does_already_exist, new String[] { workLibrary, saveFileName }));
                     } else {
 
-                        try {
+                        setStatus(Messages.bind(Messages.Creating_save_file_B_in_library_A, new String[] { workLibrary, saveFileName }));
+                        if (!createSaveFile(workLibrary, saveFileName, true)) {
+                            setErrorStatus(Messages.bind(Messages.Could_not_create_save_file_B_in_library_A,
+                                new String[] { workLibrary, saveFileName }));
+                        } else {
 
-                            setStatus(Messages.Sending_save_file_to_host);
-                            setStatus(Messages.bind(Messages.Using_Ftp_port_number, new Integer(ftpPort)));
-                            AS400FTP client = new AS400FTP(system);
+                            try {
 
-                            URL fileUrl = FileLocator.toFileURL(RapidFireCorePlugin.getInstallURL());
-                            File file = new File(fileUrl.getPath() + "Server" + File.separator + "RAPIDFIRE.SAVF");
-                            client.setPort(ftpPort);
-                            client.setDataTransferType(FTP.BINARY);
-                            if (client.connect()) {
-                                client.put(file, "/QSYS.LIB/" + workLibrary + ".LIB/" + saveFileName + ".FILE");
-                                client.disconnect();
-                            }
+                                setStatus(Messages.Sending_save_file_to_host);
+                                setStatus(Messages.bind(Messages.Using_Ftp_port_number, new Integer(ftpPort)));
+                                AS400FTP client = new AS400FTP(system);
 
-                            setStatus(Messages.bind(Messages.Restoring_library_A, rapidFireLibrary));
-                            if (!restoreLibrary(workLibrary, saveFileName, rapidFireLibrary, aspGroup)) {
-                                setErrorStatus(Messages.bind(Messages.Could_not_restore_library_A, rapidFireLibrary));
-                            } else {
-
-                                if (initializeLibrary(rapidFireLibrary, startJournaling)) {
-                                    successfullyTransfered = true;
+                                URL fileUrl = FileLocator.toFileURL(RapidFireCorePlugin.getInstallURL());
+                                File file = new File(fileUrl.getPath() + "Server" + File.separator + "RAPIDFIRE.SAVF");
+                                client.setPort(ftpPort);
+                                client.setDataTransferType(FTP.BINARY);
+                                if (client.connect()) {
+                                    client.put(file, "/QSYS.LIB/" + workLibrary + ".LIB/" + saveFileName + ".FILE");
+                                    client.disconnect();
                                 }
 
+                                setStatus(Messages.bind(Messages.Restoring_library_A, rapidFireLibrary));
+                                if (!restoreLibrary(workLibrary, saveFileName, rapidFireLibrary, aspGroup)) {
+                                    setErrorStatus(Messages.bind(Messages.Could_not_restore_library_A, rapidFireLibrary));
+                                } else {
+
+                                    if (initializeLibrary(rapidFireLibrary, startJournaling)) {
+                                        successfullyTransfered = true;
+                                    }
+
+                                }
+
+                            } catch (Throwable e) {
+                                RapidFireCorePlugin.logError(Messages.Could_not_send_save_file_to_host, e);
+
+                                setErrorStatus(Messages.Could_not_send_save_file_to_host);
+                                setStatus(e.getLocalizedMessage());
+                            } finally {
+
+                                setStatus(Messages.bind(Messages.Deleting_object_A_B_of_type_C, new String[] { workLibrary, saveFileName, "*FILE" }));
+                                deleteSaveFile(workLibrary, saveFileName, true);
                             }
 
-                        } catch (Throwable e) {
-                            RapidFireCorePlugin.logError(Messages.Could_not_send_save_file_to_host, e);
-
-                            setErrorStatus(Messages.Could_not_send_save_file_to_host);
-                            setStatus(e.getLocalizedMessage());
-                        } finally {
-
-                            setStatus(Messages.bind(Messages.Deleting_object_A_B_of_type_C, new String[] { workLibrary, saveFileName, "*FILE" }));
-                            deleteSaveFile(workLibrary, saveFileName, true);
                         }
-
                     }
                 }
+            }
+
+        } finally {
+
+            if (successfullyTransfered) {
+                setStatus("!!!   " + Messages.bind(Messages.Library_A_successfull_transfered, rapidFireLibrary) + "   !!!");
+            } else {
+                setStatus("!!!   " + Messages.bind(Messages.Error_occurred_while_transfering_library_A, rapidFireLibrary) + "   !!!");
             }
         }
 
@@ -398,6 +412,7 @@ public class ProductLibraryUploader {
                 }
                 if (escapeMessage != null) {
                     if (logError) {
+                        setStatus(Messages.bind(Messages.Error_A, command));
                         for (int idx = 0; idx < messageList.length; idx++) {
                             setStatus(messageList[idx].getID() + ": " + messageList[idx].getText());
                         }
