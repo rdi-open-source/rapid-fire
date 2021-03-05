@@ -21,6 +21,8 @@ import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Shell;
 import org.eclipse.swt.widgets.Text;
 
+import com.ibm.as400.access.AS400;
+
 import biz.rapidfire.core.Messages;
 import biz.rapidfire.core.RapidFireCorePlugin;
 import biz.rapidfire.core.dialogs.maintenance.AbstractMaintenanceDialog;
@@ -42,10 +44,8 @@ import biz.rapidfire.core.swt.widgets.WidgetFactory;
 import biz.rapidfire.core.swt.widgets.viewers.stringlist.ItemSelectionDialog;
 import biz.rapidfire.rsebase.helpers.SystemConnectionHelper;
 import biz.rapidfire.rsebase.host.SystemFileType;
-import biz.rapidfire.rsebase.swt.widgets.SystemHostCombo;
+import biz.rapidfire.rsebase.swt.widgets.ISystemHostCombo;
 import biz.rapidfire.rsebase.swt.widgets.SystemMemberPrompt;
-
-import com.ibm.as400.access.AS400;
 
 public class FileCopyProgramGeneratorMaintenanceDialog extends AbstractMaintenanceDialog implements SelectionListener {
 
@@ -53,7 +53,7 @@ public class FileCopyProgramGeneratorMaintenanceDialog extends AbstractMaintenan
 
     private FileCopyProgramGeneratorManager manager;
 
-    private SystemHostCombo systemHostCombo;
+    private ISystemHostCombo systemHostCombo;
     private SystemMemberPrompt memberPrompt;
     private Button buttonSelectArea;
     private Text textLibrary;

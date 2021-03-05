@@ -31,6 +31,7 @@ import biz.rapidfire.core.maintenance.MaintenanceMode;
 import biz.rapidfire.core.swt.widgets.listeditors.librarylist.LibraryListEditor;
 import biz.rapidfire.core.swt.widgets.listeditors.stringlist.StringListEditor;
 import biz.rapidfire.rsebase.host.SystemFileType;
+import biz.rapidfire.rsebase.swt.widgets.ISystemHostCombo;
 import biz.rapidfire.rsebase.swt.widgets.SystemHostCombo;
 import biz.rapidfire.rsebase.swt.widgets.SystemMemberPrompt;
 
@@ -85,7 +86,7 @@ public final class WidgetFactory {
      * @param style the style of control to construct
      * @return system host combo for selection a connection
      */
-    public static SystemHostCombo createSystemHostCombo(Composite parent, int style) {
+    public static ISystemHostCombo createSystemHostCombo(Composite parent, int style) {
         return createSystemHostCombo(parent, style, true);
     }
 
@@ -98,7 +99,7 @@ public final class WidgetFactory {
      * @param showNewButton - specifies whether to display the "New" button
      * @return system host combo for selection a connection
      */
-    public static SystemHostCombo createSystemHostCombo(Composite parent, int style, boolean showNewButton) {
+    public static ISystemHostCombo createSystemHostCombo(Composite parent, int style, boolean showNewButton) {
         return WidgetFactory.getInstance().produceSystemHostCombo(parent, style, showNewButton);
     }
 
@@ -999,9 +1000,9 @@ public final class WidgetFactory {
         return filler;
     }
 
-    private SystemHostCombo produceSystemHostCombo(Composite parent, int style, boolean showNewButton) {
+    private ISystemHostCombo produceSystemHostCombo(Composite parent, int style, boolean showNewButton) {
 
-        SystemHostCombo systemHostCombo = new SystemHostCombo(parent, style, showNewButton);
+        ISystemHostCombo systemHostCombo = new SystemHostCombo(parent, style, showNewButton);
 
         return systemHostCombo;
     }

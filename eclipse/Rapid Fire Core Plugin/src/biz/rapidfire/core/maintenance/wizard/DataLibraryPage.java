@@ -13,6 +13,8 @@ import org.eclipse.swt.layout.GridData;
 import org.eclipse.swt.widgets.Composite;
 import org.eclipse.swt.widgets.Text;
 
+import com.ibm.as400.access.AS400;
+
 import biz.rapidfire.core.Messages;
 import biz.rapidfire.core.helpers.RapidFireHelper;
 import biz.rapidfire.core.helpers.StringHelper;
@@ -21,15 +23,13 @@ import biz.rapidfire.core.preferences.Preferences;
 import biz.rapidfire.core.swt.widgets.WidgetFactory;
 import biz.rapidfire.core.validators.Validator;
 import biz.rapidfire.rsebase.helpers.SystemConnectionHelper;
-import biz.rapidfire.rsebase.swt.widgets.SystemHostCombo;
-
-import com.ibm.as400.access.AS400;
+import biz.rapidfire.rsebase.swt.widgets.ISystemHostCombo;
 
 public class DataLibraryPage extends AbstractWizardPage implements IUpdatePageCompleteHandler {
 
     public static final String NAME = "DATA_LIBRARY_PAGE"; //$NON-NLS-1$
 
-    private SystemHostCombo comboConnection;
+    private ISystemHostCombo comboConnection;
     private Text textDataLibrary;
 
     private WizardDataModel model;

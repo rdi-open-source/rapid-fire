@@ -45,6 +45,11 @@ import org.eclipse.swt.widgets.TableItem;
 import org.eclipse.ui.PlatformUI;
 import org.eclipse.ui.progress.UIJob;
 
+import com.ibm.as400.access.AS400;
+import com.ibm.as400.access.AS400Message;
+import com.ibm.as400.access.CommandCall;
+import com.ibm.as400.access.SecureAS400;
+
 import biz.rapidfire.core.Messages;
 import biz.rapidfire.core.RapidFireCorePlugin;
 import biz.rapidfire.core.handlers.install.ProductLibraryUploader;
@@ -57,12 +62,7 @@ import biz.rapidfire.core.jface.dialogs.XDialog;
 import biz.rapidfire.core.preferences.Preferences;
 import biz.rapidfire.core.swt.widgets.WidgetFactory;
 import biz.rapidfire.rsebase.helpers.SystemConnectionHelper;
-import biz.rapidfire.rsebase.swt.widgets.SystemHostCombo;
-
-import com.ibm.as400.access.AS400;
-import com.ibm.as400.access.AS400Message;
-import com.ibm.as400.access.CommandCall;
-import com.ibm.as400.access.SecureAS400;
+import biz.rapidfire.rsebase.swt.widgets.ISystemHostCombo;
 
 public class TransferRapidFireLibrary extends XDialog implements StatusMessageReceiver {
 
@@ -71,7 +71,7 @@ public class TransferRapidFireLibrary extends XDialog implements StatusMessageRe
     private AS400 as400;
     private CommandCall commandCall;
     private Table tableStatus;
-    private SystemHostCombo comboConnections;
+    private ISystemHostCombo comboConnections;
     private Button buttonStart;
     private Button buttonStartJournaling;
     private Button buttonClose;
@@ -256,7 +256,7 @@ public class TransferRapidFireLibrary extends XDialog implements StatusMessageRe
         menuTableStatusContextMenu.addMenuListener(new TableContextMenu(tableStatus));
         tableStatus.setMenu(menuTableStatusContextMenu);
 
-        //        new UIJob("Establish connection") { //$NON-NLS-1$
+        // new UIJob("Establish connection") { //$NON-NLS-1$
         // @Override
         // public IStatus runInUIThread(IProgressMonitor arg0) {
         // clearStatus();
@@ -285,8 +285,8 @@ public class TransferRapidFireLibrary extends XDialog implements StatusMessageRe
         if (as400 == null) {
             // setStatus(Messages.bind(Messages.Not_yet_connected_to_A,
             // connectionName));
-            setStatus(Messages.bind(Messages.About_to_transfer_library_A_ASP_group_D_to_host_B_using_port_C, new Object[] { iSphereLibrary,
-                connectionName, ftpPort, aspGroup }));
+            setStatus(Messages.bind(Messages.About_to_transfer_library_A_ASP_group_D_to_host_B_using_port_C,
+                new Object[] { iSphereLibrary, connectionName, ftpPort, aspGroup }));
         } else {
 
             try {
@@ -294,8 +294,8 @@ public class TransferRapidFireLibrary extends XDialog implements StatusMessageRe
             } catch (Throwable e) {
             }
 
-            setStatus(Messages.bind(Messages.About_to_transfer_library_A_ASP_group_D_to_host_B_using_port_C, new Object[] { iSphereLibrary,
-                connectionName, ftpPort, aspGroup }));
+            setStatus(Messages.bind(Messages.About_to_transfer_library_A_ASP_group_D_to_host_B_using_port_C,
+                new Object[] { iSphereLibrary, connectionName, ftpPort, aspGroup }));
         }
 
         if (StringHelper.isNullOrEmpty(connectionName)) {

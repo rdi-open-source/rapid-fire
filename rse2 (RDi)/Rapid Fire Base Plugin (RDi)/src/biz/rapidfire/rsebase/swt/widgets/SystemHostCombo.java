@@ -17,11 +17,11 @@ import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.widgets.Combo;
 import org.eclipse.swt.widgets.Composite;
 
-import biz.rapidfire.rsebase.helpers.SystemConnectionHelper;
-
 import com.ibm.etools.iseries.rse.ui.widgets.IBMiConnectionCombo;
 
-public class SystemHostCombo {
+import biz.rapidfire.rsebase.helpers.SystemConnectionHelper;
+
+public class SystemHostCombo implements ISystemHostCombo {
 
     private IBMiConnectionCombo connectionCombo;
 

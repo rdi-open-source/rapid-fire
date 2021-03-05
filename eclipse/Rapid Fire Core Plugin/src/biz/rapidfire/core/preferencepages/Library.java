@@ -34,6 +34,8 @@ import org.eclipse.ui.IWorkbench;
 import org.eclipse.ui.IWorkbenchPreferencePage;
 import org.eclipse.ui.PlatformUI;
 
+import com.ibm.as400.access.AS400;
+
 import biz.rapidfire.core.Messages;
 import biz.rapidfire.core.RapidFireCorePlugin;
 import biz.rapidfire.core.handlers.install.TransferRapidFireLibraryHandler;
@@ -45,9 +47,7 @@ import biz.rapidfire.core.preferences.Preferences;
 import biz.rapidfire.core.swt.widgets.WidgetFactory;
 import biz.rapidfire.core.validators.Validator;
 import biz.rapidfire.rsebase.helpers.SystemConnectionHelper;
-import biz.rapidfire.rsebase.swt.widgets.SystemHostCombo;
-
-import com.ibm.as400.access.AS400;
+import biz.rapidfire.rsebase.swt.widgets.ISystemHostCombo;
 
 public class Library extends PreferencePage implements IWorkbenchPreferencePage {
 
@@ -57,7 +57,7 @@ public class Library extends PreferencePage implements IWorkbenchPreferencePage 
     private String aspGroup;
     private Validator validatorASPGroup;
 
-    private SystemHostCombo comboConnection;
+    private ISystemHostCombo comboConnection;
     private Text textFtpPortNumber;
     private Text textProductLibrary;
     private Combo comboASPGroup;
@@ -270,8 +270,8 @@ public class Library extends PreferencePage implements IWorkbenchPreferencePage 
 
         Preferences.getInstance().setRapidFireLibrary(rapidFireLibrary);
         Preferences.getInstance().setConnectionName(comboConnection.getConnectionName());
-        Preferences.getInstance().setFtpPortNumber(
-            IntHelper.tryParseInt(textFtpPortNumber.getText(), Preferences.getInstance().getDefaultFtpPortNumber()));
+        Preferences.getInstance()
+            .setFtpPortNumber(IntHelper.tryParseInt(textFtpPortNumber.getText(), Preferences.getInstance().getDefaultFtpPortNumber()));
         Preferences.getInstance().setASPGroup(aspGroup);
 
     }
