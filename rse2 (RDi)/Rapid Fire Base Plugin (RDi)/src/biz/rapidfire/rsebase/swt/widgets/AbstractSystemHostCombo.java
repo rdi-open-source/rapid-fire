@@ -20,11 +20,11 @@ import com.ibm.etools.iseries.rse.ui.widgets.IBMiConnectionCombo;
 
 import biz.rapidfire.rsebase.helpers.SystemConnectionHelper;
 
-public abstract class SystemHostCombo {
+public abstract class AbstractSystemHostCombo {
 
     private IBMiConnectionCombo connectionCombo;
 
-    public SystemHostCombo(Composite parent, int style, boolean showNewButton, boolean showLabel) {
+    public AbstractSystemHostCombo(Composite parent, int style, boolean showNewButton, boolean showLabel) {
 
         this.connectionCombo = new IBMiConnectionCombo(parent, style, null, showNewButton, showLabel);
 
