@@ -11,7 +11,6 @@ package biz.rapidfire.rsebase.swt.widgets;
 import org.eclipse.jface.viewers.ISelection;
 import org.eclipse.jface.viewers.ISelectionChangedListener;
 import org.eclipse.rse.core.model.IHost;
-import org.eclipse.swt.SWT;
 import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.widgets.Combo;
@@ -21,21 +20,9 @@ import com.ibm.etools.iseries.rse.ui.widgets.IBMiConnectionCombo;
 
 import biz.rapidfire.rsebase.helpers.SystemConnectionHelper;
 
-public class SystemHostCombo implements ISystemHostCombo {
+public abstract class SystemHostCombo {
 
     private IBMiConnectionCombo connectionCombo;
-
-    public SystemHostCombo(Composite parent) {
-        this(parent, SWT.NONE);
-    }
-
-    public SystemHostCombo(Composite parent, int style) {
-        this(parent, style, true);
-    }
-
-    public SystemHostCombo(Composite parent, int style, boolean showNewButton) {
-        this(parent, style, showNewButton, true);
-    }
 
     public SystemHostCombo(Composite parent, int style, boolean showNewButton, boolean showLabel) {
 

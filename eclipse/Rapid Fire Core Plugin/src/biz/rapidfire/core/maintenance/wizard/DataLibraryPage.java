@@ -20,10 +20,10 @@ import biz.rapidfire.core.helpers.RapidFireHelper;
 import biz.rapidfire.core.helpers.StringHelper;
 import biz.rapidfire.core.maintenance.wizard.model.WizardDataModel;
 import biz.rapidfire.core.preferences.Preferences;
+import biz.rapidfire.core.swt.widgets.ISystemHostCombo;
 import biz.rapidfire.core.swt.widgets.WidgetFactory;
 import biz.rapidfire.core.validators.Validator;
 import biz.rapidfire.rsebase.helpers.SystemConnectionHelper;
-import biz.rapidfire.rsebase.swt.widgets.ISystemHostCombo;
 
 public class DataLibraryPage extends AbstractWizardPage implements IUpdatePageCompleteHandler {
 

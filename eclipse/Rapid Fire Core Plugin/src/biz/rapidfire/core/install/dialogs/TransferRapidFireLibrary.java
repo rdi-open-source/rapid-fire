@@ -60,9 +60,9 @@ import biz.rapidfire.core.helpers.StringHelper;
 import biz.rapidfire.core.jface.dialogs.Size;
 import biz.rapidfire.core.jface.dialogs.XDialog;
 import biz.rapidfire.core.preferences.Preferences;
+import biz.rapidfire.core.swt.widgets.ISystemHostCombo;
 import biz.rapidfire.core.swt.widgets.WidgetFactory;
 import biz.rapidfire.rsebase.helpers.SystemConnectionHelper;
-import biz.rapidfire.rsebase.swt.widgets.ISystemHostCombo;
 
 public class TransferRapidFireLibrary extends XDialog implements StatusMessageReceiver {
 

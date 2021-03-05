@@ -44,10 +44,10 @@ import biz.rapidfire.core.helpers.IntHelper;
 import biz.rapidfire.core.helpers.RapidFireHelper;
 import biz.rapidfire.core.helpers.StringHelper;
 import biz.rapidfire.core.preferences.Preferences;
+import biz.rapidfire.core.swt.widgets.ISystemHostCombo;
 import biz.rapidfire.core.swt.widgets.WidgetFactory;
 import biz.rapidfire.core.validators.Validator;
 import biz.rapidfire.rsebase.helpers.SystemConnectionHelper;
-import biz.rapidfire.rsebase.swt.widgets.ISystemHostCombo;
 
 public class Library extends PreferencePage implements IWorkbenchPreferencePage {
 

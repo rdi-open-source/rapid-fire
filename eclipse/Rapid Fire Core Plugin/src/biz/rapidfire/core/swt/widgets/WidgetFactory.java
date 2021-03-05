@@ -31,8 +31,6 @@ import biz.rapidfire.core.maintenance.MaintenanceMode;
 import biz.rapidfire.core.swt.widgets.listeditors.librarylist.LibraryListEditor;
 import biz.rapidfire.core.swt.widgets.listeditors.stringlist.StringListEditor;
 import biz.rapidfire.rsebase.host.SystemFileType;
-import biz.rapidfire.rsebase.swt.widgets.ISystemHostCombo;
-import biz.rapidfire.rsebase.swt.widgets.SystemHostCombo;
 import biz.rapidfire.rsebase.swt.widgets.SystemMemberPrompt;
 
 /**
