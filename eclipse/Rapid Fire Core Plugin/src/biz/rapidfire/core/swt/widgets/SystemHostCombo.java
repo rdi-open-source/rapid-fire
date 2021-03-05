@@ -11,7 +11,9 @@ package biz.rapidfire.core.swt.widgets;
 import org.eclipse.swt.SWT;
 import org.eclipse.swt.widgets.Composite;
 
-public class SystemHostCombo extends biz.rapidfire.rsebase.swt.widgets.SystemHostCombo implements ISystemHostCombo {
+import biz.rapidfire.rsebase.swt.widgets.AbstractSystemHostCombo;
+
+public class SystemHostCombo extends AbstractSystemHostCombo implements ISystemHostCombo {
 
     public SystemHostCombo(Composite parent) {
         this(parent, SWT.NONE);
