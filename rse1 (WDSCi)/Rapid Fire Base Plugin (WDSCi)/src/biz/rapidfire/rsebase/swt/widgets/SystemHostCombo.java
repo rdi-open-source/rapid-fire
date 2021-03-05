@@ -1,5 +1,5 @@
 /*******************************************************************************
- * Copyright (c) 2017-2017 Rapid Fire Project Team
+ * Copyright (c) 2017-2021 Rapid Fire Project Team
  * All rights reserved. This program and the accompanying materials 
  * are made available under the terms of the Common Public License v1.0
  * which accompanies this distribution, and is available at
@@ -21,7 +21,7 @@ import biz.rapidfire.rsebase.helpers.SystemConnectionHelper;
 import com.ibm.etools.iseries.core.ui.widgets.ISeriesConnectionCombo;
 import com.ibm.etools.systems.model.SystemConnection;
 
-public class SystemHostCombo {
+public class SystemHostCombo implements ISystemHostCombo {
 
     private ISeriesConnectionCombo connectionCombo;
 
@@ -44,6 +44,30 @@ public class SystemHostCombo {
         this.connectionCombo.setConnections(SystemConnectionHelper.getHosts());
         this.connectionCombo.setItems(SystemConnectionHelper.getConnectionNames());
         this.connectionCombo.setSelectionIndex(0);
+    }
+
+    public boolean isDisposed() {
+        return connectionCombo.isDisposed();
+    }
+
+    public void setEnabled(boolean enabled) {
+        connectionCombo.setEnabled(enabled);
+    }
+
+    public boolean getEnabled() {
+        return connectionCombo.getEnabled();
+    }
+
+    public void setFocus() {
+        connectionCombo.setFocus();
+    }
+
+    public void setData(String key, Object data) {
+        connectionCombo.setData(key, data);
+    }
+
+    public Object getData(String key) {
+        return connectionCombo.getData(key);
     }
 
     public void addModifyListener(ModifyListener listener) {
