@@ -14,10 +14,6 @@ import org.eclipse.swt.events.ModifyListener;
 import org.eclipse.swt.events.SelectionListener;
 import org.eclipse.swt.widgets.Combo;
 
-/*
- * TODO: Find another way to share an interface for SystemHostCombo between RDi
- * and WDSCi.
- */
 public interface ISystemHostCombo {
 
     public boolean isDisposed();
