@@ -82,6 +82,10 @@
      f                                     Rename(CHANGESLOG : CHGLOGRF)
      f                                     UsrOpn
 
+     fDUPRCDKEYSUF A E           K Disk    ExtFile(p_Qual_Dup_Rcd)
+     f                                     Rename(DUPRCDKEYS : DRKRF)
+     f                                     UsrOpn
+
       //*------------------------------------------------------------------------------------------*
 
       // Includes
@@ -130,6 +134,8 @@
      d  p_Qual_Changes...
      d                 S             21A
      d  p_Qual_Chg_Log...
+     d                 S             21A
+     d  p_Qual_Dup_Rcd...
      d                 S             21A
 
        // Source record format (before image data)
@@ -265,6 +271,8 @@
      d                 S             10U 0
      d g_OK...
      d                 S              1A
+     d g_Applied...
+     d                 S              1A
 
        //*-----------------------------------------------------------------------------------------*
 
@@ -290,6 +298,7 @@
      c                   Parm                    p_Qual_Rcd_Tgt
      c                   Parm                    p_Qual_Changes
      c                   Parm                    p_Qual_Chg_Log
+     c                   Parm                    p_Qual_Dup_Rcd
 
        //*-----------------------------------------------------------------------------------------*
 
@@ -347,20 +356,54 @@
             Open RcdTgt;
             Open Changes;
             Open ChangesLog;
+            Open DupRcdKeys;
             // %%CONVERSION_OPEN%%
 
-            // Actions
             Select;
+
+            // Copy records
             When p_Mode = '*COPY';
+
+              // Copy records
               checkFormatLevelId(
                 g_InfDs_Source.qFile: g_Source_rcdFmt: g_Source_fmtLvlId);
               checkFormatLevelId(
                 g_InfDs_Target.qFile: g_Target_rcdFmt: g_Target_fmtLvlId);
               ExSr copy_Records;
+
+            // Apply changes
             When p_Mode = '*APPLY';
+
               DoU Not g_Record_With_Duplicate_Key;
+
+                // Initialize record with duplicate key
+                g_Record_With_Duplicate_Key = *Off;
+
+                // Apply Changes
                 ExSr apply_Changes;
+
+                // record with duplicate key detected
+                If g_Record_With_Duplicate_Key;
+
+                  // Delay job
+                  EXCCMD_execute_Command(
+                    'DLYJOB DLY(1)'
+                  );
+
+                  // Leave, if job status is not run
+                  Exec SQL
+                    Select Status Into :g_Status
+                    From Jobs
+                    Where Job = :p_Job;
+                  setIgnoreWarnings();
+                  If Not (SqlCheckState(sqlState) And g_Status = '*RUN');
+                    Leave;
+                  EndIf;
+
+                EndIf;
+
               EndDo;
+
             EndSl;
 
             // Close files
@@ -370,6 +413,7 @@
             Close RcdTgt;
             Close Changes;
             Close ChangesLog;
+            Close DupRcdKeys;
             // %%CONVERSION_CLOSE%%
 
           EndIf;
@@ -396,6 +440,18 @@
             setIgnoreWarnings();
             SqlCheckState(sqlState);
 
+            // Delete Workfile Changes
+            g_SQL_Statement =
+              'Delete ' +
+              'From ' + prepareSQLTableName(p_Qual_Changes) + ' ' +
+              'Where Member = ''' + %Trim(p_Member) + '''';
+            Exec SQL
+              Prepare Delete_Changes From :g_SQL_Statement;
+            Exec SQL
+              Execute Delete_Changes;
+            setIgnoreWarnings();
+            SqlCheckState(sqlState);
+
             // Delete Workfile Changes Log
             g_SQL_Statement =
               'Delete ' +
@@ -405,6 +461,18 @@
               Prepare Delete_ChangesLog From :g_SQL_Statement;
             Exec SQL
               Execute Delete_ChangesLog;
+            setIgnoreWarnings();
+            SqlCheckState(sqlState);
+
+            // Delete Duplicate Record Keys
+            g_SQL_Statement =
+              'Delete ' +
+              'From ' + prepareSQLTableName(p_Qual_Dup_Rcd) + ' ' +
+              'Where Member = ''' + %Trim(p_Member) + '''';
+            Exec SQL
+              Prepare Delete_DuplicateRecordKeys From :g_SQL_Statement;
+            Exec SQL
+              Execute Delete_DuplicateRecordKeys;
             setIgnoreWarnings();
             SqlCheckState(sqlState);
 
@@ -499,9 +567,6 @@
 
         BegSr apply_Changes;
 
-          // Initialize record with duplicate key
-          g_Record_With_Duplicate_Key = *Off;
-
           // Get highest sequence number
           SetGt (p_Member) CHANGESRF;
           ReadPE (p_Member) CHANGESRF;
@@ -547,6 +612,9 @@
                   g_CLRPFM = 'Y';
                   Leave;
                 EndIf;
+
+                // Set "Change applied"
+                g_Applied = 'Y';
 
                 // Does record in source file exist?
                 SetLL g_Record_Number SOURCERF;
@@ -617,6 +685,14 @@
                   Write CHGLOGRF;
                 EndIf;
 
+                // Change has applied
+                If (g_Applied = 'Y');
+                  Chain (p_Member : g_Record_Number) DRKRF;
+                  If %Found;
+                    Delete DRKRF;
+                  EndIf;
+                EndIf;
+
               EndDo;
 
               // Close cursor
@@ -679,13 +755,6 @@
 
           EndIf;
 
-          // Delay job, if record with duplicate key has occured
-          If g_Record_With_Duplicate_Key;
-            EXCCMD_execute_Command(
-              'DLYJOB DLY(1)'
-            );
-          EndIf;
-
         EndSr;
 
        //*-----------------------------------------------------------------------------------------*
@@ -716,6 +785,13 @@
             // Set record with duplicate key
             g_Record_With_Duplicate_Key = *On;
 
+            If p_Mode = '*APPLY';
+
+              // Reset "Change applied"
+              g_Applied = 'N';
+
+            EndIf;
+
             // Unlock files. Even if a duplicate key occors, then the records still remain locked
             Unlock TARGET;
             Unlock RECORDS;
@@ -734,12 +810,34 @@
                 Chain g_RCD1 TARGETRF;
                 If %Found;
                   Delete TARGETRF;
+
+                  // Records with duplicate key have to be reapplied
                   X8MBR = p_Member;
                   X8RCD = RCDTGT_X9SRN;
                   Write CHANGESRF;
+
+                  If p_Mode = '*APPLY';
+
+                    // Log duplicate record key
+                    Chain (p_Member : RCDTGT_X9SRN) DRKRF;
+                    If Not %Found;
+                      Clear *All DRKRF;
+                      XHMBR = p_Member;
+                      XHRN = RCDTGT_X9SRN;
+                      XHNOAA = 1;
+                      Write DRKRF;
+                    Else;
+                      XHNOAA += 1;
+                      Update DRKRF;
+                    EndIf;
+
+                  EndIf;
+
+                  // Everything is fine
                   If RCDTGT_X9SRN = g_InfDs_Source.Record_Number;
                     g_OK = 'Y';
                   EndIf;
+
                 EndIf;
               EndIf;
             EndIf;
@@ -752,21 +850,62 @@
                 Chain g_RCD2 TARGETRF;
                 If %Found;
                   Delete TARGETRF;
+
+                  // Records with duplicate key have to be reapplied
                   X8MBR = p_Member;
                   X8RCD = RCDTGT_X9SRN;
                   Write CHANGESRF;
+
+                  If p_Mode = '*APPLY';
+
+                    // Log duplicate record key
+                    Chain (p_Member : RCDTGT_X9SRN) DRKRF;
+                    If Not %Found;
+                      Clear *All DRKRF;
+                      XHMBR = p_Member;
+                      XHRN = RCDTGT_X9SRN;
+                      XHNOAA = 1;
+                      Write DRKRF;
+                    Else;
+                      XHNOAA += 1;
+                      Update DRKRF;
+                    EndIf;
+
+                  EndIf;
+
+                  // Everything is fine
                   If RCDTGT_X9SRN = g_InfDs_Source.Record_Number;
                     g_OK = 'Y';
                   EndIf;
+
                 EndIf;
               EndIf;
             EndIf;
 
-            // Duplicate key
             If g_OK = 'N';
+
+              // Records with duplicate key have to be reapplied
               X8MBR = p_Member;
               X8RCD = g_InfDs_Source.Record_Number;
               Write CHANGESRF;
+
+              If p_Mode = '*APPLY';
+
+                // Log duplicate record key
+                Chain (p_Member : g_InfDs_Source.Record_Number) DRKRF;
+                If Not %Found;
+                  Clear *All DRKRF;
+                  XHMBR = p_Member;
+                  XHRN = g_InfDs_Source.Record_Number;
+                  XHNOAA = 1;
+                  Write DRKRF;
+                Else;
+                  XHNOAA += 1;
+                  Update DRKRF;
+                EndIf;
+
+              EndIf;
+
             EndIf;
 
             // Not done

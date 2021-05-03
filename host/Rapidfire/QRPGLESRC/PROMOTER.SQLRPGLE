@@ -3288,6 +3288,8 @@ DCL-PROC create_Work_Files;
         CHAR(10);
   DCL-S l_File_ChangesLog
         CHAR(10);
+  DCL-S l_File_Duplicate_Record_Keys
+        CHAR(10);
   DCL-S l_SQL_Statement
         CHAR(256);
 
@@ -3314,6 +3316,11 @@ DCL-PROC create_Work_Files;
   // Build name of Workfile Changes Log
   l_File_ChangesLog =
     '$L' + %Trim(%SubSt(p_File : 1 : 5)) +
+    %EditC(g_File_Counter : 'X');
+
+  // Build name of Workfile Duplicate Record Keys
+  l_File_Duplicate_Record_Keys =
+    '$D' + %Trim(%SubSt(p_File : 1 : 5)) +
     %EditC(g_File_Counter : 'X');
 
   // Create Workfile Records
@@ -3419,13 +3426,39 @@ DCL-PROC create_Work_Files;
     Return;
   EndIf;
 
+  // Create Workfile Duplicate Record Keys
+  EXCCMD_execute_Command(
+    'CRTDUPOBJ ' +
+    'OBJ(DUPRCDKEYS) ' +
+    'FROMLIB(' + %Trim(l_Rapid_Fire_Home_Library) + ') ' +
+    'OBJTYPE(*FILE) ' +
+    'TOLIB(' + %Trim(p_Shadow_Library) + ') ' +
+    'NEWOBJ(' + %Trim(l_File_Duplicate_Record_Keys) + ') ' +
+    'DATA(*NO) ' +
+    'CST(*YES)'
+  );
+
+  // Workfile Duplicate Record Keys for file &1 in library &2 could not be created
+  If EXCCMD_Message_Id <> *Blanks;
+    RAPIDFIRE_log_Error(
+      p_Job :
+      'MSG0064' :
+      p_File +
+      p_Library :
+      EXCCMD_Message_Id :
+      EXCCMD_Message_Data
+    );
+    Return;
+  EndIf;
+
   // Store workfiles
   Exec SQL
     Update Areas
     Set Workfile_Records = :l_File_Records,
         Workfile_Records_Target = :l_File_Records_Target,
         Workfile_Changes = :l_File_Changes,
-        Workfile_ChangesLog = :l_File_ChangesLog
+        Workfile_ChangesLog = :l_File_ChangesLog,
+        Workfile_Duplicate_Record_Keys = :l_File_Duplicate_Record_Keys
     Where Job = :p_Job And
           Position = :p_Position And
           Area = :p_Area;
@@ -3514,6 +3547,7 @@ DCL-PROC PROMOTER_promote EXPORT;
         Files.Workfile_Records_Target :
         Files.Workfile_Changes :
         Files.Workfile_ChangesLog :
+        Files.Workfile_Duplicate_Record_Keys :
         Files.Copy_Program_Library :
         Files.Copy_Program
       );
@@ -3705,6 +3739,7 @@ DCL-PROC PROMOTER_apply_Changes EXPORT;
       Files.Workfile_Records_Target :
       Files.Workfile_Changes :
       Files.Workfile_ChangesLog :
+      Files.Workfile_Duplicate_Record_Keys :
       Files.Copy_Program_Library :
       Files.Copy_Program
     );
@@ -3765,6 +3800,8 @@ DCL-PROC call_Copy_Program;
     CHAR(10) Const;
     p_Workfile_ChangesLog
     CHAR(10) Const;
+    p_Workfile_Duplicate_Record_Keys
+    CHAR(10) Const;
     p_Copy_Program_Library
     CHAR(10) Const;
     p_Copy_Program
@@ -3797,6 +3834,8 @@ DCL-PROC call_Copy_Program;
         CHAR(21);
   DCL-S l_Qual_Chg_Log
         CHAR(21);
+  DCL-S l_Qual_Duplicate_Record_Keys
+        CHAR(21);
 
   DCL-PR x_Copy_Program EXTPGM(l_Copy_Program);
     l_Mode_ LIKE(l_Mode);
@@ -3810,6 +3849,7 @@ DCL-PROC call_Copy_Program;
     l_Qual_Records_Target LIKE(l_Qual_Records_Target);
     l_Qual_Changes LIKE(l_Qual_Changes);
     l_Qual_Chg_Log LIKE(l_Qual_Chg_Log);
+    l_Qual_Duplicate_Record_Keys LIKE(l_Qual_Duplicate_Record_Keys);
   END-PR;
 
   // Prepare copy programm
@@ -3846,6 +3886,9 @@ DCL-PROC call_Copy_Program;
   l_Qual_Chg_Log =
     %Trim(p_Shadow_Library) + '/' +
     %Trim(p_Workfile_ChangesLog);
+  l_Qual_Duplicate_Record_Keys =
+    %Trim(p_Shadow_Library) + '/' +
+    %Trim(p_Workfile_Duplicate_Record_Keys);
 
   // Declare Cursor
   Exec SQL
@@ -3892,7 +3935,8 @@ DCL-PROC call_Copy_Program;
         l_Qual_Records :
         l_Qual_Records_Target :
         l_Qual_Changes :
-        l_Qual_Chg_Log
+        l_Qual_Chg_Log :
+        l_Qual_Duplicate_Record_Keys
       );
 
       // Copy program for file &1 in library &2 crashed. Mode &3.

@@ -8,41 +8,35 @@
 -- *                                                                        *
 -- *------------------------------------------------------------------------*
 -- *                                                                        *
--- * Files                                                                  *
+-- * Duplicate Record Keys                                                  *
 -- *                                                                        *
 -- *------------------------------------------------------------------------*
 
-CREATE VIEW FILES_WITH_SHADOW_LIBRARY
-FOR SYSTEM NAME FILESV01 AS
+CREATE TABLE DUPLICATE_RECORD_KEYS
+FOR SYSTEM NAME DUPRCDKEYS
 (
- SELECT
-    A.*,
-    B.AREA,
-    B.LIBRARY,
-    B.LIBRARY_LIST,
-    B.CCSID,
-    B.COMMAND_EXTENSION,
-    B.WORKFILE_RECORDS,
-    B.WORKFILE_RECORDS_TARGET,
-    B.WORKFILE_CHANGES,
-    B.WORKFILE_CHANGESLOG,
-    B.WORKFILE_DUPLICATE_RECORD_KEYS,
-    B.SDT_VIEW_SOURCE,
-    B.SDT_VIEW_TARGET,
-    B.JOURNALING,
-    B.JOURNAL_LIBRARY,
-    B.JOURNAL,
-    B.RECORDS_TO_COPY,
-    B.RECORDS_COPIED,
-    B.TIME_CONSUMED,
-    B.CHANGES_TO_APPLY,
-    B.CHANGES_APPLIED,
-    C.SHADOW_LIBRARY
- FROM
-    (FILES A INNER JOIN AREAS B
-    ON A.JOB = B.JOB AND A.POSITION = B.POSITION)
-    INNER JOIN LIBRARIES C
-    ON B.JOB = C.JOB AND B.LIBRARY = C.LIBRARY
+ MEMBER FOR COLUMN XHMBR CHAR(10) NOT NULL WITH DEFAULT,
+ RECORD_NUMBER FOR COLUMN XHRN DECIMAL(10, 0) NOT NULL WITH DEFAULT,
+ NUMBER_OF_APPLY_ATTEMPTS FOR COLUMN XHNOAA DECIMAL(10, 0) NOT NULL WITH DEFAULT
 );
 
-CL: CHGOBJD OBJ(FILESV01) OBJTYPE(*FILE) TEXT('Files'); 
+LABEL ON TABLE DUPLICATE_RECORD_KEYS
+ IS '* * *   R A P I D   F I R E   * * *';
+
+LABEL ON COLUMN DUPLICATE_RECORD_KEYS
+(
+ MEMBER IS 'Member',
+ RECORD_NUMBER IS 'Record number',
+ NUMBER_OF_APPLY_ATTEMPTS IS 'Number of apply attemtps'
+);
+
+LABEL ON COLUMN DUPLICATE_RECORD_KEYS
+(
+ MEMBER TEXT IS 'Member',
+ RECORD_NUMBER TEXT IS 'Record number',
+ NUMBER_OF_APPLY_ATTEMPTS TEXT IS 'Number of apply attemtps'
+);
+
+ALTER TABLE DUPLICATE_RECORD_KEYS
+ADD CONSTRAINT DUPLICATE_RECORD_KEYS_PRIMARY_KEY
+PRIMARY KEY (MEMBER, RECORD_NUMBER); 
