@@ -752,6 +752,8 @@ DCL-PROC submit_File_Jobs;
         CHAR(10);
   DCL-S l_File
         CHAR(10);
+  DCL-S l_CCSID
+        CHAR(10);
   DCL-S l_Job
         CHAR(10);
   DCL-S l_User
@@ -772,7 +774,8 @@ DCL-PROC submit_File_Jobs;
     // Declare Cursor
     Exec SQL
       Declare Files_2 Cursor For
-        Select Library, File
+        Select Library, File,
+               Case When CCSID = '*JOB' Then '*CURRENT' Else CCSID End
         From Files_With_Shadow_Library As Files
         Where Job = :p_Job And
               Type = '*PHYSICAL' And
@@ -797,7 +800,7 @@ DCL-PROC submit_File_Jobs;
         // Read 'Files'
         Exec SQL
           Fetch Next From Files_2
-          Into :l_File_Library, :l_File;
+          Into :l_File_Library, :l_File, :l_CCSID;
 
         // End of file
         setIgnoreWarnings();
@@ -825,6 +828,7 @@ DCL-PROC submit_File_Jobs;
           'SYSLIBL(*CURRENT) ' +
           'CURLIB(*CURRENT) ' +
           'INLLIBL(*CURRENT) ' +
+          'CCSID(' + %Trim(l_CCSID) + ') ' +
           'SPLFACN(*KEEP)'
         );
 
