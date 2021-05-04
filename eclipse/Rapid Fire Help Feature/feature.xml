@@ -2,7 +2,7 @@
 <feature
       id="biz.rapidfire.help"
       label="Rapid Fire Help Plugin (optional)"
-      version="1.1.7.r"
+      version="1.1.8.r"
       provider-name="Rapid Fire Project Team">
 
    <description url="https://sourceforge.net/projects/rapid-fire/">
@@ -10,7 +10,7 @@
    </description>
 
    <copyright url="https://sourceforge.net/projects/rapid-fire/">
-      Copyright (c) 2017-2020 Rapid Fire Project Team. All rights reserved.
+      Copyright (c) 2017-2021 Rapid Fire Project Team. All rights reserved.
    </copyright>
 
    <license url="http://www.eclipse.org/legal/cpl-v10.html">
@@ -26,7 +26,7 @@ this distribution, and is available at http://www.eclipse.org/legal/cpl-v10.html
    </url>
 
    <requires>
-      <import feature="biz.rapidfire.core" version="1.1.7.r"/>
+      <import feature="biz.rapidfire.core" version="1.1.8.r"/>
    </requires>
 
    <plugin
