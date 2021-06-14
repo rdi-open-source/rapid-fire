@@ -58,7 +58,7 @@
 
              CHGVAR     VAR(&RF_VER ) VALUE('05')
              CHGVAR     VAR(&RF_RLS ) VALUE('00')
-             CHGVAR     VAR(&RF_MDN ) VALUE('19')
+             CHGVAR     VAR(&RF_MDN ) VALUE('20')
 
              CHGVAR     VAR(&CM_VER ) VALUE('05')
              CHGVAR     VAR(&CM_RLS ) VALUE('01')
@@ -69,7 +69,7 @@
 
              CHGVAR     VAR(&CL_VER ) VALUE('01')
              CHGVAR     VAR(&CL_RLS ) VALUE('01')
-             CHGVAR     VAR(&CL_MDN ) VALUE('07')
+             CHGVAR     VAR(&CL_MDN ) VALUE('09')
 
              DLTDTAARA  DTAARA(&LIB/&OBJ)
              MONMSG     MSGID(CPF2105) EXEC(DO)
