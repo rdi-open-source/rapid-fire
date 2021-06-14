@@ -30,6 +30,7 @@ DCL-PR CPLSTSE_completeStatusEntry
   *N PACKED(10 : 0);       // <-- Records to copy
   *N PACKED(10 : 0);       // <-- Records copied
   *N CHAR(11);             // <-- Estimated time
+  *N PACKED(10 : 0);       // <-- Records with duplicate key
   *N PACKED(10 : 0);       // <-- Changes to apply
   *N PACKED(10 : 0);       // <-- Changes applied
   *N PACKED(3 : 0);        // <-- Percent done

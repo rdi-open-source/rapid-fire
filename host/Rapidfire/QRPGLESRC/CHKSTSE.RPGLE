@@ -170,6 +170,13 @@ DCL-PROC CHKSTSE_checkAction EXPORT;
       leave;
     endif;
 
+    // The option "Display records with duplicate key" is only valid in status *RUN
+    if (p_ACT = CHKSTSE_DSPRCDDUPKEY and
+        X1STS <> '*RUN');
+      l_MSGID = 'ERR0003';
+      leave;
+    EndIf;
+
     // The option "Reapply all changes" is only valid in status *RUN and phase *APY-CHG
     if (p_ACT = CHKSTSE_REAPYCHG and
         not (X1STS = '*RUN' And
@@ -222,6 +229,9 @@ DCL-PROC CHKSTSE_getValidActions EXPORT;
 
   p_NBRACT = *zero;
   p_ACT(*) = *blanks;
+
+  l_ACT = CHKSTSE_DSPRCDDUPKEY;
+    exsr checkAction;
 
   l_ACT = CHKSTSE_REAPYCHG;
     exsr checkAction;

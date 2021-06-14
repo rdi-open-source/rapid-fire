@@ -81,6 +81,7 @@ public class Messages extends NLS {
     public static String ColumnLabel_Records_to_copy;
     public static String ColumnLabel_Records_copied;
     public static String ColumnLabel_Estimated_time;
+    public static String ColumnLabel_Records_with_duplicate_key;
     public static String ColumnLabel_Changes_to_apply;
     public static String ColumnLabel_Changes_applied;
     public static String ColumnLabel_Progress;

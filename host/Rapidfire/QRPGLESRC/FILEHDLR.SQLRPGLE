@@ -91,8 +91,6 @@ DCL-S g_Loop
       IND Inz(*On);
 DCL-S g_Status
       CHAR(10);
-DCL-S g_Set_Phase
-      IND;
 DCL-S g_Set_Stop_Apply_Changes
       IND;
 DCL-S g_wait_Seconds
@@ -112,7 +110,6 @@ Exec SQL
   CloSQLCsr=*ENDMOD;
 
 //*-----------------------------------------------------------------------------------------*
-
 
 DoW g_Loop;
 
@@ -141,9 +138,26 @@ DoW g_Loop;
     Leave;
   EndIf;
 
-  g_Stop_Apply_Changes = 'N';
+  Exec SQL
+    Update Areas
+    Set Records_To_Copy = Records_Copied
+    Where Job = :p_Job And
+          Library = :p_File_Library And
+          File = :p_File;
+  setIgnoreWarnings();
+  SqlCheckState(sqlState);
 
-  g_Set_Phase = *Off;
+  Exec SQL
+    Update RFJobs
+    Set Phase = '*APY-CHG'
+    Where Job = :p_Job And
+          Batch_Job = :PSDS.Job And
+          Batch_User = :PSDS.User And
+          Batch_Number = :PSDS.Number;
+  setIgnoreWarnings();
+  SqlCheckState(sqlState);
+
+  g_Stop_Apply_Changes = 'N';
 
   g_Set_Stop_Apply_Changes = *Off;
 
@@ -154,31 +168,6 @@ DoW g_Loop;
       PROMOTER_apply_Changes(p_Job : p_File_Library : p_File);
       If RAPIDFIRE_is_Error(p_Job);
         Leave;
-      EndIf;
-
-      If Not g_Set_Phase;
-
-        g_Set_Phase = *On;
-
-        Exec SQL
-          Update RFJobs
-          Set Phase = '*APY-CHG'
-          Where Job = :p_Job And
-                Batch_Job = :PSDS.Job And
-                Batch_User = :PSDS.User And
-                Batch_Number = :PSDS.Number;
-        setIgnoreWarnings();
-        SqlCheckState(sqlState);
-
-        Exec SQL
-          Update Areas
-          Set Records_To_Copy = Records_Copied
-          Where Job = :p_Job And
-                Library = :p_File_Library And
-                File = :p_File;
-        setIgnoreWarnings();
-        SqlCheckState(sqlState);
-
       EndIf;
 
     Else;

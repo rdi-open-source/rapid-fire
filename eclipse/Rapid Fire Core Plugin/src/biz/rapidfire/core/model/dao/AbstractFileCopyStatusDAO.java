@@ -32,6 +32,7 @@ public abstract class AbstractFileCopyStatusDAO {
     public static final String RCDS_TO_COPY = "RTO"; //$NON-NLS-1$
     public static final String RCDS_COPIED = "RCO"; //$NON-NLS-1$
     public static final String ESTIMATED_TIME = "ETC"; //$NON-NLS-1$
+    public static final String RCDS_WITH_DUPLICATE_KEY = "RDK"; //$NON-NLS-1$
     public static final String CHANGES_TO_APPLY = "CTA"; //$NON-NLS-1$
     public static final String CHANGES_APPLIED = "CAP"; //$NON-NLS-1$
     public static final String PERCENT_DONE = "PRC"; //$NON-NLS-1$
@@ -86,6 +87,7 @@ public abstract class AbstractFileCopyStatusDAO {
         long recordsToCopy = resultSet.getLong(RCDS_TO_COPY);
         long recordsCopied = resultSet.getLong(RCDS_COPIED);
         String estimatedTime = resultSet.getString(ESTIMATED_TIME).trim();
+        long recordsWithDuplicateKey = resultSet.getLong(RCDS_WITH_DUPLICATE_KEY);
         long changesToApply = resultSet.getLong(CHANGES_TO_APPLY);
         long changesApplied = resultSet.getLong(CHANGES_APPLIED);
         int percentDone = resultSet.getInt(PERCENT_DONE);
@@ -101,6 +103,7 @@ public abstract class AbstractFileCopyStatusDAO {
         fileCopyStatus.setRecordsToCopy(recordsToCopy);
         fileCopyStatus.setRecordsCopied(recordsCopied);
         fileCopyStatus.setEstimatedTime(estimatedTime);
+        fileCopyStatus.setRecordsWithDuplicateKey(recordsWithDuplicateKey);
         fileCopyStatus.setChangesToApply(changesToApply);
         fileCopyStatus.setChangesApplied(changesApplied);
 
@@ -134,6 +137,7 @@ public abstract class AbstractFileCopyStatusDAO {
             RCDS_TO_COPY + ", " +
             RCDS_COPIED + ", " +
             ESTIMATED_TIME + ", " +
+            RCDS_WITH_DUPLICATE_KEY + ", " +
             CHANGES_TO_APPLY + ", " +
             CHANGES_APPLIED + ", " +
             PERCENT_DONE + " " +

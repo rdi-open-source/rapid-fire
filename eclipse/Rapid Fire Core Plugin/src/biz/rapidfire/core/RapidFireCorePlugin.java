@@ -30,7 +30,7 @@ public class RapidFireCorePlugin extends AbstractExtendedUIPlugin {
     public static final String PLUGIN_ID = "biz.rapidfire.core"; //$NON-NLS-1$
 
     // Minimal required version of Rapid Fire library
-    private static final String MIN_SERVER_VERSION = "5.0.18"; //$NON-NLS-1$
+    private static final String MIN_SERVER_VERSION = "5.0.20"; //$NON-NLS-1$
 
     // The shared instance
     private static RapidFireCorePlugin plugin;

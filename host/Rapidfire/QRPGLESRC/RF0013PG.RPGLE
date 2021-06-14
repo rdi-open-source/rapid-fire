@@ -88,6 +88,7 @@ DCL-F RF0013DF Workstn(*EXT) USAGE(*INPUT:*OUTPUT)
 DCL-F JOBS Disk(*EXT) USAGE(*INPUT) KEYED Rename(JOBS : JOBRF);
 DCL-F FILES Disk(*EXT) USAGE(*INPUT) KEYED Rename(FILES : FILERF);
 DCL-F AREAS Disk(*EXT) USAGE(*INPUT) KEYED Rename(AREAS : AREARF);
+DCL-F LIBRARIES Disk(*EXT) USAGE(*INPUT) KEYED Rename(LIBRARIES : LIBRF);
 
 //*-----------------------------------------------------------------------------------------*
 
@@ -135,6 +136,10 @@ END-PI;
 // Prozedurenprototyp für Prozedur 'CHKSTSE'
 
 /Copy QCPYSRC,CHKSTSE
+
+// Prozedurenprototyp für Prozedur 'EXCCMD'
+
+/Copy QCPYSRC,EXCCMD
 
 // Dateiinformationsdatenstruktur für RF0013DF
 
@@ -276,6 +281,7 @@ DCL-S ITETC CHAR(11);                                                    // <-- 
 DCL-S ITCTA PACKED(10 : 0);                                              // Changes to apply
 DCL-S ITCAP PACKED(10 : 0);                                              // Changes applied
 DCL-S ITPRZ PACKED(3 : 0);                                               // Prozent
+DCL-S ITRDK PACKED(10 : 0);                                              // Records with duplicate key
 DCL-S DO_X PACKED(7 : 0);
 DCL-S ITXMsg CHAR(256);                                                  // Nachricht
 DCL-S ITSUCC CHAR(1);                                                    // Erfolg
@@ -616,6 +622,16 @@ BegSr SR020;
     ITHILP(ITNbr) = '*LIBL';
     ITHIMO(ITNbr) = 'ETC';
     If DFFLD010 = 'DFETC';
+      ITHlp = 'J';
+      ITDsp(1) = ITNbr;
+      ITDsp(2) = ITNbr;
+    EndIf;
+    // Modul 'RDK'
+    ITNbr = ITNbr + 1;
+    ITHIPG(ITNbr) = 'RF0013GP';
+    ITHILP(ITNbr) = '*LIBL';
+    ITHIMO(ITNbr) = 'RDK';
+    If DFFLD010 = 'DFRDK';
       ITHlp = 'J';
       ITDsp(1) = ITNbr;
       ITDsp(2) = ITNbr;
@@ -1039,6 +1055,7 @@ BegSr SR090;
       ITRTO :  // <-- Records to copy
       ITRCO :  // <-- Records copied
       ITETC :  // <-- Estimated time
+      ITRDK :  // <-- Records with duplicate key
       ITCTA :  // <-- Changes to apply
       ITCAP :  // <-- Changes applied
       ITPRZ    // <-- Percent done
@@ -1050,6 +1067,7 @@ BegSr SR090;
     DFRTO = %Trim(%EditW(ITRTO:' .   .   . 0 '));
     DFRCO = %Trim(%EditW(ITRCO:' .   .   . 0 '));
     DFETC = ITETC;
+    DFRDK = %Trim(%EditW(ITRDK:' .   .   . 0 '));
     DFCTA = %Trim(%EditW(ITCTA:' .   .   . 0 '));
     DFCAP = %Trim(%EditW(ITCAP:' .   .   . 0 '));
     DFPRZ = *Blanks;
@@ -1169,6 +1187,8 @@ BegSr SR095;
     Select;
     When DFOPT = *Blanks;
       ITACT = CHKSTSE_NONE;
+    When DFOPT = '5';
+      ITACT = CHKSTSE_DSPRCDDUPKEY;
     When DFOPT = '99';
       ITACT = CHKSTSE_REAPYCHG;
     Other;
@@ -1178,6 +1198,7 @@ BegSr SR095;
     // The option is not valid
     If ITMsgId = *Blanks And
       (ITACT <> CHKSTSE_NONE And
+      ITACT <> CHKSTSE_DSPRCDDUPKEY And
       ITACT <> CHKSTSE_REAPYCHG);
       ITMsgId = 'ERR0001';
       ITMsgDta = *Blanks;
@@ -1390,6 +1411,10 @@ BegSr SR125;
   // Rückkehrcode initialisieren
   PIRtCd = '*ENTER';
   Select;
+    // Auswahl : '5=Display records with duplicate key'
+  When OptOpt(ITOEvl) = '5';
+    SlcKey = OptKey(ITOEvl);
+    ExSr SR127;
     // Auswahl : '99=Reapply all changes'
   When OptOpt(ITOEvl) = '99';
     SlcKey = OptKey(ITOEvl);
@@ -1402,6 +1427,25 @@ BegSr SR125;
     CnlKey = OptKey(ITOEvl);
     ExSr SR075;
   EndIf;
+EndSr;
+
+//*-----------------------------------------------------------------------------------------*
+//* Display records with duplicate key                                                      *
+//*-----------------------------------------------------------------------------------------*
+
+BegSr SR127;
+
+  Chain ( PIJOB : SlcPOS : SlcARA ) AREARF;
+  If %Found;
+    Chain ( PIJOB : XDLIB ) LIBRF;
+    If %Found;
+      EXCCMD_execute_Command(
+        'RUNQRY ' +
+        'QRYFILE((' + %Trim(X2SLIB) + '/' +  %Trim(XDDRK) + '))'
+      );
+    EndIf;
+  EndIf;
+
 EndSr;
 
 //*-----------------------------------------------------------------------------------------*

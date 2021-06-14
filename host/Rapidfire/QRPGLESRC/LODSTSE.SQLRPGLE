@@ -83,6 +83,7 @@ DCL-PROC LODSTSE_loadStatusEntries EXPORT;
     p_RTO       PACKED(10 : 0);      // <-- Records to copy
     p_RCO       PACKED(10 : 0);      // <-- Records copied
     p_ETC       CHAR(11);            // <-- Estimated time
+    p_RDK       PACKED(10 : 0);      // <-- Records with duplicate key
     p_CTA       PACKED(10 : 0);      // <-- Changes to apply
     p_CAP       PACKED(10 : 0);      // <-- Changes applied
     p_PRC       PACKED(3 : 0);       // <-- Percent done
@@ -97,6 +98,7 @@ DCL-PROC LODSTSE_loadStatusEntries EXPORT;
     p_RTO_n     INT(5);              // <-- (Null Ind.) Records to copy
     p_RCO_n     INT(5);              // <-- (Null Ind.) Records copied
     p_ETC_n     INT(5);              // <-- (Null Ind.) Estimated time
+    p_RDK_n     INT(5);              // <-- (Null Ind.) Records with duplicate key
     p_CTA_n     INT(5);              // <-- (Null Ind.) Changes to apply
     p_CAP_n     INT(5);              // <-- (Null Ind.) Changes applied
     p_PRC_n     INT(5);              // <-- (Null Ind.) Percent done
@@ -208,6 +210,7 @@ DCL-PROC LODSTSE_loadStatusEntries EXPORT;
           p_RTO  : // <-- Records to copy
           p_RCO  : // <-- Records copied
           p_ETC  : // <-- Estimated time
+          p_RDK  : // <-- Records with duplicate key
           p_CTA  : // <-- Changes to apply
           p_CAP  : // <-- Changes applied
           p_PRC    // <-- Percent done

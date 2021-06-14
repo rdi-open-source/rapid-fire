@@ -34,6 +34,8 @@ public interface IFileCopyStatus extends IRapidFireResource {
 
     public String getEstimatedTime();
 
+    public long getRecordsWithDuplicateKey();
+
     public long getChangesToApply();
 
     public long getChangesApplied();

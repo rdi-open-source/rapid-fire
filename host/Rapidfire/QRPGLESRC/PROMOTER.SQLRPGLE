@@ -2865,6 +2865,7 @@ DCL-PROC retrieve_Members;
         Members.Text = MBRD0300_A.Member_Text;
       EndIf;
       Members.Records = MBRD0300_A.Number_Of_Current_Records;
+      Members.Records_With_Duplicate_Key = *Zero;
       Exec SQL
         Insert Into Members Values (:Members);
       setIgnoreWarnings();
@@ -2907,6 +2908,7 @@ DCL-PROC retrieve_Members;
         Members.From_Area = '*NO';
         Members.Text = *Blanks;
         Members.Records = *Zero;
+        Members.Records_With_Duplicate_Key = *Zero;
         Exec SQL
           Insert Into Members Values (:Members);
         setIgnoreWarnings();

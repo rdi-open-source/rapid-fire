@@ -88,8 +88,9 @@ public class FileCopyStatusView extends ViewPart implements IPropertyChangeListe
     private static final int COLUMN_ID_RECORDS_TO_COPY = 5;
     private static final int COLUMN_ID_RECORDS_COPIED = 6;
     private static final int COLUMN_ID_ESTIMATED_TIME = 7;
-    private static final int COLUMN_ID_CHANGES_TO_APPLY = 8;
-    private static final int COLUMN_ID_CHANGES_APPLIED = 9;
+    private static final int COLUMN_ID_RECORDS_WITH_DUPLICATE_KEY = 8;
+    private static final int COLUMN_ID_CHANGES_TO_APPLY = 9;
+    private static final int COLUMN_ID_CHANGES_APPLIED = 10;
 
     private IRapidFireJobResource inputData;
     private boolean inputDataAvailable;
@@ -202,6 +203,7 @@ public class FileCopyStatusView extends ViewPart implements IPropertyChangeListe
         availableColumns.add(createColumn(tblJobStatuses, COLUMN_ID_RECORDS_TO_COPY, 110, Messages.ColumnLabel_Records_to_copy));
         availableColumns.add(createColumn(tblJobStatuses, COLUMN_ID_RECORDS_COPIED, 110, Messages.ColumnLabel_Records_copied));
         availableColumns.add(createColumn(tblJobStatuses, COLUMN_ID_ESTIMATED_TIME, 110, Messages.ColumnLabel_Estimated_time));
+        availableColumns.add(createColumn(tblJobStatuses, COLUMN_ID_RECORDS_WITH_DUPLICATE_KEY, 110, Messages.ColumnLabel_Records_with_duplicate_key));
         availableColumns.add(createColumn(tblJobStatuses, COLUMN_ID_CHANGES_TO_APPLY, 110, Messages.ColumnLabel_Changes_to_apply));
         availableColumns.add(createColumn(tblJobStatuses, COLUMN_ID_CHANGES_APPLIED, 110, Messages.ColumnLabel_Changes_applied));
         availableColumns.add(createColumn(tblJobStatuses, COLUMN_ID_PROGRESS, 440, Messages.ColumnLabel_Progress));
@@ -491,6 +493,8 @@ public class FileCopyStatusView extends ViewPart implements IPropertyChangeListe
                 return formatter.format(fileCopyStatus.getRecordsCopied());
             case COLUMN_ID_ESTIMATED_TIME:
                 return fileCopyStatus.getEstimatedTime();
+            case COLUMN_ID_RECORDS_WITH_DUPLICATE_KEY:
+                return formatter.format(fileCopyStatus.getRecordsWithDuplicateKey());
             case COLUMN_ID_CHANGES_TO_APPLY:
                 return formatter.format(fileCopyStatus.getChangesToApply());
             case COLUMN_ID_CHANGES_APPLIED:

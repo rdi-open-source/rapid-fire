@@ -127,6 +127,28 @@ The time will be displayed in the format "Days:Hours:Minutes:Seconds".
 :EHelp.
 
 .*-------------------------------------------------------------------------------------------*
+.* Help - Records with duplicate key                                                         *
+.*-------------------------------------------------------------------------------------------*
+
+:Help Name='RDK'.
+Records with duplicate key - Help
+:XH3.
+Records with duplicate key
+:P.
+Specifies the number of records of the file in the production library which cannot
+be copied to the corresponding file in the shadow library, because thoose records
+trigger an error CPF5009 "Duplicate record key". There are cases where Rapid Fire
+reports records with duplicate key although this shoud not occur. In this cases Rapid
+Fire is able to resolve this situations in phase *APY-CHG. If the file in the
+production library has different unique access pathes in comparision to the
+corresponding file in the shadow library, then it is possible, that records in
+the file in the production library cannot be copied to the corresponding file
+in the shadow library, because of duplicate record keys. If this is the case,
+than Rapid Fire is not able to resolve the situation. The user has to fix the
+problem on his own.
+:EHelp.
+
+.*-------------------------------------------------------------------------------------------*
 .* Help - Changes to apply                                                                   *
 .*-------------------------------------------------------------------------------------------*
 

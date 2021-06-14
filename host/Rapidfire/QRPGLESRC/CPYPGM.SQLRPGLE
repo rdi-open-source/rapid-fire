@@ -265,6 +265,8 @@
      d                 S               N
      d g_Changes_Not_Yet_Applied...
      d                 S             10S 0
+     d g_Records_With_Duplicate_Key...
+     d                 S             10S 0
      d g_RCD1...
      d                 S             10U 0
      d g_RCD2...
@@ -739,15 +741,51 @@
                 EndIf;
               EndIf;
 
+              // Get records with duplicate key
+              g_SQL_Statement =
+                'Values (' +
+                  'Select Count(*) ' +
+                  'From ' + prepareSQLTableName(p_Qual_Dup_Rcd) + ' ' +
+                  'Where Member = ''' + %Trim(p_Member) + '''' +
+                ') Into ?';
+              Exec SQL
+                Prepare Records_With_Duplicate_Key
+                  From :g_SQL_Statement;
+              setIgnoreWarnings();
+              If Not SqlCheckState(sqlState);
+                g_Records_With_Duplicate_Key = *Zero;
+              Else;
+                exec sql
+                  Execute Records_With_Duplicate_Key
+                    Using :g_Records_With_Duplicate_Key;
+                setIgnoreWarnings();
+                If Not SqlCheckState(sqlState);
+                  g_Records_With_Duplicate_Key = *Zero;
+                EndIf;
+              EndIf;
+
               // Update changes applied
               Exec SQL
                 Update Areas
                 Set Changes_Applied =
                       Changes_To_Apply -
-                      :g_Changes_Not_Yet_Applied
+                      (:g_Changes_Not_Yet_Applied -
+                       :g_Records_With_Duplicate_Key)
                 Where Job = :p_Job And
                       Position = :p_Position And
                       Area = :p_Area;
+              setIgnoreWarnings();
+              SqlCheckState(sqlState);
+
+              // Update records with duplicate key
+              Exec SQL
+                Update Members
+                Set Records_With_Duplicate_Key =
+                      :g_Records_With_Duplicate_Key
+                Where Job = :p_Job And
+                      Position = :p_Position And
+                      Area = :p_Area And
+                      Member = :p_Member;
               setIgnoreWarnings();
               SqlCheckState(sqlState);
 

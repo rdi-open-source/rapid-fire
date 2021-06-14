@@ -23,6 +23,7 @@ DCL-PR LODSTSE_loadStatusEntries
   *N PACKED(10 : 0);      // <-- Records to copy
   *N PACKED(10 : 0);      // <-- Records copied
   *N CHAR(11);            // <-- Estimated time
+  *N PACKED(10 : 0);      // <-- Records with duplicate key
   *N PACKED(10 : 0);      // <-- Changes to apply
   *N PACKED(10 : 0);      // <-- Changes applied
   *N PACKED(3 : 0);       // <-- Percent done
@@ -37,6 +38,7 @@ DCL-PR LODSTSE_loadStatusEntries
   *N INT(5);              // <-- (Null Ind.) Records to copy
   *N INT(5);              // <-- (Null Ind.) Records copied
   *N INT(5);              // <-- (Null Ind.) Estimated time
+  *N INT(5);              // <-- (Null Ind.) Records with duplicate key
   *N INT(5);              // <-- (Null Ind.) Changes to apply
   *N INT(5);              // <-- (Null Ind.) Changes applied
   *N INT(5);              // <-- (Null Ind.) Percent done

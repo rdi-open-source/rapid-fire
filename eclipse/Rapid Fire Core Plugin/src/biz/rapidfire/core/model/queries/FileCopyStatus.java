@@ -26,6 +26,7 @@ public class FileCopyStatus implements IFileCopyStatus {
     private long recordsToCopy;
     private long recordsCopied;
     private String estimatedTime; // dd-hh:MM:ss
+    private long recordsWithDuplicateKey;
     private long changesToApply;
     private long changesApplied;
     private int percentDone;
@@ -126,7 +127,15 @@ public class FileCopyStatus implements IFileCopyStatus {
         this.estimatedTime = estimatedTime;
     }
 
-    public long getChangesToApply() {
+    public long getRecordsWithDuplicateKey() {
+		return recordsWithDuplicateKey;
+	}
+
+	public void setRecordsWithDuplicateKey(long recordsWithDuplicateKey) {
+		this.recordsWithDuplicateKey = recordsWithDuplicateKey;
+	}
+
+	public long getChangesToApply() {
         return changesToApply;
     }
 

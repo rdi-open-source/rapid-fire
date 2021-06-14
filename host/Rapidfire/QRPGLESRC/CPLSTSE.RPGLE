@@ -129,6 +129,7 @@ DCL-PROC CPLSTSE_completeStatusEntry EXPORT;
     p_RTO  PACKED(10 : 0);       // <-- Records to copy
     p_RCO  PACKED(10 : 0);       // <-- Records copied
     p_ETC  CHAR(11);             // <-- Estimated time
+    p_RDK  PACKED(10 : 0);       // <-- Records with duplicate key
     p_CTA  PACKED(10 : 0);       // <-- Changes to apply
     p_CAP  PACKED(10 : 0);       // <-- Changes applied
     p_PRC  PACKED(3 : 0);        // <-- Percent done
@@ -147,6 +148,7 @@ DCL-PROC CPLSTSE_completeStatusEntry EXPORT;
   p_RTO = *Zero;
   p_RCO = *Zero;
   p_ETC = *Blanks;
+  p_RDK = *Zero;
   p_CTA = *Zero;
   p_CAP = *Zero;
   p_PRC = *Zero;
@@ -177,6 +179,7 @@ DCL-PROC CPLSTSE_completeStatusEntry EXPORT;
                 X7MBR    // --> Member
               );
             EndIf;
+            p_RDK += X7RDK;
           EndIf;
         EndDo;
         l_RTO = XDRTO;
