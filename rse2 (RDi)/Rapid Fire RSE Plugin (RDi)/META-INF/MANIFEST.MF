@@ -19,6 +19,5 @@ Require-Bundle: org.eclipse.ui,
  biz.rapidfire.rsebase,
  biz.rapidfire.core
 Bundle-ClassPath: .
-Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Bundle-ActivationPolicy: lazy
 Eclipse-LazyStart: true

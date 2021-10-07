@@ -97,6 +97,5 @@ Export-Package: biz.rapidfire.core,
  biz.rapidfire.core.view.listener
 Bundle-ClassPath: .,
  lib/commons-lang-2.1.jar
-Bundle-RequiredExecutionEnvironment: J2SE-1.5
 Bundle-ActivationPolicy: lazy
 Eclipse-LazyStart: true
