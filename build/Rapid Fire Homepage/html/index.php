@@ -99,7 +99,7 @@
         The easiest way to install the Rapid Fire plug-in is using the official update sites:
         <p/>
         <table class="nomargin">
-        <tr><td><img class="noborder" src="./assets/updatesite.png"></td><td><a href="http://rapid-fire.sourceforge.net/eclipse/rdi8.0/">IBM Rational Developer for i - RDi 8.0+</a></td></tr>
+        <tr><td><img class="noborder" src="./assets/updatesite.png"></td><td><a href="http://rapid-fire.sourceforge.net/eclipse/rdi8.0/">IBM Rational Developer for i - RDi 9.5.1.3+</a></td></tr>
         <tr><td><img class="noborder" src="./assets/updatesite.png"></td><td><a href="http://rapid-fire.sourceforge.net/eclipse/wdsci7.0/">Websphere Development Studio Client for iSeries - WDSCi 7.0</a></td></tr>
         </table>
         <p/>
@@ -108,7 +108,7 @@
         The Rapid Fire beta versions are available here:
         <p/>
         <table class="nomargin">
-        <tr><td><img class="noborder" src="./assets/updatesite_beta.png"></td><td><a href="http://rapid-fire.sourceforge.net/beta-version/eclipse/rdi8.0/">IBM Rational Developer for i - RDi 8.0+ (beta)</a></td></tr>
+        <tr><td><img class="noborder" src="./assets/updatesite_beta.png"></td><td><a href="http://rapid-fire.sourceforge.net/beta-version/eclipse/rdi8.0/">IBM Rational Developer for i - RDi 9.5.1.3+ (beta)</a></td></tr>
         <tr><td><img class="noborder" src="./assets/updatesite_beta.png"></td><td><a href="http://rapid-fire.sourceforge.net/beta-version/eclipse/wdsci7.0/">Websphere Development Studio Client for iSeries - WDSCi 7.0 (beta)</a></td></tr>
         </table>
         <p/>
@@ -129,7 +129,7 @@
 		The following terms are trademarks of the IBM Corporation in the United States or other countries or both:
 		<ul>
 		<li>Websphere Development Studio Client for iSeries 7.0</li>
-		<li>IBM Rational Developer for i 8.0+</li>
+		<li>IBM Rational Developer for i 9.5.1.3+</li>
 		</ul>
 		</div>
         <p/>
