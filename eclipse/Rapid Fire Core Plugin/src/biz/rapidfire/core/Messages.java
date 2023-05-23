@@ -45,6 +45,7 @@ public class Messages extends NLS {
     public static String DialogTitle_Select_area;
     public static String DialogTitle_Reapply_all_changes;
     public static String DialogTitle_Select_conversion_program;
+    public static String DialogTitle_Fields_with_GENERATED_clause_A;
 
     public static String Wizard_Title_New_Job_wizard;
     public static String Wizard_Page_Data_Library;
@@ -158,7 +159,13 @@ public class Messages extends NLS {
     public static String Label_Start_journaling_Rapid_Fire_files;
     public static String Label_Start_journaling_Rapid_Fire_files_help;
     public static String Label_Connection_colon;
-
+    public static String Label_Cancel;
+    public static String Label_Continue;
+    public static String Label_Library;
+    public static String Label_File;
+    public static String Label_Field;
+    public static String Label_Text;
+    
     public static String Tooltip_Library;
     public static String Tooltip_Job;
     public static String Tooltip_Description;

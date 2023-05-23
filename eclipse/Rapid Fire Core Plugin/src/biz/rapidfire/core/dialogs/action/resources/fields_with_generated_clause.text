@@ -1,0 +1,6 @@
+The Rapid Fire job contains files, which have fields with the SQL GENERATED clause. If you continue, then the values of the
+fields with the SQL GENERATED clause will be regenerated for each record in the file. Don`t use Rapid Fire for files with the
+SQL GENERATED clause for a field if this causes problems in your application.
+
+If this Rapid Fire job has been created by the Change Management System CMOne and ALL the fields listed below are handled by
+a separate SQL script with the typcode IDYCOL, then you can ignore this message.

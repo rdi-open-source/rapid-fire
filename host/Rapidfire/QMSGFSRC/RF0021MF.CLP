@@ -58,14 +58,14 @@
 
      /*-------------------------------------------------------------*/
      /*   Cmd-ADDMSGD für Message-ID :   CON0002                    */
-     /* Important informations for the usage of Rapid Fire together */
+     /* Important information for the usage of Rapid Fire together  */
      /*-------------------------------------------------------------*/
 
              ADDMSGD +
                 MSGID(CON0002) +
                 MSGF(&LIB/&OBJ) +
                 MSG( +
-'Important informations for the usage of Rapid Fire together with high-
+'Important information for the usage of Rapid Fire together with high-
 '                                                                     +
                 ) +
                 SEV(0) +
@@ -262,77 +262,6 @@ his in'                                                               +
                 MSGF(&LIB/&OBJ) +
                 MSG( +
 'your HA-Solution.'                                                   +
-                ) +
-                SEV(0) +
-     /*   No replacement variables defined!                         */ +
-                ALROPT(*NO) +
-                CCSID(65535) +
-                /*  -EOF-  */
-
-     /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   CON0014                    */
-     /* If you are using Rapid Fire for SQL tables with GENERATED A */
-     /*-------------------------------------------------------------*/
-
-             ADDMSGD +
-                MSGID(CON0014) +
-                MSGF(&LIB/&OBJ) +
-                MSG( +
-'If you are using Rapid Fire for SQL tables with GENERATED ALWAYS AS c-
-olumns'                                                               +
-                ) +
-                SEV(0) +
-     /*   No replacement variables defined!                         */ +
-                ALROPT(*NO) +
-                CCSID(65535) +
-                /*  -EOF-  */
-
-     /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   CON0015                    */
-     /* the values of the GENERATED ALWAYS AS columns for each row  */
-     /*-------------------------------------------------------------*/
-
-             ADDMSGD +
-                MSGID(CON0015) +
-                MSGF(&LIB/&OBJ) +
-                MSG( +
-'the values of the GENERATED ALWAYS AS columns for each row in the tab-
-le will'                                                              +
-                ) +
-                SEV(0) +
-     /*   No replacement variables defined!                         */ +
-                ALROPT(*NO) +
-                CCSID(65535) +
-                /*  -EOF-  */
-
-     /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   CON0016                    */
-     /* be regenerated. Don`t use Rapid Fire for SQL tables with GE */
-     /*-------------------------------------------------------------*/
-
-             ADDMSGD +
-                MSGID(CON0016) +
-                MSGF(&LIB/&OBJ) +
-                MSG( +
-'be regenerated. Don`t use Rapid Fire for SQL tables with GENERATED AL-
-WAYS AS'                                                              +
-                ) +
-                SEV(0) +
-     /*   No replacement variables defined!                         */ +
-                ALROPT(*NO) +
-                CCSID(65535) +
-                /*  -EOF-  */
-
-     /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   CON0017                    */
-     /* columns if this causes problems in your application.        */
-     /*-------------------------------------------------------------*/
-
-             ADDMSGD +
-                MSGID(CON0017) +
-                MSGF(&LIB/&OBJ) +
-                MSG( +
-'columns if this causes problems in your application.'                +
                 ) +
                 SEV(0) +
      /*   No replacement variables defined!                         */ +

@@ -1,0 +1,46 @@
+-- *------------------------------------------------------------------------*
+-- *                                                                        *
+-- * Copyright (c) 2014 Task Force IT-Consulting GmbH, Waltrop (Germany)    *
+-- * This software and the accompanying materials are made available        *
+-- * under the terms of the GNU General Public License version 2.0 (GPLv2)  *
+-- * which accompanies this distribution and is available at                *
+-- * http://www.gnu.org/licenses/gpl-2.0.html                               *
+-- *                                                                        *
+-- *------------------------------------------------------------------------*
+-- *                                                                        *
+-- * Fields with GENERATED clause                                           *
+-- *                                                                        *
+-- *------------------------------------------------------------------------*
+
+CREATE TABLE FIELDS_WITH_GENERATED_CLAUSE
+FOR SYSTEM NAME FLDGENCLS
+(
+ JOB FOR COLUMN XIJOB CHAR(10) NOT NULL WITH DEFAULT,
+ LIBRARY FOR COLUMN XILIB CHAR(10) NOT NULL WITH DEFAULT,
+ FILE FOR COLUMN XIFILE CHAR(10) NOT NULL WITH DEFAULT,
+ FIELD FOR COLUMN XIFLD CHAR(10) NOT NULL WITH DEFAULT,
+ TEXT FOR COLUMN XITEXT CHAR(50) NOT NULL WITH DEFAULT
+);
+
+LABEL ON TABLE FIELDS_WITH_GENERATED_CLAUSE
+ IS 'Fields with GENERATED clause';
+
+LABEL ON COLUMN FIELDS_WITH_GENERATED_CLAUSE
+(
+ JOB IS 'Job',
+ LIBRARY IS 'Library',
+ FILE IS 'File',
+ TEXT IS 'Text'
+);
+
+LABEL ON COLUMN FIELDS_WITH_GENERATED_CLAUSE
+(
+ JOB TEXT IS 'Job',
+ LIBRARY TEXT IS 'Library',
+ FILE TEXT IS 'File',
+ TEXT TEXT IS 'Text'
+);
+
+ALTER TABLE FIELDS_WITH_GENERATED_CLAUSE
+ADD CONSTRAINT FIELDS_WITH_GENERATED_CLAUSE_PRIMARY_KEY
+PRIMARY KEY (JOB, LIBRARY, FILE, FIELD);

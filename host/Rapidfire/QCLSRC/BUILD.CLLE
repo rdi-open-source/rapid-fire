@@ -94,6 +94,7 @@ SKIP_DLT:
              CLRPFM     FILE(&LIB/SQLLOG)
              CLRPFM     FILE(&LIB/SQLTRACE)
              CLRPFM     FILE(&LIB/SUBTOBENOT)
+             CLRPFM     FILE(&LIB/FLDGENCLS)
 
              DLTF FILE(&LIB/EVF*)
              MONMSG     MSGID(CPF2125) EXEC(DO) /* No objects deleted */
@@ -120,7 +121,7 @@ SKIP_DLT:
              CLRSAVF FILE(&LIB/&SAVF)
 
              SAVLIB     LIB(&LIB) DEV(*SAVF) SAVF(&LIB/&SAVF) +
-                          TGTRLS(V7R1M0) DTACPR(*HIGH)
+                          TGTRLS(V7R2M0) DTACPR(*HIGH)
 
              IF         COND(&CPYSAVF *EQ '*YES') THEN(DO)
 

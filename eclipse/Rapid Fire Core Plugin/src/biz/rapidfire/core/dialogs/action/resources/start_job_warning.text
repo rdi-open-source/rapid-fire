@@ -1,9 +1,4 @@
-If you are using Rapid Fire for SQL tables with GENERATED ALWAYS AS columns
-the values of the GENERATED ALWAYS AS columns for each row in the table will
-be regenerated. Don`t use Rapid Fire for SQL tables with GENERATED ALWAYS AS
-columns if this causes problems in your application.
-
-Important informations for the usage of Rapid Fire together with high
+Important information for the usage of Rapid Fire together with high
 availability solutions like MIMIX and BUS/400, which are using journals for
 the replication to a backup system.
 

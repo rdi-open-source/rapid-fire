@@ -15,6 +15,7 @@ import java.util.Set;
 
 import biz.rapidfire.core.Messages;
 import biz.rapidfire.core.maintenance.AbstractManager;
+import biz.rapidfire.core.maintenance.Contains;
 import biz.rapidfire.core.maintenance.MaintenanceMode;
 import biz.rapidfire.core.maintenance.Result;
 import biz.rapidfire.core.maintenance.Success;
@@ -297,6 +298,22 @@ public class JobManager extends AbstractManager<IRapidFireJobResource, JobKey, J
         return Result.createSuccessResult();
     }
 
+    public String buildFieldsWithGeneratedClause(JobKey key) throws Exception {
+
+        CallableStatement statement = dao.prepareCall(dao.insertLibraryQualifier("{CALL " + IJDBCConnection.LIBRARY + "\"FLDGENCLS_build\"(?, ?)}")); //$NON-NLS-1$ //$NON-NLS-2$
+
+        statement.setString(IFieldsWithGeneratedClause.JOB, key.getJobName());
+        statement.setString(IFieldsWithGeneratedClause.CONTAINS, Contains.NO.label());
+
+        statement.registerOutParameter(IFieldsWithGeneratedClause.CONTAINS, Types.CHAR);
+        
+        statement.execute();
+
+        String contains = getStringTrim(statement, IFieldsWithGeneratedClause.CONTAINS);
+        
+        return contains;
+    }
+    
     @Override
     public boolean isValidAction(IRapidFireJobResource job, JobAction action) throws Exception {
 
@@ -332,4 +349,9 @@ public class JobManager extends AbstractManager<IRapidFireJobResource, JobKey, J
     public void recoverError() {
         JDBCConnectionManager.getInstance().close(dao);
     }
+
+	public IJDBCConnection getDao() {
+		return dao;
+	}
+
 }

@@ -131,6 +131,9 @@
                 CHGVAR     VAR(&NAME) VALUE('SUBTOBENOT')
                 CALLSUBR   SUBR(EXECUTE)
 
+                CHGVAR     VAR(&NAME) VALUE('FLDGENCLS')
+                CALLSUBR   SUBR(EXECUTE)
+
              ENDDO
 
      /* Delete journal */

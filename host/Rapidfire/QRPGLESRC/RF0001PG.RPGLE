@@ -179,6 +179,10 @@ END-PI;
 
 /Copy QCPYSRC,RF0021PG
 
+// Prozedurenprototyp für Prozedur 'RF0023PG'
+
+/Copy QCPYSRC,RF0023PG
+
 // Prozedurenprototyp für Prozedur 'JOB'
 
 /Copy QCPYSRC,JOB
@@ -190,6 +194,10 @@ END-PI;
 // Prozedurenprototyp für Prozedur 'MNTJOB'
 
 /Copy QCPYSRC,MNTJOB
+
+// Prozedurenprototyp für Prozedur 'FLDGENCLS'
+
+/Copy QCPYSRC,FLDGENCLS
 
 // Dateiinformationsdatenstruktur für RF0001DF
 
@@ -335,6 +343,7 @@ DCL-S ANZVER Like(DFVER);                                                // Vers
 DCL-S ITBLK ZONED(2);                                                    // Anzahl Leerzeiche
 DCL-S ITXMsg CHAR(256);                                                  // Nachricht
 DCL-S ITSUCC CHAR(1);                                                    // Erfolg
+DCL-S g_CFWGC CHAR(1);                                                   // Contains fields with generated clause?
 
 //*-----------------------------------------------------------------------------------------*
 
@@ -1968,30 +1977,59 @@ EndSr;
 //*-----------------------------------------------------------------------------------------*
 
 BegSr SR150;
+
   // Warnung ausgeben
   RF0021PG();
+
+  // Ermitteln, ob der Job Felder mit der GENERATED Clause enthält
+  If FLDGENCLS_build(
+       SlcJOB : // --> Job
+       g_CFWGC  // <-- Contains fields with generated clause?
+     );
+
+    // Der Job enthält Felder mit der GENERATED Clause
+    RF0023PG(
+      SlcJOB : // --> Job
+      PIRtCd   // <-- Rückkehrcode
+    );
+
+    // Nicht fortfahren
+    If PIRtCd <> '*F10';
+      LeaveSr;
+    EndIf;
+
+  EndIf;
+
   // Felder initialisieren
   DFJOB = SlcJOB;
+
   DoW ITLoop;
+
     // Satzformate auf den Bildschirm ausgeben
     ExFmt DSPF020W;
+
     // Funktionstaste abrufen
     ITFktKey = RtvFktKey(AIDCde);
+
     // Funktionstaste : 'F10=Job starten'
     If ITFktKey = '*F10';
       PIRtCd = '*F10';
       Leave;
     EndIf;
+
     // Funktionstaste : 'F12=Abbrechen'
     If ITFktKey = '*F12';
       PIRtCd = '*F12';
       Leave;
     EndIf;
+
   EndDo;
+
   // Job starten
   If PIRtCd = '*F10';
     JOB_start(SlcJOB : '*NO');
   EndIf;
+
 EndSr;
 
 //*-----------------------------------------------------------------------------------------*
