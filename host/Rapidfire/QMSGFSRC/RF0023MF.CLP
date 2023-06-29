@@ -4,7 +4,7 @@
      /*   >>CRTCMD<<  CALL       PGM(QTEMP/&OB) PARM(&LI &OB);                */
      /*   >>CMD<<     CRTCLPGM   PGM(QTEMP/&OB) +                             */
      /*                          SRCFILE(&SL/&SF) SRCMBR(&SM) +               */
-     /*               TEXT('Maintain Jobs');                                  */
+     /*               TEXT('Fields with GENERATED clause');                   */
      /*   >>EXECUTE<<                                                         */
      /*   >>CMD<<     DLTPGM PGM(QTEMP/&OB);                                  */
      /* >>END-PRE-COMPILER<<                                                  */
@@ -20,7 +20,7 @@
              MONMSG     MSGID(MCH3601) EXEC(DO)
                RMVMSG     PGMQ(*SAME (*)) CLEAR(*ALL)
                SNDPGMMSG  MSGID(CPF9898) MSGF(*LIBL/QCPFMSG) +
-                            MSGDTA('Usage: CALL PGM(RF0001MF) +
+                            MSGDTA('Usage: CALL PGM(RF0023MF) +
                                     PARM(libName [msgFName)') +
                             TOPGMQ(*PRV (*PGMBDY)) MSGTYPE(*ESCAPE)
              ENDDO
@@ -28,7 +28,7 @@
              CHGVAR     VAR(&OBJ       ) VALUE(&I_OBJ)
              MONMSG     MSGID(MCH3601) EXEC(DO)
                RMVMSG     PGMQ(*SAME (*)) CLEAR(*ALL)
-               CHGVAR     VAR(&OBJ) VALUE('RF0001MF  ')
+               CHGVAR     VAR(&OBJ) VALUE('RF0023MF  ')
              ENDDO
 
              DLTMSGF MSGF(&LIB/&OBJ)
@@ -37,18 +37,19 @@
              ENDDO
 
              CRTMSGF MSGF(&LIB/&OBJ) +
-               TEXT('Maintain Jobs')
+               TEXT('Fields with GENERATED clause')
 
      /*-------------------------------------------------------------*/
      /*   Cmd-ADDMSGD für Message-ID :   CON0001                    */
-     /*                        Maintain Jobs                        */
+     /*                                           Fields with GENER */
      /*-------------------------------------------------------------*/
 
              ADDMSGD +
                 MSGID(CON0001) +
                 MSGF(&LIB/&OBJ) +
                 MSG( +
-'                       Maintain Jobs'                                +
+'                                          Fields with GENERATED claus-
+e'                                                                    +
                 ) +
                 SEV(0) +
      /*   No replacement variables defined!                         */ +
@@ -58,66 +59,14 @@
 
      /*-------------------------------------------------------------*/
      /*   Cmd-ADDMSGD für Message-ID :   CON0002                    */
-     /*                          Select Job                         */
+     /* Library    File       Field      Text                       */
      /*-------------------------------------------------------------*/
 
              ADDMSGD +
                 MSGID(CON0002) +
                 MSGF(&LIB/&OBJ) +
                 MSG( +
-'                         Select Job'                                 +
-                ) +
-                SEV(0) +
-     /*   No replacement variables defined!                         */ +
-                ALROPT(*NO) +
-                CCSID(65535) +
-                /*  -EOF-  */
-
-     /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   CON0003                    */
-     /* Type option and press enter.                                */
-     /*-------------------------------------------------------------*/
-
-             ADDMSGD +
-                MSGID(CON0003) +
-                MSGF(&LIB/&OBJ) +
-                MSG( +
-'Type option and press enter.'                                        +
-                ) +
-                SEV(0) +
-     /*   No replacement variables defined!                         */ +
-                ALROPT(*NO) +
-                CCSID(65535) +
-                /*  -EOF-  */
-
-     /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   CON0004                    */
-     /*   2=Change  3=Copy  4=Delete  5=Display  10=Libraries  11=L */
-     /*-------------------------------------------------------------*/
-
-             ADDMSGD +
-                MSGID(CON0004) +
-                MSGF(&LIB/&OBJ) +
-                MSG( +
-'  2=Change  3=Copy  4=Delete  5=Display  10=Libraries  11=Library lis-
-ts'                                                                   +
-                ) +
-                SEV(0) +
-     /*   No replacement variables defined!                         */ +
-                ALROPT(*NO) +
-                CCSID(65535) +
-                /*  -EOF-  */
-
-     /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   CON0005                    */
-     /*   1=Select                                                  */
-     /*-------------------------------------------------------------*/
-
-             ADDMSGD +
-                MSGID(CON0005) +
-                MSGF(&LIB/&OBJ) +
-                MSG( +
-'  1=Select'                                                          +
+'Library    File       Field      Text'                               +
                 ) +
                 SEV(0) +
      /*   No replacement variables defined!                         */ +
@@ -127,32 +76,14 @@ ts'                                                                   +
 
      /*-------------------------------------------------------------*/
      /*   Cmd-ADDMSGD für Message-ID :   CON0006                    */
-     /* F3=Exit  F4=Prompt  F5=Refresh  F6=Create  F9=Retrieve  F24 */
+     /* F5=Refresh  F10=Continue  F12=Cancel  F17=Top  F18=Bottom   */
      /*-------------------------------------------------------------*/
 
              ADDMSGD +
                 MSGID(CON0006) +
                 MSGF(&LIB/&OBJ) +
                 MSG( +
-'F3=Exit  F4=Prompt  F5=Refresh  F6=Create  F9=Retrieve  F24=More keys-
-'                                                                     +
-                ) +
-                SEV(0) +
-     /*   No replacement variables defined!                         */ +
-                ALROPT(*NO) +
-                CCSID(65535) +
-                /*  -EOF-  */
-
-     /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   CON0007                    */
-     /* F3=Exit  F5=Refresh  F12=Cancel  F17=Top  F18=Bottom        */
-     /*-------------------------------------------------------------*/
-
-             ADDMSGD +
-                MSGID(CON0007) +
-                MSGF(&LIB/&OBJ) +
-                MSG( +
-'F3=Exit  F5=Refresh  F12=Cancel  F17=Top  F18=Bottom'                +
+'F5=Refresh  F10=Continue  F12=Cancel  F17=Top  F18=Bottom'           +
                 ) +
                 SEV(0) +
      /*   No replacement variables defined!                         */ +
@@ -178,68 +109,15 @@ ts'                                                                   +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   CON0009                    */
-     /* OP Job        Description                         Status    */
-     /*-------------------------------------------------------------*/
-
-             ADDMSGD +
-                MSGID(CON0009) +
-                MSGF(&LIB/&OBJ) +
-                MSG( +
-'OP Job        Description                         Status     Phase   -
-   Err.'                                                              +
-                ) +
-                SEV(0) +
-     /*   No replacement variables defined!                         */ +
-                ALROPT(*NO) +
-                CCSID(65535) +
-                /*  -EOF-  */
-
-     /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   CON0010                    */
-     /* Command                                                     */
-     /*-------------------------------------------------------------*/
-
-             ADDMSGD +
-                MSGID(CON0010) +
-                MSGF(&LIB/&OBJ) +
-                MSG( +
-'Command'                                                             +
-                ) +
-                SEV(0) +
-     /*   No replacement variables defined!                         */ +
-                ALROPT(*NO) +
-                CCSID(65535) +
-                /*  -EOF-  */
-
-     /*-------------------------------------------------------------*/
      /*   Cmd-ADDMSGD für Message-ID :   CON0011                    */
-     /*   12=Files  13=Subjects to be notified  20=Test job  21=Sta */
+     /* Job  . . . . . . . . . . . . :                              */
      /*-------------------------------------------------------------*/
 
              ADDMSGD +
                 MSGID(CON0011) +
                 MSGF(&LIB/&OBJ) +
                 MSG( +
-'  12=Files  13=Subjects to be notified  20=Test job  21=Start job  22-
-=End job'                                                             +
-                ) +
-                SEV(0) +
-     /*   No replacement variables defined!                         */ +
-                ALROPT(*NO) +
-                CCSID(65535) +
-                /*  -EOF-  */
-
-     /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   CON0012                    */
-     /* Job  . . . . . . . :                                        */
-     /*-------------------------------------------------------------*/
-
-             ADDMSGD +
-                MSGID(CON0012) +
-                MSGF(&LIB/&OBJ) +
-                MSG( +
-'Job  . . . . . . . :'                                                +
+'Job  . . . . . . . . . . . . :'                                      +
                 ) +
                 SEV(0) +
      /*   No replacement variables defined!                         */ +
@@ -282,84 +160,16 @@ ts'                                                                   +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   CON0015                    */
-     /* F12=Cancel  F17=Top  F18=Bottom  F24=More keys              */
-     /*-------------------------------------------------------------*/
-
-             ADDMSGD +
-                MSGID(CON0015) +
-                MSGF(&LIB/&OBJ) +
-                MSG( +
-'F12=Cancel  F17=Top  F18=Bottom  F24=More keys'                      +
-                ) +
-                SEV(0) +
-     /*   No replacement variables defined!                         */ +
-                ALROPT(*NO) +
-                CCSID(65535) +
-                /*  -EOF-  */
-
-     /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   CON0016                    */
-     /*                 Press F10 to start the job or F12 to cancel */
-     /*-------------------------------------------------------------*/
-
-             ADDMSGD +
-                MSGID(CON0016) +
-                MSGF(&LIB/&OBJ) +
-                MSG( +
-'                Press F10 to start the job or F12 to cancel.'        +
-                ) +
-                SEV(0) +
-     /*   No replacement variables defined!                         */ +
-                ALROPT(*NO) +
-                CCSID(65535) +
-                /*  -EOF-  */
-
-     /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   CON0017                    */
-     /*                  Press F10 to end the job or F12 to cancel. */
-     /*-------------------------------------------------------------*/
-
-             ADDMSGD +
-                MSGID(CON0017) +
-                MSGF(&LIB/&OBJ) +
-                MSG( +
-'                 Press F10 to end the job or F12 to cancel.'         +
-                ) +
-                SEV(0) +
-     /*   No replacement variables defined!                         */ +
-                ALROPT(*NO) +
-                CCSID(65535) +
-                /*  -EOF-  */
-
-     /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   CON0018                    */
-     /*                 Press F10 to reset the job or F12 to cancel */
-     /*-------------------------------------------------------------*/
-
-             ADDMSGD +
-                MSGID(CON0018) +
-                MSGF(&LIB/&OBJ) +
-                MSG( +
-'                Press F10 to reset the job or F12 to cancel.'        +
-                ) +
-                SEV(0) +
-     /*   No replacement variables defined!                         */ +
-                ALROPT(*NO) +
-                CCSID(65535) +
-                /*  -EOF-  */
-
-     /*-------------------------------------------------------------*/
      /*   Cmd-ADDMSGD für Message-ID :   CON0019                    */
-     /*   23=Reset job  24=Reset job after abort.  30=Display statu */
+     /*                                                 ! ! !   A T */
      /*-------------------------------------------------------------*/
 
              ADDMSGD +
                 MSGID(CON0019) +
                 MSGF(&LIB/&OBJ) +
                 MSG( +
-'  23=Reset job  24=Reset job after abort.  30=Display status  31=Disp-
-lay error'                                                            +
+'                                                ! ! !   A T T E N T I-
+ O N   ! ! !'                                                         +
                 ) +
                 SEV(0) +
      /*   No replacement variables defined!                         */ +
@@ -369,15 +179,15 @@ lay error'                                                            +
 
      /*-------------------------------------------------------------*/
      /*   Cmd-ADDMSGD für Message-ID :   CON0020                    */
-     /* -------------------------   E R R O R   T E X T   --------- */
+     /* The Rapid Fire job contains files, which have fields with t */
      /*-------------------------------------------------------------*/
 
              ADDMSGD +
                 MSGID(CON0020) +
                 MSGF(&LIB/&OBJ) +
                 MSG( +
-'-------------------------   E R R O R   T E X T   --------------------
--------'                                                              +
+'The Rapid Fire job contains files, which have fields with the SQL GEN-
+ERATED clause. If you use Rapid Fire for such files, then the'        +
                 ) +
                 SEV(0) +
      /*   No replacement variables defined!                         */ +
@@ -387,14 +197,15 @@ lay error'                                                            +
 
      /*-------------------------------------------------------------*/
      /*   Cmd-ADDMSGD für Message-ID :   CON0021                    */
-     /* F12=Cancel                                                  */
+     /* values of the fields with the SQL GENERATED clause will be  */
      /*-------------------------------------------------------------*/
 
              ADDMSGD +
                 MSGID(CON0021) +
                 MSGF(&LIB/&OBJ) +
                 MSG( +
-'F12=Cancel'                                                          +
+'values of the fields with the SQL GENERATED clause will be regenerate-
+d for each record in the files. The current IBM i release'            +
                 ) +
                 SEV(0) +
      /*   No replacement variables defined!                         */ +
@@ -404,14 +215,15 @@ lay error'                                                            +
 
      /*-------------------------------------------------------------*/
      /*   Cmd-ADDMSGD für Message-ID :   CON0022                    */
-     /*                 Press F10 to test the job or F12 to cancel. */
+     /* provides a feature to avoid this. This feature is controlle */
      /*-------------------------------------------------------------*/
 
              ADDMSGD +
                 MSGID(CON0022) +
                 MSGF(&LIB/&OBJ) +
                 MSG( +
-'                Press F10 to test the job or F12 to cancel.'         +
+'provides a feature to avoid this. This feature is controlled by the g-
+lobal variable REPLICATION_OVERRIDE. You can find a brief'            +
                 ) +
                 SEV(0) +
      /*   No replacement variables defined!                         */ +
@@ -421,14 +233,15 @@ lay error'                                                            +
 
      /*-------------------------------------------------------------*/
      /*   Cmd-ADDMSGD für Message-ID :   CON0023                    */
-     /* Delete shadow libraries ('X' = Yes)  . :                    */
+     /* description of this global variable here: https://www.ibm.c */
      /*-------------------------------------------------------------*/
 
              ADDMSGD +
                 MSGID(CON0023) +
                 MSGF(&LIB/&OBJ) +
                 MSG( +
-'Delete shadow libraries (''X'' = Yes)  . :'                          +
+'description of this global variable here: https://www.ibm.com/support-
+/pages/node/6828143 . The usage of this global variable is'           +
                 ) +
                 SEV(0) +
      /*   No replacement variables defined!                         */ +
@@ -438,14 +251,15 @@ lay error'                                                            +
 
      /*-------------------------------------------------------------*/
      /*   Cmd-ADDMSGD für Message-ID :   CON0024                    */
-     /*   99=Activity Schedule                                      */
+     /* protected by the function QIBM_DB_GENCOL_OVERRIDE. Currentl */
      /*-------------------------------------------------------------*/
 
              ADDMSGD +
                 MSGID(CON0024) +
                 MSGF(&LIB/&OBJ) +
                 MSG( +
-'  99=Activity Schedule'                                              +
+'protected by the function QIBM_DB_GENCOL_OVERRIDE. Currently you are -
+NOT allowed to use the global variable REPLICATION_OVERRIDE.'         +
                 ) +
                 SEV(0) +
      /*   No replacement variables defined!                         */ +
@@ -455,14 +269,141 @@ lay error'                                                            +
 
      /*-------------------------------------------------------------*/
      /*   Cmd-ADDMSGD für Message-ID :   CON0025                    */
-     /* Internal Error:                                             */
+     /* To be allowed to use the global variable REPLICATION_OVERRI */
      /*-------------------------------------------------------------*/
 
              ADDMSGD +
                 MSGID(CON0025) +
                 MSGF(&LIB/&OBJ) +
                 MSG( +
-'Internal Error:'                                                     +
+'To be allowed to use the global variable REPLICATION_OVERRIDE a user -
+with special authority *SECADM has to execute the following'          +
+                ) +
+                SEV(0) +
+     /*   No replacement variables defined!                         */ +
+                ALROPT(*NO) +
+                CCSID(65535) +
+                /*  -EOF-  */
+
+     /*-------------------------------------------------------------*/
+     /*   Cmd-ADDMSGD für Message-ID :   CON0026                    */
+     /* command: CHGFCNUSG FCNID(QIBM_DB_GENCOL_OVERRIDE) USER(<use */
+     /*-------------------------------------------------------------*/
+
+             ADDMSGD +
+                MSGID(CON0026) +
+                MSGF(&LIB/&OBJ) +
+                MSG( +
+'command: CHGFCNUSG FCNID(QIBM_DB_GENCOL_OVERRIDE) USER(<user-profile>-
+) USAGE(*ALLOWED). IF YOU CONTINUE, THEN THE VALUES WILL BE'          +
+                ) +
+                SEV(0) +
+     /*   No replacement variables defined!                         */ +
+                ALROPT(*NO) +
+                CCSID(65535) +
+                /*  -EOF-  */
+
+     /*-------------------------------------------------------------*/
+     /*   Cmd-ADDMSGD für Message-ID :   CON0027                    */
+     /* REGENERATED. We advise you to cancel. You can continue if y */
+     /*-------------------------------------------------------------*/
+
+             ADDMSGD +
+                MSGID(CON0027) +
+                MSGF(&LIB/&OBJ) +
+                MSG( +
+'REGENERATED. We advise you to cancel. You can continue if you really -
+understand what this means and if this causes NO problems'            +
+                ) +
+                SEV(0) +
+     /*   No replacement variables defined!                         */ +
+                ALROPT(*NO) +
+                CCSID(65535) +
+                /*  -EOF-  */
+
+     /*-------------------------------------------------------------*/
+     /*   Cmd-ADDMSGD für Message-ID :   CON0028                    */
+     /* in your application. It is your decision. Be warned. The wr */
+     /*-------------------------------------------------------------*/
+
+             ADDMSGD +
+                MSGID(CON0028) +
+                MSGF(&LIB/&OBJ) +
+                MSG( +
+'in your application. It is your decision. Be warned. The wrong decisi-
+on can destroy your entire application.'                              +
+                ) +
+                SEV(0) +
+     /*   No replacement variables defined!                         */ +
+                ALROPT(*NO) +
+                CCSID(65535) +
+                /*  -EOF-  */
+
+     /*-------------------------------------------------------------*/
+     /*   Cmd-ADDMSGD für Message-ID :   CON0030                    */
+     /* The Rapid Fire job contains files, which have fields with t */
+     /*-------------------------------------------------------------*/
+
+             ADDMSGD +
+                MSGID(CON0030) +
+                MSGF(&LIB/&OBJ) +
+                MSG( +
+'The Rapid Fire job contains files, which have fields with the SQL GEN-
+ERATED clause. If you use Rapid Fire for such files, then the'        +
+                ) +
+                SEV(0) +
+     /*   No replacement variables defined!                         */ +
+                ALROPT(*NO) +
+                CCSID(65535) +
+                /*  -EOF-  */
+
+     /*-------------------------------------------------------------*/
+     /*   Cmd-ADDMSGD für Message-ID :   CON0031                    */
+     /* values of the fields with the SQL GENERATED clause will be  */
+     /*-------------------------------------------------------------*/
+
+             ADDMSGD +
+                MSGID(CON0031) +
+                MSGF(&LIB/&OBJ) +
+                MSG( +
+'values of the fields with the SQL GENERATED clause will be regenerate-
+d for each record in the files. IF YOU CONTINUE, THEN THE '           +
+                ) +
+                SEV(0) +
+     /*   No replacement variables defined!                         */ +
+                ALROPT(*NO) +
+                CCSID(65535) +
+                /*  -EOF-  */
+
+     /*-------------------------------------------------------------*/
+     /*   Cmd-ADDMSGD für Message-ID :   CON0032                    */
+     /* VALUES WILL BE REGENERATED. We advise you to cancel. You ca */
+     /*-------------------------------------------------------------*/
+
+             ADDMSGD +
+                MSGID(CON0032) +
+                MSGF(&LIB/&OBJ) +
+                MSG( +
+'VALUES WILL BE REGENERATED. We advise you to cancel. You can continue-
+ if you really understand what this means and if this causes '        +
+                ) +
+                SEV(0) +
+     /*   No replacement variables defined!                         */ +
+                ALROPT(*NO) +
+                CCSID(65535) +
+                /*  -EOF-  */
+
+     /*-------------------------------------------------------------*/
+     /*   Cmd-ADDMSGD für Message-ID :   CON0033                    */
+     /* NO problems in your application. It is your decision. Be wa */
+     /*-------------------------------------------------------------*/
+
+             ADDMSGD +
+                MSGID(CON0033) +
+                MSGF(&LIB/&OBJ) +
+                MSG( +
+'NO problems in your application. It is your decision. Be warned. The -
+wrong decision can destroy your entire application.'                  +
                 ) +
                 SEV(0) +
      /*   No replacement variables defined!                         */ +
@@ -514,23 +455,6 @@ lay error'                                                            +
                 MSGF(&LIB/&OBJ) +
                 MSG( +
 'The bottom of the list has already been reached.'                    +
-                ) +
-                SEV(0) +
-     /*   No replacement variables defined!                         */ +
-                ALROPT(*NO) +
-                CCSID(65535) +
-                /*  -EOF-  */
-
-     /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   ERR0004                    */
-     /* No prompt for the requested field available.                */
-     /*-------------------------------------------------------------*/
-
-             ADDMSGD +
-                MSGID(ERR0004) +
-                MSGF(&LIB/&OBJ) +
-                MSG( +
-'No prompt for the requested field available.'                        +
                 ) +
                 SEV(0) +
      /*   No replacement variables defined!                         */ +

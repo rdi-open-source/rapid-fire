@@ -65,8 +65,7 @@
                 MSGID(CON0002) +
                 MSGF(&LIB/&OBJ) +
                 MSG( +
-'Important information for the usage of Rapid Fire together with high-
-'                                                                     +
+'Important information for the usage of Rapid Fire together with high'+
                 ) +
                 SEV(0) +
      /*   No replacement variables defined!                         */ +
