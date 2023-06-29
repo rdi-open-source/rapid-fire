@@ -344,6 +344,8 @@ DCL-S ITBLK ZONED(2);                                                    // Anza
 DCL-S ITXMsg CHAR(256);                                                  // Nachricht
 DCL-S ITSUCC CHAR(1);                                                    // Erfolg
 DCL-S g_CFWGC CHAR(1);                                                   // Contains fields with generated clause?
+DCL-S g_INTERR CHAR(60);                                                 // Interner Fehler
+DCL-S g_RSLT INT(10);                                                    // Result
 
 //*-----------------------------------------------------------------------------------------*
 
@@ -1981,53 +1983,159 @@ BegSr SR150;
   // Warnung ausgeben
   RF0021PG();
 
-  // Ermitteln, ob der Job Felder mit der GENERATED Clause enthält
-  If FLDGENCLS_build(
-       SlcJOB : // --> Job
-       g_CFWGC  // <-- Contains fields with generated clause?
-     );
+  // "Interner Fehler" initialisieren
+  g_INTERR = *Blanks;
 
-    // Der Job enthält Felder mit der GENERATED Clause
-    RF0023PG(
-      SlcJOB : // --> Job
-      PIRtCd   // <-- Rückkehrcode
-    );
+  // Ermitteln, ob der Job Dateien mit Feldern mit der GENERATED Clause enthält
+  FLDGENCLS_build(
+    SlcJOB : // --> Job
+    g_RSLT   // <-- Result
+  );
 
-    // Nicht fortfahren
-    If PIRtCd <> '*F10';
-      LeaveSr;
-    EndIf;
+  select;
 
-  EndIf;
+  // Es ist ein Fehler aufgetreten
+  when g_RSLT < *Zero;
 
-  // Felder initialisieren
-  DFJOB = SlcJOB;
+    // Fehler setzen
+    g_INTERR =
+      'FLDGENCLS_build(' + %char(g_RSLT) + ')';
 
-  DoW ITLoop;
+  // Der Job enthält keine Dateien mit Feldern mit der GENERATED Clause
+  when g_RSLT = *Zero;
+
+    // Es ist nichts zu tun
+
+  // Der Job enthält Dateien mit Feldern mit der GENERATED Clause
+  when g_RSLT > *Zero;
+
+    // Ermitteln, ob die globale Variable REPLICATION_OVERRIDE existiert
+ // FLDGENCLS_isReplicationOverrideAvailable(
+ //   g_RSLT // <-- Result
+ // );
+
+ // select;
+
+    // Es ist ein Fehler aufgetreten
+ // when g_RSLT < *Zero;
+
+      // Fehler setzen
+ //   g_INTERR =
+ //     'FLDGENCLS_isReplicationOverrideAvailable(' + %char(g_RSLT) + ')';
+
+    // Die globale Variable REPLICATION_OVERRIDE existiert nicht
+ // when g_RSLT = *Zero;
+
+      // Der Job enthält Felder mit der GENERATED Clause
+      RF0023PG(
+        SlcJOB : // --> Job
+        '*1' :   // --> Modus
+        PIRtCd   // <-- Rückkehrcode
+      );
+
+      // Nicht fortfahren
+      If PIRtCd <> '*F10';
+        LeaveSr;
+      EndIf;
+
+    // Die globale Variable REPLICATION_OVERRIDE existiert
+ // when g_RSLT > *Zero;
+
+      // Ermitteln, ob der Benutzer für die globale Variable REPLICATION_OVERRIDE berechtigt ist
+ //   FLDGENCLS_isReplicationOverrideAuthorized(
+ //     g_RSLT // <-- Result
+ //   );
+
+ //   select;
+
+      // Es ist ein Fehler aufgetreten
+ //   when g_RSLT < *Zero;
+
+        // Fehler setzen
+ //     g_INTERR =
+ //       'FLDGENCLS_isReplicationOverrideAuthorized' + %char(g_RSLT) + ')';
+
+      // Der Benutzer ist für die globale Variable REPLICATION_OVERRIDE nicht berechtigt
+ //   when g_RSLT = *Zero;
+
+        // Der Job enthält Felder mit der GENERATED Clause
+ //     RF0023PG(
+ //       SlcJOB : // --> Job
+ //       '*2' :   // --> Modus
+ //       PIRtCd   // <-- Rückkehrcode
+ //     );
+
+        // Nicht fortfahren
+ //     If PIRtCd <> '*F10';
+ //       LeaveSr;
+ //     EndIf;
+
+      // Der Benutzer ist für die globale Variable REPLICATION_OVERRIDE berechtigt
+ //   when g_RSLT > *Zero;
+
+        // Markieren, dass mit "Replication Override" gearbeitet werden soll
+ //     FLDGENCLS_setFieldsWithGeneratedClause(
+ //       SlcJOB : // --> Job
+ //       'Y' :    // --> Replication Override
+ //       g_RSLT   // <-- Result
+ //     );
+
+        // Es ist ein Fehler aufgetreten
+ //     If g_RSLT < *Zero;
+
+          // Es ist ein Fehler aufgetreten
+ //       g_INTERR =
+ //         'FLDGENCLS_setFieldsWithGeneratedClause(' + %char(g_RSLT) + ')';
+
+ //     EndIf;
+
+ //   EndSl;
+
+ // EndSl;
+
+  EndSl;
+
+  If g_INTERR <> *Blanks;
+
+    // Felder initialisieren
+    DFJOB = SlcJOB;
+    DFINTERR = g_INTERR;
 
     // Satzformate auf den Bildschirm ausgeben
-    ExFmt DSPF020W;
+    ExFmt DSPF080W;
 
-    // Funktionstaste abrufen
-    ITFktKey = RtvFktKey(AIDCde);
+  Else;
 
-    // Funktionstaste : 'F10=Job starten'
-    If ITFktKey = '*F10';
-      PIRtCd = '*F10';
-      Leave;
+    // Felder initialisieren
+    DFJOB = SlcJOB;
+
+    DoW ITLoop;
+
+      // Satzformate auf den Bildschirm ausgeben
+      ExFmt DSPF020W;
+
+      // Funktionstaste abrufen
+      ITFktKey = RtvFktKey(AIDCde);
+
+      // Funktionstaste : 'F10=Job starten'
+      If ITFktKey = '*F10';
+        PIRtCd = '*F10';
+        Leave;
+      EndIf;
+
+      // Funktionstaste : 'F12=Abbrechen'
+      If ITFktKey = '*F12';
+        PIRtCd = '*F12';
+        Leave;
+      EndIf;
+
+    EndDo;
+
+    // Job starten
+    If PIRtCd = '*F10';
+      JOB_start(SlcJOB : '*NO');
     EndIf;
 
-    // Funktionstaste : 'F12=Abbrechen'
-    If ITFktKey = '*F12';
-      PIRtCd = '*F12';
-      Leave;
-    EndIf;
-
-  EndDo;
-
-  // Job starten
-  If PIRtCd = '*F10';
-    JOB_start(SlcJOB : '*NO');
   EndIf;
 
 EndSr;

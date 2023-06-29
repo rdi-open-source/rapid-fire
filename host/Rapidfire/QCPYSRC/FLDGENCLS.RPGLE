@@ -10,8 +10,40 @@
 //*                                                                                         *
 //*-----------------------------------------------------------------------------------------*
 
-DCL-PR FLDGENCLS_build Ind                 // <-- Contains fields with generated clause?
+DCL-PR FLDGENCLS_build
        EXTPROC('FLDGENCLS_build');
-  *N CHAR(10) Const;                       // --> Job
-  *N CHAR(1);                              // <-- Contains fields with generated clause?
+  *N CHAR(10) Const; // --> Job
+  *N INT(10);        // <-- Result
+END-PR;
+
+DCL-PR FLDGENCLS_isReplicationOverrideAvailable
+       EXTPROC('FLDGENCLS_isReplicationOverrideAvailable');
+  *N INT(10); // <-- Result
+END-PR;
+
+DCL-PR FLDGENCLS_isReplicationOverrideAuthorized
+       EXTPROC('FLDGENCLS_isReplicationOverrideAuthorized');
+  *N INT(10); // <-- Result
+END-PR;
+
+DCL-PR FLDGENCLS_setReplicationOverride
+       EXTPROC('FLDGENCLS_setReplicationOverride');
+  *N CHAR(1) Const; // --> Value
+  *N INT(10);       // <-- Result
+END-PR;
+
+DCL-PR FLDGENCLS_isFieldsWithGeneratedClause
+       EXTPROC('FLDGENCLS_isFieldsWithGeneratedClause');
+  *N CHAR(10) Const; // --> Job
+  *N CHAR(10) Const; // --> Library
+  *N CHAR(10) Const; // --> File
+  *N CHAR(1) Const;  // --> Check Replication Override
+  *N INT(10);        // <-- Result
+END-PR;
+
+DCL-PR FLDGENCLS_setFieldsWithGeneratedClause
+       EXTPROC('FLDGENCLS_setFieldsWithGeneratedClause');
+  *N CHAR(10) Const; // --> Job
+  *N CHAR(1) Const;  // --> Replication Override
+  *N INT(10);        // <-- Result
 END-PR;

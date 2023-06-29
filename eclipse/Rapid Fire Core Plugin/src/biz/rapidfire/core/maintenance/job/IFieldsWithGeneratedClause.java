@@ -11,5 +11,5 @@ package biz.rapidfire.core.maintenance.job;
 public interface IFieldsWithGeneratedClause {
 
     public static final int JOB = 1;
-    public static final int CONTAINS = 2;
+    public static final int RESULT = 2;
 }

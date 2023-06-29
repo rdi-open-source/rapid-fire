@@ -1,4 +1,4 @@
-     A*%%TS  SD  20230523  114307  HILDEBRAND  REL-V7R3M0  5770-WDS
+     A*%%TS  SD  20230628  120030  HILDEBRAND  REL-V7R5M0  5770-WDS
      A*------------------------------------------------------------------------*
      A*                                                                        *
      A* COPYRIGHT (C) 2014 TASK FORCE IT-CONSULTING GMBH, WALTROP (GERMANY)    *
@@ -23,21 +23,21 @@
      A                                      CHGINPDFT
      A                                      PRINT
      A          R DSPF010S                  SFL
-     A*%%TS  SD  20230523  114307  HILDEBRAND  REL-V7R3M0  5770-WDS
+     A*%%TS  SD  20230524  140022  HILDEBRAND  REL-V7R5M0  5770-WDS
      A  63                                  SFLNXTCHG
      A            DFOPT          2A  H
-     A            DFLIB     R        O 15  2REFFLD(FLDGENCLS/XILIB *LIBL/FLDGEN-
+     A            DFLIB     R        O 18  2REFFLD(FLDGENCLS/XILIB *LIBL/FLDGEN-
      A                                      CLS)
-     A            DFFILE    R        O 15 13REFFLD(FLDGENCLS/XIFILE *LIBL/FLDGE-
+     A            DFFILE    R        O 18 13REFFLD(FLDGENCLS/XIFILE *LIBL/FLDGE-
      A                                      NCLS)
-     A            DFFLD     R        O 15 24REFFLD(FLDGENCLS/XIFLD *LIBL/FLDGEN-
+     A            DFFLD     R        O 18 24REFFLD(FLDGENCLS/XIFLD *LIBL/FLDGEN-
      A                                      CLS)
-     A            DFTEXT    R        O 15 35REFFLD(FLDGENCLS/XITEXT *LIBL/FLDGE-
+     A            DFTEXT    R        O 18 35REFFLD(FLDGENCLS/XITEXT *LIBL/FLDGE-
      A                                      NCLS)
      A          R DSPF010C                  SFLCTL(DSPF010S)
-     A*%%TS  SD  20230523  114307  HILDEBRAND  REL-V7R3M0  5770-WDS
-     A                                      SFLSIZ(0010)
-     A                                      SFLPAG(0010)
+     A*%%TS  SD  20230524  143347  HILDEBRAND  REL-V7R5M0  5770-WDS
+     A                                      SFLSIZ(0007)
+     A                                      SFLPAG(0007)
      A                                      CA12
      A                                      CF01
      A                                      CF05
@@ -79,22 +79,38 @@
      A                                      CLS)
      A                                  5  2MSGCON(130 CON0019 *LIBL/RF0023MF)
      A                                      COLOR(RED)
-     A                                  7  2MSGCON(130 CON0020 *LIBL/RF0023MF)
+     A  01                              7  2MSGCON(130 CON0030 *LIBL/RF0023MF)
      A                                      COLOR(RED)
-     A                                  8  2MSGCON(130 CON0021 *LIBL/RF0023MF)
+     A  01                              8  2MSGCON(130 CON0031 *LIBL/RF0023MF)
      A                                      COLOR(RED)
-     A                                  9  2MSGCON(130 CON0022 *LIBL/RF0023MF)
+     A  01                              9  2MSGCON(130 CON0032 *LIBL/RF0023MF)
      A                                      COLOR(RED)
-     A                                 11  2MSGCON(130 CON0030 *LIBL/RF0023MF)
+     A  01                             10  2MSGCON(130 CON0033 *LIBL/RF0023MF)
      A                                      COLOR(RED)
-     A                                 12  2MSGCON(130 CON0031 *LIBL/RF0023MF)
-     A                                      COLOR(RED)
-     A                                 14  2MSGCON(130 CON0002 *LIBL/RF0023MF)
+     A                                 17  2MSGCON(130 CON0002 *LIBL/RF0023MF)
      A                                      DSPATR(HI)
+     A  02                              7  2MSGCON(130 CON0020 *LIBL/RF0023MF)
+     A                                      COLOR(RED)
+     A  02                              8  2MSGCON(130 CON0021 *LIBL/RF0023MF)
+     A                                      COLOR(RED)
+     A  02                              9  2MSGCON(130 CON0022 *LIBL/RF0023MF)
+     A                                      COLOR(RED)
+     A  02                             10  2MSGCON(130 CON0023 *LIBL/RF0023MF)
+     A                                      COLOR(RED)
+     A  02                             11  2MSGCON(130 CON0024 *LIBL/RF0023MF)
+     A                                      COLOR(RED)
+     A  02                             12  2MSGCON(130 CON0025 *LIBL/RF0023MF)
+     A                                      COLOR(RED)
+     A  02                             13  2MSGCON(130 CON0026 *LIBL/RF0023MF)
+     A                                      COLOR(RED)
+     A  02                             14  2MSGCON(130 CON0027 *LIBL/RF0023MF)
+     A                                      COLOR(RED)
+     A  02                             15  2MSGCON(130 CON0028 *LIBL/RF0023MF)
+     A                                      COLOR(RED)
      A          R DSPF010L
-     A*%%TS  SD  20230523  114307  HILDEBRAND  REL-V7R3M0  5770-WDS
+     A*%%TS  SD  20230524  140022  HILDEBRAND  REL-V7R5M0  5770-WDS
      A                                      OVERLAY
-     A                                 16  2MSGCON(130 CON0008 *LIBL/RF0023MF)
+     A                                 19  2MSGCON(130 CON0008 *LIBL/RF0023MF)
      A          R DSPF010F
      A*%%TS  SD  20141020  122002  HILDEBRAND  REL-V7R1M0  5770-WDS
      A                                      OVERLAY

@@ -15,7 +15,6 @@ import java.util.Set;
 
 import biz.rapidfire.core.Messages;
 import biz.rapidfire.core.maintenance.AbstractManager;
-import biz.rapidfire.core.maintenance.Contains;
 import biz.rapidfire.core.maintenance.MaintenanceMode;
 import biz.rapidfire.core.maintenance.Result;
 import biz.rapidfire.core.maintenance.Success;
@@ -23,6 +22,7 @@ import biz.rapidfire.core.maintenance.job.shared.DeleteShadowLibraries;
 import biz.rapidfire.core.maintenance.job.shared.JobAction;
 import biz.rapidfire.core.maintenance.job.shared.JobKey;
 import biz.rapidfire.core.maintenance.job.shared.JobTestMode;
+import biz.rapidfire.core.maintenance.reapplychanges.IReapplyChangesGetValidActions;
 import biz.rapidfire.core.model.IRapidFireJobResource;
 import biz.rapidfire.core.model.dao.IJDBCConnection;
 import biz.rapidfire.core.model.dao.JDBCConnectionManager;
@@ -298,20 +298,20 @@ public class JobManager extends AbstractManager<IRapidFireJobResource, JobKey, J
         return Result.createSuccessResult();
     }
 
-    public String buildFieldsWithGeneratedClause(JobKey key) throws Exception {
-
+    public int buildFieldsWithGeneratedClause(JobKey key) throws Exception {
+ 
         CallableStatement statement = dao.prepareCall(dao.insertLibraryQualifier("{CALL " + IJDBCConnection.LIBRARY + "\"FLDGENCLS_build\"(?, ?)}")); //$NON-NLS-1$ //$NON-NLS-2$
 
         statement.setString(IFieldsWithGeneratedClause.JOB, key.getJobName());
-        statement.setString(IFieldsWithGeneratedClause.CONTAINS, Contains.NO.label());
+        statement.setInt(IFieldsWithGeneratedClause.RESULT, 0);
 
-        statement.registerOutParameter(IFieldsWithGeneratedClause.CONTAINS, Types.CHAR);
+        statement.registerOutParameter(IFieldsWithGeneratedClause.RESULT, Types.INTEGER);
         
         statement.execute();
 
-        String contains = getStringTrim(statement, IFieldsWithGeneratedClause.CONTAINS);
+        int result = statement.getInt(IFieldsWithGeneratedClause.RESULT);
         
-        return contains;
+        return result;
     }
     
     @Override

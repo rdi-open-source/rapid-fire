@@ -33,6 +33,11 @@
              STRPGMEXP
 
                 EXPORT     SYMBOL('FLDGENCLS_build')
+                EXPORT     SYMBOL('FLDGENCLS_isReplicationOverrideAvailable')
+                EXPORT     SYMBOL('FLDGENCLS_isReplicationOverrideAuthorized')
+                EXPORT     SYMBOL('FLDGENCLS_setReplicationOverride')
+                EXPORT     SYMBOL('FLDGENCLS_isFieldsWithGeneratedClause')
+                EXPORT     SYMBOL('FLDGENCLS_setFieldsWithGeneratedClause')
 
              ENDPGMEXP
 

@@ -1,4 +1,4 @@
-     A*%%TS  SD  20171220  154614  HILDEBRAND  REL-V7R3M0  5770-WDS
+     A*%%TS  SD  20230627  153043  HILDEBRAND  REL-V7R5M0  5770-WDS
      A*------------------------------------------------------------------------*
      A*                                                                        *
      A* COPYRIGHT (C) 2014 TASK FORCE IT-CONSULTING GMBH, WALTROP (GERMANY)    *
@@ -189,6 +189,16 @@
      A                                  2 23MSGCON(020 CON0012 *LIBL/RF0001MF)
      A            DFJOB     R        O  2 44REFFLD(JOBS/X1JOB *LIBL/JOBS)
      A                                  4  1MSGCON(076 CON0022 *LIBL/RF0001MF)
+     A          R DSPF080W
+     A*%%TS  SD  20230627  153043  HILDEBRAND  REL-V7R5M0  5770-WDS
+     A                                      WINDOW(9 1 5 76)
+     A                                      CA12
+     A                                      CF10
+     A                                      OVERLAY
+     A                                  2 23MSGCON(020 CON0012 *LIBL/RF0001MF)
+     A            DFJOB     R        O  2 44REFFLD(JOBS/X1JOB *LIBL/JOBS)
+     A                                  4  1MSGCON(015 CON0025 *LIBL/RF0001MF)
+     A            DFINTERR      60A  O  4 17
      A          R DSPF999S                  SFL
      A*%%TS  SD  20010425  174353  EXT01       REL-V4R4M0  5769-PW1
      A                                      SFLMSGRCD(24)

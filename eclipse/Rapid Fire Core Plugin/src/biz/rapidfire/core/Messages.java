@@ -21,6 +21,7 @@ public class Messages extends NLS {
     public static final String SPACE = " "; //$NON-NLS-1$
 
     public static String E_R_R_O_R;
+    public static String Internal_error_colon;
 
     // Dialog titles
     public static String DialogTitle_Specify_a_filter;

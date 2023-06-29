@@ -8,9 +8,12 @@
 
 package biz.rapidfire.core.handlers.job;
 
+import org.eclipse.swt.SWT;
+import org.eclipse.swt.widgets.MessageBox;
+
+import biz.rapidfire.core.Messages;
 import biz.rapidfire.core.dialogs.action.ConfirmStartJobActionDialog;
 import biz.rapidfire.core.dialogs.action.FieldsWithGeneratedClauseDialog;
-import biz.rapidfire.core.maintenance.Contains;
 import biz.rapidfire.core.maintenance.job.shared.JobAction;
 import biz.rapidfire.core.model.IRapidFireJobResource;
 
@@ -26,11 +29,19 @@ public class StartJobHandler extends AbstractJobActionHandler {
         ConfirmStartJobActionDialog dialog = new ConfirmStartJobActionDialog(getShell(), job.getName());
         dialog.open();
         if (dialog.isConfirmed()) {
+  
+        	String _error = null;
         	
-            String contains = getManager().buildFieldsWithGeneratedClause(job.getKey());
+            int result = getManager().buildFieldsWithGeneratedClause(job.getKey());
             
-            if (Contains.YES.label().equals(contains)) {
-
+            if (result < 0) {
+            	_error = "FLDGENCLS_build(" + Integer.toString(result) + ")";
+            }
+            else if (result == 0) {
+            	// Nothing to do
+            }
+            else if (result > 0) {
+                
             	FieldsWithGeneratedClauseDialog dialogGenerated = new FieldsWithGeneratedClauseDialog(getShell(), getManager().getDao(), job);
             	dialogGenerated.open();
                 if (!dialogGenerated.isContinue()) {
@@ -38,11 +49,24 @@ public class StartJobHandler extends AbstractJobActionHandler {
                 }
             	
             }
-        	
-            getManager().startJob(job.getKey());
 
-            job.reload(getShell());
-            refreshUIChanged(job.getParentSubSystem(), job, job.getParentFilters());
+            if (_error != null) {
+            	
+    			MessageBox errorBox = new MessageBox(getShell(), SWT.ICON_ERROR);
+    			errorBox.setText(Messages.Label_Job_colon + job);
+    			errorBox.setMessage(Messages.Internal_error_colon + _error);
+    			errorBox.open();
+
+            }
+            else {
+                
+                getManager().startJob(job.getKey());
+
+                job.reload(getShell());
+                refreshUIChanged(job.getParentSubSystem(), job, job.getParentFilters());
+            	
+            }
+            
         }
     }
 }

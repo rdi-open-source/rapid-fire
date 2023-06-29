@@ -27,6 +27,9 @@
 //*                                                                                         *
 //* (01 - 49) Freie Bezugszahlen für sonstige Dinge                                         *
 //*                                                                                         *
+//* 01      --> Modus *1                                                                    *
+//* 02      --> Modus *2                                                                    *
+//*                                                                                         *
 //*-----------------------------------------------------------------------------------------*
 //*                                                                                         *
 //* (50 - 59) Reservierte Bezugszahlen für Diverses                                         *
@@ -97,6 +100,7 @@ DCL-F FLDGENCLS Disk(*EXT) USAGE(*INPUT) KEYED Rename(FLDGENCLS : FGCRF);
 
 DCL-PI RF0023PG;
   PIJOB CHAR(10) Const;                                                  // --> Job
+  PIMODE CHAR(10) Const;                                                 // --> Modus
   PIRtCd CHAR(10);                                                       // <-- Rückkehrcode
 END-PI;
 
@@ -130,7 +134,7 @@ END-DS;
 
 // Anzahl Subdateisätze pro Seite
 
-DCL-C RcdPerPage 10;
+DCL-C RcdPerPage 7;
 
 // Satzdatenstruktur für gelesene Sätze aus der Primärdatei
 
@@ -284,6 +288,15 @@ EndIf;
 //*-----------------------------------------------------------------------------------------*
 
 BegSr SR005;
+  // Bezugszahlen für Modus setzen
+  *IN01 = *Off;
+  *IN02 = *Off;
+  Select;
+  When PIMODE = '*1';
+    *IN01 = *On;
+  When PIMODE = '*2';
+    *IN02 = *On;
+  EndSl;
   // Job initialisieren
   DFJOB = PIJOB;
   // Positionierung initialisieren

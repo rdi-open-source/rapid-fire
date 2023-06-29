@@ -12,5 +12,6 @@
 
 DCL-PR RF0023PG ExtPgm('RF0023PG');
   *N CHAR(10) Const;                                                     // --> Job
+  *N CHAR(10) Const;                                                     // --> Modus
   *N CHAR(10);                                                           // <-- Rückkehrcode
 END-PR;
