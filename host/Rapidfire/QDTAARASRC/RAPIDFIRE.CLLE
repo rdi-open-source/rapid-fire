@@ -56,20 +56,20 @@
              RTVSYSVAL  SYSVAL(QDATE) RTNVAR(&SYSDATE)
              CVTDAT     DATE(&SYSDATE) TOVAR(&DATEISO) FROMFMT(*JOB) TOFMT(*ISO)
 
-             CHGVAR     VAR(&RF_VER ) VALUE('05')
+             CHGVAR     VAR(&RF_VER ) VALUE('06')
              CHGVAR     VAR(&RF_RLS ) VALUE('00')
-             CHGVAR     VAR(&RF_MDN ) VALUE('20')
+             CHGVAR     VAR(&RF_MDN ) VALUE('00')
 
              CHGVAR     VAR(&CM_VER ) VALUE('05')
              CHGVAR     VAR(&CM_RLS ) VALUE('01')
              CHGVAR     VAR(&CM_MDN ) VALUE('00')
-             CHGVAR     VAR(&CM_PTF ) VALUE('C510026')
+             CHGVAR     VAR(&CM_PTF ) VALUE('C510035')
 
              CHGVAR     VAR(&BD_DATE) VALUE(&DATEISO)
 
              CHGVAR     VAR(&CL_VER ) VALUE('01')
              CHGVAR     VAR(&CL_RLS ) VALUE('01')
-             CHGVAR     VAR(&CL_MDN ) VALUE('09')
+             CHGVAR     VAR(&CL_MDN ) VALUE('11')
 
              DLTDTAARA  DTAARA(&LIB/&OBJ)
              MONMSG     MSGID(CPF2105) EXEC(DO)
