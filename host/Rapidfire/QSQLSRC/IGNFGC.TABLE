@@ -1,0 +1,42 @@
+-- *------------------------------------------------------------------------*
+-- *                                                                        *
+-- * Copyright (c) 2014 Task Force IT-Consulting GmbH, Waltrop (Germany)    *
+-- * This software and the accompanying materials are made available        *
+-- * under the terms of the GNU General Public License version 2.0 (GPLv2)  *
+-- * which accompanies this distribution and is available at                *
+-- * http://www.gnu.org/licenses/gpl-2.0.html                               *
+-- *                                                                        *
+-- *------------------------------------------------------------------------*
+-- *                                                                        *
+-- * Ignore fields with GENERATED clause                                    *
+-- *                                                                        *
+-- *------------------------------------------------------------------------*
+
+CREATE TABLE IGNORE_FIELDS_WITH_GENERATED_CLAUSE
+FOR SYSTEM NAME IGNFGC
+(
+ JOB FOR COLUMN XJJOB CHAR(10) NOT NULL WITH DEFAULT,
+ LIBRARY FOR COLUMN XJLIB CHAR(10) NOT NULL WITH DEFAULT,
+ FILE FOR COLUMN XJFILE CHAR(10) NOT NULL WITH DEFAULT
+);
+
+LABEL ON TABLE IGNORE_FIELDS_WITH_GENERATED_CLAUSE
+ IS 'Ignore fields with GENERATED clause';
+
+LABEL ON COLUMN IGNORE_FIELDS_WITH_GENERATED_CLAUSE
+(
+ JOB IS 'Job',
+ LIBRARY IS 'Library',
+ FILE IS 'File'
+);
+
+LABEL ON COLUMN IGNORE_FIELDS_WITH_GENERATED_CLAUSE
+(
+ JOB TEXT IS 'Job',
+ LIBRARY TEXT IS 'Library',
+ FILE TEXT IS 'File'
+);
+
+ALTER TABLE IGNORE_FIELDS_WITH_GENERATED_CLAUSE
+ADD CONSTRAINT IGNORE_FIELDS_WITH_GENERATED_CLAUSE_PRIMARY_KEY
+PRIMARY KEY (JOB, LIBRARY, FILE);

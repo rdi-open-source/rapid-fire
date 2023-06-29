@@ -106,7 +106,13 @@ DCL-PROC FLDGENCLS_build EXPORT;
         Select Library, File
         From Files_With_Shadow_Library
         Where Job = :p_Job And
-              Type = '*PHYSICAL'
+              Type = '*PHYSICAL' And
+              (Library, File) Not In
+                (
+                 Select Library, File
+                 From Ignore_Fields_With_Generated_Clause
+                 Where Job = :p_Job
+                )
         For Read Only;
 
     // Open cursor
