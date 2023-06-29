@@ -343,7 +343,6 @@ DCL-S ANZVER Like(DFVER);                                                // Vers
 DCL-S ITBLK ZONED(2);                                                    // Anzahl Leerzeiche
 DCL-S ITXMsg CHAR(256);                                                  // Nachricht
 DCL-S ITSUCC CHAR(1);                                                    // Erfolg
-DCL-S g_CFWGC CHAR(1);                                                   // Contains fields with generated clause?
 DCL-S g_INTERR CHAR(60);                                                 // Interner Fehler
 DCL-S g_RSLT INT(10);                                                    // Result
 
