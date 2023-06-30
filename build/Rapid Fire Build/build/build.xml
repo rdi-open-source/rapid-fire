@@ -23,19 +23,19 @@
  *   3. The classpath must include the following jars for executing this build script.
  *      Item 4 describes how to do this.
  *         commons-net-3.3-patched.jar
- *         jsch-0.1.51.jar
+ *         jsch-0.1.55.jar
  *
  *   4. Follow these steps to change the JRE of the Ant script and to add the jars to the Ant classpath:
  *
  *      4.1 Execute the "build" target and ignore all errors, to create an
  *          "External Tools Configuration".
- *      4.2 Right-click the "build" target and select option "Run as -> Ant Build..."
+ *      4.2 Right-click build.xml and select option "Run as -> Ant Build..."
  *      4.3 Click the "JRE" tab and select option "Run in the same JRE as the 
  *          workspace".
  *      4.4 Click the "Classpath" tab, select "User Entries" and add the following jars 
  *          from "[Rapid Fire Build]/build/lib".
  *          * commons-net-3.3-patched.jar
- *          * jsch-0.1.51.jar
+ *          * jsch-0.1.55.jar
  *      4.5 Save your changes. 
  *
  *      The following jar files are loaded dynamically, because they
