@@ -36,12 +36,14 @@ public class ConfirmStartJobActionDialog extends XDialog {
 
     private boolean isConfirmed;
     private String jobName;
+    private String version;
 
-    public ConfirmStartJobActionDialog(Shell shell, String jobName) {
+    public ConfirmStartJobActionDialog(Shell shell, String jobName, String version) {
         super(shell);
 
         this.isConfirmed = false;
         this.jobName = jobName;
+        this.version = version;
     }
 
     @Override
@@ -80,7 +82,13 @@ public class ConfirmStartJobActionDialog extends XDialog {
 
         try {
 
-            in = getClass().getClassLoader().getResourceAsStream("/biz/rapidfire/core/dialogs/action/resources/start_job_warning.text");
+        	if (version.compareTo("060000") >= 0) {
+                in = getClass().getClassLoader().getResourceAsStream("/biz/rapidfire/core/dialogs/action/resources/start_job_warning.text");
+        	}
+        	else {
+                in = getClass().getClassLoader().getResourceAsStream("/biz/rapidfire/core/dialogs/action/resources/start_job_warning_old.text");
+        	}
+        	
             BufferedReader r = new BufferedReader(new InputStreamReader(in));
 
             // reads each line

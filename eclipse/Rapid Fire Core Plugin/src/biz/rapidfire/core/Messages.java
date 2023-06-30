@@ -22,6 +22,7 @@ public class Messages extends NLS {
 
     public static String E_R_R_O_R;
     public static String Internal_error_colon;
+    public static String Could_not_determine_the_version_of_the_Rapid_Fire_library;
 
     // Dialog titles
     public static String DialogTitle_Specify_a_filter;

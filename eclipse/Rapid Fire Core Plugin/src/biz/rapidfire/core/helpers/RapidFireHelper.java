@@ -327,4 +327,22 @@ public class RapidFireHelper {
         return true;
     }
 
+    public static String getRapidFireServerVersion(Shell shell, AS400 as400, String library) {
+
+        if (as400 == null) {
+            return null;
+        }
+
+        if (!checkLibrary(as400, library)) {
+            return null;
+        }
+
+        RapidFireDataArea dataAreaRapidFireContent = readRapidFireDataArea(shell, as400, library);
+        if (dataAreaRapidFireContent == null) {
+            return null;
+        }
+
+        return dataAreaRapidFireContent.getServerVersion();
+    }
+    
 }
