@@ -283,6 +283,9 @@
              CHGVAR     VAR(&NAME) VALUE('CHKSTSE04')
              CALLSUBR   SUBR(EXECUTE)
 
+             CHGVAR     VAR(&NAME) VALUE('FLDGENCLS1')
+             CALLSUBR   SUBR(EXECUTE)
+
              ENDDO
 
              SNDPGMMSG  MSGID(CPF9897) MSGF(*LIBL/QCPFMSG) +
