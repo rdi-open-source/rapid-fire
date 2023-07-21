@@ -82,12 +82,7 @@ public class ConfirmStartJobActionDialog extends XDialog {
 
         try {
 
-        	if (version.compareTo("060000") >= 0) {
-                in = getClass().getClassLoader().getResourceAsStream("/biz/rapidfire/core/dialogs/action/resources/start_job_warning.text");
-        	}
-        	else {
-                in = getClass().getClassLoader().getResourceAsStream("/biz/rapidfire/core/dialogs/action/resources/start_job_warning_old.text");
-        	}
+            in = getClass().getClassLoader().getResourceAsStream("/biz/rapidfire/core/dialogs/action/resources/start_job_warning.text");
         	
             BufferedReader r = new BufferedReader(new InputStreamReader(in));
 
