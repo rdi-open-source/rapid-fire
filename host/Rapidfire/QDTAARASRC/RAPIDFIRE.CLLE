@@ -58,7 +58,7 @@
 
              CHGVAR     VAR(&RF_VER ) VALUE('06')
              CHGVAR     VAR(&RF_RLS ) VALUE('00')
-             CHGVAR     VAR(&RF_MDN ) VALUE('00')
+             CHGVAR     VAR(&RF_MDN ) VALUE('01')
 
              CHGVAR     VAR(&CM_VER ) VALUE('05')
              CHGVAR     VAR(&CM_RLS ) VALUE('01')
