@@ -270,7 +270,7 @@ DCL-DS flda0100_t
   // Column heading 3
   colHdg3 CHAR(20);
   // Date and time format
-  datTimFmt CHAR(4);
+  datTimFmt CHAR(10);
   // Date and time separator
   datTimSep CHAR(1);
 END-DS;
@@ -315,7 +315,7 @@ DCL-DS flda0200_t
   // Column heading 3
   colHdg3 CHAR(20);
   // Date and time format
-  datTimFmt CHAR(4);
+  datTimFmt CHAR(10);
   // Date and time separator
   datTimSep CHAR(1);
   //  Additional fields of format FLDA0200
@@ -369,7 +369,7 @@ DCL-DS flda0300_t
   // Column heading 3
   colHdg3 CHAR(20);
   // Date and time format
-  datTimFmt CHAR(4);
+  datTimFmt CHAR(10);
   // Date and time separator
   datTimSep CHAR(1);
   // Additional fields of format FLDA0200

@@ -887,7 +887,7 @@ END-PROC;
 
 DCL-PROC intToExtDatTimFmt;
 
-  DCL-PI *N CHAR(4);
+  DCL-PI *N CHAR(10);
     i_intDataType CHAR(2) const;
     i_intFmt CHAR(1) const;
   END-PI;

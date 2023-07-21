@@ -1,0 +1,52 @@
+     /*-------------------------------------------------------------------------------------------*/
+     /*                                                                                           */
+     /* Copyright (c) 2014 Task Force IT-Consulting GmbH, Waltrop (Germany)                       */
+     /* This software and the accompanying materials are made available                           */
+     /* under the terms of the GNU General Public License version 2.0 (GPLv2)                     */
+     /* which accompanies this distribution and is available at                                   */
+     /* http://www.gnu.org/licenses/gpl-2.0.html                                                  */
+     /*                                                                                           */
+     /*-------------------------------------------------------------------------------------------*/
+     /*                                                                                           */
+     /* Convert Date                                                                              */
+     /*                                                                                           */
+     /*-------------------------------------------------------------------------------------------*/
+     /*  >>PRE-COMPILER<<                                                                         */
+     /*    >>CRTCMD<< CRTBNDCL     PGM(&LI/&OB) +                                                 */
+     /*                              SRCFILE(&SL/&SF) SRCMBR(&SM);                                */
+     /*    >>IMPORTANT<<                                                                          */
+     /*      >>PARM<<  DBGVIEW(*ALL);                                                             */
+     /*      >>PARM<<  OPTION(*EVENTF);                                                           */
+     /*      >>PARM<<  TGTRLS(&TR);                                                               */
+     /*    >>END-IMPORTANT<<                                                                      */
+     /*    >>EXECUTE<<                                                                            */
+     /*  >>END-PRE-COMPILER<<                                                                     */
+     /*------------+--------+---------------------------------------------------------------------*/
+     /*   Date     I Progr. I Description                                                         */
+     /*------------+--------+---------------------------------------------------------------------*/
+     /* 21.07.2023 I   FH   I Program created                                                     */
+     /*------------+--------+---------------------------------------------------------------------*/
+
+     /* Start */
+             PGM        PARM(&FROMDATE &FROMFMT &TOFMT &TOSEP &TODATE)
+
+     /* Declare compile options */
+             DCLPRCOPT  DFTACTGRP(*NO) ACTGRP(RAPIDFIRE) +
+                          BNDDIR(RAPIDFIRE)
+
+     /* Declare variables */
+             DCL        VAR(&FROMDATE) TYPE(*CHAR) LEN(10)
+             DCL        VAR(&FROMFMT) TYPE(*CHAR) LEN(10)
+             DCL        VAR(&TOFMT) TYPE(*CHAR) LEN(10)
+             DCL        VAR(&TOSEP) TYPE(*CHAR) LEN(10)
+             DCL        VAR(&TODATE) TYPE(*CHAR) LEN(10)
+
+     /* Convert date */
+             CVTDAT     DATE(&FROMDATE) TOVAR(&TODATE) +
+                          FROMFMT(&FROMFMT) TOFMT(&TOFMT) TOSEP(&TOSEP)
+             MONMSG     MSGID(CPF0000) EXEC(DO)
+             CHGVAR     VAR(&TODATE) VALUE('*CVTERR')
+             ENDDO
+
+     /* End */
+ STEP999:    ENDPGM

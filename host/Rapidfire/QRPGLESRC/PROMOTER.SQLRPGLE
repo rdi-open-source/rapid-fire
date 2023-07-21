@@ -112,9 +112,9 @@ CTL-OPT ExtBinInt(*YES);
 /Include QCPYSRC,SQLSTS
 /Include QCPYSRC,SETCCSID
 /Include QCPYSRC,PRCSDT
-
 /Include QCPYSRC,TYPES_H                    Type Templates
 /Include QCPYSRC,FLDATTRS                   Field Attributes
+/Include QCPYSRC,CVTDATE
 
 //*-----------------------------------------------------------------------------------------*
 
@@ -2565,6 +2565,9 @@ DCL-PROC getDefaultValue;
 
   DCL-S l_dftValue CHAR(2048) Based(l_pDftValue);
   DCL-S l_tmpDftValue VARCHAR(2048);
+  DCL-S l_toDate CHAR(10);
+  DCL-S l_hour ZONED(2 : 0);
+  DCL-S l_save CHAR(2);
 
   DCL-C QUOTE '''';
 
@@ -2584,9 +2587,121 @@ DCL-PROC getDefaultValue;
     Else;
       Select;
       When p_fldAttr.type = FLDATTRS_TYPE_DATE;
-        l_tmpDftValue = 'd' + l_tmpDftValue;
+        Select;
+        When p_fldAttr.datTimFmt = '*ISO' or
+             p_fldAttr.datTimFmt = '*JIS';
+          l_tmpDftValue =
+            'd' +
+            l_tmpDftValue;
+        When p_fldAttr.datTimFmt = '*USA' and
+             %subst(l_tmpDftValue : 1 : 1) = '''' and
+             %subst(l_tmpDftValue : 12 : 1) = '''';
+          l_tmpDftValue =
+            'd' +
+            '''' +
+            %subst(l_tmpDftValue : 8 : 4) + '-' +
+            %subst(l_tmpDftValue : 2 : 2) + '-' +
+            %subst(l_tmpDftValue : 5 : 2) +
+            '''';
+        When p_fldAttr.datTimFmt = '*EUR' and
+             %subst(l_tmpDftValue : 1 : 1) = '''' and
+             %subst(l_tmpDftValue : 12 : 1) = '''';
+          l_tmpDftValue =
+            'd' +
+            '''' +
+            %subst(l_tmpDftValue : 8 : 4) + '-' +
+            %subst(l_tmpDftValue : 5 : 2) + '-' +
+            %subst(l_tmpDftValue : 2 : 2) +
+            '''';
+        When (p_fldAttr.datTimFmt = '*MDY' or
+              p_fldAttr.datTimFmt = '*DMY' or
+              p_fldAttr.datTimFmt = '*YMD') and
+             %subst(l_tmpDftValue : 1 : 1) = '''' and
+             %subst(l_tmpDftValue : 10 : 1) = '''';
+          CvtDate(
+            %subst(l_tmpDftValue : 2 : 8) : // --> From date
+            p_fldAttr.datTimFmt :           // --> From format
+            '*ISO' :                        // --> To format
+            '-' :                           // --> To separator
+            l_toDate                        // --> To date
+          );
+          l_tmpDftValue =
+            'd' +
+            '''' +
+            %trim(l_toDate) +
+            '''';
+        When p_fldAttr.datTimFmt = '*JUL' and
+             %subst(l_tmpDftValue : 1 : 1) = '''' and
+             %subst(l_tmpDftValue : 8 : 1) = '''';
+          CvtDate(
+            %subst(l_tmpDftValue : 2 : 6) : // --> From date
+            p_fldAttr.datTimFmt :           // --> From format
+            '*ISO' :                        // --> To format
+            '-' :                           // --> To separator
+            l_toDate                        // --> To date
+          );
+          l_tmpDftValue =
+            'd' +
+            '''' +
+            %trim(l_toDate) +
+            '''';
+        Other;
+          l_tmpDftValue =
+            'd' +
+            l_tmpDftValue +
+            %trim(p_fldAttr.datTimFmt) +
+            '-*CVTERR';
+        EndSl;
       When p_fldAttr.type = FLDATTRS_TYPE_TIME;
-        l_tmpDftValue = 't' + l_tmpDftValue;
+        Select;
+        When p_fldAttr.datTimFmt = '*ISO' or
+             p_fldAttr.datTimFmt = '*EUR';
+          l_tmpDftValue =
+            't' +
+            l_tmpDftValue;
+        When (p_fldAttr.datTimFmt = '*HMS' or
+              p_fldAttr.datTimFmt = '*JIS') and
+             %subst(l_tmpDftValue : 1 : 1) = '''' and
+             %subst(l_tmpDftValue : 10 : 1) = '''';
+          l_tmpDftValue =
+            't' +
+            '''' +
+            %subst(l_tmpDftValue : 2 : 2) + '.' +
+            %subst(l_tmpDftValue : 5 : 2) + '.' +
+            %subst(l_tmpDftValue : 8 : 2) +
+            '''';
+        When p_fldAttr.datTimFmt = '*USA' and
+             %subst(l_tmpDftValue : 1 : 1) = '''' and
+             %subst(l_tmpDftValue : 10 : 1) = '''' and
+             (%subst(l_tmpDftValue : 8 : 2) = 'AM' or
+              %subst(l_tmpDftValue : 8 : 2) = 'PM');
+          l_save = %subst(l_tmpDftValue : 8 : 2);
+          l_tmpDftValue =
+            't' +
+            '''' +
+            %subst(l_tmpDftValue : 2 : 2) + '.' +
+            %subst(l_tmpDftValue : 5 : 2) + '.' +
+            '00' +
+            '''';
+          If l_save = 'PM';
+            Monitor;
+              l_hour = %dec(%subst(l_tmpDftValue : 3 : 2) : 2 : 0);
+              l_hour += 12;
+              %subst(l_tmpDftValue : 3 : 2) = %EditC(l_hour : 'X');
+            On-Error;
+              l_tmpDftValue =
+                l_tmpDftValue +
+                %trim(p_fldAttr.datTimFmt) +
+                '-*CVTERR';
+            EndMon;
+          EndIf;
+        Other;
+          l_tmpDftValue =
+            't' +
+            l_tmpDftValue +
+            %trim(p_fldAttr.datTimFmt) +
+            '-*CVTERR';
+        EndSl;
       When p_fldAttr.type = FLDATTRS_TYPE_TMSTMP;
         l_tmpDftValue = 'z' + l_tmpDftValue;
       Other;
