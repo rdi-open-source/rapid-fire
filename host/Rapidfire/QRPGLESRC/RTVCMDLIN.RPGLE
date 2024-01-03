@@ -36,7 +36,7 @@
 //*                                                                                         *
 //* PIRtvType  / *FIRST   --> Die erste Nachricht auffinden.                                *
 //*              *LAST    --> Die letzte Nachricht auffinden.                               *
-//*              *NEXT    --> Die nächste Nachricht auffinden.                              *
+//*              *NEXT    --> Die nÃ¤chste Nachricht auffinden.                              *
 //*              *PRV     --> Die vorherige Nachricht auffinden.                            *
 //*                                                                                         *
 //* PIRtvCmd   / *YES     --> Es konnte ein Befehl abgerufen werden.                        *
@@ -55,29 +55,29 @@ CTL-OPT ExtBinInt(*YES);
 
 //*-----------------------------------------------------------------------------------------*
 
-// Prozedurenprototyp für Prozedur 'RtvCmdLin'
+// Prozedurenprototyp fÃ¼r Prozedur 'RtvCmdLin'
 
 /Copy QCPYSRC,RTVCMDLIN
 
-// Prozedurenprototyp für Prozedur 'QMHRTVRQ'
+// Prozedurenprototyp fÃ¼r Prozedur 'QMHRTVRQ'
 
 /Copy QCPYSRC,QMHRTVRQ
 
-// Datenstruktur für Format 'RTVQ0100' für Prozedur 'QMHRTVRQ'
+// Datenstruktur fÃ¼r Format 'RTVQ0100' fÃ¼r Prozedur 'QMHRTVRQ'
 
 /Copy QCPYSRC,RTVQ0100
 
-// Datenstruktur für Format 'ERRC0100' für Fehlercode
+// Datenstruktur fÃ¼r Format 'ERRC0100' fÃ¼r Fehlercode
 
 /Copy QCPYSRC,ERRC0100
 
 //*=========================================================================================*
-//* Befehl für Befehlszeile auffinden                                                       *
+//* Befehl fÃ¼r Befehlszeile auffinden                                                       *
 //*=========================================================================================*
 
 DCL-PROC RtvCmdLin EXPORT;
 
-  DCL-PI RtvCmdLin CHAR(10);                                               // <-- Rückkehrwert
+  DCL-PI RtvCmdLin CHAR(10);                                               // <-- RÃ¼ckkehrwert
     PIRtvType CHAR(10) Const;                                              // --> Abrufart
     PIMsgKey CHAR(4);                                                      // <-> Nachrichtensc
     PICmd CHAR(1024);                                                      // <-- Befehl
@@ -101,7 +101,7 @@ DCL-PROC RtvCmdLin EXPORT;
     If ERRC0100.Exeption_Id <> *Blanks;
       Return '*EXCEPTION';
     EndIf;
-    // Rückkehrparameter füllen
+    // RÃ¼ckkehrparameter fÃ¼llen
     If RTVQ0100.Bytes_Available = *Zero;
       PIRtvCmd = '*NO';
       PIMsgKey = *Blanks;

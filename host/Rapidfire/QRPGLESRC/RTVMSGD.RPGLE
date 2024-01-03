@@ -36,15 +36,15 @@ CTL-OPT ExtBinInt(*YES);
 
 //*-----------------------------------------------------------------------------------------*
 
-// Prozedurenprototyp für Prozedur 'SndErrMsg'
+// Prozedurenprototyp fÃ¼r Prozedur 'SndErrMsg'
 
 /Copy QCPYSRC,RTVMSGD
 
-// Prozedurenprototyp für Prozedur 'QMHSNDPM'
+// Prozedurenprototyp fÃ¼r Prozedur 'QMHSNDPM'
 
 /Copy QCPYSRC,QMHRTVM
 
-// Datenstruktur für Format 'ERRC0100' für Fehlercode
+// Datenstruktur fÃ¼r Format 'ERRC0100' fÃ¼r Fehlercode
 
 /Copy QCPYSRC,ERRC0100
 

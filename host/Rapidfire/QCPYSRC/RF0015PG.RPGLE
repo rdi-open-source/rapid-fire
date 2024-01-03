@@ -14,5 +14,5 @@ DCL-PR RF0015PG ExtPgm('RF0015PG');
   *N CHAR(10) Const;                                                     // --> Modus
   *N CHAR(10) Const;                                                     // --> Job
   *N PACKED(3);                                                          // <-> Position
-  *N CHAR(10);                                                           // <-- Rückkehrcode
+  *N CHAR(10);                                                           // <-- RÃ¼ckkehrcode
 END-PR;

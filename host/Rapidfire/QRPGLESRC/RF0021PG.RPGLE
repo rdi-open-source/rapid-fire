@@ -42,11 +42,11 @@ DCL-F RF0021DF Workstn(*EXT) USAGE(*INPUT:*OUTPUT);
 
 //*-----------------------------------------------------------------------------------------*
 
-// Prozedurenprototyp für Prozedur 'RF0021PG'
+// Prozedurenprototyp fÃ¼r Prozedur 'RF0021PG'
 
 /Copy QCPYSRC,RF0021PG
 
-// Prozedurenschnittstelle für Prozedur 'RF0021PG'
+// Prozedurenschnittstelle fÃ¼r Prozedur 'RF0021PG'
 
 DCL-PI RF0021PG;
 END-PI;

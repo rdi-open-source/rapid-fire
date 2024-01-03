@@ -28,7 +28,7 @@
 :IMHELP name='BUILD/CPYSAVF   '.
 :EHELP.
 .*--------------------------------------------------------------------
-.* Helptext für den Befehl
+.* Helptext fÃ¼r den Befehl
 .*--------------------------------------------------------------------
 :HELP NAME='BUILD'.
 Rapid Fire Build (BUILD) - Help
@@ -38,7 +38,7 @@ The BUILD command produces the Rapid Fire save file.
 :EHELP.
 .*
 .*--------------------------------------------------------------------
-.* Helptext für Schlüsselwort LIB
+.* Helptext fÃ¼r SchlÃ¼sselwort LIB
 .*--------------------------------------------------------------------
 :HELP name='BUILD/LIB'.
 Rapid Fire library - Help
@@ -57,7 +57,7 @@ is RAPIDFIRE.
 :EHELP.
 .*
 .*--------------------------------------------------------------------
-.* Helptext für Schlüsselwort CPYSAVF
+.* Helptext fÃ¼r SchlÃ¼sselwort CPYSAVF
 .*--------------------------------------------------------------------
 :HELP name='BUILD/CPYSAVF'.
 Copy save file - Help

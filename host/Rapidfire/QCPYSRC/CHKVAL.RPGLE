@@ -12,6 +12,6 @@
 
 DCL-PR ChkVal CHAR(10);                                                  // <-- Fehler
   *N CHAR(10) Const;                                                     // --> Art
-  *N ZONED(5) Const;                                                     // --> Länge
+  *N ZONED(5) Const;                                                     // --> LÅ¡nge
   *N POINTER Const;                                                      // --> Wert
 END-PR;

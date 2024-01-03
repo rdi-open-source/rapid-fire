@@ -40,7 +40,7 @@
                TEXT('Rapid Fire')
 
      /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   MSG0001                    */
+     /*   Cmd-ADDMSGD fÃ¼r Message-ID :   MSG0001                    */
      /* Journal job for journal &1 in library &2 could not be submi */
      /*-------------------------------------------------------------*/
 
@@ -60,7 +60,7 @@
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   MSG0002                    */
+     /*   Cmd-ADDMSGD fÃ¼r Message-ID :   MSG0002                    */
      /* Journal job for journal &1 in library &2 could not be retri */
      /*-------------------------------------------------------------*/
 
@@ -80,7 +80,7 @@
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   MSG0003                    */
+     /*   Cmd-ADDMSGD fÃ¼r Message-ID :   MSG0003                    */
      /* No journal jobs submitted.                                  */
      /*-------------------------------------------------------------*/
 
@@ -97,7 +97,7 @@
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   MSG0004                    */
+     /*   Cmd-ADDMSGD fÃ¼r Message-ID :   MSG0004                    */
      /* At least one submitted job has not started within 120 secon */
      /*-------------------------------------------------------------*/
 
@@ -114,7 +114,7 @@
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   MSG0005                    */
+     /*   Cmd-ADDMSGD fÃ¼r Message-ID :   MSG0005                    */
      /* Journal job for journal &1 in library &2 could not read "Ch */
      /*-------------------------------------------------------------*/
 
@@ -137,7 +137,7 @@ file" for file &3 in library &4.'                                     +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   MSG0006                    */
+     /*   Cmd-ADDMSGD fÃ¼r Message-ID :   MSG0006                    */
      /* Journal job for journal &1 in library &2 could not write to */
      /*-------------------------------------------------------------*/
 
@@ -161,7 +161,7 @@ Workfile" for file &3 in library &4. Failed Statement : &5'           +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   MSG0007                    */
+     /*   Cmd-ADDMSGD fÃ¼r Message-ID :   MSG0007                    */
      /* User space PROMOTOR in library QTEMP could not be created.  */
      /*-------------------------------------------------------------*/
 
@@ -178,7 +178,7 @@ Workfile" for file &3 in library &4. Failed Statement : &5'           +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   MSG0008                    */
+     /*   Cmd-ADDMSGD fÃ¼r Message-ID :   MSG0008                    */
      /* Pointer to user space PROMOTOR in library QTEMP could not b */
      /*-------------------------------------------------------------*/
 
@@ -196,7 +196,7 @@ d.'                                                                   +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   MSG0009                    */
+     /*   Cmd-ADDMSGD fÃ¼r Message-ID :   MSG0009                    */
      /* User space PROMOTOR in library QTEMP could not be deleted.  */
      /*-------------------------------------------------------------*/
 
@@ -213,7 +213,7 @@ d.'                                                                   +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   MSG0010                    */
+     /*   Cmd-ADDMSGD fÃ¼r Message-ID :   MSG0010                    */
      /* Current library list could not be retrieved.                */
      /*-------------------------------------------------------------*/
 
@@ -230,7 +230,7 @@ d.'                                                                   +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   MSG0011                    */
+     /*   Cmd-ADDMSGD fÃ¼r Message-ID :   MSG0011                    */
      /* The journal of file &1 in library &2 could not be retrieved */
      /*-------------------------------------------------------------*/
 
@@ -250,7 +250,7 @@ d.'                                                                   +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   MSG0012                    */
+     /*   Cmd-ADDMSGD fÃ¼r Message-ID :   MSG0012                    */
      /* The ASP of library &1 could not be retrieved.               */
      /*-------------------------------------------------------------*/
 
@@ -269,7 +269,7 @@ d.'                                                                   +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   MSG0013                    */
+     /*   Cmd-ADDMSGD fÃ¼r Message-ID :   MSG0013                    */
      /* The ASP device of library &1 could not be retrieved.        */
      /*-------------------------------------------------------------*/
 
@@ -288,7 +288,7 @@ d.'                                                                   +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   MSG0014                    */
+     /*   Cmd-ADDMSGD fÃ¼r Message-ID :   MSG0014                    */
      /* Library &1 could not be created.                            */
      /*-------------------------------------------------------------*/
 
@@ -307,7 +307,7 @@ d.'                                                                   +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   MSG0015                    */
+     /*   Cmd-ADDMSGD fÃ¼r Message-ID :   MSG0015                    */
      /* Command for position &1, area &2, type &3 and sequence &4 c */
      /*-------------------------------------------------------------*/
 
@@ -330,7 +330,7 @@ e executed.'                                                          +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   MSG0016                    */
+     /*   Cmd-ADDMSGD fÃ¼r Message-ID :   MSG0016                    */
      /* Library list &1 could not be seted/reseted : Type = &2.     */
      /*-------------------------------------------------------------*/
 
@@ -350,7 +350,7 @@ e executed.'                                                          +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   MSG0017                    */
+     /*   Cmd-ADDMSGD fÃ¼r Message-ID :   MSG0017                    */
      /* Source physical file of copy program for file &1 in library */
      /*-------------------------------------------------------------*/
 
@@ -371,7 +371,7 @@ not be created in library QTEMP.'                                     +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   MSG0018                    */
+     /*   Cmd-ADDMSGD fÃ¼r Message-ID :   MSG0018                    */
      /* Source file of copy program for file &1 in library &2 could */
      /*-------------------------------------------------------------*/
 
@@ -392,7 +392,7 @@ ened.'                                                                +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   MSG0019                    */
+     /*   Cmd-ADDMSGD fÃ¼r Message-ID :   MSG0019                    */
      /* Copy program for file &1 in library &2 could not be compile */
      /*-------------------------------------------------------------*/
 
@@ -412,7 +412,7 @@ ened.'                                                                +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   MSG0020                    */
+     /*   Cmd-ADDMSGD fÃ¼r Message-ID :   MSG0020                    */
      /* Source physical file of copy program for file &1 in library */
      /*-------------------------------------------------------------*/
 
@@ -433,7 +433,7 @@ not be deleted in library QTEMP.'                                     +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   MSG0021                    */
+     /*   Cmd-ADDMSGD fÃ¼r Message-ID :   MSG0021                    */
      /* The record format of file &1 in library &2 could not be ret */
      /*-------------------------------------------------------------*/
 
@@ -453,7 +453,7 @@ not be deleted in library QTEMP.'                                     +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   MSG0022                    */
+     /*   Cmd-ADDMSGD fÃ¼r Message-ID :   MSG0022                    */
      /* File &1 in library &2 has more than one record format.      */
      /*-------------------------------------------------------------*/
 
@@ -473,7 +473,7 @@ not be deleted in library QTEMP.'                                     +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   MSG0023                    */
+     /*   Cmd-ADDMSGD fÃ¼r Message-ID :   MSG0023                    */
      /* The members of file &1 in library &2 could not be retrieved */
      /*-------------------------------------------------------------*/
 
@@ -493,7 +493,7 @@ not be deleted in library QTEMP.'                                     +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   MSG0024                    */
+     /*   Cmd-ADDMSGD fÃ¼r Message-ID :   MSG0024                    */
      /* Member &1 could not be added to file &2 in library &3.      */
      /*-------------------------------------------------------------*/
 
@@ -514,7 +514,7 @@ not be deleted in library QTEMP.'                                     +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   MSG0025                    */
+     /*   Cmd-ADDMSGD fÃ¼r Message-ID :   MSG0025                    */
      /* The description of member &1 in file &2 in library &3 could */
      /*-------------------------------------------------------------*/
 
@@ -536,7 +536,7 @@ trieved.'                                                             +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   MSG0026                    */
+     /*   Cmd-ADDMSGD fÃ¼r Message-ID :   MSG0026                    */
      /* Workfile Records for file &1 in library &2 could not be cre */
      /*-------------------------------------------------------------*/
 
@@ -556,7 +556,7 @@ trieved.'                                                             +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   MSG0027                    */
+     /*   Cmd-ADDMSGD fÃ¼r Message-ID :   MSG0027                    */
      /* Workfile Changes for file &1 in library &2 could not be cre */
      /*-------------------------------------------------------------*/
 
@@ -576,7 +576,7 @@ trieved.'                                                             +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   MSG0028                    */
+     /*   Cmd-ADDMSGD fÃ¼r Message-ID :   MSG0028                    */
      /* The description file &1 in library &2 could not be retrieve */
      /*-------------------------------------------------------------*/
 
@@ -596,7 +596,7 @@ trieved.'                                                             +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   MSG0029                    */
+     /*   Cmd-ADDMSGD fÃ¼r Message-ID :   MSG0029                    */
      /* The parameter FRCRATIO in file &1 in library &2 could not b */
      /*-------------------------------------------------------------*/
 
@@ -618,7 +618,7 @@ he value &3.'                                                         +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   MSG0030                    */
+     /*   Cmd-ADDMSGD fÃ¼r Message-ID :   MSG0030                    */
      /* Copy program for file &1 in library &2 crashed. Mode &3.    */
      /*-------------------------------------------------------------*/
 
@@ -639,7 +639,7 @@ he value &3.'                                                         +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   MSG0031                    */
+     /*   Cmd-ADDMSGD fÃ¼r Message-ID :   MSG0031                    */
      /* File job for file &1 in library &2 could not be submitted.  */
      /*-------------------------------------------------------------*/
 
@@ -659,7 +659,7 @@ he value &3.'                                                         +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   MSG0032                    */
+     /*   Cmd-ADDMSGD fÃ¼r Message-ID :   MSG0032                    */
      /* Journal job for journal &1 in library &2 could not be relea */
      /*-------------------------------------------------------------*/
 
@@ -679,7 +679,7 @@ he value &3.'                                                         +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   MSG0033                    */
+     /*   Cmd-ADDMSGD fÃ¼r Message-ID :   MSG0033                    */
      /* Control job for job &1 could not be submitted.              */
      /*-------------------------------------------------------------*/
 
@@ -698,7 +698,7 @@ he value &3.'                                                         +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   MSG0034                    */
+     /*   Cmd-ADDMSGD fÃ¼r Message-ID :   MSG0034                    */
      /* Control job for job &1 could not be retrieved.              */
      /*-------------------------------------------------------------*/
 
@@ -717,7 +717,7 @@ he value &3.'                                                         +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   MSG0035                    */
+     /*   Cmd-ADDMSGD fÃ¼r Message-ID :   MSG0035                    */
      /* Control job for job &1 could not be released.               */
      /*-------------------------------------------------------------*/
 
@@ -736,7 +736,7 @@ he value &3.'                                                         +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   MSG0036                    */
+     /*   Cmd-ADDMSGD fÃ¼r Message-ID :   MSG0036                    */
      /* Library &1 does not exit.                                   */
      /*-------------------------------------------------------------*/
 
@@ -755,7 +755,7 @@ he value &3.'                                                         +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   MSG0037                    */
+     /*   Cmd-ADDMSGD fÃ¼r Message-ID :   MSG0037                    */
      /* File &1 in library &2 does not exit.                        */
      /*-------------------------------------------------------------*/
 
@@ -775,7 +775,7 @@ he value &3.'                                                         +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   MSG0038                    */
+     /*   Cmd-ADDMSGD fÃ¼r Message-ID :   MSG0038                    */
      /* Target file of copy program for file &1 in library &2 could */
      /*-------------------------------------------------------------*/
 
@@ -796,7 +796,7 @@ ened.'                                                                +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   MSG0039                    */
+     /*   Cmd-ADDMSGD fÃ¼r Message-ID :   MSG0039                    */
      /* Journaling for file &1 in library &2 could not be started.  */
      /*-------------------------------------------------------------*/
 
@@ -816,7 +816,7 @@ ened.'                                                                +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   MSG0040                    */
+     /*   Cmd-ADDMSGD fÃ¼r Message-ID :   MSG0040                    */
      /* Journaling for file &1 in library &2 could not be ended.    */
      /*-------------------------------------------------------------*/
 
@@ -836,7 +836,7 @@ ened.'                                                                +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   MSG0041                    */
+     /*   Cmd-ADDMSGD fÃ¼r Message-ID :   MSG0041                    */
      /* Journal RAPIDFIRE could not be created in library &1.       */
      /*-------------------------------------------------------------*/
 
@@ -855,7 +855,7 @@ ened.'                                                                +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   MSG0042                    */
+     /*   Cmd-ADDMSGD fÃ¼r Message-ID :   MSG0042                    */
      /* At least one job is no longer active.                       */
      /*-------------------------------------------------------------*/
 
@@ -872,7 +872,7 @@ ened.'                                                                +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   MSG0043                    */
+     /*   Cmd-ADDMSGD fÃ¼r Message-ID :   MSG0043                    */
      /* File job for file &1 in library &2 could not be retrieved.  */
      /*-------------------------------------------------------------*/
 
@@ -892,7 +892,7 @@ ened.'                                                                +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   MSG0044                    */
+     /*   Cmd-ADDMSGD fÃ¼r Message-ID :   MSG0044                    */
      /* File job for file &1 in library &2 could not be released.   */
      /*-------------------------------------------------------------*/
 
@@ -912,7 +912,7 @@ ened.'                                                                +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   MSG0045                    */
+     /*   Cmd-ADDMSGD fÃ¼r Message-ID :   MSG0045                    */
      /* No file jobs submitted.                                     */
      /*-------------------------------------------------------------*/
 
@@ -929,7 +929,7 @@ ened.'                                                                +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   MSG0046                    */
+     /*   Cmd-ADDMSGD fÃ¼r Message-ID :   MSG0046                    */
      /* Data for file &1 in library &2 could not be retrieved.      */
      /*-------------------------------------------------------------*/
 
@@ -949,7 +949,7 @@ ened.'                                                                +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   MSG0047                    */
+     /*   Cmd-ADDMSGD fÃ¼r Message-ID :   MSG0047                    */
      /* All records in all files of Rapid Fire job &1 have copied.  */
      /*-------------------------------------------------------------*/
 
@@ -969,7 +969,7 @@ Fire job &1 is ready for installation.'                               +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   MSG0048                    */
+     /*   Cmd-ADDMSGD fÃ¼r Message-ID :   MSG0048                    */
      /* Journal job for journal &1 in library &2 received unexpecte */
      /*-------------------------------------------------------------*/
 
@@ -990,7 +990,7 @@ rom command RCVJRNE.'                                                 +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   MSG0049                    */
+     /*   Cmd-ADDMSGD fÃ¼r Message-ID :   MSG0049                    */
      /* Command RCVJRNE has finished with error &1.                 */
      /*-------------------------------------------------------------*/
 
@@ -1009,7 +1009,7 @@ rom command RCVJRNE.'                                                 +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   MSG0050                    */
+     /*   Cmd-ADDMSGD fÃ¼r Message-ID :   MSG0050                    */
      /* Exit program for command RCVJRNE has finished with error.   */
      /*-------------------------------------------------------------*/
 
@@ -1026,7 +1026,7 @@ rom command RCVJRNE.'                                                 +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   MSG0051                    */
+     /*   Cmd-ADDMSGD fÃ¼r Message-ID :   MSG0051                    */
      /* Could not retrieve field list of file &1 in library &2.     */
      /*-------------------------------------------------------------*/
 
@@ -1046,7 +1046,7 @@ rom command RCVJRNE.'                                                 +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   MSG0052                    */
+     /*   Cmd-ADDMSGD fÃ¼r Message-ID :   MSG0052                    */
      /* Journal job for journal &1 in library &2 could not retrieve */
      /*-------------------------------------------------------------*/
 
@@ -1070,7 +1070,7 @@ n "Changes Workfile" for file &3 in library &4. Failed Stm.:&5'       +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   MSG0053                    */
+     /*   Cmd-ADDMSGD fÃ¼r Message-ID :   MSG0053                    */
      /* Workfile Changes Log for file &1 in library &2 could not be */
      /*-------------------------------------------------------------*/
 
@@ -1090,7 +1090,7 @@ n "Changes Workfile" for file &3 in library &4. Failed Stm.:&5'       +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   MSG0054                    */
+     /*   Cmd-ADDMSGD fÃ¼r Message-ID :   MSG0054                    */
      /* Copy program could not open file &1.                        */
      /*-------------------------------------------------------------*/
 
@@ -1109,7 +1109,7 @@ n "Changes Workfile" for file &3 in library &4. Failed Stm.:&5'       +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   MSG0055                    */
+     /*   Cmd-ADDMSGD fÃ¼r Message-ID :   MSG0055                    */
      /* Workfile "Records Target" for file &1 in library &2 could n */
      /*-------------------------------------------------------------*/
 
@@ -1130,7 +1130,7 @@ ted.'                                                                 +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   MSG0056                    */
+     /*   Cmd-ADDMSGD fÃ¼r Message-ID :   MSG0056                    */
      /* At least one combination of library and file has been speci */
      /*-------------------------------------------------------------*/
 
@@ -1148,7 +1148,7 @@ ple times.'                                                           +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   MSG0057                    */
+     /*   Cmd-ADDMSGD fÃ¼r Message-ID :   MSG0057                    */
      /* &1                                                          */
      /*-------------------------------------------------------------*/
 
@@ -1167,7 +1167,7 @@ ple times.'                                                           +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   MSG0058                    */
+     /*   Cmd-ADDMSGD fÃ¼r Message-ID :   MSG0058                    */
      /* File &1 in library &2 contains fields with "Special Data Ty */
      /*-------------------------------------------------------------*/
 
@@ -1188,7 +1188,7 @@ LOB and DATALINK. This is not supported.'                             +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   MSG0059                    */
+     /*   Cmd-ADDMSGD fÃ¼r Message-ID :   MSG0059                    */
      /* Journal job for journal &1 in library &2 received performed */
      /*-------------------------------------------------------------*/
 
@@ -1211,7 +1211,7 @@ GZPFM for file &3 in library &4.'                                     +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   MSG0060                    */
+     /*   Cmd-ADDMSGD fÃ¼r Message-ID :   MSG0060                    */
      /* Command PWRDWNSYS, ENDSBS or ENDJOB with parameter OPTION(* */
      /*-------------------------------------------------------------*/
 
@@ -1229,7 +1229,7 @@ s performed.'                                                         +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   MSG0061                    */
+     /*   Cmd-ADDMSGD fÃ¼r Message-ID :   MSG0061                    */
      /* There are more than 300 files specified. 300 files is the l */
      /*-------------------------------------------------------------*/
 
@@ -1247,7 +1247,7 @@ s performed.'                                                         +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   MSG0062                    */
+     /*   Cmd-ADDMSGD fÃ¼r Message-ID :   MSG0062                    */
      /* File &1 in shadow library &2 has journaled. Perhaps a HA so */
      /*-------------------------------------------------------------*/
 
@@ -1268,7 +1268,7 @@ e BUS/400, iTERA, MIMIX ... has caused the problem.'                  +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   MSG0063                    */
+     /*   Cmd-ADDMSGD fÃ¼r Message-ID :   MSG0063                    */
      /* The threshold for ASP &1 has exceeded.                      */
      /*-------------------------------------------------------------*/
 

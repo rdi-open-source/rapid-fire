@@ -10,7 +10,7 @@
 //*                                                                                         *
 //*-----------------------------------------------------------------------------------------*
 
-DCL-PR SndErrMsg CHAR(10);                                               // <-- Rückkehrwert
+DCL-PR SndErrMsg CHAR(10);                                               // <-- RÃ¼ckkehrwert
   *N CHAR(10) Const;                                                     // --> Aufrufstapele
   *N CHAR(7) Const;                                                      // --> Nachrichten-I
   *N CHAR(10) Const;                                                     // --> Nachrichtenda

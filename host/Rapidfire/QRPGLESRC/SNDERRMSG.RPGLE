@@ -53,22 +53,22 @@ CTL-OPT ExtBinInt(*YES);
 
 //*-----------------------------------------------------------------------------------------*
 
-// Prozedurenprototyp für Prozedur 'SndErrMsg'
+// Prozedurenprototyp fÃ¼r Prozedur 'SndErrMsg'
 
 /Copy QCPYSRC,SNDERRMSG
 
-// Prozedurenprototyp für Prozedur 'QMHSNDPM'
+// Prozedurenprototyp fÃ¼r Prozedur 'QMHSNDPM'
 
 /Copy QCPYSRC,QMHSNDPM
 
-// Datenstruktur für Format 'ERRC0100' für Fehlercode
+// Datenstruktur fÃ¼r Format 'ERRC0100' fÃ¼r Fehlercode
 
 /Copy QCPYSRC,ERRC0100
 
 // Sonstige Felddeklarationen
 
-DCL-S ITCnt INT(10);                                                     // Aufrufstapelzähle
-DCL-S ITMsgKey CHAR(4);                                                  // Nachrichtenschlüs
+DCL-S ITCnt INT(10);                                                     // AufrufstapelzÃ¤hle
+DCL-S ITMsgKey CHAR(4);                                                  // NachrichtenschlÃ¼s
 DCL-S ITMsgType CHAR(10);                                                // Nachrichtenart
 
 //*=========================================================================================*
@@ -77,7 +77,7 @@ DCL-S ITMsgType CHAR(10);                                                // Nach
 
 DCL-PROC SndErrMsg EXPORT;
 
-  DCL-PI SndErrMsg CHAR(10);                                               // <-- Rückkehrwert
+  DCL-PI SndErrMsg CHAR(10);                                               // <-- RÃ¼ckkehrwert
     PICallStk CHAR(10) Const;                                              // --> Aufrufstapele
     PIMsgId CHAR(7) Const;                                                 // --> Nachrichten-I
     PIMsgF CHAR(10) Const;                                                 // --> Nachrichtenda
@@ -86,7 +86,7 @@ DCL-PROC SndErrMsg EXPORT;
     PIMsgType CHAR(10) Const Options(*NoPass);                             // --> Nachrichtenar
   END-PI;
 
-  // Aufrufstapelzähler ermitteln
+  // AufrufstapelzÃ¤hler ermitteln
   Select;
   When PICallStk = '*SAME';
     ITCnt = 1;

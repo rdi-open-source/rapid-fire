@@ -10,7 +10,7 @@
 //*                                                                                         *
 //*-----------------------------------------------------------------------------------------*
 
-DCL-PR RtvCmdLin CHAR(10);                                               // <-- Rückkehrwert
+DCL-PR RtvCmdLin CHAR(10);                                               // <-- RÃ¼ckkehrwert
   *N CHAR(10) Const;                                                     // --> Abrufart
   *N CHAR(4);                                                            // <-> Nachrichtensc
   *N CHAR(1024);                                                         // <-- Befehl

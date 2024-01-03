@@ -38,41 +38,41 @@ CTL-OPT ExtBinInt(*YES);
 
 //*-----------------------------------------------------------------------------------------*
 
-// Prozedurenprototyp für Prozedur 'WR0001PG'
+// Prozedurenprototyp fÃ¼r Prozedur 'WR0001PG'
 
 /Copy QCPYSRC,WR0001PG
 
-// Prozedurenschnittstelle für Prozedur 'WR0001PG'
+// Prozedurenschnittstelle fÃ¼r Prozedur 'WR0001PG'
 
 DCL-PI WR0001PG;
   PIMode CHAR(10) Const;                                                 // --> Modus
   PIJOB CHAR(10);                                                        // <-> Job
-  PIRtCd CHAR(10);                                                       // <-- Rückkehrcode
+  PIRtCd CHAR(10);                                                       // <-- RÃ¼ckkehrcode
 END-PI;
 
 //*-----------------------------------------------------------------------------------------*
 
-// Prozedurenprototyp für Prozedur 'RF0001PG'
+// Prozedurenprototyp fÃ¼r Prozedur 'RF0001PG'
 
 /Copy QCPYSRC,RF0001PG
 
-// Prozedurenprototyp für Prozedur 'RF0002PG'
+// Prozedurenprototyp fÃ¼r Prozedur 'RF0002PG'
 
 /Copy QCPYSRC,RF0002PG
 
-// Prozedurenprototypen für Modul 'EXCCMD'
+// Prozedurenprototypen fÃ¼r Modul 'EXCCMD'
 
 /Copy QCPYSRC,EXCCMD
 
-// Prozedurenprototyp für Prozedur 'QTNRCMTI'
+// Prozedurenprototyp fÃ¼r Prozedur 'QTNRCMTI'
 
 /Copy QCPYSRC,QTNRCMTI
 
-// Datenstruktur für Format 'CMTI0100' für Prozedur 'QTNRCMTI'
+// Datenstruktur fÃ¼r Format 'CMTI0100' fÃ¼r Prozedur 'QTNRCMTI'
 
 /Copy QCPYSRC,CMTI0100
 
-// Datenstruktur für Format 'ERRC0100' für Fehlercode
+// Datenstruktur fÃ¼r Format 'ERRC0100' fÃ¼r Fehlercode
 
 /Copy QCPYSRC,ERRC0100
 
@@ -124,7 +124,7 @@ If ERRC0100.Exeption_Id = *Blanks;
        PIMode :                                                          // --> Modus
        *Blanks :                                                         // --> Filter Job
        PIJOB :                                                           // <-> Job
-       PIRtCd                                                            // <-- Rückkehrcode
+       PIRtCd                                                            // <-- RÃ¼ckkehrcode
       );
     When PIMode = '*CREATE' Or
       PIMode = '*CHANGE' Or
@@ -134,7 +134,7 @@ If ERRC0100.Exeption_Id = *Blanks;
       RF0002PG(
        PIMode :                                                          // --> Modus
        PIJOB :                                                           // <-> Job
-       PIRtCd                                                            // <-- Rückkehrcode
+       PIRtCd                                                            // <-- RÃ¼ckkehrcode
       );
     EndSl;
     // Commitment Control muss beendet werden

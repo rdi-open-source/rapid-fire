@@ -40,7 +40,7 @@
                TEXT('Maintain Conversion')
 
      /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   ERR0001                    */
+     /*   Cmd-ADDMSGD fÃ¼r Message-ID :   ERR0001                    */
      /* The field to convert does already exist.                    */
      /*-------------------------------------------------------------*/
 
@@ -57,7 +57,7 @@
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   ERR0002                    */
+     /*   Cmd-ADDMSGD fÃ¼r Message-ID :   ERR0002                    */
      /* The value in field 'Field to convert' is not valid.         */
      /*-------------------------------------------------------------*/
 
@@ -74,7 +74,7 @@
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   ERR0003                    */
+     /*   Cmd-ADDMSGD fÃ¼r Message-ID :   ERR0003                    */
      /* The value in field 'Rename field in old file to' is not val */
      /*-------------------------------------------------------------*/
 
@@ -91,7 +91,7 @@
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   ERR0004                    */
+     /*   Cmd-ADDMSGD fÃ¼r Message-ID :   ERR0004                    */
      /* Invalid parameter values. Error = "Field to convert" has to */
      /*-------------------------------------------------------------*/
 
@@ -109,7 +109,7 @@
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   ERR0005                    */
+     /*   Cmd-ADDMSGD fÃ¼r Message-ID :   ERR0005                    */
      /* Both fields have to be different.                           */
      /*-------------------------------------------------------------*/
 
@@ -126,7 +126,7 @@
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   ERR0006                    */
+     /*   Cmd-ADDMSGD fÃ¼r Message-ID :   ERR0006                    */
      /* The value in field 'Statement' is not valid.                */
      /*-------------------------------------------------------------*/
 
@@ -143,7 +143,7 @@
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   ERR0007                    */
+     /*   Cmd-ADDMSGD fÃ¼r Message-ID :   ERR0007                    */
      /* Invalid parameter values. Error = &1.                       */
      /*-------------------------------------------------------------*/
 
@@ -162,7 +162,7 @@
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   ERR0008                    */
+     /*   Cmd-ADDMSGD fÃ¼r Message-ID :   ERR0008                    */
      /* &1                                                          */
      /*-------------------------------------------------------------*/
 
@@ -181,7 +181,7 @@
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   ERR0009                    */
+     /*   Cmd-ADDMSGD fÃ¼r Message-ID :   ERR0009                    */
      /* The action is only valid for jobs with status *RDY.         */
      /*-------------------------------------------------------------*/
 

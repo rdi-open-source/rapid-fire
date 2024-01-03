@@ -40,7 +40,7 @@
                TEXT('Rapid Fire files are not journaled')
 
      /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   CON0001                    */
+     /*   Cmd-ADDMSGD fÃ¼r Message-ID :   CON0001                    */
      /*             ! ! !   The Rapid Fire files are not journaled  */
      /*-------------------------------------------------------------*/
 
@@ -57,7 +57,7 @@
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   CON0002                    */
+     /*   Cmd-ADDMSGD fÃ¼r Message-ID :   CON0002                    */
      /* The Raid Fire files are not journaled. Probaly you unchecke */
      /*-------------------------------------------------------------*/
 
@@ -75,7 +75,7 @@ on'                                                                   +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   CON0003                    */
+     /*   Cmd-ADDMSGD fÃ¼r Message-ID :   CON0003                    */
      /* "Start journaling Rapid Fire files" when you transfered the */
      /*-------------------------------------------------------------*/
 
@@ -93,7 +93,7 @@ e library'                                                            +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   CON0004                    */
+     /*   Cmd-ADDMSGD fÃ¼r Message-ID :   CON0004                    */
      /* to the host. In general you do this, if you have installed  */
      /*-------------------------------------------------------------*/
 
@@ -111,7 +111,7 @@ ibility'                                                              +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   CON0005                    */
+     /*   Cmd-ADDMSGD fÃ¼r Message-ID :   CON0005                    */
      /* solution like MIMIX, iTERA, BUS/400 or others on your syste */
      /*-------------------------------------------------------------*/
 
@@ -129,7 +129,7 @@ ibility'                                                              +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   CON0006                    */
+     /*   Cmd-ADDMSGD fÃ¼r Message-ID :   CON0006                    */
      /* avaibility solution shall be responsible for the journaling */
      /*-------------------------------------------------------------*/
 
@@ -147,7 +147,7 @@ pid Fire'                                                             +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   CON0007                    */
+     /*   Cmd-ADDMSGD fÃ¼r Message-ID :   CON0007                    */
      /* files. If this is the case, then please check, why your hig */
      /*-------------------------------------------------------------*/
 
@@ -165,7 +165,7 @@ ty'                                                                   +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   CON0008                    */
+     /*   Cmd-ADDMSGD fÃ¼r Message-ID :   CON0008                    */
      /* solution has not journaled the Rapid Fire files. In all oth */
      /*-------------------------------------------------------------*/
 
@@ -183,7 +183,7 @@ tart the'                                                             +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   CON0009                    */
+     /*   Cmd-ADDMSGD fÃ¼r Message-ID :   CON0009                    */
      /* journaling of the Rapid Fire files by executing the followi */
      /*-------------------------------------------------------------*/
 
@@ -201,7 +201,7 @@ tart the'                                                             +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   CON0010                    */
+     /*   Cmd-ADDMSGD fÃ¼r Message-ID :   CON0010                    */
      /* CALL PGM(MY_RAPID_FIRE_LIB/STRENDJRN) PARM('*START' 'MY_RAP */
      /*-------------------------------------------------------------*/
 
@@ -219,7 +219,7 @@ _LIB'')'                                                              +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   CON0011                    */
+     /*   Cmd-ADDMSGD fÃ¼r Message-ID :   CON0011                    */
      /* Press enter to continue.                                    */
      /*-------------------------------------------------------------*/
 

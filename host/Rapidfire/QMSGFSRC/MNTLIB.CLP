@@ -40,7 +40,7 @@
                TEXT('Maintain Library')
 
      /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   ERR0001                    */
+     /*   Cmd-ADDMSGD fÃ¼r Message-ID :   ERR0001                    */
      /* The library does already exist.                             */
      /*-------------------------------------------------------------*/
 
@@ -57,7 +57,7 @@
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   ERR0002                    */
+     /*   Cmd-ADDMSGD fÃ¼r Message-ID :   ERR0002                    */
      /* The value in field 'Library' is not valid.                  */
      /*-------------------------------------------------------------*/
 
@@ -74,7 +74,7 @@
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   ERR0003                    */
+     /*   Cmd-ADDMSGD fÃ¼r Message-ID :   ERR0003                    */
      /* The value in field 'Shadow library' is not valid.           */
      /*-------------------------------------------------------------*/
 
@@ -91,7 +91,7 @@
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   ERR0004                    */
+     /*   Cmd-ADDMSGD fÃ¼r Message-ID :   ERR0004                    */
      /* The shadow library does already exist.                      */
      /*-------------------------------------------------------------*/
 
@@ -108,7 +108,7 @@
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   ERR0005                    */
+     /*   Cmd-ADDMSGD fÃ¼r Message-ID :   ERR0005                    */
      /* Shadow library must not be equal to library.                */
      /*-------------------------------------------------------------*/
 
@@ -125,7 +125,7 @@
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   ERR0006                    */
+     /*   Cmd-ADDMSGD fÃ¼r Message-ID :   ERR0006                    */
      /* Invalid parameter values. Error = Library has to be blanks. */
      /*-------------------------------------------------------------*/
 
@@ -142,7 +142,7 @@
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   ERR0007                    */
+     /*   Cmd-ADDMSGD fÃ¼r Message-ID :   ERR0007                    */
      /* Invalid parameter values. Error = &1.                       */
      /*-------------------------------------------------------------*/
 
@@ -161,7 +161,7 @@
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   ERR0008                    */
+     /*   Cmd-ADDMSGD fÃ¼r Message-ID :   ERR0008                    */
      /* The action is only valid for jobs with status *RDY.         */
      /*-------------------------------------------------------------*/
 
@@ -178,7 +178,7 @@
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   ERR0009                    */
+     /*   Cmd-ADDMSGD fÃ¼r Message-ID :   ERR0009                    */
      /* &1                                                          */
      /*-------------------------------------------------------------*/
 

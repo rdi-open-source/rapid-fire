@@ -40,7 +40,7 @@
                TEXT('Reapply all changes')
 
      /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   CON0001                    */
+     /*   Cmd-ADDMSGD fÃ¼r Message-ID :   CON0001                    */
      /*                     Reapply all changes                     */
      /*-------------------------------------------------------------*/
 
@@ -57,7 +57,7 @@
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   CON0002                    */
+     /*   Cmd-ADDMSGD fÃ¼r Message-ID :   CON0002                    */
      /* Job  . . . . . . . :                                        */
      /*-------------------------------------------------------------*/
 
@@ -74,7 +74,7 @@
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   CON0003                    */
+     /*   Cmd-ADDMSGD fÃ¼r Message-ID :   CON0003                    */
      /* File . . . . . . . :                                        */
      /*-------------------------------------------------------------*/
 
@@ -91,7 +91,7 @@
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   CON0004                    */
+     /*   Cmd-ADDMSGD fÃ¼r Message-ID :   CON0004                    */
      /* Library  . . . . . :                                        */
      /*-------------------------------------------------------------*/
 
@@ -108,7 +108,7 @@
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   CON0005                    */
+     /*   Cmd-ADDMSGD fÃ¼r Message-ID :   CON0005                    */
      /* F3=Exit  F10=Reapply all changes  F12=Cancel                */
      /*-------------------------------------------------------------*/
 
@@ -125,7 +125,7 @@
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   CON0010                    */
+     /*   Cmd-ADDMSGD fÃ¼r Message-ID :   CON0010                    */
      /* With this feature you can reapply all changes to the file i */
      /*-------------------------------------------------------------*/
 
@@ -143,7 +143,7 @@ ow'                                                                   +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   CON0011                    */
+     /*   Cmd-ADDMSGD fÃ¼r Message-ID :   CON0011                    */
      /* library which Rapid Fire has received from the journal sinc */
      /*-------------------------------------------------------------*/
 
@@ -161,7 +161,7 @@ d Fire'                                                               +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   CON0012                    */
+     /*   Cmd-ADDMSGD fÃ¼r Message-ID :   CON0012                    */
      /* Job has started. You should use this feature only in cases  */
      /*-------------------------------------------------------------*/
 
@@ -179,7 +179,7 @@ etected'                                                              +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   CON0013                    */
+     /*   Cmd-ADDMSGD fÃ¼r Message-ID :   CON0013                    */
      /* differences between the file in the production library and  */
      /*-------------------------------------------------------------*/
 
@@ -197,7 +197,7 @@ etected'                                                              +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   CON0014                    */
+     /*   Cmd-ADDMSGD fÃ¼r Message-ID :   CON0014                    */
      /* If you use this feature, the new number of changes to apply */
      /*-------------------------------------------------------------*/
 
@@ -215,7 +215,7 @@ be equal'                                                             +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   CON0015                    */
+     /*   Cmd-ADDMSGD fÃ¼r Message-ID :   CON0015                    */
      /* to the previous number of changes to apply in "Display Stat */
      /*-------------------------------------------------------------*/
 
@@ -233,7 +233,7 @@ be equal'                                                             +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   CON0016                    */
+     /*   Cmd-ADDMSGD fÃ¼r Message-ID :   CON0016                    */
      /* because multiple changes to the same record in the previous */
      /*-------------------------------------------------------------*/
 
@@ -251,7 +251,7 @@ g will'                                                               +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   CON0017                    */
+     /*   Cmd-ADDMSGD fÃ¼r Message-ID :   CON0017                    */
      /* result in only one change in the new processing.            */
      /*-------------------------------------------------------------*/
 

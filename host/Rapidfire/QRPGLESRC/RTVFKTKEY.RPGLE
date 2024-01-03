@@ -60,7 +60,7 @@
 //* *ENTER     --> Taste 'Enter'                                                            *
 //* *CLEAR     --> Taste 'Clear'                                                            *
 //* *AUTOENTER --> Automatische Satzfreigabe                                                *
-//* *INVALID   --> Ungültiger AID-Code                                                      *
+//* *INVALID   --> UngÃ¼ltiger AID-Code                                                      *
 //*                                                                                         *
 //*------------+--------+-------------------------------------------------------------------*
 //*   Datum    I Progr. I Beschreibung                                                      *
@@ -75,7 +75,7 @@ CTL-OPT ExtBinInt(*YES);
 
 //*-----------------------------------------------------------------------------------------*
 
-// Prozedurenprototyp für Prozedur 'RtvFktKey'
+// Prozedurenprototyp fÃ¼r Prozedur 'RtvFktKey'
 
 /Copy QCPYSRC,RTVFKTKEY
 

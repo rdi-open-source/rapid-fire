@@ -40,7 +40,7 @@
                TEXT('Generate Copy Program')
 
      /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   ERR0001                    */
+     /*   Cmd-ADDMSGD fÃ¼r Message-ID :   ERR0001                    */
      /* The value in field 'Source File' is not valid.              */
      /*-------------------------------------------------------------*/
 
@@ -57,7 +57,7 @@
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   ERR0002                    */
+     /*   Cmd-ADDMSGD fÃ¼r Message-ID :   ERR0002                    */
      /* The value in field 'Library' is not valid.                  */
      /*-------------------------------------------------------------*/
 
@@ -74,7 +74,7 @@
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   ERR0003                    */
+     /*   Cmd-ADDMSGD fÃ¼r Message-ID :   ERR0003                    */
      /* The value in field 'Source member' is not valid.            */
      /*-------------------------------------------------------------*/
 
@@ -91,7 +91,7 @@
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   ERR0004                    */
+     /*   Cmd-ADDMSGD fÃ¼r Message-ID :   ERR0004                    */
      /* Library does not exist.                                     */
      /*-------------------------------------------------------------*/
 
@@ -108,7 +108,7 @@
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   ERR0005                    */
+     /*   Cmd-ADDMSGD fÃ¼r Message-ID :   ERR0005                    */
      /* File does not exist.                                        */
      /*-------------------------------------------------------------*/
 
@@ -125,7 +125,7 @@
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   ERR0006                    */
+     /*   Cmd-ADDMSGD fÃ¼r Message-ID :   ERR0006                    */
      /* File is not a source file.                                  */
      /*-------------------------------------------------------------*/
 
@@ -142,7 +142,7 @@
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   ERR0007                    */
+     /*   Cmd-ADDMSGD fÃ¼r Message-ID :   ERR0007                    */
      /* Member already exists.                                      */
      /*-------------------------------------------------------------*/
 
@@ -159,7 +159,7 @@
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   ERR0008                    */
+     /*   Cmd-ADDMSGD fÃ¼r Message-ID :   ERR0008                    */
      /* The value in field 'Area' is not valid.                     */
      /*-------------------------------------------------------------*/
 
@@ -176,7 +176,7 @@
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   ERR0009                    */
+     /*   Cmd-ADDMSGD fÃ¼r Message-ID :   ERR0009                    */
      /* Area does not exist.                                        */
      /*-------------------------------------------------------------*/
 
@@ -193,7 +193,7 @@
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   ERR0010                    */
+     /*   Cmd-ADDMSGD fÃ¼r Message-ID :   ERR0010                    */
      /* Library record of area not found.                           */
      /*-------------------------------------------------------------*/
 
@@ -210,7 +210,7 @@
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   ERR0011                    */
+     /*   Cmd-ADDMSGD fÃ¼r Message-ID :   ERR0011                    */
      /* The value in field 'Conversion program' is not valid.       */
      /*-------------------------------------------------------------*/
 
@@ -227,7 +227,7 @@
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   ERR0012                    */
+     /*   Cmd-ADDMSGD fÃ¼r Message-ID :   ERR0012                    */
      /* The value in field 'Library' is not valid.                  */
      /*-------------------------------------------------------------*/
 
@@ -244,7 +244,7 @@
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   ERR0013                    */
+     /*   Cmd-ADDMSGD fÃ¼r Message-ID :   ERR0013                    */
      /* The library must not be specified.                          */
      /*-------------------------------------------------------------*/
 
@@ -261,7 +261,7 @@
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   ERR0014                    */
+     /*   Cmd-ADDMSGD fÃ¼r Message-ID :   ERR0014                    */
      /* The value in field 'Replace' is not valid.                  */
      /*-------------------------------------------------------------*/
 
@@ -278,7 +278,7 @@
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   ERR0017                    */
+     /*   Cmd-ADDMSGD fÃ¼r Message-ID :   ERR0017                    */
      /* Area and libraries are missing. Specify the area or the lib */
      /*-------------------------------------------------------------*/
 
@@ -295,7 +295,7 @@
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   ERR0018                    */
+     /*   Cmd-ADDMSGD fÃ¼r Message-ID :   ERR0018                    */
      /* Data library with old file does not exist.                  */
      /*-------------------------------------------------------------*/
 
@@ -312,7 +312,7 @@
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   ERR0019                    */
+     /*   Cmd-ADDMSGD fÃ¼r Message-ID :   ERR0019                    */
      /* Shadow library with new file does not exist.                */
      /*-------------------------------------------------------------*/
 
@@ -329,7 +329,7 @@
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   ERR0020                    */
+     /*   Cmd-ADDMSGD fÃ¼r Message-ID :   ERR0020                    */
      /* Old file does not exist in data library.                    */
      /*-------------------------------------------------------------*/
 
@@ -346,7 +346,7 @@
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   ERR0021                    */
+     /*   Cmd-ADDMSGD fÃ¼r Message-ID :   ERR0021                    */
      /* New file does not exist in shadow library.                  */
      /*-------------------------------------------------------------*/
 

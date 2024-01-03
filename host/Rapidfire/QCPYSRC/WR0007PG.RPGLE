@@ -13,5 +13,5 @@
 DCL-PR WR0007PG ExtPgm('WR0007PG');
   *N CHAR(10) Const;                                                     // --> Modus
   *N CHAR(10) Const;                                                     // --> Filter Job
-  *N CHAR(10);                                                           // <-- Rückkehrcode
+  *N CHAR(10);                                                           // <-- RÃ¼ckkehrcode
 END-PR;

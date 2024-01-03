@@ -40,7 +40,7 @@
                TEXT('Uninstall Rapid Fire')
 
      /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   CON0001                    */
+     /*   Cmd-ADDMSGD fÃ¼r Message-ID :   CON0001                    */
      /* Do you really want to uninstall the Rapid Fire library &1?  */
      /*-------------------------------------------------------------*/
 
@@ -59,7 +59,7 @@
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   CON0002                    */
+     /*   Cmd-ADDMSGD fÃ¼r Message-ID :   CON0002                    */
      /* Rapid Fire library &1 successfully uninstalled. Press enter */
      /*-------------------------------------------------------------*/
 
@@ -79,7 +79,7 @@ ue.'                                                                  +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   ERR0001                    */
+     /*   Cmd-ADDMSGD fÃ¼r Message-ID :   ERR0001                    */
      /* The library &1 doesn`t exist.                               */
      /*-------------------------------------------------------------*/
 
@@ -98,7 +98,7 @@ ue.'                                                                  +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   ERR0002                    */
+     /*   Cmd-ADDMSGD fÃ¼r Message-ID :   ERR0002                    */
      /* The library &1 is no Rapid Fire library.                    */
      /*-------------------------------------------------------------*/
 
@@ -117,7 +117,7 @@ ue.'                                                                  +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   ERR0003                    */
+     /*   Cmd-ADDMSGD fÃ¼r Message-ID :   ERR0003                    */
      /* The Rapid Fire library &1 cannot be allocated. Enter WRKOBJ */
      /*-------------------------------------------------------------*/
 
@@ -136,7 +136,7 @@ ue.'                                                                  +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   ERR0004                    */
+     /*   Cmd-ADDMSGD fÃ¼r Message-ID :   ERR0004                    */
      /* The Rapid Fire library &1 couldn`t be deleted completely. E */
      /*-------------------------------------------------------------*/
 

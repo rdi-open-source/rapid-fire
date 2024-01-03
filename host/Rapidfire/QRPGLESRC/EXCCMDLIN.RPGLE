@@ -36,7 +36,7 @@
 //* =====================                                                                   *
 //*                                                                                         *
 //* PIMode     / *EXECUTE --> Der Befehl wird normal verarbeitet.                           *
-//*              *PROMPT  --> Der Befehl wird nach einer Bedienerführungsanzeige verarbeitet*
+//*              *PROMPT  --> Der Befehl wird nach einer BedienerfÃ¼hrungsanzeige verarbeitet*
 //*              *DSPHELP --> Es wird Online-Hilfetext zum Befehl angezeigt.                *
 //*                                                                                         *
 //*------------+--------+-------------------------------------------------------------------*
@@ -52,56 +52,56 @@ CTL-OPT ExtBinInt(*YES);
 
 //*-----------------------------------------------------------------------------------------*
 
-// Prozedurenprototyp für Prozedur 'ExcCmdLin'
+// Prozedurenprototyp fÃ¼r Prozedur 'ExcCmdLin'
 
 /Copy QCPYSRC,EXCCMDLIN
 
-// Prozedurenprototyp für Prozedur 'QMHSNDPM'
+// Prozedurenprototyp fÃ¼r Prozedur 'QMHSNDPM'
 
 /Copy QCPYSRC,QMHSNDPM
 
-// Prozedurenprototyp für Prozedur 'QMHRCVPM'
+// Prozedurenprototyp fÃ¼r Prozedur 'QMHRCVPM'
 
 /Copy QCPYSRC,QMHRCVPM
 
-// Prozedurenprototyp für Prozedur 'QMHMOVPM'
+// Prozedurenprototyp fÃ¼r Prozedur 'QMHMOVPM'
 
 /Copy QCPYSRC,QMHMOVPM
 
-// Prozedurenprototyp für Prozedur 'QCAPCMD'
+// Prozedurenprototyp fÃ¼r Prozedur 'QCAPCMD'
 
 /Copy QCPYSRC,QCAPCMD
 
-// Datenstruktur für Format 'RCVM0100' für Prozedur 'QMHRCVPM'
+// Datenstruktur fÃ¼r Format 'RCVM0100' fÃ¼r Prozedur 'QMHRCVPM'
 
 /Copy QCPYSRC,RCVM0100
 
-// Datenstruktur für Format 'CPOP0100' für Prozedur 'QCAPCMD'
+// Datenstruktur fÃ¼r Format 'CPOP0100' fÃ¼r Prozedur 'QCAPCMD'
 
 /Copy QCPYSRC,CPOP0100
 
-// Datenstruktur für Format 'ERRC0100' für Fehlercode
+// Datenstruktur fÃ¼r Format 'ERRC0100' fÃ¼r Fehlercode
 
 /Copy QCPYSRC,ERRC0100
 
 // Sonstige Felddeklarationen
 
-DCL-S ITMsgKey CHAR(4);                                                  // Nachrichtenschlüs
+DCL-S ITMsgKey CHAR(4);                                                  // NachrichtenschlÃ¼s
 DCL-S ITCmd CHAR(1024);                                                  // Befehl
-DCL-S ITLen INT(10);                                                     // Länge
+DCL-S ITLen INT(10);                                                     // LÃ¤nge
 
 //*=========================================================================================*
-//* Befehl von der Befehlszeile ausführen                                                   *
+//* Befehl von der Befehlszeile ausfÃ¼hren                                                   *
 //*=========================================================================================*
 
 DCL-PROC ExcCmdLin EXPORT;
 
-  DCL-PI ExcCmdLin CHAR(10);                                               // <-- Rückkehrwert
+  DCL-PI ExcCmdLin CHAR(10);                                               // <-- RÃ¼ckkehrwert
     PIMode CHAR(10) Const;                                                 // --> Modus
     PICmd CHAR(1024) Const;                                                // --> Befehl
   END-PI;
 
-  // Programmnachricht mit Befehl nur in das Joblog schreiben, wenn auch ein Befehl ausgeführt
+  // Programmnachricht mit Befehl nur in das Joblog schreiben, wenn auch ein Befehl ausgefÃ¼hrt
   If PICmd <> *Blanks;
     // Programmnachricht senden
     Reset ERRC0100;

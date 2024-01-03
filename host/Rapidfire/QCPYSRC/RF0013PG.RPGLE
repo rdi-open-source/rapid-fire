@@ -12,5 +12,5 @@
 
 DCL-PR RF0013PG ExtPgm('RF0013PG');
   *N CHAR(10) Const;                                                     // --> Job
-  *N CHAR(10);                                                           // <-- Rückkehrcode
+  *N CHAR(10);                                                           // <-- RÃ¼ckkehrcode
 END-PR;

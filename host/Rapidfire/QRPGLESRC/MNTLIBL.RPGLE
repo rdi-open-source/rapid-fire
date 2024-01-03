@@ -384,7 +384,7 @@ DCL-PROC MNTLIBL_check EXPORT;
 
       for l_CNT = 1 to %elem(g_LIB) by 1;
 
-        // Die Position enth‰lt Werte
+        // Die Position enth√§lt Werte
         If g_LIB(l_CNT) <> *Blanks;
 
           // The sequenz may not be 9999

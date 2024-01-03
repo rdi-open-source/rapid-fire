@@ -10,6 +10,6 @@
 //*                                                                                         *
 //*-----------------------------------------------------------------------------------------*
 
-DCL-PR RmvErrMsg CHAR(10);                                               // <-- Rückkehrwert
+DCL-PR RmvErrMsg CHAR(10);                                               // <-- RÃ¼ckkehrwert
   *N CHAR(10) Const;                                                     // --> Aufrufstapele
 END-PR;

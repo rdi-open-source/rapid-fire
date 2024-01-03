@@ -13,4 +13,4 @@
      dWR0007PG         PR                  ExtPgm('WR0007PG')
      d                               10A   Const                                --> Modus
      d                               10A   Const                                --> Filter Job
-     d                               10A                                        <-- Rückkehrcode
+     d                               10A                                        <-- RÃ¼ckkehrcode

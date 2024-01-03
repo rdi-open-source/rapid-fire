@@ -50,21 +50,21 @@ CTL-OPT ExtBinInt(*YES);
 
 //*-----------------------------------------------------------------------------------------*
 
-// Prozedurenprototyp für Prozedur 'RmvErrMsg'
+// Prozedurenprototyp fÃ¼r Prozedur 'RmvErrMsg'
 
 /Copy QCPYSRC,RMVERRMSG
 
-// Prozedurenprototyp für Prozedur 'QMHRMVPM'
+// Prozedurenprototyp fÃ¼r Prozedur 'QMHRMVPM'
 
 /Copy QCPYSRC,QMHRMVPM
 
-// Datenstruktur für Format 'ERRC0100' für Fehlercode
+// Datenstruktur fÃ¼r Format 'ERRC0100' fÃ¼r Fehlercode
 
 /Copy QCPYSRC,ERRC0100
 
 // Sonstige Felddeklarationen
 
-DCL-S PICnt INT(10);                                                     // Aufrufstapelzähle
+DCL-S PICnt INT(10);                                                     // AufrufstapelzÃ¤hle
 
 //*=========================================================================================*
 //* Fehlernachricht entfernen                                                               *
@@ -72,11 +72,11 @@ DCL-S PICnt INT(10);                                                     // Aufr
 
 DCL-PROC RmvErrMsg EXPORT;
 
-  DCL-PI RmvErrMsg CHAR(10);                                               // <-- Rückkehrwert
+  DCL-PI RmvErrMsg CHAR(10);                                               // <-- RÃ¼ckkehrwert
     PICallstk CHAR(10) Const;                                              // --> Aufrufstapele
   END-PI;
 
-  // Aufrufstapelzähler ermitteln
+  // AufrufstapelzÃ¤hler ermitteln
   Select;
   When PICallstk = '*SAME';
     PICnt = 1;

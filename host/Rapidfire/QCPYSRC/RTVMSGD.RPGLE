@@ -13,7 +13,7 @@
 /if not defined(RTVMSGD)
 /define RTVMSGD
 
-DCL-PR rtvMsgText VARCHAR(250)                                           // <-- Rückkehrwert
+DCL-PR rtvMsgText VARCHAR(250)                                           // <-- RÃ¼ckkehrwert
        extproc('RTVMSGD_+
        rtvMsgText+
        ');
@@ -24,7 +24,7 @@ DCL-PR rtvMsgText VARCHAR(250)                                           // <-- 
        Options(*NoPass: *Omit);
 END-PR;
 
-DCL-PR rtvMsgHelp VARCHAR(3000)                                          // <-- Rückkehrwert
+DCL-PR rtvMsgHelp VARCHAR(3000)                                          // <-- RÃ¼ckkehrwert
        extproc('RTVMSGD_+
        rtvMsgHelp+
        ');

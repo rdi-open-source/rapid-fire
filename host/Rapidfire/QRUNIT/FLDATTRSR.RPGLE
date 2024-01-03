@@ -6,7 +6,7 @@
        //=======================================================================
        // History:
        //
-       // Datum       Name          Änderung
+       // Datum       Name          Ã„nderung
        // ----------  ------------  --------------------------------------------
        //
        //
@@ -157,7 +157,7 @@
 
          system(g_command);
 
-         // Nur löschen, wenn Druckfunktion komplett ausgebaut wird.
+         // Nur lÃ¶schen, wenn Druckfunktion komplett ausgebaut wird.
          closePrinter();
 
        end-proc;

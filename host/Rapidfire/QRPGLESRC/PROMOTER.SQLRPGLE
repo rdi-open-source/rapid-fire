@@ -58,10 +58,10 @@
 //*------------+--------+-------------------------------------------------------------------*
 //*   Datum    I Progr. I Beschreibung                                                      *
 //*------------+--------+-------------------------------------------------------------------*
-//* 03.02.2016 I   TR   I STRPREPRC Header hinzugefügt.                                     *
+//* 03.02.2016 I   TR   I STRPREPRC Header hinzugefÃ¼gt.                                     *
 //*------------+--------+-------------------------------------------------------------------*
-//* 11.03.2016 I   TR   I Programm erweitert, so dass bei einer Änderung im Satzformat die  *
-//*            I        I Felder einzelnd, Feld für Feld, kopiert werden. Damit ist dafür   *
+//* 11.03.2016 I   TR   I Programm erweitert, so dass bei einer Ã„nderung im Satzformat die  *
+//*            I        I Felder einzelnd, Feld fÃ¼r Feld, kopiert werden. Damit ist dafÃ¼r   *
 //*            I        I nicht mehr zwingend ein Kopierprogramm erforderlich.              *
 //*------------+--------+-------------------------------------------------------------------*
 //* 14.07.2016 I   TR   I Refactored 'Build_Target' of CPYPGM to initialize new field       *
@@ -979,7 +979,7 @@ DCL-PROC build_Environment;
           Leave;
         EndIf;
 
-        // CCSID-Zurücksetzen
+        // CCSID-ZurÃ¼cksetzen
         If Files.CCSID <> '*JOB';
           SetCCSID(-1);
         EndIf;

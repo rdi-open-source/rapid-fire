@@ -38,11 +38,11 @@ CTL-OPT ExtBinInt(*YES);
 
 //*-----------------------------------------------------------------------------------------*
 
-// Prozedurenprototyp für Prozedur 'WR0009PG'
+// Prozedurenprototyp fÃ¼r Prozedur 'WR0009PG'
 
 /Copy QCPYSRC,WR0009PG
 
-// Prozedurenschnittstelle für Prozedur 'WR0009PG'
+// Prozedurenschnittstelle fÃ¼r Prozedur 'WR0009PG'
 
 DCL-PI WR0009PG;
   p_JOB CHAR(10) Const; // --> Job
@@ -52,23 +52,23 @@ END-PI;
 
 //*-----------------------------------------------------------------------------------------*
 
-// Prozedurenprototyp für Prozedur 'MNTJOB'
+// Prozedurenprototyp fÃ¼r Prozedur 'MNTJOB'
 
 /Copy QCPYSRC,MNTJOB
 
-// Prozedurenprototypen für Modul 'EXCCMD'
+// Prozedurenprototypen fÃ¼r Modul 'EXCCMD'
 
 /Copy QCPYSRC,EXCCMD
 
-// Prozedurenprototyp für Prozedur 'QTNRCMTI'
+// Prozedurenprototyp fÃ¼r Prozedur 'QTNRCMTI'
 
 /Copy QCPYSRC,QTNRCMTI
 
-// Datenstruktur für Format 'CMTI0100' für Prozedur 'QTNRCMTI'
+// Datenstruktur fÃ¼r Format 'CMTI0100' fÃ¼r Prozedur 'QTNRCMTI'
 
 /Copy QCPYSRC,CMTI0100
 
-// Datenstruktur für Format 'ERRC0100' für Fehlercode
+// Datenstruktur fÃ¼r Format 'ERRC0100' fÃ¼r Fehlercode
 
 /Copy QCPYSRC,ERRC0100
 
@@ -119,7 +119,7 @@ If ERRC0100.Exeption_Id = *Blanks;
 
   If g_PRC = '*YES';
 
-    // Dateien öffnen
+    // Dateien Ã¶ffnen
     MNTJOB_openFiles();
 
     // Initialisieren
@@ -147,7 +147,7 @@ If ERRC0100.Exeption_Id = *Blanks;
 
     EndIf;
 
-    // Dateien schließen
+    // Dateien schlieÃŸen
     MNTJOB_closeFiles();
 
     // Commitment Control muss beendet werden

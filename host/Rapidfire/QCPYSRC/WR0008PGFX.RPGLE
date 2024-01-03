@@ -12,4 +12,4 @@
 
      dWR0008PG         PR                  ExtPgm('WR0008PG')
      d                               10A   Const                                --> Job
-     d                               10A                                        <-- Rückkehrcode
+     d                               10A                                        <-- RÃ¼ckkehrcode

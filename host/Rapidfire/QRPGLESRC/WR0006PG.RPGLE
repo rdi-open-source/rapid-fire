@@ -38,11 +38,11 @@ CTL-OPT ExtBinInt(*YES);
 
 //*-----------------------------------------------------------------------------------------*
 
-// Prozedurenprototyp für Prozedur 'WR0006PG'
+// Prozedurenprototyp fÃ¼r Prozedur 'WR0006PG'
 
 /Copy QCPYSRC,WR0006PG
 
-// Prozedurenschnittstelle für Prozedur 'WR0006PG'
+// Prozedurenschnittstelle fÃ¼r Prozedur 'WR0006PG'
 
 DCL-PI WR0006PG;
   p_Job
@@ -51,7 +51,7 @@ END-PI;
 
 //*-----------------------------------------------------------------------------------------*
 
-// Prozedurenprototypen für Modul 'JOB'
+// Prozedurenprototypen fÃ¼r Modul 'JOB'
 
 /Copy QCPYSRC,JOB
 

@@ -40,7 +40,7 @@
                TEXT('Fields with GENERATED clause')
 
      /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   CON0001                    */
+     /*   Cmd-ADDMSGD fÃ¼r Message-ID :   CON0001                    */
      /*                                           Fields with GENER */
      /*-------------------------------------------------------------*/
 
@@ -58,7 +58,7 @@ e'                                                                    +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   CON0002                    */
+     /*   Cmd-ADDMSGD fÃ¼r Message-ID :   CON0002                    */
      /* Library    File       Field      Text                       */
      /*-------------------------------------------------------------*/
 
@@ -75,7 +75,7 @@ e'                                                                    +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   CON0006                    */
+     /*   Cmd-ADDMSGD fÃ¼r Message-ID :   CON0006                    */
      /* F5=Refresh  F10=Continue  F12=Cancel  F17=Top  F18=Bottom   */
      /*-------------------------------------------------------------*/
 
@@ -92,7 +92,7 @@ e'                                                                    +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   CON0008                    */
+     /*   Cmd-ADDMSGD fÃ¼r Message-ID :   CON0008                    */
      /* ( No positions available )                                  */
      /*-------------------------------------------------------------*/
 
@@ -109,7 +109,7 @@ e'                                                                    +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   CON0011                    */
+     /*   Cmd-ADDMSGD fÃ¼r Message-ID :   CON0011                    */
      /* Job  . . . . . . . . . . . . :                              */
      /*-------------------------------------------------------------*/
 
@@ -126,7 +126,7 @@ e'                                                                    +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   CON0013                    */
+     /*   Cmd-ADDMSGD fÃ¼r Message-ID :   CON0013                    */
      /*        More ...                                             */
      /*-------------------------------------------------------------*/
 
@@ -143,7 +143,7 @@ e'                                                                    +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   CON0014                    */
+     /*   Cmd-ADDMSGD fÃ¼r Message-ID :   CON0014                    */
      /*             End                                             */
      /*-------------------------------------------------------------*/
 
@@ -160,7 +160,7 @@ e'                                                                    +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   CON0019                    */
+     /*   Cmd-ADDMSGD fÃ¼r Message-ID :   CON0019                    */
      /*                                                 ! ! !   A T */
      /*-------------------------------------------------------------*/
 
@@ -178,7 +178,7 @@ e'                                                                    +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   CON0020                    */
+     /*   Cmd-ADDMSGD fÃ¼r Message-ID :   CON0020                    */
      /* The Rapid Fire job contains files, which have fields with t */
      /*-------------------------------------------------------------*/
 
@@ -196,7 +196,7 @@ ERATED clause. If you use Rapid Fire for such files, then the'        +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   CON0021                    */
+     /*   Cmd-ADDMSGD fÃ¼r Message-ID :   CON0021                    */
      /* values of the fields with the SQL GENERATED clause will be  */
      /*-------------------------------------------------------------*/
 
@@ -214,7 +214,7 @@ d for each record in the files. The current IBM i release'            +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   CON0022                    */
+     /*   Cmd-ADDMSGD fÃ¼r Message-ID :   CON0022                    */
      /* provides a feature to avoid this. This feature is controlle */
      /*-------------------------------------------------------------*/
 
@@ -232,7 +232,7 @@ lobal variable REPLICATION_OVERRIDE. You can find a brief'            +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   CON0023                    */
+     /*   Cmd-ADDMSGD fÃ¼r Message-ID :   CON0023                    */
      /* description of this global variable here: https://www.ibm.c */
      /*-------------------------------------------------------------*/
 
@@ -250,7 +250,7 @@ lobal variable REPLICATION_OVERRIDE. You can find a brief'            +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   CON0024                    */
+     /*   Cmd-ADDMSGD fÃ¼r Message-ID :   CON0024                    */
      /* protected by the function QIBM_DB_GENCOL_OVERRIDE. Currentl */
      /*-------------------------------------------------------------*/
 
@@ -268,7 +268,7 @@ NOT allowed to use the global variable REPLICATION_OVERRIDE.'         +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   CON0025                    */
+     /*   Cmd-ADDMSGD fÃ¼r Message-ID :   CON0025                    */
      /* To be allowed to use the global variable REPLICATION_OVERRI */
      /*-------------------------------------------------------------*/
 
@@ -286,7 +286,7 @@ with special authority *SECADM has to execute the following'          +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   CON0026                    */
+     /*   Cmd-ADDMSGD fÃ¼r Message-ID :   CON0026                    */
      /* command: CHGFCNUSG FCNID(QIBM_DB_GENCOL_OVERRIDE) USER(<use */
      /*-------------------------------------------------------------*/
 
@@ -304,7 +304,7 @@ with special authority *SECADM has to execute the following'          +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   CON0027                    */
+     /*   Cmd-ADDMSGD fÃ¼r Message-ID :   CON0027                    */
      /* REGENERATED. We advise you to cancel. You can continue if y */
      /*-------------------------------------------------------------*/
 
@@ -322,7 +322,7 @@ understand what this means and if this causes NO problems'            +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   CON0028                    */
+     /*   Cmd-ADDMSGD fÃ¼r Message-ID :   CON0028                    */
      /* in your application. It is your decision. Be warned. The wr */
      /*-------------------------------------------------------------*/
 
@@ -340,7 +340,7 @@ on can destroy your entire application.'                              +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   CON0030                    */
+     /*   Cmd-ADDMSGD fÃ¼r Message-ID :   CON0030                    */
      /* The Rapid Fire job contains files, which have fields with t */
      /*-------------------------------------------------------------*/
 
@@ -358,7 +358,7 @@ ERATED clause. If you use Rapid Fire for such files, then the'        +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   CON0031                    */
+     /*   Cmd-ADDMSGD fÃ¼r Message-ID :   CON0031                    */
      /* values of the fields with the SQL GENERATED clause will be  */
      /*-------------------------------------------------------------*/
 
@@ -376,7 +376,7 @@ d for each record in the files. IF YOU CONTINUE, THEN THE '           +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   CON0032                    */
+     /*   Cmd-ADDMSGD fÃ¼r Message-ID :   CON0032                    */
      /* VALUES WILL BE REGENERATED. We advise you to cancel. You ca */
      /*-------------------------------------------------------------*/
 
@@ -394,7 +394,7 @@ d for each record in the files. IF YOU CONTINUE, THEN THE '           +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   CON0033                    */
+     /*   Cmd-ADDMSGD fÃ¼r Message-ID :   CON0033                    */
      /* NO problems in your application. It is your decision. Be wa */
      /*-------------------------------------------------------------*/
 
@@ -412,7 +412,7 @@ wrong decision can destroy your entire application.'                  +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   ERR0001                    */
+     /*   Cmd-ADDMSGD fÃ¼r Message-ID :   ERR0001                    */
      /* The option is not valid.                                    */
      /*-------------------------------------------------------------*/
 
@@ -429,7 +429,7 @@ wrong decision can destroy your entire application.'                  +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   ERR0002                    */
+     /*   Cmd-ADDMSGD fÃ¼r Message-ID :   ERR0002                    */
      /* The top of the list has already been reached.               */
      /*-------------------------------------------------------------*/
 
@@ -446,7 +446,7 @@ wrong decision can destroy your entire application.'                  +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   ERR0003                    */
+     /*   Cmd-ADDMSGD fÃ¼r Message-ID :   ERR0003                    */
      /* The bottom of the list has already been reached.            */
      /*-------------------------------------------------------------*/
 

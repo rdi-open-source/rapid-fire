@@ -16,5 +16,5 @@ DCL-PR RF0011PG ExtPgm('RF0011PG');
   *N PACKED(6) Const;                                                    // --> Position
   *N CHAR(10);                                                           // <-> Typ
   *N PACKED(3);                                                          // <-> Sequenz
-  *N CHAR(10);                                                           // <-- Rückkehrcode
+  *N CHAR(10);                                                           // <-- RÃ¼ckkehrcode
 END-PR;

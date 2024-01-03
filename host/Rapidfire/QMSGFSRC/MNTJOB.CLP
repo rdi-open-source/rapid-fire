@@ -40,7 +40,7 @@
                TEXT('Maintain Job')
 
      /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   ERR0001                    */
+     /*   Cmd-ADDMSGD fÃ¼r Message-ID :   ERR0001                    */
      /* The job does already exist.                                 */
      /*-------------------------------------------------------------*/
 
@@ -57,7 +57,7 @@
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   ERR0002                    */
+     /*   Cmd-ADDMSGD fÃ¼r Message-ID :   ERR0002                    */
      /* The value in field 'Job' is not valid.                      */
      /*-------------------------------------------------------------*/
 
@@ -74,7 +74,7 @@
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   ERR0003                    */
+     /*   Cmd-ADDMSGD fÃ¼r Message-ID :   ERR0003                    */
      /* The value in field 'Description' is not valid.              */
      /*-------------------------------------------------------------*/
 
@@ -91,7 +91,7 @@
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   ERR0004                    */
+     /*   Cmd-ADDMSGD fÃ¼r Message-ID :   ERR0004                    */
      /* The value in field 'Create environment' is not valid.       */
      /*-------------------------------------------------------------*/
 
@@ -108,7 +108,7 @@
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   ERR0005                    */
+     /*   Cmd-ADDMSGD fÃ¼r Message-ID :   ERR0005                    */
      /* Invalid parameter values. Error = &1.                       */
      /*-------------------------------------------------------------*/
 
@@ -127,7 +127,7 @@
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   ERR0006                    */
+     /*   Cmd-ADDMSGD fÃ¼r Message-ID :   ERR0006                    */
      /* The action is only valid for jobs with status *RDY.         */
      /*-------------------------------------------------------------*/
 
@@ -144,7 +144,7 @@
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   ERR0007                    */
+     /*   Cmd-ADDMSGD fÃ¼r Message-ID :   ERR0007                    */
      /* The action is only valid for jobs with status *RUN-PND, *RU */
      /*-------------------------------------------------------------*/
 
@@ -162,7 +162,7 @@ D or *ABORT.'                                                         +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   ERR0008                    */
+     /*   Cmd-ADDMSGD fÃ¼r Message-ID :   ERR0008                    */
      /* The action is only valid for jobs with status *RUN.         */
      /*-------------------------------------------------------------*/
 
@@ -179,7 +179,7 @@ D or *ABORT.'                                                         +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   ERR0009                    */
+     /*   Cmd-ADDMSGD fÃ¼r Message-ID :   ERR0009                    */
      /* The action is only valid for jobs with status *END.         */
      /*-------------------------------------------------------------*/
 
@@ -196,7 +196,7 @@ D or *ABORT.'                                                         +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   ERR0010                    */
+     /*   Cmd-ADDMSGD fÃ¼r Message-ID :   ERR0010                    */
      /* The action is only valid for jobs with "Create environment" */
      /*-------------------------------------------------------------*/
 
@@ -213,7 +213,7 @@ D or *ABORT.'                                                         +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   ERR0011                    */
+     /*   Cmd-ADDMSGD fÃ¼r Message-ID :   ERR0011                    */
      /* Invalid parameter values. Error = Job has to be blanks.     */
      /*-------------------------------------------------------------*/
 
@@ -230,7 +230,7 @@ D or *ABORT.'                                                         +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   ERR0012                    */
+     /*   Cmd-ADDMSGD fÃ¼r Message-ID :   ERR0012                    */
      /* The value in field 'Cancel, if ASP threshold exceeds' is no */
      /*-------------------------------------------------------------*/
 
@@ -248,7 +248,7 @@ D or *ABORT.'                                                         +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   ERR0045                    */
+     /*   Cmd-ADDMSGD fÃ¼r Message-ID :   ERR0045                    */
      /* The value in field 'Job queue' is not valid.                */
      /*-------------------------------------------------------------*/
 
@@ -265,7 +265,7 @@ D or *ABORT.'                                                         +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   ERR0048                    */
+     /*   Cmd-ADDMSGD fÃ¼r Message-ID :   ERR0048                    */
      /* The value in field 'Job queue - Library' is not valid.      */
      /*-------------------------------------------------------------*/
 

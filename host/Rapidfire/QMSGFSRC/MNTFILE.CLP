@@ -40,7 +40,7 @@
                TEXT('Maintain File')
 
      /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   ERR0001                    */
+     /*   Cmd-ADDMSGD fÃ¼r Message-ID :   ERR0001                    */
      /* The position does already exist.                            */
      /*-------------------------------------------------------------*/
 
@@ -57,7 +57,7 @@
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   ERR0002                    */
+     /*   Cmd-ADDMSGD fÃ¼r Message-ID :   ERR0002                    */
      /* The value in field 'Position' is not valid.                 */
      /*-------------------------------------------------------------*/
 
@@ -74,7 +74,7 @@
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   ERR0003                    */
+     /*   Cmd-ADDMSGD fÃ¼r Message-ID :   ERR0003                    */
      /* Invalid parameter values. Error = &1.                       */
      /*-------------------------------------------------------------*/
 
@@ -93,7 +93,7 @@
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   ERR0004                    */
+     /*   Cmd-ADDMSGD fÃ¼r Message-ID :   ERR0004                    */
      /* The action is only valid for jobs with status *RDY.         */
      /*-------------------------------------------------------------*/
 
@@ -110,7 +110,7 @@
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   ERR0005                    */
+     /*   Cmd-ADDMSGD fÃ¼r Message-ID :   ERR0005                    */
      /* The value in field 'File' is not valid.                     */
      /*-------------------------------------------------------------*/
 
@@ -127,7 +127,7 @@
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   ERR0006                    */
+     /*   Cmd-ADDMSGD fÃ¼r Message-ID :   ERR0006                    */
      /* The value in field 'Type' is not valid.                     */
      /*-------------------------------------------------------------*/
 
@@ -144,7 +144,7 @@
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   ERR0007                    */
+     /*   Cmd-ADDMSGD fÃ¼r Message-ID :   ERR0007                    */
      /* The action is only valid for files with "Type" *PHYSICAL.   */
      /*-------------------------------------------------------------*/
 
@@ -161,7 +161,7 @@
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   ERR0009                    */
+     /*   Cmd-ADDMSGD fÃ¼r Message-ID :   ERR0009                    */
      /* The value in field 'Copy program' is not valid.             */
      /*-------------------------------------------------------------*/
 
@@ -178,7 +178,7 @@
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   ERR0010                    */
+     /*   Cmd-ADDMSGD fÃ¼r Message-ID :   ERR0010                    */
      /* For physical files the value *NONE is not allowed.          */
      /*-------------------------------------------------------------*/
 
@@ -195,7 +195,7 @@
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   ERR0011                    */
+     /*   Cmd-ADDMSGD fÃ¼r Message-ID :   ERR0011                    */
      /* For logical files only the value *NONE is allowed.          */
      /*-------------------------------------------------------------*/
 
@@ -212,7 +212,7 @@
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   ERR0012                    */
+     /*   Cmd-ADDMSGD fÃ¼r Message-ID :   ERR0012                    */
      /* The value in field 'Copy program - Library' is not valid.   */
      /*-------------------------------------------------------------*/
 
@@ -229,7 +229,7 @@
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   ERR0013                    */
+     /*   Cmd-ADDMSGD fÃ¼r Message-ID :   ERR0013                    */
      /* The library has to be specified.                            */
      /*-------------------------------------------------------------*/
 
@@ -246,7 +246,7 @@
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   ERR0014                    */
+     /*   Cmd-ADDMSGD fÃ¼r Message-ID :   ERR0014                    */
      /* The library must not be specified.                          */
      /*-------------------------------------------------------------*/
 
@@ -263,7 +263,7 @@
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   ERR0015                    */
+     /*   Cmd-ADDMSGD fÃ¼r Message-ID :   ERR0015                    */
      /* The value in field 'Conversion program' is not valid.       */
      /*-------------------------------------------------------------*/
 
@@ -280,7 +280,7 @@
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   ERR0016                    */
+     /*   Cmd-ADDMSGD fÃ¼r Message-ID :   ERR0016                    */
      /* For logical files only the value *NONE is allowed.          */
      /*-------------------------------------------------------------*/
 
@@ -297,7 +297,7 @@
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   ERR0017                    */
+     /*   Cmd-ADDMSGD fÃ¼r Message-ID :   ERR0017                    */
      /* The value in field 'Conversion program - Library' is not va */
      /*-------------------------------------------------------------*/
 
@@ -314,7 +314,7 @@
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   ERR0018                    */
+     /*   Cmd-ADDMSGD fÃ¼r Message-ID :   ERR0018                    */
      /* The library has to be specified.                            */
      /*-------------------------------------------------------------*/
 
@@ -331,7 +331,7 @@
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   ERR0019                    */
+     /*   Cmd-ADDMSGD fÃ¼r Message-ID :   ERR0019                    */
      /* The library must not be specified.                          */
      /*-------------------------------------------------------------*/
 
@@ -348,7 +348,7 @@
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   ERR0020                    */
+     /*   Cmd-ADDMSGD fÃ¼r Message-ID :   ERR0020                    */
      /* The action is only valid for jobs with "Create environment" */
      /*-------------------------------------------------------------*/
 
@@ -365,7 +365,7 @@
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   ERR0021                    */
+     /*   Cmd-ADDMSGD fÃ¼r Message-ID :   ERR0021                    */
      /* Invalid parameter values. Error = Position has to be zero.  */
      /*-------------------------------------------------------------*/
 
@@ -382,7 +382,7 @@
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   ERR0022                    */
+     /*   Cmd-ADDMSGD fÃ¼r Message-ID :   ERR0022                    */
      /* &1                                                          */
      /*-------------------------------------------------------------*/
 

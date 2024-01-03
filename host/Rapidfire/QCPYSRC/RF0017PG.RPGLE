@@ -15,5 +15,5 @@ DCL-PR RF0017PG ExtPgm('RF0017PG');
   *N CHAR(10) Const;                                                     // --> Job
   *N PACKED(6) Const;                                                    // --> Position
   *N CHAR(10);                                                           // <-> Bereich
-  *N CHAR(10);                                                           // <-- Rückkehrcode
+  *N CHAR(10);                                                           // <-- RÃ¼ckkehrcode
 END-PR;

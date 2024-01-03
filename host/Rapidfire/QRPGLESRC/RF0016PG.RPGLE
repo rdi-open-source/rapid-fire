@@ -25,7 +25,7 @@
 //*  >>END-PRE-COMPILER<<                                                                   *
 //*-----------------------------------------------------------------------------------------*
 //*                                                                                         *
-//* (01 - 49) Freie Bezugszahlen für sonstige Dinge                                         *
+//* (01 - 49) Freie Bezugszahlen fÃ¼r sonstige Dinge                                         *
 //*                                                                                         *
 //* 01      --> Modus : 'Pflegen'                                                           *
 //* 02      --> Modus : 'Selektieren'                                                       *
@@ -35,23 +35,23 @@
 //*                                                                                         *
 //*-----------------------------------------------------------------------------------------*
 //*                                                                                         *
-//* (50 - 59) Reservierte Bezugszahlen für Diverses                                         *
+//* (50 - 59) Reservierte Bezugszahlen fÃ¼r Diverses                                         *
 //*                                                                                         *
-//* 50      --> Schlüsselwort SFLEND in Nachrichtensubdatei aktivieren                      *
-//* 51      --> Ergebnis für LookUp Operation                                               *
+//* 50      --> SchlÃ¼sselwort SFLEND in Nachrichtensubdatei aktivieren                      *
+//* 51      --> Ergebnis fÃ¼r LookUp Operation                                               *
 //*                                                                                         *
 //*-----------------------------------------------------------------------------------------*
 //*                                                                                         *
-//* (60 - 79) Reservierte Bezugszahlen für Subdateiverarbeitung                             *
+//* (60 - 79) Reservierte Bezugszahlen fÃ¼r Subdateiverarbeitung                             *
 //*                                                                                         *
-//* 60,64,68,72,76  --> (Subdatei 1 - 5) Inhalt der Subdatei löschen                        *
-//* 61,65,69,73,77  --> (Subdatei 1 - 5) Keine Sätze in der Subdatei vorhanden              *
+//* 60,64,68,72,76  --> (Subdatei 1 - 5) Inhalt der Subdatei lÃ¶schen                        *
+//* 61,65,69,73,77  --> (Subdatei 1 - 5) Keine SÃ¤tze in der Subdatei vorhanden              *
 //* 62,66,70,74,78  --> (Subdatei 1 - 5) Letzter Satz befindet sich bereits in der Subdatei *
-//* 63,67,71,75,79  --> (Subdatei 1 - 5) Subdateisatz ist ein geänderter Satz               *
+//* 63,67,71,75,79  --> (Subdatei 1 - 5) Subdateisatz ist ein geÃ¤nderter Satz               *
 //*                                                                                         *
 //*-----------------------------------------------------------------------------------------*
 //*                                                                                         *
-//* (80 - 89) Reservierte Bezugszahlen für Fehlermeldungen                                  *
+//* (80 - 89) Reservierte Bezugszahlen fÃ¼r Fehlermeldungen                                  *
 //*                                                                                         *
 //* 80      --> Es liegt ein Fehler vor (Spezifikation durch BZ 81 - 89)                    *
 //* 81 - 83 --> (Block 1) Fehlermeldungen                                                   *
@@ -60,24 +60,24 @@
 //*                                                                                         *
 //*-----------------------------------------------------------------------------------------*
 //*                                                                                         *
-//* (90 - 99) Reservierte Bezugszahlen für Cursorpositionierung                             *
+//* (90 - 99) Reservierte Bezugszahlen fÃ¼r Cursorpositionierung                             *
 //*                                                                                         *
 //* 90      --> Es soll positioniert werden (Spezifikation durch 91 - 99)                   *
 //* 91      --> Der Cursor soll auf Koordinate Zeile / Spalte positioniert werden           *
 //*                                                                                         *
 //*-----------------------------------------------------------------------------------------*
 //*                                                                                         *
-//* Übergabeparameter                                                                       *
+//* Ãœbergabeparameter                                                                       *
 //* =================                                                                       *
 //*                                                                                         *
 //* PIMode     / *EDIT    --> Modus : 'Pflegen'                                             *
 //*              *SELECT  --> Modus : 'Selektieren'                                         *
 //*              *DISPLAY --> Modus : 'Anzeigen'                                            *
 //*                                                                                         *
-//* PIRtCd     / *F3      --> Der Benutzer hat die Taste F3 gedrückt                        *
-//*              *F12     --> Der Benutzer hat die Taste F12 gedrückt                       *
-//*              *ENTER   --> Der Benutzer hat die Taste ENTER gedrückt                     *
-//*              *SELECT  --> Der Benutzer hat die Taste ENTER mit Auswahl 1 gedrückt       *
+//* PIRtCd     / *F3      --> Der Benutzer hat die Taste F3 gedrÃ¼ckt                        *
+//*              *F12     --> Der Benutzer hat die Taste F12 gedrÃ¼ckt                       *
+//*              *ENTER   --> Der Benutzer hat die Taste ENTER gedrÃ¼ckt                     *
+//*              *SELECT  --> Der Benutzer hat die Taste ENTER mit Auswahl 1 gedrÃ¼ckt       *
 //*                                                                                         *
 //*------------+--------+-------------------------------------------------------------------*
 //*   Datum    I Progr. I Beschreibung                                                      *
@@ -104,120 +104,120 @@ DCL-F AREAS Disk(*EXT) USAGE(*INPUT) KEYED Rename(AREAS : AREARF);
 
 //*-----------------------------------------------------------------------------------------*
 
-// Prozedurenprototyp für Prozedur 'RF0016PG'
+// Prozedurenprototyp fÃ¼r Prozedur 'RF0016PG'
 
 /Copy QCPYSRC,RF0016PG
 
-// Prozedurenschnittstelle für Prozedur 'RF0016PG'
+// Prozedurenschnittstelle fÃ¼r Prozedur 'RF0016PG'
 
 DCL-PI RF0016PG;
   PIMode CHAR(10) Const;                                                 // --> Modus
   PIJOB CHAR(10) Const;                                                  // --> Job
   PIPOS PACKED(6) Const;                                                 // --> Position
   PIARA CHAR(10);                                                        // <-> Area
-  PIRtCd CHAR(10);                                                       // <-- Rückkehrcode
+  PIRtCd CHAR(10);                                                       // <-- RÃ¼ckkehrcode
 END-PI;
 
 //*-----------------------------------------------------------------------------------------*
 
-// Prozedurenprototyp für Prozedur 'RtvFktKey'
+// Prozedurenprototyp fÃ¼r Prozedur 'RtvFktKey'
 
 /Copy QCPYSRC,RTVFKTKEY
 
-// Prozedurenprototyp für Prozedur 'RmvErrMsg'
+// Prozedurenprototyp fÃ¼r Prozedur 'RmvErrMsg'
 
 /Copy QCPYSRC,RMVERRMSG
 
-// Prozedurenprototyp für Prozedur 'SndErrMsg'
+// Prozedurenprototyp fÃ¼r Prozedur 'SndErrMsg'
 
 /Copy QCPYSRC,SNDERRMSG
 
-// Prozedurenprototyp für Prozedur 'RtvCmdLin'
+// Prozedurenprototyp fÃ¼r Prozedur 'RtvCmdLin'
 
 /Copy QCPYSRC,RTVCMDLIN
 
-// Prozedurenprototyp für Prozedur 'ExcCmdLin'
+// Prozedurenprototyp fÃ¼r Prozedur 'ExcCmdLin'
 
 /Copy QCPYSRC,EXCCMDLIN
 
-// Prozedurenprototyp für Prozedur 'QUHDSPH'
+// Prozedurenprototyp fÃ¼r Prozedur 'QUHDSPH'
 
 /Copy QCPYSRC,QUHDSPH
 
-// Prozedurenprototyp für Prozedur 'RF0017PG'
+// Prozedurenprototyp fÃ¼r Prozedur 'RF0017PG'
 
 /Copy QCPYSRC,RF0017PG
 
-// Datenstruktur für Format 'ERRC0100' für Fehlercode
+// Datenstruktur fÃ¼r Format 'ERRC0100' fÃ¼r Fehlercode
 
 /Copy QCPYSRC,ERRC0100
 
-// Prozedurenprototyp für Prozedur 'MNTAREA'
+// Prozedurenprototyp fÃ¼r Prozedur 'MNTAREA'
 
 /Copy QCPYSRC,MNTAREA
 
-// Dateiinformationsdatenstruktur für RF0016DF
+// Dateiinformationsdatenstruktur fÃ¼r RF0016DF
 
 DCL-DS FIDS_RF0016DF;
   AIDCde CHAR(1) POS(369);
 END-DS;
 
-// Anzahl Subdateisätze pro Seite
+// Anzahl SubdateisÃ¤tze pro Seite
 
 DCL-C RcdPerPage 8;
 
-// Satzdatenstruktur für gelesene Sätze aus der Primärdatei
+// Satzdatenstruktur fÃ¼r gelesene SÃ¤tze aus der PrimÃ¤rdatei
 
-// *** Enthält den aktuell gelesenen Datensatz ***
+// *** EnthÃ¤lt den aktuell gelesenen Datensatz ***
 DCL-DS CUR_AREAS ExtName('AREAS');
 END-DS;
-// *** Enthält die Tabelle der aktuellen Datensätze ***
+// *** EnthÃ¤lt die Tabelle der aktuellen DatensÃ¤tze ***
 DCL-DS TBC_AREAS ExtName('AREAS')
        Occurs(RcdPerPage)
        Prefix(TBC_);
 END-DS;
-// *** Enthält die Tabelle der gesicherten Datensätze ***
+// *** EnthÃ¤lt die Tabelle der gesicherten DatensÃ¤tze ***
 DCL-DS TBS_AREAS ExtName('AREAS')
        Occurs(RcdPerPage)
        Prefix(TBS_);
 END-DS;
 
-// Felder für Speicherung der Positionierungen
+// Felder fÃ¼r Speicherung der Positionierungen
 
 DCL-S StrARA CHAR(10);                                                   // (Start) Area
 
 DCL-S EndARA CHAR(10);                                                   // (Ende) Area
 
-// Felder für Speicherung der Primärschlüssel
+// Felder fÃ¼r Speicherung der PrimÃ¤rschlÃ¼ssel
 
 DCL-DS *N;
-  FileKey;                                                               // Schlüssel
+  FileKey;                                                               // SchlÃ¼ssel
   DFARA CHAR(10) Overlay(FileKey);                                       // Area
 END-DS;
 
 DCL-DS *N;
-  ErrKey;                                                                // Schlüssel
+  ErrKey;                                                                // SchlÃ¼ssel
   ErrARA CHAR(10) Overlay(ErrKey);                                       // Area
 END-DS;
 
 DCL-DS *N;
-  PosKey;                                                                // Schlüssel
+  PosKey;                                                                // SchlÃ¼ssel
   PosARA CHAR(10) Overlay(PosKey);                                       // Area
 END-DS;
 
 DCL-DS *N;
-  SlcKey;                                                                // Schlüssel
+  SlcKey;                                                                // SchlÃ¼ssel
   SlcARA CHAR(10) Overlay(SlcKey);                                       // Area
 END-DS;
 
 DCL-DS *N;
-  CnlKey;                                                                // Schlüssel
+  CnlKey;                                                                // SchlÃ¼ssel
   CnlARA CHAR(10) Overlay(CnlKey);                                       // Area
 END-DS;
 
-// Felder für Speicherung der Auswahlen
+// Felder fÃ¼r Speicherung der Auswahlen
 
-DCL-S OptCnt ZONED(5) Inz(*Zero);                                        // Zähler für Option
+DCL-S OptCnt ZONED(5) Inz(*Zero);                                        // ZÃ¤hler fÃ¼r Option
 
 DCL-S OptAct CHAR(1) Dim(32767) Based(OptActPtr);                        // Aktiv oder Inakti
 DCL-S OptActPtr POINTER;                                                 // Zeiger
@@ -225,7 +225,7 @@ DCL-S OptActPtr POINTER;                                                 // Zeig
 DCL-S OptOpt CHAR(2) Dim(32767) Based(OptOptPtr);                        // Auswahl
 DCL-S OptOptPtr POINTER;                                                 // Zeiger
 
-DCL-S OptKey Dim(32767) Based(OptKeyPtr)                                 // Schlüssel
+DCL-S OptKey Dim(32767) Based(OptKeyPtr)                                 // SchlÃ¼ssel
 Like(FileKey);
 DCL-S OptKeyPtr POINTER;                                                 // Zeiger
 
@@ -242,7 +242,7 @@ END-DS;
 
 DCL-S ITLoop IND Inz(*On);                                               // Schleife
 DCL-S ITFnd CHAR(1);                                                     // Gefunden
-DCL-S ITLen ZONED(9);                                                    // Zähler
+DCL-S ITLen ZONED(9);                                                    // ZÃ¤hler
 DCL-S ITPag010 ZONED(4) Inz(RcdPerPage);                                 // (Subdatei) Anzahl
 DCL-S ITRRN010 ZONED(4);                                                 // (Subdatei) Aktuel
 DCL-S ITCnt010 ZONED(4);                                                 // (Subdatei) Letzte
@@ -251,26 +251,26 @@ DCL-S ITMsgDta CHAR(256);                                                // Nach
 DCL-S ITMsgF   CHAR(10);                                                 // Nachrichtendatei
 DCL-S ITAct CHAR(10);                                                    // Aktion
 DCL-S ITMode CHAR(10);                                                   // Modus
-DCL-S ITMore CHAR(10);                                                   // Weitere Sätze zur
-DCL-S ITOpt ZONED(5);                                                    // Zähler für Auswah
+DCL-S ITMore CHAR(10);                                                   // Weitere SÃ¤tze zur
+DCL-S ITOpt ZONED(5);                                                    // ZÃ¤hler fÃ¼r Auswah
 DCL-S ITAra CHAR(10);                                                    // Positionierungsbe
-DCL-S ITOEvl ZONED(5);                                                   // Zähler für Auswah
-DCL-S ITOPos ZONED(5);                                                   // Zähler für Auswah
+DCL-S ITOEvl ZONED(5);                                                   // ZÃ¤hler fÃ¼r Auswah
+DCL-S ITOPos ZONED(5);                                                   // ZÃ¤hler fÃ¼r Auswah
 DCL-S ITPos CHAR(10);                                                    // Positionierung au
-DCL-S ITCnt ZONED(2);                                                    // Satz für Subfile
-DCL-S ITTbl CHAR(10) Dim(RcdPerPage);                                    // Satz für Subfile
-DCL-S ITPnt ZONED(2) Dim(RcdPerPage);                                    // Satz für Subfile
-DCL-S ITCntC ZONED(2);                                                   // Satz-DS (Zähler f
+DCL-S ITCnt ZONED(2);                                                    // Satz fÃ¼r Subfile
+DCL-S ITTbl CHAR(10) Dim(RcdPerPage);                                    // Satz fÃ¼r Subfile
+DCL-S ITPnt ZONED(2) Dim(RcdPerPage);                                    // Satz fÃ¼r Subfile
+DCL-S ITCntC ZONED(2);                                                   // Satz-DS (ZÃ¤hler f
 DCL-S ITPntC ZONED(2) Dim(RcdPerPage);                                   // Satz-DS (Zeiger f
-DCL-S ITCntS ZONED(2);                                                   // Satz-DS (Zähler f
+DCL-S ITCntS ZONED(2);                                                   // Satz-DS (ZÃ¤hler f
 DCL-S ITPntS ZONED(2) Dim(RcdPerPage);                                   // Satz-DS (Zeiger f
 DCL-S ITCntSav ZONED(2);                                                 // Satz-DS (Sicherun
-DCL-S ITCnt1 ZONED(5);                                                   // Temporärer Zähler
-DCL-S ITCnt2 ZONED(5);                                                   // Temporärer Zähler
+DCL-S ITCnt1 ZONED(5);                                                   // TemporÃ¤rer ZÃ¤hler
+DCL-S ITCnt2 ZONED(5);                                                   // TemporÃ¤rer ZÃ¤hler
 DCL-S ITFktKey CHAR(10);                                                 // Funktionstaste
 DCL-S ITSts CHAR(10);                                                    // Nachrichten-Id. b
 DCL-S ITRtvType CHAR(10);                                                // Abrufart
-DCL-S ITMsgKey CHAR(4);                                                  // Nachrichtenschlüs
+DCL-S ITMsgKey CHAR(4);                                                  // NachrichtenschlÃ¼s
 DCL-S ITCmd CHAR(1024);                                                  // Befehl
 DCL-S ITRtvCmd CHAR(10);                                                 // Befehl abgerufen
 DCL-S ITDsp INT(10) Dim(2);                                              // Anzeige Hilfetext
@@ -285,7 +285,7 @@ DCL-S ITSUCC CHAR(1);                                                    // Erfo
 
 //*-----------------------------------------------------------------------------------------*
 
-// Bezugszahl für 'Schlüsselwort SFLEND in Nachrichtensubdatei aktivieren' auf 'Ja' setzen
+// Bezugszahl fÃ¼r 'SchlÃ¼sselwort SFLEND in Nachrichtensubdatei aktivieren' auf 'Ja' setzen
 *IN50 = *On;
 // Datensatz lesen
 Chain ( PIJOB ) JOBRF;
@@ -303,7 +303,7 @@ Else;
     ExSr SR005;
     // Bildschirm verarbeiten
     ExSr SR010;
-    // Schlüsselwert zurückgeben
+    // SchlÃ¼sselwert zurÃ¼ckgeben
     If Not (PIMode = '*SELECT' And
       PIRtCd = '*SELECT');
       PIARA = *Blanks;
@@ -331,9 +331,9 @@ BegSr SR005;
   // Befehl initialisieren
   DFCMD = *Blanks;
   ITCMD = *Blanks;
-  // Funktionstastenzähler initialisieren
+  // FunktionstastenzÃ¤hler initialisieren
   ITMoreKeys = 1;
-  // Zähler für Auswahlen initialisieren
+  // ZÃ¤hler fÃ¼r Auswahlen initialisieren
   ITOpt = *Zero;
   // Subdatei auf den Anfang setzen
   ITAct = '*TOP';
@@ -345,7 +345,7 @@ EndSr;
 //*-----------------------------------------------------------------------------------------*
 
 BegSr SR010;
-  // Abrufart für Befehl auffinden initialisieren
+  // Abrufart fÃ¼r Befehl auffinden initialisieren
   ITRtvType = '*LAST';
   ITMsgKey = *Blanks;
   // Fehlernachricht entfernen
@@ -380,21 +380,21 @@ BegSr SR010;
   DFRRN010 = 1;
   DoW ITLoop;
     Select;
-      // Überschrift für Modus 'Pflegen' anzeigen
+      // Ãœberschrift fÃ¼r Modus 'Pflegen' anzeigen
     When PIMode = '*EDIT';
       *IN(1) = *ON;
       *IN(2) = *OFF;
       *IN(3) = *OFF;
       *IN(4) = *OFF;
       *IN(5) = *OFF;
-      // Überschrift für Modus 'Selektieren' anzeigen
+      // Ãœberschrift fÃ¼r Modus 'Selektieren' anzeigen
     When PIMode = '*SELECT';
       *IN(1) = *OFF;
       *IN(2) = *ON;
       *IN(3) = *OFF;
       *IN(4) = *OFF;
       *IN(5) = *OFF;
-      // Überschrift für Modus 'Anzeigen' anzeigen
+      // Ãœberschrift fÃ¼r Modus 'Anzeigen' anzeigen
     When PIMode = '*DISPLAY';
       *IN(1) = *OFF;
       *IN(2) = *OFF;
@@ -428,7 +428,7 @@ BegSr SR010;
       Read DSPF010F;
       // Funktionstaste abrufen
       ITFktKey = RtvFktKey(AIDCde);
-      // Wenn die Befehlszeile modifiziert ist, dann diese übernehmen
+      // Wenn die Befehlszeile modifiziert ist, dann diese Ã¼bernehmen
       If *IN09 = *On;
         ITCmd = DFCMD;
       EndIf;
@@ -467,7 +467,7 @@ BegSr SR010;
     *IN(99) = *OFF;
     // Cursor auf ersten Subdateisatz positionieren
     DFRRN010 = 1;
-    // Letzte Auswahl für die spätere Positionierung merken, wenn Enter gedrückt wurde
+    // Letzte Auswahl fÃ¼r die spÃ¤tere Positionierung merken, wenn Enter gedrÃ¼ckt wurde
     If ITFktKey = '*ENTER';
       ITPos = '*YES';
     Else;
@@ -489,16 +489,16 @@ BegSr SR010;
       Iter;
     EndIf;
     If *IN61 = *Off;
-      // Auswahlen in der Subfile auf Fehler überprüfen (Seite)
+      // Auswahlen in der Subfile auf Fehler Ã¼berprÃ¼fen (Seite)
       ExSr SR095;
       // Es wurde ein Fehler gefunden
       If ITMsgId <> *Blanks;
         Iter;
       EndIf;
-      // Auswahlen in der Subfile in die Optionstabelle übertragen
+      // Auswahlen in der Subfile in die Optionstabelle Ã¼bertragen
       ExSr SR105;
     ENDIF;
-    // Funktionstaste : 'F4=Bedienerführung'
+    // Funktionstaste : 'F4=BedienerfÃ¼hrung'
     If ITFktKey = '*F4';
       ExSr SR025;
       If PIRtCd = '*F3';
@@ -536,12 +536,12 @@ BegSr SR010;
       ExSr SR050;
       Iter;
     EndIf;
-    // Funktionstaste : 'Vorwärtsblättern'
+    // Funktionstaste : 'VorwÃ¤rtsblÃ¤ttern'
     If ITFktKey = '*ROLLUP';
       ExSr SR055;
       Iter;
     EndIf;
-    // Funktionstaste : 'Rückwärtsblättern'
+    // Funktionstaste : 'RÃ¼ckwÃ¤rtsblÃ¤ttern'
     If ITFktKey = '*ROLLDOWN';
       ExSr SR060;
       Iter;
@@ -554,7 +554,7 @@ BegSr SR010;
         Iter;
       EndIf;
       If ITOpt <> *Zero;
-        // Auswahlen in der Subfile auf Fehler überprüfen und auswerten (Alles)
+        // Auswahlen in der Subfile auf Fehler Ã¼berprÃ¼fen und auswerten (Alles)
         ExSr SR115;
         // Es wurde ein Fehler gefunden
         If ITMsgId <> *Blanks;
@@ -574,7 +574,7 @@ BegSr SR010;
         ExSr SR065;
         Iter;
       EndIf;
-      // Abrufart für Befehl auffinden initialisieren
+      // Abrufart fÃ¼r Befehl auffinden initialisieren
       ITRtvType = '*LAST';
       ITMsgKey = *Blanks;
       // Befehl verarbeiten
@@ -583,7 +583,7 @@ BegSr SR010;
         ExSr SR015;
         Iter;
       EndIf;
-      // Programm nach Drücken von Enter ohne sonstige Auswahl verlassen
+      // Programm nach DrÃ¼cken von Enter ohne sonstige Auswahl verlassen
       PIRtCd = '*ENTER';
       Leave;
     EndIf;
@@ -628,7 +628,7 @@ EndSr;
 //*-----------------------------------------------------------------------------------------*
 
 BegSr SR020;
-  // Hilfe für einen Befehl angefordert
+  // Hilfe fÃ¼r einen Befehl angefordert
   If DFFLD010 = 'DFCMD' And
     DFCMD <> *Blanks;
     ITMode = '*DSPHELP';
@@ -638,7 +638,7 @@ BegSr SR020;
     ITHlp = 'N';
     // Nummer Hilfetextmodul initialisieren
     ITNbr = *Zero;
-    // Hilfe für Fehlernachrichtensubdatei angefordert
+    // Hilfe fÃ¼r Fehlernachrichtensubdatei angefordert
     If DFRCD010 = 'DSPF999S';
       ITNbr = ITNbr + 1;
       ITHIPG(ITNbr) = 'CMOREFGP';
@@ -774,7 +774,7 @@ BegSr SR020;
         ITDsp(2) = ITNbr;
       EndIf;
     EndIf;
-    // Keine kontextbezogene Hilfe ausgewählt
+    // Keine kontextbezogene Hilfe ausgewÃ¤hlt
     If ITHlp = 'N';
       ITDsp(1) = 1;
       ITDsp(2) = ITNbr;
@@ -814,14 +814,14 @@ BegSr SR020;
 EndSr;
 
 //*-----------------------------------------------------------------------------------------*
-//* Bedienerführung                                                                         *
+//* BedienerfÃ¼hrung                                                                         *
 //*-----------------------------------------------------------------------------------------*
 
 BegSr SR025;
   Select;
-    // Bedienerführung für das Feld 'Auswahl'
+    // BedienerfÃ¼hrung fÃ¼r das Feld 'Auswahl'
   When DFFLD010 = 'DFOPT';
-    // Bedienerführung für das Feld 'Befehl'
+    // BedienerfÃ¼hrung fÃ¼r das Feld 'Befehl'
   When DFFLD010 = 'DFCMD';
     ITMode = '*PROMPT';
     ExSr SR015;
@@ -871,10 +871,10 @@ BegSr SR030;
   ExSr SR130;
   // Eine neue Position wurde erstellt
   If PIRtCd = '*ENTER';
-    // Die aktuellen Sätze nocheinmal in die Subfile stellen
+    // Die aktuellen SÃ¤tze nocheinmal in die Subfile stellen
     ITAct = '*REFRESH';
     ExSr SR075;
-    // Wenn keine Sätze gelesen werden konnten, dann die letzten Sätze in die Subfile stellen
+    // Wenn keine SÃ¤tze gelesen werden konnten, dann die letzten SÃ¤tze in die Subfile stellen
     If ITMore = '*NO';
       ITAct = '*BOTTOM';
       ExSr SR075;
@@ -887,12 +887,12 @@ EndSr;
 //*-----------------------------------------------------------------------------------------*
 
 BegSr SR035;
-  // Abrufart für Befehl auffinden initialisieren
+  // Abrufart fÃ¼r Befehl auffinden initialisieren
   If DFCMD = *Blanks;
     ITRtvType = '*LAST';
     ITMsgKey = *Blanks;
   EndIf;
-  // Nächsten Befehl abrufen
+  // NÃ¤chsten Befehl abrufen
   ITSts = RtvCmdLin(
    ITRtvType :                                                           // --> Abrufart
    ITMsgKey :                                                            // <-> Nachrichtensc
@@ -902,16 +902,16 @@ BegSr SR035;
   Select;
     // *** Befehl abgerufen ***
   When ITRtvCmd = '*YES';
-    // Befehl in die Befehlszeile übernehmen
+    // Befehl in die Befehlszeile Ã¼bernehmen
     DFCMD = ITCMD;
-    // Abrufart für Befehl auffinden initialisieren
+    // Abrufart fÃ¼r Befehl auffinden initialisieren
     ITRtvType = '*PRV';
     // *** Keinen Befehl abgerufen ***
   When ITRtvCmd = '*NO';
-    // Befehl in der Befehlszeile löschen
+    // Befehl in der Befehlszeile lÃ¶schen
     DFCMD = *Blanks;
     ITCMD = *Blanks;
-    // Abrufart für Befehl auffinden initialisieren
+    // Abrufart fÃ¼r Befehl auffinden initialisieren
     ITRtvType = '*LAST';
   EndSl;
   // Cursor auf die Befehlszeile positionieren
@@ -934,7 +934,7 @@ EndSr;
 //*-----------------------------------------------------------------------------------------*
 
 BegSr SR040;
-  // Die ersten Sätze in die Subfile stellen
+  // Die ersten SÃ¤tze in die Subfile stellen
   ITAct = '*TOP';
   ExSr SR075;
 EndSr;
@@ -944,7 +944,7 @@ EndSr;
 //*-----------------------------------------------------------------------------------------*
 
 BegSr SR045;
-  // Die letzten Sätze in die Subfile stellen
+  // Die letzten SÃ¤tze in die Subfile stellen
   ITAct = '*BOTTOM';
   ExSr SR075;
 EndSr;
@@ -958,7 +958,7 @@ BegSr SR050;
     // Die erste Funktionstastenzeile anzeigen
     ITMoreKeys = 1;
   Else;
-    // Die nächste Funktionstastenzeile anzeigen
+    // Die nÃ¤chste Funktionstastenzeile anzeigen
     ITMoreKeys = ITMoreKeys + 1;
   EndIf;
   // Cursor auf der letzten Position positionieren
@@ -975,11 +975,11 @@ BegSr SR050;
 EndSr;
 
 //*-----------------------------------------------------------------------------------------*
-//* Vorwärtsblättern                                                                        *
+//* VorwÃ¤rtsblÃ¤ttern                                                                        *
 //*-----------------------------------------------------------------------------------------*
 
 BegSr SR055;
-  // Die Sätze der nächsten Seite in die Subfile stellen
+  // Die SÃ¤tze der nÃ¤chsten Seite in die Subfile stellen
   ITAct = '*FOREWARD';
   ExSr SR075;
   // The bottom of the list has already been reached
@@ -991,11 +991,11 @@ BegSr SR055;
 EndSr;
 
 //*-----------------------------------------------------------------------------------------*
-//* Rückwärtsblättern                                                                       *
+//* RÃ¼ckwÃ¤rtsblÃ¤ttern                                                                       *
 //*-----------------------------------------------------------------------------------------*
 
 BegSr SR060;
-  // Die Sätze der vorherigen Seite in die Subfile stellen
+  // Die SÃ¤tze der vorherigen Seite in die Subfile stellen
   ITAct = '*BACKWARD';
   ExSr SR075;
   // The top of the list has already been reached
@@ -1011,12 +1011,12 @@ EndSr;
 //*-----------------------------------------------------------------------------------------*
 
 BegSr SR065;
-  // Zähler für Auswahlen initialisieren
+  // ZÃ¤hler fÃ¼r Auswahlen initialisieren
   ITOpt = *Zero;
-  // Die aktuellen Sätze nocheinmal in die Subfile stellen
+  // Die aktuellen SÃ¤tze nocheinmal in die Subfile stellen
   ITAct = '*REFRESH';
   ExSr SR075;
-  // Wenn keine Sätze gelesen werden konnten, dann die letzten Sätze in die Subfile stellen
+  // Wenn keine SÃ¤tze gelesen werden konnten, dann die letzten SÃ¤tze in die Subfile stellen
   If ITMore = '*NO';
     ITAct = '*BOTTOM';
     ExSr SR075;
@@ -1031,11 +1031,11 @@ EndSr;
 //*-----------------------------------------------------------------------------------------*
 
 BegSr SR070;
-  // Die Sätze ab dem Positionierungswert in die Subfile stellen
+  // Die SÃ¤tze ab dem Positionierungswert in die Subfile stellen
   ITAct = '*POSITION';
   ITAra = '*SCREEN';
   ExSr SR075;
-  // Wenn keine Sätze gelesen werden konnten, dann die letzten Sätze in die Subfile stellen
+  // Wenn keine SÃ¤tze gelesen werden konnten, dann die letzten SÃ¤tze in die Subfile stellen
   If ITMore = '*NO';
     ITAct = '*BOTTOM';
     ExSr SR075;
@@ -1045,31 +1045,31 @@ BegSr SR070;
 EndSr;
 
 //*-----------------------------------------------------------------------------------------*
-//* Subdatei mit Sätzen aus der Primärdatei füllen                                          *
+//* Subdatei mit SÃ¤tzen aus der PrimÃ¤rdatei fÃ¼llen                                          *
 //*-----------------------------------------------------------------------------------------*
 
 BegSr SR075;
-  // Zähler für die aktuelle Satzdatenstruktur sichern
+  // ZÃ¤hler fÃ¼r die aktuelle Satzdatenstruktur sichern
   ItCntSav = ITCntC;
-  // Aktuelle Satzdatenstruktur mit Sätzen aus der Primärdatei füllen
+  // Aktuelle Satzdatenstruktur mit SÃ¤tzen aus der PrimÃ¤rdatei fÃ¼llen
   ExSr SR080;
   If ITCntC > *Zero;
-    // Weitere Sätze zur Anzeige bereitgestellt
+    // Weitere SÃ¤tze zur Anzeige bereitgestellt
     ITMore = '*YES';
-    // Tabelle mit Zeigern für die in der Subfile anzuzeigenden Sätze füllen
+    // Tabelle mit Zeigern fÃ¼r die in der Subfile anzuzeigenden SÃ¤tze fÃ¼llen
     ExSr SR085;
-    // Subfile mit den Werten aus der Satzdatenstruktur füllen
+    // Subfile mit den Werten aus der Satzdatenstruktur fÃ¼llen
     ExSr SR090;
   Else;
-    // Keine weiteren Sätze zur Anzeige bereitgestellt
+    // Keine weiteren SÃ¤tze zur Anzeige bereitgestellt
     ITMore = '*NO';
-// Bei Aktionen 'Vorwärtsbl.' und 'Rückwärtsbl.' den Zähler für aktuelle Satzdatenstruktur wi
+// Bei Aktionen 'VorwÃ¤rtsbl.' und 'RÃ¼ckwÃ¤rtsbl.' den ZÃ¤hler fÃ¼r aktuelle Satzdatenstruktur wi
     If ITAct = '*FOREWARD' Or
       ITAct = '*BACKWARD';
       ITCntC = ITCntSav;
-      // Bei allen anderen Aktionen die Subdatei löschen
+      // Bei allen anderen Aktionen die Subdatei lÃ¶schen
     Else;
-      // Inhalt der Subdatei löschen
+      // Inhalt der Subdatei lÃ¶schen
       *IN60 = *On;
       Write DSPF010C;
       *IN60 = *Off;
@@ -1078,16 +1078,16 @@ BegSr SR075;
     EndIf;
   EndIf;
   If ITCnt010 = *Zero;
-    // Bezugszahl für 'Keine Sätze in der Subdatei vorhanden' auf 'Ja' setzen
+    // Bezugszahl fÃ¼r 'Keine SÃ¤tze in der Subdatei vorhanden' auf 'Ja' setzen
     *IN61 = *On;
   Else;
-    // Bezugszahl für 'Keine Sätze in der Subdatei vorhanden' auf 'Nein' setzen
+    // Bezugszahl fÃ¼r 'Keine SÃ¤tze in der Subdatei vorhanden' auf 'Nein' setzen
     *IN61 = *Off;
   EndIf;
 EndSr;
 
 //*-----------------------------------------------------------------------------------------*
-//* Aktuelle Satzdatenstruktur mit Sätzen aus der Primärdatei füllen                        *
+//* Aktuelle Satzdatenstruktur mit SÃ¤tzen aus der PrimÃ¤rdatei fÃ¼llen                        *
 //*-----------------------------------------------------------------------------------------*
 
 BegSr SR080;
@@ -1102,14 +1102,14 @@ BegSr SR080;
       ITPntS(ITCnt1) = ITPntC(ITCnt1);
     ENDFOR;
   EndIf;
-  // Zähler für aktuelle Satzdatenstruktur initialisieren
+  // ZÃ¤hler fÃ¼r aktuelle Satzdatenstruktur initialisieren
   ITCntC = *Zero;
-  // Primärdatei positionieren
+  // PrimÃ¤rdatei positionieren
   Select;
-    // *** Vorwärts ***
+    // *** VorwÃ¤rts ***
   When ITAct = '*FOREWARD';
     SetGt ( PIJOB : PIPOS : EndARA ) AREARF;
-    // *** Rückwärts ***
+    // *** RÃ¼ckwÃ¤rts ***
   When ITAct = '*BACKWARD';
     SetLL ( PIJOB : PIPOS : StrARA ) AREARF;
     // *** Positionieren ***
@@ -1144,32 +1144,32 @@ BegSr SR080;
   EndSl;
   DoU %EOF Or
     ITCntC = ITPag010;
-    // Primärdatei lesen
+    // PrimÃ¤rdatei lesen
     Select;
-      // *** Vorwärts, Positionierung, Anfang, Aktualisieren ***
+      // *** VorwÃ¤rts, Positionierung, Anfang, Aktualisieren ***
     When ITAct = '*FOREWARD' Or
       ITAct = '*POSITION' Or
       ITAct = '*TOP' Or
       ITAct = '*REFRESH';
       ReadE ( PIJOB : PIPOS ) AREARF;
-      // *** Rückwärts, Ende ***
+      // *** RÃ¼ckwÃ¤rts, Ende ***
     When ITAct = '*BACKWARD' Or
       ITAct = '*BOTTOM';
       ReadPE ( PIJOB : PIPOS ) AREARF;
     EndSl;
     If Not %EOF;
-      // Zähler der aktuellen Satzdatenstruktur auf das nächste Vorkommen setzen
+      // ZÃ¤hler der aktuellen Satzdatenstruktur auf das nÃ¤chste Vorkommen setzen
       ITCntC = ITCntC + 1;
-      // Vorkommen der aktuellen Satzdatenstruktur auf den Wert des Zählers setzen
+      // Vorkommen der aktuellen Satzdatenstruktur auf den Wert des ZÃ¤hlers setzen
       %OCCUR(TBC_AREAS) = ITCntC;
-      // Aktuellen Datensatz in die aktuelle Satzdatenstruktur übertragen
+      // Aktuellen Datensatz in die aktuelle Satzdatenstruktur Ã¼bertragen
       TBC_AREAS = CUR_AREAS;
     EndIf;
   EndDo;
   If ITCntC > *Zero;
-    // Zeiger zu den Sätzen in der aktuellen Satzdatenstruktur festlegen
+    // Zeiger zu den SÃ¤tzen in der aktuellen Satzdatenstruktur festlegen
     Select;
-      // *** Vorwärts, Positionierung, Anfang, Aktualisieren ***
+      // *** VorwÃ¤rts, Positionierung, Anfang, Aktualisieren ***
     When ITAct = '*FOREWARD' Or
       ITAct = '*POSITION' Or
       ITAct = '*TOP' Or
@@ -1177,7 +1177,7 @@ BegSr SR080;
       FOR ITCnt1 = 1 TO ITCntC;
         ITPntC(ITCnt1) = ITCnt1;
       ENDFOR;
-      // *** Rückwärts, Ende ***
+      // *** RÃ¼ckwÃ¤rts, Ende ***
     When ITAct = '*BACKWARD' Or
       ITAct = '*BOTTOM';
       ITCnt1 = ITCntC;
@@ -1190,41 +1190,41 @@ BegSr SR080;
 EndSr;
 
 //*-----------------------------------------------------------------------------------------*
-//* Tabelle mit Zeigern für die in der Subfile anzuzeigenden Sätze füllen                   *
+//* Tabelle mit Zeigern fÃ¼r die in der Subfile anzuzeigenden SÃ¤tze fÃ¼llen                   *
 //*-----------------------------------------------------------------------------------------*
 
 BegSr SR085;
-  // Zähler für die in der Subfile anzuzeigenden Sätze festlegen
+  // ZÃ¤hler fÃ¼r die in der Subfile anzuzeigenden SÃ¤tze festlegen
   ITCnt = ITCntC;
   Select;
-    // *** Vorwärts, Positionierung, Anfang, Aktualisieren ***
+    // *** VorwÃ¤rts, Positionierung, Anfang, Aktualisieren ***
   When ITAct = '*FOREWARD' Or
     ITAct = '*POSITION' Or
     ITAct = '*TOP' Or
     ITAct = '*REFRESH';
-    // Tabelle mit Zeigern für die in der Subfile anzuzeigenden Sätze füllen
+    // Tabelle mit Zeigern fÃ¼r die in der Subfile anzuzeigenden SÃ¤tze fÃ¼llen
     FOR ITCnt1 = 1 TO ITCntC;
       ITTbl(ITCnt1) = '*CURRENT';
       ITPnt(ITCnt1) = ITPntC(ITCnt1);
     ENDFOR;
-    // *** Rückwärts, Ende ***
+    // *** RÃ¼ckwÃ¤rts, Ende ***
   When ITAct = '*BACKWARD' Or
     ITAct = '*BOTTOM';
-    // Tabelle mit Zeigern für die in der Subfile anzuzeigenden Sätze füllen
+    // Tabelle mit Zeigern fÃ¼r die in der Subfile anzuzeigenden SÃ¤tze fÃ¼llen
     FOR ITCnt1 = 1 TO ITCntC;
       ITTbl(ITCnt1) = '*CURRENT';
       ITPnt(ITCnt1) = ITPntC(ITCnt1);
     ENDFOR;
-    // Es sind beim Rückwärtslesen nicht genügend Sätze für eine Seite gefunden worden
+    // Es sind beim RÃ¼ckwÃ¤rtslesen nicht genÃ¼gend SÃ¤tze fÃ¼r eine Seite gefunden worden
     If ITAct = '*BACKWARD' And
       ITCntC < ITPag010 And
       ITCntS > *Zero;
-      // Anzahl Sätze, die aus der Sicherung übernommen werden sollen berechnen
+      // Anzahl SÃ¤tze, die aus der Sicherung Ã¼bernommen werden sollen berechnen
       ITCnt1 = ITPag010 - ITCntC;
       If ITCnt1 > ITCntS;
         ITCnt1 = ITCntS;
       EndIf;
-      // Tabelle mit Zeigern für die in der Subfile anzuzeigenden Sätze füllen
+      // Tabelle mit Zeigern fÃ¼r die in der Subfile anzuzeigenden SÃ¤tze fÃ¼llen
       FOR ITCnt2 = 1 TO ITCnt1;
         ITCnt = ITCnt + 1;
         ITTbl(ITCnt) = '*SAVE';
@@ -1235,11 +1235,11 @@ BegSr SR085;
 EndSr;
 
 //*-----------------------------------------------------------------------------------------*
-//* Subfile mit den Werten aus der Satzdatenstruktur füllen                                 *
+//* Subfile mit den Werten aus der Satzdatenstruktur fÃ¼llen                                 *
 //*-----------------------------------------------------------------------------------------*
 
 BegSr SR090;
-  // Inhalt der Subdatei löschen
+  // Inhalt der Subdatei lÃ¶schen
   *IN60 = *On;
   Write DSPF010C;
   *IN60 = *Off;
@@ -1269,15 +1269,15 @@ BegSr SR090;
       %OCCUR(TBS_AREAS) = ITPnt(ITCnt1);
       CUR_AREAS = TBS_AREAS;
     EndSl;
-    // Schlüssel für Startsatz der Subfile initialisieren
+    // SchlÃ¼ssel fÃ¼r Startsatz der Subfile initialisieren
     If ITCnt1 = 1;
       StrARA = XDARA;
     EndIf;
-    // Schlüssel für Endsatz der Subfile initialisieren
+    // SchlÃ¼ssel fÃ¼r Endsatz der Subfile initialisieren
     If ITCnt1 = ITCnt;
       EndARA = XDARA;
     EndIf;
-    // Felder im Subdateisatz füllen
+    // Felder im Subdateisatz fÃ¼llen
     DFARA = XDARA;
     DFLIB = XDLIB;
     DFLIBL = XDLIBL;
@@ -1308,11 +1308,11 @@ BegSr SR090;
         Leave;
       EndIf;
     ENDFOR;
-    // Letzter Satz erhöhen
+    // Letzter Satz erhÃ¶hen
     ITCnt010 = ITCnt010 + 1;
     // Aktuellen Satz auf letzten Satz setzen
     ITRRN010 = ITCnt010;
-    // Bezugszahl für 'Subdateisatz ist ein geänderter Satz' auf 'Nein' setzen
+    // Bezugszahl fÃ¼r 'Subdateisatz ist ein geÃ¤nderter Satz' auf 'Nein' setzen
     *IN63 = *Off;
     // Subdateisatz schreiben
     Write DSPF010S;
@@ -1328,20 +1328,20 @@ BegSr SR090;
     SetGt ( PIJOB : PIPOS : EndARA ) AREARF;
     ReadE ( PIJOB : PIPOS ) AREARF;
     If %EOF;
-      // Bezugszahl für 'Letzter Satz befindet sich bereits in der Subdatei' auf 'Ja' setzen
+      // Bezugszahl fÃ¼r 'Letzter Satz befindet sich bereits in der Subdatei' auf 'Ja' setzen
       *IN62 = *On;
     Else;
-     // Bezugszahl für 'Letzter Satz befindet sich bereits in der Subdatei' auf 'Nein' setzen
+     // Bezugszahl fÃ¼r 'Letzter Satz befindet sich bereits in der Subdatei' auf 'Nein' setzen
       *IN62 = *Off;
     EndIf;
   Else;
-    // Bezugszahl für 'Letzter Satz befindet sich bereits in der Subdatei' auf 'Ja' setzen
+    // Bezugszahl fÃ¼r 'Letzter Satz befindet sich bereits in der Subdatei' auf 'Ja' setzen
     *IN62 = *On;
   EndIf;
 EndSr;
 
 //*-----------------------------------------------------------------------------------------*
-//* Auswahlen in der Subfile auf Fehler überprüfen (Seite)                                  *
+//* Auswahlen in der Subfile auf Fehler Ã¼berprÃ¼fen (Seite)                                  *
 //*-----------------------------------------------------------------------------------------*
 
 BegSr SR095;
@@ -1352,7 +1352,7 @@ BegSr SR095;
     If %EOF;
       Leave;
     EndIf;
-    // Option linksbündig ausrichten
+    // Option linksbÃ¼ndig ausrichten
     DFOpt = %TrimL(DFOpt);
     // Fehlerbezugszahlen initialisieren
     *IN(80) = *OFF;
@@ -1425,7 +1425,7 @@ BegSr SR095;
       *IN(83) = *ON;
     EndIf;
 
-    // Bezugszahl für 'Subdateisatz ist ein geänderter Satz' auf 'Ja' setzen
+    // Bezugszahl fÃ¼r 'Subdateisatz ist ein geÃ¤nderter Satz' auf 'Ja' setzen
     *IN63 = *On;
     // Subdateisatz aktualisieren
     Update DSPF010S;
@@ -1437,7 +1437,7 @@ EndSr;
 //*-----------------------------------------------------------------------------------------*
 
 BegSr SR100;
-  // Bezugszahl für 'Es liegt ein Fehler vor' auf 'Ja' setzen
+  // Bezugszahl fÃ¼r 'Es liegt ein Fehler vor' auf 'Ja' setzen
   *IN80 = *On;
   // Fehlernachricht in die Programmnachrichtenwarteschlange schreiben
   ITSts = SndErrMsg(
@@ -1450,11 +1450,11 @@ BegSr SR100;
 EndSr;
 
 //*-----------------------------------------------------------------------------------------*
-//* Auswahlen in der Subfile in die Optionstabelle übertragen                               *
+//* Auswahlen in der Subfile in die Optionstabelle Ã¼bertragen                               *
 //*-----------------------------------------------------------------------------------------*
 
 BegSr SR105;
-  // Subdateizähler initialisieren
+  // SubdateizÃ¤hler initialisieren
   If ITPos <> '*NO';
     ITRRN010 = *Zero;
   EndIf;
@@ -1474,7 +1474,7 @@ BegSr SR105;
         Leave;
       EndIf;
     EndIf;
-    // Feststellen, ob die geänderte Position bereits in der Auswahltabelle steht
+    // Feststellen, ob die geÃ¤nderte Position bereits in der Auswahltabelle steht
     ITFnd = 'N';
     FOR ITOPos = 1 TO ITOpt;
       If OptAct(ITOPos) = 'J' And
@@ -1494,16 +1494,16 @@ BegSr SR105;
       OptAct(ITOpt) = 'J';
       OptOpt(ITOpt) = DFOPT;
       OptKey(ITOpt) = FileKey;
-      // Die Auswahl wurde bei einer bestehenden Position zurückgenommen
+      // Die Auswahl wurde bei einer bestehenden Position zurÃ¼ckgenommen
     When ITFnd = 'J' And
       DFOPT = *Blanks;
       OptAct(ITOPos) = 'N';
-      // Die Auswahl wurde bei einer bestehenden Position geändert
+      // Die Auswahl wurde bei einer bestehenden Position geÃ¤ndert
     When ITFnd = 'J' And
       DFOPT <> *Blanks;
       OptOpt(ITOPos) = DFOPT;
     EndSl;
-    // Schlüssel merken
+    // SchlÃ¼ssel merken
     If ITPos = '*YES' And
       DFOPT <> *Blanks;
       ITPos = '*POS';
@@ -1513,48 +1513,48 @@ BegSr SR105;
 EndSr;
 
 //*-----------------------------------------------------------------------------------------*
-//* Speicher für Optionstabellen anfordern                                                  *
+//* Speicher fÃ¼r Optionstabellen anfordern                                                  *
 //*-----------------------------------------------------------------------------------------*
 
 BegSr SR110;
   // Das erste Mal Speicher anfordern
   If OptCnt = *Zero;
-    // Zähler erhöhen
+    // ZÃ¤hler erhÃ¶hen
     OptCnt = OptCnt + 100;
-    // Speicher für Tabelle (Aktiv) anfordern
+    // Speicher fÃ¼r Tabelle (Aktiv) anfordern
     ITLen = %Size(OptAct) * OptCnt;
     OptActPtr = %ALLOC(ITLen);
-    // Speicher für Tabelle (Auswahl) anfordern
+    // Speicher fÃ¼r Tabelle (Auswahl) anfordern
     ITLen = %Size(OptOpt) * OptCnt;
     OptOptPtr = %ALLOC(ITLen);
-    // Speicher für Tabelle (Schlüssel) anfordern
+    // Speicher fÃ¼r Tabelle (SchlÃ¼ssel) anfordern
     ITLen = %Size(OptKey) * OptCnt;
     OptKeyPtr = %ALLOC(ITLen);
     // Ein weiteres Mal Speicher anfordern
   Else;
-    // Zähler erhöhen
+    // ZÃ¤hler erhÃ¶hen
     OptCnt = OptCnt + 100;
-    // Speicher für Tabelle (Aktiv) anfordern
+    // Speicher fÃ¼r Tabelle (Aktiv) anfordern
     ITLen = %Size(OptAct) * OptCnt;
     OptActPtr = %REALLOC(OptActPtr:ITLen);
-    // Speicher für Tabelle (Auswahl) anfordern
+    // Speicher fÃ¼r Tabelle (Auswahl) anfordern
     ITLen = %Size(OptOpt) * OptCnt;
     OptOptPtr = %REALLOC(OptOptPtr:ITLen);
-    // Speicher für Tabelle (Schlüssel) anfordern
+    // Speicher fÃ¼r Tabelle (SchlÃ¼ssel) anfordern
     ITLen = %Size(OptKey) * OptCnt;
     OptKeyPtr = %REALLOC(OptKeyPtr:ITLen);
   EndIf;
 EndSr;
 
 //*-----------------------------------------------------------------------------------------*
-//* Auswahlen in der Subfile auf Fehler überprüfen und auswerten (Alles)                    *
+//* Auswahlen in der Subfile auf Fehler Ã¼berprÃ¼fen und auswerten (Alles)                    *
 //*-----------------------------------------------------------------------------------------*
 
 BegSr SR115;
   FOR ITOEvl = 1 TO ITOpt;
     // Nur aktive Positionen verarbeiten
     If OptAct(ITOEvl) = 'J';
-      // Auswahlen in der Subfile auf Fehler überprüfen (Alles)
+      // Auswahlen in der Subfile auf Fehler Ã¼berprÃ¼fen (Alles)
       ExSr SR120;
       // Bei Fehler aussteigen
       If ITMsgId <> *Blanks;
@@ -1564,10 +1564,10 @@ BegSr SR115;
         OptAct(ITOEvl) = 'N';
         // Auswahlen der Subdatei auswerten (Alles)
         ExSr SR125;
-        // Der Benutzer hat die Funktionstaste F3 oder Funktionstaste F12 gedrückt
+        // Der Benutzer hat die Funktionstaste F3 oder Funktionstaste F12 gedrÃ¼ckt
         If PIRtCd = '*F3' Or
           PIRtCd = '*F12';
-          // Zähler für Auswahlen initialisieren, wenn die letzte Position ausgewertet ist
+          // ZÃ¤hler fÃ¼r Auswahlen initialisieren, wenn die letzte Position ausgewertet ist
           If ITOEvl = ITOpt;
             ITOpt = *Zero;
           EndIf;
@@ -1580,7 +1580,7 @@ BegSr SR115;
 EndSr;
 
 //*-----------------------------------------------------------------------------------------*
-//* Auswahlen in der Subfile auf Fehler überprüfen (Alles)                                  *
+//* Auswahlen in der Subfile auf Fehler Ã¼berprÃ¼fen (Alles)                                  *
 //*-----------------------------------------------------------------------------------------*
 
 BegSr SR120;
@@ -1606,15 +1606,15 @@ EndSr;
 //*-----------------------------------------------------------------------------------------*
 
 BegSr SR125;
-  // Rückkehrcode initialisieren
+  // RÃ¼ckkehrcode initialisieren
   PIRtCd = '*ENTER';
   Select;
-    // Auswahl : '1=Auswählen'
+    // Auswahl : '1=AuswÃ¤hlen'
   When OptOpt(ITOEvl) = '1';
     SlcKey = OptKey(ITOEvl);
     PIARA = SlcARA;
     PIRtCd = '*SELECT';
-    // Auswahl : '2=Ändern'
+    // Auswahl : '2=Ã„ndern'
   When OptOpt(ITOEvl) = '2';
     ITMode = MNTAREA_CHANGE;
     SlcKey = OptKey(ITOEvl);
@@ -1624,7 +1624,7 @@ BegSr SR125;
     ITMode = MNTAREA_COPY;
     SlcKey = OptKey(ITOEvl);
     ExSr SR130;
-    // Auswahl : '4=Löschen'
+    // Auswahl : '4=LÃ¶schen'
   When OptOpt(ITOEvl) = '4';
     ITMode = MNTAREA_DELETE;
     SlcKey = OptKey(ITOEvl);
@@ -1654,6 +1654,6 @@ BegSr SR130;
    PIJOB :                                                               // --> Job
    PIPOS :                                                               // --> Position
    SlcARA :                                                              // <-> Area
-   PIRtCd                                                                // <-- Rückkehrcode
+   PIRtCd                                                                // <-- RÃ¼ckkehrcode
   );
 EndSr;

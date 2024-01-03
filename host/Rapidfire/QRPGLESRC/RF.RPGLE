@@ -130,7 +130,7 @@ Else;
        '*EDIT' : // --> Modus
        *Blanks : // --> Filter Job
        g_JOB :   // <-> Job
-       g_RtCd    // <-- Rückkehrcode
+       g_RtCd    // <-- RÃ¼ckkehrcode
       );
 
       // Commitment control has to be ended

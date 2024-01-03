@@ -25,27 +25,27 @@
 //*  >>END-PRE-COMPILER<<                                                                   *
 //*-----------------------------------------------------------------------------------------*
 //*                                                                                         *
-//* (01 - 49) Freie Bezugszahlen für sonstige Dinge                                         *
+//* (01 - 49) Freie Bezugszahlen fÃ¼r sonstige Dinge                                         *
 //*                                                                                         *
 //*-----------------------------------------------------------------------------------------*
 //*                                                                                         *
-//* (50 - 59) Reservierte Bezugszahlen für Diverses                                         *
+//* (50 - 59) Reservierte Bezugszahlen fÃ¼r Diverses                                         *
 //*                                                                                         *
-//* 50      --> Schlüsselwort SFLEND in Nachrichtensubdatei aktivieren                      *
-//* 51      --> Ergebnis für LookUp Operation                                               *
+//* 50      --> SchlÃ¼sselwort SFLEND in Nachrichtensubdatei aktivieren                      *
+//* 51      --> Ergebnis fÃ¼r LookUp Operation                                               *
 //*                                                                                         *
 //*-----------------------------------------------------------------------------------------*
 //*                                                                                         *
-//* (60 - 79) Reservierte Bezugszahlen für Subdateiverarbeitung                             *
+//* (60 - 79) Reservierte Bezugszahlen fÃ¼r Subdateiverarbeitung                             *
 //*                                                                                         *
-//* 60,64,68,72,76  --> (Subdatei 1 - 5) Inhalt der Subdatei löschen                        *
-//* 61,65,69,73,77  --> (Subdatei 1 - 5) Keine Sätze in der Subdatei vorhanden              *
+//* 60,64,68,72,76  --> (Subdatei 1 - 5) Inhalt der Subdatei lÃ¶schen                        *
+//* 61,65,69,73,77  --> (Subdatei 1 - 5) Keine SÃ¤tze in der Subdatei vorhanden              *
 //* 62,66,70,74,78  --> (Subdatei 1 - 5) Letzter Satz befindet sich bereits in der Subdatei *
-//* 63,67,71,75,79  --> (Subdatei 1 - 5) Subdateisatz ist ein geänderter Satz               *
+//* 63,67,71,75,79  --> (Subdatei 1 - 5) Subdateisatz ist ein geÃ¤nderter Satz               *
 //*                                                                                         *
 //*-----------------------------------------------------------------------------------------*
 //*                                                                                         *
-//* (80 - 89) Reservierte Bezugszahlen für Fehlermeldungen                                  *
+//* (80 - 89) Reservierte Bezugszahlen fÃ¼r Fehlermeldungen                                  *
 //*                                                                                         *
 //* 80      --> Es liegt ein Fehler vor (Spezifikation durch BZ 81 - 89)                    *
 //* 81 - 83 --> (Block 1) Fehlermeldungen                                                   *
@@ -54,19 +54,19 @@
 //*                                                                                         *
 //*-----------------------------------------------------------------------------------------*
 //*                                                                                         *
-//* (90 - 99) Reservierte Bezugszahlen für Cursorpositionierung                             *
+//* (90 - 99) Reservierte Bezugszahlen fÃ¼r Cursorpositionierung                             *
 //*                                                                                         *
 //* 90      --> Es soll positioniert werden (Spezifikation durch 91 - 99)                   *
 //* 91      --> Der Cursor soll auf Koordinate Zeile / Spalte positioniert werden           *
 //*                                                                                         *
 //*-----------------------------------------------------------------------------------------*
 //*                                                                                         *
-//* Übergabeparameter                                                                       *
+//* Ãœbergabeparameter                                                                       *
 //* =================                                                                       *
 //*                                                                                         *
-//* PIRtCd     / *F3        --> Der Benutzer hat die Taste F3 gedrückt                      *
-//*              *F12       --> Der Benutzer hat die Taste F12 gedrückt                     *
-//*              *ENTER     --> Der Benutzer hat die Taste ENTER gedrückt                   *
+//* PIRtCd     / *F3        --> Der Benutzer hat die Taste F3 gedrÃ¼ckt                      *
+//*              *F12       --> Der Benutzer hat die Taste F12 gedrÃ¼ckt                     *
+//*              *ENTER     --> Der Benutzer hat die Taste ENTER gedrÃ¼ckt                   *
 //*                                                                                         *
 //* Aufruf von der Befehlszeile                                                             *
 //* ===========================                                                             *
@@ -109,49 +109,49 @@ DCL-F LIBRARIES Disk(*EXT) USAGE(*INPUT)
 
 //*-----------------------------------------------------------------------------------------*
 
-// Prozedurenprototyp für Prozedur 'RF0018PG'
+// Prozedurenprototyp fÃ¼r Prozedur 'RF0018PG'
 
 /Copy QCPYSRC,RF0018PG
 
-// Prozedurenschnittstelle für Prozedur 'RF0008PG'
+// Prozedurenschnittstelle fÃ¼r Prozedur 'RF0008PG'
 
 DCL-PI RF0018PG;
   PIJOB CHAR(10) Const;                                                  // --> Job
   PIPOS PACKED(6) Const;                                                 // --> Position
-  PIRtCd CHAR(10);                                                       // <-- Rückkehrcode
+  PIRtCd CHAR(10);                                                       // <-- RÃ¼ckkehrcode
 END-PI;
 
 //*-----------------------------------------------------------------------------------------*
 
-// Prozedurenprototyp für Prozedur 'RtvFktKey'
+// Prozedurenprototyp fÃ¼r Prozedur 'RtvFktKey'
 
 /Copy QCPYSRC,RTVFKTKEY
 
-// Prozedurenprototyp für Prozedur 'RmvErrMsg'
+// Prozedurenprototyp fÃ¼r Prozedur 'RmvErrMsg'
 
 /Copy QCPYSRC,RMVERRMSG
 
-// Prozedurenprototyp für Prozedur 'SndErrMsg'
+// Prozedurenprototyp fÃ¼r Prozedur 'SndErrMsg'
 
 /Copy QCPYSRC,SNDERRMSG
 
-// Prozedurenprototyp für Prozedur 'QUHDSPH'
+// Prozedurenprototyp fÃ¼r Prozedur 'QUHDSPH'
 
 /Copy QCPYSRC,QUHDSPH
 
-// Prozedurenprototyp für Prozedur 'RF0016PG'
+// Prozedurenprototyp fÃ¼r Prozedur 'RF0016PG'
 
 /Copy QCPYSRC,RF0016PG
 
-// Datenstruktur für Format 'ERRC0100' für Fehlercode
+// Datenstruktur fÃ¼r Format 'ERRC0100' fÃ¼r Fehlercode
 
 /Copy QCPYSRC,ERRC0100
 
-// Prozedurenprototyp für Prozedur 'GNRCPYPGM'
+// Prozedurenprototyp fÃ¼r Prozedur 'GNRCPYPGM'
 
 /Copy QCPYSRC,GNRCPYPGM
 
-// Dateiinformationsdatenstruktur für RF0018DF
+// Dateiinformationsdatenstruktur fÃ¼r RF0018DF
 
 DCL-DS FIDS_RF0018DF;
   AIDCde CHAR(1) POS(369);
@@ -187,9 +187,9 @@ DCL-S ITSUCC CHAR(1);                                                    // Erfo
 
 //*-----------------------------------------------------------------------------------------*
 
-// Bezugszahl für 'Schlüsselwort SFLEND in Nachrichtensubdatei aktivieren' auf 'Ja' setzen
+// Bezugszahl fÃ¼r 'SchlÃ¼sselwort SFLEND in Nachrichtensubdatei aktivieren' auf 'Ja' setzen
 *IN50 = *On;
-// Dateien öffnen
+// Dateien Ã¶ffnen
 GNRCPYPGM_openFiles();
 // Initialisieren
 If GNRCPYPGM_initialize(
@@ -212,7 +212,7 @@ If GNRCPYPGM_initialize(
   // Bildschirm verarbeiten
   ExSr SR045;
 EndIf;
-// Dateien schließen
+// Dateien schlieÃŸen
 GNRCPYPGM_closeFiles();
 // Programm nicht hauptspeicherresident verlassen
 *INLR = *On;
@@ -323,7 +323,7 @@ BegSr SR045;
       PIRtCd = '*F12';
       Leave;
     EndIf;
-    // Funktionstaste : 'F4=Bedienerführung'
+    // Funktionstaste : 'F4=BedienerfÃ¼hrung'
     If ITFktKey = '*F4';
       ExSr SR065;
       If PIRtCd = '*F3';
@@ -334,12 +334,12 @@ BegSr SR045;
     EndIf;
     // Funktionstaste : 'Enter'
     If ITFktKey = '*ENTER';
-      // Bildschirmfelder auf Fehler überprüfen
+      // Bildschirmfelder auf Fehler Ã¼berprÃ¼fen
       ExSr SR050;
       If ITMsgId <> *Blanks;
         Iter;
       EndIf;
-      // Rückkehrcode setzen
+      // RÃ¼ckkehrcode setzen
       DFPGMQ = '*';
       Write DSPF999C;
       Write DSPF010;
@@ -354,12 +354,12 @@ BegSr SR045;
 EndSr;
 
 //*-----------------------------------------------------------------------------------------*
-//* Bildschirmfelder auf Fehler überprüfen                                                  *
+//* Bildschirmfelder auf Fehler Ã¼berprÃ¼fen                                                  *
 //*-----------------------------------------------------------------------------------------*
 
 BegSr SR050;
 
-  // Namensfelder linksbündig ausrichten
+  // Namensfelder linksbÃ¼ndig ausrichten
   DFSRCF = %TRIML(DFSRCF);
   DFSRCL = %TRIML(DFSRCL);
   DFSRCM = %TRIML(DFSRCM);
@@ -370,7 +370,7 @@ BegSr SR050;
   DFVP   = %TRIML(DFVP);
   DFVPL  = %TRIML(DFVPL);
 
-  // Werte übergeben
+  // Werte Ã¼bergeben
   GNRCPYPGM_setValues(
     DFSRCF : // --> Source file
     DFSRCL : // --> Source file library
@@ -383,7 +383,7 @@ BegSr SR050;
     DFVPL    // --> Conversion program library
   );
 
-  // Prüfen
+  // PrÃ¼fen
   If Not GNRCPYPGM_check(
     ITSUCC : // <-- Erfolg
     ITXFld : // <-- Feld
@@ -448,7 +448,7 @@ EndSr;
 //*-----------------------------------------------------------------------------------------*
 
 BegSr SR055;
-  // Bezugszahl für 'Es liegt ein Fehler vor' auf 'Ja' setzen
+  // Bezugszahl fÃ¼r 'Es liegt ein Fehler vor' auf 'Ja' setzen
   *IN80 = *On;
   // Fehlernachricht in die Programmnachrichtenwarteschlange schreiben
   ITSts = SndErrMsg(
@@ -469,7 +469,7 @@ BegSr SR060;
   ITHlp = 'N';
   // Nummer Hilfetextmodul initialisieren
   ITNbr = *Zero;
-  // Hilfe für Fehlernachrichtensubdatei angefordert
+  // Hilfe fÃ¼r Fehlernachrichtensubdatei angefordert
   If DFRCD010 = 'DSPF999S';
     ITNbr = ITNbr + 1;
     ITHIPG(ITNbr) = 'CMOREFGP';
@@ -618,7 +618,7 @@ BegSr SR060;
       ITDsp(2) = ITNbr;
     EndIf;
   EndIf;
-  // Keine kontextbezogene Hilfe ausgewählt
+  // Keine kontextbezogene Hilfe ausgewÃ¤hlt
   If ITHlp = 'N';
     ITDsp(1) = 1;
     ITDsp(2) = ITNbr;
@@ -657,19 +657,19 @@ BegSr SR060;
 EndSr;
 
 //*-----------------------------------------------------------------------------------------*
-//* Bedienerführung                                                                         *
+//* BedienerfÃ¼hrung                                                                         *
 //*-----------------------------------------------------------------------------------------*
 
 BegSr SR065;
   Select;
-    // Bedienerführung für das Feld 'Area'
+    // BedienerfÃ¼hrung fÃ¼r das Feld 'Area'
   When DFFLD010 = 'DFARA';
     RF0016PG(
      '*SELECT' :                                                         // --> Modus
      PIJOB :                                                             // --> Job
      PIPOS :                                                             // --> Position
      ITARA :                                                             // <-> Area
-     PIRtCd                                                              // <-- Rückkehrcode
+     PIRtCd                                                              // <-- RÃ¼ckkehrcode
     );
     If PIRtCd = '*SELECT';
       DFARA = ITARA;

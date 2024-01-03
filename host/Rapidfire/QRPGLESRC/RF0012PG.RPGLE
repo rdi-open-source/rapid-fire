@@ -25,33 +25,33 @@
 //*  >>END-PRE-COMPILER<<                                                                   *
 //*-----------------------------------------------------------------------------------------*
 //*                                                                                         *
-//* (01 - 49) Freie Bezugszahlen für sonstige Dinge                                         *
+//* (01 - 49) Freie Bezugszahlen fÃ¼r sonstige Dinge                                         *
 //*                                                                                         *
 //* 01      --> Modus : 'Erstellen'                                                         *
-//* 02      --> Modus : 'Ändern'                                                            *
+//* 02      --> Modus : 'Ã„ndern'                                                            *
 //* 03      --> Modus : 'Kopieren'                                                          *
-//* 04      --> Modus : 'Löschen'                                                           *
+//* 04      --> Modus : 'LÃ¶schen'                                                           *
 //* 05      --> Modus : 'Anzeigen'                                                          *
 //*                                                                                         *
 //*-----------------------------------------------------------------------------------------*
 //*                                                                                         *
-//* (50 - 59) Reservierte Bezugszahlen für Diverses                                         *
+//* (50 - 59) Reservierte Bezugszahlen fÃ¼r Diverses                                         *
 //*                                                                                         *
-//* 50      --> Schlüsselwort SFLEND in Nachrichtensubdatei aktivieren                      *
-//* 51      --> Ergebnis für LookUp Operation                                               *
+//* 50      --> SchlÃ¼sselwort SFLEND in Nachrichtensubdatei aktivieren                      *
+//* 51      --> Ergebnis fÃ¼r LookUp Operation                                               *
 //*                                                                                         *
 //*-----------------------------------------------------------------------------------------*
 //*                                                                                         *
-//* (60 - 79) Reservierte Bezugszahlen für Subdateiverarbeitung                             *
+//* (60 - 79) Reservierte Bezugszahlen fÃ¼r Subdateiverarbeitung                             *
 //*                                                                                         *
-//* 60,64,68,72,76  --> (Subdatei 1 - 5) Inhalt der Subdatei löschen                        *
-//* 61,65,69,73,77  --> (Subdatei 1 - 5) Keine Sätze in der Subdatei vorhanden              *
+//* 60,64,68,72,76  --> (Subdatei 1 - 5) Inhalt der Subdatei lÃ¶schen                        *
+//* 61,65,69,73,77  --> (Subdatei 1 - 5) Keine SÃ¤tze in der Subdatei vorhanden              *
 //* 62,66,70,74,78  --> (Subdatei 1 - 5) Letzter Satz befindet sich bereits in der Subdatei *
-//* 63,67,71,75,79  --> (Subdatei 1 - 5) Subdateisatz ist ein geänderter Satz               *
+//* 63,67,71,75,79  --> (Subdatei 1 - 5) Subdateisatz ist ein geÃ¤nderter Satz               *
 //*                                                                                         *
 //*-----------------------------------------------------------------------------------------*
 //*                                                                                         *
-//* (80 - 89) Reservierte Bezugszahlen für Fehlermeldungen                                  *
+//* (80 - 89) Reservierte Bezugszahlen fÃ¼r Fehlermeldungen                                  *
 //*                                                                                         *
 //* 80      --> Es liegt ein Fehler vor (Spezifikation durch BZ 81 - 89)                    *
 //* 81 - 83 --> (Block 1) Fehlermeldungen                                                   *
@@ -60,7 +60,7 @@
 //*                                                                                         *
 //*-----------------------------------------------------------------------------------------*
 //*                                                                                         *
-//* (90 - 99) Reservierte Bezugszahlen für Cursorpositionierung                             *
+//* (90 - 99) Reservierte Bezugszahlen fÃ¼r Cursorpositionierung                             *
 //*                                                                                         *
 //* 90      --> Es soll positioniert werden (Spezifikation durch 91 - 99)                   *
 //* 91      --> Der Cursor soll auf Koordinate Zeile / Spalte positioniert werden           *
@@ -68,18 +68,18 @@
 //*                                                                                         *
 //*-----------------------------------------------------------------------------------------*
 //*                                                                                         *
-//* Übergabeparameter                                                                       *
+//* Ãœbergabeparameter                                                                       *
 //* =================                                                                       *
 //*                                                                                         *
 //* PIMode     / *CREATE  --> Modus : 'Erstellen'                                           *
-//*              *CHANGE  --> Modus : 'Ändern'                                              *
+//*              *CHANGE  --> Modus : 'Ã„ndern'                                              *
 //*              *COPY    --> Modus : 'Kopieren'                                            *
-//*              *DELETE  --> Modus : 'Löschen'                                             *
+//*              *DELETE  --> Modus : 'LÃ¶schen'                                             *
 //*              *DISPLAY --> Modus : 'Anzeigen'                                            *
 //*                                                                                         *
-//* PIRtCd     / *F3      --> Der Benutzer hat die Taste F3 gedrückt                        *
-//*              *F12     --> Der Benutzer hat die Taste F12 gedrückt                       *
-//*              *ENTER   --> Der Benutzer hat die Taste ENTER gedrückt                     *
+//* PIRtCd     / *F3      --> Der Benutzer hat die Taste F3 gedrÃ¼ckt                        *
+//*              *F12     --> Der Benutzer hat die Taste F12 gedrÃ¼ckt                       *
+//*              *ENTER   --> Der Benutzer hat die Taste ENTER gedrÃ¼ckt                     *
 //*                                                                                         *
 //*------------+--------+-------------------------------------------------------------------*
 //*   Datum    I Progr. I Beschreibung                                                      *
@@ -103,11 +103,11 @@ DCL-F RF0012DF Workstn(*EXT) USAGE(*INPUT:*OUTPUT)
 
 //*-----------------------------------------------------------------------------------------*
 
-// Prozedurenprototyp für Prozedur 'RF0012PG'
+// Prozedurenprototyp fÃ¼r Prozedur 'RF0012PG'
 
 /Copy QCPYSRC,RF0012PG
 
-// Prozedurenschnittstelle für Prozedur 'RF0012PG'
+// Prozedurenschnittstelle fÃ¼r Prozedur 'RF0012PG'
 
 DCL-PI RF0012PG;
   PIMode CHAR(10) Const;                                                 // --> Modus
@@ -115,44 +115,44 @@ DCL-PI RF0012PG;
   PIPOS PACKED(6) Const;                                                 // --> Position
   PITYPE CHAR(10);                                                       // <-> Typ
   PISEQ PACKED(3);                                                       // <-> Sequenz
-  PIRtCd CHAR(10);                                                       // <-- Rückkehrcode
+  PIRtCd CHAR(10);                                                       // <-- RÃ¼ckkehrcode
 END-PI;
 
 //*-----------------------------------------------------------------------------------------*
 
-// Prozedurenprototyp für Prozedur 'RtvFktKey'
+// Prozedurenprototyp fÃ¼r Prozedur 'RtvFktKey'
 
 /Copy QCPYSRC,RTVFKTKEY
 
-// Prozedurenprototyp für Prozedur 'RmvErrMsg'
+// Prozedurenprototyp fÃ¼r Prozedur 'RmvErrMsg'
 
 /Copy QCPYSRC,RMVERRMSG
 
-// Prozedurenprototyp für Prozedur 'SndErrMsg'
+// Prozedurenprototyp fÃ¼r Prozedur 'SndErrMsg'
 
 /Copy QCPYSRC,SNDERRMSG
 
-// Prozedurenprototyp für Prozedur 'QUHDSPH'
+// Prozedurenprototyp fÃ¼r Prozedur 'QUHDSPH'
 
 /Copy QCPYSRC,QUHDSPH
 
-// Prozedurenprototyp für Prozedur 'QCAPCMD'
+// Prozedurenprototyp fÃ¼r Prozedur 'QCAPCMD'
 
 /Copy QCPYSRC,QCAPCMD
 
-// Datenstruktur für Format 'CPOP0100' für Prozedur 'QCAPCMD'
+// Datenstruktur fÃ¼r Format 'CPOP0100' fÃ¼r Prozedur 'QCAPCMD'
 
 /Copy QCPYSRC,CPOP0100
 
-// Datenstruktur für Format 'ERRC0100' für Fehlercode
+// Datenstruktur fÃ¼r Format 'ERRC0100' fÃ¼r Fehlercode
 
 /Copy QCPYSRC,ERRC0100
 
-// Prozedurenprototyp für Prozedur 'MNTCMD'
+// Prozedurenprototyp fÃ¼r Prozedur 'MNTCMD'
 
 /Copy QCPYSRC,MNTCMD
 
-// Dateiinformationsdatenstruktur für RF0012DF
+// Dateiinformationsdatenstruktur fÃ¼r RF0012DF
 
 DCL-DS FIDS_RF0012DF;
   AIDCde CHAR(1) POS(369);
@@ -184,16 +184,16 @@ DCL-S ITCsrL INT(10) Dim(2);                                             // Curs
 DCL-S ITHlp CHAR(1);                                                     // Kontextbezogene H
 DCL-S ITCmdIn CHAR(2048);                                                // Eingehender Befeh
 DCL-S ITCmdOut CHAR(2048);                                               // Ausgehender Befeh
-DCL-S ITLenOut INT(10);                                                  // Ausgehende Länge
+DCL-S ITLenOut INT(10);                                                  // Ausgehende LÃ¤nge
 DCL-S ITXFld CHAR(10);                                                   // Feld
 DCL-S ITXMsg CHAR(256);                                                  // Nachricht
 DCL-S ITSUCC CHAR(1);                                                    // Erfolg
 
 //*-----------------------------------------------------------------------------------------*
 
-// Bezugszahl für 'Schlüsselwort SFLEND in Nachrichtensubdatei aktivieren' auf 'Ja' setzen
+// Bezugszahl fÃ¼r 'SchlÃ¼sselwort SFLEND in Nachrichtensubdatei aktivieren' auf 'Ja' setzen
 *IN50 = *On;
-// Dateien öffnen
+// Dateien Ã¶ffnen
 MNTCMD_openFiles();
 // Initialisieren
 If MNTCMD_initialize(
@@ -217,7 +217,7 @@ If MNTCMD_initialize(
       PITYPE = DFTYPE;
       PISEQ = DFSEQ;
     EndIf;
-    // Modus : 'Ändern'
+    // Modus : 'Ã„ndern'
   When PIMode = MNTCMD_CHANGE;
     ExSr SR010;
     // Modus : 'Kopieren'
@@ -227,7 +227,7 @@ If MNTCMD_initialize(
       PITYPE = DFTYPE;
       PISEQ = DFSEQ;
     EndIf;
-    // Modus : 'Löschen'
+    // Modus : 'LÃ¶schen'
   When PIMode = MNTCMD_DELETE;
     ExSr SR020;
     // Modus : 'Anzeigen'
@@ -235,7 +235,7 @@ If MNTCMD_initialize(
     ExSr SR025;
   EndSl;
 EndIf;
-// Dateien schließen
+// Dateien schlieÃŸen
 MNTCMD_closeFiles();
 // Programm nicht hauptspeicherresident verlassen
 *INLR = *On;
@@ -245,13 +245,13 @@ MNTCMD_closeFiles();
 //*-----------------------------------------------------------------------------------------*
 
 BegSr SR005;
-  // Überschrift für Modus 'Erstellen' anzeigen
+  // Ãœberschrift fÃ¼r Modus 'Erstellen' anzeigen
   *IN(1) = *ON;
   *IN(2) = *OFF;
   *IN(3) = *OFF;
   *IN(4) = *OFF;
   *IN(5) = *OFF;
-  // Bildschirm mit Werten füllen
+  // Bildschirm mit Werten fÃ¼llen
   ExSr SR030;
   // Bildschirm verarbeiten
   ExSr SR050;
@@ -262,17 +262,17 @@ BegSr SR005;
 EndSr;
 
 //*-----------------------------------------------------------------------------------------*
-//* Ändern                                                                                  *
+//* Ã„ndern                                                                                  *
 //*-----------------------------------------------------------------------------------------*
 
 BegSr SR010;
-  // Überschrift für Modus 'Ändern' anzeigen
+  // Ãœberschrift fÃ¼r Modus 'Ã„ndern' anzeigen
   *IN(1) = *OFF;
   *IN(2) = *ON;
   *IN(3) = *OFF;
   *IN(4) = *OFF;
   *IN(5) = *OFF;
-  // Bildschirm mit Werten füllen
+  // Bildschirm mit Werten fÃ¼llen
   ExSr SR030;
   // Bildschirm verarbeiten
   ExSr SR050;
@@ -287,13 +287,13 @@ EndSr;
 //*-----------------------------------------------------------------------------------------*
 
 BegSr SR015;
-  // Überschrift für Modus 'Kopieren' anzeigen
+  // Ãœberschrift fÃ¼r Modus 'Kopieren' anzeigen
   *IN(1) = *OFF;
   *IN(2) = *OFF;
   *IN(3) = *ON;
   *IN(4) = *OFF;
   *IN(5) = *OFF;
-  // Bildschirm mit Werten füllen
+  // Bildschirm mit Werten fÃ¼llen
   ExSr SR030;
   // Bildschirm verarbeiten
   ExSr SR050;
@@ -304,31 +304,31 @@ BegSr SR015;
 EndSr;
 
 //*-----------------------------------------------------------------------------------------*
-//* Löschen                                                                                 *
+//* LÃ¶schen                                                                                 *
 //*-----------------------------------------------------------------------------------------*
 
 BegSr SR020;
-  // Überschrift für Modus 'Löschen' anzeigen
+  // Ãœberschrift fÃ¼r Modus 'LÃ¶schen' anzeigen
   *IN(1) = *OFF;
   *IN(2) = *OFF;
   *IN(3) = *OFF;
   *IN(4) = *ON;
   *IN(5) = *OFF;
-  // Bildschirm mit Werten füllen
+  // Bildschirm mit Werten fÃ¼llen
   ExSr SR030;
   // Bildschirm verarbeiten
   ExSr SR050;
   If PIRtCd = '*ENTER';
-    // Bestätigung für Löschung einholen
+    // BestÃ¤tigung fÃ¼r LÃ¶schung einholen
     ExFmt DSPF020W;
     // Funktionstaste abrufen
     ITFktKey = RtvFktKey(AIDCde);
-    // Datensatz löschen
+    // Datensatz lÃ¶schen
     If ITFktKey = '*ENTER';
       // Verbuchen
       MNTCMD_book();
     Else;
-      // Löschung abgebrochen
+      // LÃ¶schung abgebrochen
       PIRtCd = '*F12';
     EndIf;
   EndIf;
@@ -339,13 +339,13 @@ EndSr;
 //*-----------------------------------------------------------------------------------------*
 
 BegSr SR025;
-  // Überschrift für Modus 'Anzeigen' anzeigen
+  // Ãœberschrift fÃ¼r Modus 'Anzeigen' anzeigen
   *IN(1) = *OFF;
   *IN(2) = *OFF;
   *IN(3) = *OFF;
   *IN(4) = *OFF;
   *IN(5) = *ON;
-  // Bildschirm mit Werten füllen
+  // Bildschirm mit Werten fÃ¼llen
   ExSr SR030;
   // Bildschirm verarbeiten
   ExSr SR050;
@@ -356,7 +356,7 @@ BegSr SR025;
 EndSr;
 
 //*-----------------------------------------------------------------------------------------*
-//* Bildschirm mit Standartwerten füllen                                                    *
+//* Bildschirm mit Standartwerten fÃ¼llen                                                    *
 //*-----------------------------------------------------------------------------------------*
 
 BegSr SR030;
@@ -455,7 +455,7 @@ BegSr SR050;
       PIRtCd = '*F12';
       Leave;
     EndIf;
-    // Funktionstaste : 'F4=Bedienerführung'
+    // Funktionstaste : 'F4=BedienerfÃ¼hrung'
     If ITFktKey = '*F4';
       ExSr SR070;
       If PIRtCd = '*F3';
@@ -466,12 +466,12 @@ BegSr SR050;
     EndIf;
     // Funktionstaste : 'Enter'
     If ITFktKey = '*ENTER';
-      // Bildschirmfelder auf Fehler überprüfen
+      // Bildschirmfelder auf Fehler Ã¼berprÃ¼fen
       ExSr SR055;
       If ITMsgId <> *Blanks;
         Iter;
       EndIf;
-      // Rückkehrcode setzen
+      // RÃ¼ckkehrcode setzen
       PIRtCd = '*ENTER';
       Leave;
     endif;
@@ -479,18 +479,18 @@ BegSr SR050;
 EndSr;
 
 //*-----------------------------------------------------------------------------------------*
-//* Bildschirmfelder auf Fehler überprüfen                                                  *
+//* Bildschirmfelder auf Fehler Ã¼berprÃ¼fen                                                  *
 //*-----------------------------------------------------------------------------------------*
 
 BegSr SR055;
-  // Namensfelder linksbündig ausrichten
+  // Namensfelder linksbÃ¼ndig ausrichten
   If PIMode = MNTCMD_CREATE Or
     PIMode = MNTCMD_COPY Or
     PIMode = MNTCMD_CHANGE;
     DFTYPE = %TRIML(DFTYPE);
     DFCMD = %TRIML(DFCMD);
   EndIf;
-  // *** Fehlerprüfung nur für Modus 'Erstellen' und 'Kopieren' ***
+  // *** FehlerprÃ¼fung nur fÃ¼r Modus 'Erstellen' und 'Kopieren' ***
   If PIMode = MNTCMD_CREATE Or
     PIMode = MNTCMD_COPY Or
     PIMode = MNTCMD_CHANGE;
@@ -500,7 +500,7 @@ BegSr SR055;
       DFCMD     // --> Command
     );
   EndIf;
-  // Prüfen
+  // PrÃ¼fen
   If Not MNTCMD_check(
     ITSUCC : // <-- Erfolg
     ITXFld : // <-- Feld
@@ -536,7 +536,7 @@ EndSr;
 //*-----------------------------------------------------------------------------------------*
 
 BegSr SR060;
-  // Bezugszahl für 'Es liegt ein Fehler vor' auf 'Ja' setzen
+  // Bezugszahl fÃ¼r 'Es liegt ein Fehler vor' auf 'Ja' setzen
   *IN80 = *On;
   // Fehlernachricht in die Programmnachrichtenwarteschlange schreiben
   ITSts = SndErrMsg(
@@ -557,7 +557,7 @@ BegSr SR065;
   ITHlp = 'N';
   // Nummer Hilfetextmodul initialisieren
   ITNbr = *Zero;
-  // Hilfe für Fehlernachrichtensubdatei angefordert
+  // Hilfe fÃ¼r Fehlernachrichtensubdatei angefordert
   If DFRCD010 = 'DSPF999S';
     ITNbr = ITNbr + 1;
     ITHIPG(ITNbr) = 'CMOREFGP';
@@ -644,7 +644,7 @@ BegSr SR065;
       ITDsp(2) = ITNbr;
     EndIf;
   EndIf;
-  // Keine kontextbezogene Hilfe ausgewählt
+  // Keine kontextbezogene Hilfe ausgewÃ¤hlt
   If ITHlp = 'N';
     ITDsp(1) = 1;
     ITDsp(2) = ITNbr;
@@ -683,12 +683,12 @@ BegSr SR065;
 EndSr;
 
 //*-----------------------------------------------------------------------------------------*
-//* Bedienerführung                                                                         *
+//* BedienerfÃ¼hrung                                                                         *
 //*-----------------------------------------------------------------------------------------*
 
 BegSr SR070;
   Select;
-    // Bedienerführung für das Feld 'Befehl'
+    // BedienerfÃ¼hrung fÃ¼r das Feld 'Befehl'
   When DFFLD010 = 'DFCMD';
     // Befehl initialisieren
     ITCmdIn = DFCMD;
@@ -729,7 +729,7 @@ BegSr SR070;
       DFCMD = %SubSt(ITCmdOut : 1 : ITLenOut);
       PIRtCd = '*OK';
     EndSl;
-    // Es ist keine Bedienerführung für das angeforderte Feld vorhanden
+    // Es ist keine BedienerfÃ¼hrung fÃ¼r das angeforderte Feld vorhanden
   Other;
     ITMsgId = 'ERR0004';
     ITMsgDta = *Blanks;

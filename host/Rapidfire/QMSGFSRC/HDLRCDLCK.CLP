@@ -40,7 +40,7 @@
                TEXT('Handle Record Lock')
 
      /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   CON0001                    */
+     /*   Cmd-ADDMSGD fÃ¼r Message-ID :   CON0001                    */
      /*            !!! Interruption of processing !!!               */
      /*-------------------------------------------------------------*/
 
@@ -57,7 +57,7 @@
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   CON0002                    */
+     /*   Cmd-ADDMSGD fÃ¼r Message-ID :   CON0002                    */
      /* At the moment the  processing can not be  continued, becaus */
      /*-------------------------------------------------------------*/
 
@@ -75,7 +75,7 @@ r above'                                                              +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   CON0003                    */
+     /*   Cmd-ADDMSGD fÃ¼r Message-ID :   CON0003                    */
      /* locks a record, witch is requested  by this program. As soo */
      /*-------------------------------------------------------------*/
 
@@ -93,7 +93,7 @@ ser has'                                                              +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   CON0004                    */
+     /*   Cmd-ADDMSGD fÃ¼r Message-ID :   CON0004                    */
      /* finished his current  action the processing  can be resumed */
      /*-------------------------------------------------------------*/
 
@@ -111,7 +111,7 @@ ser has'                                                              +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   CON0005                    */
+     /*   Cmd-ADDMSGD fÃ¼r Message-ID :   CON0005                    */
      /* will not  disappeare  after  5 minutes,  so inform  the use */
      /*-------------------------------------------------------------*/
 
@@ -129,7 +129,7 @@ sh  his'                                                              +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   CON0006                    */
+     /*   Cmd-ADDMSGD fÃ¼r Message-ID :   CON0006                    */
      /* current action.                                             */
      /*-------------------------------------------------------------*/
 
@@ -147,7 +147,7 @@ sh  his'                                                              +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   CON0007                    */
+     /*   Cmd-ADDMSGD fÃ¼r Message-ID :   CON0007                    */
      /*                                                             */
      /*-------------------------------------------------------------*/
 
@@ -164,7 +164,7 @@ sh  his'                                                              +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   CON0008                    */
+     /*   Cmd-ADDMSGD fÃ¼r Message-ID :   CON0008                    */
      /* Record lock of user  . . . . :                              */
      /*-------------------------------------------------------------*/
 
@@ -181,7 +181,7 @@ sh  his'                                                              +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   CON0009                    */
+     /*   Cmd-ADDMSGD fÃ¼r Message-ID :   CON0009                    */
      /* *** Record lock ***                                         */
      /*-------------------------------------------------------------*/
 
@@ -206,7 +206,7 @@ ordert wird. Bitte  beenden Sie ihre  aktuell anstehende  Aktion. *  *-
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   CON0010                    */
+     /*   Cmd-ADDMSGD fÃ¼r Message-ID :   CON0010                    */
      /* Enter=Try to resume processing                              */
      /*-------------------------------------------------------------*/
 

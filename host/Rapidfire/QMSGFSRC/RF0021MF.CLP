@@ -32,7 +32,7 @@
              ENDDO
 
      /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   CON0001                    */
+     /*   Cmd-ADDMSGD fÃ¼r Message-ID :   CON0001                    */
      /*           ! ! !   I M P O R T A N T   I N F O R M A T I O N */
      /*-------------------------------------------------------------*/
 
@@ -52,7 +52,7 @@
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   CON0002                    */
+     /*   Cmd-ADDMSGD fÃ¼r Message-ID :   CON0002                    */
      /* Important informations for the usage of Rapid Fire together */
      /*-------------------------------------------------------------*/
 
@@ -73,7 +73,7 @@
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   CON0003                    */
+     /*   Cmd-ADDMSGD fÃ¼r Message-ID :   CON0003                    */
      /* availability solutions like MIMIX and BUS/400, which are us */
      /*-------------------------------------------------------------*/
 
@@ -94,7 +94,7 @@ ls for'                                                               +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   CON0004                    */
+     /*   Cmd-ADDMSGD fÃ¼r Message-ID :   CON0004                    */
      /* the replication to a backup system.                         */
      /*-------------------------------------------------------------*/
 
@@ -114,7 +114,7 @@ ls for'                                                               +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   CON0005                    */
+     /*   Cmd-ADDMSGD fÃ¼r Message-ID :   CON0005                    */
      /* Rapid Fire is using so called shadow libraries for a Rapid  */
      /*-------------------------------------------------------------*/
 
@@ -135,7 +135,7 @@ You can'                                                              +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   CON0006                    */
+     /*   Cmd-ADDMSGD fÃ¼r Message-ID :   CON0006                    */
      /* create this shadow libraries on your own, or you can let Ra */
      /*-------------------------------------------------------------*/
 
@@ -156,7 +156,7 @@ reate'                                                                +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   CON0007                    */
+     /*   Cmd-ADDMSGD fÃ¼r Message-ID :   CON0007                    */
      /* this shadow libraries. In every case you have to take care  */
      /*-------------------------------------------------------------*/
 
@@ -177,7 +177,7 @@ shadow'                                                               +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   CON0008                    */
+     /*   Cmd-ADDMSGD fÃ¼r Message-ID :   CON0008                    */
      /* libraries are excluded from the replication to the backup s */
      /*-------------------------------------------------------------*/
 
@@ -198,7 +198,7 @@ our'                                                                  +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   CON0009                    */
+     /*   Cmd-ADDMSGD fÃ¼r Message-ID :   CON0009                    */
      /* HA-Solution.                                                */
      /*-------------------------------------------------------------*/
 
@@ -218,7 +218,7 @@ our'                                                                  +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   CON0010                    */
+     /*   Cmd-ADDMSGD fÃ¼r Message-ID :   CON0010                    */
      /* Rapid Fire is receiving the changes made to a file from a j */
      /*-------------------------------------------------------------*/
 
@@ -239,7 +239,7 @@ erefore'                                                              +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   CON0011                    */
+     /*   Cmd-ADDMSGD fÃ¼r Message-ID :   CON0011                    */
      /* you have to take care that detached journal receivers will  */
      /*-------------------------------------------------------------*/
 
@@ -260,7 +260,7 @@ eted for'                                                             +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   CON0012                    */
+     /*   Cmd-ADDMSGD fÃ¼r Message-ID :   CON0012                    */
      /* at least one day. If you are using a HA-Solution you have t */
      /*-------------------------------------------------------------*/
 
@@ -281,7 +281,7 @@ his in'                                                               +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   CON0013                    */
+     /*   Cmd-ADDMSGD fÃ¼r Message-ID :   CON0013                    */
      /* your HA-Solution.                                           */
      /*-------------------------------------------------------------*/
 
@@ -301,7 +301,7 @@ his in'                                                               +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   CON0014                    */
+     /*   Cmd-ADDMSGD fÃ¼r Message-ID :   CON0014                    */
      /* If you are using Rapid Fire for SQL tables with GENERATED A */
      /*-------------------------------------------------------------*/
 
@@ -322,7 +322,7 @@ olumns'                                                               +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   CON0015                    */
+     /*   Cmd-ADDMSGD fÃ¼r Message-ID :   CON0015                    */
      /* the values of the GENERATED ALWAYS AS columns for each row  */
      /*-------------------------------------------------------------*/
 
@@ -343,7 +343,7 @@ le will'                                                              +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   CON0016                    */
+     /*   Cmd-ADDMSGD fÃ¼r Message-ID :   CON0016                    */
      /* be regenerated. Don`t use Rapid Fire for SQL tables with GE */
      /*-------------------------------------------------------------*/
 
@@ -364,7 +364,7 @@ WAYS AS'                                                              +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   CON0017                    */
+     /*   Cmd-ADDMSGD fÃ¼r Message-ID :   CON0017                    */
      /* columns if this causes problems in your application.        */
      /*-------------------------------------------------------------*/
 

@@ -44,11 +44,11 @@ DCL-F AREAS Disk(*EXT) USAGE(*INPUT) KEYED Rename(AREAS : AREARF);
 
 //*-----------------------------------------------------------------------------------------*
 
-// Prozedurenprototyp für Prozedur 'RF0019PG'
+// Prozedurenprototyp fÃ¼r Prozedur 'RF0019PG'
 
 /Copy QCPYSRC,RF0019PG
 
-// Prozedurenschnittstelle für Prozedur 'RF0019PG'
+// Prozedurenschnittstelle fÃ¼r Prozedur 'RF0019PG'
 
 DCL-PI RF0019PG;
   PIJOB CHAR(10) Const;                                                  // --> Job
@@ -59,23 +59,23 @@ END-PI;
 
 //*-----------------------------------------------------------------------------------------*
 
-// Prozedurenprototyp für Prozedur 'RtvFktKey'
+// Prozedurenprototyp fÃ¼r Prozedur 'RtvFktKey'
 
 /Copy QCPYSRC,RTVFKTKEY
 
-// Prozedurenprototyp für Prozedur 'RmvErrMsg'
+// Prozedurenprototyp fÃ¼r Prozedur 'RmvErrMsg'
 
 /Copy QCPYSRC,RMVERRMSG
 
-// Prozedurenprototyp für Prozedur 'SndErrMsg'
+// Prozedurenprototyp fÃ¼r Prozedur 'SndErrMsg'
 
 /Copy QCPYSRC,SNDERRMSG
 
-// Prozedurenprototyp für Modul 'PROMOTER'
+// Prozedurenprototyp fÃ¼r Modul 'PROMOTER'
 
 /Copy QCPYSRC,PROMOTER
 
-// Dateiinformationsdatenstruktur für RF0019DF
+// Dateiinformationsdatenstruktur fÃ¼r RF0019DF
 
 DCL-DS FIDS_RF0019DF;
   AIDCde CHAR(1) POS(369);
@@ -90,7 +90,7 @@ DCL-S ITMsgId CHAR(7);                                                   // Nach
 
 //*-----------------------------------------------------------------------------------------*
 
-// Bezugszahl für 'Schlüsselwort SFLEND in Nachrichtensubdatei aktivieren' auf 'Ja' setzen
+// Bezugszahl fÃ¼r 'SchlÃ¼sselwort SFLEND in Nachrichtensubdatei aktivieren' auf 'Ja' setzen
 *IN50 = *On;
 // Datei 'Areas' lesen
 Chain ( PIJOB : PIPOS : PIARA ) AREARF;
@@ -192,7 +192,7 @@ EndIf;
 //*-----------------------------------------------------------------------------------------*
 
 BegSr SR005;
-  // Bezugszahl für 'Es liegt ein Fehler vor' auf 'Ja' setzen
+  // Bezugszahl fÃ¼r 'Es liegt ein Fehler vor' auf 'Ja' setzen
   *IN80 = *On;
   // Fehlernachricht in die Programmnachrichtenwarteschlange schreiben
   ITSts = SndErrMsg(

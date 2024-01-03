@@ -29,7 +29,7 @@
 //*------------+--------+-------------------------------------------------------------------*
 //*   Datum    I Progr. I Beschreibung                                                      *
 //*------------+--------+-------------------------------------------------------------------*
-//* 03.02.2016 I   TR   I STRPREPRC Header hinzugefügt.                                     *
+//* 03.02.2016 I   TR   I STRPREPRC Header hinzugefÃ¼gt.                                     *
 //*------------+--------+-------------------------------------------------------------------*
 //* 11.03.2016 I   TR   I Problem korrigiert, so dass jetzt auch Dateien mit einem Punkt    *
 //*            I        I im Dateinamen verarbeitet werden.                                 *

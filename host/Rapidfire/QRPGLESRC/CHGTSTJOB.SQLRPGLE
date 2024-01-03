@@ -188,7 +188,7 @@ DCL-PROC CHGTSTJOB_change_Test_Job EXPORT;
 
   EndIf;
 
-  // Zurück
+  // ZurÃ¼ck
   Return l_Msg;
 
 END-PROC CHGTSTJOB_change_Test_Job;

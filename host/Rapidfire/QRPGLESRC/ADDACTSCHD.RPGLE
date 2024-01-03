@@ -43,18 +43,18 @@ DCL-F ACTSCHD Disk(*EXT) USAGE(*OUTPUT) Rename(ACTSCHD : ACTSCHDRF)
 
 //*-----------------------------------------------------------------------------------------*
 
-// Prozedurenprototyp für Prozedur 'ADDACTSCHD'
+// Prozedurenprototyp fÃ¼r Prozedur 'ADDACTSCHD'
 
 DCL-PR ADDACTSCHD;
   *N CHAR(96);                                                           // <-> Parameter
-  *N INT(10) Const;                                                      // --> Länge "Parame
+  *N INT(10) Const;                                                      // --> LÃ¤nge "Parame
 END-PR;
 
-// Prozedurenschnittstelle für Prozedur 'ADDACTSCHD'
+// Prozedurenschnittstelle fÃ¼r Prozedur 'ADDACTSCHD'
 
 DCL-PI ADDACTSCHD;
   pep_Prm CHAR(96);                                                      // <-> Parameter
-  pep_LngPrm INT(10) Const;                                              // --> Länge "Parame
+  pep_LngPrm INT(10) Const;                                              // --> LÃ¤nge "Parame
 END-PI;
 
 //*-----------------------------------------------------------------------------------------*
@@ -109,11 +109,11 @@ DCL-S AFT_JOBS_Ptr POINTER;
 
 DCL-S g_Loop IND Inz(*On);                                               // Schleife
 DCL-S g_STR TIME(*ISO);                                                  // Start
-DCL-S g_CNT ZONED(5);                                                    // Zähler
+DCL-S g_CNT ZONED(5);                                                    // ZÃ¤hler
 
 //*-----------------------------------------------------------------------------------------*
 
-// Parameter übertragen
+// Parameter Ã¼bertragen
 g_Prm = pep_Prm;
 
 // *BEFORE-Image ermitteln
@@ -122,7 +122,7 @@ BEF_JOBS_Ptr = %Addr(pep_Prm) + g_BEOF;
 // *AFTER-Image ermitteln
 AFT_JOBS_Ptr = %Addr(pep_Prm) + g_AFOF;
 
-// Ein Satz wurde eingefügt
+// Ein Satz wurde eingefÃ¼gt
 If g_EVNT = '1';
   Open ACTSCHD;
   g_STR = *LoVal;

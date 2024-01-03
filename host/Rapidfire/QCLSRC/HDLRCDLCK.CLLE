@@ -32,7 +32,7 @@
      /* Bildschirmdatei deklarieren */
              DCLF       FILE(HDLRCDLCK)
 
-     /* Variable deklarieren für API 'QUSRJOBI' */
+     /* Variable deklarieren fÃ¼r API 'QUSRJOBI' */
              DCL        VAR(&RCVVAR) TYPE(*CHAR) LEN(86) /* Receiver +
                           variable */
              DCL        VAR(&LNGRCV) TYPE(*CHAR) LEN(4) /* Length of +
@@ -45,7 +45,7 @@
              DCL        VAR(&ERRCODE) TYPE(*CHAR) LEN(144) /* Error +
                           code */
 
-     /* Variable deklarieren für Arbeitsfelder */
+     /* Variable deklarieren fÃ¼r Arbeitsfelder */
              DCL        VAR(&PGMSTS) TYPE(*CHAR) LEN(429) /* +
                           Programmstatusdatenstruktur */
              DCL        VAR(&MSG) TYPE(*CHAR) LEN(512) /* +
@@ -55,7 +55,7 @@
              DCL        VAR(&MSGDTA) TYPE(*CHAR) LEN(128) /* +
                           Nachrichtendaten */
              DCL        VAR(&KEYVAR) TYPE(*CHAR) LEN(4) /* +
-                          Nachrichtenreferenzschlüssel */
+                          NachrichtenreferenzschlÃ¼ssel */
              DCL        VAR(&EXCRSN) TYPE(*CHAR) LEN(5) /* +
                           Exception reason */
              DCL        VAR(&JOB1) TYPE(*CHAR) LEN(10) /* Job */

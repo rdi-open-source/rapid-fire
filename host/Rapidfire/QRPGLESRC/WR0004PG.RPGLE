@@ -38,11 +38,11 @@ CTL-OPT ExtBinInt(*YES);
 
 //*-----------------------------------------------------------------------------------------*
 
-// Prozedurenprototyp für Prozedur 'WR0004PG'
+// Prozedurenprototyp fÃ¼r Prozedur 'WR0004PG'
 
 /Copy QCPYSRC,WR0004PG
 
-// Prozedurenschnittstelle für Prozedur 'WR0004PG'
+// Prozedurenschnittstelle fÃ¼r Prozedur 'WR0004PG'
 
 DCL-PI WR0004PG;
   p_Job
@@ -53,7 +53,7 @@ END-PI;
 
 //*-----------------------------------------------------------------------------------------*
 
-// Prozedurenprototypen für Modul 'RAPIDFIRE'
+// Prozedurenprototypen fÃ¼r Modul 'RAPIDFIRE'
 
 /Copy QCPYSRC,RAPIDFIRE
 

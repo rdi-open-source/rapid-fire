@@ -10,7 +10,7 @@
 //*                                                                                         *
 //*-----------------------------------------------------------------------------------------*
 
-DCL-PR ExcCmdLin CHAR(10);                                               // <-- Rückkehrwert
+DCL-PR ExcCmdLin CHAR(10);                                               // <-- RÃ¼ckkehrwert
   *N CHAR(10) Const;                                                     // --> Modus
   *N CHAR(1024) Const;                                                   // --> Befehl
 END-PR;

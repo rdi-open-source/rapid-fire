@@ -227,7 +227,7 @@ DCL-PROC CRTTSTJOB_create_Test_Job EXPORT;
     Return l_Msg;
   EndIf;
 
-  // Zurück
+  // ZurÃ¼ck
   Return *Blanks;
 
 END-PROC CRTTSTJOB_create_Test_Job;
@@ -315,7 +315,7 @@ DCL-PROC create_SQL_Objects;
 
   EndFor;
 
-  // Zurück
+  // ZurÃ¼ck
   Return *Blanks;
 
 END-PROC create_SQL_Objects;
@@ -391,7 +391,7 @@ DCL-PROC create_Rows;
 
   EndFor;
 
-  // Zurück
+  // ZurÃ¼ck
   Return *Blanks;
 
   // Tabelle und Spalten holen
@@ -599,7 +599,7 @@ DCL-PROC create_Rapid_Fire_Job;
 
   EndFor;
 
-  // Zurück
+  // ZurÃ¼ck
   Return *Blanks;
 
 END-PROC create_Rapid_Fire_Job;

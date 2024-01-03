@@ -38,36 +38,36 @@ CTL-OPT ExtBinInt(*YES);
 
 //*-----------------------------------------------------------------------------------------*
 
-// Prozedurenprototyp für Prozedur 'WR0008PG'
+// Prozedurenprototyp fÃ¼r Prozedur 'WR0008PG'
 
 /Copy QCPYSRC,WR0008PG
 
-// Prozedurenschnittstelle für Prozedur 'WR0008PG'
+// Prozedurenschnittstelle fÃ¼r Prozedur 'WR0008PG'
 
 DCL-PI WR0008PG;
   PIJOB CHAR(10) Const;                                                  // --> Job
-  PIRtCd CHAR(10);                                                       // <-- Rückkehrcode
+  PIRtCd CHAR(10);                                                       // <-- RÃ¼ckkehrcode
 END-PI;
 
 //*-----------------------------------------------------------------------------------------*
 
-// Prozedurenprototyp für Prozedur 'RF0020PG'
+// Prozedurenprototyp fÃ¼r Prozedur 'RF0020PG'
 
 /Copy QCPYSRC,RF0020PG
 
-// Prozedurenprototypen für Modul 'EXCCMD'
+// Prozedurenprototypen fÃ¼r Modul 'EXCCMD'
 
 /Copy QCPYSRC,EXCCMD
 
-// Prozedurenprototyp für Prozedur 'QTNRCMTI'
+// Prozedurenprototyp fÃ¼r Prozedur 'QTNRCMTI'
 
 /Copy QCPYSRC,QTNRCMTI
 
-// Datenstruktur für Format 'CMTI0100' für Prozedur 'QTNRCMTI'
+// Datenstruktur fÃ¼r Format 'CMTI0100' fÃ¼r Prozedur 'QTNRCMTI'
 
 /Copy QCPYSRC,CMTI0100
 
-// Datenstruktur für Format 'ERRC0100' für Fehlercode
+// Datenstruktur fÃ¼r Format 'ERRC0100' fÃ¼r Fehlercode
 
 /Copy QCPYSRC,ERRC0100
 
@@ -109,7 +109,7 @@ If ERRC0100.Exeption_Id = *Blanks;
     RF0020PG(
      '*EDIT' :                                                           // --> Modus
      PIJOB :                                                             // --> Job
-     PIRtCd                                                              // <-- Rückkehrcode
+     PIRtCd                                                              // <-- RÃ¼ckkehrcode
     );
     // Commitment Control muss beendet werden
     If CMTI0100.Commit_Definition_Status = 'I';

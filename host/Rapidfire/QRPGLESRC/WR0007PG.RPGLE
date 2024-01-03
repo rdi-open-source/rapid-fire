@@ -38,37 +38,37 @@ CTL-OPT ExtBinInt(*YES);
 
 //*-----------------------------------------------------------------------------------------*
 
-// Prozedurenprototyp für Prozedur 'WR0007PG'
+// Prozedurenprototyp fÃ¼r Prozedur 'WR0007PG'
 
 /Copy QCPYSRC,WR0007PG
 
-// Prozedurenschnittstelle für Prozedur 'WR0007PG'
+// Prozedurenschnittstelle fÃ¼r Prozedur 'WR0007PG'
 
 DCL-PI WR0007PG;
   PIMode CHAR(10) Const;                                                 // --> Modus
   PIFLTJOB CHAR(10) Const;                                               // --> Filter Job
-  PIRtCd CHAR(10);                                                       // <-- Rückkehrcode
+  PIRtCd CHAR(10);                                                       // <-- RÃ¼ckkehrcode
 END-PI;
 
 //*-----------------------------------------------------------------------------------------*
 
-// Prozedurenprototyp für Prozedur 'RF0001PG'
+// Prozedurenprototyp fÃ¼r Prozedur 'RF0001PG'
 
 /Copy QCPYSRC,RF0001PG
 
-// Prozedurenprototypen für Modul 'EXCCMD'
+// Prozedurenprototypen fÃ¼r Modul 'EXCCMD'
 
 /Copy QCPYSRC,EXCCMD
 
-// Prozedurenprototyp für Prozedur 'QTNRCMTI'
+// Prozedurenprototyp fÃ¼r Prozedur 'QTNRCMTI'
 
 /Copy QCPYSRC,QTNRCMTI
 
-// Datenstruktur für Format 'CMTI0100' für Prozedur 'QTNRCMTI'
+// Datenstruktur fÃ¼r Format 'CMTI0100' fÃ¼r Prozedur 'QTNRCMTI'
 
 /Copy QCPYSRC,CMTI0100
 
-// Datenstruktur für Format 'ERRC0100' für Fehlercode
+// Datenstruktur fÃ¼r Format 'ERRC0100' fÃ¼r Fehlercode
 
 /Copy QCPYSRC,ERRC0100
 
@@ -112,7 +112,7 @@ If ERRC0100.Exeption_Id = *Blanks;
      PIMode :                                                            // --> Modus
      PIFLTJOB :                                                          // --> Filter Job
      ITJOB :                                                             // <-> Job
-     PIRtCd                                                              // <-- Rückkehrcode
+     PIRtCd                                                              // <-- RÃ¼ckkehrcode
     );
     // Commitment Control muss beendet werden
     If CMTI0100.Commit_Definition_Status = 'I';

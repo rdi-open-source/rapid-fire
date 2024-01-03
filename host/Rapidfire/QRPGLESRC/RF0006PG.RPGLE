@@ -25,33 +25,33 @@
 //*  >>END-PRE-COMPILER<<                                                                   *
 //*-----------------------------------------------------------------------------------------*
 //*                                                                                         *
-//* (01 - 49) Freie Bezugszahlen für sonstige Dinge                                         *
+//* (01 - 49) Freie Bezugszahlen fÃ¼r sonstige Dinge                                         *
 //*                                                                                         *
 //* 01      --> Modus : 'Erstellen'                                                         *
-//* 02      --> Modus : 'Ändern'                                                            *
+//* 02      --> Modus : 'Ã„ndern'                                                            *
 //* 03      --> Modus : 'Kopieren'                                                          *
-//* 04      --> Modus : 'Löschen'                                                           *
+//* 04      --> Modus : 'LÃ¶schen'                                                           *
 //* 05      --> Modus : 'Anzeigen'                                                          *
 //*                                                                                         *
 //*-----------------------------------------------------------------------------------------*
 //*                                                                                         *
-//* (50 - 59) Reservierte Bezugszahlen für Diverses                                         *
+//* (50 - 59) Reservierte Bezugszahlen fÃ¼r Diverses                                         *
 //*                                                                                         *
-//* 50      --> Schlüsselwort SFLEND in Nachrichtensubdatei aktivieren                      *
-//* 51      --> Ergebnis für LookUp Operation                                               *
+//* 50      --> SchlÃ¼sselwort SFLEND in Nachrichtensubdatei aktivieren                      *
+//* 51      --> Ergebnis fÃ¼r LookUp Operation                                               *
 //*                                                                                         *
 //*-----------------------------------------------------------------------------------------*
 //*                                                                                         *
-//* (60 - 79) Reservierte Bezugszahlen für Subdateiverarbeitung                             *
+//* (60 - 79) Reservierte Bezugszahlen fÃ¼r Subdateiverarbeitung                             *
 //*                                                                                         *
-//* 60,64,68,72,76  --> (Subdatei 1 - 5) Inhalt der Subdatei löschen                        *
-//* 61,65,69,73,77  --> (Subdatei 1 - 5) Keine Sätze in der Subdatei vorhanden              *
+//* 60,64,68,72,76  --> (Subdatei 1 - 5) Inhalt der Subdatei lÃ¶schen                        *
+//* 61,65,69,73,77  --> (Subdatei 1 - 5) Keine SÃ¤tze in der Subdatei vorhanden              *
 //* 62,66,70,74,78  --> (Subdatei 1 - 5) Letzter Satz befindet sich bereits in der Subdatei *
-//* 63,67,71,75,79  --> (Subdatei 1 - 5) Subdateisatz ist ein geänderter Satz               *
+//* 63,67,71,75,79  --> (Subdatei 1 - 5) Subdateisatz ist ein geÃ¤nderter Satz               *
 //*                                                                                         *
 //*-----------------------------------------------------------------------------------------*
 //*                                                                                         *
-//* (80 - 89) Reservierte Bezugszahlen für Fehlermeldungen                                  *
+//* (80 - 89) Reservierte Bezugszahlen fÃ¼r Fehlermeldungen                                  *
 //*                                                                                         *
 //* 80      --> Es liegt ein Fehler vor (Spezifikation durch BZ 81 - 89)                    *
 //* 81 - 83 --> (Block 1) Fehlermeldungen                                                   *
@@ -60,25 +60,25 @@
 //*                                                                                         *
 //*-----------------------------------------------------------------------------------------*
 //*                                                                                         *
-//* (90 - 99) Reservierte Bezugszahlen für Cursorpositionierung                             *
+//* (90 - 99) Reservierte Bezugszahlen fÃ¼r Cursorpositionierung                             *
 //*                                                                                         *
 //* 90      --> Es soll positioniert werden (Spezifikation durch 91 - 99)                   *
 //* 91      --> Der Cursor soll auf Koordinate Zeile / Spalte positioniert werden           *
 //*                                                                                         *
 //*-----------------------------------------------------------------------------------------*
 //*                                                                                         *
-//* Übergabeparameter                                                                       *
+//* Ãœbergabeparameter                                                                       *
 //* =================                                                                       *
 //*                                                                                         *
 //* PIMode     / *CREATE  --> Modus : 'Erstellen'                                           *
-//*              *CHANGE  --> Modus : 'Ändern'                                              *
+//*              *CHANGE  --> Modus : 'Ã„ndern'                                              *
 //*              *COPY    --> Modus : 'Kopieren'                                            *
-//*              *DELETE  --> Modus : 'Löschen'                                             *
+//*              *DELETE  --> Modus : 'LÃ¶schen'                                             *
 //*              *DISPLAY --> Modus : 'Anzeigen'                                            *
 //*                                                                                         *
-//* PIRtCd     / *F3      --> Der Benutzer hat die Taste F3 gedrückt                        *
-//*              *F12     --> Der Benutzer hat die Taste F12 gedrückt                       *
-//*              *ENTER   --> Der Benutzer hat die Taste ENTER gedrückt                     *
+//* PIRtCd     / *F3      --> Der Benutzer hat die Taste F3 gedrÃ¼ckt                        *
+//*              *F12     --> Der Benutzer hat die Taste F12 gedrÃ¼ckt                       *
+//*              *ENTER   --> Der Benutzer hat die Taste ENTER gedrÃ¼ckt                     *
 //*                                                                                         *
 //*------------+--------+-------------------------------------------------------------------*
 //*   Datum    I Progr. I Beschreibung                                                      *
@@ -102,46 +102,46 @@ DCL-F RF0006DF Workstn(*EXT) USAGE(*INPUT:*OUTPUT)
 
 //*-----------------------------------------------------------------------------------------*
 
-// Prozedurenprototyp für Prozedur 'RF0006PG'
+// Prozedurenprototyp fÃ¼r Prozedur 'RF0006PG'
 
 /Copy QCPYSRC,RF0006PG
 
-// Prozedurenschnittstelle für Prozedur 'RF0006PG'
+// Prozedurenschnittstelle fÃ¼r Prozedur 'RF0006PG'
 
 DCL-PI RF0006PG;
   PIMode CHAR(10) Const;                                                 // --> Modus
   PIJOB CHAR(10) Const;                                                  // --> Job
   PILIB CHAR(10);                                                        // <-> Bibliothek
-  PIRtCd CHAR(10);                                                       // <-- Rückkehrcode
+  PIRtCd CHAR(10);                                                       // <-- RÃ¼ckkehrcode
 END-PI;
 
 //*-----------------------------------------------------------------------------------------*
 
-// Prozedurenprototyp für Prozedur 'RtvFktKey'
+// Prozedurenprototyp fÃ¼r Prozedur 'RtvFktKey'
 
 /Copy QCPYSRC,RTVFKTKEY
 
-// Prozedurenprototyp für Prozedur 'RmvErrMsg'
+// Prozedurenprototyp fÃ¼r Prozedur 'RmvErrMsg'
 
 /Copy QCPYSRC,RMVERRMSG
 
-// Prozedurenprototyp für Prozedur 'SndErrMsg'
+// Prozedurenprototyp fÃ¼r Prozedur 'SndErrMsg'
 
 /Copy QCPYSRC,SNDERRMSG
 
-// Prozedurenprototyp für Prozedur 'QUHDSPH'
+// Prozedurenprototyp fÃ¼r Prozedur 'QUHDSPH'
 
 /Copy QCPYSRC,QUHDSPH
 
-// Datenstruktur für Format 'ERRC0100' für Fehlercode
+// Datenstruktur fÃ¼r Format 'ERRC0100' fÃ¼r Fehlercode
 
 /Copy QCPYSRC,ERRC0100
 
-// Prozedurenprototyp für Prozedur 'MNTLIB'
+// Prozedurenprototyp fÃ¼r Prozedur 'MNTLIB'
 
 /Copy QCPYSRC,MNTLIB
 
-// Dateiinformationsdatenstruktur für RF0006DF
+// Dateiinformationsdatenstruktur fÃ¼r RF0006DF
 
 DCL-DS FIDS_RF0006DF;
   AIDCde CHAR(1) POS(369);
@@ -176,9 +176,9 @@ DCL-S ITSUCC CHAR(1);                                                    // Erfo
 
 //*-----------------------------------------------------------------------------------------*
 
-// Bezugszahl für 'Schlüsselwort SFLEND in Nachrichtensubdatei aktivieren' auf 'Ja' setzen
+// Bezugszahl fÃ¼r 'SchlÃ¼sselwort SFLEND in Nachrichtensubdatei aktivieren' auf 'Ja' setzen
 *IN50 = *On;
-// Dateien öffnen
+// Dateien Ã¶ffnen
 MNTLIB_openFiles();
 // Initialisieren
 If MNTLIB_initialize(
@@ -197,7 +197,7 @@ If MNTLIB_initialize(
     If PIRtCd = '*ENTER';
       PILIB = DFLIB;
     EndIf;
-    // Modus : 'Ändern'
+    // Modus : 'Ã„ndern'
   When PIMode = MNTLIB_CHANGE;
     ExSr SR010;
     // Modus : 'Kopieren'
@@ -206,7 +206,7 @@ If MNTLIB_initialize(
     If PIRtCd = '*ENTER';
       PILIB = DFLIB;
     EndIf;
-    // Modus : 'Löschen'
+    // Modus : 'LÃ¶schen'
   When PIMode = MNTLIB_DELETE;
     ExSr SR020;
     // Modus : 'Anzeigen'
@@ -214,7 +214,7 @@ If MNTLIB_initialize(
     ExSr SR025;
   EndSl;
 EndIf;
-// Dateien schließen
+// Dateien schlieÃŸen
 MNTLIB_closeFiles();
 // Programm nicht hauptspeicherresident verlassen
 *INLR = *On;
@@ -224,13 +224,13 @@ MNTLIB_closeFiles();
 //*-----------------------------------------------------------------------------------------*
 
 BegSr SR005;
-  // Überschrift für Modus 'Erstellen' anzeigen
+  // Ãœberschrift fÃ¼r Modus 'Erstellen' anzeigen
   *IN(1) = *ON;
   *IN(2) = *OFF;
   *IN(3) = *OFF;
   *IN(4) = *OFF;
   *IN(5) = *OFF;
-  // Bildschirm mit Werten füllen
+  // Bildschirm mit Werten fÃ¼llen
   ExSr SR030;
   // Bildschirm verarbeiten
   ExSr SR045;
@@ -241,17 +241,17 @@ BegSr SR005;
 EndSr;
 
 //*-----------------------------------------------------------------------------------------*
-//* Ändern                                                                                  *
+//* Ã„ndern                                                                                  *
 //*-----------------------------------------------------------------------------------------*
 
 BegSr SR010;
-  // Überschrift für Modus 'Ändern' anzeigen
+  // Ãœberschrift fÃ¼r Modus 'Ã„ndern' anzeigen
   *IN(1) = *OFF;
   *IN(2) = *ON;
   *IN(3) = *OFF;
   *IN(4) = *OFF;
   *IN(5) = *OFF;
-  // Bildschirm mit Werten füllen
+  // Bildschirm mit Werten fÃ¼llen
   ExSr SR030;
   // Bildschirm verarbeiten
   ExSr SR045;
@@ -266,13 +266,13 @@ EndSr;
 //*-----------------------------------------------------------------------------------------*
 
 BegSr SR015;
-  // Überschrift für Modus 'Kopieren' anzeigen
+  // Ãœberschrift fÃ¼r Modus 'Kopieren' anzeigen
   *IN(1) = *OFF;
   *IN(2) = *OFF;
   *IN(3) = *ON;
   *IN(4) = *OFF;
   *IN(5) = *OFF;
-  // Bildschirm mit Werten füllen
+  // Bildschirm mit Werten fÃ¼llen
   ExSr SR030;
   // Bildschirm verarbeiten
   ExSr SR045;
@@ -283,31 +283,31 @@ BegSr SR015;
 EndSr;
 
 //*-----------------------------------------------------------------------------------------*
-//* Löschen                                                                                 *
+//* LÃ¶schen                                                                                 *
 //*-----------------------------------------------------------------------------------------*
 
 BegSr SR020;
-  // Überschrift für Modus 'Löschen' anzeigen
+  // Ãœberschrift fÃ¼r Modus 'LÃ¶schen' anzeigen
   *IN(1) = *OFF;
   *IN(2) = *OFF;
   *IN(3) = *OFF;
   *IN(4) = *ON;
   *IN(5) = *OFF;
-  // Bildschirm mit Werten füllen
+  // Bildschirm mit Werten fÃ¼llen
   ExSr SR030;
   // Bildschirm verarbeiten
   ExSr SR045;
   If PIRtCd = '*ENTER';
-    // Bestätigung für Löschung einholen
+    // BestÃ¤tigung fÃ¼r LÃ¶schung einholen
     ExFmt DSPF020W;
     // Funktionstaste abrufen
     ITFktKey = RtvFktKey(AIDCde);
-    // Datensatz löschen
+    // Datensatz lÃ¶schen
     If ITFktKey = '*ENTER';
       // Verbuchen
       MNTLIB_book();
     Else;
-      // Löschung abgebrochen
+      // LÃ¶schung abgebrochen
       PIRtCd = '*F12';
     EndIf;
   EndIf;
@@ -318,13 +318,13 @@ EndSr;
 //*-----------------------------------------------------------------------------------------*
 
 BegSr SR025;
-  // Überschrift für Modus 'Anzeigen' anzeigen
+  // Ãœberschrift fÃ¼r Modus 'Anzeigen' anzeigen
   *IN(1) = *OFF;
   *IN(2) = *OFF;
   *IN(3) = *OFF;
   *IN(4) = *OFF;
   *IN(5) = *ON;
-  // Bildschirm mit Werten füllen
+  // Bildschirm mit Werten fÃ¼llen
   ExSr SR030;
   // Bildschirm verarbeiten
   ExSr SR045;
@@ -335,7 +335,7 @@ BegSr SR025;
 EndSr;
 
 //*-----------------------------------------------------------------------------------------*
-//* Bildschirm mit Werten füllen                                                            *
+//* Bildschirm mit Werten fÃ¼llen                                                            *
 //*-----------------------------------------------------------------------------------------*
 
 BegSr SR030;
@@ -433,7 +433,7 @@ BegSr SR045;
       PIRtCd = '*F12';
       Leave;
     EndIf;
-    // Funktionstaste : 'F4=Bedienerführung'
+    // Funktionstaste : 'F4=BedienerfÃ¼hrung'
     If ITFktKey = '*F4';
       ExSr SR065;
       If PIRtCd = '*F3';
@@ -444,12 +444,12 @@ BegSr SR045;
     EndIf;
     // Funktionstaste : 'Enter'
     If ITFktKey = '*ENTER';
-      // Bildschirmfelder auf Fehler überprüfen
+      // Bildschirmfelder auf Fehler Ã¼berprÃ¼fen
       ExSr SR050;
       If ITMsgId <> *Blanks;
         Iter;
       EndIf;
-      // Rückkehrcode setzen
+      // RÃ¼ckkehrcode setzen
       PIRtCd = '*ENTER';
       Leave;
     endIf;
@@ -457,18 +457,18 @@ BegSr SR045;
 EndSr;
 
 //*-----------------------------------------------------------------------------------------*
-//* Bildschirmfelder auf Fehler überprüfen                                                  *
+//* Bildschirmfelder auf Fehler Ã¼berprÃ¼fen                                                  *
 //*-----------------------------------------------------------------------------------------*
 
 BegSr SR050;
-  // Namensfelder linksbündig ausrichten
+  // Namensfelder linksbÃ¼ndig ausrichten
   If PIMode = MNTLIB_CREATE Or
     PIMode = MNTLIB_COPY Or
     PIMode = MNTLIB_CHANGE;
     DFLIB = %TRIML(DFLIB);
     DFSLIB = %TRIML(DFSLIB);
   EndIf;
-  // *** Fehlerprüfung nur für Modus 'Erstellen', 'Kopieren' und 'Ändern' ***
+  // *** FehlerprÃ¼fung nur fÃ¼r Modus 'Erstellen', 'Kopieren' und 'Ã„ndern' ***
   If PIMode = MNTLIB_CREATE Or
     PIMode = MNTLIB_COPY Or
     PIMode = MNTLIB_CHANGE;
@@ -477,7 +477,7 @@ BegSr SR050;
       DFSLIB    // <-- Shadow Library
     );
   EndIf;
-  // Prüfen
+  // PrÃ¼fen
   If Not MNTLIB_check(
     ITSUCC : // <-- Erfolg
     ITXFld : // <-- Feld
@@ -505,7 +505,7 @@ EndSr;
 //*-----------------------------------------------------------------------------------------*
 
 BegSr SR055;
-  // Bezugszahl für 'Es liegt ein Fehler vor' auf 'Ja' setzen
+  // Bezugszahl fÃ¼r 'Es liegt ein Fehler vor' auf 'Ja' setzen
   *IN80 = *On;
   // Fehlernachricht in die Programmnachrichtenwarteschlange schreiben
   ITSts = SndErrMsg(
@@ -526,7 +526,7 @@ BegSr SR060;
   ITHlp = 'N';
   // Nummer Hilfetextmodul initialisieren
   ITNbr = *Zero;
-  // Hilfe für Fehlernachrichtensubdatei angefordert
+  // Hilfe fÃ¼r Fehlernachrichtensubdatei angefordert
   If DFRCD010 = 'DSPF999S';
     ITNbr = ITNbr + 1;
     ITHIPG(ITNbr) = 'CMOREFGP';
@@ -593,7 +593,7 @@ BegSr SR060;
       ITDsp(2) = ITNbr;
     EndIf;
   EndIf;
-  // Keine kontextbezogene Hilfe ausgewählt
+  // Keine kontextbezogene Hilfe ausgewÃ¤hlt
   If ITHlp = 'N';
     ITDsp(1) = 1;
     ITDsp(2) = ITNbr;
@@ -632,7 +632,7 @@ BegSr SR060;
 EndSr;
 
 //*-----------------------------------------------------------------------------------------*
-//* Bedienerführung                                                                         *
+//* BedienerfÃ¼hrung                                                                         *
 //*-----------------------------------------------------------------------------------------*
 
 BegSr SR065;

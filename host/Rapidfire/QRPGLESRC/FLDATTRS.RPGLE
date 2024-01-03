@@ -679,7 +679,7 @@ DCL-PROC FieldAttributes_length EXPORT;
   // Einblenden Handle
   pHandle = i_handle;
 
-  // Ermöglichen Zugriff auf "Format Definition Header"
+  // ErmÃ¶glichen Zugriff auf "Format Definition Header"
   pQdb_Qddfmt = handle.pointer;
 
   // Ermitteln Anzahl Felder
@@ -713,10 +713,10 @@ DCL-PROC FieldAttributes_getRecordFormat EXPORT;
   // Einblenden Handle
   pHandle = i_handle;
 
-  // Ermöglichen Zugriff auf "Format Definition Header"
+  // ErmÃ¶glichen Zugriff auf "Format Definition Header"
   pQdb_Qddfmt = handle.pointer;
 
-  // Satzformat zurückgeben
+  // Satzformat zurÃ¼ckgeben
   return Qdb_Qddfmt.Qddfname;
 
 END-PROC;
@@ -747,7 +747,7 @@ DCL-PROC FieldAttributes_getFormatLevelId EXPORT;
   // Einblenden Handle
   pHandle = i_handle;
 
-  // Ermöglichen Zugriff auf "Format Definition Header"
+  // ErmÃ¶glichen Zugriff auf "Format Definition Header"
   pQdb_Qddfmt = handle.pointer;
 
   // Ermitteln Anzahl Felder

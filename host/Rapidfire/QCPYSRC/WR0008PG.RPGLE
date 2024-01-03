@@ -12,5 +12,5 @@
 
 DCL-PR WR0008PG ExtPgm('WR0008PG');
   *N CHAR(10) Const;                                                     // --> Job
-  *N CHAR(10);                                                           // <-- Rückkehrcode
+  *N CHAR(10);                                                           // <-- RÃ¼ckkehrcode
 END-PR;

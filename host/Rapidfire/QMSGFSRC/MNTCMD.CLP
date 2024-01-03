@@ -40,7 +40,7 @@
                TEXT('Maintain Command')
 
      /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   ERR0001                    */
+     /*   Cmd-ADDMSGD fÃ¼r Message-ID :   ERR0001                    */
      /* Type/Sequence does already exist.                           */
      /*-------------------------------------------------------------*/
 
@@ -57,7 +57,7 @@
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   ERR0002                    */
+     /*   Cmd-ADDMSGD fÃ¼r Message-ID :   ERR0002                    */
      /* The value in field 'Type' is not valid.                     */
      /*-------------------------------------------------------------*/
 
@@ -74,7 +74,7 @@
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   ERR0003                    */
+     /*   Cmd-ADDMSGD fÃ¼r Message-ID :   ERR0003                    */
      /* Invalid parameter values. Error = Type has to be blanks and */
      /*-------------------------------------------------------------*/
 
@@ -92,7 +92,7 @@ has to be zero.'                                                      +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   ERR0004                    */
+     /*   Cmd-ADDMSGD fÃ¼r Message-ID :   ERR0004                    */
      /* Invalid parameter values. Error = &1.                       */
      /*-------------------------------------------------------------*/
 
@@ -111,7 +111,7 @@ has to be zero.'                                                      +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   ERR0005                    */
+     /*   Cmd-ADDMSGD fÃ¼r Message-ID :   ERR0005                    */
      /* &1                                                          */
      /*-------------------------------------------------------------*/
 
@@ -130,7 +130,7 @@ has to be zero.'                                                      +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   ERR0006                    */
+     /*   Cmd-ADDMSGD fÃ¼r Message-ID :   ERR0006                    */
      /* If 'Type' is *COMPILE, then 'Sequence' has to be 5.         */
      /*-------------------------------------------------------------*/
 
@@ -147,7 +147,7 @@ has to be zero.'                                                      +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   ERR0007                    */
+     /*   Cmd-ADDMSGD fÃ¼r Message-ID :   ERR0007                    */
      /* The action is only valid for jobs with status *RDY.         */
      /*-------------------------------------------------------------*/
 
@@ -164,7 +164,7 @@ has to be zero.'                                                      +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   ERR0009                    */
+     /*   Cmd-ADDMSGD fÃ¼r Message-ID :   ERR0009                    */
      /* The value in field 'Sequence' is not valid.                 */
      /*-------------------------------------------------------------*/
 
@@ -181,7 +181,7 @@ has to be zero.'                                                      +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   ERR0015                    */
+     /*   Cmd-ADDMSGD fÃ¼r Message-ID :   ERR0015                    */
      /* The command or one or multiple command parameter are wrong. */
      /*-------------------------------------------------------------*/
 
@@ -198,7 +198,7 @@ has to be zero.'                                                      +
                 /*  -EOF-  */
 
      /*-------------------------------------------------------------*/
-     /*   Cmd-ADDMSGD für Message-ID :   ERR0019                    */
+     /*   Cmd-ADDMSGD fÃ¼r Message-ID :   ERR0019                    */
      /* The value in field 'Command' is not valid.                  */
      /*-------------------------------------------------------------*/
 
