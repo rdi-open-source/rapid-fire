@@ -328,7 +328,7 @@
 
 	<!-- =============================================================
 	      Erstellt eine neue Update-Site.
-	      Alle alten Dateien werden überschrieben, bzw. gelöscht.
+	      Alle alten Dateien werden ueberschrieben, bzw. geloescht.
 	     ============================================================= -->
 	<target name="build" depends="checkBuildTarget, junit, clean, updateVersionNumber, createTagFile" description="Step 1">
 
@@ -346,7 +346,7 @@
 	</target>
 
 	<!-- =============================================================
-	      Führt JUnit Test aus.
+	      Fuehrt JUnit Test aus.
 	     ============================================================= -->
 	<target name="junit" >
 
@@ -831,7 +831,7 @@
 	</target>
 
 	<!-- =============================================================
-	      Löscht alle bestehenden Dateien.
+	      Loescht alle bestehenden Dateien.
 	     ============================================================= -->
 	<target name="clean" depends="cleanTempAndPDE">
 
@@ -849,7 +849,7 @@
 	</target>
 
 	<!-- =============================================================
-	      Löscht alle bestehenden Dateien.
+	      Loescht alle bestehenden Dateien.
 	     ============================================================= -->
 	<target name="cleanTempAndPDE" >
 
