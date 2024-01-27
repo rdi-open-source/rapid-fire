@@ -1,0 +1,46 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<link rel="stylesheet" type="text/css" href="../stylesheet.css">
+	<title>Deploying Data File Changes With Rapid Fire</title>
+</head>
+
+<body>
+<h1>Deploying Data File Changes With Rapid Fire</h1>
+<p>
+<a href="../deploying_files_today/deploying_files_today.html">Previous page</a>
+&nbsp;•&nbsp;
+<a href="../er_model/er_model.html">Next page</a>
+<p>
+<div align="right">
+<a href="https://sourceforge.net/projects/rapid-fire/" target="_blank">
+<img src="assets/updating_files_rapidfire.png" style="float:right; margin-right:20px;  margin-bottom:20px" border=0></a>
+</div>
+<div align="left">
+Rapid Fire let you deploy your changes while your users are busy. It performs the
+following steps in order to change a production file:
+<ul>
+<li>Create a shadow library to store the new file.</li>
+<li>Create the new file in the shadow library.</li>
+<li>Generate a RPG program for copying the data from the production to the shadow library.</li>
+<li>Start journaling for the original file in the production library.</li>
+<li>Copy data from the production to the shadow library using a batch job. Your users keep on working and do not have to leave the application.</li>
+<li>While the copy job is active, a second Rapid Fire batch job receives changes of the copied data from the journal.</li>
+<li>When all records a copied, the changes are applied to the data in the shadow library.</li>
+</ul>
+When Rapid Fire starts applying the changes from the journal, you reached the point when you
+can ask your users to leave the application in order to install the new file. That takes just
+a few minutes, since all you have to do is moving some objects: 
+<ul>
+<li>Ensure that nobody can change the production file any longer.</li>
+<li>End the Rapid Fire copy job.</li>
+<li>Move the old file from the production library to a backup library.</li>
+<li>Move the new file from the shadow to the production library.</li>
+</ul>
+</div>
+<p>
+<iframe src="../copyright.html" width="100%" frameborder="0" marginheight="0" marginwidth="0"></iframe>
+</body>
+</html>

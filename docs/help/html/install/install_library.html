@@ -1,0 +1,120 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<link rel="stylesheet" type="text/css" href="../stylesheet.css">
+	<title>Install Rapid Fire Library</title>
+</head>
+
+<body>
+<h1>Install Rapid Fire Library</h1>
+<p>
+<a href="../prerequisites/prerequisites.html">Previous page</a>
+&nbsp;•&nbsp;
+<a href="../deploying_files_today/deploying_files_today.html">Next page</a>
+<p>
+<a id="before_you_begin"></a>
+Before you begin:
+<p>
+<table>
+	<tr>
+		<td class="notice"><b>Notice</b>:<br>
+		                   Rapid Fire uses commitment control to update its files. Therefore a journal 
+		                   must be attached to all Rapid Fire files. By default the Rapid Fire installer
+		                   ensures that journaling is started for all Rapid Fire files.<br>
+		                   But in case that you have installed a high availability software, such as 
+		                   BUS/400, MIMIX or iTERA, that also use journals to keep track of object changes, 
+		                   you may need to install Rapid Fire without a journal, because that is attached 
+		                   by your HA software.<br><br>
+		                   <font color="red">Please uncheck "Start journaling Rapid Fire files" on the 
+		                   "Transfer Rapid Fire Library" dialog to transfer the Rapid Fire library 
+		                   without attaching a journal to the Rapid Fire files.</font></td>
+	</tr>
+</table>
+<p>
+Before you proceed:
+<p>
+<table>
+	<tr>
+		<td class="notice"><b>Notice</b>:<br>
+		                   The Rapid Fire plug-in is a client-server application that utilizes
+		                   SQL stored procedures and functions for retrieving data from the host
+		                   and for executing actions on the host. All SQL procedures and functions
+		                   are installed with the specific schema name that equals the name of the
+		                   Rapid Fire product library. The default name is <i>RAPIDFIRE</i>.<p>
+		                   The library is shipped with program CRTDRPSQL that can be used for
+		                   deleting and/or creating the procedures and functions.<p>
+		                   The procedures and functions are created automatically by the installer,
+		                   when you use the "Transfer Rapid Fire library" dialog for installing
+		                   the library.<p>
+		                   Please consider reading <a href="../uninstall/uninstall_library.html">Uninstall Rapid Fire Library</a>
+		                   before installing it.</td>
+	</tr>
+</table>
+<p>
+Follow these steps to install the Rapid Fire library from the host:
+<p>
+<ul>
+<li>Start WDSCi 7.0 or RDi 9.5.1.3+.</li>
+<li>Click on &quot;Windows / Preferences&quot;.</li>
+<li>Expand item &quot;Rapid Fire&quot;.</li>
+<li>Click &quot;Library&quot;.</li>
+<li>In &quot;Host name:&quot; enter the name of an IBM i host
+    system that is configured as a <i>Remote System</i> in the <i>Remote System Explorer</i> view.<br>
+    Review the &quot;FTP port number&quot; and the name of the &quot;Rapid Fire
+    library&quot;. The default FTP port is 21. The default library name is
+    RAPIDFIRE.<br>
+    <b>Note:</b> You may use another library name, but be aware
+    that this library will be <b>deleted</b> if it exists.
+<li>Verify the ASP group. The name of the ASP group is used for parameter <i>RSTASPDEV</i>
+    of command <i>RSTLIB</i> when restoring the Rapid Fire library. The possible values are:<p>
+    <table>
+    <tr><td nowrap valign="top">*NONE</td><td valign="top">-</td><td valign="top">The DLTLIB and RSTLIB commands are executed without the ASPDEV and RSTASPDEV parameters.</td></tr>
+    <tr><td nowrap valign="top">asp-device-name</td><td valign="top">-</td><td valign="top">The DLTLIB command is executed with ASPDEV(*) and the RSTLIB command is extended with RSTASPDEV(asp-device-name).</td></tr>
+    </table>
+    <p>
+    </li>
+<li>Click the [Transfer Rapid Fire library] button.</li>
+<li>Use the refresh button to retrieve the version of the Rapid Fire library. Once
+    pressed, the version is automatically updated as the library name changes.
+    Auto-update is disabled, when the host name is changed.<p>
+    <img src="./assets/preferences_library.png" /></li>
+<li>In the "Sign on" popup, confirm the the name of your host
+    system and enter the user and password to be used to connect to the host.<p>
+    <img src="./assets/signon.png" /><p></li>
+<li>Click the [OK] button to proceed.<p></li>
+<li>On the following &quot;Transfer Rapid Fire library&quot; dialog, specify whether
+    to start journaling the Rapid Fire files and then click [Start Transfer] to start 
+    the FTP transfer.<br>
+	<p>
+    <img src="./assets/transfer_start.png" /><p></li>
+<li>If the Rapid FIre library already exists, you will be asked to confirm 
+    that you want to delete it:<p>
+    <img src="./assets/delete_lib.png" /><p></li>
+<li>The transfer will start and the steps will be displayed in the window as the 
+    transfer runs.</li>
+<li>At the end of the transfer request a [Print job log] button will appear:<p>
+    <img src="./assets/transfer_end.png" /><p></li>
+<li>Review the contents of the window to check, whether the library has been
+    successfully installed. If you need to report errors, use the context menu
+	to copy all messages to the clipboard and click the [Print job log] button
+	to print a job log on the host. Use the [Close] button to close the dialog.
+	<p>
+	Alternatively you can use <i>CTRL-A</i> to select all messages and 
+	<i>CTRL-C</i> to copy the selected messages to the clipboard.
+</li>
+</ul>
+<p>
+You can use the following SQL commands to display the installed Rapid Fire SQL procedures and functions
+to see what has been installed:
+<p>
+<div class="codeIndent">SELECT * FROM QSYS2.SYSPROCS WHERE SPECIFIC_SCHEMA = '<i>libraryName</i>'</div>
+<p>
+<div class="codeIndent">SELECT * FROM QSYS2.SYSFUNCS WHERE SPECIFIC_SCHEMA = '<i>libraryName</i>'</div>
+<p>
+Replace <i>libraryName</i> with the name of your Rapid Fire product library.
+<p>
+<iframe src="../copyright.html" width="100%" frameborder="0" marginheight="0" marginwidth="0"></iframe>
+</body>
+</html>
