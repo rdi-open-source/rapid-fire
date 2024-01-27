@@ -1,0 +1,9 @@
+Manifest-Version: 1.0
+Bundle-Version: 1.1.0.r
+X-Bundle-Update-Library: false
+X-Bundle-Update-Library-Info: .
+X-Bundle-Info: Added option to upload the Rapid Fire library to a named ASP.
+X-Beta-Version: 1.1.0.r
+X-Beta-Update-Library: false
+X-Beta-Update-Library-Info: Added option to upload the Rapid Fire library to a named ASP.
+X-Beta-Info: .

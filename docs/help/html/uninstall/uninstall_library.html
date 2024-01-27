@@ -1,0 +1,38 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<link rel="stylesheet" type="text/css" href="../stylesheet.css">
+	<title>Uninstall Rapid Fire Library</title>
+</head>
+
+<body>
+<h1>Uninstall Rapid Fire Library</h1>
+<p>
+<a href="../preferences/library/library.html">Previous page</a>
+&nbsp;•&nbsp;
+End
+<p>
+Follow these steps to uninstall the Rapid Fire library from the host:
+<p>
+<ul>
+<li>Signon to your host system.</li>
+<li>Add your Rapid Fire library to the library list by using the following command.<p>
+    <div class="codeIndent">ADDLIBLE LIB(libraryName)<p></div></li>
+<li>Uninstall the Rapid Fire library by using the following command.<p>
+    <div class="codeIndent">UNINSTALL LIB(libraryName)<p></div></li>
+</ul>
+<p>
+You can use the following SQL commands to display the installed Rapid Fire SQL procedures and functions
+to verify that everything has been removed:
+<p>
+<div class="codeIndent">SELECT * FROM QSYS2.SYSPROCS WHERE SPECIFIC_SCHEMA = '<i>libraryName</i>'</div>
+<p>
+<div class="codeIndent">SELECT * FROM QSYS2.SYSFUNCS WHERE SPECIFIC_SCHEMA = '<i>libraryName</i>'</div>
+<p>
+Replace <i>libraryName</i> with the name of your Rapid Fire product library. The default Rapid Fire library name is RAPIDFIRE.
+<p>
+<iframe src="../copyright.html" width="100%" frameborder="0" marginheight="0" marginwidth="0"></iframe>
+</body>
+</html>

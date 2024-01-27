@@ -1,0 +1,167 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+
+<html>
+<head>
+	<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+	<link rel="stylesheet" type="text/css" href="../stylesheet.css">
+	<title>Adding a File to a Rapid Fire Job</title>
+</head>
+
+<body>
+<h1>Adding a File to a Rapid Fire Job</h1>
+<p>
+<a href="../create_job/create_job.html">Previous page</a>
+&nbsp;•&nbsp;
+<a href="../menu_options/menu_options.html">Next page</a>
+<p>
+<div align="right">
+</div>
+<div align="left">
+Adding one or more files to a Rapid Fire job is easy when you follow these steps:
+<p>
+<ul>
+<li><a href="#add_file">Add File</a></li>
+<li><a href="#add_area">Add Area</a></li>
+<li><a href="#add_conversion">Add Conversion</a></li>
+<li><a href="#add_command">Add Command</a></li>
+</ul>
+<p>
+<a id="#add_file"></a>
+<h2>Add File</h2>
+<p>
+Expand a <i>Job</i> node and select <i>New -&gt; File...</i> from the context menu of 
+the <i>Files</i> node. Then enter the following attributes:
+<p>
+<table>
+<tr><td valign="top" nowrap>Position</td><td valign="top"> - </td>
+    <td>The position number of the file. The objects of the shadow environment are compiled in 
+        the sequence of the position numbers.</td></tr>
+<tr><td valign="top" nowrap>File</td><td valign="top"> - </td>
+    <td>Enter the name of the file that is copied. The names of the production and shadow libraries 
+        are found by evaluating the associated <a href="#add_area"><i>Area</i></a> entry.</td></tr>
+<tr><td valign="top" nowrap>Type</td><td valign="top"> - </td>
+    <td>Enter the type of the file: <i>*PHYSICAL</i> or <i>*LOGICAL</i>. You should also add logical files to your 
+        Rapid Fire job, in case you want Rapid Fire to create the required logical files when 
+        creating the shadow environment.<br>
+        It is recommended to create the logical files before the copy process starts, because 
+        creating the logical files after the physical file has been updated can take significant 
+        time, depending on the number of records in the physical file.</td></tr>
+<tr><td valign="top" nowrap>Copy program</td><td valign="top"> - </td>
+    <td>Enter the name of the program that you want to use for copying the records or select <i>*GEN</i> 
+        to let Rapid Fire generate a copy program for you. For logical files only <i>*NONE</i> is allowed.</td></tr>
+<tr><td valign="top" nowrap>Copy program library</td><td valign="top"> - </td>
+    <td>Enter the name of the library where the copy program is stored.<br>
+        Rapid Fire stores a generated copy program in the shadow library.</td></tr>
+<tr><td valign="top" nowrap>Conversion program</td><td valign="top"> - </td>
+    <td>Enter the name of the conversion that you want to use for converting records or select <i>*NONE</i>.</td></tr>
+<tr><td valign="top" nowrap>Conversion program library</td><td valign="top"> - </td>
+    <td>Enter the name of the library where the conversion program is stored.</td></tr>
+</table>
+<p>
+<a id="#add_area"></a>
+<h2>Add Area</h2>
+<p>
+Expand the created <i>File</i> node and select <i>New -&gt; Area...</i> from the context menu of 
+the <i>Areas</i> node. Then enter the following attributes:
+<p>
+<table>
+<tr><td valign="top" nowrap>Area</td><td valign="top"> - </td>
+    <td>Enter the name of the area. The name must follow the rules for host object names.</td></tr>
+<tr><td valign="top" nowrap>Library</td><td valign="top"> - </td>
+    <td>Enter the name of a production library that you added to 
+        the <a href="./../create_job/create_job.html#add_libraries"><i>Rapid Fire job</i></a> beforehand.</td></tr>
+<tr><td valign="top" nowrap>Library list</td><td valign="top"> - </td>
+    <td>Enter the name of the library list that you want to use for compiling the objects of the shadow environment.</td></tr>
+<tr><td valign="top" nowrap>Library CCSID</td><td valign="top"> - </td>
+    <td>Enter the CCSID of the files of the production library. Rapid Fire executes the copy job with that CCSID to 
+        properly create the shadow environment. The CCSID is also assigned to the copy job while copying data.</td></tr>
+<tr><td valign="top" nowrap>Command extension</td><td valign="top"> - </td>
+    <td>Add additional parameters that are added to the compile command that is used for compiling the file in the 
+        shadow environment. For example, if the base command was <i>CRTPF</i>, then parameter SRTSEQ could be different 
+        for each area.</td></tr>
+</table>
+<p>
+<a id="#add_conversion"></a>
+<h2>Add Conversion</h2>
+<p>
+Expand the created <i>File</i> node and select <i>New -&gt; Conversion...</i> from the context menu of 
+the <i>Conversions</i> node. Then enter the following attributes:
+<p>
+<table>
+<tr><td valign="top" nowrap>Field to convert</td><td valign="top"> - </td>
+    <td>Enter the name of the field the conversion rules apply to.</td></tr>
+<tr><td valign="top" nowrap>Rename field in old file to</td><td valign="top"> - </td>
+    <td>Enter a new name if you need to rename a field in the old file, because you
+        need to access the old value in a conversion statement. It is up to you, to
+        fill a renamed field in the target record format.<br>
+        Select <i>*NONE</i> if renaming is not required.</td></tr>
+<tr><td valign="top" nowrap>Conversions</td><td valign="top"> - </td>
+    <td>Enter one or more conversion statements for example if you need to convert a
+        numeric field to a date field. Each statement must be a valid RPG statement.</td></tr>
+</table>
+<p>
+<h3>Sample copy programs</h3>
+<p>
+Generated copy program where the record format IDs of the old and new file did not change. Simple
+conversion statement that assigns a fix value to the existing field <i>X1ERR</i>. The field names 
+of the source and target file are the same.
+<p>
+<img src="./assets/sample_copy_pgm_1.png"/>
+<p>
+Generated copy program where the record format IDs of the old and new file did not change. IF/ELSE
+conversion statements converting field <i>X1ERR</i> from alpha-numeric to numeric. The field names 
+of the source and target file are the same.
+<p>
+<img src="./assets/sample_copy_pgm_2.png"/>
+<p>
+Generated copy program where the new record format has the new field <i>X1NEWCOL</i>. Simple
+conversion statement that assigns a fix value to the existing field <i>X1ERR</i>. The field names
+of the source and target file are prefixed with <i>S_</i> and <i>T_</i> since the record format has
+changed.
+<p>
+<img src="./assets/sample_copy_pgm_3.png"/>
+<p>
+<a id="#add_command"></a>
+<h2>Add Command</h2>
+<p>
+Expand the created <i>File</i> node and select <i>New -&gt; Command...</i> from the context menu of 
+the <i>Commands</i> node. Then enter the following attributes:
+<p>
+<table>
+<tr><td valign="top" nowrap>Command type</td><td valign="top"> - </td>
+    <td>Enter the type of the command. The available command types and their meanings are:
+    <br>
+    <table>
+    <tr><td valign="top" nowrap width="70px"><i>*PRERUN</i></td><td valign="top">:</td><td>Command that is executed before the compile command.</td></tr>
+    <tr><td valign="top" nowrap width="70px"><i>*COMPILE</i></td><td valign="top">:</td><td>Command that is used for compiling the object.</td></tr>
+    <tr><td valign="top" nowrap width="70px"><i>*POSTRUN</i></td><td valign="top">:</td><td>Command that is executed after the compile command.</td></tr>
+    </table>
+    </td></tr>
+<tr><td valign="top" nowrap>Sequence</td><td valign="top"> - </td>
+    <td>Enter a sequence number. Commands of the same type are executed in the ascending order of their sequence numbers.</td></tr>
+<tr><td valign="top" nowrap>Command</td><td valign="top"> - </td>
+    <td>Enter the CL command that you want to execute. The following replacement variables are available:
+    <br>
+    <table>
+    <tr><td valign="top" nowrap width="70px"><i>&amp;LIB</i></td><td valign="top">:</td><td>Variable that is replaced with the name of the library where the object will be stored.</td></tr>
+    <tr><td valign="top" nowrap width="70px"><i>&amp;FILE</i></td><td valign="top">:</td><td>Variable that is replaced with the name of the object that is compiled.</td></tr>
+    </table>
+    Make sure to specify the replacement variables in upper case.
+    </td></tr>
+</table>
+</div>
+<p>
+<h3>Sample Commands</h3>
+<p>
+<b><i>*PRERUN</i></b><p>
+<div class="codeIndent">CRTPF FILE(&amp;LIB/IMPORT) RCDLEN(250) MBR(*NONE)</div>
+<p>
+<b><i>*COMPILE</i></b><p>
+<div class="codeIndent">CRTPF FILE(&amp;LIB/&amp;FILE) SRCFILE(*LIBL/QSQLSRC) SRCMBR(&amp;FILE)</div>
+<p>
+<b><i>*POSTRUN</i></b><p>
+<div class="codeIndent">DLTF FILE(&amp;LIB/IMPORT)</div>
+<p>
+<iframe src="../copyright.html" width="100%" frameborder="0" marginheight="0" marginwidth="0"></iframe>
+</body>
+</html>
