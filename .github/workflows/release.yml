@@ -111,7 +111,8 @@ jobs:
           VERSION="${TAG#v}"
           echo "Version: ${VERSION}"
 
-                    mapfile -t PDFS < <(compgen -G "docs/files/Rapid Fire*.pdf" || true)
+          # Der Name der PDF kann die RDi-Version enthalten.
+          mapfile -t PDFS < <(compgen -G "docs/files/Rapid Fire*.pdf" || true)
           if [ ${#PDFS[@]} -ne 1 ]; then
             echo "PDF nicht eindeutig (${#PDFS[@]} Treffer)." >&2
             exit 1
